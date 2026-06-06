@@ -1,0 +1,166 @@
+{
+  "bonds": [
+    {
+      "id": "bond_fire",
+      "name": "火系",
+      "type": "element",
+      "description": "火属性功法和装备的羁绊",
+      "keywords": ["火", "炎", "焰", "烈"],
+      "levels": [
+        { "required": 2, "stats": { "攻击": 5 } },
+        { "required": 5, "stats": { "攻击": 10, "体质": 3 } },
+        { "required": 10, "stats": { "攻击": 20, "体质": 8 } },
+        { "required": 20, "stats": { "攻击": 35, "体质": 15 } }
+      ]
+    },
+    {
+      "id": "bond_ice",
+      "name": "冰系",
+      "type": "element",
+      "description": "冰属性功法和装备的羁绊",
+      "keywords": ["冰", "霜", "雪", "寒"],
+      "levels": [
+        { "required": 2, "stats": { "防御": 5 } },
+        { "required": 5, "stats": { "防御": 10, "体质": 3 } },
+        { "required": 10, "stats": { "防御": 20, "体质": 8 } },
+        { "required": 20, "stats": { "防御": 35, "体质": 15 } }
+      ]
+    },
+    {
+      "id": "bond_thunder",
+      "name": "雷系",
+      "type": "element",
+      "description": "雷属性功法和装备的羁绊",
+      "keywords": ["雷", "电", "霆"],
+      "levels": [
+        { "required": 2, "stats": { "攻击": 4, "法力": 5 } },
+        { "required": 5, "stats": { "攻击": 8, "法力": 10 } },
+        { "required": 10, "stats": { "攻击": 15, "法力": 20 } },
+        { "required": 20, "stats": { "攻击": 25, "法力": 35 } }
+      ]
+    },
+    {
+      "id": "bond_wind",
+      "name": "风系",
+      "type": "element",
+      "description": "风属性功法和装备的羁绊",
+      "keywords": ["风", "岚", "飓"],
+      "levels": [
+        { "required": 2, "stats": { "闪避": 5 } },
+        { "required": 5, "stats": { "闪避": 10, "速度": 5 } },
+        { "required": 10, "stats": { "闪避": 15, "速度": 10 } },
+        { "required": 20, "stats": { "闪避": 25, "速度": 20 } }
+      ]
+    },
+    {
+      "id": "bond_earth",
+      "name": "土系",
+      "type": "element",
+      "description": "土属性功法和装备的羁绊",
+      "keywords": ["土", "岩", "石", "山"],
+      "levels": [
+        { "required": 2, "stats": { "防御": 6 } },
+        { "required": 5, "stats": { "防御": 12, "生命": 50 } },
+        { "required": 10, "stats": { "防御": 25, "生命": 120 } },
+        { "required": 20, "stats": { "防御": 40, "生命": 250 } }
+      ]
+    },
+    {
+      "id": "bond_light",
+      "name": "光系",
+      "type": "element",
+      "description": "光属性功法和装备的羁绊",
+      "keywords": ["光", "圣", "辉", "阳"],
+      "levels": [
+        { "required": 2, "stats": { "治疗效果": 10 } },
+        { "required": 5, "stats": { "治疗效果": 20, "法力": 10 } },
+        { "required": 10, "stats": { "治疗效果": 35, "法力": 25 } },
+        { "required": 20, "stats": { "治疗效果": 50, "法力": 50 } }
+      ]
+    },
+    {
+      "id": "bond_dark",
+      "name": "暗系",
+      "type": "element",
+      "description": "暗属性功法和装备的羁绊",
+      "keywords": ["暗", "影", "幽", "冥"],
+      "levels": [
+        { "required": 2, "stats": { "暴击": 5 } },
+        { "required": 5, "stats": { "暴击": 10, "暴伤": 10 } },
+        { "required": 10, "stats": { "暴击": 18, "暴伤": 25 } },
+        { "required": 20, "stats": { "暴击": 30, "暴伤": 50 } }
+      ]
+    },
+    {
+      "id": "bond_sword",
+      "name": "剑系",
+      "type": "weapon",
+      "description": "剑类功法和装备的羁绊",
+      "keywords": ["剑", "锋"],
+      "levels": [
+        { "required": 2, "stats": { "攻击": 5 } },
+        { "required": 5, "stats": { "攻击": 12, "命中": 5 } },
+        { "required": 10, "stats": { "攻击": 25, "命中": 12 } },
+        { "required": 20, "stats": { "攻击": 45, "命中": 25 } }
+      ]
+    },
+    {
+      "id": "bond_blade",
+      "name": "刀系",
+      "type": "weapon",
+      "description": "刀类功法和装备的羁绊",
+      "keywords": ["刀", "刃"],
+      "levels": [
+        { "required": 2, "stats": { "攻击": 6 } },
+        { "required": 5, "stats": { "攻击": 14, "暴击": 3 } },
+        { "required": 10, "stats": { "攻击": 28, "暴击": 8 } },
+        { "required": 20, "stats": { "攻击": 50, "暴击": 18 } }
+      ]
+    },
+    {
+      "id": "bond_fist",
+      "name": "拳系",
+      "type": "weapon",
+      "description": "拳类功法和装备的羁绊",
+      "keywords": ["拳", "掌", "爪"],
+      "levels": [
+        { "required": 2, "stats": { "攻击": 4, "防御": 2 } },
+        { "required": 5, "stats": { "攻击": 10, "防御": 5 } },
+        { "required": 10, "stats": { "攻击": 20, "防御": 12 } },
+        { "required": 20, "stats": { "攻击": 35, "防御": 25 } }
+      ]
+    },
+    {
+      "id": "bond_bow",
+      "name": "弓系",
+      "type": "weapon",
+      "description": "弓类功法和装备的羁绊",
+      "keywords": ["弓", "箭", "射"],
+      "levels": [
+        { "required": 2, "stats": { "命中": 8, "速度": 3 } },
+        { "required": 5, "stats": { "命中": 15, "速度": 8 } },
+        { "required": 10, "stats": { "命中": 30, "速度": 18 } },
+        { "required": 20, "stats": { "命中": 55, "速度": 35 } }
+      ]
+    },
+    {
+      "id": "bond_spear",
+      "name": "枪系",
+      "type": "weapon",
+      "description": "枪类功法和装备的羁绊",
+      "keywords": ["枪", "戟", "矛"],
+      "levels": [
+        { "required": 2, "stats": { "攻击": 5, "穿透": 3 } },
+        { "required": 5, "stats": { "攻击": 12, "穿透": 8 } },
+        { "required": 10, "stats": { "攻击": 25, "穿透": 18 } },
+        { "required": 20, "stats": { "攻击": 45, "穿透": 35 } }
+      ]
+    }
+  ],
+  "rarityBonuses": {
+    "普通": { "mult": 1.0 },
+    "稀有": { "mult": 1.2 },
+    "史诗": { "mult": 1.5 },
+    "传说": { "mult": 2.0 }
+  }
+}

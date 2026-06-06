@@ -1,0 +1,339 @@
+{
+  "achievements": [
+    {
+      "id": "level_10",
+      "name": "初窥门径",
+      "description": "角色等级达到10级",
+      "type": "level",
+      "icon": "trophy",
+      "triggerEvent": "level_up",
+      "condition": {
+        "field": "newLevel",
+        "operator": ">=",
+        "value": 10
+      },
+      "rewards": {
+        "experience": 100,
+        "stats": {
+          "体质": 5
+        }
+      },
+      "rarity": "普通"
+    },
+    {
+      "id": "level_30",
+      "name": "小有所成",
+      "description": "角色等级达到30级",
+      "type": "level",
+      "icon": "trophy",
+      "triggerEvent": "level_up",
+      "condition": {
+        "field": "newLevel",
+        "operator": ">=",
+        "value": 30
+      },
+      "rewards": {
+        "experience": 500,
+        "stats": {
+          "体质": 10,
+          "灵根": 5
+        }
+      },
+      "rarity": "稀有"
+    },
+    {
+      "id": "level_50",
+      "name": "登堂入室",
+      "description": "角色等级达到50级",
+      "type": "level",
+      "icon": "trophy",
+      "triggerEvent": "level_up",
+      "condition": {
+        "field": "newLevel",
+        "operator": ">=",
+        "value": 50
+      },
+      "rewards": {
+        "experience": 2000,
+        "stats": {
+          "体质": 20,
+          "灵根": 10,
+          "悟性": 5
+        }
+      },
+      "rarity": "史诗"
+    },
+    {
+      "id": "level_100",
+      "name": "大道将成",
+      "description": "角色等级达到100级",
+      "type": "level",
+      "icon": "trophy",
+      "triggerEvent": "level_up",
+      "condition": {
+        "field": "newLevel",
+        "operator": ">=",
+        "value": 100
+      },
+      "rewards": {
+        "experience": 10000,
+        "stats": {
+          "体质": 50,
+          "灵根": 30,
+          "悟性": 20,
+          "意志": 20
+        }
+      },
+      "rarity": "传说"
+    },
+    {
+      "id": "combat_enemies_10",
+      "name": "初试锋芒",
+      "description": "累计击败10个敌人",
+      "type": "combat",
+      "icon": "swords",
+      "triggerEvent": "monster_killed",
+      "condition": {
+        "type": "accumulate",
+        "event": "monster_killed",
+        "target": 10
+      },
+      "rewards": {
+        "experience": 50
+      },
+      "rarity": "普通"
+    },
+    {
+      "id": "combat_enemies_100",
+      "name": "战意盎然",
+      "description": "累计击败100个敌人",
+      "type": "combat",
+      "icon": "swords",
+      "triggerEvent": "monster_killed",
+      "condition": {
+        "type": "accumulate",
+        "event": "monster_killed",
+        "target": 100
+      },
+      "rewards": {
+        "experience": 200,
+        "stats": {
+          "体质": 5
+        }
+      },
+      "rarity": "稀有"
+    },
+    {
+      "id": "combat_boss_1",
+      "name": "Boss杀手",
+      "description": "击败第一个Boss",
+      "type": "combat",
+      "icon": "swords",
+      "triggerEvent": "boss_killed",
+      "condition": {
+        "type": "accumulate",
+        "event": "boss_killed",
+        "target": 1
+      },
+      "rewards": {
+        "experience": 300,
+        "stats": {
+          "意志": 5
+        }
+      },
+      "rarity": "稀有"
+    },
+    {
+      "id": "combat_boss_5",
+      "name": "Boss克星",
+      "description": "累计击败5个Boss",
+      "type": "combat",
+      "icon": "swords",
+      "triggerEvent": "boss_killed",
+      "condition": {
+        "type": "accumulate",
+        "event": "boss_killed",
+        "target": 5
+      },
+      "rewards": {
+        "experience": 1000,
+        "stats": {
+          "体质": 10,
+          "意志": 10
+        }
+      },
+      "rarity": "史诗"
+    },
+    {
+      "id": "collection_technique_5",
+      "name": "功法初学者",
+      "description": "收集5种不同的功法",
+      "type": "collection",
+      "icon": "package",
+      "triggerEvent": "technique_collected",
+      "condition": {
+        "type": "accumulate_unique",
+        "event": "technique_collected",
+        "field": "techniqueName",
+        "target": 5
+      },
+      "rewards": {
+        "experience": 100
+      },
+      "rarity": "普通"
+    },
+    {
+      "id": "collection_technique_20",
+      "name": "功法收藏家",
+      "description": "收集20种不同的功法",
+      "type": "collection",
+      "icon": "package",
+      "triggerEvent": "technique_collected",
+      "condition": {
+        "type": "accumulate_unique",
+        "event": "technique_collected",
+        "field": "techniqueName",
+        "target": 20
+      },
+      "rewards": {
+        "experience": 500,
+        "stats": {
+          "悟性": 10
+        }
+      },
+      "rarity": "稀有"
+    },
+    {
+      "id": "collection_equipment_6",
+      "name": "全身武装",
+      "description": "收集6种不同的装备",
+      "type": "collection",
+      "icon": "shield",
+      "triggerEvent": "equipment_collected",
+      "condition": {
+        "type": "accumulate_unique",
+        "event": "equipment_collected",
+        "field": "equipmentName",
+        "target": 6
+      },
+      "rewards": {
+        "experience": 100
+      },
+      "rarity": "普通"
+    },
+    {
+      "id": "exploration_1",
+      "name": "初探秘境",
+      "description": "完成1次秘境探索",
+      "type": "exploration",
+      "icon": "map",
+      "triggerEvent": "adventure_completed",
+      "condition": {
+        "type": "accumulate",
+        "event": "adventure_completed",
+        "target": 1
+      },
+      "rewards": {
+        "experience": 100
+      },
+      "rarity": "普通"
+    },
+    {
+      "id": "exploration_10",
+      "name": "秘境常客",
+      "description": "完成10次秘境探索",
+      "type": "exploration",
+      "icon": "map",
+      "triggerEvent": "adventure_completed",
+      "condition": {
+        "type": "accumulate",
+        "event": "adventure_completed",
+        "target": 10
+      },
+      "rewards": {
+        "experience": 500,
+        "stats": {
+          "幸运": 5
+        }
+      },
+      "rarity": "稀有"
+    },
+    {
+      "id": "cultivation_100",
+      "name": "勤奋修炼",
+      "description": "累计修炼100次",
+      "type": "cultivation",
+      "icon": "sparkles",
+      "triggerEvent": "cultivation_done",
+      "condition": {
+        "type": "accumulate",
+        "event": "cultivation_done",
+        "target": 100
+      },
+      "rewards": {
+        "experience": 300,
+        "stats": {
+          "意志": 5
+        }
+      },
+      "rarity": "普通"
+    },
+    {
+      "id": "special_first_legendary",
+      "name": "传说降临",
+      "description": "获得第一件传说品质物品",
+      "type": "special",
+      "icon": "star",
+      "triggerEvent": "legendary_obtained",
+      "condition": {
+        "type": "accumulate",
+        "event": "legendary_obtained",
+        "target": 1
+      },
+      "rewards": {
+        "experience": 1000,
+        "stats": {
+          "幸运": 10
+        }
+      },
+      "rarity": "史诗"
+    },
+    {
+      "id": "special_full_equipment",
+      "name": "全副武装",
+      "description": "所有装备槽位都已装备",
+      "type": "special",
+      "icon": "star",
+      "triggerEvent": "full_equipped",
+      "condition": {
+        "type": "once"
+      },
+      "rewards": {
+        "experience": 500,
+        "stats": {
+          "体质": 10,
+          "意志": 5
+        }
+      },
+      "rarity": "稀有"
+    },
+    {
+      "id": "special_technique_max",
+      "name": "功法大成",
+      "description": "将一本功法升至满级",
+      "type": "special",
+      "icon": "star",
+      "triggerEvent": "technique_max_level",
+      "condition": {
+        "type": "once"
+      },
+      "rewards": {
+        "experience": 800,
+        "stats": {
+          "悟性": 15
+        }
+      },
+      "rarity": "史诗"
+    }
+  ]
+}

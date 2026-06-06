@@ -1,0 +1,307 @@
+/**
+ * 万界修行录 - 统一主题配置
+ * 
+ * 主题说明：
+ * - 默认主题：米色系（温暖、古典、书卷气）
+ * - 暗色主题：深棕/墨色系（通过 .dark 类切换）
+ * 
+ * 使用规范：
+ * - 所有颜色必须使用语义化变量（如 bg-background, text-foreground）
+ * - 禁止硬编码颜色值（如 #fff, rgb(), rgba()）
+ * - 禁止使用 Tailwind 原生色盘（如 bg-amber-500, text-gray-900）
+ * - 如需调整透明度，使用 / 修饰符（如 bg-primary/50, text-muted-foreground/80）
+ * 
+ * 品质颜色（全局统一，从高到低）：
+ * - 红色(mythic)：传说品质，最高级
+ * - 橙色(legendary)：史诗品质
+ * - 黄色(epic)：稀有品质
+ * - 紫色(rare)：精良品质
+ * - 蓝色(uncommon)：优秀品质
+ * - 绿色(common)：普通品质
+ * - 灰色(poor)：劣质品质
+ * - 白色(basic)：基础品质，最低级
+ */
+
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@200..900&display=swap');
+@import 'tailwindcss';
+@import 'tw-animate-css';
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  /* 品质颜色 - 全局统一 */
+  --color-quality-mythic: var(--quality-mythic);
+  --color-quality-legendary: var(--quality-legendary);
+  --color-quality-epic: var(--quality-epic);
+  --color-quality-rare: var(--quality-rare);
+  --color-quality-uncommon: var(--quality-uncommon);
+  --color-quality-common: var(--quality-common);
+  --color-quality-poor: var(--quality-poor);
+  --color-quality-basic: var(--quality-basic);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --radius-4xl: calc(var(--radius) + 16px);
+  --font-sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  --font-serif: "Noto Serif SC", "Songti SC", "SimSun", ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+  --shadow-2xs: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+}
+
+/**
+ * 米色系主题（默认）
+ * 
+ * 设计理念：
+ * - 温暖的米色背景，营造书卷气息
+ * - 棕褐色主色调，呼应古典修仙主题
+ * - 柔和的对比度，舒适的阅读体验
+ */
+:root {
+  /* 背景层 */
+  --background: oklch(0.96 0.012 75);           /* 温暖米白 #f5f0e8 近似 */
+  --foreground: oklch(0.22 0.035 55);           /* 深棕色文字 */
+  
+  /* 卡片层 */
+  --card: oklch(0.99 0.006 75);                 /* 接近白色的米色 */
+  --card-foreground: oklch(0.22 0.035 55);      /* 深棕色文字 */
+  
+  /* 弹出层 */
+  --popover: oklch(0.99 0.006 75);
+  --popover-foreground: oklch(0.22 0.035 55);
+  
+  /* 主色调 - 琥珀棕 */
+  --primary: oklch(0.50 0.10 60);               /* 琥珀棕，用于主按钮 */
+  --primary-foreground: oklch(0.98 0.01 75);    /* 米白色文字 */
+  
+  /* 次要色 */
+  --secondary: oklch(0.92 0.02 70);             /* 浅米色 */
+  --secondary-foreground: oklch(0.30 0.04 55);  /* 棕色文字 */
+  
+  /* 柔和色 */
+  --muted: oklch(0.94 0.015 72);                /* 更浅的米色 */
+  --muted-foreground: oklch(0.45 0.03 60);      /* 中棕色文字 */
+  
+  /* 强调色 */
+  --accent: oklch(0.88 0.04 70);                /* 带色调的浅米色 */
+  --accent-foreground: oklch(0.25 0.04 55);     /* 深棕色文字 */
+  
+  /* 危险色 */
+  --destructive: oklch(0.55 0.20 25);           /* 暗红色 */
+  
+  /* 边框与输入 */
+  --border: oklch(0.88 0.02 70);                /* 浅棕边框 */
+  --input: oklch(0.92 0.015 72);                /* 输入框背景 */
+  --ring: oklch(0.50 0.10 60);                  /* 焦点环色 */
+  
+  /* 图表色 - 暖色系 */
+  --chart-1: oklch(0.65 0.12 55);               /* 琥珀色 */
+  --chart-2: oklch(0.55 0.15 40);               /* 棕红色 */
+  --chart-3: oklch(0.50 0.10 75);               /* 金棕色 */
+  --chart-4: oklch(0.45 0.08 55);               /* 深棕色 */
+  --chart-5: oklch(0.60 0.06 70);               /* 浅棕色 */
+  
+  /* 圆角 */
+  --radius: 0.5rem;
+  
+  /* 侧边栏 */
+  --sidebar: oklch(0.97 0.012 75);
+  --sidebar-foreground: oklch(0.22 0.035 55);
+  --sidebar-primary: oklch(0.50 0.10 60);
+  --sidebar-primary-foreground: oklch(0.98 0.01 75);
+  --sidebar-accent: oklch(0.92 0.025 70);
+  --sidebar-accent-foreground: oklch(0.25 0.04 55);
+  --sidebar-border: oklch(0.88 0.02 70);
+  --sidebar-ring: oklch(0.50 0.10 60);
+  
+  /* ========================================
+   * 品质颜色系统（全局统一）
+   * 从高到低：红 > 橙 > 黄 > 紫 > 蓝 > 绿 > 灰 > 白
+   * ======================================== */
+  
+  /* 传说品质 - 红色（最高） */
+  --quality-mythic: oklch(0.60 0.22 25);
+  
+  /* 史诗品质 - 橙色 */
+  --quality-legendary: oklch(0.70 0.17 55);
+  
+  /* 稀有品质 - 黄色 */
+  --quality-epic: oklch(0.85 0.15 90);
+  
+  /* 精良品质 - 紫色 */
+  --quality-rare: oklch(0.55 0.20 300);
+  
+  /* 优秀品质 - 蓝色 */
+  --quality-uncommon: oklch(0.55 0.15 250);
+  
+  /* 普通品质 - 绿色 */
+  --quality-common: oklch(0.60 0.12 145);
+  
+  /* 劣质品质 - 灰色 */
+  --quality-poor: oklch(0.50 0.02 70);
+  
+  /* 基础品质 - 白色（最低） */
+  --quality-basic: oklch(0.85 0.01 75);
+}
+
+/**
+ * 暗色主题
+ * 
+ * 启用方式：在 <html> 或父元素添加 .dark 类
+ * 
+ * 设计理念：
+ * - 深墨色背景，保持古典气息
+ * - 金棕色主色调，呼应修仙神秘感
+ * - 适度对比度，保护眼睛
+ */
+.dark {
+  /* 背景层 */
+  --background: oklch(0.18 0.02 55);            /* 深墨棕色 */
+  --foreground: oklch(0.92 0.015 70);           /* 浅米色文字 */
+  
+  /* 卡片层 */
+  --card: oklch(0.22 0.025 55);                 /* 稍浅的深棕色 */
+  --card-foreground: oklch(0.92 0.015 70);
+  
+  /* 弹出层 */
+  --popover: oklch(0.22 0.025 55);
+  --popover-foreground: oklch(0.92 0.015 70);
+  
+  /* 主色调 - 金棕色 */
+  --primary: oklch(0.70 0.12 65);               /* 金棕色，用于主按钮 */
+  --primary-foreground: oklch(0.15 0.02 55);    /* 深棕色文字 */
+  
+  /* 次要色 */
+  --secondary: oklch(0.28 0.03 55);
+  --secondary-foreground: oklch(0.88 0.015 70);
+  
+  /* 柔和色 */
+  --muted: oklch(0.25 0.025 55);
+  --muted-foreground: oklch(0.65 0.03 60);
+  
+  /* 强调色 */
+  --accent: oklch(0.32 0.04 55);
+  --accent-foreground: oklch(0.90 0.015 70);
+  
+  /* 危险色 */
+  --destructive: oklch(0.65 0.18 25);
+  
+  /* 边框与输入 */
+  --border: oklch(0.30 0.02 55);
+  --input: oklch(0.25 0.025 55);
+  --ring: oklch(0.70 0.12 65);
+  
+  /* 图表色 */
+  --chart-1: oklch(0.75 0.12 55);
+  --chart-2: oklch(0.65 0.15 40);
+  --chart-3: oklch(0.70 0.10 75);
+  --chart-4: oklch(0.55 0.08 55);
+  --chart-5: oklch(0.60 0.06 70);
+  
+  /* 侧边栏 */
+  --sidebar: oklch(0.20 0.025 55);
+  --sidebar-foreground: oklch(0.90 0.015 70);
+  --sidebar-primary: oklch(0.70 0.12 65);
+  --sidebar-primary-foreground: oklch(0.15 0.02 55);
+  --sidebar-accent: oklch(0.28 0.04 55);
+  --sidebar-accent-foreground: oklch(0.88 0.015 70);
+  --sidebar-border: oklch(0.30 0.02 55);
+  --sidebar-ring: oklch(0.70 0.12 65);
+  
+  /* 品质颜色 - 暗色模式下提高亮度以保持可见性 */
+  --quality-mythic: oklch(0.70 0.22 25);
+  --quality-legendary: oklch(0.75 0.18 55);
+  --quality-epic: oklch(0.88 0.15 90);
+  --quality-rare: oklch(0.65 0.20 300);
+  --quality-uncommon: oklch(0.65 0.15 250);
+  --quality-common: oklch(0.70 0.12 145);
+  --quality-poor: oklch(0.55 0.02 70);
+  --quality-basic: oklch(0.80 0.01 75);
+}
+
+@custom-variant dark (&:is(.dark *));
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground font-serif;
+  }
+}
+
+/* ========================================
+ * 残血蒙层动画
+ * ======================================== */
+
+/* 脉冲光晕动画 */
+@keyframes pulse-glow {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
+/* 微弱震动效果 */
+@keyframes subtle-shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-1px);
+  }
+  75% {
+    transform: translateX(1px);
+  }
+}
+
+/* 脉冲动画（用于警告文字） */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 0.3;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    opacity: 0.6;
+    transform: translate(-50%, -50%) scale(1.05);
+  }
+}

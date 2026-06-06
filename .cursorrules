@@ -1,0 +1,71 @@
+# 万界修行录 - AI Agent 开发规则
+
+## 必读文件
+
+每次对话开始前，**必须**阅读 `RULES.md` 了解完整开发规范。
+
+## 核心原则
+
+### 1. 目录结构
+- `components/game/` - 游戏功能面板
+- `components/pages/{module}/` - 页面级组件
+- `components/shared/` - 跨模块共享组件
+- `components/ui/` - shadcn/ui（禁止修改）
+- `lib/game/` - 核心业务逻辑（纯函数）
+- `lib/game/data/` - 静态配置数据
+- `hooks/` - React Hooks
+
+### 2. 开发前检查
+```
+□ grep_file("关键字", "src/components") - 搜索现有组件
+□ grep_file("关键字", "src/lib/game") - 搜索现有模块
+□ read_file("src/lib/game/types.ts") - 检查类型定义
+□ read_file("src/lib/game/index.ts") - 检查统一导出
+```
+
+### 3. 模块职责
+- `types.ts` - 类型定义集中地
+- `balanceConfig.ts` - 战斗数值
+- `worldData.ts` - 世界配置
+- `factionData.ts` - 势力配置
+- `adventure.ts` - 战斗、机缘逻辑
+- `cultivation.ts` - 修炼逻辑
+- 新模块必须在 `index.ts` 导出
+
+### 4. 状态管理
+- 全局状态：`useGameState.tsx`（单一数据源）
+- 功能 Hooks：`useGameHooks.ts`（组合状态）
+- 组件仅使用 `useState` 管理 UI 临时状态
+
+### 5. 禁止行为
+- ❌ 在 `lib/game` 放置 React 组件
+- ❌ 在 `components/ui` 添加自定义组件
+- ❌ 重复定义类型
+- ❌ 组件内硬编码数值
+- ❌ 直接修改状态对象
+- ❌ 创建未在 index.ts 导出的模块
+
+### 6. 文件命名
+- 组件：`PascalCase.tsx`
+- Hook：`useCamelCase.tsx`
+- 工具：`camelCase.ts`
+- 类型：`types.ts`
+- 常量：`UPPER_SNAKE_CASE`
+
+### 7. 开发流程
+```
+需求分析 → 查看现有代码 → 类型定义(types.ts) → 
+业务逻辑(lib/game/) → 更新导出(index.ts) → 
+Hook集成(useGameHooks) → UI组件(components/) → 测试验证
+```
+
+## 快速参考
+
+| 文件 | 路径 |
+|-----|------|
+| 类型定义 | src/lib/game/types.ts |
+| 统一导出 | src/lib/game/index.ts |
+| 游戏状态 | src/hooks/useGameState.tsx |
+| 数值配置 | src/lib/game/balanceConfig.ts |
+| 世界配置 | src/lib/game/worldData.ts |
+| 主游戏 | src/components/game/MainGame.tsx |
