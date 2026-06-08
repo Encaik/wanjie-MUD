@@ -10,6 +10,7 @@
  * - 事件执行
  */
 import { describe, it, expect, beforeEach } from 'vitest';
+
 import {
   DUNGEON_EVENTS,
   EVENTS_BY_TYPE,
@@ -22,6 +23,7 @@ import {
   getAvailableChoices,
   quickHandleEvent,
 } from '@/lib/game/dungeon';
+
 import { createTestProtagonist } from '../adventure/test-helpers';
 
 // ============================================

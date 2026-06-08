@@ -4,13 +4,14 @@
 
 'use client';
 
-import { cn } from '@/lib/utils';
+import { Bell, X } from 'lucide-react';
+
+import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Badge } from '@/components/ui/badge';
-import { Bell, X } from 'lucide-react';
-import type { Announcement } from '@/types/announcement';
 import { ANNOUNCEMENT_TYPE_CONFIG } from '@/lib/game/announcement/config';
+import { cn } from '@/lib/utils';
+import type { Announcement } from '@/types/announcement';
 
 /** Props */
 interface AnnouncementHistoryProps {

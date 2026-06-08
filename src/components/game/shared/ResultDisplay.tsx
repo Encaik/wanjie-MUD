@@ -1,10 +1,12 @@
 'use client';
 
-import { ActionResult } from '@/lib/game/types';
-import { Card, CardContent } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import { CheckCircle2, XCircle, Package } from 'lucide-react';
+
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
+import { ActionResult } from '@/lib/game/types';
+
 
 interface ResultDisplayProps {
   result: ActionResult | null;

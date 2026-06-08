@@ -5,7 +5,6 @@
  * 整合机缘解锁和品质系统
  */
 
-import { ItemRarity, EnemyTier } from '../game/types';
 import { 
   checkOpportunityUnlock, 
   getOpportunityConfig,
@@ -19,6 +18,7 @@ import {
   RaritySource,
   DropResult,
 } from './raritySystem';
+import { ItemRarity, EnemyTier } from '../game/types';
 
 // ============================================
 // 类型定义

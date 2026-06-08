@@ -2,6 +2,30 @@
 
 > 本文档为 AI Agent 开发指南，每次对话必须遵循此规则进行开发。
 
+## 规则文件（必读）
+
+开发前请阅读以下规则文件：
+- **[核心约束](.claude/rules/core.md)** — 文件大小限制、目录职责、禁止行为
+- **[模块规范](.claude/rules/modules.md)** — lib/game、hooks、components、features 开发规范
+- **[代码风格](.claude/rules/style.md)** — 导入顺序、命名、JSDoc、TypeScript 严格模式
+
+## 质量门禁
+
+| 命令 | 用途 |
+|------|------|
+| `pnpm lint` | ESLint 检查 |
+| `pnpm lint:strict` | 完整质量门禁（ESLint + 文件大小检查） |
+| `pnpm ts-check` | TypeScript 类型检查 |
+| `pnpm test` | 单元测试 |
+| `pnpm check-sizes` | 文件大小限制检查 |
+
+## Skills
+
+可用的项目定制技能：
+- `/code-review` — 代码审查（含目录合规、大文件警告、类型滥用检测）
+- `/simplify` — 代码简化（含重复逻辑识别、组件拆分建议）
+- `/verify` — 变更验证（含测试、类型检查、构建）
+
 ---
 
 ## 一、项目概述

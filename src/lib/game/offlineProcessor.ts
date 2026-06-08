@@ -13,7 +13,6 @@
  * - 离线收益有上限，防止无限挂机
  */
 
-import { Protagonist, InventoryItem, createInventoryItem } from './types';
 import { 
   RealTimeState, 
   GameTimeState,
@@ -24,6 +23,7 @@ import {
   processOfflineCooldowns,
   shouldDailyRefresh,
 } from './timeSystem';
+import { Protagonist, InventoryItem, createInventoryItem } from './types';
 
 // ============================================
 // 类型定义

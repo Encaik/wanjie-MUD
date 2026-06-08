@@ -6,6 +6,11 @@
  */
 
 import {
+  DUNGEON_EVENTS,
+  getAvailableEvents,
+  EVENTS_BY_ID,
+} from './eventConfigs';
+import {
   DungeonEvent,
   DungeonChoice,
   DungeonOutcome,
@@ -19,13 +24,8 @@ import {
   EventEffect,
   DungeonEventType,
 } from './types';
-import {
-  DUNGEON_EVENTS,
-  getAvailableEvents,
-  EVENTS_BY_ID,
-} from './eventConfigs';
-import { Protagonist, InventoryItem, CharacterStats, getFinalStats, LegacyStats, StatKey } from '../types';
 import { getRandomItem } from '../items';
+import { Protagonist, InventoryItem, CharacterStats, getFinalStats, LegacyStats, StatKey } from '../types';
 
 // ============================================
 // 需求检查

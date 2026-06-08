@@ -8,8 +8,8 @@
  * 4. 技能推荐算法
  */
 
-import { Technique, Equipment, ItemRarity } from '../types';
 import { TechniqueSkill, WeaponTechnique } from '../skillTypes';
+import { Technique, Equipment, ItemRarity } from '../types';
 import { 
   BattleSkill, 
   BattleSkillType,

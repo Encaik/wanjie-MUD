@@ -7,41 +7,35 @@
 
 import { useCallback } from 'react';
 import type { Dispatch, SetStateAction } from 'react';
-import { 
-  GameState, 
-  MessageRecord, 
-  InventoryItem,
-  DungeonConfig,
-  CharacterStats,
-  createInventoryItem,
-  ActiveBattleState,
-  CellType,
-  BattleResult,
-  getFinalStats,
-  ItemRarity,
-  ItemDefinition,
-  Technique,
-  Equipment,
-  EnemyTier,
-} from '@/lib/game/types';
-import { getRandomEvent } from '@/lib/game/events';
+
+import { getEnemyTierFromCellType, getEnemyTierConfig } from '@/lib/data/worldData';
 import { 
   generateAdventureGrid, 
   handleCellEvent,
   parseEnemyInfo,
 } from '@/lib/game/adventure';
 import { calculateBattleWithLogs } from '@/lib/game/adventureBattleNew';
-import { getAvailableDifficultiesForRealm } from '@/lib/game/generators';
-import { applyGrowthStatChanges, getGrowthStatCap } from '@/lib/game/realmSystem';
+import {
+  STAMINA_CONFIG,
+  canEnterAdventure,
+  createAdventureSession,
+  canMoveInAdventure,
+  consumeStaminaForMove,
+  recoverStaminaFromBattle,
+  endAdventureSession,
+  getCooldownRemaining,
+  getEnemyTierFromType,
+} from '@/lib/game/adventureStamina';
+import { calculatePlayerCombatPower } from '@/lib/game/combatPower';
+import { getMaxExperience } from '@/lib/game/cultivation';
+import { getRandomEvent } from '@/lib/game/events';
 import { GrowthStats } from '@/lib/game/types';
 import { processExperienceGain } from '@/lib/game/experienceSystem';
-import { getMaxExperience } from '@/lib/game/cultivation';
 import { 
   spiritStoneItems, 
   breakthroughItems, 
   getRandomItem 
 } from '@/lib/game/items';
-import { calculatePlayerCombatPower } from '@/lib/game/combatPower';
 import { updateTaskProgress } from '@/lib/game/expansionLogic';
 import { 
   DEFAULT_PROTAGONIST_EXTENSION,
@@ -60,23 +54,31 @@ import {
 // 统计系统
 import { statisticsManager, StatisticsEventType } from '@/lib/game/statisticsSystem';
 import { gameSystems } from '@/lib/game/gameSystems';
+import { getAvailableDifficultiesForRealm } from '@/lib/game/generators';
+import { applyGrowthStatChanges, getGrowthStatCap } from '@/lib/game/realmSystem';
 import { consumeGameTime, ACTION_TIME_COST, createCooldown } from '@/lib/game/timeSystem';
-import { addToInventory } from '../utils/inventoryUtils';
-import { getEnemyTierFromCellType, getEnemyTierConfig } from '@/lib/data/worldData';
 import { isNewbie } from '@/lib/game/taskSystem';
 import { getTerminology } from '@/lib/game/terminology';
+import { 
+  GameState, 
+  MessageRecord, 
+  InventoryItem,
+  DungeonConfig,
+  CharacterStats,
+  createInventoryItem,
+  ActiveBattleState,
+  CellType,
+  BattleResult,
+  getFinalStats,
+  ItemRarity,
+  ItemDefinition,
+  Technique,
+  Equipment,
+  EnemyTier,
+} from '@/lib/game/types';
+
+import { addToInventory } from '../utils/inventoryUtils';
 // 行动力系统
-import {
-  STAMINA_CONFIG,
-  canEnterAdventure,
-  createAdventureSession,
-  canMoveInAdventure,
-  consumeStaminaForMove,
-  recoverStaminaFromBattle,
-  endAdventureSession,
-  getCooldownRemaining,
-  getEnemyTierFromType,
-} from '@/lib/game/adventureStamina';
 
 interface UseGameAdventureProps {
   gameState: GameState;
@@ -211,7 +213,7 @@ export function useGameAdventure({
           }
           
           // 【关键修复】处理碎片掉落 - 添加到玩家库存
-          let newFragmentInventory = prev.protagonist.fragmentInventory ?? createEmptyFragmentInventory();
+          const newFragmentInventory = prev.protagonist.fragmentInventory ?? createEmptyFragmentInventory();
           if (result.rewards?.fragments) {
             for (const fragment of result.rewards.fragments as FragmentDropData[]) {
               addFragmentToInventory(newFragmentInventory, fragment);
@@ -623,7 +625,7 @@ export function useGameAdventure({
         ? [...prev.protagonist.equipments, ...droppedEquipments]
         : prev.protagonist.equipments;
       
-      let newStatistics = {
+      const newStatistics = {
         ...prev.statistics,
         totalAdventuresCompleted: prev.statistics.totalAdventuresCompleted + 1,
         totalEnemiesKilled: prev.statistics.totalEnemiesKilled + enemyCount + 1,
@@ -709,7 +711,7 @@ export function useGameAdventure({
       
       // 根据退出类型决定战利品和经验保留比例
       let finalInventory = [...(prev.protagonist.inventory || [])];
-      let keptLoot: InventoryItem[] = [];
+      const keptLoot: InventoryItem[] = [];
       let keptExperience = 0;
       let keptFragments: FragmentDropData[] = [];
       
@@ -980,7 +982,7 @@ export function useGameAdventure({
       }
       
       // 消耗行动力（步数为0时不消耗，战斗胜利会恢复）
-      let updatedSession = prev.adventureSession ? { ...prev.adventureSession } : null;
+      const updatedSession = prev.adventureSession ? { ...prev.adventureSession } : null;
       if (updatedSession && updatedSession.currentStamina > 0) {
         consumeStaminaForMove(updatedSession);
       }
@@ -1116,7 +1118,7 @@ export function useGameAdventure({
             }
             
             // 战利品放入冒险背包，而不是直接放入主角背包
-            let newLoot = [...(prev.adventureLoot || [])];
+            const newLoot = [...(prev.adventureLoot || [])];
             if (result.rewards?.items) {
               for (const item of result.rewards.items) {
                 newLoot.push(item);
@@ -1200,7 +1202,7 @@ export function useGameAdventure({
             
             // 处理战利品：每个物品数量减半（向下取整）
             let finalInventory = [...(prev.protagonist.inventory || [])];
-            let keptLoot: InventoryItem[] = [];
+            const keptLoot: InventoryItem[] = [];
             for (const item of currentLoot) {
               const keptQuantity = Math.floor(item.quantity * keepRatio);
               if (keptQuantity > 0) {
@@ -1351,7 +1353,7 @@ export function useGameAdventure({
           const result = handleCellEvent(prev.protagonist, targetCell, prev.adventureConfig);
           
           // 战利品放入冒险背包
-          let newLoot = [...(prev.adventureLoot || [])];
+          const newLoot = [...(prev.adventureLoot || [])];
           if (result.rewards?.items) {
             for (const item of result.rewards.items) {
               newLoot.push(item);
@@ -1446,7 +1448,7 @@ export function useGameAdventure({
           const result = handleCellEvent(prev.protagonist, targetCell, prev.adventureConfig);
           
           // 战利品放入冒险背包
-          let newLoot = [...(prev.adventureLoot || [])];
+          const newLoot = [...(prev.adventureLoot || [])];
           if (result.rewards?.items) {
             for (const item of result.rewards.items) {
               newLoot.push(item);
@@ -1674,7 +1676,7 @@ export function useGameAdventure({
           }
           
           // 更新玩家背包中的灵石
-          let updatedInventory = [...prev.protagonist.inventory];
+          const updatedInventory = [...prev.protagonist.inventory];
           if (spiritStonesReward > 0) {
             const spiritStoneIndex = updatedInventory.findIndex(
               item => item.definition.id === 'spirit_stone' || item.definition.type === '灵石'
@@ -1708,8 +1710,8 @@ export function useGameAdventure({
           const worldType = prev.protagonist.world.type;
           
           // 处理预设的碎片奖励
-          let newTechniques = [...prev.protagonist.techniques];
-          let newEquipments = [...prev.protagonist.equipments];
+          const newTechniques = [...prev.protagonist.techniques];
+          const newEquipments = [...prev.protagonist.equipments];
           
           if (towerEnemy.rewards.fragments.length > 0) {
             // 导入所需函数
@@ -1919,7 +1921,7 @@ export function useGameAdventure({
         // ========================================
         // 行动力系统：战斗胜利恢复行动力
         // ========================================
-        let updatedSession = prev.adventureSession ? { ...prev.adventureSession } : null;
+        const updatedSession = prev.adventureSession ? { ...prev.adventureSession } : null;
         let staminaRecoveryInfo = '';
         if (updatedSession && enemyTier) {
           const recoveryResult = recoverStaminaFromBattle(updatedSession, enemyTier);
@@ -1932,7 +1934,7 @@ export function useGameAdventure({
         const expReward = Math.floor((enemyLevel * 10 + 20) * prev.adventureConfig.rewardMultiplier);
         
         // 战利品放入冒险背包
-        let newLoot = [...(prev.adventureLoot || [])];
+        const newLoot = [...(prev.adventureLoot || [])];
         
         // 随机掉落物品（使用敌人等级对应的物品）
         if (Math.random() < 0.15) {
@@ -2074,7 +2076,7 @@ export function useGameAdventure({
         
         // 处理战利品：每个物品数量减半（向下取整）
         let finalInventory = [...(prev.protagonist.inventory || [])];
-        let keptLoot: InventoryItem[] = [];
+        const keptLoot: InventoryItem[] = [];
         for (const item of currentLoot) {
           const keptQuantity = Math.floor(item.quantity * keepRatio);
           if (keptQuantity > 0) {

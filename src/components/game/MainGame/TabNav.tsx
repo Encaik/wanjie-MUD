@@ -1,10 +1,11 @@
 'use client';
 
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { ActionTab } from '@/lib/game/types';
 import { Swords, Sparkles, Building2, ShoppingBag, Zap, Shield, Trophy, BookOpen, BarChart3, FlaskConical, Anvil } from 'lucide-react';
-import { checkRankPromotion } from '@/lib/game/expansionLogic';
+
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { getFactionById } from '@/lib/data/factionData';
+import { checkRankPromotion } from '@/lib/game/expansionLogic';
+import { ActionTab } from '@/lib/game/types';
 import { Protagonist } from '@/lib/game/types';
 
 interface TabNavProps {

@@ -4,8 +4,8 @@
  * 将境界加成转换为统一效果格式
  */
 
-import { UnifiedEffect, EffectSourceType, EffectCalcType, EffectPriority, CalculableStat } from '../types';
 import { CalculationContext, RealmInput } from '../context/types';
+import { UnifiedEffect, EffectSourceType, EffectCalcType, EffectPriority, CalculableStat } from '../types';
 import { EffectAdapter, createBaseEffect, generateEffectId } from './base';
 
 // ============================================

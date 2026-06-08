@@ -1,16 +1,15 @@
 'use client';
 
 import { useState, useMemo } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { Progress } from '@/components/ui/progress';
+
 import { Trophy, Swords, Package, Map, Sparkles, Star, Lock, CheckCircle, Gift } from 'lucide-react';
-import { 
-  GameStatistics,
-} from '@/lib/game/types';
+
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Progress } from '@/components/ui/progress';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { 
   ACHIEVEMENTS, 
   getAchievementsByType, 
@@ -20,6 +19,9 @@ import {
   calculateAllAchievementStatuses,
   getAchievementProgress,
 } from '@/lib/game/achievementUtils';
+import { 
+  GameStatistics,
+} from '@/lib/game/types';
 import { AchievementType, AchievementStatus, AchievementDefinition } from '@/lib/game/types';
 
 interface AchievementPanelProps {

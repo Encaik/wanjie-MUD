@@ -1,13 +1,3 @@
-import { CellType, AdventureCell, BattleResult, CharacterStats, Protagonist, BattleState, BattleLog, ActiveEffect, InventoryItem, DungeonConfig, WorldType, Technique, Equipment, DifficultyLevel, EnemyTier, createInventoryItem, Element, WeaponCategory, getFinalStats, LegacyStats } from './types';
-import { getEnemyTierFromCellType, getEnemyTierConfig, ENEMY_TIER_CONFIG } from '../data/worldData';
-import { getRandomItem, getItemById, spiritStoneItems, breakthroughItems } from './items';
-import { getTerminology, getDungeonInfo } from './terminology';
-import { getAvailableDifficulties as getRealmDifficulties } from './realmSystem';
-import { generateRandomTechnique } from './technique';
-import { generateRandomEquipment } from './equipment';
-import { getEnemyNames } from '../data/enemies';
-import { getDungeonInfo as getDataDungeonInfo } from '../data/terminology';
-import { calculatePlayerCombatPower, calculateEnemyCombatPower } from './combatPower';
 import {
   calculatePlayerMaxHp,
   calculatePlayerMaxMp,
@@ -27,11 +17,36 @@ import {
   RESOURCE_CONFIG,
   BREAKTHROUGH_CONFIG,
 } from './balanceConfig';
+import { calculatePlayerCombatPower, calculateEnemyCombatPower } from './combatPower';
+import { GAME_CONSTANTS } from './constants';
+import {
+  handleEventCell,
+  quickHandleEvent,
+  executeEvent,
+  getEventTriggerService,
+  DungeonEvent,
+  EventExecutionContext,
+} from './dungeon';
 import {
   calculateEnemyEnhancement,
   applyEnemyEnhancement,
   getEnemyEnhancementShortDesc,
 } from './enemyEnhancement';
+import { generateRandomEquipment } from './equipment';
+import { 
+  generateFragmentDrop, 
+  addFragmentToInventory,
+  FragmentInventory,
+  FragmentDropResult 
+} from './fragmentSystem';
+import { getRandomItem, getItemById, spiritStoneItems, breakthroughItems } from './items';
+import { getAvailableDifficulties as getRealmDifficulties } from './realmSystem';
+import { getTerminology, getDungeonInfo } from './terminology';
+import { CellType, AdventureCell, BattleResult, CharacterStats, Protagonist, BattleState, BattleLog, ActiveEffect, InventoryItem, DungeonConfig, WorldType, Technique, Equipment, DifficultyLevel, EnemyTier, createInventoryItem, Element, WeaponCategory, getFinalStats, LegacyStats } from './types';
+import { getEnemyTierFromCellType, getEnemyTierConfig, ENEMY_TIER_CONFIG } from '../data/worldData';
+import { generateRandomTechnique } from './technique';
+import { getEnemyNames } from '../data/enemies';
+import { getDungeonInfo as getDataDungeonInfo } from '../data/terminology';
 // 克制关系系统
 import {
   getEnemyAttributes,
@@ -48,25 +63,10 @@ import {
   EnemyAttributes,
 } from './restraintSystem';
 // 地牢随机事件系统
-import {
-  handleEventCell,
-  quickHandleEvent,
-  executeEvent,
-  getEventTriggerService,
-  DungeonEvent,
-  EventExecutionContext,
-} from './dungeon';
 
 // 数值约束工具
 import { clamp, clampNonNegative, applyDamage, applyHeal } from './utils/numberUtils';
-import { GAME_CONSTANTS } from './constants';
 // 碎片系统
-import { 
-  generateFragmentDrop, 
-  addFragmentToInventory,
-  FragmentInventory,
-  FragmentDropResult 
-} from './fragmentSystem';
 
 // 随机工具
 const random = (min: number, max: number) => Math.floor(Math.random() * (max - min + 1)) + min;
@@ -1029,7 +1029,7 @@ function calculateBattleRewards(
     const expGain = Math.floor(5 * (1 + enemyLevel * 0.1));
     
     // 新手提示
-    let message = isNewbie
+    const message = isNewbie
       ? `战斗失败！你被${enemyLevel}级的${tierConfig.name}敌人击败。${isNewbie ? '\n\n【新手保护】等级1-8战斗失败不损失灵石，请继续努力修炼！' : ''}`
       : `战斗失败！你被${enemyLevel}级的${tierConfig.name}敌人击败，损失了${spiritStoneLoss}灵石。`;
     

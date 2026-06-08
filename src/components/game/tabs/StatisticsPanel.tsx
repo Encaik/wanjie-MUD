@@ -1,9 +1,7 @@
 'use client';
 
 import { useMemo } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { GameStatistics, Protagonist, getFinalStats } from '@/lib/game/types';
-import { calculateStatisticsSummary, StatisticsSummary } from '@/lib/game/statisticsSystem';
+
 import { 
   Swords, 
   Sparkles, 
@@ -16,6 +14,10 @@ import {
   Users,
   BarChart3,
 } from 'lucide-react';
+
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { calculateStatisticsSummary, StatisticsSummary } from '@/lib/game/statisticsSystem';
+import { GameStatistics, Protagonist, getFinalStats } from '@/lib/game/types';
 import { cn } from '@/lib/util/utils';
 
 interface StatisticsPanelProps {

@@ -15,8 +15,8 @@ import {
   shouldDailyRefresh,
   getDefaultRealTimeState,
 } from './timeSystem';
-import { Protagonist } from './types';
 import { TOWER_CONFIG } from './tower/types';
+import { Protagonist } from './types';
 
 // ============================================
 // 类型定义
@@ -593,8 +593,8 @@ export function processOfflineTime(
   }
   
   // === 2. 处理HP/MP恢复 ===
-  let hpRecovered = 0;
-  let mpRecovered = 0;
+  const hpRecovered = 0;
+  const mpRecovered = 0;
   
   // === 3. 处理冷却时间 ===
   const expiredCooldowns = processExpiredCooldowns(

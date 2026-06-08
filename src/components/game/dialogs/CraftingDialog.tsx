@@ -1,18 +1,7 @@
 'use client';
 
 import { useState, useEffect, useMemo, useCallback, useRef } from 'react';
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-} from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { Progress } from '@/components/ui/progress';
-import { Badge } from '@/components/ui/badge';
-import { Card, CardContent } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+
 import { 
   FlaskConical, 
   Anvil, 
@@ -26,6 +15,22 @@ import {
   Zap,
   Star
 } from 'lucide-react';
+
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from '@/components/ui/dialog';
+import { getRarityStyle } from '@/components/ui/item-tooltip';
+import { Progress } from '@/components/ui/progress';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { 
   ALCHEMY_RECIPES, 
   ALCHEMY_MATERIALS, 
@@ -48,10 +53,7 @@ import {
   EQUIPMENT_QUALITY_NAMES,
 } from '@/lib/data/forgeRecipes';
 import { InventoryItem, CraftingState, ForgingState, ItemRarity } from '@/lib/game/types';
-import { getRarityStyle } from '@/components/ui/item-tooltip';
 import { cn } from '@/lib/util/utils';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 
 interface CraftingDialogProps {
   type: 'alchemy' | 'forge';

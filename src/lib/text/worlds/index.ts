@@ -7,18 +7,18 @@
  * - 统一导出便于管理
  */
 
-import { WorldType } from '../../game/types';
-import { WorldTextDefinition, WorldTextsMap, WorldTerminology, WorldStatNames, PathTextDefinition, PathTypeId } from './types';
 
 // 导入所有世界观文案
-import { xiuxianTexts } from './xiuxian';
 import { gaowuTexts } from './gaowu';
 import { kejiTexts } from './keji';
 import { mohuanTexts } from './mohuan';
-import { yinengTexts } from './yineng';
-import { xianxiaTexts } from './xianxia';
-import { wuxiaTexts } from './wuxia';
 import { moshiTexts } from './moshi';
+import { WorldTextDefinition, WorldTextsMap, WorldTerminology, WorldStatNames, PathTextDefinition, PathTypeId } from './types';
+import { wuxiaTexts } from './wuxia';
+import { xianxiaTexts } from './xianxia';
+import { xiuxianTexts } from './xiuxian';
+import { yinengTexts } from './yineng';
+import { WorldType } from '../../game/types';
 
 // ============================================
 // 世界观文案映射表

@@ -4,7 +4,6 @@
  * 提供数值边界检查和保护功能
  */
 
-import { StatBounds } from '../types';
 import { 
   FLOAT_EPSILON, 
   MIN_POSITIVE, 
@@ -12,6 +11,7 @@ import {
   SAFE_INTEGER_MIN,
   LOG_PREFIX,
 } from '../constants';
+import { StatBounds } from '../types';
 
 // ============================================
 // 边界检查器

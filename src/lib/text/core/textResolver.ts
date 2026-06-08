@@ -4,12 +4,12 @@
  * 根据世界观加载对应文案，解析占位符
  */
 
-import { WorldType } from '../../game/types';
 import { 
   TextResolveResult,
   TextResolverConfig,
   ValueContext,
 } from './types';
+import { WorldType } from '../../game/types';
 import { getWorldTexts, WorldTextDefinition } from '../worlds';
 
 // ============================================

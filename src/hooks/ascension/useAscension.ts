@@ -7,6 +7,16 @@
 
 import { useCallback, useEffect } from 'react';
 import type { Dispatch, SetStateAction } from 'react';
+
+import { 
+  checkAscensionRequirements, 
+  calculateBattleReward, 
+  generateNewWorld, 
+  calculateInheritance,
+  getOrCreateAscensionMark,
+  updateAscensionMark
+} from '@/lib/game/ascensionLogic';
+import { calculatePlayerMaxHp, calculatePlayerMaxMp } from '@/lib/game/balanceConfig';
 import { 
   GameState, 
   MessageRecord, 
@@ -20,15 +30,6 @@ import {
 } from '@/lib/game/types';
 import { DEFAULT_PROTAGONIST_EXTENSION, InheritanceChoice, NewWorldInfo, DiscoveredWorld, GuardianBattleState } from '@/lib/game/typesExtension';
 import { DEFAULT_ASCENSION_FLOW_STATE, DEFAULT_GUARDIAN_BATTLE_STATE } from '@/lib/game/typesExtension';
-import { calculatePlayerMaxHp, calculatePlayerMaxMp } from '@/lib/game/balanceConfig';
-import { 
-  checkAscensionRequirements, 
-  calculateBattleReward, 
-  generateNewWorld, 
-  calculateInheritance,
-  getOrCreateAscensionMark,
-  updateAscensionMark
-} from '@/lib/game/ascensionLogic';
 
 interface UseGameAscensionProps {
   gameState: GameState;

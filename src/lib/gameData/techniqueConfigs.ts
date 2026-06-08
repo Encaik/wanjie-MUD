@@ -8,9 +8,9 @@
  * - 稀有度配置
  */
 
-import { TechniqueType, ItemRarity } from '../game/types';
-import { TECHNIQUE_RARITY_CONFIG, RARITY_ORDER, RARITY_WEIGHTS } from '../game/skillTypes';
 import { Element, WeaponCategory } from '../game/restraintSystem';
+import { TECHNIQUE_RARITY_CONFIG, RARITY_ORDER, RARITY_WEIGHTS } from '../game/skillTypes';
+import { TechniqueType, ItemRarity } from '../game/types';
 
 // ============================================
 // 功法名称库

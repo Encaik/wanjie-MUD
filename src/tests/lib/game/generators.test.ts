@@ -2,6 +2,7 @@
  * @vitest-environment jsdom
  */
 import { describe, it, expect, beforeEach } from 'vitest';
+
 import { generateId } from '@/lib/game/generators';
 
 describe('generators', () => {

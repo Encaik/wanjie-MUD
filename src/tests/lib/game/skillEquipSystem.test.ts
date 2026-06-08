@@ -15,9 +15,9 @@ import {
   unequipTechnique,
   quickEquipTechnique,
 } from '@/lib/game/skillEquipSystem';
+import { TechniqueSkill, WeaponTechnique } from '@/lib/game/skillTypes';
 import { Technique } from '@/lib/game/types';
 import { Equipment } from '@/lib/game/types';
-import { TechniqueSkill, WeaponTechnique } from '@/lib/game/skillTypes';
 
 // 创建测试用功法
 function createTestTechnique(overrides: Partial<Technique> = {}): Technique {

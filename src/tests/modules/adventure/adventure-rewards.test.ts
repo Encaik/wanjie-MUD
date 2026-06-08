@@ -9,6 +9,7 @@
  * - 战斗奖励
  */
 import { describe, it, expect } from 'vitest';
+
 import { createTestDungeonConfig, createTestProtagonist, createTestCell } from './test-helpers';
 
 // ============================================

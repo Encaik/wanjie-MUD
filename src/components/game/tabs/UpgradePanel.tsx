@@ -1,10 +1,14 @@
 'use client';
 
 import { useState, useMemo, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Checkbox } from '@/components/ui/checkbox';
+
+import { Sparkles, Sword, Shield, ChevronUp, Info } from 'lucide-react';
+
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Checkbox } from '@/components/ui/checkbox';
+import { getRarityStyle } from '@/components/ui/item-tooltip';
 import { Progress } from '@/components/ui/progress';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { 
@@ -21,8 +25,7 @@ import {
   equipmentToMaterial,
   getUpgradeProgress,
 } from '@/lib/game/upgradeSystem';
-import { getRarityStyle } from '@/components/ui/item-tooltip';
-import { Sparkles, Sword, Shield, ChevronUp, Info } from 'lucide-react';
+
 
 // 可升级物品的联合类型
 type UpgradeableItem = Technique | Equipment;

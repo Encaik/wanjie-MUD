@@ -12,17 +12,17 @@
  */
 
 import { WorldType } from '../game/types';
-import { WorldTextDefinition } from './worlds/types';
 
 // 导入所有世界观文案
-import { xiuxianTexts } from './worlds/xiuxian';
 import { gaowuTexts } from './worlds/gaowu';
 import { kejiTexts } from './worlds/keji';
 import { mohuanTexts } from './worlds/mohuan';
-import { yinengTexts } from './worlds/yineng';
-import { xianxiaTexts } from './worlds/xianxia';
-import { wuxiaTexts } from './worlds/wuxia';
 import { moshiTexts } from './worlds/moshi';
+import { WorldTextDefinition } from './worlds/types';
+import { wuxiaTexts } from './worlds/wuxia';
+import { xianxiaTexts } from './worlds/xianxia';
+import { xiuxianTexts } from './worlds/xiuxian';
+import { yinengTexts } from './worlds/yineng';
 
 /**
  * 世界观文案映射表

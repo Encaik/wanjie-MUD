@@ -10,6 +10,7 @@
  * - 状态异常恢复
  */
 import { describe, it, expect } from 'vitest';
+
 import { createTestDungeonConfig, createTestProtagonist } from './test-helpers';
 
 // ============================================

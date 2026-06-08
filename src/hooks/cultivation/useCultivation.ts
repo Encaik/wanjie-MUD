@@ -7,6 +7,17 @@
 
 import { useCallback, useEffect } from 'react';
 import type { Dispatch, SetStateAction } from 'react';
+
+import { CULTIVATION_PATHS } from '@/lib/data/cultivationPathData';
+import { calculatePlayerMaxHp, calculatePlayerMaxMp } from '@/lib/game/balanceConfig';
+import { executeCultivation, getMaxExperience } from '@/lib/game/cultivation';
+import { applyMentalChange } from '@/lib/game/expansionLogic';
+import { updateTaskProgress } from '@/lib/game/expansionLogic';
+import { processExperienceGain, calculateBreakthroughTransfer } from '@/lib/game/experienceSystem';
+import { gameSystems } from '@/lib/game/gameSystems';
+import { getRealmName } from '@/lib/game/generators';
+import { applyGrowthStatChanges, getGrowthStatCap } from '@/lib/game/realmSystem';
+import { consumeGameTime, ACTION_TIME_COST } from '@/lib/game/timeSystem';
 import { 
   GameState, 
   MessageRecord, 
@@ -15,17 +26,9 @@ import {
   GrowthStats,
 } from '@/lib/game/types';
 import { DEFAULT_PROTAGONIST_EXTENSION, MentalState } from '@/lib/game/typesExtension';
-import { executeCultivation, getMaxExperience } from '@/lib/game/cultivation';
-import { getRealmName } from '@/lib/game/generators';
-import { applyGrowthStatChanges, getGrowthStatCap } from '@/lib/game/realmSystem';
-import { processExperienceGain, calculateBreakthroughTransfer } from '@/lib/game/experienceSystem';
-import { applyMentalChange } from '@/lib/game/expansionLogic';
-import { consumeGameTime, ACTION_TIME_COST } from '@/lib/game/timeSystem';
-import { updateTaskProgress } from '@/lib/game/expansionLogic';
-import { CULTIVATION_PATHS } from '@/lib/data/cultivationPathData';
-import { gameSystems } from '@/lib/game/gameSystems';
+
 import { removeFromInventory } from '../utils/inventoryUtils';
-import { calculatePlayerMaxHp, calculatePlayerMaxMp } from '@/lib/game/balanceConfig';
+
 
 export interface UseGameCultivationProps {
   gameState: GameState;
@@ -78,13 +81,13 @@ export function useGameCultivation({
       let newInventory = [...(prev.protagonist.inventory || [])];
       let newStats = prev.protagonist.stats;
       let newLevel = prev.protagonist.level;
-      let newStatCapBonuses = prev.protagonist.statCapBonuses;
+      const newStatCapBonuses = prev.protagonist.statCapBonuses;
       
       // 【重构】突破时属性增长设计
       // 1. 不再所有属性都增长，而是随机选择 1-2 个属性
       // 2. 增长值更合理（1-3点），符合游戏平衡
       // 3. 记录实际应用的值，用于消息显示
-      let actualStatGains: Partial<GrowthStats> = {};
+      const actualStatGains: Partial<GrowthStats> = {};
       
       if (result.breakthroughSuccess) {
         const growthCap = newLevel * 2;
@@ -494,7 +497,7 @@ export function useGameCultivation({
         
         let messageType: MessageRecord['type'] = 'info';
         let messageTitle = '自动修炼';
-        let messageContent = result.message;
+        const messageContent = result.message;
         
         if (result.breakthroughSuccess) {
           messageType = 'success';

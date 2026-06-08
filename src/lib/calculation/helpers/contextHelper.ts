@@ -4,10 +4,11 @@
  * 提供从游戏对象构建计算上下文的便捷方法
  */
 
+import { ContextBuilder } from '../context/builder';
+
+import type { WorldDanger, WorldOpportunity } from '../../data/worldEffectsData';
 import type { Protagonist, Technique, Equipment, ActiveEffect, EnemyTier } from '../../game/types';
 import type { CalculationContext, WorldEffectInput } from '../context/types';
-import type { WorldDanger, WorldOpportunity } from '../../data/worldEffectsData';
-import { ContextBuilder } from '../context/builder';
 
 /**
  * 从主角对象构建计算上下文

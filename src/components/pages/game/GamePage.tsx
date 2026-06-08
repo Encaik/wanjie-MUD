@@ -12,21 +12,12 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Protagonist, ActionTab, BattleState, DungeonConfig, Technique, TechniqueType, Equipment, EquipmentSlot, ItemDefinition, CraftingState, ForgingState, GameStatistics, CultivationPath, MessageRecord, getFinalStats } from '@/lib/game/types';
-import { TimeSystemState } from '@/lib/game/timeSystem';
-import { StatusPanel } from '@/components/game/sidebar';
-import { MessagePanel } from '@/components/game/shared';
-import { BattleResultDialog, BattleDialog } from '@/components/game/battle';
-import { GameLayout, GameHeader } from '@/components/layout';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Swords, Sparkles, Building2, RotateCcw, AlertTriangle, Zap, Shield, ShoppingBag, Trophy, BookOpen, LogOut, BarChart3, FlaskConical, Anvil } from 'lucide-react';
-import { AlchemyRecipe, PillQuality } from '@/lib/data/alchemyRecipes';
-import { ForgeRecipe, EquipmentQuality } from '@/lib/data/forgeRecipes';
-import { MentalState, DEFAULT_PROTAGONIST_EXTENSION } from '@/lib/game/typesExtension';
 
-// 直接导入功能面板组件（渐进式迁移）
+import { Swords, Sparkles, Building2, RotateCcw, AlertTriangle, Zap, Shield, ShoppingBag, Trophy, BookOpen, LogOut, BarChart3, FlaskConical, Anvil } from 'lucide-react';
+
+import { BattleResultDialog, BattleDialog } from '@/components/game/battle';
+import { MessagePanel } from '@/components/game/shared';
+import { StatusPanel } from '@/components/game/sidebar';
 import { 
   CultivationPanel, 
   SeclusionPanel,
@@ -43,6 +34,17 @@ import {
   AlchemyPanel,
   ForgePanel
 } from '@/components/game/tabs';
+import { GameLayout, GameHeader } from '@/components/layout';
+import { Button } from '@/components/ui/button';
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { AlchemyRecipe, PillQuality } from '@/lib/data/alchemyRecipes';
+import { ForgeRecipe, EquipmentQuality } from '@/lib/data/forgeRecipes';
+import { TimeSystemState } from '@/lib/game/timeSystem';
+import { Protagonist, ActionTab, BattleState, DungeonConfig, Technique, TechniqueType, Equipment, EquipmentSlot, ItemDefinition, CraftingState, ForgingState, GameStatistics, CultivationPath, MessageRecord, getFinalStats } from '@/lib/game/types';
+import { MentalState, DEFAULT_PROTAGONIST_EXTENSION } from '@/lib/game/typesExtension';
+
+// 直接导入功能面板组件（渐进式迁移）
 
 // Tab 配置 - 双行布局
 const TAB_CONFIG_ROW1 = [

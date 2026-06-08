@@ -1,14 +1,17 @@
 'use client';
 
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+
+import { MessageCircle, Send, Users, Crown, Sparkles, Bell, ChevronDown, AlertTriangle } from 'lucide-react';
+
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { ChatMessage, OnlinePlayer } from '@/types/chat';
-import { MessageCircle, Send, Users, Crown, Sparkles, Bell, ChevronDown, AlertTriangle } from 'lucide-react';
+
 
 interface ChatRoomProps {
   playerId: string;

@@ -7,13 +7,17 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { DailySaleData, SaleProduct, PlayerCurrencies } from '@/lib/game/shop/types';
-import { DailySaleService } from '@/lib/game/shop/dailySaleService';
-import { CurrencyService } from '@/lib/game/shop/currencyService';
-import { getProductConfig } from '@/lib/game/shop/productConfigs';
-import { cn } from '@/lib/util/utils';
+
 import { Flame, Clock, ChevronLeft, ChevronRight } from 'lucide-react';
+
 import { getRarityStyle } from '@/components/ui/item-tooltip';
+import { CurrencyService } from '@/lib/game/shop/currencyService';
+import { DailySaleService } from '@/lib/game/shop/dailySaleService';
+import { getProductConfig } from '@/lib/game/shop/productConfigs';
+import { DailySaleData, SaleProduct, PlayerCurrencies } from '@/lib/game/shop/types';
+import { cn } from '@/lib/util/utils';
+
+
 
 interface DailySaleBannerProps {
   saleData: DailySaleData;

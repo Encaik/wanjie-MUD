@@ -23,8 +23,9 @@
  */
 
 import React, { createContext, useContext, useMemo, useEffect } from 'react';
-import { WorldType } from '../game/types';
+
 import { worldTextManager, WORLD_TEXT_MAP } from './WorldTextManager';
+import { WorldType } from '../game/types';
 import { WorldTextDefinition, WorldStatNames, WorldTerminology, WorldPathTexts, PathTextDefinition, StatKey, PathTypeId } from './worlds/types';
 
 interface WorldTextContextValue {

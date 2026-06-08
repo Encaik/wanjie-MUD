@@ -1,30 +1,40 @@
 'use client';
 
 import { useState, useEffect, useRef, useMemo } from 'react';
-import { Protagonist, ActionResult, ActionTab, BattleState, DungeonConfig, Technique, TechniqueType, InventoryItem, Equipment, EquipmentSlot, ItemDefinition, CraftingState, ForgingState, AchievementStatus, CollectionStatus, GameStatistics, CultivationPath, ItemRarity, MessageRecord, getFinalStats } from '@/lib/game/types';
-import { TowerEnemy, createDefaultTowerProgress } from '@/lib/game/tower/types';
+
+import { Swords, Sparkles, Building2, Zap, Package, LogOut, Shield, ShoppingBag, Trophy, BookOpen, Clock, BarChart3, FlaskConical, Anvil, Landmark } from 'lucide-react';
+
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Separator } from '@/components/ui/separator';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { isDebugMode } from '@/lib/config/env';
 import { createEmptyFragmentInventory, getSynthesizableCount } from '@/lib/game/fragmentSystem';
+import { TowerEnemy, createDefaultTowerProgress } from '@/lib/game/tower/types';
+import { Protagonist, ActionResult, ActionTab, BattleState, DungeonConfig, Technique, TechniqueType, InventoryItem, Equipment, EquipmentSlot, ItemDefinition, CraftingState, ForgingState, AchievementStatus, CollectionStatus, GameStatistics, CultivationPath, ItemRarity, MessageRecord, getFinalStats } from '@/lib/game/types';
 import type { SeclusionType } from '@/lib/game/seclusion';
 import { TimeSystemState } from '@/lib/game/timeSystem';
 
 // Tab panels
+import { AchievementPanel } from '../tabs/AchievementPanel';
+import { AdventurePanel } from '../tabs/AdventurePanel';
 import { CultivationPanel } from '../tabs/CultivationPanel';
 import { CultivationPathSelect } from '../tabs/CultivationPathSelect';
 import { SeclusionPanel } from '../tabs/SeclusionPanel';
 import { FactionPanel } from '../tabs/FactionPanel';
-import { AdventurePanel } from '../tabs/AdventurePanel';
 import { InventoryPanel } from '../tabs/InventoryPanel';
+import { SkillsTab } from '../tabs/SkillsTab';
 import { TechniquePanel } from '../tabs/TechniquePanel';
 import { EquipmentPanel } from '../tabs/EquipmentPanel';
-import { SkillsTab } from '../tabs/SkillsTab';
 import { ShopPanel } from '../tabs/ShopPanel';
 import { AlchemyPanel } from '../tabs/AlchemyPanel';
 import { ForgePanel } from '../tabs/ForgePanel';
+import { TowerPanel } from '../tabs/TowerPanel';
 import { UpgradePanel } from '../tabs/UpgradePanel';
-import { AchievementPanel } from '../tabs/AchievementPanel';
 import { CollectionPanel } from '../tabs/CollectionPanel';
 import { FragmentPanel } from '../tabs/FragmentPanel';
-import { TowerPanel } from '../tabs/TowerPanel';
 import { StatisticsPanel } from '../tabs/StatisticsPanel';
 
 // Dialogs
@@ -50,15 +60,8 @@ import { LeftSidebar } from './LeftSidebar';
 import { RightSidebar } from './RightSidebar';
 import { MobileLayout } from './MobileLayout';
 import { CenterPanel } from './CenterPanel';
-import { isDebugMode } from '@/lib/config/env';
+
 import { InheritanceChoice, NewWorldInfo, DEFAULT_ASCENSION_MARK, AscensionFlowState, DeathState } from '@/lib/game/typesExtension';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Separator } from '@/components/ui/separator';
-import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Swords, Sparkles, Building2, Zap, Package, LogOut, Shield, ShoppingBag, Trophy, BookOpen, Clock, BarChart3, FlaskConical, Anvil, Landmark } from 'lucide-react';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { getRealmName } from '@/lib/data/realmData';
 import { 
@@ -80,7 +83,9 @@ import { getFactionById } from '@/lib/data/factionData';
 
 // 多人游戏相关
 import { useMultiplayerHttp } from '@/hooks/useMultiplayerHttp';
+
 import { AnnouncementContainer } from '../announcement';
+
 import type { Announcement } from '@/types/announcement';
 
 interface MainGameProps {

@@ -1,9 +1,10 @@
 /**
  * @vitest-environment jsdom
  */
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { renderHook } from '@testing-library/react';
 import React from 'react';
+
+import { renderHook } from '@testing-library/react';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 
 // Mock the ProtagonistProvider
 describe('ProtagonistContext', () => {

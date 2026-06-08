@@ -1,13 +1,16 @@
 'use client';
 
+import { RotateCcw } from 'lucide-react';
+
+import { Button } from '@/components/ui/button';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import { Protagonist } from '@/lib/game/types';
 import { MentalState } from '@/lib/game/typesExtension';
+
+import { SaveLoadPanel } from '../sidebar/SaveLoadPanel';
 import { StatusPanel } from '../sidebar/StatusPanel';
 import { WorldInfoPanel } from '../sidebar/WorldInfoPanel';
-import { SaveLoadPanel } from '../sidebar/SaveLoadPanel';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { Button } from '@/components/ui/button';
-import { RotateCcw } from 'lucide-react';
+
 
 interface LeftSidebarProps {
   protagonist: Protagonist;

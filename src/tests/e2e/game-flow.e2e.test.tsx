@@ -11,9 +11,11 @@
  * 5. 游戏主循环 -> 修炼、探索、战斗等
  */
 
-import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { renderHook, act, waitFor } from '@testing-library/react';
 import React from 'react';
+
+import { renderHook, act, waitFor } from '@testing-library/react';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
+
 import { GameProvider, useGame } from '@/hooks/useGameState';
 
 // 测试包装器

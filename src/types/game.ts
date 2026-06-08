@@ -4,11 +4,11 @@
 
 import { GamePhase, ActionTab, AdventurePhase } from './base';
 import { Character, CharacterStats } from './character';
-import { World } from './world';
-import { InventoryItem, ActiveEffect, PlayerCurrencies } from './item';
 import { BattleState, AdventureEvent, AdventureCell, DungeonConfig } from './combat';
-import { Technique } from './technique';
 import { Equipment } from './equipment';
+import { InventoryItem, ActiveEffect, PlayerCurrencies } from './item';
+import { Technique } from './technique';
+import { World } from './world';
 
 // 消息记录
 export interface MessageRecord {

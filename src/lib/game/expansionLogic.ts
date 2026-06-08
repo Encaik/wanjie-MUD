@@ -16,6 +16,13 @@ import {
   ProtagonistExtension,
   DEFAULT_PROTAGONIST_EXTENSION
 } from './typesExtension';
+import { TaskProgress } from './typesExtension';
+import {
+  RealmBottleneck,
+  TribulationState,
+  BottleneckType
+} from './typesExtension';
+import { DemonEncounter, DemonChoice } from './typesExtension';
 import {
   CULTIVATION_PATHS,
   PATH_LEVEL_CONFIG,
@@ -25,13 +32,11 @@ import {
   calculatePathStatBonus
 } from '../data/cultivationPathData';
 import {
-  TECHNIQUE_BONDS,
-  PROFICIENCY_LEVELS,
-  getProficiencyLevel,
-  getProficiencyBonus,
-  calculateBondEffects,
-  TechniqueBondConfig
-} from '../data/techniqueBondData';
+  DEMON_ENCOUNTERS,
+  getRandomDemonEncounter,
+  calculateDemonChoiceSuccessRate,
+  calculateDemonTriggerChance
+} from '../data/demonData';
 import {
   ALL_AFFIXES,
   EQUIPMENT_SETS,
@@ -50,7 +55,14 @@ import {
   FACTION_SHOP_ITEMS,
   FACTION_SKILLS
 } from '../data/factionProgressData';
-import { TaskProgress } from './typesExtension';
+import {
+  TECHNIQUE_BONDS,
+  PROFICIENCY_LEVELS,
+  getProficiencyLevel,
+  getProficiencyBonus,
+  calculateBondEffects,
+  TechniqueBondConfig
+} from '../data/techniqueBondData';
 
 // ============================================
 // 修炼流派系统逻辑
@@ -172,7 +184,7 @@ export function addTechniqueProficiency(
   gain: number
 ): { proficiency: number; usageCount: number; leveledUp: boolean } {
   const newUsageCount = usageCount + 1;
-  let newProficiency = Math.min(1000, proficiency + gain);
+  const newProficiency = Math.min(1000, proficiency + gain);
   
   const oldLevel = getProficiencyLevel(proficiency);
   const newLevel = getProficiencyLevel(newProficiency);
@@ -723,11 +735,6 @@ import {
   getNextTribulationLevel,
   calculateSuccessRate
 } from '../data/tribulationData';
-import {
-  RealmBottleneck,
-  TribulationState,
-  BottleneckType
-} from './typesExtension';
 
 /**
  * 检测是否触发境界瓶颈
@@ -966,13 +973,6 @@ export function calculateTribulationPenalty(
 // 心境与心魔系统逻辑
 // ============================================
 
-import {
-  DEMON_ENCOUNTERS,
-  getRandomDemonEncounter,
-  calculateDemonChoiceSuccessRate,
-  calculateDemonTriggerChance
-} from '../data/demonData';
-import { DemonEncounter, DemonChoice } from './typesExtension';
 
 /**
  * 计算心境对修炼效率的影响

@@ -7,6 +7,12 @@
  * 3. 与玩家系统完全同构
  */
 
+import {
+  TierEquipmentConfig,
+  TIER_EQUIPMENT_CONFIG,
+} from './types';
+import { BattleSkill } from '../battle/types';
+import { ELEMENTS, WEAPON_CATEGORIES } from '../stats/calculator';
 import { 
   Technique, 
   Equipment, 
@@ -17,12 +23,6 @@ import {
   Element,
   WeaponCategory,
 } from '../types';
-import { BattleSkill } from '../battle/types';
-import {
-  TierEquipmentConfig,
-  TIER_EQUIPMENT_CONFIG,
-} from './types';
-import { ELEMENTS, WEAPON_CATEGORIES } from '../stats/calculator';
 
 // ============================================
 // 工具函数

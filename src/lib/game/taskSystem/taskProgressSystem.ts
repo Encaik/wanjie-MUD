@@ -12,8 +12,8 @@
  * - 边界条件完整处理
  */
 
-import { GameStatistics } from '../types';
 import { StatisticsEventType } from '../statisticsSystem';
+import { GameStatistics } from '../types';
 
 // ============================================
 // 任务需求类型定义

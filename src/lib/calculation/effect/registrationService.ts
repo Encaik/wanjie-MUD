@@ -5,11 +5,11 @@
  * 支持按来源类型批量注册和注销
  */
 
-import { UnifiedEffect, EffectSourceType, CalculableStat } from '../types';
-import { CalculationContext } from '../context/types';
 import { EffectRegistry } from './registry';
 import { getAdapter, AllAdapters } from '../adapters';
 import { LOG_PREFIX } from '../constants';
+import { CalculationContext } from '../context/types';
+import { UnifiedEffect, EffectSourceType, CalculableStat } from '../types';
 
 // ============================================
 // 注册结果类型

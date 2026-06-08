@@ -2,6 +2,7 @@
  * @vitest-environment jsdom
  */
 import { describe, it, expect } from 'vitest';
+
 import { isProtagonist, isTechnique, isEquipment, isObject, isNumber } from '@/lib/game/typeGuards';
 import type { Protagonist, Technique, Equipment, CharacterStats, ItemRarity, TechniqueType } from '@/lib/game/types';
 

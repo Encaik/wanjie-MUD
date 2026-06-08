@@ -9,22 +9,6 @@
  * 5. 支持多敌人战斗
  */
 
-import {
-  ExtendedBattleState,
-  BattleAction,
-  BattleActionResult,
-  TurnResult,
-  BattleStatistics,
-  BattlePhase,
-  BattleConfig,
-  BATTLE_CONSTANTS,
-  BattleActionRecord,
-  DecisionOption,
-  TriggeredEvent,
-  PlayerData,
-} from './types';
-import { BattleSkill, generateSkillsFromEquippedTechniques, generateCombatSkillsFromEquippedWeapons } from './skillSystem';
-import type { BattleSkillType } from './types';
 import { 
   getAvailableDecisions, 
   executePlayerAction, 
@@ -42,6 +26,24 @@ import {
   recordBattleEvent,
   formatEventMessages,
 } from './eventSystem';
+import { BattleSkill, generateSkillsFromEquippedTechniques, generateCombatSkillsFromEquippedWeapons } from './skillSystem';
+import {
+  ExtendedBattleState,
+  BattleAction,
+  BattleActionResult,
+  TurnResult,
+  BattleStatistics,
+  BattlePhase,
+  BattleConfig,
+  BATTLE_CONSTANTS,
+  BattleActionRecord,
+  DecisionOption,
+  TriggeredEvent,
+  PlayerData,
+} from './types';
+import { calculateDamage, COMBAT_CONFIG } from '../balanceConfig';
+import { EnemyGroup, Enemy } from '../enemy/types';
+import { getDefenseAttributes } from '../restraintSystem';
 import { 
   Technique, 
   Equipment, 
@@ -50,10 +52,6 @@ import {
   EnemyTier,
   Protagonist,
 } from '../types';
-import { applyDamage, applyHeal, clamp, clampNonNegative } from '../utils/numberUtils';
-import { calculateDamage, COMBAT_CONFIG } from '../balanceConfig';
-import { getDefenseAttributes } from '../restraintSystem';
-import { EnemyGroup, Enemy } from '../enemy/types';
 import {
   BattleEnemy,
   TurnOrderEntry,
@@ -65,6 +63,9 @@ import {
   getNextActor,
   resetTurnOrder,
 } from './enemyState';
+import { applyDamage, applyHeal, clamp, clampNonNegative } from '../utils/numberUtils';
+
+import type { BattleSkillType } from './types';
 
 // ============================================
 // 战斗状态创建

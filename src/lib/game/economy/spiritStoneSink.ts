@@ -5,9 +5,6 @@
  * 包括：装备重铸、功法突破、境界突破辅助、属性重置
  */
 
-import { Protagonist, Equipment, Technique, ItemRarity, StatKey } from '../types';
-import { CurrencyService } from '../shop/currencyService';
-import { PlayerCurrencies, CurrencyType } from '../shop/types';
 import {
   SpiritStoneSink,
   SinkApplyResult,
@@ -18,6 +15,9 @@ import {
   STAT_RESET_CONFIG,
 } from './types';
 import { EquipmentAffix, AffixType, AffixEffect } from '../../data/equipmentAffixData';
+import { CurrencyService } from '../shop/currencyService';
+import { PlayerCurrencies, CurrencyType } from '../shop/types';
+import { Protagonist, Equipment, Technique, ItemRarity, StatKey } from '../types';
 
 /**
  * 灵石消耗服务

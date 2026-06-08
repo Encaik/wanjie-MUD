@@ -8,8 +8,8 @@
  * - 奖励声望和贡献点
  */
 
-import { Protagonist, GameStatistics, ItemRarity } from '../types';
 import { breakthroughItems, cultivationPillItems } from '../items';
+import { Protagonist, GameStatistics, ItemRarity } from '../types';
 import {
   TaskSystemType,
   TaskSystemState,

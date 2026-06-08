@@ -9,8 +9,8 @@
  * - 双向契合：同时满足时，额外+10%（总计+40%）
  */
 
-import { Technique, Equipment } from './types';
 import { Element, WeaponCategory } from './restraintSystem';
+import { Technique, Equipment } from './types';
 
 // ============================================
 // 类型定义

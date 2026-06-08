@@ -8,8 +8,9 @@
 'use client';
 
 import { useCallback, useState } from 'react';
-import type { PlayerOnlineState, AllLeaderboards } from '@/types/multiplayer';
+
 import type { Announcement, AnnouncementRequest } from '@/types/announcement';
+import type { PlayerOnlineState, AllLeaderboards } from '@/types/multiplayer';
 
 /** Hook 配置 */
 interface UseMultiplayerHttpOptions {

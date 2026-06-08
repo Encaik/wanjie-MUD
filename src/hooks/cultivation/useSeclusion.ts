@@ -7,17 +7,14 @@
 
 import { useCallback, useState } from 'react';
 import type { Dispatch, SetStateAction } from 'react';
-import { GameState, MessageRecord, ActiveEffect } from '@/lib/game/types';
-import { DEFAULT_PROTAGONIST_EXTENSION, MentalState } from '@/lib/game/typesExtension';
-import { processExperienceGain, calculateBreakthroughTransfer } from '@/lib/game/experienceSystem';
-import { getMaxExperience, getMaxLevel } from '@/lib/game/cultivation';
-import { getRealmName } from '@/lib/game/generators';
-import { applyMentalChange, updateTaskProgress } from '@/lib/game/expansionLogic';
-import { applyGrowthStatChanges } from '@/lib/game/realmSystem';
-import { consumeGameTime, ACTION_TIME_COST } from '@/lib/game/timeSystem';
+
 import { CULTIVATION_PATHS } from '@/lib/data/cultivationPathData';
+import { getMaxExperience, getMaxLevel } from '@/lib/game/cultivation';
+import { applyMentalChange, updateTaskProgress } from '@/lib/game/expansionLogic';
+import { processExperienceGain, calculateBreakthroughTransfer } from '@/lib/game/experienceSystem';
 import { gameSystems } from '@/lib/game/gameSystems';
-import { removeFromInventory, addToInventory } from '../utils/inventoryUtils';
+import { getRealmName } from '@/lib/game/generators';
+import { applyGrowthStatChanges } from '@/lib/game/realmSystem';
 import {
   SeclusionType,
   SeclusionOutcome,
@@ -30,6 +27,12 @@ import {
   SECLUSION_CONFIGS,
   SECLUSION_OUTCOMES,
 } from '@/lib/game/seclusion';
+import { consumeGameTime, ACTION_TIME_COST } from '@/lib/game/timeSystem';
+import { GameState, MessageRecord, ActiveEffect } from '@/lib/game/types';
+import { DEFAULT_PROTAGONIST_EXTENSION, MentalState } from '@/lib/game/typesExtension';
+
+import { removeFromInventory, addToInventory } from '../utils/inventoryUtils';
+
 
 export interface UseSeclusionProps {
   gameState: GameState;

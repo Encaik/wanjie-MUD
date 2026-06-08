@@ -6,14 +6,14 @@
  */
 
 import { Protagonist, getFinalStats, BaseStats } from '../../game/types';
+import { getCalculator } from '../calculator';
+import { buildContextFromProtagonist } from '../helpers/contextHelper';
 import { 
   CalculableStat, 
   EffectSourceType, 
   StatCalculationResult,
   EffectContribution 
 } from '../types';
-import { getCalculator } from '../calculator';
-import { buildContextFromProtagonist } from '../helpers/contextHelper';
 
 // ============================================
 // 展示用类型定义

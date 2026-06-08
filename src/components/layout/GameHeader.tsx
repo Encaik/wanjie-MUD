@@ -1,20 +1,21 @@
 'use client';
 
-import { Protagonist } from '@/lib/game/types';
-import { TimeSystemState, formatGameTimeShort } from '@/lib/game/timeSystem';
-import { Badge } from '@/components/ui/badge';
 import { 
   Clock, Heart, Zap, Brain, Gem,
   Swords, Shield, Flame, Sparkles
 } from 'lucide-react';
-import { cn } from '@/lib/util/utils';
+
+import { Badge } from '@/components/ui/badge';
+import { CULTIVATION_PATHS, getPathLevelExp } from '@/lib/data/cultivationPathData';
 import { getRealmName } from '@/lib/data/realmData';
 import { getMaxExperience } from '@/lib/game/cultivation';
-import { CULTIVATION_PATHS, getPathLevelExp } from '@/lib/data/cultivationPathData';
+import { getResourceName } from '@/lib/game/items';
+import { TimeSystemState, formatGameTimeShort } from '@/lib/game/timeSystem';
 import { CultivationPath } from '@/lib/game/types';
+import { Protagonist } from '@/lib/game/types';
 import { MentalState } from '@/lib/game/typesExtension';
 import { WORLD_TEXT_MAP } from '@/lib/text/WorldTextManager';
-import { getResourceName } from '@/lib/game/items';
+import { cn } from '@/lib/util/utils';
 
 // 流派图标和颜色
 const PATH_CONFIG: Record<CultivationPath, { icon: React.ReactNode; color: string; barColor: string }> = {

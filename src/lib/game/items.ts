@@ -1,5 +1,5 @@
-import { ItemDefinition, WorldType } from './types';
 import { getTerminology } from './terminology';
+import { ItemDefinition, WorldType } from './types';
 
 // 根据世界类型获取灵石名称 - 使用统一术语系统
 export function getResourceName(worldType: WorldType): string {

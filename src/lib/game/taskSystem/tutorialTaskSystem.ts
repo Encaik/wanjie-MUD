@@ -8,13 +8,13 @@
  * - 完成所有任务后显示庆祝弹窗
  */
 
-import { Protagonist, GameStatistics, createInventoryItem, ItemDefinition } from '../types';
 import { 
   spiritStoneItems, 
   cultivationPillItems, 
   breakthroughItems,
   restorePillItems 
 } from '../items';
+import { Protagonist, GameStatistics, createInventoryItem, ItemDefinition } from '../types';
 import {
   TaskSystemType,
   TaskSystemState,

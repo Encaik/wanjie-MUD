@@ -1,9 +1,12 @@
 'use client';
 
 import { useState, useEffect, useMemo, useCallback, useRef } from 'react';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
+
 import { Anvil, Clock, Package, Shield, AlertCircle, Sword, Shirt, Footprints, Glasses } from 'lucide-react';
+
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { getRarityStyle } from '@/components/ui/item-tooltip';
 import { 
   FORGE_RECIPES, 
   FORGE_MATERIALS, 
@@ -15,7 +18,6 @@ import {
   getSlotName,
 } from '@/lib/data/forgeRecipes';
 import { InventoryItem, ItemRarity, ForgingState, EquipmentSlot } from '@/lib/game/types';
-import { getRarityStyle } from '@/components/ui/item-tooltip';
 import { cn } from '@/lib/util/utils';
 
 // 部位图标映射

@@ -1,8 +1,10 @@
 'use client';
 
 import { useState } from 'react';
-import { RealmSystem } from '@/lib/data/realmData';
+
 import { ChevronDown, ChevronRight } from 'lucide-react';
+
+import { RealmSystem } from '@/lib/data/realmData';
 import { cn } from '@/lib/util/utils';
 
 interface RealmTableProps {

@@ -1,11 +1,13 @@
 'use client';
 
 import { useMemo } from 'react';
-import { InventoryItem, ItemRarity, WorldType } from '@/lib/game/types';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
+
 import { Package, EyeOff, Sparkles } from 'lucide-react';
+
+import { Badge } from '@/components/ui/badge';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { getTerminology } from '@/lib/game/terminology';
+import { InventoryItem, ItemRarity, WorldType } from '@/lib/game/types';
 
 interface AdventureLootPanelProps {
   loot: InventoryItem[];

@@ -7,10 +7,7 @@
  * 3. 战利品存入掉落池，供挂机使用
  */
 
-import { WorldType, ItemRarity, EnemyTier } from '../types';
-import { getTerminology } from '../terminology';
-import { Enemy } from '../enemy/types';
-import { EnemyGroup } from '../enemy/types';
+import { calculateEnemyHp, calculateEnemyAttack, calculateEnemyDefense, calculatePlayerMaxMp } from '../balanceConfig';
 import {
   TowerEnemy,
   TowerRewards,
@@ -23,7 +20,10 @@ import {
   createEmptyDropPool,
   createDefaultTowerProgress,
 } from './types';
-import { calculateEnemyHp, calculateEnemyAttack, calculateEnemyDefense, calculatePlayerMaxMp } from '../balanceConfig';
+import { Enemy } from '../enemy/types';
+import { EnemyGroup } from '../enemy/types';
+import { getTerminology } from '../terminology';
+import { WorldType, ItemRarity, EnemyTier } from '../types';
 
 // ============================================
 // 工具函数

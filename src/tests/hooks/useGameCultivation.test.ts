@@ -8,11 +8,14 @@
  * - 休息功能
  * - 自动修炼
  */
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { renderHook, act } from '@testing-library/react';
 import { useState } from 'react';
-import type { GameState, MessageRecord, InventoryItem, ActiveEffect } from '@/lib/game/types';
+
+import { renderHook, act } from '@testing-library/react';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+
 import { useGameCultivation } from '@/hooks/cultivation/useCultivation';
+import type { GameState, MessageRecord, InventoryItem, ActiveEffect } from '@/lib/game/types';
+
 import { createTestGameState } from '../helpers/testState';
 
 // 创建模拟的 addMessageInternal

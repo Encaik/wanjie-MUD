@@ -11,6 +11,7 @@
  * - 物品掉落
  */
 import { describe, it, expect } from 'vitest';
+
 import { createTestDungeonConfig, createTestProtagonist } from './test-helpers';
 
 // ============================================

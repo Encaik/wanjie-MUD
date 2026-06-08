@@ -13,17 +13,7 @@
 'use client';
 
 import { useState, useCallback, useEffect, useRef } from 'react';
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-} from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Separator } from '@/components/ui/separator';
-import { ScrollArea } from '@/components/ui/scroll-area';
+
 import {
   Swords,
   Trophy,
@@ -36,6 +26,23 @@ import {
   Flame,
 } from 'lucide-react';
 
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from '@/components/ui/dialog';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { Separator } from '@/components/ui/separator';
+import { 
+  initInteractiveBattle, 
+  initTowerBattle, 
+  performPlayerAction, 
+  estimateBattleDifficulty 
+} from '@/lib/game/adventureBattleIntegration';
 import {
   ExtendedBattleState,
   BattleStatistics,
@@ -44,19 +51,13 @@ import {
   TurnResult,
   TriggeredEvent,
 } from '@/lib/game/battle';
-import { Protagonist, CellType, DungeonConfig, BattleResult } from '@/lib/game/types';
-import { 
-  initInteractiveBattle, 
-  initTowerBattle, 
-  performPlayerAction, 
-  estimateBattleDifficulty 
-} from '@/lib/game/adventureBattleIntegration';
 import type { TowerEnemy } from '@/lib/game/tower/types';
+import { Protagonist, CellType, DungeonConfig, BattleResult } from '@/lib/game/types';
 
+import { BattleLogList } from './BattleLogList';
 import { CombatantPanel } from './CombatantPanel';
 import { DecisionPanel } from './DecisionPanel';
 import { RestraintDisplay } from './RestraintDisplay';
-import { BattleLogList } from './BattleLogList';
 
 /** 战斗阶段 */
 type BattlePhase = 'preparing' | 'player_turn' | 'enemy_turn' | 'result';

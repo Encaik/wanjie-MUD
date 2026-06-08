@@ -7,6 +7,18 @@
  * 3. 保持与原有接口的兼容性
  */
 
+import { parseEnemyInfo } from './adventure';
+import { 
+  calculatePlayerMaxHp,
+  calculatePlayerMaxMp,
+  calculatePlayerAttack,
+  calculatePlayerDefense,
+  calculateEnemyHp,
+  calculateEnemyAttack,
+  calculateEnemyDefense,
+  calculateBattleExp,
+  calculateBattleSpiritStones,
+} from './balanceConfig';
 import {
   createBattleState,
   createBattleStateFromGroup,
@@ -26,6 +38,23 @@ import {
   TriggeredEvent,
   Enemy,
 } from './battle';
+import { calculatePlayerCombatPower, calculateEnemyCombatPower } from './combatPower';
+import { calculateEnemyEnhancement, applyEnemyEnhancement } from './enemyEnhancement';
+import { 
+  generateEnemyTechniquesAndEquipments,
+  calculateTechniqueBonus,
+  calculateEquipmentBonus,
+} from './enemyTechniqueEquipment';
+import { 
+  getEnemyAttributes,
+  calculateRestraintResult,
+  getElementIcon,
+  getWeaponCategoryIcon,
+  ELEMENT_NAMES,
+  WEAPON_CATEGORY_NAMES,
+} from './restraintSystem';
+import { generateTowerEnemyGroup, convertTowerEnemyToEnemy } from './tower/towerSystem';
+import { TowerEnemy } from './tower/types';
 import { 
   Protagonist, 
   CellType, 
@@ -39,40 +68,13 @@ import {
   WorldType,
   getFinalStats,
 } from './types';
-import { TowerEnemy } from './tower/types';
-import { generateTowerEnemyGroup, convertTowerEnemyToEnemy } from './tower/towerSystem';
-import type { EnemyGroup } from './enemy/types';
 import { 
   getEnemyTierFromCellType, 
   getEnemyTierConfig 
 } from '../data/worldData';
-import { 
-  calculatePlayerMaxHp,
-  calculatePlayerMaxMp,
-  calculatePlayerAttack,
-  calculatePlayerDefense,
-  calculateEnemyHp,
-  calculateEnemyAttack,
-  calculateEnemyDefense,
-  calculateBattleExp,
-  calculateBattleSpiritStones,
-} from './balanceConfig';
-import { 
-  getEnemyAttributes,
-  calculateRestraintResult,
-  getElementIcon,
-  getWeaponCategoryIcon,
-  ELEMENT_NAMES,
-  WEAPON_CATEGORY_NAMES,
-} from './restraintSystem';
-import { calculateEnemyEnhancement, applyEnemyEnhancement } from './enemyEnhancement';
-import { 
-  generateEnemyTechniquesAndEquipments,
-  calculateTechniqueBonus,
-  calculateEquipmentBonus,
-} from './enemyTechniqueEquipment';
-import { calculatePlayerCombatPower, calculateEnemyCombatPower } from './combatPower';
-import { parseEnemyInfo } from './adventure';
+
+import type { EnemyGroup } from './enemy/types';
+
 
 // ============================================
 // 类型适配器

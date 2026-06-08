@@ -1,49 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { WorldType, Faction, FactionTypeNames, WorldFaction } from '@/lib/game/types';
-import { 
-  TaskRoundState, 
-  CommissionState, 
-  CommissionProgress,
-  FactionProgress,
-  ReputationLevel,
-} from '@/lib/game/typesExtension';
-import { 
-  getFactionsByWorld, 
-  getFactionById, 
-  calculateFactionBonuses,
-} from '@/lib/data/factionData';
-import { 
-  REPUTATION_LEVELS,
-  DAILY_TASK_ROUND,
-  WEEKLY_TASK_ROUND,
-  getReputationLevel,
-  getRanksByFactionType,
-  FactionRankConfig,
-  getTaskConfig,
-  FactionTaskConfig,
-  COMMISSION_QUALITY_CONFIG,
-  CommissionQuality,
-} from '@/lib/data/factionProgressData';
-import { checkRankPromotion } from '@/lib/game/expansionLogic';
-import { RankDetailDialog, ReputationDetailDialog } from '@/components/game/dialogs';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Progress } from '@/components/ui/progress';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Slider } from '@/components/ui/slider';
-import { 
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog';
+
 import { 
   Building2, 
   Users, 
@@ -77,6 +35,51 @@ import {
   FlaskConical,
   Hammer,
 } from 'lucide-react';
+
+import { RankDetailDialog, ReputationDetailDialog } from '@/components/game/dialogs';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { 
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
+import { Progress } from '@/components/ui/progress';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
+import { 
+  getFactionsByWorld, 
+  getFactionById, 
+  calculateFactionBonuses,
+} from '@/lib/data/factionData';
+import { WorldType, Faction, FactionTypeNames, WorldFaction } from '@/lib/game/types';
+import { 
+  TaskRoundState, 
+  CommissionState, 
+  CommissionProgress,
+  FactionProgress,
+  ReputationLevel,
+} from '@/lib/game/typesExtension';
+import { 
+  REPUTATION_LEVELS,
+  DAILY_TASK_ROUND,
+  WEEKLY_TASK_ROUND,
+  getReputationLevel,
+  getRanksByFactionType,
+  FactionRankConfig,
+  getTaskConfig,
+  FactionTaskConfig,
+  COMMISSION_QUALITY_CONFIG,
+  CommissionQuality,
+} from '@/lib/data/factionProgressData';
+import { checkRankPromotion } from '@/lib/game/expansionLogic';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Slider } from '@/components/ui/slider';
+
 
 interface FactionPanelProps {
   worldType: WorldType;

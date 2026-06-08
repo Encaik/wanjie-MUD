@@ -1,10 +1,12 @@
 'use client';
 
+import { AlertTriangle, RotateCcw } from 'lucide-react';
+
+import { Button } from '@/components/ui/button';
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { ActionResult, InventoryItem, CharacterStats } from '@/lib/game/types';
 
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { AlertTriangle, RotateCcw } from 'lucide-react';
+
 
 // 重置确认弹窗
 interface ResetConfirmDialogProps {

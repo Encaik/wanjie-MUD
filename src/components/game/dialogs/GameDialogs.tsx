@@ -1,16 +1,19 @@
 'use client';
 
-import { Protagonist, Technique, Equipment, InventoryItem } from '@/lib/game/types';
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
 import { AlertTriangle, LogOut, PartyPopper, Trophy } from 'lucide-react';
-import { DeveloperPanel } from '../shared/DeveloperPanel';
-import { GuardianBattle } from '../battle/GuardianBattle';
+
+import { Button } from '@/components/ui/button';
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { isDebugMode } from '@/lib/config/env';
+import { Protagonist, Technique, Equipment, InventoryItem } from '@/lib/game/types';
+import { NewWorldInfo, InheritanceChoice } from '@/lib/game/typesExtension';
+
 import { InheritanceSelect } from './InheritanceSelect';
 import { WorldReveal } from './WorldReveal';
+import { GuardianBattle } from '../battle/GuardianBattle';
+import { DeveloperPanel } from '../shared/DeveloperPanel';
 import { UpgradePanel } from '../tabs/UpgradePanel';
-import { NewWorldInfo, InheritanceChoice } from '@/lib/game/typesExtension';
-import { isDebugMode } from '@/lib/config/env';
+
 
 // Props 类型
 interface UpgradeTarget {

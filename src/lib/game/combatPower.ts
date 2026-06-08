@@ -5,7 +5,6 @@
  * 保持旧接口兼容，内部使用新系统
  */
 
-import type { Protagonist, Technique, Equipment, ActiveEffect, EnemyTier } from './types';
 import { 
   quickCalculatePlayerPower, 
   quickCalculateEnemyPower,
@@ -13,6 +12,8 @@ import {
   formatCombatPower as formatPower,
   getCombatPowerRatio as getPowerRatio,
 } from '../calculation';
+
+import type { Protagonist, Technique, Equipment, ActiveEffect, EnemyTier } from './types';
 
 /**
  * 计算玩家战力

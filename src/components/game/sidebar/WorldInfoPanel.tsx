@@ -1,15 +1,5 @@
 'use client';
 
-import { World, Protagonist, WorldType, WorldDifficulty } from '@/lib/game/types';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Progress } from '@/components/ui/progress';
-import { Separator } from '@/components/ui/separator';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from '@/components/ui/tooltip';
 import { 
   Globe, 
   Building2, 
@@ -22,7 +12,16 @@ import {
   Star,
   Skull
 } from 'lucide-react';
-import { cn } from '@/lib/util/utils';
+
+import { Badge } from '@/components/ui/badge';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Progress } from '@/components/ui/progress';
+import { Separator } from '@/components/ui/separator';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
 import {
   formatDanger,
   formatOpportunity,
@@ -30,6 +29,8 @@ import {
   getOpportunityLevelStyle,
   generateLevelStars,
 } from '@/lib/data/worldEffectsUtils';
+import { World, Protagonist, WorldType, WorldDifficulty } from '@/lib/game/types';
+import { cn } from '@/lib/util/utils';
 
 // 世界类型颜色配置 - 与个人信息面板风格一致
 const worldTypeConfig: Record<WorldType, { 

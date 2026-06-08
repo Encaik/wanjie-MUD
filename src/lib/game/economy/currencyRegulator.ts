@@ -5,7 +5,6 @@
  * 解决后期货币通胀问题
  */
 
-import { CurrencyType } from '../shop/types';
 import {
   CurrencyRegulationConfig,
   CurrencyRewardParams,
@@ -13,6 +12,7 @@ import {
   SPIRIT_STONE_REGULATION,
   ASCENSION_MARK_REGULATION,
 } from './types';
+import { CurrencyType } from '../shop/types';
 
 /**
  * 货币调节服务

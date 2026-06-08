@@ -302,7 +302,7 @@ export function calculateEnemyHp(
     enemyLevel * worldData.hpPerLevel;
   
   // 只应用敌人分级系数和难度系数（移除 levelFactor）
-  let hp = baseHp * tierConfig.hpMultiplier * difficulty.hpMultiplier;
+  const hp = baseHp * tierConfig.hpMultiplier * difficulty.hpMultiplier;
   
   // 应用随机浮动
   const variance = tierConfig.variance;
@@ -338,7 +338,7 @@ export function calculateEnemyAttack(
     enemyLevel * worldData.attackPerLevel;
   
   // 只应用敌人分级系数和难度系数
-  let attack = baseAttack * tierConfig.attackMultiplier * difficulty.attackMultiplier;
+  const attack = baseAttack * tierConfig.attackMultiplier * difficulty.attackMultiplier;
   
   // 应用随机浮动
   const variance = tierConfig.variance;
@@ -373,7 +373,7 @@ export function calculateEnemyDefense(
     enemyLevel * worldData.defensePerLevel;
   
   // 只应用敌人分级系数和难度系数（移除 levelFactor）
-  let defense = baseDefense * tierConfig.defenseMultiplier * difficulty.defenseMultiplier;
+  const defense = baseDefense * tierConfig.defenseMultiplier * difficulty.defenseMultiplier;
   
   // 应用随机浮动（仅在启用时）
   // 用于机缘战力计算时禁用随机浮动，确保战力要求稳定

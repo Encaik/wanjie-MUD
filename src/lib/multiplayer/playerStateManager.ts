@@ -7,6 +7,7 @@
  * 3. 提供排行榜数据
  */
 
+import type { WorldType } from '@/types/base';
 import type {
   PlayerOnlineState,
   PlayerState,
@@ -15,7 +16,7 @@ import type {
   LeaderboardType,
   AllLeaderboards,
 } from '@/types/multiplayer';
-import type { WorldType } from '@/types/base';
+
 import { WS_CONFIG } from '../websocket/types';
 
 /** 玩家状态管理器（全局单例） */

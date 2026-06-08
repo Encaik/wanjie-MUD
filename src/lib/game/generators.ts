@@ -1,4 +1,4 @@
-import { Character, World, CharacterStats, WorldType, ImpactfulTrait, ImpactLevel, StatImpact, WorldFaction } from './types';
+import { evaluateCharacter, evaluateCharacters } from './characterEvaluation';
 import { getTerminology } from './terminology';
 import { 
   ORIGIN_TRAITS, 
@@ -10,7 +10,12 @@ import {
   calculateTotalImpact,
   QUALITY_CONFIG
 } from './traits';
-import { evaluateCharacter, evaluateCharacters } from './characterEvaluation';
+import { Character, World, CharacterStats, WorldType, ImpactfulTrait, ImpactLevel, StatImpact, WorldFaction } from './types';
+import {
+  generateWorldFactions,
+  generateFactionDescription,
+  generateFactionBackgroundDescription,
+} from '../data/factionData';
 import {
   generateRealmSystem,
   getRealmName,
@@ -25,11 +30,6 @@ import {
   getStatPotentialForLevel,
   RealmSystem,
 } from '../data/realmData';
-import {
-  generateWorldFactions,
-  generateFactionDescription,
-  generateFactionBackgroundDescription,
-} from '../data/factionData';
 import {
   WORLD_DATA,
   WORLD_COEFFICIENTS,

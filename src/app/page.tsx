@@ -2,13 +2,14 @@
 
 // 游戏主页面 - 扩展系统已集成
 import { useEffect, useState } from 'react';
-import { GameProvider, useGame } from '@/hooks/useGameState';
-import { StartScreen } from '@/components/pages/home/StartScreen';
-import { CharacterSelect } from '@/components/pages/character-select/CharacterSelect';
-import { WorldSelect } from '@/components/pages/world-select/WorldSelect';
-import { BackstoryView } from '@/components/pages/backstory/BackstoryView';
-import { MainGame } from '@/components/game/layout';
+
 import { OfflineRewardDialog, OfflineProcessResultV2 } from '@/components/game/dialogs';
+import { MainGame } from '@/components/game/layout';
+import { BackstoryView } from '@/components/pages/backstory/BackstoryView';
+import { CharacterSelect } from '@/components/pages/character-select/CharacterSelect';
+import { StartScreen } from '@/components/pages/home/StartScreen';
+import { WorldSelect } from '@/components/pages/world-select/WorldSelect';
+import { GameProvider, useGame } from '@/hooks/useGameState';
 import { DungeonConfig, MessageRecord } from '@/lib/game/types';
 
 function GameContent() {

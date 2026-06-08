@@ -1,6 +1,13 @@
 'use client';
 
 import { useState } from 'react';
+
+import { 
+  Zap, AlertTriangle, CheckCircle, XCircle, 
+  Sparkles, Heart, TrendingUp, Clock
+} from 'lucide-react';
+
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -11,13 +18,8 @@ import {
   DialogFooter,
 } from '@/components/ui/dialog';
 import { Progress } from '@/components/ui/progress';
-import { Badge } from '@/components/ui/badge';
-import { 
-  Zap, AlertTriangle, CheckCircle, XCircle, 
-  Sparkles, Heart, TrendingUp, Clock
-} from 'lucide-react';
-import { TribulationConfig, TribulationState, RealmBottleneck } from '@/lib/game/typesExtension';
 import { CharacterStats, getFinalStats } from '@/lib/game/types';
+import { TribulationConfig, TribulationState, RealmBottleneck } from '@/lib/game/typesExtension';
 
 interface TribulationDialogProps {
   open: boolean;

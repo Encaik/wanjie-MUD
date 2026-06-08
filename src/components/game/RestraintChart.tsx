@@ -6,20 +6,21 @@
 
 'use client';
 
+import { Flame, Swords, ArrowRight, ArrowLeftRight } from 'lucide-react';
+
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import {
-  Element,
-  WeaponCategory,
-  ELEMENT_NAMES,
-  WEAPON_CATEGORY_NAMES,
-} from '@/lib/game/types';
 import {
   ELEMENT_COUNTER_MAP,
   WEAPON_COUNTER_MAP,
   getElementIcon,
   getWeaponCategoryIcon,
 } from '@/lib/game/restraintSystem';
-import { Flame, Swords, ArrowRight, ArrowLeftRight } from 'lucide-react';
+import {
+  Element,
+  WeaponCategory,
+  ELEMENT_NAMES,
+  WEAPON_CATEGORY_NAMES,
+} from '@/lib/game/types';
 import { cn } from '@/lib/util/utils';
 
 // 元素颜色映射

@@ -6,8 +6,6 @@
 
 'use client';
 
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import {
   Swords,
   Shield,
@@ -18,6 +16,9 @@ import {
   AlertCircle,
   Loader2,
 } from 'lucide-react';
+
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { BattleAction, DecisionOption } from '@/lib/game/battle';
 
 interface DecisionPanelProps {

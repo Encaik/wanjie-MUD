@@ -8,9 +8,9 @@
  * - 稀有度配置
  */
 
-import { EquipmentSlot, ItemRarity } from '../game/types';
-import { EQUIPMENT_RARITY_CONFIG, RARITY_WEIGHTS } from '../game/skillTypes';
 import { Element, WeaponCategory } from '../game/restraintSystem';
+import { EQUIPMENT_RARITY_CONFIG, RARITY_WEIGHTS } from '../game/skillTypes';
+import { EquipmentSlot, ItemRarity } from '../game/types';
 
 // ============================================
 // 装备名称库

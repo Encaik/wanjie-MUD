@@ -1,15 +1,17 @@
 'use client';
 
 import { useState } from 'react';
-import { InventoryItem, ActiveEffect, WorldType, ItemRarity } from '@/lib/game/types';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+
 import { Package, Heart, Zap, Star, TrendingUp, Sword } from 'lucide-react';
-import { getResourceName } from '@/lib/game/items';
-import { cn } from '@/lib/util/utils';
-import { useInventory, useProtagonist } from '@/hooks';
+
+import { Badge } from '@/components/ui/badge';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ItemTooltip, getRarityStyle } from '@/components/ui/item-tooltip';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { useInventory, useProtagonist } from '@/hooks';
+import { getResourceName } from '@/lib/game/items';
+import { InventoryItem, ActiveEffect, WorldType, ItemRarity } from '@/lib/game/types';
+import { cn } from '@/lib/util/utils';
 
 interface InventoryPanelProps {
   inventory?: InventoryItem[];

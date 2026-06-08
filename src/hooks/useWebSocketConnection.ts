@@ -12,9 +12,10 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
-import type { PlayerOnlineState, AllLeaderboards } from '@/types/multiplayer';
-import type { Announcement, AnnouncementRequest } from '@/types/announcement';
+
 import { WS_CONFIG, WSMessage, WSConnectionState, WSAuthPayload, WSAuthSuccessPayload } from '@/lib/websocket/types';
+import type { Announcement, AnnouncementRequest } from '@/types/announcement';
+import type { PlayerOnlineState, AllLeaderboards } from '@/types/multiplayer';
 
 /** Hook 配置 */
 interface UseWebSocketConnectionOptions {

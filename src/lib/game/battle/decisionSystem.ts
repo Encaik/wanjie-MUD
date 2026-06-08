@@ -10,6 +10,13 @@
  */
 
 import { 
+  BattleSkill,
+  isSkillUsable, 
+  isSkillRecommended, 
+  getSkillExtraInfo,
+  calculateSkillDamage,
+} from './skillSystem';
+import { 
   BattleAction, 
   BattleActionType,
   BattleActionResult,
@@ -23,23 +30,14 @@ import {
   StatBuff,
   BattlePhase,
 } from './types';
-import { 
-  BattleSkill,
-  isSkillUsable, 
-  isSkillRecommended, 
-  getSkillExtraInfo,
-  calculateSkillDamage,
-} from './skillSystem';
-import type { BattleSkillType } from './types';
-import { InventoryItem, EnemyTier } from '../types';
-import { clamp, clampNonNegative, applyDamage, applyHeal } from '../utils/numberUtils';
+import { calculateDamage, calculateCritRate, COMBAT_CONFIG } from '../balanceConfig';
 import { 
   calculateRestraintResult, 
   formatRestraintDescription,
   EnemyAttributes,
   getDefenseAttributes,
 } from '../restraintSystem';
-import { calculateDamage, calculateCritRate, COMBAT_CONFIG } from '../balanceConfig';
+import { InventoryItem, EnemyTier } from '../types';
 import {
   BattleEnemy,
   TurnOrderEntry,
@@ -53,6 +51,9 @@ import {
   applyDamageToEnemy,
   applyHealToEnemy,
 } from './enemyState';
+import { clamp, clampNonNegative, applyDamage, applyHeal } from '../utils/numberUtils';
+
+import type { BattleSkillType } from './types';
 
 // ============================================
 // 决策选项生成
@@ -509,7 +510,7 @@ function executeTechniqueAttack(skillId: string, state: ExtendedBattleState): Ba
   // 应用防御减伤（与普通攻击一致）
   const defenseReductionFactor = 100; // 与 COMBAT_CONFIG.defenseReductionFactor 一致
   const defenseReduction = defenseReductionFactor / (defenseReductionFactor + enemyDefense);
-  let damageAfterDefense = Math.floor(baseDamage * defenseReduction);
+  const damageAfterDefense = Math.floor(baseDamage * defenseReduction);
   
   // 计算克制关系
   const restraint = calculateRestraintResult(
@@ -921,7 +922,7 @@ export function executeEnemyAction(state: ExtendedBattleState): BattleActionResu
   
   // 计算伤害
   const levelDiff = enemyLevel - playerLevel;
-  let baseDamage = calculateDamage(enemyAttack, playerDefense, levelDiff);
+  const baseDamage = calculateDamage(enemyAttack, playerDefense, levelDiff);
   let damage = baseDamage;
   let skillName = '';
   
@@ -1229,7 +1230,7 @@ export function executeSingleEnemyAction(
   
   // 计算伤害
   const levelDiff = enemy.level - state.playerLevel;
-  let baseDamage = calculateDamage(enemyAttack, state.playerDefense, levelDiff);
+  const baseDamage = calculateDamage(enemyAttack, state.playerDefense, levelDiff);
   let damage = baseDamage;
   let skillName = '';
   

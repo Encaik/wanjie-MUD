@@ -6,15 +6,14 @@
 
 'use client';
 
-import { Progress } from '@/components/ui/progress';
-import { Badge } from '@/components/ui/badge';
 import { 
   Heart, Zap, Swords, Shield, User, Skull, 
   Crown, Star
 } from 'lucide-react';
-import { Technique, Equipment, EnemyTier } from '@/lib/game/types';
+
+import { Badge } from '@/components/ui/badge';
+import { Progress } from '@/components/ui/progress';
 import { StatBuff } from '@/lib/game/battle';
-import { Element, WeaponCategory } from '@/lib/game/types';
 import { 
   getElementIcon, 
   getWeaponCategoryIcon, 
@@ -22,6 +21,8 @@ import {
   WEAPON_CATEGORY_NAMES,
   EnemyAttributes,
 } from '@/lib/game/restraintSystem';
+import { Technique, Equipment, EnemyTier } from '@/lib/game/types';
+import { Element, WeaponCategory } from '@/lib/game/types';
 
 /** 敌人类型显示配置 */
 const TIER_CONFIG: Record<EnemyTier, { name: string; icon: React.ReactNode; color: string }> = {

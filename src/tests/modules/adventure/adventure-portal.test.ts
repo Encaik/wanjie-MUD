@@ -9,6 +9,7 @@
  * - 传送门移动逻辑
  */
 import { describe, it, expect } from 'vitest';
+
 import { createTestDungeonConfig, createTestCell } from './test-helpers';
 
 // ============================================

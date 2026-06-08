@@ -1,14 +1,15 @@
 'use client';
 
-import { Protagonist } from '@/lib/game/types';
-import { Badge } from '@/components/ui/badge';
 import { Sparkles } from 'lucide-react';
+
+import { Badge } from '@/components/ui/badge';
 import { 
   getRealmName, 
   getNextRealm, 
   getNextMainRealmLevel 
 } from '@/lib/data/realmData';
 import { getTerminology } from '@/lib/game/terminology';
+import { Protagonist } from '@/lib/game/types';
 
 interface CharacterInfoProps {
   protagonist: Protagonist;

@@ -1,18 +1,24 @@
 'use client';
 
 import { useState } from 'react';
-import { MessageRecord } from '@/lib/game/types';
+
+import { MessageCircle, Bell, Trophy, Newspaper } from 'lucide-react';
+
+import { Badge } from '@/components/ui/badge';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { RealmSystem } from '@/lib/data/realmData';
+import { getRealmName } from '@/lib/data/realmData';
+import { MessageRecord } from '@/lib/game/types';
+import type { Announcement } from '@/types/announcement';
+import type { AllLeaderboards } from '@/types/multiplayer';
+
+import { AnnouncementHistory } from '../announcement';
+import { LeaderboardPanel } from '../leaderboard';
 import { ChatRoom } from '../shared/ChatRoom';
 import { MessagePanel } from '../shared/MessagePanel';
-import { LeaderboardPanel } from '../leaderboard';
-import { AnnouncementHistory } from '../announcement';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { MessageCircle, Bell, Trophy, Newspaper } from 'lucide-react';
-import { getRealmName } from '@/lib/data/realmData';
-import { Badge } from '@/components/ui/badge';
-import type { AllLeaderboards } from '@/types/multiplayer';
-import type { Announcement } from '@/types/announcement';
+
+
+
 
 interface RightSidebarProps {
   protagonistId: number;

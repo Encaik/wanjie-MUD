@@ -9,6 +9,30 @@ import React, { createContext, useCallback, useContext, useEffect, useRef, useSt
 import type { Dispatch, SetStateAction } from 'react';
 
 // 类型导入
+import { handleCellEvent } from '@/lib/game/adventure';
+import { calculateBattleWithLogs } from '@/lib/game/adventureBattleNew';
+import { calculatePlayerMaxHp, calculatePlayerMaxMp } from '@/lib/game/balanceConfig';
+import { calculatePlayerCombatPower } from '@/lib/game/combatPower';
+import { executeCultivation, getMaxExperience } from '@/lib/game/cultivation';
+import { generateEquipment } from '@/lib/game/equipment';
+import { updateTaskProgress, applyMentalChange } from '@/lib/game/expansionLogic';
+import { processExperienceGain, calculateBreakthroughTransfer } from '@/lib/game/experienceSystem';
+import { generateCharacters, generateWorlds, generateBackstory } from '@/lib/game/generators';
+import type { SeclusionType } from '@/lib/game/seclusion';
+import type { TowerEnemy } from '@/lib/game/tower/types';
+import { createDefaultTowerProgress } from '@/lib/game/tower/types';
+import { createInventoryItem } from '@/lib/game/types';
+import { spiritStoneItems, cultivationPillItems, breakthroughItems } from '@/lib/game/items';
+import { generateRandomTechnique, generateTechniqueByType } from '@/lib/game/technique';
+import { getRealmName } from '@/lib/game/generators';
+import { applyBaseStatChanges, getGrowthStatCap } from '@/lib/game/realmSystem';
+import { 
+  TUTORIAL_TASKS, 
+  checkTutorialProgress, 
+  checkNewlyCompletedTask,
+  getTaskRewards,
+  getTutorialWelcomeMessage
+} from '@/lib/game/taskSystem';
 import type {
   GameState,
   WorldType,
@@ -40,27 +64,22 @@ import type {
   ActiveEffect,
   ActiveBattleState,
 } from '@/lib/game/types';
-import type { SeclusionType } from '@/lib/game/seclusion';
-import type { TowerEnemy } from '@/lib/game/tower/types';
-import { createDefaultTowerProgress } from '@/lib/game/tower/types';
-import { createInventoryItem } from '@/lib/game/types';
-import { generateCharacters, generateWorlds, generateBackstory } from '@/lib/game/generators';
-import { spiritStoneItems, cultivationPillItems, breakthroughItems } from '@/lib/game/items';
-import { generateRandomTechnique, generateTechniqueByType } from '@/lib/game/technique';
-import { generateEquipment } from '@/lib/game/equipment';
-import { calculatePlayerCombatPower } from '@/lib/game/combatPower';
-import { calculatePlayerMaxHp, calculatePlayerMaxMp } from '@/lib/game/balanceConfig';
-import { executeCultivation, getMaxExperience } from '@/lib/game/cultivation';
-import { getRealmName } from '@/lib/game/generators';
-import { applyBaseStatChanges, getGrowthStatCap } from '@/lib/game/realmSystem';
-import { processExperienceGain, calculateBreakthroughTransfer } from '@/lib/game/experienceSystem';
-import { 
-  TUTORIAL_TASKS, 
-  checkTutorialProgress, 
-  checkNewlyCompletedTask,
-  getTaskRewards,
-  getTutorialWelcomeMessage
-} from '@/lib/game/taskSystem';
+import type {
+  MentalState,
+  FactionProgress,
+  InheritanceChoice,
+  NewWorldInfo,
+  DiscoveredWorld,
+  GuardianBattleState,
+  AscensionFlowState,
+  ProtagonistExtension,
+} from '@/lib/game/typesExtension';
+import {
+  DEFAULT_PROTAGONIST_EXTENSION,
+  DEFAULT_ASCENSION_FLOW_STATE,
+  createDefaultDailyRoundState,
+  createDefaultWeeklyRoundState,
+} from '@/lib/game/typesExtension';
 import { 
   upgradeTechnique, 
   upgradeEquipment,
@@ -74,30 +93,19 @@ import {
 } from '@/lib/game/fragmentSystem';
 
 // 扩展类型导入
-import type {
-  MentalState,
-  FactionProgress,
-  InheritanceChoice,
-  NewWorldInfo,
-  DiscoveredWorld,
-  GuardianBattleState,
-  AscensionFlowState,
-  ProtagonistExtension,
-} from '@/lib/game/typesExtension';
 
 // 默认状态导入
-import {
-  DEFAULT_PROTAGONIST_EXTENSION,
-  DEFAULT_ASCENSION_FLOW_STATE,
-  createDefaultDailyRoundState,
-  createDefaultWeeklyRoundState,
-} from '@/lib/game/typesExtension';
 
 // 共享工具函数
+import { safeSaveGameState, loadGameStateWithRecovery } from '@/lib/game/utils/saveUtils';
+
+import { useGameAdventure } from './adventure/useAdventure';
+import { useGameCultivation } from './cultivation/useCultivation';
+import { useSeclusion } from './cultivation/useSeclusion';
+import { useGameFaction } from './faction/useFaction';
 import { addToInventory, removeFromInventory } from './utils/inventoryUtils';
 
 // 安全存档工具
-import { safeSaveGameState, loadGameStateWithRecovery } from '@/lib/game/utils/saveUtils';
 
 // 离线收益计算
 import { processOfflineTime, OfflineProcessResult } from '@/lib/game/tower/idleSystem';
@@ -113,15 +121,8 @@ import { TOWER_CONFIG } from '@/lib/game/tower/types';
 import { getDefaultRealTimeState, getDefaultGameTimeState } from '@/lib/game/timeSystem';
 
 // 子 Hooks
-import { useGameCultivation } from './cultivation/useCultivation';
-import { useSeclusion } from './cultivation/useSeclusion';
-import { useGameAdventure } from './adventure/useAdventure';
-import { useGameFaction } from './faction/useFaction';
 
 // 游戏逻辑模块
-import { handleCellEvent } from '@/lib/game/adventure';
-import { calculateBattleWithLogs } from '@/lib/game/adventureBattleNew';
-import { updateTaskProgress, applyMentalChange } from '@/lib/game/expansionLogic';
 import { getRandomItem } from '@/lib/game/items';
 import { calculatePillEffect, getPillRealmLevel } from '@/lib/game/pillRealmSystem';
 
@@ -452,7 +453,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
       }
       
       // === 3. 更新任务冷却 ===
-      let updatedTaskCooldowns = savedState.protagonist?.taskCooldowns || {};
+      const updatedTaskCooldowns = savedState.protagonist?.taskCooldowns || {};
       for (const taskId of offlineTimeResult.expiredTaskCooldowns) {
         delete updatedTaskCooldowns[taskId];
       }
@@ -618,7 +619,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
             if (!prev.protagonist) return prev;
             
             // 添加物品到背包
-            let newInventory = [...prev.protagonist.inventory];
+            const newInventory = [...prev.protagonist.inventory];
             for (const itemReward of rewards.items) {
               const existingIdx = newInventory.findIndex(
                 i => i.definition.id === itemReward.item.id
@@ -1920,8 +1921,8 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     const towerProgress = protagonist.towerProgress ?? createDefaultTowerProgress();
     
     // 应用收益到主角
-    let newProtagonist = { ...protagonist };
-    let newInventory = [...protagonist.inventory];
+    const newProtagonist = { ...protagonist };
+    const newInventory = [...protagonist.inventory];
     
     // 应用经验
     if (rewards.experience > 0) {

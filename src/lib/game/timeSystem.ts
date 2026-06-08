@@ -252,7 +252,7 @@ export function calculateCurrentAge(gameTime: GameTimeState): number {
  * 消耗游戏时间
  */
 export function consumeGameTime(gameTime: GameTimeState, seconds: number): GameTimeState {
-  let newTotalSeconds = gameTime.totalGameSeconds + seconds;
+  const newTotalSeconds = gameTime.totalGameSeconds + seconds;
   
   // 计算新的日期
   let remainingSeconds = newTotalSeconds;

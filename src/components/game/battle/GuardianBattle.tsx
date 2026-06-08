@@ -1,7 +1,15 @@
 'use client';
 
 import { useState, useEffect, useCallback, useRef } from 'react';
+
+import { 
+  Swords, Heart, Shield, Zap, Trophy, Skull, 
+  Sparkles, User, SwordsIcon, AlertTriangle, Loader2
+} from 'lucide-react';
+
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
 import {
   Dialog,
   DialogContent,
@@ -11,19 +19,13 @@ import {
   DialogFooter,
 } from '@/components/ui/dialog';
 import { Progress } from '@/components/ui/progress';
-import { Badge } from '@/components/ui/badge';
-import { Card } from '@/components/ui/card';
-import { 
-  Swords, Heart, Shield, Zap, Trophy, Skull, 
-  Sparkles, User, SwordsIcon, AlertTriangle, Loader2
-} from 'lucide-react';
-import { BattleState, BattleLog, Protagonist, getFinalStats } from '@/lib/game/types';
-import { GuardianBattleState } from '@/lib/game/typesExtension';
 import { WORLD_GUARDIANS, ASCENSION_CONFIG } from '@/lib/data/ascensionData';
 import { 
   createGuardianBattleState, 
   executeBattleRound,
 } from '@/lib/game/ascensionLogic';
+import { BattleState, BattleLog, Protagonist, getFinalStats } from '@/lib/game/types';
+import { GuardianBattleState } from '@/lib/game/typesExtension';
 
 // 战斗结果类型
 interface BattleResult {

@@ -6,9 +6,9 @@
 
 'use client';
 
-import { PlayerCurrencies, CurrencyType, CURRENCY_CONFIGS } from '@/lib/game/shop/types';
-import { CurrencyService } from '@/lib/game/shop/currencyService';
 import { getResourceName } from '@/lib/game/items';
+import { CurrencyService } from '@/lib/game/shop/currencyService';
+import { PlayerCurrencies, CurrencyType, CURRENCY_CONFIGS } from '@/lib/game/shop/types';
 import { WorldType } from '@/lib/game/types';
 import { cn } from '@/lib/util/utils';
 

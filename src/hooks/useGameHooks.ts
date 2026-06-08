@@ -1,7 +1,18 @@
 'use client';
 
 import { useMemo, useCallback } from 'react';
-import { useGame } from './useGameState';
+
+import { getRealmName, getNextRealm, getNextMainRealmLevel, getMainRealmName } from '@/lib/data/realmData';
+import { 
+  calculatePlayerAttack, 
+  calculatePlayerDefense,
+  calculatePlayerMaxHp,
+  calculatePlayerMaxMp
+} from '@/lib/game/balanceConfig';
+import { getMaxExperience } from '@/lib/game/cultivation';
+import { getActualStatCap } from '@/lib/game/realmSystem';
+import { MAX_LEVEL } from '@/lib/game/realmSystem';
+import { getAttributeNames, getTerminology, getDungeonInfo } from '@/lib/game/terminology';
 import { 
   Protagonist, 
   InventoryItem, 
@@ -11,18 +22,9 @@ import {
   ActiveEffect,
   DungeonConfig
 } from '@/lib/game/types';
-import { 
-  calculatePlayerAttack, 
-  calculatePlayerDefense,
-  calculatePlayerMaxHp,
-  calculatePlayerMaxMp
-} from '@/lib/game/balanceConfig';
-import { getActualStatCap } from '@/lib/game/realmSystem';
 import { getFinalStats } from '@/lib/game/types';
-import { getMaxExperience } from '@/lib/game/cultivation';
-import { getRealmName, getNextRealm, getNextMainRealmLevel, getMainRealmName } from '@/lib/data/realmData';
-import { getAttributeNames, getTerminology, getDungeonInfo } from '@/lib/game/terminology';
-import { MAX_LEVEL } from '@/lib/game/realmSystem';
+
+import { useGame } from './useGameState';
 
 // 计算战斗加成
 function calculateCombatBoost(activeEffects: ActiveEffect[]): number {

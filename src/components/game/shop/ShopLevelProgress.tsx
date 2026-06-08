@@ -6,10 +6,12 @@
 
 'use client';
 
-import { ShopLevelData } from '@/lib/game/shop/types';
-import { ShopLevelService } from '@/lib/game/shop/shopLevelService';
-import { cn } from '@/lib/util/utils';
 import { Crown, TrendingUp, Gift, ChevronUp } from 'lucide-react';
+
+import { ShopLevelService } from '@/lib/game/shop/shopLevelService';
+import { ShopLevelData } from '@/lib/game/shop/types';
+import { cn } from '@/lib/util/utils';
+
 
 interface ShopLevelProgressProps {
   levelData: ShopLevelData;

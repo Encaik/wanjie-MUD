@@ -4,7 +4,6 @@
 
 'use client';
 
-import { Badge } from '@/components/ui/badge';
 import { 
   Swords, 
   Shield, 
@@ -16,6 +15,8 @@ import {
   Wind,
   Star,
 } from 'lucide-react';
+
+import { Badge } from '@/components/ui/badge';
 
 interface BattleLogListProps {
   logs: string[];

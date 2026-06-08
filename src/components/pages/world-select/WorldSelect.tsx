@@ -1,11 +1,15 @@
 'use client';
 
-import { World, WorldType, WorldDifficulty } from '@/lib/game/types';
-import { Card, CardContent } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { Skull, Sparkles, Star, Info } from 'lucide-react';
+
 import { RealmTable } from '@/components/game/shared';
-import { cn } from '@/lib/util/utils';
+import { Badge } from '@/components/ui/badge';
+import { Card, CardContent } from '@/components/ui/card';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
 import {
   formatDanger,
   formatOpportunity,
@@ -13,11 +17,8 @@ import {
   getOpportunityLevelStyle,
   generateLevelStars,
 } from '@/lib/data/worldEffectsUtils';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from '@/components/ui/tooltip';
+import { World, WorldType, WorldDifficulty } from '@/lib/game/types';
+import { cn } from '@/lib/util/utils';
 
 interface WorldSelectProps {
   worlds: World[];

@@ -10,12 +10,12 @@
  * - 大彻大悟效果：+3~+8点主属性可成长
  */
 
-import { Protagonist, CultivationResult, CharacterStats, GrowthStats, WorldType, InventoryItem, createInventoryItem, getGrowthStatCap } from './types';
-import { spiritStoneItems } from './items';
-import { getTerminology } from './terminology';
-import { getRealmName } from './generators';
 import { getMaxExperience } from './cultivation';
 import { processExperienceGain, calculateBreakthroughTransfer } from './experienceSystem';
+import { getRealmName } from './generators';
+import { spiritStoneItems } from './items';
+import { getTerminology } from './terminology';
+import { Protagonist, CultivationResult, CharacterStats, GrowthStats, WorldType, InventoryItem, createInventoryItem, getGrowthStatCap } from './types';
 import { getMaxLevel } from '../data/realmData';
 
 const random = (min: number, max: number) => Math.floor(Math.random() * (max - min + 1)) + min;

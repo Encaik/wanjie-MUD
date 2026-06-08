@@ -10,6 +10,7 @@
  * - 秘境状态
  */
 import { describe, it, expect } from 'vitest';
+
 import { createTestDungeonConfig, createTestProtagonist } from './test-helpers';
 
 // ============================================

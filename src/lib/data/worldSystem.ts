@@ -8,7 +8,14 @@
  * - 世界选择规则
  */
 
-import { WorldType, WorldDifficulty } from '../game/types';
+import { 
+  checkOpportunityUnlock, 
+  MAX_OPPORTUNITY_LEVEL,
+  getOpportunityLevelColorClass,
+  getOpportunityLevelBgClass,
+} from './opportunityConfig';
+import { getRarityColorClass, getRarityBgClass } from './raritySystem';
+import { WORLD_DATA, WORLD_COEFFICIENTS } from './worldData';
 import {
   WorldDanger,
   WorldOpportunity,
@@ -19,14 +26,7 @@ import {
   calculateDangerCount,
   calculateOpportunityCount,
 } from './worldEffectsData';
-import { WORLD_DATA, WORLD_COEFFICIENTS } from './worldData';
-import { 
-  checkOpportunityUnlock, 
-  MAX_OPPORTUNITY_LEVEL,
-  getOpportunityLevelColorClass,
-  getOpportunityLevelBgClass,
-} from './opportunityConfig';
-import { getRarityColorClass, getRarityBgClass } from './raritySystem';
+import { WorldType, WorldDifficulty } from '../game/types';
 
 // ============================================
 // 常量定义

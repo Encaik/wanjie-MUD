@@ -4,11 +4,13 @@
 
 'use client';
 
+import { Sparkles, Shield, Swords, Zap, Flame } from 'lucide-react';
+
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { CultivationPath } from '@/lib/game/types';
 import { CULTIVATION_PATHS } from '@/lib/data/cultivationPathData';
-import { Sparkles, Shield, Swords, Zap, Flame } from 'lucide-react';
+import { CultivationPath } from '@/lib/game/types';
+
 import { getPathColor } from '../utils/pathStyles';
 
 // 获取流派图标

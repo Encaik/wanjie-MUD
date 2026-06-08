@@ -10,6 +10,7 @@
  * - 探索进度计算
  */
 import { describe, it, expect } from 'vitest';
+
 import { createTestDungeonConfig, createTestCell } from './test-helpers';
 
 // ============================================

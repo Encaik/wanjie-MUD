@@ -2,9 +2,9 @@
  * 稀有度工具函数和常量
  */
 
-import { ItemRarity, Technique, Equipment, TechniqueType, EquipmentSlot } from './types';
 import { Element, WeaponCategory } from './restraintSystem';
 import { TECHNIQUE_RARITY_CONFIG, EQUIPMENT_RARITY_CONFIG } from './skillTypes';
+import { ItemRarity, Technique, Equipment, TechniqueType, EquipmentSlot } from './types';
 
 /** 稀有度中文名称 */
 export const RARITY_NAMES: Record<ItemRarity, string> = {

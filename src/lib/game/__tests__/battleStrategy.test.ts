@@ -5,10 +5,7 @@
  */
 
 import { describe, it, expect } from 'vitest';
-import { 
-  Element, 
-  WeaponCategory,
-} from '../types';
+
 import {
   ELEMENT_COUNTER_MAP,
   WEAPON_COUNTER_MAP,
@@ -20,6 +17,10 @@ import {
   ELEMENT_NAMES,
   WEAPON_CATEGORY_NAMES,
 } from '../restraintSystem';
+import { 
+  Element, 
+  WeaponCategory,
+} from '../types';
 
 // ========== 克制关系测试 ==========
 

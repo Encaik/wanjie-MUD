@@ -2,6 +2,7 @@
  * @vitest-environment jsdom
  */
 import { describe, it, expect } from 'vitest';
+
 import { logger, LogLevel } from '@/utils/logger';
 
 describe('logger', () => {

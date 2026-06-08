@@ -1,17 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogFooter,
-} from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Card, CardContent } from '@/components/ui/card';
+
 import {
   Shield,
   Swords,
@@ -26,16 +16,28 @@ import {
   TrendingDown,
   Minus
 } from 'lucide-react';
-import { CharacterStats, WorldType, LegacyStats } from '@/lib/game/types';
+
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
 import {
-  CultivationPath,
-} from '@/lib/game/typesExtension';
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from '@/components/ui/dialog';
 import {
   CULTIVATION_PATHS,
   checkPathUnlockConditions,
   getPathLevelExp,
   PATH_LEVEL_CONFIG,
 } from '@/lib/data/cultivationPathData';
+import { CharacterStats, WorldType, LegacyStats } from '@/lib/game/types';
+import {
+  CultivationPath,
+} from '@/lib/game/typesExtension';
 import { getWorldText } from '@/lib/text/WorldTextContext';
 
 interface CultivationPathSelectProps {

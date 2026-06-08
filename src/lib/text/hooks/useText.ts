@@ -5,10 +5,11 @@
  */
 
 import { useCallback, useMemo } from 'react';
-import { TextKey, UseTextResult, ValueContext } from '../core/types';
-import { textResolver } from '../core/textResolver';
-import { getWorldTerminology, getWorldStatNames } from '../worlds';
+
 import { WorldType } from '../../game/types';
+import { textResolver } from '../core/textResolver';
+import { TextKey, UseTextResult, ValueContext } from '../core/types';
+import { getWorldTerminology, getWorldStatNames } from '../worlds';
 
 /**
  * 文案 Hook

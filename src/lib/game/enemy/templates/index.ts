@@ -8,9 +8,9 @@
  * - 掉落配置
  */
 
+import { Element } from '../../restraintSystem';
 import { WorldType, EnemyTier } from '../../types';
 import { EnemyTemplate, EnemyBehaviorType } from '../types';
-import { Element } from '../../restraintSystem';
 
 // ============================================
 // 基础属性模板

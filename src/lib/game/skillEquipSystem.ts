@@ -4,9 +4,9 @@
  * 管理功法法技和武器斗技的装备/卸下/交换
  */
 
+import { TechniqueSkill, WeaponTechnique, EquipResult, getUnlockedSlotCount } from './skillTypes';
 import { Technique } from './types';
 import { Equipment } from './types';
-import { TechniqueSkill, WeaponTechnique, EquipResult, getUnlockedSlotCount } from './skillTypes';
 
 // ============================================
 // 功法技能装备管理

@@ -5,11 +5,13 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { cn } from '@/lib/utils';
-import { Card } from '@/components/ui/card';
+
 import { X } from 'lucide-react';
-import type { Announcement } from '@/types/announcement';
+
+import { Card } from '@/components/ui/card';
 import { ANNOUNCEMENT_TYPE_CONFIG, ANNOUNCEMENT_PRIORITY_CONFIG } from '@/lib/game/announcement/config';
+import { cn } from '@/lib/utils';
+import type { Announcement } from '@/types/announcement';
 
 /** Props */
 interface AnnouncementToastProps {

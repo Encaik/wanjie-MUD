@@ -13,13 +13,6 @@ import {
   EnemyTier,
 } from '../types';
 import {
-  Enemy,
-  EnemyTemplate,
-  DIFFICULTY_CONFIG,
-  TIER_EQUIPMENT_CONFIG,
-} from './types';
-import { calculateStats } from '../stats/calculator';
-import {
   generateEnemyTechniqueEquipment,
   EnemyTechniqueEquipmentResult,
 } from './techniqueEquipment';
@@ -28,6 +21,13 @@ import {
   getTemplateById,
   getAttributeTemplate,
 } from './templates';
+import {
+  Enemy,
+  EnemyTemplate,
+  DIFFICULTY_CONFIG,
+  TIER_EQUIPMENT_CONFIG,
+} from './types';
+import { calculateStats } from '../stats/calculator';
 
 // ============================================
 // 工具函数

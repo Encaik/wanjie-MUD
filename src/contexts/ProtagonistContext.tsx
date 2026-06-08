@@ -1,6 +1,7 @@
 'use client';
 
 import { createContext, useContext, ReactNode } from 'react';
+
 import type { Protagonist, InventoryItem, ActiveEffect } from '@/lib/game/types';
 import type { CultivationPath, MentalState, FactionProgress } from '@/lib/game/typesExtension';
 

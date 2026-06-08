@@ -5,14 +5,7 @@
  * 修复 P2-002：添加运行时类型守卫验证
  */
 
-import { GameState } from './types';
-import { 
-  DEFAULT_PROTAGONIST_EXTENSION, 
-  DEFAULT_TECHNIQUE_EXTENSION, 
-  DEFAULT_EQUIPMENT_EXTENSION,
-  TechniqueExtension,
-  EquipmentExtension,
-} from './typesExtension';
+import { GAME_CONSTANTS } from './constants';
 import { 
   toArray,
   getPropertyOrDefault,
@@ -23,8 +16,15 @@ import {
   isEquipment,
   isArray,
 } from './typeGuards';
-import { GAME_CONSTANTS } from './constants';
+import { GameState } from './types';
 import { Technique, Equipment, DEFAULT_STATISTICS } from './types';
+import { 
+  DEFAULT_PROTAGONIST_EXTENSION, 
+  DEFAULT_TECHNIQUE_EXTENSION, 
+  DEFAULT_EQUIPMENT_EXTENSION,
+  TechniqueExtension,
+  EquipmentExtension,
+} from './typesExtension';
 
 /**
  * 存档迁移版本号

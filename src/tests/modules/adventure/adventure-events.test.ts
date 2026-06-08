@@ -9,6 +9,7 @@
  * - 相邻格子
  */
 import { describe, it, expect } from 'vitest';
+
 import { createTestDungeonConfig, createTestProtagonist } from './test-helpers';
 
 // ============================================

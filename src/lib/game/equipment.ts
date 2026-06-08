@@ -8,22 +8,22 @@
  */
 
 import { 
-  Equipment, 
-  EquipmentSlot, 
-  ItemRarity, 
-  WorldType 
-} from './types';
-import { 
-  EQUIPMENT_RARITY_CONFIG,
-  RARITY_WEIGHTS,
-} from './skillTypes';
-import { 
   Element, 
   WeaponCategory,
   detectElementFromName,
   detectWeaponCategoryFromName,
 } from './restraintSystem';
 import { generateWeaponTechniques } from './skillGenerator';
+import { 
+  EQUIPMENT_RARITY_CONFIG,
+  RARITY_WEIGHTS,
+} from './skillTypes';
+import { 
+  Equipment, 
+  EquipmentSlot, 
+  ItemRarity, 
+  WorldType 
+} from './types';
 
 // 导入配置数据
 import {

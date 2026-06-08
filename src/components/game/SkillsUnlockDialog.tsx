@@ -1,14 +1,16 @@
 'use client';
 
 import React from 'react';
+
+import { Zap, Lock, Check, Sword, Sparkles, Droplets } from 'lucide-react';
+
+import { Badge } from '@/components/ui/badge';
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-import { Badge } from '@/components/ui/badge';
-import { Zap, Lock, Check, Sword, Sparkles, Droplets } from 'lucide-react';
 import { TechniqueSkill, WeaponTechnique } from '@/lib/game/skillTypes';
 
 interface SkillUnlockInfo {

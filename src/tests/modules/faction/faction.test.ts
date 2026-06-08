@@ -12,6 +12,7 @@
  * - 日常历练：势力日常活动
  */
 import { describe, it, expect } from 'vitest';
+
 import { 
   createDefaultFactionProgress,
   createDefaultDailyRoundState,

@@ -6,18 +6,6 @@
  */
 
 import {
-  DungeonEvent,
-  DungeonChoice,
-  DungeonOutcome,
-  EventExecutionContext,
-  EventExecutionResult,
-  EventEffect,
-  EventPreview,
-  EventLogEntry,
-  DEFAULT_TRIGGER_CONFIG,
-  EventTriggerConfig,
-} from './types';
-import {
   DUNGEON_EVENTS,
   getEventById,
   getAvailableEvents,
@@ -29,10 +17,22 @@ import {
   getAvailableChoices,
   getRecommendedChoice,
 } from './eventTrigger';
-import { Protagonist, InventoryItem, CharacterStats, createInventoryItem, ItemDefinition, ActiveEffect, LegacyStats } from '../types';
+import {
+  DungeonEvent,
+  DungeonChoice,
+  DungeonOutcome,
+  EventExecutionContext,
+  EventExecutionResult,
+  EventEffect,
+  EventPreview,
+  EventLogEntry,
+  DEFAULT_TRIGGER_CONFIG,
+  EventTriggerConfig,
+} from './types';
+import { generateRandomEquipment } from '../equipment';
 import { getRandomItem, spiritStoneItems } from '../items';
 import { generateRandomTechnique } from '../technique';
-import { generateRandomEquipment } from '../equipment';
+import { Protagonist, InventoryItem, CharacterStats, createInventoryItem, ItemDefinition, ActiveEffect, LegacyStats } from '../types';
 
 // ============================================
 // 效果应用

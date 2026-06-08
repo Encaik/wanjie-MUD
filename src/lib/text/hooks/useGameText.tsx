@@ -5,13 +5,15 @@
  */
 
 import { useCallback, useMemo } from 'react';
-import { TextKey, ValueContext, UseTextResult } from '../core/types';
-import { textResolver } from '../core/textResolver';
+
 import { useGame } from '@/hooks/useGameState';
-import { WorldType } from '@/lib/game/types';
 import { calculatePlayerCombatPower } from '@/lib/game/combatPower';
+import { WorldType } from '@/lib/game/types';
+
+import { textResolver } from '../core/textResolver';
 import { getWorldTerminology, getWorldStatNames } from '../worlds';
 import { useText } from './useText';
+import { TextKey, ValueContext, UseTextResult } from '../core/types';
 
 /**
  * 游戏文案 Hook

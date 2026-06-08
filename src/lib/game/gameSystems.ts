@@ -3,9 +3,9 @@
  * 统一管理事件系统、成就系统、图鉴系统
  */
 
-import { gameEventManager, GameEventType, EventPayloadMap, triggerEvent } from './eventManager';
 import { achievementSystem, AchievementConfig } from './achievementSystem';
 import { collectionSystem, BondConfig } from './collectionSystem';
+import { gameEventManager, GameEventType, EventPayloadMap, triggerEvent } from './eventManager';
 import { GameStatistics, Technique, Equipment } from './types';
 
 // ============================================

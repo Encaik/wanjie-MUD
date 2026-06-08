@@ -1,18 +1,20 @@
 'use client';
 
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Separator } from '@/components/ui/separator';
-import { Heart, Zap, Shield, Activity, User, TrendingUp, TrendingDown, Swords, ShieldCheck, Flame, Info } from 'lucide-react';
 import { useState, useEffect, useMemo } from 'react';
+
+import { Heart, Zap, Shield, Activity, User, TrendingUp, TrendingDown, Swords, ShieldCheck, Flame, Info } from 'lucide-react';
+
+import { StatDetailDialog } from '@/components/game/shared/StatDetailDialog';
+import { Badge } from '@/components/ui/badge';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Separator } from '@/components/ui/separator';
 import { 
   useProtagonistInfo, 
   useStats, 
   useCombatStats 
 } from '@/hooks/useGameHooks';
-import { Protagonist, getFinalStats } from '@/lib/game/types';
 import { calculatePlayerCombatPower, getCombatPowerRank, formatCombatPower } from '@/lib/game/combatPower';
-import { StatDetailDialog } from '@/components/game/shared/StatDetailDialog';
+import { Protagonist, getFinalStats } from '@/lib/game/types';
 
 // 属性图标和颜色配置
 const statConfig = [

@@ -5,18 +5,6 @@
  */
 
 import {
-  CalculableStat,
-  UnifiedEffect,
-  StatCalculationResult,
-  CalculationResult,
-  EffectSourceType,
-} from '../types';
-import { LOG_PREFIX, getStatBounds, ENABLE_EFFECT_TRACING } from '../constants';
-import { BoundaryChecker } from '../boundary';
-import { CalculationContext } from '../context/types';
-import { ContextBuilder } from '../context/builder';
-import { EffectRegistry, EffectProcessor } from '../effect';
-import {
   AllAdapters,
   EquipmentAdapter,
   TechniqueAdapter,
@@ -27,6 +15,18 @@ import {
   BuffAdapter,
   RealmAdapter,
 } from '../adapters';
+import { BoundaryChecker } from '../boundary';
+import { LOG_PREFIX, getStatBounds, ENABLE_EFFECT_TRACING } from '../constants';
+import { ContextBuilder } from '../context/builder';
+import { CalculationContext } from '../context/types';
+import { EffectRegistry, EffectProcessor } from '../effect';
+import {
+  CalculableStat,
+  UnifiedEffect,
+  StatCalculationResult,
+  CalculationResult,
+  EffectSourceType,
+} from '../types';
 
 // ============================================
 // 统一计算器

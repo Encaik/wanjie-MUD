@@ -6,6 +6,7 @@
  * 配置数据来源：gameData/skillConfigs.ts
  */
 
+import { Element, WeaponCategory } from './restraintSystem';
 import { 
   TechniqueSkill, 
   WeaponTechnique, 
@@ -17,7 +18,6 @@ import {
   TECHNIQUE_RARITY_CONFIG,
   EQUIPMENT_RARITY_CONFIG,
 } from './skillTypes';
-import { Element, WeaponCategory } from './restraintSystem';
 
 // 导入配置数据
 import {

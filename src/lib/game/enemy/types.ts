@@ -7,6 +7,7 @@
  * 3. 支持多敌人战斗
  */
 
+import { BattleSkill } from '../battle/types';
 import { 
   WorldType, 
   EnemyTier, 
@@ -16,7 +17,6 @@ import {
   Element,
   WeaponCategory,
 } from '../types';
-import { BattleSkill } from '../battle/types';
 
 // ============================================
 // 行为类型

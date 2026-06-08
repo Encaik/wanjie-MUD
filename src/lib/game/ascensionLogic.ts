@@ -2,16 +2,6 @@
  * 飞升系统核心逻辑
  */
 
-import { WorldType, CharacterStats, BattleState, BattleLog, Protagonist, Technique, Equipment, getFinalStats, LegacyStats, GrowthStats } from '../game/types';
-import {
-  AscensionMark,
-  GuardianBattleState,
-  AscensionChallengeResult,
-  NewWorldInfo,
-  InheritanceChoice,
-  DEFAULT_ASCENSION_MARK,
-  DEFAULT_GUARDIAN_BATTLE_STATE,
-} from '../game/typesExtension';
 import {
   ASCENSION_CONFIG,
   WORLD_GUARDIANS,
@@ -26,6 +16,16 @@ import {
   calculateWorldWeights,
   weightedRandom,
 } from '../data/ascensionData';
+import { WorldType, CharacterStats, BattleState, BattleLog, Protagonist, Technique, Equipment, getFinalStats, LegacyStats, GrowthStats } from '../game/types';
+import {
+  AscensionMark,
+  GuardianBattleState,
+  AscensionChallengeResult,
+  NewWorldInfo,
+  InheritanceChoice,
+  DEFAULT_ASCENSION_MARK,
+  DEFAULT_GUARDIAN_BATTLE_STATE,
+} from '../game/typesExtension';
 
 // ============================================
 // 成功率计算
@@ -213,8 +213,8 @@ export function executeBattleRound(
   victory?: boolean;
 } {
   const logs: BattleLog[] = [];
-  let newGuardianState = { ...guardianState };
-  let newBattleState = { ...battleState };
+  const newGuardianState = { ...guardianState };
+  const newBattleState = { ...battleState };
   
   // 玩家行动
   let playerDamage = 0;
@@ -303,7 +303,7 @@ export function executeBattleRound(
   
   // 根据阶段调整攻击强度
   const phaseMultiplier = 1 + (newGuardianState.currentPhase - 1) * 0.2;
-  let guardianDamage = devInvincible ? 1 : Math.max(1, Math.floor(
+  const guardianDamage = devInvincible ? 1 : Math.max(1, Math.floor(
     (guardianAttack * phaseMultiplier - playerDefense * 0.5 + Math.random() * 10) *
     (playerAction === 'defend' ? 0.5 : 1)
   ));

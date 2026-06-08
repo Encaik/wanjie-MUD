@@ -6,10 +6,10 @@
 
 'use client';
 
+import { ArrowRight, AlertTriangle, Check, X } from 'lucide-react';
+
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
-import { ArrowRight, AlertTriangle, Check, X } from 'lucide-react';
-import { Element, WeaponCategory } from '@/lib/game/types';
 import {
   calculateRestraintResult,
   getElementIcon,
@@ -20,6 +20,7 @@ import {
   WEAPON_COUNTER_MAP,
 } from '@/lib/game/restraintSystem';
 import type { EnemyAttributes } from '@/lib/game/restraintSystem';
+import { Element, WeaponCategory } from '@/lib/game/types';
 
 interface RestraintDisplayProps {
   playerElement: Element | null;

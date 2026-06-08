@@ -17,17 +17,18 @@ export { RealmAdapter } from './realmAdapter';
 export { FactionAdapter, SchoolAdapter } from './factionAdapter';
 
 // 类型导入
-import type { EffectAdapter } from './base';
-import { EquipmentAdapter } from './equipmentAdapter';
-import { TechniqueAdapter } from './techniqueAdapter';
-import { WorldDangerAdapter, WorldOpportunityAdapter } from './worldEffectAdapter';
-import { PillAdapter } from './pillAdapter';
-import { TitleAdapter } from './titleAdapter';
 import { BuffAdapter } from './buffAdapter';
-import { RealmAdapter } from './realmAdapter';
+import { EquipmentAdapter } from './equipmentAdapter';
 import { FactionAdapter, SchoolAdapter } from './factionAdapter';
-import type { EffectSourceType } from '../types';
+import { PillAdapter } from './pillAdapter';
+import { RealmAdapter } from './realmAdapter';
+import { TechniqueAdapter } from './techniqueAdapter';
+import { TitleAdapter } from './titleAdapter';
+import { WorldDangerAdapter, WorldOpportunityAdapter } from './worldEffectAdapter';
+
+import type { EffectAdapter } from './base';
 import type { CalculationContext, EquipmentInput, TechniqueInput, WorldEffectInput, ActiveEffectInput, TitleInput, BuffInput, RealmInput, FactionInput, SchoolInput } from '../context/types';
+import type { EffectSourceType } from '../types';
 
 // ============================================
 // 适配器注册表

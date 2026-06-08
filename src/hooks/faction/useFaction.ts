@@ -8,6 +8,24 @@
 
 import { useCallback } from 'react';
 import type { Dispatch, SetStateAction } from 'react';
+
+import { ACHIEVEMENTS } from '@/lib/data/achievementData';
+import { getFactionById, calculateFactionBonuses } from '@/lib/data/factionData';
+import { 
+  getRanksByFactionType,
+  getTaskConfig,
+  DAILY_TASK_ROUND,
+  WEEKLY_TASK_ROUND,
+  checkRankPromotion,
+  calculateDailySalary,
+  generateCommission,
+  COMMISSION_QUALITY_CONFIG,
+  CommissionQuality,
+  FactionCommissionConfig,
+} from '@/lib/data/factionProgressData';
+import { getStatisticValue } from '@/lib/game/achievementUtils';
+import { spiritStoneItems } from '@/lib/game/items';
+import { statisticsManager } from '@/lib/game/statisticsSystem';
 import { 
   GameState, 
   MessageRecord,
@@ -26,24 +44,9 @@ import {
   createDefaultWeeklyRoundState,
   createDefaultCommissionState,
 } from '@/lib/game/typesExtension';
-import { getFactionById, calculateFactionBonuses } from '@/lib/data/factionData';
-import { 
-  getRanksByFactionType,
-  getTaskConfig,
-  DAILY_TASK_ROUND,
-  WEEKLY_TASK_ROUND,
-  checkRankPromotion,
-  calculateDailySalary,
-  generateCommission,
-  COMMISSION_QUALITY_CONFIG,
-  CommissionQuality,
-  FactionCommissionConfig,
-} from '@/lib/data/factionProgressData';
-import { spiritStoneItems } from '@/lib/game/items';
-import { ACHIEVEMENTS } from '@/lib/data/achievementData';
-import { getStatisticValue } from '@/lib/game/achievementUtils';
+
 import { addToInventory } from '../utils/inventoryUtils';
-import { statisticsManager } from '@/lib/game/statisticsSystem';
+
 
 interface UseGameFactionProps {
   setGameState: Dispatch<SetStateAction<GameState>>;
@@ -361,7 +364,7 @@ export function useGameFaction({
       const progress = prev.protagonist.factionProgress;
       const now = Date.now();
       let updated = false;
-      let newProgress = { ...progress };
+      const newProgress = { ...progress };
       
       // 检查日常轮次
       if (progress.dailyRound.roundCooldownEnd && now >= progress.dailyRound.roundCooldownEnd) {

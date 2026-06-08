@@ -1,11 +1,12 @@
 'use client';
 
 import { useState, useEffect, useMemo, useRef } from 'react';
-import { AdventureCell, WorldType, DungeonConfig, CellType, AdventureSessionState } from '@/lib/game/types';
+
+import { Swords, Gem, Skull, HelpCircle, Coffee, Crown, Map, Flag, Sparkles, Compass, Zap, Timer } from 'lucide-react';
+
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Progress } from '@/components/ui/progress';
 import {
   Dialog,
   DialogContent,
@@ -14,10 +15,11 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-import { Swords, Gem, Skull, HelpCircle, Coffee, Crown, Map, Flag, Sparkles, Compass, Zap, Timer } from 'lucide-react';
+import { Progress } from '@/components/ui/progress';
 import { getAdjacentCells } from '@/lib/game/adventure';
-import { getDungeonInfo, getTerminology } from '@/lib/game/terminology';
 import { STAMINA_CONFIG, getCooldownRemaining } from '@/lib/game/adventureStamina';
+import { getDungeonInfo, getTerminology } from '@/lib/game/terminology';
+import { AdventureCell, WorldType, DungeonConfig, CellType, AdventureSessionState } from '@/lib/game/types';
 
 interface AdventurePanelProps {
   grid: AdventureCell[][] | null;

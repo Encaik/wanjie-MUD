@@ -5,8 +5,8 @@
  * 包含：飞升境界、排行榜、每周Boss、飞升商店
  */
 
-import { CharacterStats, GrowthStats, ItemDefinition, WorldType, Technique, Equipment, Protagonist } from '../types';
 import { Element } from '../restraintSystem';
+import { CharacterStats, GrowthStats, ItemDefinition, WorldType, Technique, Equipment, Protagonist } from '../types';
 
 // 重新导出 Element 类型供其他模块使用
 export type { Element } from '../restraintSystem';

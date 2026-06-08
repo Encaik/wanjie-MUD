@@ -1,11 +1,14 @@
 'use client';
 
 import { useState, useRef, useCallback, useMemo, memo, useEffect } from 'react';
-import { MessageRecord, ItemRarity, FragmentDropData } from '@/lib/game/types';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { ScrollArea } from '@/components/ui/scroll-area';
+
 import { Bell, CheckCircle, XCircle, Info, AlertTriangle, Loader2, ChevronUp } from 'lucide-react';
+
+import { Badge } from '@/components/ui/badge';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { MessageRecord, ItemRarity, FragmentDropData } from '@/lib/game/types';
+
 
 interface MessagePanelProps {
   messages: MessageRecord[];

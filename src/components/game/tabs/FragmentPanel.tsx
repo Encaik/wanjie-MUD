@@ -1,10 +1,7 @@
 'use client';
 
 import { useMemo, useCallback } from 'react';
-import { Badge } from '@/components/ui/badge';
-import { Progress } from '@/components/ui/progress';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { Button } from '@/components/ui/button';
+
 import { 
   Sparkles, 
   Swords, 
@@ -12,7 +9,12 @@ import {
   Lock,
   CheckCircle2,
 } from 'lucide-react';
-import { ItemRarity, WorldType } from '@/lib/game/types';
+
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { ItemTooltip, getRarityStyle } from '@/components/ui/item-tooltip';
+import { Progress } from '@/components/ui/progress';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import { 
   FragmentInventory, 
   FragmentType,
@@ -25,7 +27,7 @@ import {
   createEmptyFragmentInventory,
   synthesizeFragmentByName,
 } from '@/lib/game/fragmentSystem';
-import { ItemTooltip, getRarityStyle } from '@/components/ui/item-tooltip';
+import { ItemRarity, WorldType } from '@/lib/game/types';
 import { cn } from '@/lib/util/utils';
 
 interface FragmentPanelProps {

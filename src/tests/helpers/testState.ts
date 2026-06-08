@@ -3,10 +3,10 @@
  * 提供创建测试状态的通用方法
  */
 
-import type { GameState, Protagonist, World, Character, ImpactfulTrait, StatImpact, WorldImpact } from '@/lib/game/types';
 import type { RealmSystem } from '@/lib/data/realmData';
-import { createInventoryItem } from '@/lib/game/types';
 import { spiritStoneItems, cultivationPillItems } from '@/lib/game/items';
+import type { GameState, Protagonist, World, Character, ImpactfulTrait, StatImpact, WorldImpact } from '@/lib/game/types';
+import { createInventoryItem } from '@/lib/game/types';
 
 // 创建空的带影响特性
 const emptyImpact: StatImpact = { 体质: 0, 灵根: 0, 悟性: 0, 意志: 0, 幸运: 0 };

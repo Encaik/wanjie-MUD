@@ -10,8 +10,8 @@
  * - special: 特殊成就
  */
 
-import { AchievementDefinition, AchievementType, ItemRarity, createInventoryItem } from '../game/types';
 import { spiritStoneItems, breakthroughItems, cultivationPillItems } from '../game/items';
+import { AchievementDefinition, AchievementType, ItemRarity, createInventoryItem } from '../game/types';
 
 // 成就图标（使用 lucide-react 图标名称）
 export const AchievementIcons: Record<string, string> = {

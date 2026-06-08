@@ -4,7 +4,6 @@
  * 定义所有商店的配置信息
  */
 
-import { ShopConfig, ShopType } from './types';
 import { 
   NORMAL_SHOP_PRODUCTS, 
   FACTION_SHOP_PRODUCTS, 
@@ -12,6 +11,7 @@ import {
   ARENA_SHOP_PRODUCTS,
   ASCENSION_SHOP_PRODUCTS,
 } from './productConfigs';
+import { ShopConfig, ShopType } from './types';
 
 // ============================================
 // 商店配置

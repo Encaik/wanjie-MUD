@@ -1,11 +1,7 @@
 'use client';
 
 import React, { useMemo, useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
-import { ScrollArea } from '@/components/ui/scroll-area';
+
 import { 
   Zap, 
   Lock, 
@@ -22,8 +18,13 @@ import {
   Swords,
   ArrowUpDown
 } from 'lucide-react';
-import { Technique, Equipment } from '@/lib/game/types';
-import { TechniqueSkill, WeaponTechnique } from '@/lib/game/skillTypes';
+
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
+import { Element, WeaponCategory, ELEMENT_NAMES, WEAPON_CATEGORY_NAMES } from '@/lib/game/restraintSystem';
 import { 
   getUnlockedSkills, 
   getEquippedSkills,
@@ -36,7 +37,8 @@ import {
   quickEquipSkill,
   quickEquipTechnique,
 } from '@/lib/game/skillEquipSystem';
-import { Element, WeaponCategory, ELEMENT_NAMES, WEAPON_CATEGORY_NAMES } from '@/lib/game/restraintSystem';
+import { TechniqueSkill, WeaponTechnique } from '@/lib/game/skillTypes';
+import { Technique, Equipment } from '@/lib/game/types';
 
 // ============================================
 // 类型定义

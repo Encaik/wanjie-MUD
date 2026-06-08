@@ -4,8 +4,8 @@
  * 将称号数据转换为统一效果格式
  */
 
-import { UnifiedEffect, EffectSourceType, EffectCalcType, EffectPriority, CalculableStat } from '../types';
 import { CalculationContext, TitleInput, TitleEffectInput } from '../context/types';
+import { UnifiedEffect, EffectSourceType, EffectCalcType, EffectPriority, CalculableStat } from '../types';
 import { EffectAdapter, createBaseEffect, generateEffectId, mapStatName } from './base';
 
 // ============================================

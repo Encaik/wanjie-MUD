@@ -8,45 +8,7 @@
 'use client';
 
 import { useState, useEffect, useMemo, useCallback } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { cn } from '@/lib/util/utils';
 
-// 商店系统
-import {
-  ShopType,
-  ShopProduct,
-  PlayerCurrencies,
-  ShopPersistData,
-  PurchaseResult,
-  ShopLevelData,
-  DailySaleData,
-  ProductCategory,
-  SortMode,
-} from '@/lib/game/shop/types';
-import { ShopService, PlayerDataForShop } from '@/lib/game/shop/shopService';
-import { ShopLevelService } from '@/lib/game/shop/shopLevelService';
-import { DailySaleService } from '@/lib/game/shop/dailySaleService';
-import { CurrencyService } from '@/lib/game/shop/currencyService';
-import { SHOP_CONFIGS, getShopConfig, isShopUnlocked, getShopUnlockDescription } from '@/lib/game/shop/shopConfigs';
-import { getProductConfig } from '@/lib/game/shop/productConfigs';
-import { createShopTaskState, ShopTaskCheckData } from '@/lib/game/shop/shopTaskService';
-import { RefreshService, RefreshState } from '@/lib/game/shop/refreshService';
-import { WorldType } from '@/lib/game/types';
-
-// 子组件
-import { CurrencyBar } from './CurrencyBar';
-import { ProductCard, ProductEmptyState, ShopLockedState } from './ProductCard';
-import { ProductDetailModal } from './ProductDetailModal';
-import { DailySaleBanner } from './DailySaleBanner';
-import { ShopLevelProgress } from './ShopLevelProgress';
-import { ShopTaskPanel } from './ShopTaskPanel';
-import { RefreshCountdown } from './RefreshCountdown';
-
-// 图标
 import {
   ShoppingBag,
   Star,
@@ -60,6 +22,46 @@ import {
   Clock,
   Zap,
 } from 'lucide-react';
+
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+
+// 商店系统
+import { CurrencyService } from '@/lib/game/shop/currencyService';
+import { DailySaleService } from '@/lib/game/shop/dailySaleService';
+import { getProductConfig } from '@/lib/game/shop/productConfigs';
+import { RefreshService, RefreshState } from '@/lib/game/shop/refreshService';
+import { SHOP_CONFIGS, getShopConfig, isShopUnlocked, getShopUnlockDescription } from '@/lib/game/shop/shopConfigs';
+import { ShopLevelService } from '@/lib/game/shop/shopLevelService';
+import { ShopService, PlayerDataForShop } from '@/lib/game/shop/shopService';
+import { createShopTaskState, ShopTaskCheckData } from '@/lib/game/shop/shopTaskService';
+import {
+  ShopType,
+  ShopProduct,
+  PlayerCurrencies,
+  ShopPersistData,
+  PurchaseResult,
+  ShopLevelData,
+  DailySaleData,
+  ProductCategory,
+  SortMode,
+} from '@/lib/game/shop/types';
+import { WorldType } from '@/lib/game/types';
+import { cn } from '@/lib/util/utils';
+
+// 子组件
+import { CurrencyBar } from './CurrencyBar';
+import { DailySaleBanner } from './DailySaleBanner';
+import { ProductCard, ProductEmptyState, ShopLockedState } from './ProductCard';
+import { ProductDetailModal } from './ProductDetailModal';
+import { RefreshCountdown } from './RefreshCountdown';
+import { ShopLevelProgress } from './ShopLevelProgress';
+import { ShopTaskPanel } from './ShopTaskPanel';
+
+// 图标
 
 // ============================================
 // Props 定义

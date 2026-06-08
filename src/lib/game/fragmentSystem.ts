@@ -8,12 +8,8 @@
  */
 
 import { 
-  ItemRarity, 
-  EnemyTier, 
-  Technique, 
-  Equipment, 
-  WorldType 
-} from './types';
+  generateRandomEquipment,
+} from './equipment';
 import { 
   TECHNIQUE_RARITY_CONFIG,
   EQUIPMENT_RARITY_CONFIG,
@@ -24,8 +20,12 @@ import {
   generateRandomTechnique, 
 } from './technique';
 import { 
-  generateRandomEquipment,
-} from './equipment';
+  ItemRarity, 
+  EnemyTier, 
+  Technique, 
+  Equipment, 
+  WorldType 
+} from './types';
 import { clampNonNegative } from './utils/numberUtils';
 
 // ============================================

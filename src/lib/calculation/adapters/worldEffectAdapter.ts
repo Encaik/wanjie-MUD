@@ -4,8 +4,8 @@
  * 将世界危险/机缘数据转换为统一效果格式
  */
 
-import { UnifiedEffect, EffectSourceType, EffectCalcType, EffectPriority, CalculableStat } from '../types';
 import { CalculationContext, WorldEffectInput } from '../context/types';
+import { UnifiedEffect, EffectSourceType, EffectCalcType, EffectPriority, CalculableStat } from '../types';
 import { EffectAdapter, createBaseEffect, generateEffectId, mapStatName } from './base';
 
 // ============================================

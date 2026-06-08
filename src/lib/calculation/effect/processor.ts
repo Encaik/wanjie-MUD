@@ -4,6 +4,8 @@
  * 负责效果的排序、分组、计算等核心逻辑
  */
 
+import { BoundaryChecker, SafeMath } from '../boundary';
+import { PRIORITY_ORDER, LOG_PREFIX, getStatBounds } from '../constants';
 import {
   UnifiedEffect,
   CalculableStat,
@@ -11,8 +13,6 @@ import {
   StatCalculationResult,
   EffectContribution,
 } from '../types';
-import { PRIORITY_ORDER, LOG_PREFIX, getStatBounds } from '../constants';
-import { BoundaryChecker, SafeMath } from '../boundary';
 import { EffectRegistry } from './registry';
 
 // ============================================

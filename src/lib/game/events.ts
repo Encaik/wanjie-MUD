@@ -9,10 +9,10 @@
  * 数据文件：src/lib/game/data/events.ts
  */
 
-import { AdventureEvent, WorldType, InventoryItem, createInventoryItem } from './types';
+import { getEventExpReward } from './balanceConfig';
 import { getWorldTerms } from './generators';
 import { getItemById, cultivationPillItems, materialItems } from './items';
-import { getEventExpReward } from './balanceConfig';
+import { AdventureEvent, WorldType, InventoryItem, createInventoryItem } from './types';
 import {
   SAFE_EVENTS,
   RISKY_EVENTS,

@@ -4,6 +4,7 @@
  * 管理所有已注册的效果，提供索引和查询功能
  */
 
+import { MAX_ACTIVE_EFFECTS, LOG_PREFIX, PRIORITY_ORDER } from '../constants';
 import { 
   UnifiedEffect, 
   CalculableStat, 
@@ -11,7 +12,6 @@ import {
   EffectPriority,
   AggregatedEffects,
 } from '../types';
-import { MAX_ACTIVE_EFFECTS, LOG_PREFIX, PRIORITY_ORDER } from '../constants';
 
 // ============================================
 // 效果注册表

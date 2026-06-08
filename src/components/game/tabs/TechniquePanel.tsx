@@ -1,17 +1,14 @@
 'use client';
 
-import { Technique, TechniqueType, ItemRarity, UPGRADE_CONFIG, Element, ELEMENT_NAMES, WEAPON_CATEGORY_NAMES, WeaponCategory } from '@/lib/game/types';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
-import { Sword, Shield, Zap, Droplets, Package, Link2, Star, ArrowUpDown, Filter, Flame, Snowflake, Zap as Thunder, Wind, Mountain, Sun, Moon, Swords, Settings2 } from 'lucide-react';
-import { useTechniques } from '@/hooks';
-import { getRarityStyle, BackpackHeader, EmptyBackpackHint, UpgradeableItemTooltip } from '@/components/ui/item-tooltip';
-import { TECHNIQUE_BONDS, PROFICIENCY_LEVELS, getProficiencyLevel } from '@/lib/data/techniqueBondData';
-import { getElementRestraintHint, getElementIcon, WEAPON_CATEGORY_DEFAULT_ELEMENT, WEAPON_CATEGORY_COMPATIBLE_TECHNIQUE } from '@/lib/game/restraintSystem';
-import { ElementRestraintChart } from '@/components/game/RestraintChart';
 import { useState, useMemo } from 'react';
+
+import { Sword, Shield, Zap, Droplets, Package, Link2, Star, ArrowUpDown, Filter, Flame, Snowflake, Zap as Thunder, Wind, Mountain, Sun, Moon, Swords, Settings2 } from 'lucide-react';
+
+import { ElementRestraintChart } from '@/components/game/RestraintChart';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { getRarityStyle, BackpackHeader, EmptyBackpackHint, UpgradeableItemTooltip } from '@/components/ui/item-tooltip';
 import {
   Select,
   SelectContent,
@@ -19,6 +16,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
+import { useTechniques } from '@/hooks';
+import { TECHNIQUE_BONDS, PROFICIENCY_LEVELS, getProficiencyLevel } from '@/lib/data/techniqueBondData';
+import { getElementRestraintHint, getElementIcon, WEAPON_CATEGORY_DEFAULT_ELEMENT, WEAPON_CATEGORY_COMPATIBLE_TECHNIQUE } from '@/lib/game/restraintSystem';
+import { Technique, TechniqueType, ItemRarity, UPGRADE_CONFIG, Element, ELEMENT_NAMES, WEAPON_CATEGORY_NAMES, WeaponCategory } from '@/lib/game/types';
 
 // 熟练度等级配置
 const PROFICIENCY_COLORS: Record<string, string> = {

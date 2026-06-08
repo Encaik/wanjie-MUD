@@ -7,8 +7,9 @@
 
 import { UnifiedCalculator } from '../calculator';
 import { ContextBuilder } from '../context/builder';
-import type { CalculableStat } from '../types';
+
 import type { CalculationContext } from '../context/types';
+import type { CalculableStat } from '../types';
 import type { StatCalculationResult } from '../types';
 import type { CalculationResult } from '../types';
 

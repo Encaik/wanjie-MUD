@@ -6,6 +6,8 @@
     "build": "next build",
     "dev": "next dev",
     "lint": "eslint",
+    "lint:strict": "eslint . --max-warnings 0 && bash scripts/check-file-sizes.sh",
+    "check-sizes": "bash scripts/check-file-sizes.sh",
     "start": "npx serve out",
     "ts-check": "tsc -p tsconfig.json",
     "test": "vitest run",

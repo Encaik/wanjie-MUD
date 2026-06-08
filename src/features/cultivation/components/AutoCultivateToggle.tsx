@@ -4,8 +4,9 @@
 
 'use client';
 
-import { Button } from '@/components/ui/button';
 import { Play, Square } from 'lucide-react';
+
+import { Button } from '@/components/ui/button';
 
 interface AutoCultivateToggleProps {
   /** 是否正在自动修炼 */

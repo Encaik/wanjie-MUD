@@ -4,8 +4,8 @@
  * 将装备数据转换为统一效果格式
  */
 
-import { UnifiedEffect, EffectSourceType, EffectCalcType, EffectPriority } from '../types';
 import { CalculationContext, EquipmentInput } from '../context/types';
+import { UnifiedEffect, EffectSourceType, EffectCalcType, EffectPriority } from '../types';
 import { EffectAdapter, createBaseEffect, generateEffectId } from './base';
 
 // ============================================

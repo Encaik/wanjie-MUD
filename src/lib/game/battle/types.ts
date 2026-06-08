@@ -7,6 +7,7 @@
  * 3. 接口抽象，便于扩展
  */
 
+import { RestraintResult, EnemyAttributes } from '../restraintSystem';
 import { 
   Technique, 
   Equipment, 
@@ -22,7 +23,6 @@ import {
   Protagonist,
   LegacyStats,
 } from '../types';
-import { RestraintResult, EnemyAttributes } from '../restraintSystem';
 
 // ============================================
 // 战斗行动类型

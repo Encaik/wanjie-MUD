@@ -10,10 +10,11 @@
  * - 检查物品数量
  */
 import { describe, it, expect } from 'vitest';
-import type { InventoryItem } from '@/lib/game/types';
-import { createInventoryItem } from '@/lib/game/types';
+
 import { addToInventory, removeFromInventory, getSpiritStoneCount, hasEnoughItems } from '@/hooks/utils/inventoryUtils';
 import { spiritStoneItems } from '@/lib/game/items';
+import type { InventoryItem } from '@/lib/game/types';
+import { createInventoryItem } from '@/lib/game/types';
 
 describe('背包工具函数', () => {
   describe('addToInventory', () => {

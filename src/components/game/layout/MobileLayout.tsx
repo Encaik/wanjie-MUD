@@ -1,12 +1,14 @@
 'use client';
 
+import { RotateCcw } from 'lucide-react';
+
+import { Button } from '@/components/ui/button';
 import { Protagonist, BattleState, Technique, Equipment } from '@/lib/game/types';
 import { MentalState } from '@/lib/game/typesExtension';
-import { StatusPanel } from '../sidebar/StatusPanel';
-import { SaveLoadPanel } from '../sidebar/SaveLoadPanel';
+
 import { BattleResultDialog } from '../battle';
-import { Button } from '@/components/ui/button';
-import { RotateCcw } from 'lucide-react';
+import { SaveLoadPanel } from '../sidebar/SaveLoadPanel';
+import { StatusPanel } from '../sidebar/StatusPanel';
 
 interface MobileLayoutProps {
   protagonist: Protagonist;

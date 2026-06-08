@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+
 import {
   Dialog,
   DialogContent,
@@ -9,6 +10,7 @@ import {
 } from '@/components/ui/dialog';
 import { ControlledTabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Technique, Equipment } from '@/lib/game/types';
+
 import { TechniqueSkillPanel, WeaponTechniquePanel } from './SkillManagePanel';
 
 interface SkillManageDialogProps {

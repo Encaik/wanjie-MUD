@@ -7,9 +7,10 @@
 'use client';
 
 import { useMemo } from 'react';
+
 import { ShopPanel as NewShopPanel } from '@/components/game/shop';
-import { PlayerCurrencies } from '@/lib/game/shop/types';
 import { CurrencyService } from '@/lib/game/shop/currencyService';
+import { PlayerCurrencies } from '@/lib/game/shop/types';
 import { InventoryItem, WorldType } from '@/lib/game/types';
 
 // ============================================

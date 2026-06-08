@@ -7,6 +7,19 @@
 'use client';
 
 import { useState } from 'react';
+
+import { 
+  ClipboardList, 
+  Check, 
+  Gift, 
+  ChevronDown, 
+  ChevronUp,
+  Circle,
+  CheckCircle2,
+} from 'lucide-react';
+
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { 
   ShopTaskState,
   ShopTaskCheckData, 
@@ -17,17 +30,7 @@ import {
   getTaskProgressText,
 } from '@/lib/game/shop/shopTaskService';
 import { cn } from '@/lib/util/utils';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { 
-  ClipboardList, 
-  Check, 
-  Gift, 
-  ChevronDown, 
-  ChevronUp,
-  Circle,
-  CheckCircle2,
-} from 'lucide-react';
+
 
 interface ShopTaskPanelProps {
   taskState: ShopTaskState;

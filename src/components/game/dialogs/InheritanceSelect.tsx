@@ -1,7 +1,15 @@
 'use client';
 
 import { useState, useMemo } from 'react';
+
+import { 
+  ScrollText, Shield, Diamond, Sparkles,
+  Check, X, ChevronRight
+} from 'lucide-react';
+
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
 import {
   Dialog,
   DialogContent,
@@ -10,19 +18,13 @@ import {
   DialogTitle,
   DialogFooter,
 } from '@/components/ui/dialog';
-import { Progress } from '@/components/ui/progress';
-import { Badge } from '@/components/ui/badge';
-import { Card, CardContent } from '@/components/ui/card';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
+import { Progress } from '@/components/ui/progress';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Slider } from '@/components/ui/slider';
-import { 
-  ScrollText, Shield, Diamond, Sparkles,
-  Check, X, ChevronRight
-} from 'lucide-react';
+import { ASCENSION_CONFIG } from '@/lib/data/ascensionData';
 import { Protagonist, Technique, Equipment, InventoryItem } from '@/lib/game/types';
 import { InheritanceChoice } from '@/lib/game/typesExtension';
-import { ASCENSION_CONFIG } from '@/lib/data/ascensionData';
 
 interface InheritanceSelectProps {
   open: boolean;

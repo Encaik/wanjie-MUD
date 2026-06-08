@@ -4,8 +4,8 @@
  * 将战斗Buff数据转换为统一效果格式
  */
 
-import { UnifiedEffect, EffectSourceType, EffectCalcType, EffectPriority, CalculableStat } from '../types';
 import { CalculationContext, BuffInput } from '../context/types';
+import { UnifiedEffect, EffectSourceType, EffectCalcType, EffectPriority, CalculableStat } from '../types';
 import { EffectAdapter, createBaseEffect, generateEffectId, mapStatName } from './base';
 
 // ============================================
@@ -41,7 +41,7 @@ export const BuffAdapter: EffectAdapter<BuffInput> = {
     }
     
     // Buff通常是百分比加成
-    let calcType: EffectCalcType = 'multiply';
+    const calcType: EffectCalcType = 'multiply';
     let value = buff.value;
     
     // 如果值大于1，可能是百分比形式

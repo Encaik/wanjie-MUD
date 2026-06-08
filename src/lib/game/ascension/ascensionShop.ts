@@ -5,13 +5,13 @@
  * 管理：商品展示、购买限制、功能解锁
  */
 
+import { RealmService } from './realmSystem';
 import { 
   AscensionShopItem, 
   AscensionShopItemType,
   AscensionShopPurchase,
   PlayerAscensionState
 } from './types';
-import { RealmService } from './realmSystem';
 
 // ============================================
 // 商店商品配置

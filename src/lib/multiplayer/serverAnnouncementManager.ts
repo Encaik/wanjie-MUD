@@ -12,6 +12,7 @@
  */
 
 import type { Announcement, AnnouncementRequest, AnnouncementPriority } from '@/types/announcement';
+
 import { WS_CONFIG } from '../websocket/types';
 
 /** 服务端公告管理器（全局单例） */

@@ -1,9 +1,22 @@
 'use client';
 
 import { useState } from 'react';
+
+import { 
+  Lock, 
+  Sparkles, 
+  Coins, 
+  Timer, 
+  TrendingUp, 
+  AlertTriangle,
+  CheckCircle2,
+  XCircle,
+  HelpCircle,
+} from 'lucide-react';
+
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { 
   Dialog,
   DialogContent,
@@ -17,24 +30,14 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
-import { WorldType, InventoryItem } from '@/lib/game/types';
-import { getTerminology } from '@/lib/game/terminology';
 import { 
   SeclusionType, 
   SECLUSION_CONFIGS, 
   SECLUSION_OUTCOMES,
 } from '@/lib/game/seclusion';
-import { 
-  Lock, 
-  Sparkles, 
-  Coins, 
-  Timer, 
-  TrendingUp, 
-  AlertTriangle,
-  CheckCircle2,
-  XCircle,
-  HelpCircle,
-} from 'lucide-react';
+import { getTerminology } from '@/lib/game/terminology';
+import { WorldType, InventoryItem } from '@/lib/game/types';
+
 
 interface SeclusionPanelProps {
   onSeclusion: (type: SeclusionType) => void;

@@ -1,11 +1,14 @@
 'use client';
 
 import { useState } from 'react';
+
+import { Bug, Settings, Sparkles, Swords, Shield, Heart, Zap, Globe, ShieldCheck } from 'lucide-react';
+
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Badge } from '@/components/ui/badge';
-import { ControlledTabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import {
   Select,
   SelectContent,
@@ -13,6 +16,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { Separator } from '@/components/ui/separator';
 import {
   Sheet,
   SheetContent,
@@ -21,13 +25,11 @@ import {
   SheetTitle,
   SheetTrigger,
 } from '@/components/ui/sheet';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { Separator } from '@/components/ui/separator';
 import { Switch } from '@/components/ui/switch';
-import { Bug, Settings, Sparkles, Swords, Shield, Heart, Zap, Globe, ShieldCheck } from 'lucide-react';
-import { Protagonist, CultivationPath, WorldType, ItemRarity, TechniqueType, EquipmentSlot } from '@/lib/game/types';
-import { TECHNIQUE_NAMES, RARITY_POWER_RANGE, RARITY_BONUS_RANGE } from '@/lib/data/techniques';
+import { ControlledTabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { EQUIPMENT_NAMES } from '@/lib/data/equipment';
+import { TECHNIQUE_NAMES, RARITY_POWER_RANGE, RARITY_BONUS_RANGE } from '@/lib/data/techniques';
+import { Protagonist, CultivationPath, WorldType, ItemRarity, TechniqueType, EquipmentSlot } from '@/lib/game/types';
 
 interface DeveloperPanelProps {
   protagonist: Protagonist;

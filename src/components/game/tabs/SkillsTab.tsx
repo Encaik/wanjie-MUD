@@ -1,18 +1,7 @@
 'use client';
 
 import React, { useMemo, useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { 
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
+
 import { 
   Zap, 
   Lock, 
@@ -29,8 +18,20 @@ import {
   ChevronDown,
   ChevronRight,
 } from 'lucide-react';
-import { Technique, Equipment } from '@/lib/game/types';
-import { TechniqueSkill, WeaponTechnique } from '@/lib/game/skillTypes';
+
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { 
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Element, WeaponCategory, ELEMENT_NAMES, WEAPON_CATEGORY_NAMES, getElementIcon, getWeaponCategoryIcon } from '@/lib/game/restraintSystem';
 import { 
   getUnlockedSkills, 
   getEquippedSkills,
@@ -43,7 +44,8 @@ import {
   quickEquipSkill,
   quickEquipTechnique,
 } from '@/lib/game/skillEquipSystem';
-import { Element, WeaponCategory, ELEMENT_NAMES, WEAPON_CATEGORY_NAMES, getElementIcon, getWeaponCategoryIcon } from '@/lib/game/restraintSystem';
+import { TechniqueSkill, WeaponTechnique } from '@/lib/game/skillTypes';
+import { Technique, Equipment } from '@/lib/game/types';
 
 interface SkillsTabProps {
   /** 主角功法列表 */

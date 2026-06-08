@@ -7,13 +7,14 @@
 
 import { useCallback } from 'react';
 import type { Dispatch, SetStateAction } from 'react';
-import { MessageRecord } from '@/lib/game/types';
+
 import { generateId } from '@/lib/game/generators';
-import { MESSAGE_CONFIG } from '@/lib/game/types';
 import {
   addMessage as dbAddMessage,
   getMessagesPage,
 } from '@/lib/game/messageDB';
+import { MessageRecord } from '@/lib/game/types';
+import { MESSAGE_CONFIG } from '@/lib/game/types';
 
 interface UseGameMessagesProps {
   gameId: string;

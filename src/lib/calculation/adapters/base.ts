@@ -4,8 +4,8 @@
  * 定义所有适配器必须实现的接口
  */
 
-import { UnifiedEffect, EffectSourceType } from '../types';
 import { CalculationContext } from '../context/types';
+import { UnifiedEffect, EffectSourceType } from '../types';
 
 // ============================================
 // 适配器接口

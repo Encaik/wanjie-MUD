@@ -4,6 +4,9 @@
  * 提供商店的核心逻辑：商品生成、条件验证、交易处理
  */
 
+import { CurrencyService } from './currencyService';
+import { getProductConfig, BLACKMARKET_PRODUCT_POOL } from './productConfigs';
+import { SHOP_CONFIGS, getShopConfig } from './shopConfigs';
 import {
   ShopType,
   ShopProduct,
@@ -19,9 +22,6 @@ import {
   ShopPersistData,
   PurchaseRecord,
 } from './types';
-import { CurrencyService } from './currencyService';
-import { getProductConfig, BLACKMARKET_PRODUCT_POOL } from './productConfigs';
-import { SHOP_CONFIGS, getShopConfig } from './shopConfigs';
 
 /** 玩家数据接口（用于条件验证） */
 export interface PlayerDataForShop {
@@ -130,7 +130,7 @@ export class ShopService {
     if (!config) return null;
 
     // 计算价格
-    let price = { ...config.price.primary };
+    const price = { ...config.price.primary };
     if (config.price.dynamic) {
       const dynamic = config.price.dynamic;
       const dynamicAmount = dynamic.baseAmount + playerData.level * dynamic.levelMultiplier;

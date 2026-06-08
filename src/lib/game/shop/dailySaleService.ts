@@ -4,6 +4,7 @@
  * 管理每日特卖商品的生成、刷新和购买
  */
 
+import { ALL_PRODUCTS, getProductConfig } from './productConfigs';
 import {
   DailySaleData,
   SaleProduct,
@@ -12,7 +13,6 @@ import {
   PlayerCurrencies,
   SALE_PRODUCT_WEIGHTS,
 } from './types';
-import { ALL_PRODUCTS, getProductConfig } from './productConfigs';
 
 /** 特卖配置 */
 const SALE_CONFIG = {

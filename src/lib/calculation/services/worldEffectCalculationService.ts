@@ -5,19 +5,19 @@
  * 提供对主角和敌人的效果计算
  */
 
-import { Protagonist, World, StatName } from '../../game/types';
-import { Enemy } from '../../game/enemy/types';
-import { UnifiedCalculator, getCalculator } from '../calculator';
-import { CalculationContext } from '../context/types';
-import { UnifiedEffect, CalculableStat } from '../types';
-import { EffectRegistry, createEffectRegistry } from '../effect/registry';
-import { WorldDangerAdapter, WorldOpportunityAdapter } from '../adapters/worldEffectAdapter';
-import { buildContextFromProtagonist } from '../helpers/contextHelper';
 import {
   WorldDanger,
   WorldOpportunity,
 } from '../../data/worldEffectsData';
+import { Enemy } from '../../game/enemy/types';
+import { Protagonist, World, StatName } from '../../game/types';
+import { WorldDangerAdapter, WorldOpportunityAdapter } from '../adapters/worldEffectAdapter';
+import { UnifiedCalculator, getCalculator } from '../calculator';
 import { LOG_PREFIX } from '../constants';
+import { CalculationContext } from '../context/types';
+import { EffectRegistry, createEffectRegistry } from '../effect/registry';
+import { buildContextFromProtagonist } from '../helpers/contextHelper';
+import { UnifiedEffect, CalculableStat } from '../types';
 
 // ============================================
 // 类型定义

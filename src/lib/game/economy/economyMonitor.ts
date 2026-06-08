@@ -5,13 +5,13 @@
  * 提供通胀/通缩检测和预警
  */
 
-import { CurrencyType } from '../shop/types';
 import {
   EconomyStatistics,
   EconomyHealthReport,
   EconomyHealthStatus,
   DailyEconomyData,
 } from './types';
+import { CurrencyType } from '../shop/types';
 
 /**
  * 经济监控服务

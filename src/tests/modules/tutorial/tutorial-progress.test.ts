@@ -10,6 +10,7 @@
  * - 任务奖励领取
  */
 import { describe, it, expect } from 'vitest';
+
 import type { Protagonist, GameStatistics } from '@/lib/game/types';
 
 // 创建测试用的主角数据（简化版，仅包含必要字段）

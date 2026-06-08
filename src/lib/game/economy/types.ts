@@ -8,10 +8,10 @@
  * 4. 经济监控与健康度检测
  */
 
-import { ItemRarity, Protagonist, Equipment, Technique, CharacterStats } from '../types';
-import { CurrencyType, PlayerCurrencies, CURRENCY_CONFIGS } from '../shop/types';
-// 导入已有的 EquipmentAffix 类型用于内部使用
 import { EquipmentAffix as EquipmentAffixType } from '../../data/equipmentAffixData';
+import { CurrencyType, PlayerCurrencies, CURRENCY_CONFIGS } from '../shop/types';
+import { ItemRarity, Protagonist, Equipment, Technique, CharacterStats } from '../types';
+// 导入已有的 EquipmentAffix 类型用于内部使用
 
 // 重新导出已有的 EquipmentAffix 类型
 export type { EquipmentAffix } from '../../data/equipmentAffixData';

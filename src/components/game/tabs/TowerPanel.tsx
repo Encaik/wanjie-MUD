@@ -5,17 +5,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { 
-  TowerProgress, 
-  TowerEnemy, 
-} from '@/lib/game/tower/types';
-import { generateTowerEnemy } from '@/lib/game/tower/towerSystem';
-import { estimateIdleRewards } from '@/lib/game/tower/idleSystem';
-import { getRarityBgClass, getRarityColorClass, getRarityBorderClass } from '@/lib/data/raritySystem';
-import { WorldType, ItemRarity } from '@/lib/game/types';
+
 import { 
   Swords, 
   Trophy, 
@@ -27,6 +17,19 @@ import {
   Sparkles,
   Package,
 } from 'lucide-react';
+
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { getRarityBgClass, getRarityColorClass, getRarityBorderClass } from '@/lib/data/raritySystem';
+import { estimateIdleRewards } from '@/lib/game/tower/idleSystem';
+import { generateTowerEnemy } from '@/lib/game/tower/towerSystem';
+import { 
+  TowerProgress, 
+  TowerEnemy, 
+} from '@/lib/game/tower/types';
+import { WorldType, ItemRarity } from '@/lib/game/types';
+
 
 interface TowerPanelProps {
   /** 爬塔进度 */

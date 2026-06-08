@@ -1,10 +1,13 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Dialog, DialogContent, DialogTitle, DialogDescription } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { DeathState, DEFAULT_DEATH_STATE } from '@/lib/game/typesExtension';
+
 import { Skull, Heart, Sparkles } from 'lucide-react';
+
+import { Button } from '@/components/ui/button';
+import { Dialog, DialogContent, DialogTitle, DialogDescription } from '@/components/ui/dialog';
+import { DeathState, DEFAULT_DEATH_STATE } from '@/lib/game/typesExtension';
+
 
 interface DeathDialogProps {
   deathState: DeathState | undefined;

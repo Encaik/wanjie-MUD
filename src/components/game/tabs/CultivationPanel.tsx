@@ -1,15 +1,16 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
+
+import { Sparkles, AlertTriangle, Coins, Play, Square, Moon, Swords, TrendingUp, Droplets, Zap, Flame, Shield, Wand2, Heart, Swords as SwordIcon, Brain, CloudLightning, FlaskConical, Anvil, CheckCircle2, Circle, ChevronRight } from 'lucide-react';
+
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
-import { WorldType, InventoryItem, ActiveEffect, CultivationPath, CharacterStats, GameStatistics, LegacyStats } from '@/lib/game/types';
-import { getTerminology } from '@/lib/game/terminology';
-import { getMaxExperience, calculateBreakthroughRate, calculateBreakthroughBoost, calculateCultivationBoost } from '@/lib/game/cultivation';
-import { MAX_LEVEL } from '@/lib/game/realmSystem';
 import { CULTIVATION_PATHS } from '@/lib/data/cultivationPathData';
+import { TRIBULATION_CONFIGS, getNextTribulationLevel } from '@/lib/data/tribulationData';
+import { getMaxExperience, calculateBreakthroughRate, calculateBreakthroughBoost, calculateCultivationBoost } from '@/lib/game/cultivation';
 import { 
   checkRealmBottleneck,
   attemptBreakthrough,
@@ -22,6 +23,14 @@ import {
   getDemonEvent,
   processDemonChoice
 } from '@/lib/game/expansionLogic';
+import { MAX_LEVEL } from '@/lib/game/realmSystem';
+import { 
+  TUTORIAL_TASKS, 
+  checkTutorialProgress, 
+  TutorialTask 
+} from '@/lib/game/taskSystem';
+import { getTerminology } from '@/lib/game/terminology';
+import { WorldType, InventoryItem, ActiveEffect, CultivationPath, CharacterStats, GameStatistics, LegacyStats } from '@/lib/game/types';
 import { 
   RealmBottleneck, 
   TribulationState, 
@@ -29,13 +38,7 @@ import {
   DemonEncounter,
   DEFAULT_PROTAGONIST_EXTENSION 
 } from '@/lib/game/typesExtension';
-import { TRIBULATION_CONFIGS, getNextTribulationLevel } from '@/lib/data/tribulationData';
-import { 
-  TUTORIAL_TASKS, 
-  checkTutorialProgress, 
-  TutorialTask 
-} from '@/lib/game/taskSystem';
-import { Sparkles, AlertTriangle, Coins, Play, Square, Moon, Swords, TrendingUp, Droplets, Zap, Flame, Shield, Wand2, Heart, Swords as SwordIcon, Brain, CloudLightning, FlaskConical, Anvil, CheckCircle2, Circle, ChevronRight } from 'lucide-react';
+
 
 interface CultivationPanelProps {
   onCultivate: () => void;

@@ -1,7 +1,16 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+
+import { 
+  Globe, Sparkles, ChevronRight, RotateCcw,
+  Mountain, Sword, Cpu, Wand2, Zap, Trees, Heart,
+  AlertTriangle, Star
+} from 'lucide-react';
+
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import {
   Dialog,
   DialogContent,
@@ -10,16 +19,9 @@ import {
   DialogTitle,
   DialogFooter,
 } from '@/components/ui/dialog';
-import { Badge } from '@/components/ui/badge';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { 
-  Globe, Sparkles, ChevronRight, RotateCcw,
-  Mountain, Sword, Cpu, Wand2, Zap, Trees, Heart,
-  AlertTriangle, Star
-} from 'lucide-react';
+import { WORLD_NAME_GENERATORS } from '@/lib/data/ascensionData';
 import { WorldType } from '@/lib/game/types';
 import { NewWorldInfo } from '@/lib/game/typesExtension';
-import { WORLD_NAME_GENERATORS } from '@/lib/data/ascensionData';
 
 interface WorldRevealProps {
   open: boolean;

@@ -5,9 +5,9 @@
  * 只返回已装备的技能
  */
 
-import { Protagonist, Technique, Equipment } from './types';
-import { TechniqueSkill, WeaponTechnique } from './skillTypes';
 import { getEquippedSkills, getEquippedTechniques } from './skillEquipSystem';
+import { TechniqueSkill, WeaponTechnique } from './skillTypes';
+import { Protagonist, Technique, Equipment } from './types';
 
 // ============================================
 // 类型定义

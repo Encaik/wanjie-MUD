@@ -1,13 +1,14 @@
 'use client';
 
 import { useState, useMemo } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { Progress } from '@/components/ui/progress';
+
 import { Flame, Snowflake, Zap, Wind, Mountain, Sun, Moon, Sword, Swords, Hand, Target, Crosshair, BookOpen, Shield, Sparkles, Lock, CheckCircle, Flame as FireIcon } from 'lucide-react';
-import { Technique, Equipment, ItemRarity } from '@/lib/game/types';
+
+import { Badge } from '@/components/ui/badge';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Progress } from '@/components/ui/progress';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { 
   BONDS, 
   BOND_LEVELS, 
@@ -19,6 +20,7 @@ import {
   ElementNames,
   WeaponNames
 } from '@/lib/data/bondData';
+import { Technique, Equipment, ItemRarity } from '@/lib/game/types';
 import { GameStatistics } from '@/lib/game/types';
 
 interface CollectionPanelProps {

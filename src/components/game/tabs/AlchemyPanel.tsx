@@ -1,9 +1,12 @@
 'use client';
 
 import { useState, useEffect, useMemo, useCallback, useRef } from 'react';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
+
 import { FlaskConical, Clock, Package, AlertCircle } from 'lucide-react';
+
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { getRarityStyle } from '@/components/ui/item-tooltip';
 import { 
   ALCHEMY_RECIPES, 
   ALCHEMY_MATERIALS, 
@@ -14,7 +17,6 @@ import {
   AlchemyRecipe,
 } from '@/lib/data/alchemyRecipes';
 import { InventoryItem, ItemRarity, CraftingState } from '@/lib/game/types';
-import { getRarityStyle } from '@/components/ui/item-tooltip';
 import { cn } from '@/lib/util/utils';
 
 interface AlchemyPanelProps {

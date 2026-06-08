@@ -1,16 +1,14 @@
 'use client';
 
 import React, { useMemo, useState } from 'react';
-import { Equipment, EquipmentSlot, ItemRarity, UPGRADE_CONFIG, ELEMENT_NAMES, WEAPON_CATEGORY_NAMES } from '@/lib/game/types';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
+
 import { Shield, Sword, Swords, Crosshair, Headphones, Shirt, Footprints, Package, Sparkles, Layers, Info, ArrowUpDown, Filter, Star, Flame, Snowflake, Zap as Thunder, Wind, Mountain, Sun, Moon } from 'lucide-react';
-import { getRarityStyle, BackpackHeader, EmptyBackpackHint, UpgradeableItemTooltip } from '@/components/ui/item-tooltip';
-import { EQUIPMENT_SETS, EquipmentAffix } from '@/lib/data/equipmentAffixData';
+
 import { WeaponRestraintChart } from '@/components/game/RestraintChart';
-import { getElementIcon, getWeaponCategoryIcon } from '@/lib/game/restraintSystem';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { getRarityStyle, BackpackHeader, EmptyBackpackHint, UpgradeableItemTooltip } from '@/components/ui/item-tooltip';
 import {
   Select,
   SelectContent,
@@ -18,6 +16,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
+import { EQUIPMENT_SETS, EquipmentAffix } from '@/lib/data/equipmentAffixData';
+import { getElementIcon, getWeaponCategoryIcon } from '@/lib/game/restraintSystem';
+import { Equipment, EquipmentSlot, ItemRarity, UPGRADE_CONFIG, ELEMENT_NAMES, WEAPON_CATEGORY_NAMES } from '@/lib/game/types';
 
 interface EquipmentPanelProps {
   equipments: Equipment[];

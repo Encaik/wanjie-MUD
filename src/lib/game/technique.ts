@@ -8,23 +8,22 @@
  */
 
 import { 
-  Technique, 
-  TechniqueType, 
-  ItemRarity, 
-  WorldType 
-} from './types';
-import { 
-  TECHNIQUE_RARITY_CONFIG,
-  RARITY_WEIGHTS,
-} from './skillTypes';
-import { 
   Element, 
   WeaponCategory,
   detectElementFromName,
   WEAPON_CATEGORY_DEFAULT_ELEMENT,
 } from './restraintSystem';
 import { generateTechniqueSkills } from './skillGenerator';
-import { clamp } from './utils/numberUtils';
+import { 
+  TECHNIQUE_RARITY_CONFIG,
+  RARITY_WEIGHTS,
+} from './skillTypes';
+import { 
+  Technique, 
+  TechniqueType, 
+  ItemRarity, 
+  WorldType 
+} from './types';
 
 // 导入配置数据
 import {
@@ -43,6 +42,7 @@ import {
   // 掉落权重
   TECHNIQUE_DROP_WEIGHTS,
 } from '../gameData';
+import { clamp } from './utils/numberUtils';
 
 // ============================================
 // 常量配置

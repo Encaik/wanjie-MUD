@@ -7,11 +7,11 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { ShopProduct, PlayerCurrencies, CurrencyType, ProductEffect } from '@/lib/game/shop/types';
-import { CurrencyService } from '@/lib/game/shop/currencyService';
-import { ShopLevelService } from '@/lib/game/shop/shopLevelService';
-import { getRarityStyle } from '@/components/ui/item-tooltip';
-import { cn } from '@/lib/util/utils';
+
+import { Minus, Plus, Heart, ShoppingCart, Lock, AlertCircle } from 'lucide-react';
+
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
@@ -19,9 +19,12 @@ import {
   DialogTitle,
   DialogDescription,
 } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Minus, Plus, Heart, ShoppingCart, Lock, AlertCircle } from 'lucide-react';
+import { getRarityStyle } from '@/components/ui/item-tooltip';
+import { CurrencyService } from '@/lib/game/shop/currencyService';
+import { ShopLevelService } from '@/lib/game/shop/shopLevelService';
+import { ShopProduct, PlayerCurrencies, CurrencyType, ProductEffect } from '@/lib/game/shop/types';
+import { cn } from '@/lib/util/utils';
+
 
 interface ProductDetailModalProps {
   product: ShopProduct | null;

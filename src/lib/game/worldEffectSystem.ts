@@ -4,8 +4,8 @@
  * 处理危险和机缘效果在游戏中的实际应用
  */
 
-import { Protagonist, StatName } from './types';
 import { Enemy } from './enemy/types';
+import { Protagonist, StatName } from './types';
 import { World } from './types';
 import {
   WorldDanger,
@@ -443,7 +443,7 @@ export function applyWorldEffectsToEnemy(
   };
   
   // 应用危险效果中的敌人增益
-  let dangerBonus = { attack: 0, defense: 0, hp: 0 };
+  const dangerBonus = { attack: 0, defense: 0, hp: 0 };
   for (const danger of worldEffectState.activeDangers) {
     if (danger.enemyBuffs) {
       dangerBonus.attack += danger.enemyBuffs.attackBonus || 0;

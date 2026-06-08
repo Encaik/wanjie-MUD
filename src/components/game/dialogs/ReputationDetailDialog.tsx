@@ -1,6 +1,10 @@
 'use client';
 
 import { useState } from 'react';
+
+import { Star, ChevronRight } from 'lucide-react';
+
+import { Badge } from '@/components/ui/badge';
 import {
   Dialog,
   DialogContent,
@@ -9,13 +13,12 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { Progress } from '@/components/ui/progress';
-import { Badge } from '@/components/ui/badge';
 import {
   REPUTATION_LEVELS,
   ReputationLevel,
   getReputationLevel,
 } from '@/lib/data/factionProgressData';
-import { Star, ChevronRight } from 'lucide-react';
+
 
 interface ReputationDetailDialogProps {
   currentReputation: number;

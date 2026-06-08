@@ -4,6 +4,7 @@
  * 将势力特性数据转换为统一效果格式
  */
 
+import { CalculationContext, FactionInput, FactionTraitInput, FactionTraitEffectInput } from '../context/types';
 import { 
   UnifiedEffect, 
   EffectSourceType, 
@@ -11,7 +12,6 @@ import {
   EffectPriority, 
   CalculableStat 
 } from '../types';
-import { CalculationContext, FactionInput, FactionTraitInput, FactionTraitEffectInput } from '../context/types';
 import { EffectAdapter, createBaseEffect, generateEffectId, mapStatName } from './base';
 
 // ============================================

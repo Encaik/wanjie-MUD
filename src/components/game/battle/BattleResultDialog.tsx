@@ -12,20 +12,6 @@
 
 'use client';
 
-import { BattleState, BattleLog, Technique, Equipment } from '@/lib/game/types';
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-  DialogFooter,
-} from '@/components/ui/dialog';
-import { Progress } from '@/components/ui/progress';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { Separator } from '@/components/ui/separator';
 import {
   Swords,
   Heart,
@@ -39,8 +25,21 @@ import {
   Flame,
   X,
 } from 'lucide-react';
+
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from '@/components/ui/dialog';
+import { Progress } from '@/components/ui/progress';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { Separator } from '@/components/ui/separator';
 import { formatCombatPower, getCombatPowerRank } from '@/lib/game/combatPower';
-import { CombatantPanel } from './CombatantPanel';
 import { 
   getElementIcon, 
   getWeaponCategoryIcon, 
@@ -48,6 +47,9 @@ import {
   WEAPON_CATEGORY_NAMES,
   EnemyAttributes,
 } from '@/lib/game/restraintSystem';
+import { BattleState, BattleLog, Technique, Equipment } from '@/lib/game/types';
+
+import { CombatantPanel } from './CombatantPanel';
 
 interface BattleResultDialogProps {
   /** 是否打开 */

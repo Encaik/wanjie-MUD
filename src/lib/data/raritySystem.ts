@@ -7,8 +7,8 @@
  * 3. 完全隔离品质上限与玩家属性
  */
 
-import { ItemRarity } from '../game/types';
 import { getOpportunityRarityRange, getOpportunityRarityWeights } from './opportunityConfig';
+import { ItemRarity } from '../game/types';
 
 // ============================================
 // 类型定义

@@ -1,9 +1,16 @@
 'use client';
 
+import { useState } from 'react';
+
+import { 
+  Heart, Brain, Sparkles, AlertTriangle, 
+  CheckCircle, XCircle, TrendingUp, TrendingDown,
+  Shield, Zap
+} from 'lucide-react';
+
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Progress } from '@/components/ui/progress';
-import { Badge } from '@/components/ui/badge';
 import {
   Dialog,
   DialogContent,
@@ -12,14 +19,10 @@ import {
   DialogTitle,
   DialogFooter,
 } from '@/components/ui/dialog';
-import { 
-  Heart, Brain, Sparkles, AlertTriangle, 
-  CheckCircle, XCircle, TrendingUp, TrendingDown,
-  Shield, Zap
-} from 'lucide-react';
-import { MentalState, DemonEncounter, DemonChoice } from '@/lib/game/typesExtension';
+import { Progress } from '@/components/ui/progress';
 import { CharacterStats, getFinalStats, LegacyStats } from '@/lib/game/types';
-import { useState } from 'react';
+import { MentalState, DemonEncounter, DemonChoice } from '@/lib/game/typesExtension';
+
 
 interface MentalStateCardProps {
   mentalState: MentalState;

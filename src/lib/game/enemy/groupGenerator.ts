@@ -9,6 +9,9 @@
 
 import { WorldType } from '../types';
 import {
+  generateEnemy,
+} from './generator';
+import {
   EnemyGroup,
   EnemyGroupConfig,
   TurnOrderEntry,
@@ -16,9 +19,6 @@ import {
   ENEMY_GROUP_CONFIG,
   Enemy,
 } from './types';
-import {
-  generateEnemy,
-} from './generator';
 
 // ============================================
 // 工具函数

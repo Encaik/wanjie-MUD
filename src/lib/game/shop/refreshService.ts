@@ -4,9 +4,9 @@
  * 管理商店的定时刷新和手动刷新逻辑
  */
 
-import { ShopType, CurrencyCost, PlayerCurrencies, ShopProduct } from './types';
-import { ShopService, PlayerDataForShop } from './shopService';
 import { SHOP_CONFIGS, getShopConfig } from './shopConfigs';
+import { ShopService, PlayerDataForShop } from './shopService';
+import { ShopType, CurrencyCost, PlayerCurrencies, ShopProduct } from './types';
 
 // ============================================
 // 类型定义
@@ -316,7 +316,7 @@ export class RefreshService {
     });
 
     // 扣除货币
-    let newCurrencies = { ...playerData.currencies };
+    const newCurrencies = { ...playerData.currencies };
     if (cost.amount > 0) {
       newCurrencies[cost.type] = (newCurrencies[cost.type] || 0) - cost.amount;
     }

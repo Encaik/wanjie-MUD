@@ -8,12 +8,12 @@
  * - 稀有度加成
  */
 
+import { Element, WeaponCategory } from '../game/restraintSystem';
 import { 
   ItemRarity,
   TECHNIQUE_RARITY_CONFIG,
   EQUIPMENT_RARITY_CONFIG,
 } from '../game/skillTypes';
-import { Element, WeaponCategory } from '../game/restraintSystem';
 
 // ============================================
 // 稀有度加成配置

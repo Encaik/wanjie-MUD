@@ -7,8 +7,8 @@
  * 3. 支持多种行为策略
  */
 
-import { Enemy, EnemyBehaviorType, AIDecision, SkillPriority } from '../types';
 import { BattleSkill } from '../../battle/types';
+import { Enemy, EnemyBehaviorType, AIDecision, SkillPriority } from '../types';
 
 // ============================================
 // 决策上下文

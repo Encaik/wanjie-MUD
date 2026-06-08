@@ -6,6 +6,17 @@
  */
 
 import {
+  calculatePlayerMaxHp,
+  calculatePlayerMaxMp,
+  calculatePlayerAttack,
+  calculatePlayerDefense,
+  calculateEnemyHp,
+  calculateEnemyAttack,
+  calculateEnemyDefense,
+  calculateBattleExp,
+  calculateBattleSpiritStones,
+} from './balanceConfig';
+import {
   createBattleState,
   createBattleStatistics,
   startBattle,
@@ -16,6 +27,38 @@ import {
   PlayerData,
 } from './battle';
 import { executeAutoTurn } from './battle/battleController';
+import {
+  calculatePlayerCombatPower,
+  calculateEnemyCombatPower,
+} from './combatPower';
+import { GAME_CONSTANTS } from './constants';
+import {
+  calculateEnemyEnhancement,
+  applyEnemyEnhancement,
+} from './enemyEnhancement';
+import {
+  generateEnemyTechniquesAndEquipments,
+  calculateTechniqueBonus,
+  calculateEquipmentBonus,
+} from './enemyTechniqueEquipment';
+import {
+  generateRandomEquipment,
+} from './equipment';
+import {
+  generateFragmentDrop,
+  FragmentDropResult,
+} from './fragmentSystem';
+import {
+  getRandomItem,
+  spiritStoneItems,
+  breakthroughItems,
+} from './items';
+import {
+  getEnemyAttributes,
+} from './restraintSystem';
+import {
+  generateRandomTechnique,
+} from './technique';
 import {
   Protagonist,
   CellType,
@@ -37,51 +80,8 @@ import {
   getEnemyTierConfig,
 } from '../data/worldData';
 import {
-  calculatePlayerMaxHp,
-  calculatePlayerMaxMp,
-  calculatePlayerAttack,
-  calculatePlayerDefense,
-  calculateEnemyHp,
-  calculateEnemyAttack,
-  calculateEnemyDefense,
-  calculateBattleExp,
-  calculateBattleSpiritStones,
-} from './balanceConfig';
-import {
-  getEnemyAttributes,
-} from './restraintSystem';
-import {
-  calculateEnemyEnhancement,
-  applyEnemyEnhancement,
-} from './enemyEnhancement';
-import {
-  generateEnemyTechniquesAndEquipments,
-  calculateTechniqueBonus,
-  calculateEquipmentBonus,
-} from './enemyTechniqueEquipment';
-import {
-  calculatePlayerCombatPower,
-  calculateEnemyCombatPower,
-} from './combatPower';
-import {
-  generateFragmentDrop,
-  FragmentDropResult,
-} from './fragmentSystem';
-import {
-  getRandomItem,
-  spiritStoneItems,
-  breakthroughItems,
-} from './items';
-import {
-  generateRandomTechnique,
-} from './technique';
-import {
-  generateRandomEquipment,
-} from './equipment';
-import {
   createInventoryItem,
 } from './types';
-import { GAME_CONSTANTS } from './constants';
 import { clamp } from './utils/numberUtils';
 
 // 随机工具
