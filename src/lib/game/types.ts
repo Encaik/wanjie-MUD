@@ -1,5 +1,5 @@
 import { FragmentDropData, FragmentDropResult } from './utils/fragmentSystem';
-import { RealmSystem } from '../data/realmData';
+import type { RealmSystem } from '../data/realmData';
 
 // 重新导出难度级别类型
 export type { DifficultyLevel } from '../data/worldData';
