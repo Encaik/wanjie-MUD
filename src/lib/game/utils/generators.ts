@@ -28,8 +28,8 @@ import {
   getExperienceForLevel,
   getStatBaseForLevel,
   getStatPotentialForLevel,
-  RealmSystem,
 } from '../../data/realmData';
+import type { RealmSystem } from '../../data/realmData';
 import {
   WORLD_DATA,
   WORLD_COEFFICIENTS,

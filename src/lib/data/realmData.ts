@@ -15,7 +15,7 @@ import {
 } from '../game/utils/balanceConfig';
 import { calculateEnemyCombatPower } from '../game/utils/combatPower';
 import { calculateEnemyEnhancement } from '../game/enemy/enemyEnhancement';
-import { WorldType, DungeonConfig, EnemyTier } from '../game/types';
+import type { WorldType, DungeonConfig, EnemyTier } from '../game/types';
 
 // ============================================
 // 小境界体系（可与任意大境界体系搭配）
