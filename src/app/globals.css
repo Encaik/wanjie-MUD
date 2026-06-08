@@ -305,3 +305,80 @@
     transform: translate(-50%, -50%) scale(1.05);
   }
 }
+
+/* ========================================
+ * 首页动效
+ * ======================================== */
+
+/* 浮动动画 - 用于背景符文（仅控制位移，透明度由 Tailwind class 控制） */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  25% {
+    transform: translateY(-12px) rotate(2deg);
+  }
+  50% {
+    transform: translateY(-6px) rotate(0deg);
+  }
+  75% {
+    transform: translateY(8px) rotate(-2deg);
+  }
+}
+
+/* 入场动画 - 淡入上移 */
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 按钮发光脉冲 */
+@keyframes button-glow {
+  0%, 100% {
+    opacity: 0.5;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.08);
+  }
+}
+
+/* 光晕旋转 */
+@keyframes glow-rotate {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+/* 工具类 - 使用 @layer utilities 确保 Tailwind v4 正确处理 */
+@layer utilities {
+  .animate-float {
+    animation: float ease-in-out infinite;
+  }
+
+  .animate-pulse-glow {
+    animation: pulse-glow 2.5s ease-in-out infinite;
+  }
+
+  .animate-fade-in-up {
+    animation: fade-in-up 0.8s ease-out forwards;
+  }
+
+  .animate-button-glow {
+    animation: button-glow 3s ease-in-out infinite;
+  }
+
+  .animate-glow-rotate {
+    animation: glow-rotate 12s linear infinite;
+  }
+}
