@@ -273,7 +273,7 @@ export function AchievementPanel({
             <Trophy className="w-4 h-4 text-yellow-500" />
             成就系统
             {newUnlocks.length > 0 && (
-              <Badge className="bg-red-500 text-white text-[10px] animate-pulse">
+              <Badge variant="destructive" className="text-[10px] animate-pulse">
                 {newUnlocks.length}个可领取
               </Badge>
             )}

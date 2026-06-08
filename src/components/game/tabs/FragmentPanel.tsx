@@ -40,19 +40,19 @@ interface FragmentPanelProps {
 
 // 品质颜色映射
 const rarityColors: Record<ItemRarity, string> = {
-  '普通': 'text-gray-500',
-  '稀有': 'text-blue-500',
-  '史诗': 'text-purple-500',
-  '传说': 'text-yellow-500',
-  '神话': 'text-red-500',
+  '普通': 'text-gray-500 dark:text-gray-400',
+  '稀有': 'text-blue-500 dark:text-blue-400',
+  '史诗': 'text-purple-500 dark:text-purple-400',
+  '传说': 'text-yellow-500 dark:text-yellow-400',
+  '神话': 'text-red-500 dark:text-red-400',
 };
 
 const rarityProgressColors: Record<ItemRarity, string> = {
-  '普通': '[&>div]:bg-gray-500',
-  '稀有': '[&>div]:bg-blue-500',
-  '史诗': '[&>div]:bg-purple-500',
-  '传说': '[&>div]:bg-yellow-500',
-  '神话': '[&>div]:bg-red-500',
+  '普通': '[&>div]:bg-gray-500 dark:[&>div]:bg-gray-400',
+  '稀有': '[&>div]:bg-blue-500 dark:[&>div]:bg-blue-400',
+  '史诗': '[&>div]:bg-purple-500 dark:[&>div]:bg-purple-400',
+  '传说': '[&>div]:bg-yellow-500 dark:[&>div]:bg-yellow-400',
+  '神话': '[&>div]:bg-red-500 dark:[&>div]:bg-red-400',
 };
 
 // 单个碎片卡片 - 按物品名称分组
@@ -121,7 +121,7 @@ function FragmentCard({
             <span 
               key={idx}
               className={cn(
-                'text-[8px] px-0.5 rounded',
+                'text-[10px] px-0.5 rounded',
                 group.collectedIndices.includes(idx) 
                   ? 'bg-green-500/20 text-green-600' 
                   : 'bg-muted text-muted-foreground'

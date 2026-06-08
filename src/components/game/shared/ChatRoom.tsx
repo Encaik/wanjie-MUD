@@ -38,12 +38,12 @@ const QUICK_INPUTS = [
 
 // 境界颜色
 const getRealmColor = (level: number): string => {
-  if (level >= 50) return 'text-purple-500';
-  if (level >= 40) return 'text-red-500';
-  if (level >= 30) return 'text-orange-500';
-  if (level >= 20) return 'text-blue-500';
-  if (level >= 10) return 'text-green-500';
-  return 'text-gray-500';
+  if (level >= 50) return 'text-purple-500 dark:text-purple-400';
+  if (level >= 40) return 'text-red-500 dark:text-red-400';
+  if (level >= 30) return 'text-orange-500 dark:text-orange-400';
+  if (level >= 20) return 'text-blue-500 dark:text-blue-400';
+  if (level >= 10) return 'text-green-500 dark:text-green-400';
+  return 'text-gray-500 dark:text-gray-400';
 };
 
 // 格式化时间

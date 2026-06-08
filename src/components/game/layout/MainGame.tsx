@@ -608,7 +608,7 @@ export function MainGame({
         />
       </TabsContent>
       
-      <TabsContent value="experience" className="mt-3 h-[calc(100%-3rem)]" style={{ minHeight: '300px' }}>
+      <TabsContent value="experience" className="mt-3 h-[calc(100%-3rem)] min-h-[300px]">
         <FactionPanel
           worldType={protagonist.world.type}
           worldFactions={protagonist.world.factions}
@@ -694,7 +694,7 @@ export function MainGame({
         />
       </TabsContent>
       
-      <TabsContent value="technique" className="mt-3 h-[calc(100%-3rem)]" style={{ minHeight: '300px' }}>
+      <TabsContent value="technique" className="mt-3 h-[calc(100%-3rem)] min-h-[300px]">
         <TechniquePanel
           techniques={protagonist.techniques}
           equippedAttackTechniques={protagonist.equippedAttackTechniques}
@@ -706,7 +706,7 @@ export function MainGame({
         />
       </TabsContent>
       
-      <TabsContent value="equipment" className="mt-3 h-[calc(100%-3rem)]" style={{ minHeight: '300px' }}>
+      <TabsContent value="equipment" className="mt-3 h-[calc(100%-3rem)] min-h-[300px]">
         <EquipmentPanel
           equipments={protagonist.equipments}
           equippedMelee={protagonist.equippedMelee}
@@ -721,7 +721,7 @@ export function MainGame({
         />
       </TabsContent>
       
-      <TabsContent value="fragment" className="mt-3 h-[calc(100%-3rem)]" style={{ minHeight: '300px' }}>
+      <TabsContent value="fragment" className="mt-3 h-[calc(100%-3rem)] min-h-[300px]">
         <FragmentPanel
           fragmentInventory={protagonist.fragmentInventory ?? createEmptyFragmentInventory()}
           playerLevel={protagonist.level}
@@ -730,7 +730,7 @@ export function MainGame({
         />
       </TabsContent>
       
-      <TabsContent value="skill" className="mt-3 h-[calc(100%-3rem)]" style={{ minHeight: '300px' }}>
+      <TabsContent value="skill" className="mt-3 h-[calc(100%-3rem)] min-h-[300px]">
         <SkillsTab
           techniques={protagonist.techniques}
           equipments={protagonist.equipments}
@@ -743,7 +743,7 @@ export function MainGame({
         />
       </TabsContent>
       
-      <TabsContent value="alchemy" className="mt-3 h-[calc(100%-3rem)]" style={{ minHeight: '300px' }}>
+      <TabsContent value="alchemy" className="mt-3 h-[calc(100%-3rem)] min-h-[300px]">
         <AlchemyPanel
           inventory={protagonist.inventory}
           playerLevel={protagonist.level}
@@ -753,7 +753,7 @@ export function MainGame({
         />
       </TabsContent>
       
-      <TabsContent value="forge" className="mt-3 h-[calc(100%-3rem)]" style={{ minHeight: '300px' }}>
+      <TabsContent value="forge" className="mt-3 h-[calc(100%-3rem)] min-h-[300px]">
         <ForgePanel
           inventory={protagonist.inventory}
           playerLevel={protagonist.level}
@@ -763,7 +763,7 @@ export function MainGame({
         />
       </TabsContent>
       
-      <TabsContent value="tower" className="mt-3 h-[calc(100%-3rem)]" style={{ minHeight: '300px' }}>
+      <TabsContent value="tower" className="mt-3 h-[calc(100%-3rem)] min-h-[300px]">
         <TowerPanel
           towerProgress={protagonist.towerProgress ?? createDefaultTowerProgress()}
           playerLevel={protagonist.level}
@@ -779,7 +779,7 @@ export function MainGame({
         />
       </TabsContent>
       
-      <TabsContent value="achievement" className="mt-3 h-[calc(100%-3rem)]" style={{ minHeight: '300px' }}>
+      <TabsContent value="achievement" className="mt-3 h-[calc(100%-3rem)] min-h-[300px]">
         <AchievementPanel
           statistics={statistics}
           unlockedAchievementIds={unlockedAchievementIds}
@@ -788,7 +788,7 @@ export function MainGame({
         />
       </TabsContent>
       
-      <TabsContent value="collection" className="mt-3 h-[calc(100%-3rem)]" style={{ minHeight: '300px' }}>
+      <TabsContent value="collection" className="mt-3 h-[calc(100%-3rem)] min-h-[300px]">
         <CollectionPanel
           techniques={protagonist.techniques}
           equipments={protagonist.equipments}
@@ -796,7 +796,7 @@ export function MainGame({
         />
       </TabsContent>
       
-      <TabsContent value="statistics" className="mt-3 h-[calc(100%-3rem)] overflow-auto" style={{ minHeight: '300px' }}>
+      <TabsContent value="statistics" className="mt-3 h-[calc(100%-3rem)] overflow-auto min-h-[300px]">
         <StatisticsPanel
           statistics={statistics}
           protagonist={protagonist}

@@ -47,12 +47,12 @@ const DIMENSIONS = [
 
 // 定位标签样式
 const ARCHETYPE_STYLES: Record<string, { badge: string; icon: string }> = {
-  'combat_warrior': { badge: 'bg-red-100 text-red-700 border-red-300', icon: '⚔️' },
-  'cultivation_genius': { badge: 'bg-blue-100 text-blue-700 border-blue-300', icon: '📚' },
-  'survival_master': { badge: 'bg-green-100 text-green-700 border-green-300', icon: '🛡️' },
-  'fortune_seeker': { badge: 'bg-amber-100 text-amber-700 border-amber-300', icon: '✨' },
-  'balanced': { badge: 'bg-gray-100 text-gray-700 border-gray-300', icon: '⚖️' },
-  'specialist': { badge: 'bg-purple-100 text-purple-700 border-purple-300', icon: '🎯' },
+  'combat_warrior': { badge: 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400 border-red-300 dark:border-red-800', icon: '⚔️' },
+  'cultivation_genius': { badge: 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 border-blue-300 dark:border-blue-800', icon: '📚' },
+  'survival_master': { badge: 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 border-green-300 dark:border-green-800', icon: '🛡️' },
+  'fortune_seeker': { badge: 'bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 border-amber-300 dark:border-amber-800', icon: '✨' },
+  'balanced': { badge: 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-700', icon: '⚖️' },
+  'specialist': { badge: 'bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-400 border-purple-300 dark:border-purple-800', icon: '🎯' },
 };
 
 // 维度评分条组件
@@ -283,10 +283,10 @@ export function CharacterSelect({ characters, onSelect, onRefresh }: CharacterSe
                       {synergies.length > 0 && (
                         <div className="flex flex-wrap gap-1 mt-1">
                           {synergies.map((synergy) => (
-                            <Badge 
-                              key={synergy.id} 
-                              variant="secondary" 
-                              className="text-[9px] px-1 py-0 h-4 bg-amber-100 text-amber-700 border-amber-200"
+                            <Badge
+                              key={synergy.id}
+                              variant="secondary"
+                              className="text-[9px] px-1 py-0 h-4 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 border-amber-200 dark:border-amber-800"
                             >
                               {synergy.name}+{synergy.bonus}
                             </Badge>

@@ -1,6 +1,7 @@
 'use client';
 
-import { Download, Upload } from 'lucide-react';
+import { useState } from 'react';
+import { Download, Upload, X } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 
@@ -11,12 +12,14 @@ interface SaveLoadPanelProps {
   className?: string;
 }
 
-export function SaveLoadPanel({ 
-  onExportSave, 
-  onImportSave, 
+export function SaveLoadPanel({
+  onExportSave,
+  onImportSave,
   variant = 'desktop',
-  className = '' 
+  className = ''
 }: SaveLoadPanelProps) {
+  const [importError, setImportError] = useState<string | null>(null);
+
   const handleExport = () => {
     const saveData = onExportSave();
     const blob = new Blob([saveData], { type: 'application/json' });
@@ -29,6 +32,7 @@ export function SaveLoadPanel({
   };
 
   const handleImport = () => {
+    setImportError(null);
     const input = document.createElement('input');
     input.type = 'file';
     input.accept = '.json';
@@ -41,7 +45,7 @@ export function SaveLoadPanel({
             const content = event.target?.result as string;
             onImportSave(content);
           } catch {
-            alert('导入失败：存档格式无效');
+            setImportError('导入失败：存档格式无效');
           }
         };
         reader.readAsText(file);
@@ -50,32 +54,40 @@ export function SaveLoadPanel({
     input.click();
   };
 
-  // 移动端布局：grid-cols-2
-  // PC端布局：grid grid-cols-2 gap-2
-  const containerClass = variant === 'mobile' 
-    ? `grid grid-cols-2 gap-2 ${className}`
-    : `grid grid-cols-2 gap-2 ${className}`;
-
   return (
-    <div className={containerClass}>
-      <Button 
-        variant="outline" 
-        size="sm" 
-        className="text-xs h-9"
-        onClick={handleExport}
-      >
-        <Download className="w-4 h-4 mr-1.5" />
-        导出存档
-      </Button>
-      <Button 
-        variant="outline" 
-        size="sm" 
-        className="text-xs h-9"
-        onClick={handleImport}
-      >
-        <Upload className="w-4 h-4 mr-1.5" />
-        导入存档
-      </Button>
+    <div className={className}>
+      <div className="grid grid-cols-2 gap-2">
+        <Button
+          variant="outline"
+          size="sm"
+          className="text-xs h-9"
+          onClick={handleExport}
+        >
+          <Download className="w-4 h-4 mr-1.5" />
+          导出存档
+        </Button>
+        <Button
+          variant="outline"
+          size="sm"
+          className="text-xs h-9"
+          onClick={handleImport}
+        >
+          <Upload className="w-4 h-4 mr-1.5" />
+          导入存档
+        </Button>
+      </div>
+      {importError && (
+        <div className="flex items-center gap-1 mt-1.5 p-1.5 rounded bg-destructive/10 border border-destructive/30 text-destructive text-[11px]">
+          <X className="w-3 h-3 shrink-0" />
+          <span>{importError}</span>
+          <button
+            className="ml-auto p-0.5 rounded hover:bg-destructive/20 transition-colors"
+            onClick={() => setImportError(null)}
+          >
+            <X className="w-3 h-3" />
+          </button>
+        </div>
+      )}
     </div>
   );
 }

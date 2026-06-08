@@ -102,12 +102,12 @@ function getPathIcon(pathType: string) {
 // 获取流派颜色
 function getPathColor(pathType: string) {
   switch (pathType) {
-    case 'body': return 'text-orange-600 bg-orange-100 dark:bg-orange-900/30 border-orange-300';
-    case 'sword': return 'text-cyan-600 bg-cyan-100 dark:bg-cyan-900/30 border-cyan-300';
-    case 'spell': return 'text-blue-600 bg-blue-100 dark:bg-blue-900/30 border-blue-300';
-    case 'alchemy': return 'text-green-600 bg-green-100 dark:bg-green-900/30 border-green-300';
-    case 'demon': return 'text-purple-600 bg-purple-100 dark:bg-purple-900/30 border-purple-300';
-    default: return 'text-gray-600 bg-gray-100 dark:bg-gray-900/30 border-gray-300';
+    case 'body': return 'text-orange-600 dark:text-orange-400 bg-orange-100 dark:bg-orange-900/30 border-orange-300 dark:border-orange-700';
+    case 'sword': return 'text-cyan-600 dark:text-cyan-400 bg-cyan-100 dark:bg-cyan-900/30 border-cyan-300 dark:border-cyan-700';
+    case 'spell': return 'text-blue-600 dark:text-blue-400 bg-blue-100 dark:bg-blue-900/30 border-blue-300 dark:border-blue-700';
+    case 'alchemy': return 'text-green-600 dark:text-green-400 bg-green-100 dark:bg-green-900/30 border-green-300 dark:border-green-700';
+    case 'demon': return 'text-purple-600 dark:text-purple-400 bg-purple-100 dark:bg-purple-900/30 border-purple-300 dark:border-purple-700';
+    default: return 'text-gray-600 dark:text-gray-400 bg-gray-100 dark:bg-gray-800 border-gray-300 dark:border-gray-700';
   }
 }
 

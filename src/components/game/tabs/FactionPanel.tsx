@@ -984,14 +984,14 @@ export function FactionPanel({
                             <Badge 
                               key={idx} 
                               variant="outline" 
-                              className="text-[8px] h-3.5 bg-amber-500/10 border-amber-500/30 text-amber-600 dark:text-amber-400"
+                              className="text-[10px] h-3.5 bg-amber-500/10 border-amber-500/30 text-amber-600 dark:text-amber-400"
                             >
                               {bonus.icon}
                               <span className="ml-0.5">{bonus.label}+{bonus.value}%</span>
                             </Badge>
                           ))}
                           {potentialBonuses.length > 4 && (
-                            <span className="text-[8px] text-muted-foreground">
+                            <span className="text-[10px] text-muted-foreground">
                               +{potentialBonuses.length - 4}
                             </span>
                           )}

@@ -51,19 +51,19 @@ const WeaponIcons: Record<string, React.ReactNode> = {
 
 // 稀有度颜色
 const rarityColors: Record<ItemRarity, string> = {
-  '普通': 'text-gray-500',
-  '稀有': 'text-blue-500',
-  '史诗': 'text-purple-500',
-  '传说': 'text-yellow-500',
-  '神话': 'text-red-500',
+  '普通': 'text-gray-500 dark:text-gray-400',
+  '稀有': 'text-blue-500 dark:text-blue-400',
+  '史诗': 'text-purple-500 dark:text-purple-400',
+  '传说': 'text-yellow-500 dark:text-yellow-400',
+  '神话': 'text-red-500 dark:text-red-400',
 };
 
 const rarityBgColors: Record<ItemRarity, string> = {
-  '普通': 'bg-gray-500/10 border-gray-500/30',
-  '稀有': 'bg-blue-500/10 border-blue-500/30',
-  '史诗': 'bg-purple-500/10 border-purple-500/30',
-  '传说': 'bg-yellow-500/10 border-yellow-500/30',
-  '神话': 'bg-red-500/10 border-red-500/30',
+  '普通': 'bg-gray-500/10 dark:bg-gray-500/15 border-gray-500/30 dark:border-gray-500/30',
+  '稀有': 'bg-blue-500/10 dark:bg-blue-500/15 border-blue-500/30 dark:border-blue-500/30',
+  '史诗': 'bg-purple-500/10 dark:bg-purple-500/15 border-purple-500/30 dark:border-purple-500/30',
+  '传说': 'bg-yellow-500/10 dark:bg-yellow-500/15 border-yellow-500/30 dark:border-yellow-500/30',
+  '神话': 'bg-red-500/10 dark:bg-red-500/15 border-red-500/30 dark:border-red-500/30',
 };
 
 // 羁绊卡片

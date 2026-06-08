@@ -225,7 +225,7 @@ export function WorldInfoPanel({ world, protagonist }: WorldInfoPanelProps) {
                               {info.name}
                             </span>
                             <span className={`text-[8px] ${style.stars} shrink-0`}>
-                              {'★'.repeat(info.level)}
+                              {generateLevelStars(info.level)}
                             </span>
                           </div>
                         </div>
@@ -271,7 +271,7 @@ export function WorldInfoPanel({ world, protagonist }: WorldInfoPanelProps) {
                               {info.name}
                             </span>
                             <span className={`text-[8px] ${style.stars} shrink-0`}>
-                              {'★'.repeat(info.level)}
+                              {generateLevelStars(info.level)}
                             </span>
                           </div>
                         </div>

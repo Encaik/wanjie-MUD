@@ -47,8 +47,7 @@ const MessageItem = memo(({ msg, compact }: { msg: MessageRecord; compact: boole
 
   return (
     <div
-      className={`p-1.5 rounded ${config.bg}`}
-      style={{ contentVisibility: 'auto', containIntrinsicSize: 'auto 60px' }}
+      className={`p-1.5 rounded ${config.bg} [content-visibility:auto]`}
     >
       <div className="flex items-start gap-1.5">
         <Icon className={`w-3 h-3 ${config.color} shrink-0 mt-0.5`} />

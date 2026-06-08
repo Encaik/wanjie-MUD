@@ -40,22 +40,22 @@ const worldTypeColors: Record<WorldType, { bg: string; border: string; text: str
 // 难度样式
 const difficultyStyles: Record<WorldDifficulty, { badge: string }> = {
   '简单': {
-    badge: 'bg-emerald-500/15 text-emerald-600 border-emerald-500/30',
+    badge: 'bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border-emerald-500/30 dark:border-emerald-500/30',
   },
   '普通': {
-    badge: 'bg-blue-500/15 text-blue-600 border-blue-500/30',
+    badge: 'bg-blue-500/15 text-blue-600 dark:text-blue-400 border-blue-500/30 dark:border-blue-500/30',
   },
   '困难': {
-    badge: 'bg-amber-500/15 text-amber-600 border-amber-500/30',
+    badge: 'bg-amber-500/15 text-amber-600 dark:text-amber-400 border-amber-500/30 dark:border-amber-500/30',
   },
   '噩梦': {
-    badge: 'bg-red-500/15 text-red-600 border-red-500/30',
+    badge: 'bg-red-500/15 text-red-600 dark:text-red-400 border-red-500/30 dark:border-red-500/30',
   },
   '地狱': {
-    badge: 'bg-orange-500/15 text-orange-600 border-orange-500/30',
+    badge: 'bg-orange-500/15 text-orange-600 dark:text-orange-400 border-orange-500/30 dark:border-orange-500/30',
   },
   '深渊': {
-    badge: 'bg-purple-500/15 text-purple-600 border-purple-500/30',
+    badge: 'bg-purple-500/15 text-purple-600 dark:text-purple-400 border-purple-500/30 dark:border-purple-500/30',
   },
 };
 
@@ -141,8 +141,8 @@ export function WorldSelect({ worlds, onSelect }: WorldSelectProps) {
                           return (
                             <Tooltip key={idx}>
                               <TooltipTrigger asChild>
-                                <div className="flex items-center gap-1.5 p-1 rounded bg-red-50/50 dark:bg-red-950/20 cursor-help">
-                                  <span className="text-[10px] font-medium text-red-700 dark:text-red-400 truncate flex-1">
+                                <div className="flex items-center gap-1.5 p-1 rounded bg-destructive/5 dark:bg-destructive/10 cursor-help">
+                                  <span className="text-[10px] font-medium text-destructive truncate flex-1">
                                     {info.name}
                                   </span>
                                   <span className={`text-[9px] ${style.stars}`}>
@@ -150,7 +150,7 @@ export function WorldSelect({ worlds, onSelect }: WorldSelectProps) {
                                   </span>
                                 </div>
                               </TooltipTrigger>
-                              <TooltipContent side="right" className="max-w-xs p-2 bg-popover text-popover-foreground border border-red-200 dark:border-red-800">
+                              <TooltipContent side="right" className="max-w-xs p-2 bg-popover text-popover-foreground border border-destructive/30">
                                 <div className="space-y-1.5">
                                   <div className="font-medium text-red-600 dark:text-red-400">{info.name}</div>
                                   <div className="text-[11px] text-muted-foreground">{info.description}</div>
@@ -202,7 +202,7 @@ export function WorldSelect({ worlds, onSelect }: WorldSelectProps) {
                                   </span>
                                 </div>
                               </TooltipTrigger>
-                              <TooltipContent side="right" className="max-w-xs p-2 bg-popover text-popover-foreground border border-emerald-200 dark:border-emerald-800">
+                              <TooltipContent side="right" className="max-w-xs p-2 bg-popover text-popover-foreground border border-emerald-500/30">
                                 <div className="space-y-1.5">
                                   <div className="font-medium text-emerald-600 dark:text-emerald-400">{info.name}</div>
                                   <div className="text-[11px] text-muted-foreground">{info.description}</div>

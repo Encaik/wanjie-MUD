@@ -133,10 +133,10 @@ function EquipmentSlotCard({
               </div>
               <div className="flex items-center gap-2 text-[10px] mt-0.5">
                 {equipment.attackBonus > 0 && (
-                  <span className="text-red-500">+{equipment.attackBonus}%攻</span>
+                  <span className="text-red-500 dark:text-red-400">+{equipment.attackBonus}%攻</span>
                 )}
                 {equipment.defenseBonus > 0 && (
-                  <span className="text-blue-500">+{equipment.defenseBonus}%防</span>
+                  <span className="text-blue-500 dark:text-blue-400">+{equipment.defenseBonus}%防</span>
                 )}
                 {equipment.level > 1 && (
                   <span className="text-primary">Lv.{equipment.level}</span>
@@ -229,10 +229,10 @@ function EquipmentItem({
             </div>
             <div className="flex items-center gap-2 text-[10px] mt-0.5">
               {equipment.attackBonus > 0 && (
-                <span className="text-red-500">+{equipment.attackBonus}%攻</span>
+                <span className="text-red-500 dark:text-red-400">+{equipment.attackBonus}%攻</span>
               )}
               {equipment.defenseBonus > 0 && (
-                <span className="text-blue-500">+{equipment.defenseBonus}%防</span>
+                <span className="text-blue-500 dark:text-blue-400">+{equipment.defenseBonus}%防</span>
               )}
               {equipment.level > 1 && (
                 <span className="text-primary">Lv.{equipment.level}</span>
@@ -339,8 +339,8 @@ export function EquipmentPanel({
             装备
           </div>
           <div className="flex gap-2 text-[10px] font-normal">
-            <span className="text-red-500">+{totalAttackBonus}%攻</span>
-            <span className="text-blue-500">+{totalDefenseBonus}%防</span>
+            <span className="text-red-500 dark:text-red-400">+{totalAttackBonus}%攻</span>
+            <span className="text-blue-500 dark:text-blue-400">+{totalDefenseBonus}%防</span>
           </div>
         </CardTitle>
       </CardHeader>
@@ -352,7 +352,7 @@ export function EquipmentPanel({
               <Sword className="w-3 h-3" />
               武器
             </div>
-            <div className="text-[10px] font-medium text-red-500">+{totalAttackBonus}%</div>
+            <div className="text-[10px] font-medium text-red-500 dark:text-red-400">+{totalAttackBonus}%</div>
           </div>
           <div className="grid grid-cols-2 gap-1.5">
             <EquipmentSlotCard
@@ -377,7 +377,7 @@ export function EquipmentPanel({
               <Shield className="w-3 h-3" />
               护甲
             </div>
-            <div className="text-[10px] font-medium text-blue-500">+{totalDefenseBonus}%</div>
+            <div className="text-[10px] font-medium text-blue-500 dark:text-blue-400">+{totalDefenseBonus}%</div>
           </div>
           <div className="grid grid-cols-2 gap-1.5">
             <EquipmentSlotCard

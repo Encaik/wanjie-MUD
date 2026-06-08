@@ -49,7 +49,7 @@ export function MentalStateCard({
   const isDemonPath = cultivationPath === 'demon';
 
   return (
-    <Card className="border-2">
+    <Card className="border-2 border-primary/20">
       <CardHeader className="pb-1 pt-2">
         <CardTitle className="flex items-center gap-2 text-sm">
           <Brain className="w-4 h-4 text-primary" />

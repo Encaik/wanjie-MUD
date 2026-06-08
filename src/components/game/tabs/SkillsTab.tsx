@@ -394,7 +394,7 @@ function TechniqueSkillList({
                       <div className="text-[11px] font-medium truncate text-muted-foreground">{skill.name}</div>
                       <div className="text-[10px] text-orange-500">需 Lv.{skill.unlockLevel}</div>
                     </div>
-                    <Badge variant="outline" className="text-[8px] px-1 py-0 h-4 bg-orange-500/10 border-orange-400 text-orange-600">
+                    <Badge variant="outline" className="text-[10px] px-1 py-0 h-4 bg-orange-500/10 border-orange-400 text-orange-600">
                       {skill.unlockLevel - technique.level}级
                     </Badge>
                   </div>
@@ -650,7 +650,7 @@ function WeaponTechniqueList({
                       <div className="text-[11px] font-medium truncate text-muted-foreground">{technique.name}</div>
                       <div className="text-[10px] text-orange-500">需 Lv.{technique.unlockLevel}</div>
                     </div>
-                    <Badge variant="outline" className="text-[8px] px-1 py-0 h-4 bg-orange-500/10 border-orange-400 text-orange-600">
+                    <Badge variant="outline" className="text-[10px] px-1 py-0 h-4 bg-orange-500/10 border-orange-400 text-orange-600">
                       {technique.unlockLevel - equipment.level}级
                     </Badge>
                   </div>

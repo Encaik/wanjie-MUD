@@ -145,7 +145,7 @@ export function TowerPanel({
               <CheckCircle2 className="w-4 h-4 text-green-500" />
             )}
             {!cleared && floor === nextFloor && (
-              <Badge variant="outline" className="bg-yellow-50 text-yellow-700 border-yellow-300">
+              <Badge variant="outline" className="bg-yellow-50 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400 border-yellow-300 dark:border-yellow-600">
                 首通
               </Badge>
             )}
@@ -168,13 +168,13 @@ export function TowerPanel({
           <div className="text-xs font-medium mb-1">奖励</div>
           <div className="flex flex-wrap gap-1.5 text-xs">
             {/* 灵石 */}
-            <Badge variant="secondary" className="bg-yellow-50 text-yellow-700 border-yellow-200">
+            <Badge variant="secondary" className="bg-yellow-50 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400 border-yellow-200 dark:border-yellow-600">
               <Coins className="w-3 h-3 mr-0.5" />
               {enemy.rewards.spiritStones}
             </Badge>
             
             {/* 经验 */}
-            <Badge variant="secondary" className="bg-blue-50 text-blue-700 border-blue-200">
+            <Badge variant="secondary" className="bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 border-blue-200 dark:border-blue-600">
               <Sparkles className="w-3 h-3 mr-0.5" />
               {enemy.rewards.experience}
             </Badge>
