@@ -15,7 +15,7 @@ import {
   EQUIPMENT_RARITY_CONFIG,
   RARITY_ORDER,
   RARITY_WEIGHTS,
-} from './skillTypes';
+} from './skill/skillTypes';
 import { 
   generateRandomTechnique, 
 } from './technique';
@@ -176,7 +176,7 @@ export const ENEMY_DROP_CONFIG: Record<EnemyTier, {
 };
 
 /** 所有品质列表（从低到高） */
-export { RARITY_ORDER } from './skillTypes';
+export { RARITY_ORDER } from './skill/skillTypes';
 
 // ============================================
 // 工具函数

@@ -17,7 +17,7 @@ import {
 } from '@/components/ui/dialog';
 import { Progress } from '@/components/ui/progress';
 import { getAdjacentCells } from '@/lib/game/adventure';
-import { STAMINA_CONFIG, getCooldownRemaining } from '@/lib/game/adventureStamina';
+import { STAMINA_CONFIG, getCooldownRemaining } from '@/lib/game/adventure/adventureStamina';
 import { getDungeonInfo, getTerminology } from '@/lib/game/terminology';
 import { AdventureCell, WorldType, DungeonConfig, CellType, AdventureSessionState } from '@/lib/game/types';
 

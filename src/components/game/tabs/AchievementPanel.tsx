@@ -18,7 +18,7 @@ import {
 import { 
   calculateAllAchievementStatuses,
   getAchievementProgress,
-} from '@/lib/game/achievementUtils';
+} from '@/lib/game/achievement/achievementUtils';
 import { 
   GameStatistics,
 } from '@/lib/game/types';

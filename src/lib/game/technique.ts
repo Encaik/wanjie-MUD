@@ -13,11 +13,11 @@ import {
   detectElementFromName,
   WEAPON_CATEGORY_DEFAULT_ELEMENT,
 } from './restraintSystem';
-import { generateTechniqueSkills } from './skillGenerator';
+import { generateTechniqueSkills } from './skill/skillGenerator';
 import { 
   TECHNIQUE_RARITY_CONFIG,
   RARITY_WEIGHTS,
-} from './skillTypes';
+} from './skill/skillTypes';
 import { 
   Technique, 
   TechniqueType, 

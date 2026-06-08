@@ -11,7 +11,7 @@
  */
 
 import { getMaxExperience } from './cultivation';
-import { processExperienceGain, calculateBreakthroughTransfer } from './experienceSystem';
+import { processExperienceGain, calculateBreakthroughTransfer } from './utils/experienceSystem';
 import { getRealmName } from './generators';
 import { spiritStoneItems } from './items';
 import { getTerminology } from './terminology';

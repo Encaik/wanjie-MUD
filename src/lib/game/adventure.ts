@@ -1,3 +1,10 @@
+/**
+ * 机缘探索系统
+ *
+ * @note 本模块使用 Math.random() 进行随机生成。计划在后续专项变更中
+ * 改造为 seed-based RNG（使用 createRng 工具函数），以提高可测试性。
+ * 参见 openspec/changes/archive/2026-06-08-architecture-code-quality-refactor/
+ */
 import {
   calculatePlayerMaxHp,
   calculatePlayerMaxMp,
@@ -18,7 +25,7 @@ import {
   BREAKTHROUGH_CONFIG,
 } from './balanceConfig';
 import { calculatePlayerCombatPower, calculateEnemyCombatPower } from './combatPower';
-import { GAME_CONSTANTS } from './constants';
+import { GAME_CONSTANTS } from './utils/constants';
 import {
   handleEventCell,
   quickHandleEvent,
@@ -31,7 +38,7 @@ import {
   calculateEnemyEnhancement,
   applyEnemyEnhancement,
   getEnemyEnhancementShortDesc,
-} from './enemyEnhancement';
+} from './enemy/enemyEnhancement';
 import { generateRandomEquipment } from './equipment';
 import { 
   generateFragmentDrop, 

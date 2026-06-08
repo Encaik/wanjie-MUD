@@ -40,7 +40,7 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { AlchemyRecipe, PillQuality } from '@/lib/data/alchemyRecipes';
 import { ForgeRecipe, EquipmentQuality } from '@/lib/data/forgeRecipes';
-import { TimeSystemState } from '@/lib/game/timeSystem';
+import { TimeSystemState } from '@/lib/game/time/timeSystem';
 import { Protagonist, ActionTab, BattleState, DungeonConfig, Technique, TechniqueType, Equipment, EquipmentSlot, ItemDefinition, CraftingState, ForgingState, GameStatistics, CultivationPath, MessageRecord, getFinalStats } from '@/lib/game/types';
 import { MentalState, DEFAULT_PROTAGONIST_EXTENSION } from '@/lib/game/typesExtension';
 

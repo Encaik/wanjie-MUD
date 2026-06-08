@@ -327,26 +327,27 @@ function getItemEffectDescription(item: InventoryItem): string {
  */
 export function executePlayerAction(
   action: BattleAction,
-  state: ExtendedBattleState
+  state: ExtendedBattleState,
+  rng: () => number = Math.random
 ): BattleActionResult {
   switch (action.type) {
     case 'normal_attack':
-      return executeNormalAttack(state);
-    
+      return executeNormalAttack(state, rng);
+
     case 'technique_attack':
       return executeTechniqueAttack(action.techniqueSkillId!, state);
-    
+
     case 'combat_technique':
-      return executeCombatTechnique(action.combatTechniqueId!, state);
-    
+      return executeCombatTechnique(action.combatTechniqueId!, state, rng);
+
     case 'defend':
       return executeDefend(state);
-    
+
     case 'use_item':
       return executeUseItem(action.itemId!, state);
-    
+
     case 'flee':
-      return executeFlee(state);
+      return executeFlee(state, rng);
     
     default:
       return {
@@ -361,7 +362,7 @@ export function executePlayerAction(
 /**
  * 执行普通攻击
  */
-function executeNormalAttack(state: ExtendedBattleState): BattleActionResult {
+function executeNormalAttack(state: ExtendedBattleState, rng: () => number = Math.random): BattleActionResult {
   const { playerAttack, playerLuck, playerLevel, playerDefense, enemyLevel } = state;
   
   // ============================================
@@ -389,7 +390,7 @@ function executeNormalAttack(state: ExtendedBattleState): BattleActionResult {
   
   // 计算暴击
   const critRate = calculateCritRate(playerLuck);
-  const isCrit = Math.random() < critRate;
+  const isCrit = rng() < critRate;
   
   // 计算伤害
   const levelDiff = playerLevel - (targetEnemy?.level || enemyLevel);
@@ -580,7 +581,7 @@ function executeTechniqueAttack(skillId: string, state: ExtendedBattleState): Ba
 /**
  * 执行斗技（武器技巧：无MP消耗，中等伤害）
  */
-function executeCombatTechnique(skillId: string, state: ExtendedBattleState): BattleActionResult {
+function executeCombatTechnique(skillId: string, state: ExtendedBattleState, rng: () => number = Math.random): BattleActionResult {
   const skill = state.availableSkills.find(s => s.id === skillId);
   
   if (!skill) {
@@ -639,7 +640,7 @@ function executeCombatTechnique(skillId: string, state: ExtendedBattleState): Ba
   const variance = 0.20;
   const minMultiplier = Math.max(0.5, 1 - variance);
   const maxMultiplier = Math.min(2.0, 1 + variance);
-  const randomMultiplier = minMultiplier + Math.random() * (maxMultiplier - minMultiplier);
+  const randomMultiplier = minMultiplier + rng() * (maxMultiplier - minMultiplier);
   const damageAfterVariance = Math.floor(baseDamage * randomMultiplier);
   
   // 应用防御减伤
@@ -794,9 +795,9 @@ function executeUseItem(itemId: string, state: ExtendedBattleState): BattleActio
 /**
  * 执行逃跑
  */
-function executeFlee(state: ExtendedBattleState): BattleActionResult {
+function executeFlee(state: ExtendedBattleState, rng: () => number = Math.random): BattleActionResult {
   const fleeRate = calculateFleeRate(state);
-  const success = Math.random() < fleeRate;
+  const success = rng() < fleeRate;
   
   return {
     action: { type: 'flee' },
@@ -858,7 +859,7 @@ function applySpecialEffect(
 /**
  * 执行敌人行动
  */
-export function executeEnemyAction(state: ExtendedBattleState): BattleActionResult {
+export function executeEnemyAction(state: ExtendedBattleState, rng: () => number = Math.random): BattleActionResult {
   // 重置玩家防御状态
   const playerWasDefending = state.playerIsDefending;
   state.playerIsDefending = false;
@@ -913,7 +914,7 @@ export function executeEnemyAction(state: ExtendedBattleState): BattleActionResu
       const hpAdjustedChance = baseSkillUseChance + (1 - playerHpPercent) * 0.15;
       
       // 选择技能：优先选择伤害最高的
-      if (Math.random() < hpAdjustedChance && sortedSkills.length > 0) {
+      if (rng() < hpAdjustedChance && sortedSkills.length > 0) {
         selectedSkill = sortedSkills[0];
         useSkill = true;
       }
@@ -1013,7 +1014,8 @@ export function executeEnemyAction(state: ExtendedBattleState): BattleActionResu
 export function executeTurn(
   action: BattleAction,
   state: ExtendedBattleState,
-  statistics: BattleStatistics
+  statistics: BattleStatistics,
+  rng: () => number = Math.random
 ): TurnResult {
   const result: TurnResult = {
     events: [],
@@ -1021,7 +1023,7 @@ export function executeTurn(
   };
   
   // 执行玩家行动
-  result.playerResult = executePlayerAction(action, state);
+  result.playerResult = executePlayerAction(action, state, rng);
   
   // 更新统计
   if (result.playerResult.success) {
@@ -1114,7 +1116,7 @@ export function executeTurn(
     }
     
     // 执行单个敌人的行动
-    const enemyResult = executeSingleEnemyAction(state, enemy, statistics);
+    const enemyResult = executeSingleEnemyAction(state, enemy, statistics, rng);
     enemyResults.push(enemyResult);
     
     // 检查玩家是否死亡
@@ -1171,7 +1173,8 @@ export function executeTurn(
 export function executeSingleEnemyAction(
   state: ExtendedBattleState,
   enemy: BattleEnemy,
-  statistics: BattleStatistics
+  statistics: BattleStatistics,
+  rng: () => number = Math.random
 ): BattleActionResult {
   const playerWasDefending = state.playerIsDefending;
   
@@ -1221,7 +1224,7 @@ export function executeSingleEnemyAction(
                                   enemy.tier === 'elite' ? 0.5 : 0.35;
       const hpAdjustedChance = baseSkillUseChance + (1 - playerHpPercent) * 0.15;
       
-      if (Math.random() < hpAdjustedChance && sortedSkills.length > 0) {
+      if (rng() < hpAdjustedChance && sortedSkills.length > 0) {
         selectedSkill = sortedSkills[0];
         useSkill = true;
       }
@@ -1313,17 +1316,18 @@ export function executeSingleEnemyAction(
  */
 export function executeAutoTurn(
   state: ExtendedBattleState,
-  statistics: BattleStatistics
+  statistics: BattleStatistics,
+  rng: () => number = Math.random
 ): TurnResult {
   // AI选择最佳行动
-  const action = selectBestAction(state);
-  return executeTurn(action, state, statistics);
+  const action = selectBestAction(state, rng);
+  return executeTurn(action, state, statistics, rng);
 }
 
 /**
  * AI选择最佳行动
  */
-function selectBestAction(state: ExtendedBattleState): BattleAction {
+function selectBestAction(state: ExtendedBattleState, rng: () => number = Math.random): BattleAction {
   const context: DecisionContext = { state, round: state.currentRound };
   const options = getAvailableDecisions(context);
   
@@ -1337,27 +1341,27 @@ function selectBestAction(state: ExtendedBattleState): BattleAction {
   // 优先选择推荐选项
   const recommended = availableOptions.filter(o => o.recommended);
   if (recommended.length > 0) {
-    return recommended[Math.floor(Math.random() * recommended.length)].action;
+    return recommended[Math.floor(rng() * recommended.length)].action;
   }
-  
+
   // 低血量时优先防御
   const hpPercent = state.playerCurrentHp / state.playerMaxHp;
   if (hpPercent < 0.3) {
     const defend = availableOptions.find(o => o.action.type === 'defend');
     if (defend) return defend.action;
   }
-  
+
   // 有可用的攻击技能
   // 有可用的法技且MP充足
   const techniqueSkills = availableOptions.filter(o => o.action.type === 'technique_attack');
   if (techniqueSkills.length > 0 && state.playerCurrentMp > 20) {
-    return techniqueSkills[Math.floor(Math.random() * techniqueSkills.length)].action;
+    return techniqueSkills[Math.floor(rng() * techniqueSkills.length)].action;
   }
-  
+
   // 有可用的斗技
   const combatTechniques = availableOptions.filter(o => o.action.type === 'combat_technique');
   if (combatTechniques.length > 0) {
-    return combatTechniques[Math.floor(Math.random() * combatTechniques.length)].action;
+    return combatTechniques[Math.floor(rng() * combatTechniques.length)].action;
   }
   
   // 默认普通攻击

@@ -25,7 +25,7 @@ import {
 import { clamp, clampNonNegative } from '../utils/numberUtils';
 
 // 随机工具
-const randomBetween = (min: number, max: number) => Math.random() * (max - min) + min;
+const randomBetween = (min: number, max: number, rng: () => number = Math.random) => rng() * (max - min) + min;
 
 // ============================================
 // 事件生成配置
@@ -96,14 +96,15 @@ const BUFF_CONFIG = {
  */
 export function checkBattleEvents(
   state: ExtendedBattleState,
-  options: BattleEventOptions = {}
+  options: BattleEventOptions = {},
+  rng: () => number = Math.random
 ): TriggeredEvent[] {
   const events: TriggeredEvent[] = [];
   
   // 1. 暴击事件（由伤害计算触发，这里不重复检测）
   
   // 2. 闪避事件
-  if (options.checkDodge && Math.random() < calculateDodgeChance(state)) {
+  if (options.checkDodge && rng() < calculateDodgeChance(state)) {
     events.push({
       type: 'dodge',
       message: '你灵巧地闪避了攻击！',
@@ -112,7 +113,7 @@ export function checkBattleEvents(
   }
   
   // 3. 反击事件
-  if (options.checkCounter && Math.random() < calculateCounterChance(state)) {
+  if (options.checkCounter && rng() < calculateCounterChance(state)) {
     events.push({
       type: 'counter',
       message: '抓住破绽，发动反击！',
@@ -123,12 +124,12 @@ export function checkBattleEvents(
   }
   
   // 4. 连击事件
-  if (options.checkCombo && Math.random() < calculateComboChance(state)) {
+  if (options.checkCombo && rng() < calculateComboChance(state)) {
     events.push({
       type: 'combo',
       message: '攻击连贯流畅，触发连击！',
       data: {
-        comboCount: Math.floor(Math.random() * 2) + 2, // 2-3连击
+        comboCount: Math.floor(rng() * 2) + 2, // 2-3连击
       },
     });
   }
@@ -136,7 +137,7 @@ export function checkBattleEvents(
   // 5. 低血量护盾事件
   const hpPercent = state.playerCurrentHp / state.playerMaxHp;
   if (hpPercent < EVENT_TRIGGER_CONFIG.shield.hpThreshold && 
-      Math.random() < EVENT_TRIGGER_CONFIG.shield.baseChance) {
+      rng() < EVENT_TRIGGER_CONFIG.shield.baseChance) {
     events.push({
       type: 'shield',
       message: '危急时刻，护盾自动触发！',
@@ -450,10 +451,11 @@ export function processSkillSpecialEffect(
  * 用于增加战斗趣味性
  */
 export function generateRandomBattleEvent(
-  state: ExtendedBattleState
+  state: ExtendedBattleState,
+  rng: () => number = Math.random
 ): TriggeredEvent | null {
   // 5%概率触发随机事件
-  if (Math.random() > 0.05) {
+  if (rng() > 0.05) {
     return null;
   }
   
@@ -501,7 +503,7 @@ export function generateRandomBattleEvent(
   ];
   
   const totalWeight = randomEvents.reduce((sum, e) => sum + e.weight, 0);
-  let random = Math.random() * totalWeight;
+  let random = rng() * totalWeight;
   
   for (const { weight, event } of randomEvents) {
     random -= weight;

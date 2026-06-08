@@ -13,11 +13,11 @@ import {
   detectElementFromName,
   detectWeaponCategoryFromName,
 } from './restraintSystem';
-import { generateWeaponTechniques } from './skillGenerator';
+import { generateWeaponTechniques } from './skill/skillGenerator';
 import { 
   EQUIPMENT_RARITY_CONFIG,
   RARITY_WEIGHTS,
-} from './skillTypes';
+} from './skill/skillTypes';
 import { 
   Equipment, 
   EquipmentSlot, 

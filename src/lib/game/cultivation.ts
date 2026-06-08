@@ -1,4 +1,4 @@
-import { GAME_CONSTANTS } from './constants';
+import { GAME_CONSTANTS } from './utils/constants';
 import { getItemById, spiritStoneItems, breakthroughItems } from './items';
 import { getExperienceForLevel, getActualStatCap } from './realmSystem';
 import { getTerminology } from './terminology';

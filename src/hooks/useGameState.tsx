@@ -10,13 +10,13 @@ import type { Dispatch, SetStateAction } from 'react';
 
 // 类型导入
 import { handleCellEvent } from '@/lib/game/adventure';
-import { calculateBattleWithLogs } from '@/lib/game/adventureBattleNew';
+import { calculateBattleWithLogs } from '@/lib/game/adventure/adventureBattleNew';
 import { calculatePlayerMaxHp, calculatePlayerMaxMp } from '@/lib/game/balanceConfig';
 import { calculatePlayerCombatPower } from '@/lib/game/combatPower';
 import { executeCultivation, getMaxExperience } from '@/lib/game/cultivation';
 import { generateEquipment } from '@/lib/game/equipment';
 import { updateTaskProgress, applyMentalChange } from '@/lib/game/expansionLogic';
-import { processExperienceGain, calculateBreakthroughTransfer } from '@/lib/game/experienceSystem';
+import { processExperienceGain, calculateBreakthroughTransfer } from '@/lib/game/utils/experienceSystem';
 import { generateCharacters, generateWorlds, generateBackstory } from '@/lib/game/generators';
 import type { SeclusionType } from '@/lib/game/seclusion';
 import type { TowerEnemy } from '@/lib/game/tower/types';
@@ -84,7 +84,7 @@ import {
   upgradeTechnique, 
   upgradeEquipment,
   getMaterialExpValue 
-} from '@/lib/game/upgradeSystem';
+} from '@/lib/game/utils/upgradeSystem';
 import {
   createEmptyFragmentInventory,
   synthesizeFragmentGroup,
@@ -116,15 +116,17 @@ import {
   shouldShowOfflineDialog,
   OfflineTimeResult,
   DEFAULT_OFFLINE_TIME_CONFIG,
-} from '@/lib/game/offlineTimeProcessor';
+} from '@/lib/game/time/offlineTimeProcessor';
 import { TOWER_CONFIG } from '@/lib/game/tower/types';
-import { getDefaultRealTimeState, getDefaultGameTimeState } from '@/lib/game/timeSystem';
+import { getDefaultRealTimeState, getDefaultGameTimeState } from '@/lib/game/time/timeSystem';
 
 // 子 Hooks
 
 // 游戏逻辑模块
 import { getRandomItem } from '@/lib/game/items';
-import { calculatePillEffect, getPillRealmLevel } from '@/lib/game/pillRealmSystem';
+import { calculatePillEffect, getPillRealmLevel } from '@/lib/game/cultivation/pillRealmSystem';
+import { createMinimalEquipment, createMinimalTechnique } from '@/lib/game/utils/rarityUtils';
+import { createInitialGameState } from './game-state/initialState';
 
 // 游戏上下文类型
 interface GameContextType {
@@ -242,86 +244,6 @@ interface GameContextType {
 }
 
 const GameContext = createContext<GameContextType | null>(null);
-
-// 创建初始游戏状态
-function createInitialGameState(): GameState {
-  return {
-    phase: 'character-select',
-    characters: [],
-    worlds: [],
-    selectedCharacter: null,
-    selectedWorld: null,
-    protagonist: null,
-    currentEvent: null,
-    lastActionResult: null,
-    adventureGrid: null,
-    adventurePosition: null,
-    adventureConfig: null,
-    adventurePhase: 'select',
-    adventureLoot: [],
-    adventureExperience: 0,
-    currentTab: 'cultivation',
-    battleState: null,
-    activeBattle: null,
-    messages: [],
-    totalMessageCount: 0,
-    autoCultivating: false,
-    autoBattle: false,
-    lastExploreTime: 0,
-    crafting: null,
-    forging: null,
-    statistics: {
-      maxLevel: 1,
-      totalEnemiesKilled: 0,
-      totalBossKilled: 0,
-      totalEliteKilled: 0,
-      totalTechniquesCollected: 0,
-      totalEquipmentsCollected: 0,
-      totalAdventuresCompleted: 0,
-      clearedDifficulties: [], // 已通关的机缘难度等级列表
-      totalCultivations: 0,
-      totalBreakthroughs: 0,
-      legendaryItemsObtained: 0,
-      hasFullEquipment: false,
-      maxLevelTechniques: 0,
-      maxLevelEquipments: 0,
-      collectedTechniqueNames: [],
-      collectedEquipmentNames: [],
-      pathSelected: false,
-      pathLevel: 0,
-      techniqueProficiencyXiaocheng: 0,
-      techniqueProficiencyDacheng: 0,
-      techniqueProficiencyHuajing: 0,
-      bondsActivated: 0,
-      bondLevel3Activated: false,
-      maxEnhancementLevel: 0,
-      factionJoined: false,
-      reputationFriendly: false,
-      reputationHonored: false,
-      reputationExalted: false,
-      achievementRewardsClaimed: 0,
-      totalItemsUsed: 0,
-      // 新增：势力任务相关统计默认值
-      totalSpiritStonesGained: 0,
-      totalSpiritStonesSpent: 0,
-      totalMaterialsCollected: 0,
-      totalFragmentsCollected: 0,
-      totalEquipmentsCrafted: 0,
-      totalTechniquesSynthesized: 0,
-      totalContribution: 0,
-      totalDonations: 0,
-      totalSpiritStonesDonated: 0,
-      totalFragmentsSynthesized: 0,
-    },
-    unlockedAchievementIds: [],
-    claimedAchievementIds: [],
-    completedTutorialTaskIds: [], // 已完成的新手任务ID列表
-    devMode: undefined,
-    ascensionFlow: {
-      ...DEFAULT_ASCENSION_FLOW_STATE,
-    },
-  };
-}
 
 export function GameProvider({ children }: { children: React.ReactNode }) {
   const [gameState, setGameState] = useState<GameState>(createInitialGameState);
@@ -693,7 +615,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     // 动态导入 gameSystems 以避免循环依赖
     let gameSystems: { initialize: () => void; destroy: () => void } | null = null;
     
-    import('@/lib/game/gameSystems').then(module => {
+    import('@/lib/game/utils/gameSystems').then(module => {
       gameSystems = module.gameSystems;
       gameSystems.initialize();
     }).catch(err => {
@@ -1541,7 +1463,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     setGameState(prev => {
       if (!prev.protagonist) return prev;
       
-      const { createMinimalEquipment } = require('@/lib/game/rarityUtils');
+      
       const newEquipment = createMinimalEquipment(
         `eq_${Date.now()}`,
         '炼制武器',
@@ -2200,7 +2122,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     onAddTechnique: useCallback((techniqueId: string) => {
       setGameState(prev => {
         if (!prev.protagonist) return prev;
-        const { createMinimalTechnique } = require('@/lib/game/rarityUtils');
+        
         const newTechnique = createMinimalTechnique(
           techniqueId,
           techniqueId,
@@ -2226,7 +2148,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     onAddEquipment: useCallback((equipmentId: string) => {
       setGameState(prev => {
         if (!prev.protagonist) return prev;
-        const { createMinimalEquipment } = require('@/lib/game/rarityUtils');
+        
         const newEquipment = createMinimalEquipment(
           equipmentId,
           equipmentId,
@@ -2254,7 +2176,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
       setGameState(prev => {
         if (!prev.protagonist) return prev;
         // 使用正确的功法生成函数
-        const { generateTechniqueByType } = require('@/lib/game/technique');
+        
         const newTechnique = generateTechniqueByType(
           type,
           1, // difficulty
@@ -2278,7 +2200,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
       setGameState(prev => {
         if (!prev.protagonist) return prev;
         // 使用正确的装备生成函数
-        const { generateEquipment } = require('@/lib/game/equipment');
+        
         const newEquipment = generateEquipment(
           slot,
           rarity,

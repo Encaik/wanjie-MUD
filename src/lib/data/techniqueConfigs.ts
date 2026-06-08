@@ -9,7 +9,7 @@
  */
 
 import { Element, WeaponCategory } from '../game/restraintSystem';
-import { TECHNIQUE_RARITY_CONFIG, RARITY_ORDER, RARITY_WEIGHTS } from '../game/skillTypes';
+import { TECHNIQUE_RARITY_CONFIG, RARITY_ORDER, RARITY_WEIGHTS } from '../game/skill/skillTypes';
 import { TechniqueType, ItemRarity } from '../game/types';
 
 // ============================================

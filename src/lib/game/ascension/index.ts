@@ -114,3 +114,6 @@ export function isFeatureUnlocked(
 export function getCurrentRealm(state: ReturnType<typeof RealmService.createInitialState>) {
   return RealmService.getCurrentRealm(state);
 }
+
+// 飞升核心逻辑
+export * from './ascensionLogic';

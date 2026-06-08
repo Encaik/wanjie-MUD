@@ -23,7 +23,7 @@ import { WORLD_GUARDIANS, ASCENSION_CONFIG } from '@/lib/data/ascensionData';
 import { 
   createGuardianBattleState, 
   executeBattleRound,
-} from '@/lib/game/ascensionLogic';
+} from '@/lib/game/ascension/ascensionLogic';
 import { BattleState, BattleLog, Protagonist, getFinalStats } from '@/lib/game/types';
 import { GuardianBattleState } from '@/lib/game/typesExtension';
 

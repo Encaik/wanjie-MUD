@@ -649,7 +649,7 @@ export interface Technique {
   // ========== 法技系统 ==========
   skillSlots: number; // 已解锁的技能槽位数量
   maxSkillSlots: number; // 最大技能槽位数量
-  allSkills: import('./skillTypes').TechniqueSkill[]; // 全部可解锁技能
+  allSkills: import('./skill/skillTypes').TechniqueSkill[]; // 全部可解锁技能
   equippedSkills: (string | null)[]; // 当前装备的技能ID列表（按槽位顺序，null表示空槽）
   
   // ========== 来源信息 ==========
@@ -722,7 +722,7 @@ export interface Equipment {
   // ========== 斗技系统 ==========
   techniqueSlots: number; // 已解锁的技巧槽位数量
   maxTechniqueSlots: number; // 最大技巧槽位数量
-  allTechniques: import('./skillTypes').WeaponTechnique[]; // 全部可解锁技巧
+  allTechniques: import('./skill/skillTypes').WeaponTechnique[]; // 全部可解锁技巧
   equippedTechniques: (string | null)[]; // 当前装备的技巧ID列表
   
   // ========== 来源信息 ==========
@@ -1014,9 +1014,9 @@ export interface GameState {
   currentFactionId?: string | null; // 当前加入的势力ID
   factionProgress?: import('./typesExtension').FactionProgress | null; // 势力进度
   // 时间系统
-  timeSystem?: import('./timeSystem').TimeSystemState | null; // 统一时间系统
+  timeSystem?: import('./time/timeSystem').TimeSystemState | null; // 统一时间系统
   // 离线处理结果（登录时显示，显示后清除）
-  offlineResult?: import('./offlineProcessor').OfflineProcessResult | null;
+  offlineResult?: import('./time/offlineProcessor').OfflineProcessResult | null;
   // 离线处理结果V2（新系统）
   offlineResultV2?: import('./tower/idleSystem').OfflineProcessResult | null;
   // 开发者调试状态

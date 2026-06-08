@@ -342,7 +342,7 @@ describe('新手区域敌人数值', () => {
   });
 
   it('新手区域Boss增强应该降低', async () => {
-    const { calculateEnemyEnhancement } = await import('@/lib/game/enemyEnhancement');
+    const { calculateEnemyEnhancement } = await import('@/lib/game/enemy/enemyEnhancement');
     
     // 新手区域（难度<=10）的Boss增强
     const newbieEnhancement = calculateEnemyEnhancement(7, 'boss', 7);
@@ -359,7 +359,7 @@ describe('新手区域敌人数值', () => {
   });
 
   it('高等级Boss增强应该正常', async () => {
-    const { calculateEnemyEnhancement } = await import('@/lib/game/enemyEnhancement');
+    const { calculateEnemyEnhancement } = await import('@/lib/game/enemy/enemyEnhancement');
     
     // 高等级Boss（难度>10）
     const enhancement = calculateEnemyEnhancement(50, 'boss', 50);

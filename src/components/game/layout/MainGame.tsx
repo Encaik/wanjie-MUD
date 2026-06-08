@@ -15,7 +15,7 @@ import { createEmptyFragmentInventory, getSynthesizableCount } from '@/lib/game/
 import { TowerEnemy, createDefaultTowerProgress } from '@/lib/game/tower/types';
 import { Protagonist, ActionResult, ActionTab, BattleState, DungeonConfig, Technique, TechniqueType, InventoryItem, Equipment, EquipmentSlot, ItemDefinition, CraftingState, ForgingState, AchievementStatus, CollectionStatus, GameStatistics, CultivationPath, ItemRarity, MessageRecord, getFinalStats } from '@/lib/game/types';
 import type { SeclusionType } from '@/lib/game/seclusion';
-import { TimeSystemState } from '@/lib/game/timeSystem';
+import { TimeSystemState } from '@/lib/game/time/timeSystem';
 
 // Tab panels
 import { AchievementPanel } from '../tabs/AchievementPanel';

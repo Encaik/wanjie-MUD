@@ -9,7 +9,7 @@
  */
 
 import { Element, WeaponCategory } from '../game/restraintSystem';
-import { EQUIPMENT_RARITY_CONFIG, RARITY_WEIGHTS } from '../game/skillTypes';
+import { EQUIPMENT_RARITY_CONFIG, RARITY_WEIGHTS } from '../game/skill/skillTypes';
 import { EquipmentSlot, ItemRarity } from '../game/types';
 
 // ============================================

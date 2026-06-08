@@ -2,6 +2,10 @@
  * 游戏数值平衡配置文件
  * 所有核心数值公式和平衡参数都在这里统一管理
  * 基于世界数据进行计算，确保不同世界的数值体系一致
+ *
+ * @note 本模块在 calculateEnemyHp/Attack/Defense 等函数中使用 Math.random()
+ * 进行数值浮动。计划在后续专项变更中改造为 seed-based RNG。参见
+ * openspec/changes/archive/2026-06-08-architecture-code-quality-refactor/
  */
 
 import { WorldType, World, EnemyTier } from './types';

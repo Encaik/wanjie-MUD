@@ -10,7 +10,7 @@ import { CULTIVATION_PATHS, getPathLevelExp } from '@/lib/data/cultivationPathDa
 import { getRealmName } from '@/lib/data/realmData';
 import { getMaxExperience } from '@/lib/game/cultivation';
 import { getResourceName } from '@/lib/game/items';
-import { TimeSystemState, formatGameTimeShort } from '@/lib/game/timeSystem';
+import { TimeSystemState, formatGameTimeShort } from '@/lib/game/time/timeSystem';
 import { CultivationPath } from '@/lib/game/types';
 import { Protagonist } from '@/lib/game/types';
 import { MentalState } from '@/lib/game/typesExtension';

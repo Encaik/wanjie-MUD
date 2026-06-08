@@ -43,8 +43,8 @@ import {
   unequipTechnique,
   quickEquipSkill,
   quickEquipTechnique,
-} from '@/lib/game/skillEquipSystem';
-import { TechniqueSkill, WeaponTechnique } from '@/lib/game/skillTypes';
+} from '@/lib/game/skill/skillEquipSystem';
+import { TechniqueSkill, WeaponTechnique } from '@/lib/game/skill/skillTypes';
 import { Technique, Equipment } from '@/lib/game/types';
 
 interface SkillsTabProps {

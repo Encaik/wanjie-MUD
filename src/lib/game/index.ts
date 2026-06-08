@@ -31,7 +31,7 @@ export {
 } from './generators';
 
 // ========== 历练系统 ==========
-export { getRandomEvent } from './events';
+export { getRandomEvent } from './events/events';
 
 // ========== 机缘系统 ==========
 export {
@@ -44,7 +44,7 @@ export {
 // ========== 战斗系统（新版） ==========
 export {
   calculateBattleWithLogs,
-} from './adventureBattleNew';
+} from './adventure/adventureBattleNew';
 
 // ========== 修炼系统 ==========
 export {
@@ -91,7 +91,7 @@ export {
   upgradeTechnique,
   upgradeEquipment,
   getUpgradeProgress,
-} from './upgradeSystem';
+} from './utils/upgradeSystem';
 
 // ========== 境界系统 ==========
 export type { RealmTier, RealmSystem } from '../data/realmData';
@@ -139,10 +139,10 @@ export {
 export {
   impactLevelToQuality,
   getQualityClasses,
-} from './quality';
+} from './utils/quality';
 
 // ========== 词条系统 ==========
-export type { TraitDefinition } from './traits';
+export type { TraitDefinition } from './utils/traits';
 
 export {
   QUALITY_CONFIG,
@@ -153,7 +153,7 @@ export {
   selectRandomTrait,
   generateImpactDescription,
   calculateTotalImpact,
-} from './traits';
+} from './utils/traits';
 
 // ========== 消息存储 ==========
 export {
@@ -163,7 +163,7 @@ export {
   getMessageCount,
   clearAllMessages,
   syncMessagesFromRemote,
-} from './messageDB';
+} from './utils/messageDB';
 
 // ========== 经济平衡系统 ==========
 export type {

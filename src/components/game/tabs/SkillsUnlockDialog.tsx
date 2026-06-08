@@ -11,7 +11,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-import { TechniqueSkill, WeaponTechnique } from '@/lib/game/skillTypes';
+import { TechniqueSkill, WeaponTechnique } from '@/lib/game/skill/skillTypes';
 
 interface SkillUnlockInfo {
   id: string;

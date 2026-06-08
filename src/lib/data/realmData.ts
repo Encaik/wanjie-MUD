@@ -14,7 +14,7 @@ import {
   calculateEnemyDefense 
 } from '../game/balanceConfig';
 import { calculateEnemyCombatPower } from '../game/combatPower';
-import { calculateEnemyEnhancement } from '../game/enemyEnhancement';
+import { calculateEnemyEnhancement } from '../game/enemy/enemyEnhancement';
 import { WorldType, DungeonConfig, EnemyTier } from '../game/types';
 
 // ============================================

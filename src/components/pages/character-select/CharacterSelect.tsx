@@ -5,7 +5,7 @@ import { RefreshCw, Swords, BookOpen, Shield, Compass } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { impactLevelToQuality, getQualityClasses } from '@/lib/game/quality';
+import { impactLevelToQuality, getQualityClasses } from '@/lib/game/utils/quality';
 import { getAttributeNames } from '@/lib/game/terminology';
 import { Character, CharacterStats, ImpactLevel, StatImpact } from '@/lib/game/types';
 import { cn } from '@/utils';

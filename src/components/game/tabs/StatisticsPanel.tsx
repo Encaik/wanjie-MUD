@@ -16,7 +16,7 @@ import {
 } from 'lucide-react';
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { calculateStatisticsSummary, StatisticsSummary } from '@/lib/game/statisticsSystem';
+import { calculateStatisticsSummary, StatisticsSummary } from '@/lib/game/statistics/statisticsSystem';
 import { GameStatistics, Protagonist, getFinalStats } from '@/lib/game/types';
 import { cn } from '@/utils';
 

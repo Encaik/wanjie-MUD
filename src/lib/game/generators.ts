@@ -1,4 +1,4 @@
-import { evaluateCharacter, evaluateCharacters } from './characterEvaluation';
+import { evaluateCharacter, evaluateCharacters } from './utils/characterEvaluation';
 import { getTerminology } from './terminology';
 import { 
   ORIGIN_TRAITS, 
@@ -9,7 +9,7 @@ import {
   generateImpactDescription,
   calculateTotalImpact,
   QUALITY_CONFIG
-} from './traits';
+} from './utils/traits';
 import { Character, World, CharacterStats, WorldType, ImpactfulTrait, ImpactLevel, StatImpact, WorldFaction } from './types';
 import {
   generateWorldFactions,

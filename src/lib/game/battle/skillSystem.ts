@@ -8,7 +8,7 @@
  * 4. 技能推荐算法
  */
 
-import { TechniqueSkill, WeaponTechnique } from '../skillTypes';
+import { TechniqueSkill, WeaponTechnique } from '../skill/skillTypes';
 import { Technique, Equipment, ItemRarity } from '../types';
 import { 
   BattleSkill, 
@@ -389,8 +389,14 @@ function generateSkillDescription(
 
 /**
  * 生成随机特殊效果
+ *
+ * @param rarity - 物品稀有度
+ * @param rng - 可选随机数生成器，默认使用 Math.random（向后兼容）
  */
-function generateRandomSpecialEffect(rarity: ItemRarity): SpecialEffectType | undefined {
+function generateRandomSpecialEffect(
+  rarity: ItemRarity,
+  rng: () => number = Math.random
+): SpecialEffectType | undefined {
   const effects: Array<{ type: SpecialEffectType['type']; weight: number; value: number }> = [
     { type: 'life_steal', weight: 3, value: rarity === '传说' ? 20 : 10 },
     { type: 'ignore_defense', weight: 2, value: rarity === '传说' ? 30 : 15 },
@@ -398,10 +404,10 @@ function generateRandomSpecialEffect(rarity: ItemRarity): SpecialEffectType | un
     { type: 'stun', weight: 1, value: 1 },
     { type: 'shield', weight: 2, value: rarity === '传说' ? 100 : 50 },
   ];
-  
+
   const totalWeight = effects.reduce((sum, e) => sum + e.weight, 0);
-  let random = Math.random() * totalWeight;
-  
+  let random = rng() * totalWeight;
+
   for (const effect of effects) {
     random -= effect.weight;
     if (random <= 0) {
@@ -419,7 +425,7 @@ function generateRandomSpecialEffect(rarity: ItemRarity): SpecialEffectType | un
       }
     }
   }
-  
+
   return undefined;
 }
 
@@ -577,17 +583,23 @@ function getElementMultiplier(attacker: string, defender: string): number {
 
 /**
  * 计算技能伤害
- * 
+ *
  * 设计原则：
  * 1. 技能伤害基于基础攻击力和技能倍率
  * 2. 所有技能伤害都有随机浮动（±20%）
  * 3. 强力技能浮动更大（±25%）
  * 4. Buff加成在浮动前计算
+ *
+ * @param skill - 使用的战斗技能
+ * @param baseAttack - 基础攻击力
+ * @param state - 扩展战斗状态
+ * @param rng - 可选随机数生成器，默认使用 Math.random（向后兼容）
  */
 export function calculateSkillDamage(
   skill: BattleSkill,
   baseAttack: number,
-  state: ExtendedBattleState
+  state: ExtendedBattleState,
+  rng: () => number = Math.random
 ): number {
   let damage = baseAttack;
   
@@ -621,7 +633,7 @@ export function calculateSkillDamage(
   // 浮动范围：1 - variance 到 1 + variance
   const minMultiplier = Math.max(0.5, 1 - variance);
   const maxMultiplier = Math.min(2.0, 1 + variance);
-  const randomMultiplier = minMultiplier + Math.random() * (maxMultiplier - minMultiplier);
+  const randomMultiplier = minMultiplier + rng() * (maxMultiplier - minMultiplier);
   
   damage = Math.floor(damage * randomMultiplier);
   

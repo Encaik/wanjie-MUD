@@ -12,7 +12,7 @@ import { generateId } from '@/lib/game/generators';
 import {
   addMessage as dbAddMessage,
   getMessagesPage,
-} from '@/lib/game/messageDB';
+} from '@/lib/game/utils/messageDB';
 import { MessageRecord } from '@/lib/game/types';
 import { MESSAGE_CONFIG } from '@/lib/game/types';
 

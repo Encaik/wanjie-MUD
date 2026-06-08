@@ -42,7 +42,7 @@ import {
   initTowerBattle, 
   performPlayerAction, 
   estimateBattleDifficulty 
-} from '@/lib/game/adventureBattleIntegration';
+} from '@/lib/game/adventure/adventureBattleIntegration';
 import {
   ExtendedBattleState,
   BattleStatistics,

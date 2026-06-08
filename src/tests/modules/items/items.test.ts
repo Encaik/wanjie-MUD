@@ -98,7 +98,7 @@ describe('装备系统', () => {
 
   it('装备应该有属性加成', async () => {
     type TestEquipment = import('@/lib/game/types').Equipment;
-    const { createMinimalEquipment } = require('@/lib/game/rarityUtils');
+    const { createMinimalEquipment } = require('@/lib/game/utils/rarityUtils');
     
     const equipment: TestEquipment = createMinimalEquipment(
       'equip-1',
@@ -128,7 +128,7 @@ describe('功法系统', () => {
   it('功法应该有属性', async () => {
     type TestTechnique = import('@/lib/game/types').Technique;
     
-    const { createMinimalTechnique } = require('@/lib/game/rarityUtils');
+    const { createMinimalTechnique } = require('@/lib/game/utils/rarityUtils');
     const technique: TestTechnique = createMinimalTechnique(
       'tech-1',
       'Basic Attack',

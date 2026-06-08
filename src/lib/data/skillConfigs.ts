@@ -13,7 +13,7 @@ import {
   ItemRarity,
   TECHNIQUE_RARITY_CONFIG,
   EQUIPMENT_RARITY_CONFIG,
-} from '../game/skillTypes';
+} from '../game/skill/skillTypes';
 
 // ============================================
 // 稀有度加成配置

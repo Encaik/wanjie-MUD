@@ -114,7 +114,7 @@ describe('typeGuards', () => {
     });
 
     it('should return true for valid technique', () => {
-      const { createMinimalTechnique } = require('@/lib/game/rarityUtils');
+      const { createMinimalTechnique } = require('@/lib/game/utils/rarityUtils');
       const validTechnique = createMinimalTechnique(
         'tech-1',
         'Basic Attack',
@@ -137,7 +137,7 @@ describe('typeGuards', () => {
     });
 
     it('should return true for valid equipment', () => {
-      const { createMinimalEquipment } = require('@/lib/game/rarityUtils');
+      const { createMinimalEquipment } = require('@/lib/game/utils/rarityUtils');
       const validEquipment = createMinimalEquipment(
         'equip-1',
         'Iron Sword',

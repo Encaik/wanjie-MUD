@@ -519,11 +519,14 @@ interface BattleSettlement {
 
 /**
  * 结算战斗
+ *
+ * @param rng - 可选随机数生成器，默认使用 Math.random（向后兼容）
  */
 export function settleBattle(
   state: ExtendedBattleState,
   statistics: BattleStatistics,
-  enemy: Enemy
+  enemy: Enemy,
+  rng: () => number = Math.random
 ): BattleSettlement {
   const settlement: BattleSettlement = {
     victory: state.victory ?? false,
@@ -535,7 +538,7 @@ export function settleBattle(
   };
   
   if (state.victory) {
-    settlement.rewards = calculateRewards(state, enemy, statistics);
+    settlement.rewards = calculateRewards(state, enemy, statistics, rng);
   } else {
     settlement.deathPenalty = calculateDeathPenalty(state);
   }
@@ -549,7 +552,8 @@ export function settleBattle(
 function calculateRewards(
   state: ExtendedBattleState,
   enemy: Enemy,
-  statistics: BattleStatistics
+  statistics: BattleStatistics,
+  rng: () => number = Math.random
 ): BattleReward {
   const rewards: BattleReward = {
     experience: enemy.expReward || 0,
@@ -584,9 +588,9 @@ function calculateRewards(
   // 掉落物品
   if (enemy.drops && enemy.drops.length > 0) {
     enemy.drops.forEach(drop => {
-      if (Math.random() < drop.chance) {
+      if (rng() < drop.chance) {
         const quantity = drop.minQuantity && drop.maxQuantity
-          ? Math.floor(Math.random() * (drop.maxQuantity - drop.minQuantity + 1)) + drop.minQuantity
+          ? Math.floor(rng() * (drop.maxQuantity - drop.minQuantity + 1)) + drop.minQuantity
           : 1;
         rewards.items.push({ id: drop.itemId, quantity });
       }

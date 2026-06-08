@@ -14,7 +14,7 @@ import {
   handleCellEvent,
   parseEnemyInfo,
 } from '@/lib/game/adventure';
-import { calculateBattleWithLogs } from '@/lib/game/adventureBattleNew';
+import { calculateBattleWithLogs } from '@/lib/game/adventure/adventureBattleNew';
 import {
   STAMINA_CONFIG,
   canEnterAdventure,
@@ -25,12 +25,12 @@ import {
   endAdventureSession,
   getCooldownRemaining,
   getEnemyTierFromType,
-} from '@/lib/game/adventureStamina';
+} from '@/lib/game/adventure/adventureStamina';
 import { calculatePlayerCombatPower } from '@/lib/game/combatPower';
 import { getMaxExperience } from '@/lib/game/cultivation';
-import { getRandomEvent } from '@/lib/game/events';
+import { getRandomEvent } from '@/lib/game/events/events';
 import { GrowthStats } from '@/lib/game/types';
-import { processExperienceGain } from '@/lib/game/experienceSystem';
+import { processExperienceGain } from '@/lib/game/utils/experienceSystem';
 import { 
   spiritStoneItems, 
   breakthroughItems, 
@@ -52,11 +52,11 @@ import {
   generateFragmentDrop,
 } from '@/lib/game/fragmentSystem';
 // 统计系统
-import { statisticsManager, StatisticsEventType } from '@/lib/game/statisticsSystem';
-import { gameSystems } from '@/lib/game/gameSystems';
+import { statisticsManager, StatisticsEventType } from '@/lib/game/statistics/statisticsSystem';
+import { gameSystems } from '@/lib/game/utils/gameSystems';
 import { getAvailableDifficultiesForRealm } from '@/lib/game/generators';
 import { applyGrowthStatChanges, getGrowthStatCap } from '@/lib/game/realmSystem';
-import { consumeGameTime, ACTION_TIME_COST, createCooldown } from '@/lib/game/timeSystem';
+import { consumeGameTime, ACTION_TIME_COST, createCooldown } from '@/lib/game/time/timeSystem';
 import { isNewbie } from '@/lib/game/taskSystem';
 import { getTerminology } from '@/lib/game/terminology';
 import { 

@@ -13,11 +13,11 @@ import { calculatePlayerMaxHp, calculatePlayerMaxMp } from '@/lib/game/balanceCo
 import { executeCultivation, getMaxExperience } from '@/lib/game/cultivation';
 import { applyMentalChange } from '@/lib/game/expansionLogic';
 import { updateTaskProgress } from '@/lib/game/expansionLogic';
-import { processExperienceGain, calculateBreakthroughTransfer } from '@/lib/game/experienceSystem';
-import { gameSystems } from '@/lib/game/gameSystems';
+import { processExperienceGain, calculateBreakthroughTransfer } from '@/lib/game/utils/experienceSystem';
+import { gameSystems } from '@/lib/game/utils/gameSystems';
 import { getRealmName } from '@/lib/game/generators';
 import { applyGrowthStatChanges, getGrowthStatCap } from '@/lib/game/realmSystem';
-import { consumeGameTime, ACTION_TIME_COST } from '@/lib/game/timeSystem';
+import { consumeGameTime, ACTION_TIME_COST } from '@/lib/game/time/timeSystem';
 import { 
   GameState, 
   MessageRecord, 

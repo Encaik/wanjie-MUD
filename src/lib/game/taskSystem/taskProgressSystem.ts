@@ -12,7 +12,7 @@
  * - 边界条件完整处理
  */
 
-import { StatisticsEventType } from '../statisticsSystem';
+import { StatisticsEventType } from '../statistics/statisticsSystem';
 import { GameStatistics } from '../types';
 
 // ============================================

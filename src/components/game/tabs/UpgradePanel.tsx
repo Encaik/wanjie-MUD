@@ -24,7 +24,7 @@ import {
   techniqueToMaterial,
   equipmentToMaterial,
   getUpgradeProgress,
-} from '@/lib/game/upgradeSystem';
+} from '@/lib/game/utils/upgradeSystem';
 
 
 // 可升级物品的联合类型

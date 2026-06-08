@@ -14,8 +14,8 @@ import {
   equipTechnique,
   unequipTechnique,
   quickEquipTechnique,
-} from '@/lib/game/skillEquipSystem';
-import { TechniqueSkill, WeaponTechnique } from '@/lib/game/skillTypes';
+} from '@/lib/game/skill/skillEquipSystem';
+import { TechniqueSkill, WeaponTechnique } from '@/lib/game/skill/skillTypes';
 import { Technique } from '@/lib/game/types';
 import { Equipment } from '@/lib/game/types';
 

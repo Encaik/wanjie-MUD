@@ -15,7 +15,7 @@ import {
   calculateInheritance,
   getOrCreateAscensionMark,
   updateAscensionMark
-} from '@/lib/game/ascensionLogic';
+} from '@/lib/game/ascension/ascensionLogic';
 import { calculatePlayerMaxHp, calculatePlayerMaxMp } from '@/lib/game/balanceConfig';
 import { 
   GameState, 

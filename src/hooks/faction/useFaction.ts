@@ -23,9 +23,9 @@ import {
   CommissionQuality,
   FactionCommissionConfig,
 } from '@/lib/data/factionProgressData';
-import { getStatisticValue } from '@/lib/game/achievementUtils';
+import { getStatisticValue } from '@/lib/game/achievement/achievementUtils';
 import { spiritStoneItems } from '@/lib/game/items';
-import { statisticsManager } from '@/lib/game/statisticsSystem';
+import { statisticsManager } from '@/lib/game/statistics/statisticsSystem';
 import { 
   GameState, 
   MessageRecord,
