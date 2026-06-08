@@ -138,7 +138,7 @@ describe('境界系统', () => {
 // ============================================
 describe('突破系统', () => {
   it('应该能计算最大经验值', async () => {
-    const { getMaxExperience } = await import('@/lib/game/cultivation');
+    const { getMaxExperience } = await import('@/lib/game/cultivation/cultivation');
     
     // 测试不同等级的最大经验
     expect(getMaxExperience(1)).toBeGreaterThan(0);
@@ -147,7 +147,7 @@ describe('突破系统', () => {
   });
 
   it('应该能计算突破概率', async () => {
-    const { calculateBreakthroughRate } = await import('@/lib/game/cultivation');
+    const { calculateBreakthroughRate } = await import('@/lib/game/cultivation/cultivation');
     
     // 低等级应该有较高的基础成功率
     const lowLevelRate = calculateBreakthroughRate(1, 10, 0, 0, 100);
@@ -161,7 +161,7 @@ describe('突破系统', () => {
   });
 
   it('突破增益应该提高成功率', async () => {
-    const { calculateBreakthroughRate } = await import('@/lib/game/cultivation');
+    const { calculateBreakthroughRate } = await import('@/lib/game/cultivation/cultivation');
     
     // 有增益效果时成功率应该更高
     const baseRate = calculateBreakthroughRate(50, 10, 0, 0, 100);
@@ -171,7 +171,7 @@ describe('突破系统', () => {
   });
 
   it('悟性应该影响突破概率', async () => {
-    const { calculateBreakthroughRate } = await import('@/lib/game/cultivation');
+    const { calculateBreakthroughRate } = await import('@/lib/game/cultivation/cultivation');
     
     const lowWuxingRate = calculateBreakthroughRate(50, 30, 0, 0, 100);
     const highWuxingRate = calculateBreakthroughRate(50, 80, 0, 0, 100);
@@ -180,7 +180,7 @@ describe('突破系统', () => {
   });
 
   it('满级时应该不能突破', async () => {
-    const { executeCultivation } = await import('@/lib/game/cultivation');
+    const { executeCultivation } = await import('@/lib/game/cultivation/cultivation');
     const { getMaxLevel, generateRealmSystem } = await import('@/lib/data/realmData');
     const { createInventoryItem } = await import('@/lib/game/types');
     const { spiritStoneItems } = await import('@/lib/game/items');

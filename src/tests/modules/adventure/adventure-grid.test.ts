@@ -17,13 +17,13 @@ import { describe, it, expect } from 'vitest';
 // ============================================
 describe('地图基础结构', () => {
   it('应该能导入地图生成函数', async () => {
-    const { generateAdventureGrid } = await import('@/lib/game/adventure');
+    const { generateAdventureGrid } = await import('@/lib/game/adventure/adventure');
     expect(generateAdventureGrid).toBeDefined();
     expect(typeof generateAdventureGrid).toBe('function');
   });
 
   it('生成的地图应该有正确的尺寸', async () => {
-    const { generateAdventureGrid } = await import('@/lib/game/adventure');
+    const { generateAdventureGrid } = await import('@/lib/game/adventure/adventure');
     
     const config = {
       rows: 7,
@@ -44,7 +44,7 @@ describe('地图基础结构', () => {
   });
 
   it('生成的地图应该有正确的格子结构', async () => {
-    const { generateAdventureGrid } = await import('@/lib/game/adventure');
+    const { generateAdventureGrid } = await import('@/lib/game/adventure/adventure');
     
     const config = {
       rows: 5,
@@ -72,7 +72,7 @@ describe('地图基础结构', () => {
   });
 
   it('第一行应该都是空格（起点区域）', async () => {
-    const { generateAdventureGrid } = await import('@/lib/game/adventure');
+    const { generateAdventureGrid } = await import('@/lib/game/adventure/adventure');
     
     const config = {
       rows: 5,
@@ -95,7 +95,7 @@ describe('地图基础结构', () => {
   });
 
   it('Boss应该在最后一行中间位置', async () => {
-    const { generateAdventureGrid } = await import('@/lib/game/adventure');
+    const { generateAdventureGrid } = await import('@/lib/game/adventure/adventure');
     
     const config = {
       rows: 5,
@@ -117,7 +117,7 @@ describe('地图基础结构', () => {
   });
 
   it('起点应该被标记为已访问', async () => {
-    const { generateAdventureGrid } = await import('@/lib/game/adventure');
+    const { generateAdventureGrid } = await import('@/lib/game/adventure/adventure');
     
     const config = {
       rows: 5,
@@ -143,7 +143,7 @@ describe('地图基础结构', () => {
 // ============================================
 describe('格子类型分布', () => {
   it('应该保证宝箱格至少有1个', async () => {
-    const { generateAdventureGrid } = await import('@/lib/game/adventure');
+    const { generateAdventureGrid } = await import('@/lib/game/adventure/adventure');
     
     const config = {
       rows: 5,
@@ -173,7 +173,7 @@ describe('格子类型分布', () => {
   });
 
   it('应该保证事件格至少有1个', async () => {
-    const { generateAdventureGrid } = await import('@/lib/game/adventure');
+    const { generateAdventureGrid } = await import('@/lib/game/adventure/adventure');
     
     const config = {
       rows: 5,
@@ -202,7 +202,7 @@ describe('格子类型分布', () => {
   });
 
   it('应该保证休息格至少有1个', async () => {
-    const { generateAdventureGrid } = await import('@/lib/game/adventure');
+    const { generateAdventureGrid } = await import('@/lib/game/adventure/adventure');
     
     const config = {
       rows: 5,
@@ -231,7 +231,7 @@ describe('格子类型分布', () => {
   });
 
   it('应该保证普通敌人至少有2个', async () => {
-    const { generateAdventureGrid } = await import('@/lib/game/adventure');
+    const { generateAdventureGrid } = await import('@/lib/game/adventure/adventure');
     
     const config = {
       rows: 5,
@@ -260,7 +260,7 @@ describe('格子类型分布', () => {
   });
 
   it('应该保证小Boss至少有1个', async () => {
-    const { generateAdventureGrid } = await import('@/lib/game/adventure');
+    const { generateAdventureGrid } = await import('@/lib/game/adventure/adventure');
     
     const config = {
       rows: 5,
@@ -294,7 +294,7 @@ describe('格子类型分布', () => {
 // ============================================
 describe('传送门生成', () => {
   it('小地图不应该有传送门', async () => {
-    const { generateAdventureGrid } = await import('@/lib/game/adventure');
+    const { generateAdventureGrid } = await import('@/lib/game/adventure/adventure');
     
     // 5x5 = 25格，小于81格
     const smallConfig = {
@@ -322,7 +322,7 @@ describe('传送门生成', () => {
   });
 
   it('中等地图（7x7=49格）不应该有传送门', async () => {
-    const { generateAdventureGrid } = await import('@/lib/game/adventure');
+    const { generateAdventureGrid } = await import('@/lib/game/adventure/adventure');
     
     const mediumConfig = {
       rows: 7,
@@ -349,7 +349,7 @@ describe('传送门生成', () => {
   });
 
   it('大地图（9x9=81格以上）可以生成传送门', async () => {
-    const { generateAdventureGrid } = await import('@/lib/game/adventure');
+    const { generateAdventureGrid } = await import('@/lib/game/adventure/adventure');
     
     // 10x10 = 100格，大于81格
     const largeConfig = {
@@ -378,7 +378,7 @@ describe('传送门生成', () => {
   });
 
   it('传送门应该成对出现', async () => {
-    const { generateAdventureGrid } = await import('@/lib/game/adventure');
+    const { generateAdventureGrid } = await import('@/lib/game/adventure/adventure');
     
     const largeConfig = {
       rows: 10,
@@ -416,7 +416,7 @@ describe('传送门生成', () => {
   });
 
   it('传送门不应该在第一行或最后一行', async () => {
-    const { generateAdventureGrid } = await import('@/lib/game/adventure');
+    const { generateAdventureGrid } = await import('@/lib/game/adventure/adventure');
     
     const largeConfig = {
       rows: 10,
@@ -446,7 +446,7 @@ describe('传送门生成', () => {
 // ============================================
 describe('难度对地图的影响', () => {
   it('高难度应该增加敌人比例', async () => {
-    const { generateAdventureGrid } = await import('@/lib/game/adventure');
+    const { generateAdventureGrid } = await import('@/lib/game/adventure/adventure');
     
     const easyConfig = {
       rows: 7,
@@ -498,7 +498,7 @@ describe('难度对地图的影响', () => {
   });
 
   it('高难度应该减少空格比例', async () => {
-    const { generateAdventureGrid } = await import('@/lib/game/adventure');
+    const { generateAdventureGrid } = await import('@/lib/game/adventure/adventure');
     
     const easyConfig = {
       rows: 7,
@@ -554,7 +554,7 @@ describe('难度对地图的影响', () => {
 // ============================================
 describe('世界观适配', () => {
   it('不同世界观应该有不同的敌人名称', async () => {
-    const { generateAdventureGrid } = await import('@/lib/game/adventure');
+    const { generateAdventureGrid } = await import('@/lib/game/adventure/adventure');
     
     const config = {
       rows: 7,
@@ -595,7 +595,7 @@ describe('世界观适配', () => {
   });
 
   it('Boss应该在最后一行且有正确的等级', async () => {
-    const { generateAdventureGrid } = await import('@/lib/game/adventure');
+    const { generateAdventureGrid } = await import('@/lib/game/adventure/adventure');
     
     const config = {
       rows: 5,
@@ -627,7 +627,7 @@ describe('世界观适配', () => {
 // ============================================
 describe('边界条件', () => {
   it('最小地图（5x5）应该正常生成', async () => {
-    const { generateAdventureGrid } = await import('@/lib/game/adventure');
+    const { generateAdventureGrid } = await import('@/lib/game/adventure/adventure');
     
     const minConfig = {
       rows: 5,
@@ -662,7 +662,7 @@ describe('边界条件', () => {
   });
 
   it('最大地图（30x30）应该正常生成', async () => {
-    const { generateAdventureGrid } = await import('@/lib/game/adventure');
+    const { generateAdventureGrid } = await import('@/lib/game/adventure/adventure');
     
     const maxConfig = {
       rows: 30,

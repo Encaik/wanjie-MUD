@@ -16,7 +16,7 @@ import {
   getOrCreateAscensionMark,
   updateAscensionMark
 } from '@/lib/game/ascension/ascensionLogic';
-import { calculatePlayerMaxHp, calculatePlayerMaxMp } from '@/lib/game/balanceConfig';
+import { calculatePlayerMaxHp, calculatePlayerMaxMp } from '@/lib/game/utils/balanceConfig';
 import { 
   GameState, 
   MessageRecord, 
@@ -84,7 +84,7 @@ export function useGameAscension({
       const stats = prev.protagonist.stats;
       
       const { getNextTribulationLevel } = require('@/lib/data/tribulationData');
-      const { startTribulation, executeTribulationPhase, calculateTribulationReward, calculateTribulationPenalty } = require('@/lib/game/expansionLogic');
+      const { startTribulation, executeTribulationPhase, calculateTribulationReward, calculateTribulationPenalty } = require('@/lib/game/utils/expansionLogic');
       
       const nextTribLevel = getNextTribulationLevel(level);
       if (!nextTribLevel || level < nextTribLevel) {

@@ -8,7 +8,7 @@
 import { useCallback } from 'react';
 import type { Dispatch, SetStateAction } from 'react';
 
-import { generateId } from '@/lib/game/generators';
+import { generateId } from '@/lib/game/utils/generators';
 import {
   addMessage as dbAddMessage,
   getMessagesPage,

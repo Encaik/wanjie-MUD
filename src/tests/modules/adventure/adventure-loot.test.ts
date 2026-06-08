@@ -19,12 +19,12 @@ import { createTestDungeonConfig, createTestProtagonist } from './test-helpers';
 // ============================================
 describe('战利品基础功能', () => {
   it('应该能导入战利品相关函数', async () => {
-    const { calculateBattleWithLogs } = await import('@/lib/game/adventure');
+    const { calculateBattleWithLogs } = await import('@/lib/game/adventure/adventure');
     expect(calculateBattleWithLogs).toBeDefined();
   });
 
   it('战斗胜利应该获得战利品', async () => {
-    const { calculateBattleWithLogs } = await import('@/lib/game/adventure');
+    const { calculateBattleWithLogs } = await import('@/lib/game/adventure/adventure');
     
     const mockProtagonist = createTestProtagonist({
       stats: { 体质: 200, 灵根: 200, 悟性: 50, 幸运: 50, 意志: 50 },
@@ -44,7 +44,7 @@ describe('战利品基础功能', () => {
   });
 
   it('战斗失败后状态应该正确', async () => {
-    const { calculateBattleWithLogs } = await import('@/lib/game/adventure');
+    const { calculateBattleWithLogs } = await import('@/lib/game/adventure/adventure');
     
     const mockProtagonist = createTestProtagonist({
       stats: { 体质: 10, 灵根: 10, 悟性: 10, 幸运: 10, 意志: 10 },
@@ -76,7 +76,7 @@ describe('战利品基础功能', () => {
 // ============================================
 describe('经验值战利品化', () => {
   it('战斗胜利应该获得经验值', async () => {
-    const { calculateBattleWithLogs } = await import('@/lib/game/adventure');
+    const { calculateBattleWithLogs } = await import('@/lib/game/adventure/adventure');
     
     const mockProtagonist = createTestProtagonist({
       stats: { 体质: 200, 灵根: 200, 悟性: 50, 幸运: 50, 意志: 50 },
@@ -97,7 +97,7 @@ describe('经验值战利品化', () => {
   });
 
   it('Boss应该给予更多经验值', async () => {
-    const { calculateBattleWithLogs } = await import('@/lib/game/adventure');
+    const { calculateBattleWithLogs } = await import('@/lib/game/adventure/adventure');
     
     const mockProtagonist = createTestProtagonist({
       stats: { 体质: 500, 灵根: 500, 悟性: 50, 幸运: 50, 意志: 50 },
@@ -132,7 +132,7 @@ describe('经验值战利品化', () => {
   });
 
   it('高难度应该给予更多经验值', async () => {
-    const { calculateBattleWithLogs } = await import('@/lib/game/adventure');
+    const { calculateBattleWithLogs } = await import('@/lib/game/adventure/adventure');
     
     const mockProtagonist = createTestProtagonist({
       stats: { 体质: 300, 灵根: 300, 悟性: 50, 幸运: 50, 意志: 50 },
@@ -178,7 +178,7 @@ describe('经验值战利品化', () => {
 // ============================================
 describe('物品掉落', () => {
   it('Boss有概率掉落物品', async () => {
-    const { calculateBattleWithLogs } = await import('@/lib/game/adventure');
+    const { calculateBattleWithLogs } = await import('@/lib/game/adventure/adventure');
     
     const mockProtagonist = createTestProtagonist({
       stats: { 体质: 300, 灵根: 300, 悟性: 50, 幸运: 100, 意志: 50 }, // 高幸运增加掉落率
@@ -206,7 +206,7 @@ describe('物品掉落', () => {
   });
 
   it('精英敌人比普通敌人有更高掉落率', async () => {
-    const { calculateBattleWithLogs } = await import('@/lib/game/adventure');
+    const { calculateBattleWithLogs } = await import('@/lib/game/adventure/adventure');
     
     const mockProtagonist = createTestProtagonist({
       stats: { 体质: 500, 灵根: 500, 悟性: 50, 幸运: 50, 意志: 50 },
@@ -248,7 +248,7 @@ describe('物品掉落', () => {
 // ============================================
 describe('战利品稀有度', () => {
   it('高等级敌人应该掉落更好的物品', async () => {
-    const { calculateBattleWithLogs } = await import('@/lib/game/adventure');
+    const { calculateBattleWithLogs } = await import('@/lib/game/adventure/adventure');
     
     const mockProtagonist = createTestProtagonist({
       stats: { 体质: 999, 灵根: 999, 悟性: 999, 幸运: 999, 意志: 999 },

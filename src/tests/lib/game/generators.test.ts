@@ -3,7 +3,7 @@
  */
 import { describe, it, expect, beforeEach } from 'vitest';
 
-import { generateId } from '@/lib/game/generators';
+import { generateId } from '@/lib/game/utils/generators';
 
 describe('generators', () => {
   describe('generateId', () => {

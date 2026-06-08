@@ -1,5 +1,5 @@
-import { evaluateCharacter, evaluateCharacters } from './utils/characterEvaluation';
-import { getTerminology } from './terminology';
+import { evaluateCharacter, evaluateCharacters } from './characterEvaluation';
+import { getTerminology } from '../utils/terminology';
 import { 
   ORIGIN_TRAITS, 
   TRAIT_TRAITS, 
@@ -9,13 +9,13 @@ import {
   generateImpactDescription,
   calculateTotalImpact,
   QUALITY_CONFIG
-} from './utils/traits';
-import { Character, World, CharacterStats, WorldType, ImpactfulTrait, ImpactLevel, StatImpact, WorldFaction } from './types';
+} from './traits';
+import { Character, World, CharacterStats, WorldType, ImpactfulTrait, ImpactLevel, StatImpact, WorldFaction } from '../types';
 import {
   generateWorldFactions,
   generateFactionDescription,
   generateFactionBackgroundDescription,
-} from '../data/factionData';
+} from '../../data/factionData';
 import {
   generateRealmSystem,
   getRealmName,
@@ -29,11 +29,11 @@ import {
   getStatBaseForLevel,
   getStatPotentialForLevel,
   RealmSystem,
-} from '../data/realmData';
+} from '../../data/realmData';
 import {
   WORLD_DATA,
   WORLD_COEFFICIENTS,
-} from '../data/worldData';
+} from '../../data/worldData';
 import {
   calculateWorldDifficultyCoefficient,
   getWorldDifficultyFromCoefficient,
@@ -41,7 +41,7 @@ import {
   generateWorldDangers,
   generateWorldOpportunities,
   getWorldBaseCoefficient,
-} from '../data/worldSystem';
+} from '../../data/worldSystem';
 
 // 重新导出境界相关函数，供其他模块使用
 export { 

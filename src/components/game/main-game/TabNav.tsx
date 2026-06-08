@@ -4,7 +4,7 @@ import { Swords, Sparkles, Building2, ShoppingBag, Zap, Shield, Trophy, BookOpen
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { getFactionById } from '@/lib/data/factionData';
-import { checkRankPromotion } from '@/lib/game/expansionLogic';
+import { checkRankPromotion } from '@/lib/game/utils/expansionLogic';
 import { ActionTab } from '@/lib/game/types';
 import { Protagonist } from '@/lib/game/types';
 

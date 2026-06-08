@@ -20,13 +20,13 @@ import { createTestDungeonConfig, createTestProtagonist } from './test-helpers';
 // ============================================
 describe('战斗基础功能', () => {
   it('应该能导入战斗计算函数', async () => {
-    const { calculateBattleWithLogs } = await import('@/lib/game/adventure');
+    const { calculateBattleWithLogs } = await import('@/lib/game/adventure/adventure');
     expect(calculateBattleWithLogs).toBeDefined();
     expect(typeof calculateBattleWithLogs).toBe('function');
   });
 
   it('战斗应该返回正确的结果结构', async () => {
-    const { calculateBattleWithLogs } = await import('@/lib/game/adventure');
+    const { calculateBattleWithLogs } = await import('@/lib/game/adventure/adventure');
     
     const mockProtagonist = createTestProtagonist();
     const config = createTestDungeonConfig({
@@ -56,7 +56,7 @@ describe('战斗基础功能', () => {
   });
 
   it('战斗胜利后应该有战利品', async () => {
-    const { calculateBattleWithLogs } = await import('@/lib/game/adventure');
+    const { calculateBattleWithLogs } = await import('@/lib/game/adventure/adventure');
     
     const mockProtagonist = createTestProtagonist({
       stats: { 体质: 200, 灵根: 200, 悟性: 50, 幸运: 50, 意志: 50 }, // 强属性确保胜利
@@ -83,7 +83,7 @@ describe('战斗基础功能', () => {
   });
 
   it('战斗失败后HP应该被限制在合理范围', async () => {
-    const { calculateBattleWithLogs } = await import('@/lib/game/adventure');
+    const { calculateBattleWithLogs } = await import('@/lib/game/adventure/adventure');
     
     // 创建一个弱小的主角
     const mockProtagonist = createTestProtagonist({
@@ -118,7 +118,7 @@ describe('战斗基础功能', () => {
 // ============================================
 describe('敌人类型', () => {
   it('普通敌人应该有合理的属性', async () => {
-    const { calculateBattleWithLogs } = await import('@/lib/game/adventure');
+    const { calculateBattleWithLogs } = await import('@/lib/game/adventure/adventure');
     
     const mockProtagonist = createTestProtagonist();
     const config = createTestDungeonConfig();
@@ -138,7 +138,7 @@ describe('敌人类型', () => {
   });
 
   it('精英敌人应该比普通敌人更强', async () => {
-    const { calculateBattleWithLogs } = await import('@/lib/game/adventure');
+    const { calculateBattleWithLogs } = await import('@/lib/game/adventure/adventure');
     
     const mockProtagonist = createTestProtagonist();
     const config = createTestDungeonConfig();
@@ -166,7 +166,7 @@ describe('敌人类型', () => {
   });
 
   it('Boss应该比精英敌人更强', async () => {
-    const { calculateBattleWithLogs } = await import('@/lib/game/adventure');
+    const { calculateBattleWithLogs } = await import('@/lib/game/adventure/adventure');
     
     const mockProtagonist = createTestProtagonist();
     const config = createTestDungeonConfig();
@@ -199,7 +199,7 @@ describe('敌人类型', () => {
 // ============================================
 describe('难度影响', () => {
   it('高难度应该有更强的敌人', async () => {
-    const { calculateBattleWithLogs } = await import('@/lib/game/adventure');
+    const { calculateBattleWithLogs } = await import('@/lib/game/adventure/adventure');
     
     const mockProtagonist = createTestProtagonist();
     
@@ -229,7 +229,7 @@ describe('难度影响', () => {
   });
 
   it('高难度应该有更高的奖励倍率', async () => {
-    const { calculateBattleWithLogs } = await import('@/lib/game/adventure');
+    const { calculateBattleWithLogs } = await import('@/lib/game/adventure/adventure');
     
     const mockProtagonist = createTestProtagonist({
       stats: { 体质: 200, 灵根: 200, 悟性: 50, 幸运: 50, 意志: 50 },
@@ -277,7 +277,7 @@ describe('难度影响', () => {
 // ============================================
 describe('伤害上限', () => {
   it('单次伤害不应该超过敌人HP的一定比例', async () => {
-    const { calculateBattleWithLogs } = await import('@/lib/game/adventure');
+    const { calculateBattleWithLogs } = await import('@/lib/game/adventure/adventure');
     
     // 创建一个非常强的主角
     const mockProtagonist = createTestProtagonist({

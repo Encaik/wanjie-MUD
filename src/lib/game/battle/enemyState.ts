@@ -9,7 +9,7 @@
 
 import { EnemyTier, Element, WeaponCategory } from '../types';
 import { BattleSkill } from './types';
-import { EnemyAttributes } from '../restraintSystem';
+import { EnemyAttributes } from '../utils/restraintSystem';
 
 // ============================================
 // 战斗敌人状态

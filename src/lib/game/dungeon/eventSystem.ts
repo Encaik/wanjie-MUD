@@ -29,9 +29,9 @@ import {
   DEFAULT_TRIGGER_CONFIG,
   EventTriggerConfig,
 } from './types';
-import { generateRandomEquipment } from '../equipment';
-import { getRandomItem, spiritStoneItems } from '../items';
-import { generateRandomTechnique } from '../technique';
+import { generateRandomEquipment } from '../utils/equipment';
+import { getRandomItem, spiritStoneItems } from '../utils/items';
+import { generateRandomTechnique } from '../utils/technique';
 import { Protagonist, InventoryItem, CharacterStats, createInventoryItem, ItemDefinition, ActiveEffect, LegacyStats } from '../types';
 
 // ============================================

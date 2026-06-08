@@ -2,7 +2,7 @@
  * 稀有度工具函数和常量
  */
 
-import { Element, WeaponCategory } from '../restraintSystem';
+import { Element, WeaponCategory } from '../utils/restraintSystem';
 import { TECHNIQUE_RARITY_CONFIG, EQUIPMENT_RARITY_CONFIG } from '../skill/skillTypes';
 import { ItemRarity, Technique, Equipment, TechniqueType, EquipmentSlot } from '../types';
 

@@ -13,7 +13,7 @@ import {
   cultivationPillItems, 
   breakthroughItems,
   restorePillItems 
-} from '../items';
+} from '../utils/items';
 import { Protagonist, GameStatistics, createInventoryItem, ItemDefinition } from '../types';
 import {
   TaskSystemType,

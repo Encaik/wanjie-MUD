@@ -8,7 +8,7 @@
  * - 稀有度配置
  */
 
-import { Element, WeaponCategory } from '../game/restraintSystem';
+import { Element, WeaponCategory } from '../game/utils/restraintSystem';
 import { TECHNIQUE_RARITY_CONFIG, RARITY_ORDER, RARITY_WEIGHTS } from '../game/skill/skillTypes';
 import { TechniqueType, ItemRarity } from '../game/types';
 

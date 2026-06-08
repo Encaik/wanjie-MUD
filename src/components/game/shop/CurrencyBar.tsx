@@ -6,7 +6,7 @@
 
 'use client';
 
-import { getResourceName } from '@/lib/game/items';
+import { getResourceName } from '@/lib/game/utils/items';
 import { CurrencyService } from '@/lib/game/shop/currencyService';
 import { PlayerCurrencies, CurrencyType, CURRENCY_CONFIGS } from '@/lib/game/shop/types';
 import { WorldType } from '@/lib/game/types';

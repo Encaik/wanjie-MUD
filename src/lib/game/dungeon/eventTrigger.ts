@@ -24,7 +24,7 @@ import {
   EventEffect,
   DungeonEventType,
 } from './types';
-import { getRandomItem } from '../items';
+import { getRandomItem } from '../utils/items';
 import { Protagonist, InventoryItem, CharacterStats, getFinalStats, LegacyStats, StatKey } from '../types';
 
 // ============================================

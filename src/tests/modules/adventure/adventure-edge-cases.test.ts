@@ -18,7 +18,7 @@ import { createTestDungeonConfig, createTestProtagonist } from './test-helpers';
 // ============================================
 describe('地图生成边界条件', () => {
   it('最小地图尺寸应该能生成', async () => {
-    const { generateAdventureGrid } = await import('@/lib/game/adventure');
+    const { generateAdventureGrid } = await import('@/lib/game/adventure/adventure');
     
     const config = createTestDungeonConfig({
       rows: 3,
@@ -42,7 +42,7 @@ describe('地图生成边界条件', () => {
   });
 
   it('大地图应该能正确生成', async () => {
-    const { generateAdventureGrid } = await import('@/lib/game/adventure');
+    const { generateAdventureGrid } = await import('@/lib/game/adventure/adventure');
     
     const config = createTestDungeonConfig({
       rows: 20,
@@ -72,7 +72,7 @@ describe('地图生成边界条件', () => {
   });
 
   it('极高难度应该能处理', async () => {
-    const { generateAdventureGrid } = await import('@/lib/game/adventure');
+    const { generateAdventureGrid } = await import('@/lib/game/adventure/adventure');
     
     const config = createTestDungeonConfig({
       difficulty: 999,
@@ -92,7 +92,7 @@ describe('地图生成边界条件', () => {
 // ============================================
 describe('战斗系统边界条件', () => {
   it('低属性角色应该能战斗', async () => {
-    const { calculateBattleWithLogs } = await import('@/lib/game/adventure');
+    const { calculateBattleWithLogs } = await import('@/lib/game/adventure/adventure');
     
     const mockProtagonist = createTestProtagonist({
       stats: { 体质: 5, 灵根: 5, 悟性: 5, 幸运: 5, 意志: 5 },
@@ -119,7 +119,7 @@ describe('战斗系统边界条件', () => {
   });
 
   it('超高属性角色应该能战斗', async () => {
-    const { calculateBattleWithLogs } = await import('@/lib/game/adventure');
+    const { calculateBattleWithLogs } = await import('@/lib/game/adventure/adventure');
     
     const mockProtagonist = createTestProtagonist({
       stats: { 体质: 99999, 灵根: 99999, 悟性: 99999, 幸运: 99999, 意志: 99999 },
@@ -143,7 +143,7 @@ describe('战斗系统边界条件', () => {
   });
 
   it('相同等级对战应该有合理结果', async () => {
-    const { calculateBattleWithLogs } = await import('@/lib/game/adventure');
+    const { calculateBattleWithLogs } = await import('@/lib/game/adventure/adventure');
     
     const mockProtagonist = createTestProtagonist({
       level: 50,
@@ -172,7 +172,7 @@ describe('战斗系统边界条件', () => {
 // ============================================
 describe('HP边界条件', () => {
   it('HP不应该为负数', async () => {
-    const { calculateBattleWithLogs } = await import('@/lib/game/adventure');
+    const { calculateBattleWithLogs } = await import('@/lib/game/adventure/adventure');
     
     const mockProtagonist = createTestProtagonist({
       stats: { 体质: 1, 灵根: 1, 悟性: 1, 幸运: 1, 意志: 1 },
@@ -198,7 +198,7 @@ describe('HP边界条件', () => {
   });
 
   it('HP不应该超过maxHp', async () => {
-    const { calculateBattleWithLogs } = await import('@/lib/game/adventure');
+    const { calculateBattleWithLogs } = await import('@/lib/game/adventure/adventure');
     
     const mockProtagonist = createTestProtagonist({
       maxHp: 100,
@@ -226,7 +226,7 @@ describe('HP边界条件', () => {
 // ============================================
 describe('相邻格子边界条件', () => {
   it('单格地图应该返回空数组', async () => {
-    const { getAdjacentCells } = await import('@/lib/game/adventure');
+    const { getAdjacentCells } = await import('@/lib/game/adventure/adventure');
     
     const grid = [[{ type: 'empty' as const, cleared: false, visited: false }]];
     
@@ -236,7 +236,7 @@ describe('相邻格子边界条件', () => {
   });
 
   it('角落位置应该有正确的相邻格子', async () => {
-    const { getAdjacentCells } = await import('@/lib/game/adventure');
+    const { getAdjacentCells } = await import('@/lib/game/adventure/adventure');
     
     const grid = [
       [{ type: 'empty' as const, cleared: false, visited: true }, 
@@ -255,7 +255,7 @@ describe('相邻格子边界条件', () => {
   });
 
   it('边缘位置应该有正确的相邻格子', async () => {
-    const { getAdjacentCells } = await import('@/lib/game/adventure');
+    const { getAdjacentCells } = await import('@/lib/game/adventure/adventure');
     
     const grid = [
       [{ type: 'empty' as const, cleared: false, visited: false }, 
@@ -284,7 +284,7 @@ describe('相邻格子边界条件', () => {
 // ============================================
 describe('世界观边界条件', () => {
   it('所有支持的世界观应该能工作', async () => {
-    const { getDungeonNames, getAvailableDifficulties } = await import('@/lib/game/adventure');
+    const { getDungeonNames, getAvailableDifficulties } = await import('@/lib/game/adventure/adventure');
     
     const worlds: Array<'修仙' | '高武' | '科技' | '魔幻' | '异能' | '仙侠' | '武侠' | '末世'> = 
       ['修仙', '高武', '科技', '魔幻', '异能', '仙侠', '武侠', '末世'];
@@ -307,7 +307,7 @@ describe('世界观边界条件', () => {
 // ============================================
 describe('配置边界条件', () => {
   it('高奖励倍率应该能正常工作', async () => {
-    const { calculateBattleWithLogs } = await import('@/lib/game/adventure');
+    const { calculateBattleWithLogs } = await import('@/lib/game/adventure/adventure');
     
     const mockProtagonist = createTestProtagonist({
       stats: { 体质: 200, 灵根: 200, 悟性: 50, 幸运: 50, 意志: 50 },
@@ -329,7 +329,7 @@ describe('配置边界条件', () => {
   });
 
   it('敌人等级范围应该被正确处理', async () => {
-    const { calculateBattleWithLogs } = await import('@/lib/game/adventure');
+    const { calculateBattleWithLogs } = await import('@/lib/game/adventure/adventure');
     
     const mockProtagonist = createTestProtagonist();
     const config = createTestDungeonConfig({

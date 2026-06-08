@@ -11,10 +11,10 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Separator } from '@/components/ui/separator';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { isDebugMode } from '@/lib/config/env';
-import { createEmptyFragmentInventory, getSynthesizableCount } from '@/lib/game/fragmentSystem';
+import { createEmptyFragmentInventory, getSynthesizableCount } from '@/lib/game/utils/fragmentSystem';
 import { TowerEnemy, createDefaultTowerProgress } from '@/lib/game/tower/types';
 import { Protagonist, ActionResult, ActionTab, BattleState, DungeonConfig, Technique, TechniqueType, InventoryItem, Equipment, EquipmentSlot, ItemDefinition, CraftingState, ForgingState, AchievementStatus, CollectionStatus, GameStatistics, CultivationPath, ItemRarity, MessageRecord, getFinalStats } from '@/lib/game/types';
-import type { SeclusionType } from '@/lib/game/seclusion';
+import type { SeclusionType } from '@/lib/game/cultivation/seclusion';
 import { TimeSystemState } from '@/lib/game/time/timeSystem';
 
 // Tab panels
@@ -76,9 +76,9 @@ import {
   calculateFinalStats,
   ForgeMaterialRequirement,
 } from '@/lib/data/forgeRecipes';
-import { generateId } from '@/lib/game/generators';
+import { generateId } from '@/lib/game/utils/generators';
 import { MentalState, DEFAULT_PROTAGONIST_EXTENSION } from '@/lib/game/typesExtension';
-import { checkRankPromotion } from '@/lib/game/expansionLogic';
+import { checkRankPromotion } from '@/lib/game/utils/expansionLogic';
 import { getFactionById } from '@/lib/data/factionData';
 
 // 多人游戏相关

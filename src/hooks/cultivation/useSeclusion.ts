@@ -9,12 +9,12 @@ import { useCallback, useState } from 'react';
 import type { Dispatch, SetStateAction } from 'react';
 
 import { CULTIVATION_PATHS } from '@/lib/data/cultivationPathData';
-import { getMaxExperience, getMaxLevel } from '@/lib/game/cultivation';
-import { applyMentalChange, updateTaskProgress } from '@/lib/game/expansionLogic';
+import { getMaxExperience, getMaxLevel } from '@/lib/game/cultivation/cultivation';
+import { applyMentalChange, updateTaskProgress } from '@/lib/game/utils/expansionLogic';
 import { processExperienceGain, calculateBreakthroughTransfer } from '@/lib/game/utils/experienceSystem';
 import { gameSystems } from '@/lib/game/utils/gameSystems';
-import { getRealmName } from '@/lib/game/generators';
-import { applyGrowthStatChanges } from '@/lib/game/realmSystem';
+import { getRealmName } from '@/lib/game/utils/generators';
+import { applyGrowthStatChanges } from '@/lib/game/utils/realmSystem';
 import {
   SeclusionType,
   SeclusionOutcome,
@@ -26,7 +26,7 @@ import {
   getOutcomeBgColor,
   SECLUSION_CONFIGS,
   SECLUSION_OUTCOMES,
-} from '@/lib/game/seclusion';
+} from '@/lib/game/cultivation/seclusion';
 import { consumeGameTime, ACTION_TIME_COST } from '@/lib/game/time/timeSystem';
 import { GameState, MessageRecord, ActiveEffect } from '@/lib/game/types';
 import { DEFAULT_PROTAGONIST_EXTENSION, MentalState } from '@/lib/game/typesExtension';

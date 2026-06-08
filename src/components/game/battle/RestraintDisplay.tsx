@@ -18,8 +18,8 @@ import {
   WEAPON_CATEGORY_NAMES,
   ELEMENT_COUNTER_MAP,
   WEAPON_COUNTER_MAP,
-} from '@/lib/game/restraintSystem';
-import type { EnemyAttributes } from '@/lib/game/restraintSystem';
+} from '@/lib/game/utils/restraintSystem';
+import type { EnemyAttributes } from '@/lib/game/utils/restraintSystem';
 import { Element, WeaponCategory } from '@/lib/game/types';
 
 interface RestraintDisplayProps {

@@ -17,13 +17,13 @@ import { createTestDungeonConfig, createTestProtagonist, createTestCell } from '
 // ============================================
 describe('格子事件处理', () => {
   it('应该能导入handleCellEvent函数', async () => {
-    const { handleCellEvent } = await import('@/lib/game/adventure');
+    const { handleCellEvent } = await import('@/lib/game/adventure/adventure');
     expect(handleCellEvent).toBeDefined();
     expect(typeof handleCellEvent).toBe('function');
   });
 
   it('宝箱格应该给予奖励', async () => {
-    const { handleCellEvent } = await import('@/lib/game/adventure');
+    const { handleCellEvent } = await import('@/lib/game/adventure/adventure');
     
     const mockProtagonist = createTestProtagonist();
     const mockCell = createTestCell('treasure');
@@ -37,7 +37,7 @@ describe('格子事件处理', () => {
   });
 
   it('事件格应该有结果', async () => {
-    const { handleCellEvent } = await import('@/lib/game/adventure');
+    const { handleCellEvent } = await import('@/lib/game/adventure/adventure');
     
     const mockProtagonist = createTestProtagonist();
     const mockCell = createTestCell('event');
@@ -50,7 +50,7 @@ describe('格子事件处理', () => {
   });
 
   it('休息格应该恢复HP和MP', async () => {
-    const { handleCellEvent } = await import('@/lib/game/adventure');
+    const { handleCellEvent } = await import('@/lib/game/adventure/adventure');
     
     const mockProtagonist = createTestProtagonist({
       currentHp: 100, // 受伤了
@@ -67,7 +67,7 @@ describe('格子事件处理', () => {
   });
 
   it('空格应该有结果', async () => {
-    const { handleCellEvent } = await import('@/lib/game/adventure');
+    const { handleCellEvent } = await import('@/lib/game/adventure/adventure');
     
     const mockProtagonist = createTestProtagonist();
     const mockCell = createTestCell('empty');
@@ -85,7 +85,7 @@ describe('格子事件处理', () => {
 // ============================================
 describe('战斗奖励', () => {
   it('战斗胜利应该有奖励', async () => {
-    const { calculateBattleWithLogs } = await import('@/lib/game/adventure');
+    const { calculateBattleWithLogs } = await import('@/lib/game/adventure/adventure');
     
     const mockProtagonist = createTestProtagonist({
       stats: { 体质: 500, 灵根: 500, 悟性: 50, 幸运: 50, 意志: 50 },
@@ -108,7 +108,7 @@ describe('战斗奖励', () => {
   });
 
   it('Boss战斗胜利应该有更好的奖励', async () => {
-    const { calculateBattleWithLogs } = await import('@/lib/game/adventure');
+    const { calculateBattleWithLogs } = await import('@/lib/game/adventure/adventure');
     
     const mockProtagonist = createTestProtagonist({
       stats: { 体质: 500, 灵根: 500, 悟性: 50, 幸运: 50, 意志: 50 },
@@ -131,7 +131,7 @@ describe('战斗奖励', () => {
   });
 
   it('高难度应该有更好的奖励', async () => {
-    const { calculateBattleWithLogs } = await import('@/lib/game/adventure');
+    const { calculateBattleWithLogs } = await import('@/lib/game/adventure/adventure');
     
     const mockProtagonist = createTestProtagonist({
       stats: { 体质: 200, 灵根: 200, 悟性: 50, 幸运: 50, 意志: 50 },
@@ -173,7 +173,7 @@ describe('战斗奖励', () => {
 // ============================================
 describe('经验值奖励', () => {
   it('战斗胜利应该获得经验值', async () => {
-    const { calculateBattleWithLogs } = await import('@/lib/game/adventure');
+    const { calculateBattleWithLogs } = await import('@/lib/game/adventure/adventure');
     
     const mockProtagonist = createTestProtagonist({
       stats: { 体质: 200, 灵根: 200, 悟性: 50, 幸运: 50, 意志: 50 },
@@ -194,7 +194,7 @@ describe('经验值奖励', () => {
   });
 
   it('高等级敌人应该给予更多经验', async () => {
-    const { calculateBattleWithLogs } = await import('@/lib/game/adventure');
+    const { calculateBattleWithLogs } = await import('@/lib/game/adventure/adventure');
     
     const mockProtagonist = createTestProtagonist({
       stats: { 体质: 999, 灵根: 999, 悟性: 999, 幸运: 999, 意志: 999 },

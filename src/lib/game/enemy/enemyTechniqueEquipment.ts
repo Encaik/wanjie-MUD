@@ -17,10 +17,10 @@ import {
 import { Enemy } from './types';
 import {
   generateRandomEquipment,
-} from '../equipment';
+} from '../utils/equipment';
 import {
   generateRandomTechnique,
-} from '../technique';
+} from '../utils/technique';
 import {
   Technique,
   Equipment,

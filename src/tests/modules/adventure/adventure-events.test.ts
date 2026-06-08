@@ -17,12 +17,12 @@ import { createTestDungeonConfig, createTestProtagonist } from './test-helpers';
 // ============================================
 describe('事件基础功能', () => {
   it('应该能导入事件相关函数', async () => {
-    const { getAdjacentCells } = await import('@/lib/game/adventure');
+    const { getAdjacentCells } = await import('@/lib/game/adventure/adventure');
     expect(getAdjacentCells).toBeDefined();
   });
 
   it('应该能获取相邻格子', async () => {
-    const { getAdjacentCells } = await import('@/lib/game/adventure');
+    const { getAdjacentCells } = await import('@/lib/game/adventure/adventure');
     
     const grid = [
       [{ type: 'empty' as const, cleared: false, visited: false }, { type: 'empty' as const, cleared: false, visited: false }, { type: 'empty' as const, cleared: false, visited: false }],
@@ -37,7 +37,7 @@ describe('事件基础功能', () => {
   });
 
   it('边缘格子应该有正确的相邻格子', async () => {
-    const { getAdjacentCells } = await import('@/lib/game/adventure');
+    const { getAdjacentCells } = await import('@/lib/game/adventure/adventure');
     
     const grid = [
       [{ type: 'empty' as const, cleared: false, visited: true }, { type: 'empty' as const, cleared: false, visited: false }],
@@ -56,7 +56,7 @@ describe('事件基础功能', () => {
 // ============================================
 describe('战斗功能', () => {
   it('应该能进行战斗', async () => {
-    const { calculateBattleWithLogs } = await import('@/lib/game/adventure');
+    const { calculateBattleWithLogs } = await import('@/lib/game/adventure/adventure');
     
     const mockProtagonist = createTestProtagonist();
     const config = createTestDungeonConfig();
@@ -74,7 +74,7 @@ describe('战斗功能', () => {
   });
 
   it('Boss战斗应该能完成', async () => {
-    const { calculateBattleWithLogs } = await import('@/lib/game/adventure');
+    const { calculateBattleWithLogs } = await import('@/lib/game/adventure/adventure');
     
     const mockProtagonist = createTestProtagonist();
     const config = createTestDungeonConfig();
@@ -92,7 +92,7 @@ describe('战斗功能', () => {
   });
 
   it('精英战斗应该能完成', async () => {
-    const { calculateBattleWithLogs } = await import('@/lib/game/adventure');
+    const { calculateBattleWithLogs } = await import('@/lib/game/adventure/adventure');
     
     const mockProtagonist = createTestProtagonist();
     const config = createTestDungeonConfig();
@@ -115,7 +115,7 @@ describe('战斗功能', () => {
 // ============================================
 describe('事件世界观适配', () => {
   it('不同世界观应该能战斗', async () => {
-    const { calculateBattleWithLogs } = await import('@/lib/game/adventure');
+    const { calculateBattleWithLogs } = await import('@/lib/game/adventure/adventure');
     
     const worlds: Array<'修仙' | '高武' | '科技' | '魔幻'> = ['修仙', '高武', '科技', '魔幻'];
     

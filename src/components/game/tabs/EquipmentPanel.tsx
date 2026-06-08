@@ -18,7 +18,7 @@ import {
 } from '@/components/ui/select';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { EQUIPMENT_SETS, EquipmentAffix } from '@/lib/data/equipmentAffixData';
-import { getElementIcon, getWeaponCategoryIcon } from '@/lib/game/restraintSystem';
+import { getElementIcon, getWeaponCategoryIcon } from '@/lib/game/utils/restraintSystem';
 import { Equipment, EquipmentSlot, ItemRarity, UPGRADE_CONFIG, ELEMENT_NAMES, WEAPON_CATEGORY_NAMES } from '@/lib/game/types';
 
 interface EquipmentPanelProps {

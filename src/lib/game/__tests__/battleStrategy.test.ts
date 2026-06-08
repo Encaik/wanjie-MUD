@@ -16,7 +16,7 @@ import {
   detectWeaponCategoryFromName,
   ELEMENT_NAMES,
   WEAPON_CATEGORY_NAMES,
-} from '../restraintSystem';
+} from '../utils/restraintSystem';
 import { 
   Element, 
   WeaponCategory,

@@ -110,7 +110,7 @@ describe('流派选择文案', () => {
 // ============================================
 describe('新手引导完成后隐藏新手难度', () => {
   it('未完成新手机缘时应显示新手难度', async () => {
-    const { getAvailableDifficulties } = await import('@/lib/game/adventure');
+    const { getAvailableDifficulties } = await import('@/lib/game/adventure/adventure');
     
     // isPlayerNewbie=true, hasCompletedNoviceAdventure=false
     const difficulties = getAvailableDifficulties(5, '修仙', false, true);
@@ -122,7 +122,7 @@ describe('新手引导完成后隐藏新手难度', () => {
   });
 
   it('已完成新手机缘时不应显示新手难度', async () => {
-    const { getAvailableDifficulties } = await import('@/lib/game/adventure');
+    const { getAvailableDifficulties } = await import('@/lib/game/adventure/adventure');
     
     // hasCompletedNoviceAdventure=true
     const difficulties = getAvailableDifficulties(5, '修仙', true, true);
@@ -132,7 +132,7 @@ describe('新手引导完成后隐藏新手难度', () => {
   });
 
   it('新手任务完成后应隐藏新手难度', async () => {
-    const { getAvailableDifficulties } = await import('@/lib/game/adventure');
+    const { getAvailableDifficulties } = await import('@/lib/game/adventure/adventure');
     
     // isPlayerNewbie=false（新手任务全部完成）
     const difficulties = getAvailableDifficulties(5, '修仙', false, false);
@@ -142,7 +142,7 @@ describe('新手引导完成后隐藏新手难度', () => {
   });
 
   it('新手难度参数应符合预期', async () => {
-    const { getAvailableDifficulties } = await import('@/lib/game/adventure');
+    const { getAvailableDifficulties } = await import('@/lib/game/adventure/adventure');
     
     const playerLevel = 5;
     const difficulties = getAvailableDifficulties(playerLevel, '修仙', false, true);
@@ -164,7 +164,7 @@ describe('新手引导完成后隐藏新手难度', () => {
 // ============================================
 describe('传送门互相传送逻辑', () => {
   it('传送门应该成对出现', async () => {
-    const { generateAdventureGrid } = await import('@/lib/game/adventure');
+    const { generateAdventureGrid } = await import('@/lib/game/adventure/adventure');
     
     const config = {
       rows: 12,
@@ -195,7 +195,7 @@ describe('传送门互相传送逻辑', () => {
   });
 
   it('传送门应该有配对目标', async () => {
-    const { generateAdventureGrid } = await import('@/lib/game/adventure');
+    const { generateAdventureGrid } = await import('@/lib/game/adventure/adventure');
     
     const config = {
       rows: 12,
@@ -225,7 +225,7 @@ describe('传送门互相传送逻辑', () => {
   });
 
   it('传送门应该是双向的', async () => {
-    const { generateAdventureGrid } = await import('@/lib/game/adventure');
+    const { generateAdventureGrid } = await import('@/lib/game/adventure/adventure');
     
     const config = {
       rows: 15,
@@ -270,7 +270,7 @@ describe('传送门互相传送逻辑', () => {
   });
 
   it('低难度机缘不应生成传送门', async () => {
-    const { generateAdventureGrid } = await import('@/lib/game/adventure');
+    const { generateAdventureGrid } = await import('@/lib/game/adventure/adventure');
     
     const config = {
       rows: 10,
@@ -300,7 +300,7 @@ describe('传送门互相传送逻辑', () => {
   });
 
   it('新手机缘不应生成传送门', async () => {
-    const { generateAdventureGrid } = await import('@/lib/game/adventure');
+    const { generateAdventureGrid } = await import('@/lib/game/adventure/adventure');
     
     const config = {
       rows: 5,

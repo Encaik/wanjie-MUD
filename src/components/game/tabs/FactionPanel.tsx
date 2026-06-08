@@ -76,7 +76,7 @@ import {
   COMMISSION_QUALITY_CONFIG,
   CommissionQuality,
 } from '@/lib/data/factionProgressData';
-import { checkRankPromotion } from '@/lib/game/expansionLogic';
+import { checkRankPromotion } from '@/lib/game/utils/expansionLogic';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Slider } from '@/components/ui/slider';
 

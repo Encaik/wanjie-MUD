@@ -15,7 +15,7 @@ import {
   calculateEnemyDefense,
   calculateBattleExp,
   calculateBattleSpiritStones,
-} from '../balanceConfig';
+} from '../utils/balanceConfig';
 import {
   createBattleState,
   createBattleStatistics,
@@ -30,7 +30,7 @@ import { executeAutoTurn } from '../battle/battleController';
 import {
   calculatePlayerCombatPower,
   calculateEnemyCombatPower,
-} from '../combatPower';
+} from '../utils/combatPower';
 import { GAME_CONSTANTS } from '../utils/constants';
 import {
   calculateEnemyEnhancement,
@@ -43,22 +43,22 @@ import {
 } from '../enemy/enemyTechniqueEquipment';
 import {
   generateRandomEquipment,
-} from '../equipment';
+} from '../utils/equipment';
 import {
   generateFragmentDrop,
   FragmentDropResult,
-} from '../fragmentSystem';
+} from '../utils/fragmentSystem';
 import {
   getRandomItem,
   spiritStoneItems,
   breakthroughItems,
-} from '../items';
+} from '../utils/items';
 import {
   getEnemyAttributes,
-} from '../restraintSystem';
+} from '../utils/restraintSystem';
 import {
   generateRandomTechnique,
-} from '../technique';
+} from '../utils/technique';
 import {
   Protagonist,
   CellType,

@@ -4,7 +4,7 @@
  * 整合修炼流派、功法羁绊、装备词缀、势力进度等系统的计算逻辑
  */
 
-import { CharacterStats, ItemRarity, WorldType, EquipmentSlot, getFinalStats, LegacyStats, GrowthStats } from './types';
+import { CharacterStats, ItemRarity, WorldType, EquipmentSlot, getFinalStats, LegacyStats, GrowthStats } from '../types';
 import { 
   CultivationPath,
   CultivationPathProgress,
@@ -15,14 +15,14 @@ import {
   CurrencyState,
   ProtagonistExtension,
   DEFAULT_PROTAGONIST_EXTENSION
-} from './typesExtension';
-import { TaskProgress } from './typesExtension';
+} from '../typesExtension';
+import { TaskProgress } from '../typesExtension';
 import {
   RealmBottleneck,
   TribulationState,
   BottleneckType
-} from './typesExtension';
-import { DemonEncounter, DemonChoice } from './typesExtension';
+} from '../typesExtension';
+import { DemonEncounter, DemonChoice } from '../typesExtension';
 import {
   CULTIVATION_PATHS,
   PATH_LEVEL_CONFIG,
@@ -30,13 +30,13 @@ import {
   checkPathUnlockConditions,
   getActivePathSkills,
   calculatePathStatBonus
-} from '../data/cultivationPathData';
+} from '../../data/cultivationPathData';
 import {
   DEMON_ENCOUNTERS,
   getRandomDemonEncounter,
   calculateDemonChoiceSuccessRate,
   calculateDemonTriggerChance
-} from '../data/demonData';
+} from '../../data/demonData';
 import {
   ALL_AFFIXES,
   EQUIPMENT_SETS,
@@ -46,7 +46,7 @@ import {
   getEnhancementBonus,
   calculateSetBonus,
   EquipmentAffix
-} from '../data/equipmentAffixData';
+} from '../../data/equipmentAffixData';
 import {
   REPUTATION_LEVELS,
   getReputationLevel,
@@ -54,7 +54,7 @@ import {
   FACTION_TASKS,
   FACTION_SHOP_ITEMS,
   FACTION_SKILLS
-} from '../data/factionProgressData';
+} from '../../data/factionProgressData';
 import {
   TECHNIQUE_BONDS,
   PROFICIENCY_LEVELS,
@@ -62,7 +62,7 @@ import {
   getProficiencyBonus,
   calculateBondEffects,
   TechniqueBondConfig
-} from '../data/techniqueBondData';
+} from '../../data/techniqueBondData';
 
 // ============================================
 // 修炼流派系统逻辑
@@ -734,7 +734,7 @@ import {
   getTribulationConfig,
   getNextTribulationLevel,
   calculateSuccessRate
-} from '../data/tribulationData';
+} from '../../data/tribulationData';
 
 /**
  * 检测是否触发境界瓶颈

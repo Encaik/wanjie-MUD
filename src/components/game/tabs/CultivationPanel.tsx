@@ -10,7 +10,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { CULTIVATION_PATHS } from '@/lib/data/cultivationPathData';
 import { TRIBULATION_CONFIGS, getNextTribulationLevel } from '@/lib/data/tribulationData';
-import { getMaxExperience, calculateBreakthroughRate, calculateBreakthroughBoost, calculateCultivationBoost } from '@/lib/game/cultivation';
+import { getMaxExperience, calculateBreakthroughRate, calculateBreakthroughBoost, calculateCultivationBoost } from '@/lib/game/cultivation/cultivation';
 import { 
   checkRealmBottleneck,
   attemptBreakthrough,
@@ -22,14 +22,14 @@ import {
   checkDemonTrigger,
   getDemonEvent,
   processDemonChoice
-} from '@/lib/game/expansionLogic';
-import { MAX_LEVEL } from '@/lib/game/realmSystem';
+} from '@/lib/game/utils/expansionLogic';
+import { MAX_LEVEL } from '@/lib/game/utils/realmSystem';
 import { 
   TUTORIAL_TASKS, 
   checkTutorialProgress, 
   TutorialTask 
 } from '@/lib/game/taskSystem';
-import { getTerminology } from '@/lib/game/terminology';
+import { getTerminology } from '@/lib/game/utils/terminology';
 import { WorldType, InventoryItem, ActiveEffect, CultivationPath, CharacterStats, GameStatistics, LegacyStats } from '@/lib/game/types';
 import { 
   RealmBottleneck, 

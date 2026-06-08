@@ -13,7 +13,7 @@ import {
   useStats, 
   useCombatStats 
 } from '@/hooks/useGameHooks';
-import { calculatePlayerCombatPower, getCombatPowerRank, formatCombatPower } from '@/lib/game/combatPower';
+import { calculatePlayerCombatPower, getCombatPowerRank, formatCombatPower } from '@/lib/game/utils/combatPower';
 import { Protagonist, getFinalStats } from '@/lib/game/types';
 
 // 属性图标和颜色配置

@@ -7,7 +7,7 @@
  * - 满级10级制，按稀有度不同
  */
 
-import { Element } from '../restraintSystem';
+import { Element } from '../utils/restraintSystem';
 
 // ============================================
 // 技能标签

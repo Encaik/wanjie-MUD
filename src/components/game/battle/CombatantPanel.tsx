@@ -20,7 +20,7 @@ import {
   ELEMENT_NAMES, 
   WEAPON_CATEGORY_NAMES,
   EnemyAttributes,
-} from '@/lib/game/restraintSystem';
+} from '@/lib/game/utils/restraintSystem';
 import { Technique, Equipment, EnemyTier } from '@/lib/game/types';
 import { Element, WeaponCategory } from '@/lib/game/types';
 

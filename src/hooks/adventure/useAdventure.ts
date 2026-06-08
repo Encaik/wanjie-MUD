@@ -13,7 +13,7 @@ import {
   generateAdventureGrid, 
   handleCellEvent,
   parseEnemyInfo,
-} from '@/lib/game/adventure';
+} from '@/lib/game/adventure/adventure';
 import { calculateBattleWithLogs } from '@/lib/game/adventure/adventureBattleNew';
 import {
   STAMINA_CONFIG,
@@ -26,8 +26,8 @@ import {
   getCooldownRemaining,
   getEnemyTierFromType,
 } from '@/lib/game/adventure/adventureStamina';
-import { calculatePlayerCombatPower } from '@/lib/game/combatPower';
-import { getMaxExperience } from '@/lib/game/cultivation';
+import { calculatePlayerCombatPower } from '@/lib/game/utils/combatPower';
+import { getMaxExperience } from '@/lib/game/cultivation/cultivation';
 import { getRandomEvent } from '@/lib/game/events/events';
 import { GrowthStats } from '@/lib/game/types';
 import { processExperienceGain } from '@/lib/game/utils/experienceSystem';
@@ -35,30 +35,30 @@ import {
   spiritStoneItems, 
   breakthroughItems, 
   getRandomItem 
-} from '@/lib/game/items';
-import { updateTaskProgress } from '@/lib/game/expansionLogic';
+} from '@/lib/game/utils/items';
+import { updateTaskProgress } from '@/lib/game/utils/expansionLogic';
 import { 
   DEFAULT_PROTAGONIST_EXTENSION,
   getDeathMessage,
   DeathCause,
   DeathState,
 } from '@/lib/game/typesExtension';
-import { applyMentalChange } from '@/lib/game/expansionLogic';
+import { applyMentalChange } from '@/lib/game/utils/expansionLogic';
 // 碎片系统
 import { 
   FragmentDropData,
   createEmptyFragmentInventory,
   addFragmentToInventory,
   generateFragmentDrop,
-} from '@/lib/game/fragmentSystem';
+} from '@/lib/game/utils/fragmentSystem';
 // 统计系统
 import { statisticsManager, StatisticsEventType } from '@/lib/game/statistics/statisticsSystem';
 import { gameSystems } from '@/lib/game/utils/gameSystems';
-import { getAvailableDifficultiesForRealm } from '@/lib/game/generators';
-import { applyGrowthStatChanges, getGrowthStatCap } from '@/lib/game/realmSystem';
+import { getAvailableDifficultiesForRealm } from '@/lib/game/utils/generators';
+import { applyGrowthStatChanges, getGrowthStatCap } from '@/lib/game/utils/realmSystem';
 import { consumeGameTime, ACTION_TIME_COST, createCooldown } from '@/lib/game/time/timeSystem';
 import { isNewbie } from '@/lib/game/taskSystem';
-import { getTerminology } from '@/lib/game/terminology';
+import { getTerminology } from '@/lib/game/utils/terminology';
 import { 
   GameState, 
   MessageRecord, 
@@ -1715,9 +1715,9 @@ export function useGameAdventure({
           
           if (towerEnemy.rewards.fragments.length > 0) {
             // 导入所需函数
-            const { generateRandomTechnique } = require('@/lib/game/technique');
-            const { generateRandomEquipment } = require('@/lib/game/equipment');
-            const { SYNTHESIS_REQUIREMENTS } = require('@/lib/game/fragmentSystem');
+            const { generateRandomTechnique } = require('@/lib/game/utils/technique');
+            const { generateRandomEquipment } = require('@/lib/game/utils/equipment');
+            const { SYNTHESIS_REQUIREMENTS } = require('@/lib/game/utils/fragmentSystem');
             
             // 按品质分组统计碎片
             const fragmentByRarity: Record<string, { count: number; type: string }> = {};

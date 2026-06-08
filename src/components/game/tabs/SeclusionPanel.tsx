@@ -34,8 +34,8 @@ import {
   SeclusionType, 
   SECLUSION_CONFIGS, 
   SECLUSION_OUTCOMES,
-} from '@/lib/game/seclusion';
-import { getTerminology } from '@/lib/game/terminology';
+} from '@/lib/game/cultivation/seclusion';
+import { getTerminology } from '@/lib/game/utils/terminology';
 import { WorldType, InventoryItem } from '@/lib/game/types';
 
 

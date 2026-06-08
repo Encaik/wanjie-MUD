@@ -31,7 +31,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Element, WeaponCategory, ELEMENT_NAMES, WEAPON_CATEGORY_NAMES, getElementIcon, getWeaponCategoryIcon } from '@/lib/game/restraintSystem';
+import { Element, WeaponCategory, ELEMENT_NAMES, WEAPON_CATEGORY_NAMES, getElementIcon, getWeaponCategoryIcon } from '@/lib/game/utils/restraintSystem';
 import { 
   getUnlockedSkills, 
   getEquippedSkills,

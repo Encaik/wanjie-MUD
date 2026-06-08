@@ -39,14 +39,14 @@ import {
 import { Progress } from '@/components/ui/progress';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
-import { formatCombatPower, getCombatPowerRank } from '@/lib/game/combatPower';
+import { formatCombatPower, getCombatPowerRank } from '@/lib/game/utils/combatPower';
 import { 
   getElementIcon, 
   getWeaponCategoryIcon, 
   ELEMENT_NAMES, 
   WEAPON_CATEGORY_NAMES,
   EnemyAttributes,
-} from '@/lib/game/restraintSystem';
+} from '@/lib/game/utils/restraintSystem';
 import { BattleState, BattleLog, Technique, Equipment } from '@/lib/game/types';
 
 import { CombatantPanel } from './CombatantPanel';

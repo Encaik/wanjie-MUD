@@ -9,23 +9,23 @@ import React, { createContext, useCallback, useContext, useEffect, useRef, useSt
 import type { Dispatch, SetStateAction } from 'react';
 
 // 类型导入
-import { handleCellEvent } from '@/lib/game/adventure';
+import { handleCellEvent } from '@/lib/game/adventure/adventure';
 import { calculateBattleWithLogs } from '@/lib/game/adventure/adventureBattleNew';
-import { calculatePlayerMaxHp, calculatePlayerMaxMp } from '@/lib/game/balanceConfig';
-import { calculatePlayerCombatPower } from '@/lib/game/combatPower';
-import { executeCultivation, getMaxExperience } from '@/lib/game/cultivation';
-import { generateEquipment } from '@/lib/game/equipment';
-import { updateTaskProgress, applyMentalChange } from '@/lib/game/expansionLogic';
+import { calculatePlayerMaxHp, calculatePlayerMaxMp } from '@/lib/game/utils/balanceConfig';
+import { calculatePlayerCombatPower } from '@/lib/game/utils/combatPower';
+import { executeCultivation, getMaxExperience } from '@/lib/game/cultivation/cultivation';
+import { generateEquipment } from '@/lib/game/utils/equipment';
+import { updateTaskProgress, applyMentalChange } from '@/lib/game/utils/expansionLogic';
 import { processExperienceGain, calculateBreakthroughTransfer } from '@/lib/game/utils/experienceSystem';
-import { generateCharacters, generateWorlds, generateBackstory } from '@/lib/game/generators';
-import type { SeclusionType } from '@/lib/game/seclusion';
+import { generateCharacters, generateWorlds, generateBackstory } from '@/lib/game/utils/generators';
+import type { SeclusionType } from '@/lib/game/cultivation/seclusion';
 import type { TowerEnemy } from '@/lib/game/tower/types';
 import { createDefaultTowerProgress } from '@/lib/game/tower/types';
 import { createInventoryItem } from '@/lib/game/types';
-import { spiritStoneItems, cultivationPillItems, breakthroughItems } from '@/lib/game/items';
-import { generateRandomTechnique, generateTechniqueByType } from '@/lib/game/technique';
-import { getRealmName } from '@/lib/game/generators';
-import { applyBaseStatChanges, getGrowthStatCap } from '@/lib/game/realmSystem';
+import { spiritStoneItems, cultivationPillItems, breakthroughItems } from '@/lib/game/utils/items';
+import { generateRandomTechnique, generateTechniqueByType } from '@/lib/game/utils/technique';
+import { getRealmName } from '@/lib/game/utils/generators';
+import { applyBaseStatChanges, getGrowthStatCap } from '@/lib/game/utils/realmSystem';
 import { 
   TUTORIAL_TASKS, 
   checkTutorialProgress, 
@@ -90,7 +90,7 @@ import {
   synthesizeFragmentGroup,
   synthesizeFragmentByName,
   getFragmentGroupsByName,
-} from '@/lib/game/fragmentSystem';
+} from '@/lib/game/utils/fragmentSystem';
 
 // 扩展类型导入
 
@@ -123,7 +123,7 @@ import { getDefaultRealTimeState, getDefaultGameTimeState } from '@/lib/game/tim
 // 子 Hooks
 
 // 游戏逻辑模块
-import { getRandomItem } from '@/lib/game/items';
+import { getRandomItem } from '@/lib/game/utils/items';
 import { calculatePillEffect, getPillRealmLevel } from '@/lib/game/cultivation/pillRealmSystem';
 import { createMinimalEquipment, createMinimalTechnique } from '@/lib/game/utils/rarityUtils';
 import { createInitialGameState } from './game-state/initialState';

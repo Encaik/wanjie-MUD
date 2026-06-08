@@ -7,7 +7,7 @@
  * 3. 接口抽象，便于扩展
  */
 
-import { RestraintResult, EnemyAttributes } from '../restraintSystem';
+import { RestraintResult, EnemyAttributes } from '../utils/restraintSystem';
 import { 
   Technique, 
   Equipment, 

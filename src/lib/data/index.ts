@@ -75,7 +75,7 @@ export * from './techniqueBondData';
 export * from './techniques';
 
 // 术语系统
-export * from './terminology';
+export * from './utils/terminology';
 
 // 词条
 export * from './traits';

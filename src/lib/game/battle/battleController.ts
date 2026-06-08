@@ -41,9 +41,9 @@ import {
   TriggeredEvent,
   PlayerData,
 } from './types';
-import { calculateDamage, COMBAT_CONFIG } from '../balanceConfig';
+import { calculateDamage, COMBAT_CONFIG } from '../utils/balanceConfig';
 import { EnemyGroup, Enemy } from '../enemy/types';
-import { getDefenseAttributes } from '../restraintSystem';
+import { getDefenseAttributes } from '../utils/restraintSystem';
 import { 
   Technique, 
   Equipment, 

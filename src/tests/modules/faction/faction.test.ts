@@ -124,7 +124,7 @@ describe('声望系统', () => {
   });
 
   it('声望应该可以增加', async () => {
-    const { addFactionReputation } = await import('@/lib/game/expansionLogic');
+    const { addFactionReputation } = await import('@/lib/game/utils/expansionLogic');
     
     const progress = createDefaultFactionProgress('test_faction');
     progress.reputation = 100;
@@ -185,7 +185,7 @@ describe('职位系统', () => {
   });
 
   it('应该能检查职位晋升资格', async () => {
-    const { checkRankPromotion } = await import('@/lib/game/expansionLogic');
+    const { checkRankPromotion } = await import('@/lib/game/utils/expansionLogic');
     
     // 模拟低声望进度
     const lowProgress = createDefaultFactionProgress('test_faction');
@@ -261,7 +261,7 @@ describe('任务系统', () => {
   });
 
   it('应该能更新任务进度', async () => {
-    const { updateTaskProgress } = await import('@/lib/game/expansionLogic');
+    const { updateTaskProgress } = await import('@/lib/game/utils/expansionLogic');
     
     const progress = createDefaultFactionProgress('test_faction');
     // 设置已接取的任务

@@ -7,7 +7,7 @@ import { Swords, Map, AlertTriangle, Star, Zap, Lock, Battery, BatteryLow, Batte
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { getDungeonInfo } from '@/lib/game/terminology';
+import { getDungeonInfo } from '@/lib/game/utils/terminology';
 import { DungeonConfig, WorldType, Protagonist } from '@/lib/game/types';
 
 

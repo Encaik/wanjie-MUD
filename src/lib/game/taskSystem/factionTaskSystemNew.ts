@@ -7,7 +7,7 @@
  * - 与统计系统紧密集成
  */
 
-import { breakthroughItems, cultivationPillItems } from '../items';
+import { breakthroughItems, cultivationPillItems } from '../utils/items';
 import { Protagonist, GameStatistics, ItemDefinition } from '../types';
 import {
   TaskDefinition,

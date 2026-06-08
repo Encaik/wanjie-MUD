@@ -30,13 +30,13 @@ import {
   StatBuff,
   BattlePhase,
 } from './types';
-import { calculateDamage, calculateCritRate, COMBAT_CONFIG } from '../balanceConfig';
+import { calculateDamage, calculateCritRate, COMBAT_CONFIG } from '../utils/balanceConfig';
 import { 
   calculateRestraintResult, 
   formatRestraintDescription,
   EnemyAttributes,
   getDefenseAttributes,
-} from '../restraintSystem';
+} from '../utils/restraintSystem';
 import { InventoryItem, EnemyTier } from '../types';
 import {
   BattleEnemy,

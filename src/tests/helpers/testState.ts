@@ -4,7 +4,7 @@
  */
 
 import type { RealmSystem } from '@/lib/data/realmData';
-import { spiritStoneItems, cultivationPillItems } from '@/lib/game/items';
+import { spiritStoneItems, cultivationPillItems } from '@/lib/game/utils/items';
 import type { GameState, Protagonist, World, Character, ImpactfulTrait, StatImpact, WorldImpact } from '@/lib/game/types';
 import { createInventoryItem } from '@/lib/game/types';
 

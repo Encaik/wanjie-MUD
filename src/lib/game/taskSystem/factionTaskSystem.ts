@@ -8,7 +8,7 @@
  * - 奖励声望和贡献点
  */
 
-import { breakthroughItems, cultivationPillItems } from '../items';
+import { breakthroughItems, cultivationPillItems } from '../utils/items';
 import { Protagonist, GameStatistics, ItemRarity } from '../types';
 import {
   TaskSystemType,

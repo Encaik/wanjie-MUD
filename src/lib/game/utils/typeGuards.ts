@@ -3,8 +3,8 @@
  * 用于替代 any 类型，提供类型安全的类型转换和验证
  */
 
-import { Protagonist, InventoryItem, Technique, Equipment, CharacterStats, AchievementStatus, StatKey } from './types';
-import { TechniqueExtension, EquipmentExtension } from './typesExtension';
+import { Protagonist, InventoryItem, Technique, Equipment, CharacterStats, AchievementStatus, StatKey } from '../types';
+import { TechniqueExtension, EquipmentExtension } from '../typesExtension';
 
 /**
  * 类型守卫：检查是否为有效数组

@@ -398,7 +398,7 @@ describe('难度选择', () => {
 // ============================================
 describe('Bug修复 - 机缘格子奖励', () => {
   it('宝箱格应该给予奖励', async () => {
-    const { handleCellEvent } = await import('@/lib/game/adventure');
+    const { handleCellEvent } = await import('@/lib/game/adventure/adventure');
     
     const mockProtagonist = {
       level: 10,
@@ -431,7 +431,7 @@ describe('Bug修复 - 机缘格子奖励', () => {
   });
 
   it('事件格应该给予奖励', async () => {
-    const { handleCellEvent } = await import('@/lib/game/adventure');
+    const { handleCellEvent } = await import('@/lib/game/adventure/adventure');
     
     const mockProtagonist = {
       level: 10,
@@ -462,7 +462,7 @@ describe('Bug修复 - 机缘格子奖励', () => {
   });
 
   it('休息格应该恢复HP和MP', async () => {
-    const { handleCellEvent } = await import('@/lib/game/adventure');
+    const { handleCellEvent } = await import('@/lib/game/adventure/adventure');
     
     const mockProtagonist = {
       level: 10,
@@ -669,7 +669,7 @@ describe('Bug修复 - 格子比例和传送门限制', () => {
   });
 
   it('每种格子类型应该有最小数量', async () => {
-    const { generateAdventureGrid } = await import('@/lib/game/adventure');
+    const { generateAdventureGrid } = await import('@/lib/game/adventure/adventure');
     
     const config = {
       rows: 5,
@@ -739,7 +739,7 @@ describe('Bug修复 - 奖励格物品显示', () => {
   });
 
   it('宝箱奖励应该使用术语系统', async () => {
-    const { handleCellEvent } = await import('@/lib/game/adventure');
+    const { handleCellEvent } = await import('@/lib/game/adventure/adventure');
     const { getTerminology } = await import('@/lib/game/terminology');
     
     const mockProtagonist = {

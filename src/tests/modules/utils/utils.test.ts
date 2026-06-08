@@ -41,24 +41,24 @@ describe('ID生成器', () => {
 // ============================================
 describe('类型守卫 - isObject', () => {
   it('null应该返回false', async () => {
-    const { isObject } = await import('@/lib/game/typeGuards');
+    const { isObject } = await import('@/lib/game/utils/typeGuards');
     expect(isObject(null)).toBe(false);
   });
 
   it('undefined应该返回false', async () => {
-    const { isObject } = await import('@/lib/game/typeGuards');
+    const { isObject } = await import('@/lib/game/utils/typeGuards');
     expect(isObject(undefined)).toBe(false);
   });
 
   it('基本类型应该返回false', async () => {
-    const { isObject } = await import('@/lib/game/typeGuards');
+    const { isObject } = await import('@/lib/game/utils/typeGuards');
     expect(isObject('string')).toBe(false);
     expect(isObject(123)).toBe(false);
     expect(isObject(true)).toBe(false);
   });
 
   it('对象应该返回true', async () => {
-    const { isObject } = await import('@/lib/game/typeGuards');
+    const { isObject } = await import('@/lib/game/utils/typeGuards');
     expect(isObject({})).toBe(true);
     expect(isObject({ name: 'test' })).toBe(true);
   });
@@ -66,39 +66,39 @@ describe('类型守卫 - isObject', () => {
 
 describe('类型守卫 - isNumber', () => {
   it('非数字应该返回false', async () => {
-    const { isNumber } = await import('@/lib/game/typeGuards');
+    const { isNumber } = await import('@/lib/game/utils/typeGuards');
     expect(isNumber('string')).toBe(false);
     expect(isNumber(null)).toBe(false);
     expect(isNumber(undefined)).toBe(false);
   });
 
   it('有效数字应该返回true', async () => {
-    const { isNumber } = await import('@/lib/game/typeGuards');
+    const { isNumber } = await import('@/lib/game/utils/typeGuards');
     expect(isNumber(0)).toBe(true);
     expect(isNumber(42)).toBe(true);
     expect(isNumber(-1)).toBe(true);
   });
 
   it('NaN应该返回false', async () => {
-    const { isNumber } = await import('@/lib/game/typeGuards');
+    const { isNumber } = await import('@/lib/game/utils/typeGuards');
     expect(isNumber(NaN)).toBe(false);
   });
 });
 
 describe('类型守卫 - isProtagonist', () => {
   it('null应该返回false', async () => {
-    const { isProtagonist } = await import('@/lib/game/typeGuards');
+    const { isProtagonist } = await import('@/lib/game/utils/typeGuards');
     expect(isProtagonist(null)).toBe(false);
   });
 
   it('无效对象应该返回false', async () => {
-    const { isProtagonist } = await import('@/lib/game/typeGuards');
+    const { isProtagonist } = await import('@/lib/game/utils/typeGuards');
     expect(isProtagonist({})).toBe(false);
     expect(isProtagonist({ name: 'test' })).toBe(false);
   });
 
   it('有效的protagonist应该返回true', async () => {
-    const { isProtagonist } = await import('@/lib/game/typeGuards');
+    const { isProtagonist } = await import('@/lib/game/utils/typeGuards');
     
     const mockProtagonist = {
       character: {
@@ -148,18 +148,18 @@ describe('类型守卫 - isProtagonist', () => {
 
 describe('类型守卫 - isTechnique', () => {
   it('null应该返回false', async () => {
-    const { isTechnique } = await import('@/lib/game/typeGuards');
+    const { isTechnique } = await import('@/lib/game/utils/typeGuards');
     expect(isTechnique(null)).toBe(false);
   });
 
   it('无效对象应该返回false', async () => {
-    const { isTechnique } = await import('@/lib/game/typeGuards');
+    const { isTechnique } = await import('@/lib/game/utils/typeGuards');
     expect(isTechnique({})).toBe(false);
     expect(isTechnique({ name: 'test' })).toBe(false);
   });
 
   it('有效的technique应该返回true', async () => {
-    const { isTechnique } = await import('@/lib/game/typeGuards');
+    const { isTechnique } = await import('@/lib/game/utils/typeGuards');
     
     const validTechnique = {
       id: 'tech-1',
@@ -180,18 +180,18 @@ describe('类型守卫 - isTechnique', () => {
 
 describe('类型守卫 - isEquipment', () => {
   it('null应该返回false', async () => {
-    const { isEquipment } = await import('@/lib/game/typeGuards');
+    const { isEquipment } = await import('@/lib/game/utils/typeGuards');
     expect(isEquipment(null)).toBe(false);
   });
 
   it('无效对象应该返回false', async () => {
-    const { isEquipment } = await import('@/lib/game/typeGuards');
+    const { isEquipment } = await import('@/lib/game/utils/typeGuards');
     expect(isEquipment({})).toBe(false);
     expect(isEquipment({ name: 'test' })).toBe(false);
   });
 
   it('有效的equipment应该返回true', async () => {
-    const { isEquipment } = await import('@/lib/game/typeGuards');
+    const { isEquipment } = await import('@/lib/game/utils/typeGuards');
     
     const validEquipment = {
       id: 'equip-1',

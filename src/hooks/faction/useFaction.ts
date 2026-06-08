@@ -24,7 +24,7 @@ import {
   FactionCommissionConfig,
 } from '@/lib/data/factionProgressData';
 import { getStatisticValue } from '@/lib/game/achievement/achievementUtils';
-import { spiritStoneItems } from '@/lib/game/items';
+import { spiritStoneItems } from '@/lib/game/utils/items';
 import { statisticsManager } from '@/lib/game/statistics/statisticsSystem';
 import { 
   GameState, 

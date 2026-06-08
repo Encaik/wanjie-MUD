@@ -18,13 +18,13 @@ import { createTestDungeonConfig, createTestCell } from './test-helpers';
 // ============================================
 describe('相邻格子计算', () => {
   it('应该能导入getAdjacentCells函数', async () => {
-    const { getAdjacentCells } = await import('@/lib/game/adventure');
+    const { getAdjacentCells } = await import('@/lib/game/adventure/adventure');
     expect(getAdjacentCells).toBeDefined();
     expect(typeof getAdjacentCells).toBe('function');
   });
 
   it('中间位置应该有4个相邻格子', async () => {
-    const { getAdjacentCells } = await import('@/lib/game/adventure');
+    const { getAdjacentCells } = await import('@/lib/game/adventure/adventure');
     
     // 创建一个5x5的模拟网格
     const mockGrid = Array(5).fill(null).map(() => 
@@ -42,7 +42,7 @@ describe('相邻格子计算', () => {
   });
 
   it('左上角应该只有2个相邻格子', async () => {
-    const { getAdjacentCells } = await import('@/lib/game/adventure');
+    const { getAdjacentCells } = await import('@/lib/game/adventure/adventure');
     
     const mockGrid = Array(5).fill(null).map(() => 
       Array(5).fill(null).map(() => createTestCell('empty'))
@@ -57,7 +57,7 @@ describe('相邻格子计算', () => {
   });
 
   it('右下角应该只有2个相邻格子', async () => {
-    const { getAdjacentCells } = await import('@/lib/game/adventure');
+    const { getAdjacentCells } = await import('@/lib/game/adventure/adventure');
     
     const mockGrid = Array(5).fill(null).map(() => 
       Array(5).fill(null).map(() => createTestCell('empty'))
@@ -72,7 +72,7 @@ describe('相邻格子计算', () => {
   });
 
   it('边缘位置应该有3个相邻格子', async () => {
-    const { getAdjacentCells } = await import('@/lib/game/adventure');
+    const { getAdjacentCells } = await import('@/lib/game/adventure/adventure');
     
     const mockGrid = Array(5).fill(null).map(() => 
       Array(5).fill(null).map(() => createTestCell('empty'))
@@ -93,7 +93,7 @@ describe('相邻格子计算', () => {
 // ============================================
 describe('秘境探索', () => {
   it('应该能生成秘境网格', async () => {
-    const { generateAdventureGrid } = await import('@/lib/game/adventure');
+    const { generateAdventureGrid } = await import('@/lib/game/adventure/adventure');
     
     const config = createTestDungeonConfig();
     const grid = generateAdventureGrid(config);
@@ -112,7 +112,7 @@ describe('秘境探索', () => {
   });
 
   it('探索进度应该正确计算', async () => {
-    const { generateAdventureGrid } = await import('@/lib/game/adventure');
+    const { generateAdventureGrid } = await import('@/lib/game/adventure/adventure');
     
     const config = createTestDungeonConfig();
     const grid = generateAdventureGrid(config);
@@ -139,7 +139,7 @@ describe('秘境探索', () => {
 // ============================================
 describe('传送门功能', () => {
   it('大地图应该有传送门', async () => {
-    const { generateAdventureGrid } = await import('@/lib/game/adventure');
+    const { generateAdventureGrid } = await import('@/lib/game/adventure/adventure');
     
     const config = createTestDungeonConfig({
       rows: 15,
@@ -162,7 +162,7 @@ describe('传送门功能', () => {
   });
 
   it('传送门应该有目标位置', async () => {
-    const { generateAdventureGrid } = await import('@/lib/game/adventure');
+    const { generateAdventureGrid } = await import('@/lib/game/adventure/adventure');
     
     const config = createTestDungeonConfig({
       rows: 15,

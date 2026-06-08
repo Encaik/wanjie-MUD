@@ -50,7 +50,7 @@ describe('状态结构', () => {
 // ============================================
 describe('战斗状态', () => {
   it('战斗应该返回正确的状态', async () => {
-    const { calculateBattleWithLogs } = await import('@/lib/game/adventure');
+    const { calculateBattleWithLogs } = await import('@/lib/game/adventure/adventure');
     
     const mockProtagonist = createTestProtagonist();
     const config = createTestDungeonConfig();
@@ -76,7 +76,7 @@ describe('战斗状态', () => {
   });
 
   it('HP不应该为负数', async () => {
-    const { calculateBattleWithLogs } = await import('@/lib/game/adventure');
+    const { calculateBattleWithLogs } = await import('@/lib/game/adventure/adventure');
     
     const mockProtagonist = createTestProtagonist({
       stats: { 体质: 1, 灵根: 1, 悟性: 1, 幸运: 1, 意志: 1 },
@@ -101,7 +101,7 @@ describe('战斗状态', () => {
   });
 
   it('HP不应该超过maxHp', async () => {
-    const { calculateBattleWithLogs } = await import('@/lib/game/adventure');
+    const { calculateBattleWithLogs } = await import('@/lib/game/adventure/adventure');
     
     const mockProtagonist = createTestProtagonist({
       maxHp: 100,
@@ -128,7 +128,7 @@ describe('战斗状态', () => {
 // ============================================
 describe('秘境状态', () => {
   it('应该能生成秘境网格', async () => {
-    const { generateAdventureGrid } = await import('@/lib/game/adventure');
+    const { generateAdventureGrid } = await import('@/lib/game/adventure/adventure');
     
     const config = createTestDungeonConfig();
     const grid = generateAdventureGrid(config);
@@ -139,7 +139,7 @@ describe('秘境状态', () => {
   });
 
   it('格子应该有正确的属性', async () => {
-    const { generateAdventureGrid } = await import('@/lib/game/adventure');
+    const { generateAdventureGrid } = await import('@/lib/game/adventure/adventure');
     
     const config = createTestDungeonConfig();
     const grid = generateAdventureGrid(config);
@@ -156,7 +156,7 @@ describe('秘境状态', () => {
   });
 
   it('起点应该已访问', async () => {
-    const { generateAdventureGrid } = await import('@/lib/game/adventure');
+    const { generateAdventureGrid } = await import('@/lib/game/adventure/adventure');
     
     const config = createTestDungeonConfig();
     const grid = generateAdventureGrid(config);
@@ -172,7 +172,7 @@ describe('秘境状态', () => {
 // ============================================
 describe('经验值管理', () => {
   it('战斗胜利应该获得经验值', async () => {
-    const { calculateBattleWithLogs } = await import('@/lib/game/adventure');
+    const { calculateBattleWithLogs } = await import('@/lib/game/adventure/adventure');
     
     const mockProtagonist = createTestProtagonist({
       stats: { 体质: 200, 灵根: 200, 悟性: 50, 幸运: 50, 意志: 50 },
@@ -193,7 +193,7 @@ describe('经验值管理', () => {
   });
 
   it('Boss应该给予更多经验', async () => {
-    const { calculateBattleWithLogs } = await import('@/lib/game/adventure');
+    const { calculateBattleWithLogs } = await import('@/lib/game/adventure/adventure');
     
     const mockProtagonist = createTestProtagonist({
       stats: { 体质: 500, 灵根: 500, 悟性: 50, 幸运: 50, 意志: 50 },

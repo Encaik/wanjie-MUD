@@ -11,12 +11,12 @@
  */
 
 import { getMaxExperience } from './cultivation';
-import { processExperienceGain, calculateBreakthroughTransfer } from './utils/experienceSystem';
-import { getRealmName } from './generators';
-import { spiritStoneItems } from './items';
-import { getTerminology } from './terminology';
-import { Protagonist, CultivationResult, CharacterStats, GrowthStats, WorldType, InventoryItem, createInventoryItem, getGrowthStatCap } from './types';
-import { getMaxLevel } from '../data/realmData';
+import { processExperienceGain, calculateBreakthroughTransfer } from '../utils/experienceSystem';
+import { getRealmName } from '../utils/generators';
+import { spiritStoneItems } from '../utils/items';
+import { getTerminology } from '../utils/terminology';
+import { Protagonist, CultivationResult, CharacterStats, GrowthStats, WorldType, InventoryItem, createInventoryItem, getGrowthStatCap } from '../types';
+import { getMaxLevel } from '../../data/realmData';
 
 const random = (min: number, max: number) => Math.floor(Math.random() * (max - min + 1)) + min;
 

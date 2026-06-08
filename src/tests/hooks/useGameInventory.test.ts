@@ -12,7 +12,7 @@
 import { describe, it, expect } from 'vitest';
 
 import { addToInventory, removeFromInventory, getSpiritStoneCount, hasEnoughItems } from '@/hooks/utils/inventoryUtils';
-import { spiritStoneItems } from '@/lib/game/items';
+import { spiritStoneItems } from '@/lib/game/utils/items';
 import type { InventoryItem } from '@/lib/game/types';
 import { createInventoryItem } from '@/lib/game/types';
 

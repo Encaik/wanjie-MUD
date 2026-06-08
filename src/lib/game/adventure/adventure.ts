@@ -23,9 +23,9 @@ import {
   EXPERIENCE_CONFIG,
   RESOURCE_CONFIG,
   BREAKTHROUGH_CONFIG,
-} from './balanceConfig';
-import { calculatePlayerCombatPower, calculateEnemyCombatPower } from './combatPower';
-import { GAME_CONSTANTS } from './utils/constants';
+} from '../utils/balanceConfig';
+import { calculatePlayerCombatPower, calculateEnemyCombatPower } from '../utils/combatPower';
+import { GAME_CONSTANTS } from '../utils/constants';
 import {
   handleEventCell,
   quickHandleEvent,
@@ -33,27 +33,27 @@ import {
   getEventTriggerService,
   DungeonEvent,
   EventExecutionContext,
-} from './dungeon';
+} from '../dungeon';
 import {
   calculateEnemyEnhancement,
   applyEnemyEnhancement,
   getEnemyEnhancementShortDesc,
-} from './enemy/enemyEnhancement';
-import { generateRandomEquipment } from './equipment';
+} from '../enemy/enemyEnhancement';
+import { generateRandomEquipment } from '../utils/equipment';
 import { 
   generateFragmentDrop, 
   addFragmentToInventory,
   FragmentInventory,
   FragmentDropResult 
-} from './fragmentSystem';
-import { getRandomItem, getItemById, spiritStoneItems, breakthroughItems } from './items';
-import { getAvailableDifficulties as getRealmDifficulties } from './realmSystem';
-import { getTerminology, getDungeonInfo } from './terminology';
-import { CellType, AdventureCell, BattleResult, CharacterStats, Protagonist, BattleState, BattleLog, ActiveEffect, InventoryItem, DungeonConfig, WorldType, Technique, Equipment, DifficultyLevel, EnemyTier, createInventoryItem, Element, WeaponCategory, getFinalStats, LegacyStats } from './types';
-import { getEnemyTierFromCellType, getEnemyTierConfig, ENEMY_TIER_CONFIG } from '../data/worldData';
-import { generateRandomTechnique } from './technique';
-import { getEnemyNames } from '../data/enemies';
-import { getDungeonInfo as getDataDungeonInfo } from '../data/terminology';
+} from '../utils/fragmentSystem';
+import { getRandomItem, getItemById, spiritStoneItems, breakthroughItems } from '../utils/items';
+import { getAvailableDifficulties as getRealmDifficulties } from '../utils/realmSystem';
+import { getTerminology, getDungeonInfo } from '../utils/terminology';
+import { CellType, AdventureCell, BattleResult, CharacterStats, Protagonist, BattleState, BattleLog, ActiveEffect, InventoryItem, DungeonConfig, WorldType, Technique, Equipment, DifficultyLevel, EnemyTier, createInventoryItem, Element, WeaponCategory, getFinalStats, LegacyStats } from '../types';
+import { getEnemyTierFromCellType, getEnemyTierConfig, ENEMY_TIER_CONFIG } from '../../data/worldData';
+import { generateRandomTechnique } from '../utils/technique';
+import { getEnemyNames } from '../../data/enemies';
+import { getDungeonInfo as getDataDungeonInfo } from '../../data/terminology';
 // 克制关系系统
 import {
   getEnemyAttributes,
@@ -68,11 +68,11 @@ import {
   WEAPON_CATEGORY_NAMES,
   RestraintResult,
   EnemyAttributes,
-} from './restraintSystem';
+} from '../utils/restraintSystem';
 // 地牢随机事件系统
 
 // 数值约束工具
-import { clamp, clampNonNegative, applyDamage, applyHeal } from './utils/numberUtils';
+import { clamp, clampNonNegative, applyDamage, applyHeal } from '../utils/numberUtils';
 // 碎片系统
 
 // 随机工具

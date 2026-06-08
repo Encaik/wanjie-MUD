@@ -8,7 +8,7 @@ import {
   getNextRealm, 
   getNextMainRealmLevel 
 } from '@/lib/data/realmData';
-import { getTerminology } from '@/lib/game/terminology';
+import { getTerminology } from '@/lib/game/utils/terminology';
 import { Protagonist } from '@/lib/game/types';
 
 interface CharacterInfoProps {

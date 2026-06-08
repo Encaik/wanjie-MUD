@@ -19,7 +19,7 @@ import {
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { useTechniques } from '@/hooks';
 import { TECHNIQUE_BONDS, PROFICIENCY_LEVELS, getProficiencyLevel } from '@/lib/data/techniqueBondData';
-import { getElementRestraintHint, getElementIcon, WEAPON_CATEGORY_DEFAULT_ELEMENT, WEAPON_CATEGORY_COMPATIBLE_TECHNIQUE } from '@/lib/game/restraintSystem';
+import { getElementRestraintHint, getElementIcon, WEAPON_CATEGORY_DEFAULT_ELEMENT, WEAPON_CATEGORY_COMPATIBLE_TECHNIQUE } from '@/lib/game/utils/restraintSystem';
 import { Technique, TechniqueType, ItemRarity, UPGRADE_CONFIG, Element, ELEMENT_NAMES, WEAPON_CATEGORY_NAMES, WeaponCategory } from '@/lib/game/types';
 
 // 熟练度等级配置

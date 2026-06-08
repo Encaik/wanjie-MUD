@@ -8,8 +8,8 @@ import {
 import { Badge } from '@/components/ui/badge';
 import { CULTIVATION_PATHS, getPathLevelExp } from '@/lib/data/cultivationPathData';
 import { getRealmName } from '@/lib/data/realmData';
-import { getMaxExperience } from '@/lib/game/cultivation';
-import { getResourceName } from '@/lib/game/items';
+import { getMaxExperience } from '@/lib/game/cultivation/cultivation';
+import { getResourceName } from '@/lib/game/utils/items';
 import { TimeSystemState, formatGameTimeShort } from '@/lib/game/time/timeSystem';
 import { CultivationPath } from '@/lib/game/types';
 import { Protagonist } from '@/lib/game/types';

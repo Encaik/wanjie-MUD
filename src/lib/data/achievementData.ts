@@ -10,7 +10,7 @@
  * - special: 特殊成就
  */
 
-import { spiritStoneItems, breakthroughItems, cultivationPillItems } from '../game/items';
+import { spiritStoneItems, breakthroughItems, cultivationPillItems } from '../game/utils/items';
 import { AchievementDefinition, AchievementType, ItemRarity, createInventoryItem } from '../game/types';
 
 // 成就图标（使用 lucide-react 图标名称）

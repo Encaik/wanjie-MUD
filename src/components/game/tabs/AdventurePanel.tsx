@@ -16,9 +16,9 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { Progress } from '@/components/ui/progress';
-import { getAdjacentCells } from '@/lib/game/adventure';
+import { getAdjacentCells } from '@/lib/game/adventure/adventure';
 import { STAMINA_CONFIG, getCooldownRemaining } from '@/lib/game/adventure/adventureStamina';
-import { getDungeonInfo, getTerminology } from '@/lib/game/terminology';
+import { getDungeonInfo, getTerminology } from '@/lib/game/utils/terminology';
 import { AdventureCell, WorldType, DungeonConfig, CellType, AdventureSessionState } from '@/lib/game/types';
 
 interface AdventurePanelProps {

@@ -24,7 +24,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
-import { Element, WeaponCategory, ELEMENT_NAMES, WEAPON_CATEGORY_NAMES } from '@/lib/game/restraintSystem';
+import { Element, WeaponCategory, ELEMENT_NAMES, WEAPON_CATEGORY_NAMES } from '@/lib/game/utils/restraintSystem';
 import { 
   getUnlockedSkills, 
   getEquippedSkills,

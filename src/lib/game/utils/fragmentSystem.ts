@@ -15,7 +15,7 @@ import {
   EQUIPMENT_RARITY_CONFIG,
   RARITY_ORDER,
   RARITY_WEIGHTS,
-} from './skill/skillTypes';
+} from '../skill/skillTypes';
 import { 
   generateRandomTechnique, 
 } from './technique';
@@ -25,8 +25,8 @@ import {
   Technique, 
   Equipment, 
   WorldType 
-} from './types';
-import { clampNonNegative } from './utils/numberUtils';
+} from '../types';
+import { clampNonNegative } from './numberUtils';
 
 // ============================================
 // 类型定义
@@ -176,7 +176,7 @@ export const ENEMY_DROP_CONFIG: Record<EnemyTier, {
 };
 
 /** 所有品质列表（从低到高） */
-export { RARITY_ORDER } from './skill/skillTypes';
+export { RARITY_ORDER } from '../skill/skillTypes';
 
 // ============================================
 // 工具函数

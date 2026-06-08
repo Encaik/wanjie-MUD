@@ -7,7 +7,7 @@
 import { useCallback, useMemo } from 'react';
 
 import { useGame } from '@/hooks/useGameState';
-import { calculatePlayerCombatPower } from '@/lib/game/combatPower';
+import { calculatePlayerCombatPower } from '@/lib/game/utils/combatPower';
 import { WorldType } from '@/lib/game/types';
 
 import { textResolver } from '@/lib/text/core/textResolver';

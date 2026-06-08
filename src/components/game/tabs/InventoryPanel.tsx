@@ -9,7 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ItemTooltip, getRarityStyle } from '@/components/ui/item-tooltip';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useInventory, useProtagonist } from '@/hooks';
-import { getResourceName } from '@/lib/game/items';
+import { getResourceName } from '@/lib/game/utils/items';
 import { InventoryItem, ActiveEffect, WorldType, ItemRarity } from '@/lib/game/types';
 import { cn } from '@/utils';
 

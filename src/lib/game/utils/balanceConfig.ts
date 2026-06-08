@@ -8,9 +8,9 @@
  * openspec/changes/archive/2026-06-08-architecture-code-quality-refactor/
  */
 
-import { WorldType, World, EnemyTier } from './types';
-import { getWorldData, DIFFICULTY_MULTIPLIERS, DifficultyLevel, ENEMY_TIER_CONFIG, getEnemyTierConfig, getEffectiveEnemyTierConfig } from '../data/worldData';
-import { clamp, clampNonNegative, safeDivide } from './utils/numberUtils';
+import { WorldType, World, EnemyTier } from '../types';
+import { getWorldData, DIFFICULTY_MULTIPLIERS, DifficultyLevel, ENEMY_TIER_CONFIG, getEnemyTierConfig, getEffectiveEnemyTierConfig } from '../../data/worldData';
+import { clamp, clampNonNegative, safeDivide } from './numberUtils';
 
 // ============================================
 // Boss倍率配置（已废弃，使用敌人分级系统）
@@ -453,7 +453,7 @@ export function calculateBattleSpiritStonesWithRegulation(
   worldType?: WorldType
 ): number {
   // 动态导入避免循环依赖
-  const { BattleRewardRegulator } = require('./economy/currencyRegulator');
+  const { BattleRewardRegulator } = require('../economy/currencyRegulator');
   
   const baseReward = calculateBattleSpiritStones(enemyLevel, enemyTier, difficultyLevel, worldType);
   

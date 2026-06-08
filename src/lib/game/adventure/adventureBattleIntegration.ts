@@ -18,7 +18,7 @@ import {
   calculateEnemyDefense,
   calculateBattleExp,
   calculateBattleSpiritStones,
-} from '../balanceConfig';
+} from '../utils/balanceConfig';
 import {
   createBattleState,
   createBattleStateFromGroup,
@@ -38,7 +38,7 @@ import {
   TriggeredEvent,
   Enemy,
 } from '../battle';
-import { calculatePlayerCombatPower, calculateEnemyCombatPower } from '../combatPower';
+import { calculatePlayerCombatPower, calculateEnemyCombatPower } from '../utils/combatPower';
 import { calculateEnemyEnhancement, applyEnemyEnhancement } from '../enemy/enemyEnhancement';
 import { 
   generateEnemyTechniquesAndEquipments,
@@ -52,7 +52,7 @@ import {
   getWeaponCategoryIcon,
   ELEMENT_NAMES,
   WEAPON_CATEGORY_NAMES,
-} from '../restraintSystem';
+} from '../utils/restraintSystem';
 import { generateTowerEnemyGroup, convertTowerEnemyToEnemy } from '../tower/towerSystem';
 import { TowerEnemy } from '../tower/types';
 import { 

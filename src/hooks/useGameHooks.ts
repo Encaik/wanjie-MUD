@@ -8,11 +8,11 @@ import {
   calculatePlayerDefense,
   calculatePlayerMaxHp,
   calculatePlayerMaxMp
-} from '@/lib/game/balanceConfig';
-import { getMaxExperience } from '@/lib/game/cultivation';
-import { getActualStatCap } from '@/lib/game/realmSystem';
-import { MAX_LEVEL } from '@/lib/game/realmSystem';
-import { getAttributeNames, getTerminology, getDungeonInfo } from '@/lib/game/terminology';
+} from '@/lib/game/utils/balanceConfig';
+import { getMaxExperience } from '@/lib/game/cultivation/cultivation';
+import { getActualStatCap } from '@/lib/game/utils/realmSystem';
+import { MAX_LEVEL } from '@/lib/game/utils/realmSystem';
+import { getAttributeNames, getTerminology, getDungeonInfo } from '@/lib/game/utils/terminology';
 import { 
   Protagonist, 
   InventoryItem, 

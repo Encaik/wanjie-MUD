@@ -18,13 +18,13 @@ import { createTestDungeonConfig, createTestProtagonist } from './test-helpers';
 // ============================================
 describe('难度基础功能', () => {
   it('应该能导入难度相关函数', async () => {
-    const { calculateBattleWithLogs, getAvailableDifficulties } = await import('@/lib/game/adventure');
+    const { calculateBattleWithLogs, getAvailableDifficulties } = await import('@/lib/game/adventure/adventure');
     expect(calculateBattleWithLogs).toBeDefined();
     expect(getAvailableDifficulties).toBeDefined();
   });
 
   it('不同难度应该生成不同强度的敌人', async () => {
-    const { calculateBattleWithLogs } = await import('@/lib/game/adventure');
+    const { calculateBattleWithLogs } = await import('@/lib/game/adventure/adventure');
     
     const mockProtagonist = createTestProtagonist();
     
@@ -54,7 +54,7 @@ describe('难度基础功能', () => {
   });
 
   it('不同难度应该有不同的奖励倍率', async () => {
-    const { calculateBattleWithLogs } = await import('@/lib/game/adventure');
+    const { calculateBattleWithLogs } = await import('@/lib/game/adventure/adventure');
     
     const mockProtagonist = createTestProtagonist({
       stats: { 体质: 200, 灵根: 200, 悟性: 50, 幸运: 50, 意志: 50 },
@@ -92,7 +92,7 @@ describe('难度基础功能', () => {
   });
 
   it('应该能获取可用难度列表', async () => {
-    const { getAvailableDifficulties } = await import('@/lib/game/adventure');
+    const { getAvailableDifficulties } = await import('@/lib/game/adventure/adventure');
     
     // 低等级玩家
     const lowLevelDifficulties = getAvailableDifficulties(5, '修仙');
@@ -109,7 +109,7 @@ describe('难度基础功能', () => {
 // ============================================
 describe('敌人等级范围', () => {
   it('敌人等级应该在配置范围内', async () => {
-    const { calculateBattleWithLogs } = await import('@/lib/game/adventure');
+    const { calculateBattleWithLogs } = await import('@/lib/game/adventure/adventure');
     
     const mockProtagonist = createTestProtagonist();
     const config = createTestDungeonConfig({
@@ -135,7 +135,7 @@ describe('敌人等级范围', () => {
 // ============================================
 describe('伤害上限机制', () => {
   it('非常强大的攻击不应该一击秒杀Boss', async () => {
-    const { calculateBattleWithLogs } = await import('@/lib/game/adventure');
+    const { calculateBattleWithLogs } = await import('@/lib/game/adventure/adventure');
     
     // 创建超强主角
     const mockProtagonist = createTestProtagonist({
@@ -163,7 +163,7 @@ describe('伤害上限机制', () => {
 // ============================================
 describe('世界观适配', () => {
   it('不同世界观应该能正常战斗', async () => {
-    const { calculateBattleWithLogs } = await import('@/lib/game/adventure');
+    const { calculateBattleWithLogs } = await import('@/lib/game/adventure/adventure');
     
     const worlds: Array<'修仙' | '高武' | '科技' | '魔幻' | '异能' | '仙侠' | '武侠' | '末世'> = 
       ['修仙', '高武', '科技', '魔幻', '异能', '仙侠', '武侠', '末世'];
@@ -207,7 +207,7 @@ describe('世界观适配', () => {
 // ============================================
 describe('新手难度机缘系统', () => {
   it('未完成新手机缘时，难度列表应包含新手难度', async () => {
-    const { getAvailableDifficulties } = await import('@/lib/game/adventure');
+    const { getAvailableDifficulties } = await import('@/lib/game/adventure/adventure');
     
     // 模拟未完成新手机缘的玩家
     const difficulties = getAvailableDifficulties(5, '修仙', false);
@@ -219,7 +219,7 @@ describe('新手难度机缘系统', () => {
   });
 
   it('已完成新手机缘时，难度列表不应包含新手难度', async () => {
-    const { getAvailableDifficulties } = await import('@/lib/game/adventure');
+    const { getAvailableDifficulties } = await import('@/lib/game/adventure/adventure');
     
     // 模拟已完成新手机缘的玩家
     const difficulties = getAvailableDifficulties(5, '修仙', true);
@@ -229,7 +229,7 @@ describe('新手难度机缘系统', () => {
   });
 
   it('新手难度应该比普通难度更容易', async () => {
-    const { getAvailableDifficulties } = await import('@/lib/game/adventure');
+    const { getAvailableDifficulties } = await import('@/lib/game/adventure/adventure');
     
     // 获取包含新手难度的列表
     const difficulties = getAvailableDifficulties(5, '修仙', false);
@@ -250,7 +250,7 @@ describe('新手难度机缘系统', () => {
   });
 
   it('新手难度参数应该符合预期', async () => {
-    const { getAvailableDifficulties } = await import('@/lib/game/adventure');
+    const { getAvailableDifficulties } = await import('@/lib/game/adventure/adventure');
     
     const playerLevel = 5;
     const difficulties = getAvailableDifficulties(playerLevel, '修仙', false);
@@ -279,7 +279,7 @@ describe('新手难度机缘系统', () => {
 // ============================================
 describe('新手区域敌人数值', () => {
   it('低等级普通敌人HP应该在合理范围内', async () => {
-    const { calculateBattleWithLogs } = await import('@/lib/game/adventure');
+    const { calculateBattleWithLogs } = await import('@/lib/game/adventure/adventure');
     
     // 创建一个普通玩家
     const mockProtagonist = createTestProtagonist({
@@ -308,7 +308,7 @@ describe('新手区域敌人数值', () => {
   });
 
   it('低等级Boss HP不应该过高（修复1600血量问题）', async () => {
-    const { calculateBattleWithLogs } = await import('@/lib/game/adventure');
+    const { calculateBattleWithLogs } = await import('@/lib/game/adventure/adventure');
     
     // 创建一个较强的玩家
     const mockProtagonist = createTestProtagonist({

@@ -8,7 +8,7 @@
  * - 掉落配置
  */
 
-import { Element } from '../../restraintSystem';
+import { Element } from '../../utils/restraintSystem';
 import { WorldType, EnemyTier } from '../../types';
 import { EnemyTemplate, EnemyBehaviorType } from '../types';
 

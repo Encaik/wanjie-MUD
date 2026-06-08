@@ -12,18 +12,18 @@ import {
   WeaponCategory,
   detectElementFromName,
   WEAPON_CATEGORY_DEFAULT_ELEMENT,
-} from './restraintSystem';
-import { generateTechniqueSkills } from './skill/skillGenerator';
+} from '../utils/restraintSystem';
+import { generateTechniqueSkills } from '../skill/skillGenerator';
 import { 
   TECHNIQUE_RARITY_CONFIG,
   RARITY_WEIGHTS,
-} from './skill/skillTypes';
+} from '../skill/skillTypes';
 import { 
   Technique, 
   TechniqueType, 
   ItemRarity, 
   WorldType 
-} from './types';
+} from '../types';
 
 // 导入配置数据
 import {
@@ -41,8 +41,8 @@ import {
   BONUS_RANGE,
   // 掉落权重
   TECHNIQUE_DROP_WEIGHTS,
-} from '../data/techniqueConfigs';
-import { clamp } from './utils/numberUtils';
+} from '../../data/techniqueConfigs';
+import { clamp } from '../utils/numberUtils';
 
 // ============================================
 // 常量配置

@@ -1,18 +1,18 @@
-import { FragmentDropData, FragmentDropResult } from './fragmentSystem';
+import { FragmentDropData, FragmentDropResult } from './utils/fragmentSystem';
 import { RealmSystem } from '../data/realmData';
 
 // 重新导出难度级别类型
 export type { DifficultyLevel } from '../data/worldData';
 
 // 重新导出碎片相关类型
-export type { FragmentDropData, FragmentDropResult } from './fragmentSystem';
+export type { FragmentDropData, FragmentDropResult } from './utils/fragmentSystem';
 
 // 重新导出势力相关类型
 export type { Faction, FactionType } from '../data/factionData';
 export { FactionTypeNames, getFactionsByWorld, getFactionById } from '../data/factionData';
 
 // 重新导出克制关系类型
-export type { Element, WeaponCategory } from './restraintSystem';
+export type { Element, WeaponCategory } from './utils/restraintSystem';
 export {
   ELEMENT_NAMES,
   WEAPON_CATEGORY_NAMES,
@@ -20,7 +20,7 @@ export {
   WEAPON_KEYWORDS,
   getElementIcon,
   getWeaponCategoryIcon,
-} from './restraintSystem';
+} from './utils/restraintSystem';
 
 // 敌人等级类型（在此定义，避免循环依赖）
 export type EnemyTier = 'normal' | 'elite' | 'miniboss' | 'boss';
@@ -589,7 +589,7 @@ export interface Protagonist {
   worldVisitHistory?: import('./typesExtension').WorldVisitRecord[]; // 世界访问历史
   ascensionHistory?: import('./typesExtension').AscensionRecord[]; // 飞升历史记录
   // 残本/残片系统
-  fragmentInventory?: import('./fragmentSystem').FragmentInventory; // 残本/残片库存
+  fragmentInventory?: import('./utils/fragmentSystem').FragmentInventory; // 残本/残片库存
   // 爬塔系统
   towerProgress?: import('./tower/types').TowerProgress; // 爬塔进度
 }
@@ -639,11 +639,11 @@ export interface Technique {
   baseMpCost: number; // 基础法力消耗
   
   // ========== 元素属性 ==========
-  element: import('./restraintSystem').Element; // 主元素属性（必有）
-  subElement?: import('./restraintSystem').Element; // 副元素属性（稀有及以上可能拥有）
+  element: import('./utils/restraintSystem').Element; // 主元素属性（必有）
+  subElement?: import('./utils/restraintSystem').Element; // 副元素属性（稀有及以上可能拥有）
   
   // ========== 武器契合 ==========
-  compatibleWeapon: import('./restraintSystem').WeaponCategory | null; // 契合武器类型
+  compatibleWeapon: import('./utils/restraintSystem').WeaponCategory | null; // 契合武器类型
   compatibleBonus: number; // 契合加成百分比
   
   // ========== 法技系统 ==========
@@ -707,11 +707,11 @@ export interface Equipment {
   maxLevel: number; // 最大等级（按稀有度：普通5/稀有7/史诗8/传说9/神话10）
   
   // ========== 武器类型 ==========
-  weaponCategory: import('./restraintSystem').WeaponCategory | null; // 武器类别（仅武器类装备有）
+  weaponCategory: import('./utils/restraintSystem').WeaponCategory | null; // 武器类别（仅武器类装备有）
   
   // ========== 元素契合 ==========
-  element: import('./restraintSystem').Element | null; // 主元素属性
-  compatibleElement: import('./restraintSystem').Element | null; // 契合元素类型
+  element: import('./utils/restraintSystem').Element | null; // 主元素属性
+  compatibleElement: import('./utils/restraintSystem').Element | null; // 契合元素类型
   compatibleBonus: number; // 契合加成百分比
   
   // ========== 基础数值 ==========

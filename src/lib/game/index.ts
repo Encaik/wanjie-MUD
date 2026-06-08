@@ -28,7 +28,7 @@ export {
   generateBackstory,
   getRealmName,
   getAvailableDifficultiesForRealm,
-} from './generators';
+} from './utils/generators';
 
 // ========== 历练系统 ==========
 export { getRandomEvent } from './events/events';
@@ -39,7 +39,7 @@ export {
   handleCellEvent,
   getAdjacentCells,
   parseEnemyInfo,
-} from './adventure';
+} from './adventure/adventure';
 
 // ========== 战斗系统（新版） ==========
 export {
@@ -52,7 +52,7 @@ export {
   getMaxExperience,
   calculateBreakthroughRate,
   calculateBreakthroughBoost,
-} from './cultivation';
+} from './cultivation/cultivation';
 
 // ========== 物品系统 ==========
 export {
@@ -61,7 +61,7 @@ export {
   breakthroughItems,
   cultivationPillItems,
   getShopItems,
-} from './items';
+} from './utils/items';
 
 // ========== 功法系统 ==========
 export {
@@ -69,7 +69,7 @@ export {
   generateTechniqueByType,
   techniqueRarityColors,
   techniqueTypeNames,
-} from './technique';
+} from './utils/technique';
 
 // ========== 装备系统 ==========
 export {
@@ -77,7 +77,7 @@ export {
   generateRandomEquipment,
   getEquipmentDescription,
   equipmentRarityColors,
-} from './equipment';
+} from './utils/equipment';
 
 // ========== 升级系统 ==========
 export type { UpgradeMaterial, UpgradeableItemType } from './types';
@@ -116,7 +116,7 @@ export {
   getGrowthStatCap,
   getFixedStatCap,
   MAX_LEVEL,
-} from './realmSystem';
+} from './utils/realmSystem';
 
 // ========== 数值平衡 ==========
 export {
@@ -126,14 +126,14 @@ export {
   calculatePlayerMaxMp,
   calculateRestHeal,
   EXPERIENCE_CONFIG,
-} from './balanceConfig';
+} from './utils/balanceConfig';
 
 // ========== 术语系统 ==========
 export {
   getAttributeNames,
   getTerminology,
   getDungeonInfo,
-} from './terminology';
+} from './utils/terminology';
 
 // ========== 品质系统 ==========
 export {

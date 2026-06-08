@@ -17,7 +17,7 @@ import { createTestDungeonConfig, createTestCell } from './test-helpers';
 // ============================================
 describe('传送门生成', () => {
   it('传送门应该成对出现', async () => {
-    const { generateAdventureGrid } = await import('@/lib/game/adventure');
+    const { generateAdventureGrid } = await import('@/lib/game/adventure/adventure');
     
     const config = createTestDungeonConfig({
       rows: 15,
@@ -49,7 +49,7 @@ describe('传送门生成', () => {
   });
 
   it('每个传送门应该有配对目标', async () => {
-    const { generateAdventureGrid } = await import('@/lib/game/adventure');
+    const { generateAdventureGrid } = await import('@/lib/game/adventure/adventure');
     
     const config = createTestDungeonConfig({
       rows: 15,
@@ -81,7 +81,7 @@ describe('传送门生成', () => {
   });
 
   it('小地图不应该生成传送门', async () => {
-    const { generateAdventureGrid } = await import('@/lib/game/adventure');
+    const { generateAdventureGrid } = await import('@/lib/game/adventure/adventure');
     
     const config = createTestDungeonConfig({
       rows: 5,
@@ -105,7 +105,7 @@ describe('传送门生成', () => {
   });
 
   it('大地图(81格以上)应该生成传送门', async () => {
-    const { generateAdventureGrid } = await import('@/lib/game/adventure');
+    const { generateAdventureGrid } = await import('@/lib/game/adventure/adventure');
     
     const config = createTestDungeonConfig({
       rows: 10,
@@ -137,7 +137,7 @@ describe('传送门移动逻辑', () => {
   it('传送门应该传送到配对位置而不是退出机缘', async () => {
     // 这个测试验证传送门的portalTarget属性存在
     // 实际的移动逻辑在useGameState.tsx和useGameAdventure.ts中
-    const { generateAdventureGrid } = await import('@/lib/game/adventure');
+    const { generateAdventureGrid } = await import('@/lib/game/adventure/adventure');
     
     const config = createTestDungeonConfig({
       rows: 12,
@@ -170,7 +170,7 @@ describe('传送门移动逻辑', () => {
   });
 
   it('传送门应该是双向的', async () => {
-    const { generateAdventureGrid } = await import('@/lib/game/adventure');
+    const { generateAdventureGrid } = await import('@/lib/game/adventure/adventure');
     
     const config = createTestDungeonConfig({
       rows: 15,
@@ -215,7 +215,7 @@ describe('传送门移动逻辑', () => {
 // ============================================
 describe('传送门位置限制', () => {
   it('传送门不应该出现在第一行', async () => {
-    const { generateAdventureGrid } = await import('@/lib/game/adventure');
+    const { generateAdventureGrid } = await import('@/lib/game/adventure/adventure');
     
     const config = createTestDungeonConfig({
       rows: 12,
@@ -233,7 +233,7 @@ describe('传送门位置限制', () => {
   });
 
   it('传送门不应该出现在最后一行', async () => {
-    const { generateAdventureGrid } = await import('@/lib/game/adventure');
+    const { generateAdventureGrid } = await import('@/lib/game/adventure/adventure');
     
     const config = createTestDungeonConfig({
       rows: 12,

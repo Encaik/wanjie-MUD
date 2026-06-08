@@ -6,7 +6,7 @@
  * 配置数据来源：gameData/skillConfigs.ts
  */
 
-import { Element, WeaponCategory } from '../restraintSystem';
+import { Element, WeaponCategory } from '../utils/restraintSystem';
 import { 
   TechniqueSkill, 
   WeaponTechnique, 

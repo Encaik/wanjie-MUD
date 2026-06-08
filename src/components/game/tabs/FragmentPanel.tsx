@@ -26,7 +26,7 @@ import {
   getSynthesizableCount,
   createEmptyFragmentInventory,
   synthesizeFragmentByName,
-} from '@/lib/game/fragmentSystem';
+} from '@/lib/game/utils/fragmentSystem';
 import { ItemRarity, WorldType } from '@/lib/game/types';
 import { cn } from '@/utils';
 

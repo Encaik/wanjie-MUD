@@ -14,7 +14,7 @@ import {
   WEAPON_COUNTER_MAP,
   getElementIcon,
   getWeaponCategoryIcon,
-} from '@/lib/game/restraintSystem';
+} from '@/lib/game/utils/restraintSystem';
 import {
   Element,
   WeaponCategory,

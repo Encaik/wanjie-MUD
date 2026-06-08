@@ -1,7 +1,7 @@
 /**
  * 测试敌人属性计算是否合理
  */
-import { calculateEnemyHp, calculateEnemyAttack, calculateEnemyDefense, calculatePlayerMaxHp, calculatePlayerAttack, calculatePlayerDefense } from '@/lib/game/balanceConfig';
+import { calculateEnemyHp, calculateEnemyAttack, calculateEnemyDefense, calculatePlayerMaxHp, calculatePlayerAttack, calculatePlayerDefense } from '@/lib/game/utils/balanceConfig';
 
 describe('敌人属性计算', () => {
   const worldType = '修仙' as const;

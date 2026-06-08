@@ -7,7 +7,7 @@
  * - 普通攻击使用武器属性，功法攻击使用功法属性
  */
 
-import { Technique, Equipment } from './types';
+import { Technique, Equipment } from '../types';
 
 // ============================================
 // 类型定义

@@ -18,14 +18,14 @@ import { createTestDungeonConfig } from './test-helpers';
 // ============================================
 describe('秘境基础功能', () => {
   it('应该能导入秘境相关函数', async () => {
-    const { generateAdventureGrid, getDungeonNames, getAvailableDifficulties } = await import('@/lib/game/adventure');
+    const { generateAdventureGrid, getDungeonNames, getAvailableDifficulties } = await import('@/lib/game/adventure/adventure');
     expect(generateAdventureGrid).toBeDefined();
     expect(getDungeonNames).toBeDefined();
     expect(getAvailableDifficulties).toBeDefined();
   });
 
   it('应该能生成秘境网格', async () => {
-    const { generateAdventureGrid } = await import('@/lib/game/adventure');
+    const { generateAdventureGrid } = await import('@/lib/game/adventure/adventure');
     
     const config = createTestDungeonConfig({
       rows: 7,
@@ -40,7 +40,7 @@ describe('秘境基础功能', () => {
   });
 
   it('秘境应该包含不同类型的格子', async () => {
-    const { generateAdventureGrid } = await import('@/lib/game/adventure');
+    const { generateAdventureGrid } = await import('@/lib/game/adventure/adventure');
     
     const config = createTestDungeonConfig({
       rows: 10,
@@ -63,7 +63,7 @@ describe('秘境基础功能', () => {
   });
 
   it('小地图(5x5)不应该生成传送门', async () => {
-    const { generateAdventureGrid } = await import('@/lib/game/adventure');
+    const { generateAdventureGrid } = await import('@/lib/game/adventure/adventure');
     
     const config = createTestDungeonConfig({
       rows: 5,
@@ -87,7 +87,7 @@ describe('秘境基础功能', () => {
   });
 
   it('大地图应该生成传送门', async () => {
-    const { generateAdventureGrid } = await import('@/lib/game/adventure');
+    const { generateAdventureGrid } = await import('@/lib/game/adventure/adventure');
     
     const config = createTestDungeonConfig({
       rows: 15,
@@ -119,7 +119,7 @@ describe('秘境基础功能', () => {
 // ============================================
 describe('秘境入口和出口', () => {
   it('秘境应该有入口', async () => {
-    const { generateAdventureGrid } = await import('@/lib/game/adventure');
+    const { generateAdventureGrid } = await import('@/lib/game/adventure/adventure');
     
     const config = createTestDungeonConfig();
     const grid = generateAdventureGrid(config);
@@ -132,7 +132,7 @@ describe('秘境入口和出口', () => {
   });
 
   it('秘境应该有Boss房间', async () => {
-    const { generateAdventureGrid } = await import('@/lib/game/adventure');
+    const { generateAdventureGrid } = await import('@/lib/game/adventure/adventure');
     
     const config = createTestDungeonConfig();
     const grid = generateAdventureGrid(config);
@@ -156,7 +156,7 @@ describe('秘境入口和出口', () => {
 // ============================================
 describe('秘境难度配置', () => {
   it('不同难度的秘境应该有不同的属性', async () => {
-    const { generateAdventureGrid } = await import('@/lib/game/adventure');
+    const { generateAdventureGrid } = await import('@/lib/game/adventure/adventure');
     
     const easyConfig = createTestDungeonConfig({ difficulty: 1 });
     const hardConfig = createTestDungeonConfig({ difficulty: 10 });
@@ -178,7 +178,7 @@ describe('秘境难度配置', () => {
   });
 
   it('应该能获取不同世界观的秘境名称', async () => {
-    const { getDungeonNames } = await import('@/lib/game/adventure');
+    const { getDungeonNames } = await import('@/lib/game/adventure/adventure');
     
     const worlds = ['修仙', '高武', '科技', '魔幻', '异能', '仙侠', '武侠', '末世'];
     
@@ -190,7 +190,7 @@ describe('秘境难度配置', () => {
   });
 
   it('应该能获取可用难度列表', async () => {
-    const { getAvailableDifficulties } = await import('@/lib/game/adventure');
+    const { getAvailableDifficulties } = await import('@/lib/game/adventure/adventure');
     
     const difficulties = getAvailableDifficulties(10, '修仙');
     
@@ -207,7 +207,7 @@ describe('秘境难度配置', () => {
 // ============================================
 describe('传送门传送逻辑', () => {
   it('传送门应该成对出现', async () => {
-    const { generateAdventureGrid } = await import('@/lib/game/adventure');
+    const { generateAdventureGrid } = await import('@/lib/game/adventure/adventure');
     
     const config = createTestDungeonConfig({
       rows: 15,
@@ -232,7 +232,7 @@ describe('传送门传送逻辑', () => {
   });
 
   it('传送门应该在有效位置', async () => {
-    const { generateAdventureGrid } = await import('@/lib/game/adventure');
+    const { generateAdventureGrid } = await import('@/lib/game/adventure/adventure');
     
     const config = createTestDungeonConfig({
       rows: 15,
@@ -261,7 +261,7 @@ describe('传送门传送逻辑', () => {
 // ============================================
 describe('格子属性', () => {
   it('所有格子应该有cleared和visited属性', async () => {
-    const { generateAdventureGrid } = await import('@/lib/game/adventure');
+    const { generateAdventureGrid } = await import('@/lib/game/adventure/adventure');
     
     const config = createTestDungeonConfig();
     const grid = generateAdventureGrid(config);
@@ -283,7 +283,7 @@ describe('格子属性', () => {
 // ============================================
 describe('格子类型多样性', () => {
   it('大型地图应该包含所有主要格子类型', async () => {
-    const { generateAdventureGrid } = await import('@/lib/game/adventure');
+    const { generateAdventureGrid } = await import('@/lib/game/adventure/adventure');
     
     // 使用较大的地图以确保所有格子类型都有机会生成
     const config = createTestDungeonConfig({
@@ -311,7 +311,7 @@ describe('格子类型多样性', () => {
   });
 
   it('小型地图也应该包含敌人格子', async () => {
-    const { generateAdventureGrid } = await import('@/lib/game/adventure');
+    const { generateAdventureGrid } = await import('@/lib/game/adventure/adventure');
     
     const config = createTestDungeonConfig({
       rows: 5,
@@ -333,7 +333,7 @@ describe('格子类型多样性', () => {
   });
 
   it('中型地图应该包含宝箱和事件格子', async () => {
-    const { generateAdventureGrid } = await import('@/lib/game/adventure');
+    const { generateAdventureGrid } = await import('@/lib/game/adventure/adventure');
     
     const config = createTestDungeonConfig({
       rows: 10,

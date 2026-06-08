@@ -3,7 +3,7 @@
  * 所有术语的key保持一致，value根据世界类型动态变化
  */
 
-import { WorldType } from './types';
+import { WorldType } from '../types';
 
 // 术语类型定义
 export interface WorldTerminology {

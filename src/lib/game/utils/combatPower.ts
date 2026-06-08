@@ -11,9 +11,9 @@ import {
   getCombatPowerRank as getPowerRank,
   formatCombatPower as formatPower,
   getCombatPowerRatio as getPowerRatio,
-} from '../calculation';
+} from '../../calculation';
 
-import type { Protagonist, Technique, Equipment, ActiveEffect, EnemyTier } from './types';
+import type { Protagonist, Technique, Equipment, ActiveEffect, EnemyTier } from '../types';
 
 /**
  * 计算玩家战力

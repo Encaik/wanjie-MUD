@@ -3,7 +3,7 @@
  */
 import { describe, it, expect } from 'vitest';
 
-import { isProtagonist, isTechnique, isEquipment, isObject, isNumber } from '@/lib/game/typeGuards';
+import { isProtagonist, isTechnique, isEquipment, isObject, isNumber } from '@/lib/game/utils/typeGuards';
 import type { Protagonist, Technique, Equipment, CharacterStats, ItemRarity, TechniqueType } from '@/lib/game/types';
 
 describe('typeGuards', () => {

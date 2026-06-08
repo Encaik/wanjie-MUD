@@ -12,8 +12,8 @@ import {
   calculateEnemyHp, 
   calculateEnemyAttack, 
   calculateEnemyDefense 
-} from '../game/balanceConfig';
-import { calculateEnemyCombatPower } from '../game/combatPower';
+} from '../game/utils/balanceConfig';
+import { calculateEnemyCombatPower } from '../game/utils/combatPower';
 import { calculateEnemyEnhancement } from '../game/enemy/enemyEnhancement';
 import { WorldType, DungeonConfig, EnemyTier } from '../game/types';
 

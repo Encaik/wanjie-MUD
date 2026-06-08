@@ -9,14 +9,14 @@ import { useCallback, useEffect } from 'react';
 import type { Dispatch, SetStateAction } from 'react';
 
 import { CULTIVATION_PATHS } from '@/lib/data/cultivationPathData';
-import { calculatePlayerMaxHp, calculatePlayerMaxMp } from '@/lib/game/balanceConfig';
-import { executeCultivation, getMaxExperience } from '@/lib/game/cultivation';
-import { applyMentalChange } from '@/lib/game/expansionLogic';
-import { updateTaskProgress } from '@/lib/game/expansionLogic';
+import { calculatePlayerMaxHp, calculatePlayerMaxMp } from '@/lib/game/utils/balanceConfig';
+import { executeCultivation, getMaxExperience } from '@/lib/game/cultivation/cultivation';
+import { applyMentalChange } from '@/lib/game/utils/expansionLogic';
+import { updateTaskProgress } from '@/lib/game/utils/expansionLogic';
 import { processExperienceGain, calculateBreakthroughTransfer } from '@/lib/game/utils/experienceSystem';
 import { gameSystems } from '@/lib/game/utils/gameSystems';
-import { getRealmName } from '@/lib/game/generators';
-import { applyGrowthStatChanges, getGrowthStatCap } from '@/lib/game/realmSystem';
+import { getRealmName } from '@/lib/game/utils/generators';
+import { applyGrowthStatChanges, getGrowthStatCap } from '@/lib/game/utils/realmSystem';
 import { consumeGameTime, ACTION_TIME_COST } from '@/lib/game/time/timeSystem';
 import { 
   GameState, 
