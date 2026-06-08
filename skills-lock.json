@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "skills": {
+    "find-skills": {
+      "source": "vercel-labs/skills",
+      "sourceType": "github",
+      "skillPath": "skills/find-skills/SKILL.md",
+      "computedHash": "9e1c8b3103f92fa8092568a44fe64858de7c5c9dc65ce4bea8f168080e889cfd"
+    },
+    "frontend-ui-ux-design": {
+      "source": "dauquangthanh/hanoi-rainbow",
+      "sourceType": "github",
+      "skillPath": "skills/frontend-ui-ux-design/SKILL.md",
+      "computedHash": "9b248bd883108d9e4a8ae9149f1042b8b50adc7b9b99b9f40a26f7d4b5092ed4"
+    },
+    "game-developer": {
+      "source": "jeffallan/claude-skills",
+      "sourceType": "github",
+      "skillPath": "skills/game-developer/SKILL.md",
+      "computedHash": "5310da9a7910ae7e9d119abb7377b6213b1dc7767e4aacd818b8fdb60abab36f"
+    },
+    "level-design": {
+      "source": "pluginagentmarketplace/custom-plugin-game-developer",
+      "sourceType": "github",
+      "skillPath": "skills/level-design/SKILL.md",
+      "computedHash": "38da1df6988ebff0cdf597e21be2b00124fa63cd45901b0d34aabe94ad697883"
+    },
+    "react-nextjs-development": {
+      "source": "sickn33/antigravity-awesome-skills",
+      "sourceType": "github",
+      "skillPath": "skills/react-nextjs-development/SKILL.md",
+      "computedHash": "f6fccc099580762dc1ffe48d8462c9183f14225a6dd28679cb56a0e5b011669a"
+    },
+    "supabase-database": {
+      "source": "nice-wolf-studio/claude-code-supabase-skills",
+      "sourceType": "github",
+      "skillPath": "skills/supabase-database/SKILL.md",
+      "computedHash": "280ad66f1b1358318d84be7b6e9657233ace517ae4b9b2f0e9beb30f61242def"
+    }
+  }
+}

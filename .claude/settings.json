@@ -10,7 +10,8 @@
       "Bash(openspec instructions *)",
       "Bash(pnpm build *)",
       "Bash(xargs wc -l)",
-      "Bash(awk '$1 > 500')"
+      "Bash(awk '$1 > 500')",
+      "Bash(npx skills *)"
     ]
   }
 }

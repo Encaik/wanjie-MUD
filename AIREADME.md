@@ -22,9 +22,25 @@
 ## Skills
 
 可用的项目定制技能：
+
+**代码质量（项目内置）：**
+
 - `/code-review` — 代码审查（含目录合规、大文件警告、类型滥用检测）
 - `/simplify` — 代码简化（含重复逻辑识别、组件拆分建议）
 - `/verify` — 变更验证（含测试、类型检查、构建）
+
+**游戏设计（skills.sh 安装）：**
+
+- `/game-developer` — 游戏系统设计、状态机模式、性能优化思维（来自 jeffallan/claude-skills，3K+ installs）
+- `/level-design` — 关卡/秘境设计，难度曲线、环境叙事、玩家引导（来自 pluginagentmarketplace，405 installs）
+
+**扩展推荐（待网络恢复后安装）：**
+
+- `react-nextjs-development` — Next.js/React 开发模式（636 installs）
+- `frontend-ui-ux-design` — 前端 UI/UX 设计（369 installs）
+- `supabase-database` — Supabase 数据层操作（222 installs）
+
+> 完整技能发现报告：[doc/reference/skills-discovery-report.md](doc/reference/skills-discovery-report.md)
 
 ---
 
