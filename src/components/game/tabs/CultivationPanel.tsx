@@ -42,6 +42,9 @@ import {
 
 interface CultivationPanelProps {
   onCultivate: () => void;
+  onCultivateWithStrategy?: (strategy: 'steady' | 'aggressive' | 'insight') => void;
+  cultivationCooldown?: number | null;
+  insightMarks?: number;
   onRest: () => void;
   onChallengeGuardian?: () => void;
   onSelectPath?: () => void;
@@ -108,16 +111,19 @@ function getPathColor(pathType: string) {
   }
 }
 
-export function CultivationPanel({ 
-  onCultivate, 
+export function CultivationPanel({
+  onCultivate,
+  onCultivateWithStrategy,
+  cultivationCooldown,
+  insightMarks = 0,
   onRest,
   onChallengeGuardian,
   onSelectPath,
-  disabled, 
-  worldType, 
-  inventory, 
+  disabled,
+  worldType,
+  inventory,
   activeEffects = [],
-  experience, 
+  experience,
   overflowExperience,
   level,
   currentHp,
@@ -499,33 +505,111 @@ export function CultivationPanel({
               </div>
             )}
             
-            <div className="flex gap-2">
-              <Button 
-                className="flex-1 h-8 text-xs" 
-                onClick={onCultivate}
-                disabled={disabled || !hasEnoughStones || autoCultivating}
-              >
-                开始{terminology.practice}
-              </Button>
-              <Button 
-                className={`h-8 text-xs px-3 ${autoCultivating ? 'bg-destructive hover:bg-destructive/90' : ''}`}
-                variant={autoCultivating ? 'destructive' : 'outline'}
-                onClick={onToggleAutoCultivation}
-                disabled={disabled || !hasEnoughStones}
-              >
-                {autoCultivating ? (
-                  <>
-                    <Square className="w-3 h-3 mr-1" />
-                    停止
-                  </>
-                ) : (
-                  <>
-                    <Play className="w-3 h-3 mr-1" />
-                    自动
-                  </>
-                )}
-              </Button>
-            </div>
+            {/* 冷却提示 */}
+            {cultivationCooldown && cultivationCooldown > Date.now() ? (
+              <div className="text-[10px] text-orange-500 text-center">
+                冥想冷却中，剩余 {Math.ceil((cultivationCooldown - Date.now()) / 1000)} 秒
+              </div>
+            ) : null}
+
+            {/* 顿悟印记 */}
+            {insightMarks > 0 && (
+              <div className="text-[10px] text-purple-500 text-center">
+                ✦ 顿悟印记：{insightMarks} 枚（集齐3枚可兑换）
+              </div>
+            )}
+
+            {/* 修炼策略选择 */}
+            {onCultivateWithStrategy ? (
+              <div className="space-y-1">
+                <div className="grid grid-cols-3 gap-1">
+                  <Button
+                    size="sm"
+                    className="h-7 text-[10px]"
+                    onClick={() => onCultivateWithStrategy('steady')}
+                    disabled={disabled || !hasEnoughStones || autoCultivating}
+                    title="消耗20灵石，标准收益，失败返半"
+                  >
+                    稳健
+                  </Button>
+                  <Button
+                    size="sm"
+                    className="h-7 text-[10px]"
+                    variant="secondary"
+                    onClick={() => onCultivateWithStrategy('aggressive')}
+                    disabled={disabled || spiritStones < 40 || autoCultivating}
+                    title="消耗40灵石，高收益高风险，有意外突破可能"
+                  >
+                    激进
+                  </Button>
+                  <Button
+                    size="sm"
+                    className="h-7 text-[10px]"
+                    variant="outline"
+                    onClick={() => onCultivateWithStrategy('insight')}
+                    disabled={disabled || autoCultivating || (cultivationCooldown && cultivationCooldown > Date.now()) || false}
+                    title="不消耗灵石，极低成功率，可获得顿悟印记"
+                  >
+                    顿悟
+                  </Button>
+                </div>
+                <div className="flex gap-2">
+                  <Button
+                    className="flex-1 h-8 text-xs"
+                    onClick={onCultivate}
+                    disabled={disabled || !hasEnoughStones || autoCultivating}
+                  >
+                    传统{terminology.practice}
+                  </Button>
+                  <Button
+                    className={`h-8 text-xs px-3 ${autoCultivating ? 'bg-destructive hover:bg-destructive/90' : ''}`}
+                    variant={autoCultivating ? 'destructive' : 'outline'}
+                    onClick={onToggleAutoCultivation}
+                    disabled={disabled || !hasEnoughStones}
+                  >
+                    {autoCultivating ? (
+                      <>
+                        <Square className="w-3 h-3 mr-1" />
+                        停止
+                      </>
+                    ) : (
+                      <>
+                        <Play className="w-3 h-3 mr-1" />
+                        自动
+                      </>
+                    )}
+                  </Button>
+                </div>
+              </div>
+            ) : (
+              <div className="flex gap-2">
+                <Button
+                  className="flex-1 h-8 text-xs"
+                  onClick={onCultivate}
+                  disabled={disabled || !hasEnoughStones || autoCultivating}
+                >
+                  开始{terminology.practice}
+                </Button>
+                <Button
+                  className={`h-8 text-xs px-3 ${autoCultivating ? 'bg-destructive hover:bg-destructive/90' : ''}`}
+                  variant={autoCultivating ? 'destructive' : 'outline'}
+                  onClick={onToggleAutoCultivation}
+                  disabled={disabled || !hasEnoughStones}
+                >
+                  {autoCultivating ? (
+                    <>
+                      <Square className="w-3 h-3 mr-1" />
+                      停止
+                    </>
+                  ) : (
+                    <>
+                      <Play className="w-3 h-3 mr-1" />
+                      自动
+                    </>
+                  )}
+                </Button>
+              </div>
+            )}
           </div>
         )}
 

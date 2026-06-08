@@ -572,6 +572,9 @@ export interface Protagonist {
   cultivationPath?: CultivationPath | null; // 当前修炼流派
   pathExp?: number; // 流派经验
   pathLevel?: number; // 流派等级
+  // 修炼系统扩展
+  cultivationCooldown?: number; // 修炼冷却结束时间戳（顿悟失败后）
+  insightMarks?: number; // 顿悟印记数量
   // 扩展系统 - 心境状态
   mentalState?: import('./typesExtension').MentalState; // 心境状态
   // 扩展系统 - 势力进度
@@ -1019,6 +1022,10 @@ export interface GameState {
   offlineResult?: import('./time/offlineProcessor').OfflineProcessResult | null;
   // 离线处理结果V2（新系统）
   offlineResultV2?: import('./tower/idleSystem').OfflineProcessResult | null;
+  // 事件历史记录（用于事件因果链）
+  eventHistory?: import('./events/types').EventRecord[];
+  // 世界状态标记（用于持久后果）
+  worldFlags?: Record<string, unknown>;
   // 开发者调试状态
   devMode?: {
     invincible: boolean; // 战斗无敌模式

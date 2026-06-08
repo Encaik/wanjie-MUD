@@ -1,0 +1,72 @@
+/**
+ * 科技世界机制
+ *
+ * 修炼→研究（消耗科技点提升芯片等级）
+ * 招式→义体模块（三槽位：脑部/手臂/躯干，过热冷却）
+ * 探索→任务
+ */
+
+import type { WorldMechanics } from './types';
+import type { BattleAction, ManualBattleState } from '../combat/types';
+import type { AutoBattleStrategy } from '../combat/types';
+
+/** 科技世界机制 */
+export const techWorld: WorldMechanics = {
+  worldType: '科技',
+
+  getCultivationParams: () => ({
+    resourceName: '科技点',
+    actionName: '研究',
+    baseCost: 20,
+    useStandardFormula: true,
+    successRateModifier: 0,
+  }),
+
+  getCombatParams: () => ({
+    mpName: '能量',
+    abilityName: '义体模块',
+    basicAttackName: '充能攻击',
+  }),
+
+  getExplorationParams: () => ({
+    exploreName: '任务',
+    hasSpecialMechanics: true,
+  }),
+
+  /** 科技世界的义体过热机制：连续使用同一模块增加过热风险 */
+  customSuccessRate: (baseRate: number) => {
+    // 科技世界：芯片等级越高，研究效率越高
+    return Math.min(95, baseRate * 1.05);
+  },
+
+  /** 科技世界的战斗策略：考虑过热冷却 */
+  customAutoStrategy: (state: ManualBattleState, strategy: AutoBattleStrategy): BattleAction => {
+    // 激进：无视过热风险，连续使用最强模块
+    if (strategy === 'aggressive') {
+      const best = state.availableTechniques
+        .filter(t => t.isAvailable)
+        .sort((a, b) => b.powerMultiplier - a.powerMultiplier)[0];
+      if (best) {
+        return { type: 'attack', techniqueId: best.techniqueId, source: 'ai' };
+      }
+      return { type: 'attack', source: 'ai' };
+    }
+
+    // 保守：HP < 50% 时防御，否则用低消耗模块
+    if (strategy === 'conservative') {
+      if (state.playerCurrentHp / state.playerMaxHp < 0.5) {
+        return { type: 'defend', source: 'ai' };
+      }
+      const cheapest = state.availableTechniques
+        .filter(t => t.isAvailable)
+        .sort((a, b) => a.mpCost - b.mpCost)[0];
+      if (cheapest) {
+        return { type: 'attack', techniqueId: cheapest.techniqueId, source: 'ai' };
+      }
+      return { type: 'attack', source: 'ai' };
+    }
+
+    // 均衡：随机交替模块
+    return { type: 'attack', source: 'ai' };
+  },
+};

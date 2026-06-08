@@ -46,6 +46,18 @@ export {
   calculateBattleWithLogs,
 } from './adventure/adventureBattleNew';
 
+// ========== 手动战斗系统 ==========
+export type {
+  BattleAction,
+  BattleActionType,
+  AutoBattleStrategy,
+  CombatTechniqueSlot,
+  TurnResult,
+  ManualBattleState,
+  ManualBattleResult,
+  AIDecision,
+} from './combat';
+
 // ========== 修炼系统 ==========
 export {
   executeCultivation,

@@ -11,6 +11,8 @@ import type { Dispatch, SetStateAction } from 'react';
 import { CULTIVATION_PATHS } from '@/lib/data/cultivationPathData';
 import { calculatePlayerMaxHp, calculatePlayerMaxMp } from '@/lib/game/utils/balanceConfig';
 import { executeCultivation, getMaxExperience } from '@/lib/game/cultivation/cultivation';
+import { executeCultivationWithStrategy } from '@/lib/game/cultivation/cultivationStrategy';
+import type { CultivationStrategy } from '@/lib/game/cultivation/types';
 import { applyMentalChange } from '@/lib/game/utils/expansionLogic';
 import { updateTaskProgress } from '@/lib/game/utils/expansionLogic';
 import { processExperienceGain, calculateBreakthroughTransfer } from '@/lib/game/utils/experienceSystem';
@@ -29,6 +31,127 @@ import { DEFAULT_PROTAGONIST_EXTENSION, MentalState } from '@/lib/game/typesExte
 
 import { removeFromInventory } from '../utils/inventoryUtils';
 
+/**
+ * 处理策略修炼结果并返回新的 GameState
+ * 独立于 Hook，减少回调内代码量
+ */
+function handleStrategyCultivationImpl(
+  prev: GameState,
+  strategy: CultivationStrategy,
+  addMessageInternal: UseGameCultivationProps['addMessageInternal'],
+  updateActiveEffects: UseGameCultivationProps['updateActiveEffects']
+): GameState {
+  if (!prev.protagonist) return prev;
+
+  const result = executeCultivationWithStrategy(prev.protagonist, strategy);
+
+  if (!result.success && result.spiritStonesSpent === 0) {
+    return {
+      ...prev,
+      lastActionResult: { success: false, message: result.message } as GameState['lastActionResult'],
+      messages: addMessageInternal(prev.messages, 'warning', '修炼', result.message),
+    };
+  }
+
+  let newInventory = [...(prev.protagonist.inventory || [])];
+  const stoneItem = newInventory.find(i => i.definition.id === 'spirit_stone');
+  if (stoneItem && result.spiritStonesSpent > 0) {
+    const actualCost = result.spiritStonesSpent - result.spiritStonesRefunded;
+    stoneItem.quantity = Math.max(0, stoneItem.quantity - actualCost);
+    if (stoneItem.quantity <= 0) {
+      newInventory = newInventory.filter(i => i.definition.id !== 'spirit_stone');
+    }
+  }
+
+  const newActiveEffects = result.success
+    ? updateActiveEffects(prev.protagonist.activeEffects)
+    : prev.protagonist.activeEffects;
+
+  const newCooldown = result.cooldownUntil > 0 ? result.cooldownUntil : prev.protagonist.cultivationCooldown;
+  const newInsightMarks = (prev.protagonist.insightMarks ?? 0) + (result.insightMarkGained ? 1 : 0);
+
+  // 经验处理
+  let newExp = prev.protagonist.experience;
+  let newOverflowExp = prev.protagonist.overflowExperience;
+  const maxExp = getMaxExperience(prev.protagonist.level);
+  const expGain = result.experienceGain;
+  const expResult = processExperienceGain(newExp, expGain, maxExp, newOverflowExp);
+  newExp = expResult.newExp;
+  newOverflowExp = expResult.newOverflow;
+
+  // 统计
+  const newStatistics = {
+    ...prev.statistics,
+    totalCultivations: prev.statistics.totalCultivations + 1,
+  };
+
+  // 流派经验
+  let newPathExp = prev.protagonist.pathExp ?? 0;
+  let newPathLevel = prev.protagonist.pathLevel ?? 1;
+  if (prev.protagonist.cultivationPath && result.success) {
+    const pathConfig = CULTIVATION_PATHS[prev.protagonist.cultivationPath];
+    newPathExp += Math.floor(5 * (1 + pathConfig.cultivationBonus / 100));
+    if (newPathExp >= newPathLevel * 100) {
+      newPathExp -= newPathLevel * 100;
+      newPathLevel += 1;
+    }
+  }
+
+  // 时间消耗
+  const newTimeSystem = prev.timeSystem ? {
+    ...prev.timeSystem,
+    gameTime: consumeGameTime(prev.timeSystem.gameTime, ACTION_TIME_COST.cultivate),
+  } : null;
+
+  // 构建奖励消息
+  const rewards: MessageRecord['rewards'] = {};
+  if (Object.keys(result.statChanges).length > 0) {
+    rewards.stats = result.statChanges as Partial<GrowthStats>;
+  }
+  if (result.experienceGain > 0) {
+    rewards.experience = result.experienceGain;
+  }
+
+  // 冷却提示
+  let extraMsg = '';
+  if (result.cooldownUntil > 0) {
+    const mins = Math.ceil((result.cooldownUntil - Date.now()) / 60000);
+    extraMsg = `\n进入 ${mins} 分钟冥想冷却。`;
+  }
+  if (result.insightMarkGained) {
+    extraMsg += `\n获得一枚顿悟印记！（当前 ${newInsightMarks} 枚）`;
+  }
+  if (result.critEvent) {
+    extraMsg += '\n触发修炼暴击！请在弹窗中选择奖励。';
+  }
+
+  return {
+    ...prev,
+    protagonist: {
+      ...prev.protagonist,
+      inventory: newInventory,
+      activeEffects: newActiveEffects,
+      experience: newExp,
+      overflowExperience: newOverflowExp,
+      cultivationCooldown: newCooldown,
+      insightMarks: newInsightMarks,
+      pathExp: newPathExp,
+      pathLevel: newPathLevel,
+    },
+    statistics: newStatistics,
+    timeSystem: newTimeSystem,
+    lastActionResult: { success: result.success, message: result.message + extraMsg } as GameState['lastActionResult'],
+    messages: addMessageInternal(
+      prev.messages,
+      result.success ? 'success' : 'info',
+      strategy === 'insight' ? '顿悟修炼' : strategy === 'aggressive' ? '激进修炼' : '稳健修炼',
+      result.message + extraMsg,
+      undefined,
+      rewards
+    ),
+  };
+}
+
 
 export interface UseGameCultivationProps {
   gameState: GameState;
@@ -45,7 +168,7 @@ export interface UseGameCultivationProps {
 }
 
 export interface UseGameCultivationReturn {
-  performCultivation: () => void;
+  performCultivation: (strategy?: CultivationStrategy) => void;
   performRest: () => void;
   toggleAutoCultivation: () => void;
 }
@@ -61,12 +184,28 @@ export function useGameCultivation({
 }: UseGameCultivationProps): UseGameCultivationReturn {
   
   // 执行修炼
-  const performCultivation = useCallback(() => {
+  const performCultivation = useCallback((strategy?: CultivationStrategy) => {
     setGameState((prev: GameState) => {
       if (!prev.protagonist) return prev;
-      
+
+      // 检查冷却
+      if (strategy && prev.protagonist.cultivationCooldown && prev.protagonist.cultivationCooldown > Date.now()) {
+        const remaining = Math.ceil((prev.protagonist.cultivationCooldown - Date.now()) / 1000);
+        return {
+          ...prev,
+          lastActionResult: { success: false, message: `冥想冷却中，剩余 ${remaining} 秒` },
+          messages: addMessageInternal(prev.messages, 'warning', '修炼冷却', `冥想冷却中，剩余 ${remaining} 秒`),
+        };
+      }
+
+      // 策略修炼：使用新路径
+      if (strategy) {
+        return handleStrategyCultivationImpl(prev, strategy, addMessageInternal, updateActiveEffects);
+      }
+
+      // 传统修炼：使用旧路径
       const result = executeCultivation(prev.protagonist);
-      
+
       if (result.canAfford === false) {
         return {
           ...prev,
@@ -82,6 +221,13 @@ export function useGameCultivation({
       let newStats = prev.protagonist.stats;
       let newLevel = prev.protagonist.level;
       const newStatCapBonuses = prev.protagonist.statCapBonuses;
+
+      // 处理 itemsCost
+      if (result.itemsCost) {
+        for (const cost of result.itemsCost) {
+          newInventory = removeFromInventory(newInventory, cost.definition.id, cost.quantity);
+        }
+      }
       
       // 【重构】突破时属性增长设计
       // 1. 不再所有属性都增长，而是随机选择 1-2 个属性

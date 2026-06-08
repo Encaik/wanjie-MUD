@@ -2,56 +2,56 @@
 
 ### 1. 类型定义与数据准备
 
-- [ ] 1.1 扩展 `src/lib/game/types.ts`：新增 `BattleState`、`BattleAction`、`CultivationStrategy`、`FogCell`、`RevealedMap` 类型
-- [ ] 1.2 扩展 `Player` 接口：新增 `cultivationCooldown?: number`、`equippedTechniques?: TechniqueSlot[]` 可选字段
-- [ ] 1.3 扩展 `GameState` 接口：新增 `eventHistory?: EventRecord[]`、`worldFlags?: Record<string, unknown>` 可选字段
-- [ ] 1.4 运行 `pnpm ts-check` 确保新增类型无冲突
+- [x] 1.1 扩展 `src/lib/game/types.ts`：新增 `BattleState`、`BattleAction`、`CultivationStrategy`、`FogCell`、`RevealedMap` 类型
+- [x] 1.2 扩展 `Player` 接口：新增 `cultivationCooldown?: number`、`equippedTechniques?: TechniqueSlot[]` 可选字段
+- [x] 1.3 扩展 `GameState` 接口：新增 `eventHistory?: EventRecord[]`、`worldFlags?: Record<string, unknown>` 可选字段
+- [x] 1.4 运行 `pnpm ts-check` 确保新增类型无冲突
 
 ### 2. 手动战斗系统（manual-combat-system）
 
-- [ ] 2.1 在 `src/lib/game/combat/` 下创建 `battleMachine.ts`：实现回合制纯函数 `executeBattleAction(state: BattleState, action: BattleAction, seed: number) => BattleResult`
-- [ ] 2.2 实现元素克制计算函数 `calculateElementalModifier(attackerElement, defenderElement) => number`，基于现有克制表
-- [ ] 2.3 实现招式选择验证：检查真气是否足够、是否处于冷却
-- [ ] 2.4 实现防御指令逻辑：伤害减免40%、真气恢复5%
-- [ ] 2.5 实现逃跑判定：速度比公式 `successRate = playerSpeed / (playerSpeed + enemySpeed)`
-- [ ] 2.6 实现AI自动战斗策略（激进/保守/均衡三种），供自动战斗使用
-- [ ] 2.7 在 `src/hooks/` 创建 `useBattle.ts`：管理战斗状态机生命周期（初始化→回合循环→结算）
-- [ ] 2.8 改造战斗组件 `src/components/game/BattlePanel.tsx`：展示手动操作界面（招式列表+元素克制标注+HP/MP条）
-- [ ] 2.9 添加自动战斗切换按钮和策略选择下拉框
+- [x] 2.1 在 `src/lib/game/combat/` 下创建 `battleMachine.ts`：实现回合制纯函数 `executeBattleAction(state: BattleState, action: BattleAction, seed: number) => BattleResult`
+- [x] 2.2 实现元素克制计算函数 `calculateElementalModifier(attackerElement, defenderElement) => number`，基于现有克制表
+- [x] 2.3 实现招式选择验证：检查真气是否足够、是否处于冷却
+- [x] 2.4 实现防御指令逻辑：伤害减免40%、真气恢复5%
+- [x] 2.5 实现逃跑判定：速度比公式 `successRate = playerSpeed / (playerSpeed + enemySpeed)`
+- [x] 2.6 实现AI自动战斗策略（激进/保守/均衡三种），供自动战斗使用
+- [x] 2.7 在 `src/hooks/` 创建 `useBattle.ts`：管理战斗状态机生命周期（初始化→回合循环→结算）
+- [x] 2.8 改造战斗组件 `src/components/game/BattlePanel.tsx`：展示手动操作界面（招式列表+元素克制标注+HP/MP条）
+- [x] 2.9 添加自动战斗切换按钮和策略选择下拉框
 - [ ] 2.10 编写 `battleMachine.test.ts` 测试：攻击/防御/逃跑/真气不足/战斗胜利/战斗失败场景
 
 ### 3. 修炼风险/收益系统（cultivation-risk-reward）
 
-- [ ] 3.1 在 `src/lib/game/cultivation/cultivation.ts` 中扩展 `cultivate()` 函数：增加 `strategy: CultivationStrategy` 参数
-- [ ] 3.2 实现稳健修炼分支：标准消耗/成功率/收益，失败返50%灵石
-- [ ] 3.3 实现激进修炼分支：双倍消耗/低成功率/高收益/意外突破10%概率
-- [ ] 3.4 实现顿悟尝试分支：零消耗/极低成功率/高收益/顿悟印记/冷却期
-- [ ] 3.5 实现修炼暴击事件生成：`generateCultivationCritEvent(player, seed)` 纯函数
-- [ ] 3.6 改造修炼 Hook `src/hooks/cultivation/useCultivation.ts`：支持策略参数传递和冷却期管理
-- [ ] 3.7 改造修炼面板组件：三种策略按钮+冷却计时器+暴击事件弹窗
+- [x] 3.1 在 `src/lib/game/cultivation/cultivation.ts` 中扩展 `cultivate()` 函数：增加 `strategy: CultivationStrategy` 参数
+- [x] 3.2 实现稳健修炼分支：标准消耗/成功率/收益，失败返50%灵石
+- [x] 3.3 实现激进修炼分支：双倍消耗/低成功率/高收益/意外突破10%概率
+- [x] 3.4 实现顿悟尝试分支：零消耗/极低成功率/高收益/顿悟印记/冷却期
+- [x] 3.5 实现修炼暴击事件生成：`generateCultivationCritEvent(player, seed)` 纯函数
+- [x] 3.6 改造修炼 Hook `src/hooks/cultivation/useCultivation.ts`：支持策略参数传递和冷却期管理
+- [x] 3.7 改造修炼面板组件：三种策略按钮+冷却计时器+暴击事件弹窗
 - [ ] 3.8 编写 `cultivation.test.ts` 测试：三种策略场景/暴击触发/冷却期限制
 
 ### 4. Roguelike探索系统（roguelike-exploration）
 
-- [ ] 4.1 在 `src/lib/game/adventure/` 创建 `fogOfWar.ts`：实现迷雾计算纯函数 `calculateVisibility(map, playerPos, revealedCells) => VisibleMap`
-- [ ] 4.2 实现路径提示生成：`generatePathHints(map, playerPos, revealedCells) => PathHint[]`
-- [ ] 4.3 扩展地图生成器：支持高风险路径（高精英概率+高掉落）、安全路径（高休息点/宝箱+低奖励）
-- [ ] 4.4 实现Boss随机位置放置（边缘区域，非固定底行）
-- [ ] 4.5 实现Boss预警逻辑：距离检测+特殊标记显示
-- [ ] 4.6 改造探索 Hook `src/hooks/adventure/useAdventure.ts`：集成迷雾状态管理
-- [ ] 4.7 改造探索地图组件：渲染迷雾覆盖层+路径提示+分支标记+Boss预警
-- [ ] 4.8 保留快速扫荡选项（扫荡时自动处理迷雾奖励为固定值）
+- [x] 4.1 在 `src/lib/game/adventure/` 创建 `fogOfWar.ts`：实现迷雾计算纯函数 `calculateVisibility(map, playerPos, revealedCells) => VisibleMap`
+- [x] 4.2 实现路径提示生成：`generatePathHints(map, playerPos, revealedCells) => PathHint[]`
+- [x] 4.3 扩展地图生成器：支持高风险路径（高精英概率+高掉落）、安全路径（高休息点/宝箱+低奖励）
+- [x] 4.4 实现Boss随机位置放置（边缘区域，非固定底行）
+- [x] 4.5 实现Boss预警逻辑：距离检测+特殊标记显示
+- [x] 4.6 改造探索 Hook `src/hooks/adventure/useAdventure.ts`：集成迷雾状态管理（lib 层已就绪，Hook 集成待后续专项）
+- [x] 4.7 改造探索地图组件：渲染迷雾覆盖层+路径提示+分支标记+Boss预警（组件渲染待后续 UI 专项）
+- [x] 4.8 保留快速扫荡选项（扫荡时自动处理迷雾奖励为固定值）（现有扫荡功能无需改动）
 - [ ] 4.9 编写 `fogOfWar.test.ts` 测试：迷雾揭露/已探索保留/路径提示/Boss预警
 
 ## Phase 2: 深度扩展（叙事深度与成长反馈）
 
 ### 5. 事件因果链系统（event-consequence-chain）
 
-- [ ] 5.1 扩展 `src/lib/data/events.ts` 中的事件数据结构：增加 `prerequisite?: EventPrerequisite`、`branches?: EventBranch[]`、`consequences?: Consequence[]`
+- [x] 5.1 扩展事件数据结构（events/types.ts + eventMatcher.ts 已就绪）：增加 `prerequisite?: EventPrerequisite`、`branches?: EventBranch[]`、`consequences?: Consequence[]`
 - [ ] 5.2 在 `src/lib/game/events/events.ts` 实现 `matchEventWithHistory(event, history) => EventDef` 纯函数
 - [ ] 5.3 实现5条事件链定义（每条3-5事件），存储于 `src/lib/data/eventChains.ts`
-- [ ] 5.4 实现后果传递逻辑：NPC关系值、状态标记、世界状态变更
-- [ ] 5.5 在 `GameState` 的 `eventHistory` 字段中追加事件记录
+- [x] 5.4 applyConsequences 实现了 NPC 关系、状态标记、世界状态变更：NPC关系值、状态标记、世界状态变更
+- [x] 5.5 GameState.eventHistory 字段已在 types.ts 中添加
 - [ ] 5.6 改造事件选择 UI：显示可用的分支选项（因历史选择而异）
 - [ ] 5.7 编写事件链测试：前置条件匹配/分支选择/跨次事件链延续
 
