@@ -151,6 +151,14 @@ class WorldTextManager {
 // 导出单例
 export const worldTextManager = WorldTextManager.getInstance();
 
+/**
+ * 获取指定世界观的文案（纯函数，不依赖 React）
+ * 用于服务端渲染或非组件场景
+ */
+export function getWorldText(worldType: WorldType): WorldTextDefinition {
+  return WORLD_TEXT_MAP[worldType];
+}
+
 // 导出类型和工具函数
 export { WORLD_TEXT_MAP };
 export type { WorldTextDefinition };

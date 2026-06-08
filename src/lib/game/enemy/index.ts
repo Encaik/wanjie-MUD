@@ -15,6 +15,20 @@ export * from './types';
 // 功法装备生成
 export * from './techniqueEquipment';
 
+// 敌人功法装备（冒险战斗用）
+export {
+  ENEMY_TECHNIQUE_COUNT,
+  ENEMY_EQUIPMENT_COUNT,
+  ENEMY_RARITY_WEIGHTS,
+  getEnemyRarityRange,
+  calculateTechniqueBonus,
+  calculateEquipmentBonus,
+  generateEnemyTechniquesAndEquipments,
+  selectEnemySkill,
+  calculateEnemySkillDamage,
+} from './enemyTechniqueEquipment';
+export type { EnemyTechniqueEquipmentResult } from './techniqueEquipment';
+
 // 等级压制
 export * from './levelSuppression';
 

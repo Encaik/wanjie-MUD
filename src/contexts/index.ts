@@ -31,6 +31,12 @@ export {
   type GameActions,
 } from './GameActionsContext';
 
+// WorldText Context
+export {
+  WorldTextProvider,
+  useWorldText,
+} from './WorldTextContext';
+
 // Ascension Context
 export {
   AscensionProvider,

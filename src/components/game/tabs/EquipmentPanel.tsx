@@ -4,7 +4,7 @@ import React, { useMemo, useState } from 'react';
 
 import { Shield, Sword, Swords, Crosshair, Headphones, Shirt, Footprints, Package, Sparkles, Layers, Info, ArrowUpDown, Filter, Star, Flame, Snowflake, Zap as Thunder, Wind, Mountain, Sun, Moon } from 'lucide-react';
 
-import { WeaponRestraintChart } from '@/components/game/RestraintChart';
+import { WeaponRestraintChart } from '@/components/game/battle/RestraintChart';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';

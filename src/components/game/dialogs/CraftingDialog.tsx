@@ -53,7 +53,7 @@ import {
   EQUIPMENT_QUALITY_NAMES,
 } from '@/lib/data/forgeRecipes';
 import { InventoryItem, CraftingState, ForgingState, ItemRarity } from '@/lib/game/types';
-import { cn } from '@/lib/util/utils';
+import { cn } from '@/utils';
 
 interface CraftingDialogProps {
   type: 'alchemy' | 'forge';

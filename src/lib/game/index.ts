@@ -198,6 +198,47 @@ export {
   EconomyReportFormatter,
 } from './economy';
 
+// ========== 商店系统 ==========
+export type {
+  CurrencyType,
+  CurrencyConfig,
+  PlayerCurrencies,
+  CurrencyCost,
+  PriceConfig,
+  DynamicPrice,
+  ProductType,
+  ProductDefinition,
+} from './shop';
+
+export {
+  CURRENCY_CONFIGS,
+  createDefaultCurrencies,
+  CurrencyService,
+  migrateCurrencies,
+  DailySaleService,
+  NORMAL_SHOP_PRODUCTS,
+  FACTION_SHOP_PRODUCTS,
+  BLACKMARKET_PRODUCT_POOL,
+  ARENA_SHOP_PRODUCTS,
+  ASCENSION_SHOP_PRODUCTS,
+  ALL_PRODUCTS,
+  getProductConfig,
+  RefreshService,
+  SHOP_CONFIGS,
+  getShopConfig,
+  getAllShopTypes,
+  getUnlockedShops,
+  isShopUnlocked,
+  getShopUnlockDescription,
+  ShopLevelService,
+  ShopService,
+  SHOP_TASKS,
+  getDailyShopTasks,
+  getWeeklyShopTasks,
+  createShopTaskState,
+  checkTaskComplete,
+} from './shop';
+
 // ========== 地牢随机事件系统 ==========
 export type {
   DungeonEventType,

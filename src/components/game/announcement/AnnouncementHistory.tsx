@@ -10,7 +10,7 @@ import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { ANNOUNCEMENT_TYPE_CONFIG } from '@/lib/game/announcement/config';
-import { cn } from '@/lib/utils';
+import { cn } from '@/utils';
 import type { Announcement } from '@/types/announcement';
 
 /** Props */

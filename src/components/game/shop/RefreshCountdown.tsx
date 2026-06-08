@@ -15,7 +15,7 @@ import { Button } from '@/components/ui/button';
 import { CurrencyService } from '@/lib/game/shop/currencyService';
 import { RefreshService } from '@/lib/game/shop/refreshService';
 import { ShopType, PlayerCurrencies, CurrencyCost } from '@/lib/game/shop/types';
-import { cn } from '@/lib/util/utils';
+import { cn } from '@/utils';
 
 
 interface RefreshCountdownProps {

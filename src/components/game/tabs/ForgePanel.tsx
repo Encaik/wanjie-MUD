@@ -18,7 +18,7 @@ import {
   getSlotName,
 } from '@/lib/data/forgeRecipes';
 import { InventoryItem, ItemRarity, ForgingState, EquipmentSlot } from '@/lib/game/types';
-import { cn } from '@/lib/util/utils';
+import { cn } from '@/utils';
 
 // 部位图标映射
 const SLOT_ICONS: Record<string, React.ReactNode> = {

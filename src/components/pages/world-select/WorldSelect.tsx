@@ -18,7 +18,7 @@ import {
   generateLevelStars,
 } from '@/lib/data/worldEffectsUtils';
 import { World, WorldType, WorldDifficulty } from '@/lib/game/types';
-import { cn } from '@/lib/util/utils';
+import { cn } from '@/utils';
 
 interface WorldSelectProps {
   worlds: World[];

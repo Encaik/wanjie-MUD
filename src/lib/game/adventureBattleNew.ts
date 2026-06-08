@@ -40,7 +40,7 @@ import {
   generateEnemyTechniquesAndEquipments,
   calculateTechniqueBonus,
   calculateEquipmentBonus,
-} from './enemyTechniqueEquipment';
+} from './enemy/enemyTechniqueEquipment';
 import {
   generateRandomEquipment,
 } from './equipment';

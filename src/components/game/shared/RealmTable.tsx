@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { ChevronDown, ChevronRight } from 'lucide-react';
 
 import { RealmSystem } from '@/lib/data/realmData';
-import { cn } from '@/lib/util/utils';
+import { cn } from '@/utils';
 
 interface RealmTableProps {
   realmSystem: RealmSystem | undefined;

@@ -44,7 +44,7 @@ import {
   generateEnemyTechniquesAndEquipments,
   calculateTechniqueBonus,
   calculateEquipmentBonus,
-} from './enemyTechniqueEquipment';
+} from './enemy/enemyTechniqueEquipment';
 import { 
   getEnemyAttributes,
   calculateRestraintResult,

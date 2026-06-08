@@ -50,7 +50,7 @@ import {
   SortMode,
 } from '@/lib/game/shop/types';
 import { WorldType } from '@/lib/game/types';
-import { cn } from '@/lib/util/utils';
+import { cn } from '@/utils';
 
 // 子组件
 import { CurrencyBar } from './CurrencyBar';

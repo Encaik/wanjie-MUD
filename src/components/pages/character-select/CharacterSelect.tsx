@@ -8,7 +8,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { impactLevelToQuality, getQualityClasses } from '@/lib/game/quality';
 import { getAttributeNames } from '@/lib/game/terminology';
 import { Character, CharacterStats, ImpactLevel, StatImpact } from '@/lib/game/types';
-import { cn } from '@/lib/util/utils';
+import { cn } from '@/utils';
 
 interface CharacterSelectProps {
   characters: Character[];

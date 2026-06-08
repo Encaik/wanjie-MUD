@@ -6,3 +6,4 @@ export { DecisionPanel } from './DecisionPanel';
 export { RestraintDisplay, ElementRestraintCycle, WeaponRestraintCycle } from './RestraintDisplay';
 export { BattleLogList, DetailedBattleLogItem } from './BattleLogList';
 export { GuardianBattle } from './GuardianBattle';
+export { ElementRestraintChart, WeaponRestraintChart, RestraintChart } from './RestraintChart';

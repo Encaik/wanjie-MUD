@@ -29,7 +29,7 @@ import {
   RARITY_DAMAGE_MULTIPLIER,
   // 解锁等级生成
   generateUnlockLevels,
-} from '../gameData';
+} from '../data/skillConfigs';
 
 // ============================================
 // 工具函数

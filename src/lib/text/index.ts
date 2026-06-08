@@ -27,6 +27,5 @@ export * from './worlds';
 // 核心模块
 export * from './core';
 
-// React Hooks
-export { useText, useTerminology, formatTextValue } from './hooks';
-export { useGameText, useGameTerminology } from './hooks';
+// React Hooks — moved to @/hooks/text and @/contexts
+// Pure functions exported from core and worlds modules

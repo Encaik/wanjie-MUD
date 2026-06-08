@@ -18,7 +18,7 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { calculateStatisticsSummary, StatisticsSummary } from '@/lib/game/statisticsSystem';
 import { GameStatistics, Protagonist, getFinalStats } from '@/lib/game/types';
-import { cn } from '@/lib/util/utils';
+import { cn } from '@/utils';
 
 interface StatisticsPanelProps {
   statistics: GameStatistics;

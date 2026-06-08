@@ -29,7 +29,7 @@ import {
   getWeeklyShopTasks,
   getTaskProgressText,
 } from '@/lib/game/shop/shopTaskService';
-import { cn } from '@/lib/util/utils';
+import { cn } from '@/utils';
 
 
 interface ShopTaskPanelProps {

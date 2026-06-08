@@ -41,7 +41,7 @@ import {
   BONUS_RANGE,
   // 掉落权重
   TECHNIQUE_DROP_WEIGHTS,
-} from '../gameData';
+} from '../data/techniqueConfigs';
 import { clamp } from './utils/numberUtils';
 
 // ============================================

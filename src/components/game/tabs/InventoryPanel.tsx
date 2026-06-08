@@ -11,7 +11,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useInventory, useProtagonist } from '@/hooks';
 import { getResourceName } from '@/lib/game/items';
 import { InventoryItem, ActiveEffect, WorldType, ItemRarity } from '@/lib/game/types';
-import { cn } from '@/lib/util/utils';
+import { cn } from '@/utils';
 
 interface InventoryPanelProps {
   inventory?: InventoryItem[];

@@ -30,7 +30,7 @@ import {
   generateLevelStars,
 } from '@/lib/data/worldEffectsUtils';
 import { World, Protagonist, WorldType, WorldDifficulty } from '@/lib/game/types';
-import { cn } from '@/lib/util/utils';
+import { cn } from '@/utils';
 
 // 世界类型颜色配置 - 与个人信息面板风格一致
 const worldTypeConfig: Record<WorldType, { 

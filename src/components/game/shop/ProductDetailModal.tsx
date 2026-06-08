@@ -23,7 +23,7 @@ import { getRarityStyle } from '@/components/ui/item-tooltip';
 import { CurrencyService } from '@/lib/game/shop/currencyService';
 import { ShopLevelService } from '@/lib/game/shop/shopLevelService';
 import { ShopProduct, PlayerCurrencies, CurrencyType, ProductEffect } from '@/lib/game/shop/types';
-import { cn } from '@/lib/util/utils';
+import { cn } from '@/utils';
 
 
 interface ProductDetailModalProps {

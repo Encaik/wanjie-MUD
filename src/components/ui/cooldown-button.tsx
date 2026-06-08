@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 
 import { Button } from '@/components/ui/button';
-import { cn } from '@/lib/util/utils';
+import { cn } from '@/utils';
 
 interface CooldownButtonProps extends React.ComponentProps<'button'> {
   cooldown: number; // 冷却时间（毫秒）

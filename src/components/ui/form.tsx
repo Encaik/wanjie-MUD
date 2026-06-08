@@ -14,7 +14,7 @@ import {
 } from "react-hook-form"
 
 import { Label } from "@/components/ui/label"
-import { cn } from "@/lib/util/utils"
+import { cn } from "@/utils"
 
 import type * as LabelPrimitive from "@radix-ui/react-label"
 

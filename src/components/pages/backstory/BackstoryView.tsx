@@ -5,7 +5,7 @@ import { Sparkles, Scroll } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { cn } from '@/lib/util/utils';
+import { cn } from '@/utils';
 
 interface BackstoryProps {
   backstory: string;

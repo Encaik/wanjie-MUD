@@ -4,7 +4,7 @@ import { useState, useMemo } from 'react';
 
 import { Sword, Shield, Zap, Droplets, Package, Link2, Star, ArrowUpDown, Filter, Flame, Snowflake, Zap as Thunder, Wind, Mountain, Sun, Moon, Swords, Settings2 } from 'lucide-react';
 
-import { ElementRestraintChart } from '@/components/game/RestraintChart';
+import { ElementRestraintChart } from '@/components/game/battle/RestraintChart';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';

@@ -38,7 +38,7 @@ import { CharacterStats, WorldType, LegacyStats } from '@/lib/game/types';
 import {
   CultivationPath,
 } from '@/lib/game/typesExtension';
-import { getWorldText } from '@/lib/text/WorldTextContext';
+import { getWorldText } from '@/lib/text/WorldTextManager';
 
 interface CultivationPathSelectProps {
   isOpen: boolean;

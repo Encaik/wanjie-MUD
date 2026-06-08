@@ -35,7 +35,7 @@ import {
   DEFENSE_BONUS_RANGE,
   // 掉落权重
   EQUIPMENT_DROP_WEIGHTS,
-} from '../gameData';
+} from '../data/weaponConfigs';
 
 // ============================================
 // 常量配置

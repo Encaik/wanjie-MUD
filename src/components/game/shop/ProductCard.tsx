@@ -11,7 +11,7 @@ import { Sparkles, Lock, Check, Clock } from 'lucide-react';
 import { getRarityStyle } from '@/components/ui/item-tooltip';
 import { CurrencyService } from '@/lib/game/shop/currencyService';
 import { ShopProduct, PlayerCurrencies, CurrencyType } from '@/lib/game/shop/types';
-import { cn } from '@/lib/util/utils';
+import { cn } from '@/utils';
 
 
 interface ProductCardProps {

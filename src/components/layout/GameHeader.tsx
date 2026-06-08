@@ -15,7 +15,7 @@ import { CultivationPath } from '@/lib/game/types';
 import { Protagonist } from '@/lib/game/types';
 import { MentalState } from '@/lib/game/typesExtension';
 import { WORLD_TEXT_MAP } from '@/lib/text/WorldTextManager';
-import { cn } from '@/lib/util/utils';
+import { cn } from '@/utils';
 
 // 流派图标和颜色
 const PATH_CONFIG: Record<CultivationPath, { icon: React.ReactNode; color: string; barColor: string }> = {

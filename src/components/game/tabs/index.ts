@@ -14,3 +14,6 @@ export { UpgradePanel } from './UpgradePanel';
 export { AchievementPanel } from './AchievementPanel';
 export { CollectionPanel } from './CollectionPanel';
 export { StatisticsPanel } from './StatisticsPanel';
+export { TechniqueSkillPanel, WeaponTechniquePanel } from './SkillManagePanel';
+export { SkillManageDialog } from './SkillManageDialog';
+export { SkillsUnlockDialog } from './SkillsUnlockDialog';

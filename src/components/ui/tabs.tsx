@@ -4,7 +4,7 @@ import * as React from "react"
 
 import * as TabsPrimitive from "@radix-ui/react-tabs"
 
-import { cn } from "@/lib/util/utils"
+import { cn } from "@/utils"
 
 // 原始 Tabs 组件 - 用于外部管理状态
 function Tabs({

@@ -28,7 +28,7 @@ import {
   synthesizeFragmentByName,
 } from '@/lib/game/fragmentSystem';
 import { ItemRarity, WorldType } from '@/lib/game/types';
-import { cn } from '@/lib/util/utils';
+import { cn } from '@/utils';
 
 interface FragmentPanelProps {
   fragmentInventory: FragmentInventory;

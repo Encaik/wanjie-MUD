@@ -17,7 +17,7 @@ import {
   AlchemyRecipe,
 } from '@/lib/data/alchemyRecipes';
 import { InventoryItem, ItemRarity, CraftingState } from '@/lib/game/types';
-import { cn } from '@/lib/util/utils';
+import { cn } from '@/utils';
 
 interface AlchemyPanelProps {
   inventory: InventoryItem[];
