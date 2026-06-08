@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx openspec *)",
+      "Bash(openspec --help)",
+      "Bash(openspec change *)",
+      "Bash(openspec schema *)",
+      "Bash(openspec new *)",
+      "Bash(openspec status *)",
+      "Bash(openspec instructions *)",
+      "Bash(pnpm build *)"
+    ]
+  }
+}

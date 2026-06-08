@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-import { Inspector } from 'react-dev-inspector';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -16,13 +15,10 @@ export const metadata: Metadata = {
     '万界修行录',
     '文字冒险',
   ],
-  authors: [{ name: 'Coze Code Team', url: 'https://code.coze.cn' }],
-  generator: 'Coze Code',
   openGraph: {
     title: '万界修行录 | 文字修仙游戏',
     description:
       '选择你的化身，降临万界宇宙，开启属于你的修行传说。',
-    url: 'https://code.coze.cn',
     siteName: '万界修行录',
     locale: 'zh_CN',
     type: 'website',
@@ -38,12 +34,9 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const isDev = process.env.NODE_ENV === 'development';
-
   return (
     <html lang="zh-CN">
       <body className={`antialiased`}>
-        {isDev && <Inspector />}
         {children}
       </body>
     </html>

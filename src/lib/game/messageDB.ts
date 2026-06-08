@@ -227,73 +227,21 @@ async function pruneOldMessages(gameId: string, keepCount: number): Promise<void
   });
 }
 
-// ========== API 接口封装 ==========
+// ========== 远程存储（静态模式下禁用） ==========
 
-interface ApiResponse<T> {
-  success: boolean;
-  data?: T;
-  error?: string;
-}
+// 注意：静态导出模式下无服务端 API，远程存储功能已禁用
+// 所有消息仅存储在本地 IndexedDB 中
 
-/**
- * 保存消息到远程数据库
- */
-async function saveMessageToRemote(message: MessageRecord, gameId: string): Promise<boolean> {
-  try {
-    const response = await fetch('/api/messages', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ gameId, message }),
-    });
-    
-    const result = await response.json() as ApiResponse<{ total: number }>;
-    return result.success;
-  } catch (error) {
-    console.error('Failed to save message to remote:', error);
-    return false;
-  }
-}
-
-/**
- * 从远程数据库分页获取消息
- */
 async function getMessagesFromRemote(
-  gameId: string,
-  page: number,
-  pageSize: number
+  _gameId: string,
+  _page: number,
+  _pageSize: number
 ): Promise<{ messages: MessageRecord[]; total: number; hasMore: boolean }> {
-  try {
-    const response = await fetch(
-      `/api/messages?gameId=${gameId}&page=${page}&pageSize=${pageSize}`
-    );
-    
-    const result = await response.json();
-    return {
-      messages: result.messages || [],
-      total: result.total || 0,
-      hasMore: result.hasMore || false,
-    };
-  } catch (error) {
-    console.error('Failed to fetch messages from remote:', error);
-    return { messages: [], total: 0, hasMore: false };
-  }
+  return { messages: [], total: 0, hasMore: false };
 }
 
-/**
- * 清空远程数据库中的消息
- */
-async function clearMessagesFromRemote(gameId: string): Promise<boolean> {
-  try {
-    const response = await fetch(`/api/messages?gameId=${gameId}`, {
-      method: 'DELETE',
-    });
-    
-    const result = await response.json() as ApiResponse<null>;
-    return result.success;
-  } catch (error) {
-    console.error('Failed to clear messages from remote:', error);
-    return false;
-  }
+async function clearMessagesFromRemote(_gameId: string): Promise<boolean> {
+  return true;
 }
 
 // ========== 公开接口 ==========
@@ -318,13 +266,8 @@ export async function addMessage(
 ): Promise<void> {
   // 1. 写入 IndexedDB
   await addMessageToIndexedDB(message);
-  
-  // 2. 异步同步到远程（不阻塞）
-  saveMessageToRemote(message, gameId).catch(err => {
-    console.warn('Failed to sync message to remote:', err);
-  });
-  
-  // 3. 清理超出限制的旧消息（IndexedDB 保留更多，如 500 条）
+
+  // 2. 清理超出限制的旧消息（IndexedDB 保留最多 500 条）
   const indexedDBLimit = 500;
   await pruneOldMessages(gameId, indexedDBLimit);
 }
@@ -337,23 +280,9 @@ export async function getLatestMessages(
   gameId: string,
   limit: number = MESSAGE_CONFIG.memoryLimit
 ): Promise<MessageRecord[]> {
-  // 先从 IndexedDB 获取
+  // 从 IndexedDB 获取
   const localMessages = await getMessagesFromIndexedDB(gameId, limit);
-  
-  // 如果本地足够，直接返回
-  if (localMessages.length >= limit) {
-    return localMessages.slice(0, limit);
-  }
-  
-  // 否则从远程获取
-  const remote = await getMessagesFromRemote(gameId, 1, limit);
-  
-  // 缓存到本地
-  if (remote.messages.length > 0) {
-    await addMessagesToIndexedDB(remote.messages);
-  }
-  
-  return remote.messages.slice(0, limit);
+  return localMessages.slice(0, limit);
 }
 
 /**

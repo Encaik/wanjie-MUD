@@ -72,53 +72,8 @@ export function ChatRoom({ playerId, playerName, playerLevel, playerRealm, onNew
 
   // 获取新消息（增量更新）
   const fetchNewMessages = useCallback(async () => {
-    try {
-      const params = new URLSearchParams({
-        playerId,
-        playerName,
-        playerLevel: String(playerLevel),
-        playerRealm,
-      });
-      
-      // 只获取上次之后的新消息
-      if (lastTimestampRef.current > 0) {
-        params.set('after', String(lastTimestampRef.current));
-      }
-      
-      const response = await fetch(`/api/chat?${params}`);
-      const data = await response.json();
-      
-      if (data.messages && data.messages.length > 0) {
-        // 更新最新时间戳
-        const newTimestamp = Math.max(...data.messages.map((m: ChatMessage) => m.timestamp));
-        lastTimestampRef.current = Math.max(lastTimestampRef.current, newTimestamp);
-        
-        // 过滤掉已存在的消息
-        const newMessages = data.messages.filter((m: ChatMessage) => !messageIdsRef.current.has(m.id));
-        
-        if (newMessages.length > 0) {
-          // 添加新消息ID到集合
-          newMessages.forEach((m: ChatMessage) => messageIdsRef.current.add(m.id));
-          
-          // 追加新消息
-          setMessages(prev => {
-            const combined = [...prev, ...newMessages];
-            // 保留最近200条
-            return combined.slice(-200);
-          });
-          
-          // 如果不在底部，显示新消息提示
-          if (!isAtBottom) {
-            setHasNewMessage(true);
-          }
-        }
-      }
-      
-      setOnlinePlayers(data.onlinePlayers || []);
-    } catch (error) {
-      console.error('Failed to fetch messages:', error);
-    }
-  }, [playerId, playerName, playerLevel, playerRealm, isAtBottom]);
+    // 静态导出模式：无服务端 API，仅使用本地消息
+  }, []);
 
   // 初始化加载
   useEffect(() => {
@@ -149,46 +104,26 @@ export function ChatRoom({ playerId, playerName, playerLevel, playerRealm, onNew
     setIsLoading(true);
     
     try {
-      const response = await fetch('/api/chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          senderId: playerId,
-          senderName: playerName,
-          senderLevel: playerLevel,
-          senderRealm: playerRealm,
-          content
-        })
+      // 静态导出模式：本地创建消息，无服务端存储
+      const newMsg: ChatMessage = {
+        id: `local_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+        type: 'player' as const,
+        senderId: playerId,
+        senderName: playerName,
+        senderLevel: playerLevel,
+        senderRealm: playerRealm,
+        content,
+        timestamp: Date.now(),
+      };
+      messageIdsRef.current.add(newMsg.id);
+      lastTimestampRef.current = Math.max(lastTimestampRef.current, newMsg.timestamp);
+
+      setMessages(prev => {
+        const combined = [...prev, newMsg];
+        return combined.slice(-200);
       });
-      
-      const data = await response.json();
-      
-      if (response.ok && data.message) {
-        // 乐观更新：直接添加到本地消息列表
-        const newMsg = data.message;
-        messageIdsRef.current.add(newMsg.id);
-        lastTimestampRef.current = Math.max(lastTimestampRef.current, newMsg.timestamp);
-        
-        setMessages(prev => {
-          const combined = [...prev, newMsg];
-          return combined.slice(-200);
-        });
-      } else if (data.spamWarning) {
-        // 显示刷屏警告
-        setSpamWarning(true);
-        setTimeout(() => setSpamWarning(false), 3000);
-        // 恢复输入内容
-        setInputValue(content);
-      } else {
-        // 其他错误，恢复输入内容
-        setInputValue(content);
-      }
-    } catch (error) {
-      console.error('Failed to send message:', error);
-      setInputValue(content);
     } finally {
       setIsLoading(false);
-      // 确保输入框保持焦点
       inputRef.current?.focus();
     }
   };

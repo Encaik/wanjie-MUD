@@ -1,51 +1,20 @@
 import type { NextConfig } from 'next';
-import path from 'path';
 
 const nextConfig: NextConfig = {
-  // outputFileTracingRoot: path.resolve(__dirname, '../../'),
-  /* config options here */
-  allowedDevOrigins: ['*.dev.coze.site'],
+  // 静态导出模式，用于 GitHub Pages 部署
+  output: 'export',
+
+  // 尾部斜杠，兼容 GitHub Pages 路由
+  trailingSlash: true,
+
+  // GitHub Pages 仓库路径前缀
+  basePath: '/wanjie-MUD',
+
+  // 静态导出不支持默认图片优化，使用自定义 loader
   images: {
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'lf-coze-web-cdn.coze.cn',
-        pathname: '/**',
-      },
-    ],
-  },
-  // 配置响应头，禁用缓存以确保每次部署都获取最新文件
-  async headers() {
-    return [
-      {
-        // 匹配所有路由
-        source: '/:path*',
-        headers: [
-          {
-            key: 'Cache-Control',
-            value: 'no-store, no-cache, must-revalidate, proxy-revalidate',
-          },
-          {
-            key: 'Pragma',
-            value: 'no-cache',
-          },
-          {
-            key: 'Expires',
-            value: '0',
-          },
-        ],
-      },
-      // 静态资源使用短期缓存，但通过 ETag 验证
-      {
-        source: '/_next/static/:path*',
-        headers: [
-          {
-            key: 'Cache-Control',
-            value: 'public, max-age=0, must-revalidate',
-          },
-        ],
-      },
-    ];
+    loader: 'custom',
+    loaderFile: '',
+    unoptimized: true,
   },
 };
 
