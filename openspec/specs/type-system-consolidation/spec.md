@@ -28,8 +28,30 @@ TBD — see change project-quality-foundation for full context.
 - **WHEN** 某个领域类型足够独立
 - **THEN** 在领域内 `types.ts` 中定义领域特有类型，但必须通过 `extends` 继承核心类型，不得重新定义已有字段
 
+### Requirement: typesExtension merged into domain types
+The file `src/lib/game/typesExtension.ts` (917 lines, containing ascension flow state and extended game state types) SHALL be split and merged into the domain type files that use those types.
+
+#### Scenario: Ascension types in ascension module
+- **WHEN** typesExtension is split
+- **THEN** ascension-related types are moved to `src/lib/game/ascension/types.ts`
+
+#### Scenario: Extended state types in core types
+- **WHEN** remaining types are merged
+- **THEN** generic extensions to `GameState` are moved to `src/lib/game/types.ts`
+
+#### Scenario: typesExtension removed
+- **WHEN** all content is relocated
+- **THEN** `src/lib/game/typesExtension.ts` is deleted and all imports are updated
+
+### Requirement: gameData types consolidated
+Types defined in `src/lib/gameData/` SHALL be merged into `src/lib/data/` when the directories are consolidated.
+
+#### Scenario: Skill config types in data
+- **WHEN** gameData is merged into data
+- **THEN** types from `gameData/skillConfigs.ts` are accessible from `@/lib/data`
+
 ### Requirement: 类型导出统一
-所有领域类型 SHALL 通过 `src/lib/game/types.ts` 或领域入口文件统一导出，不得有"散落导出"。
+所有领域类型 SHALL 通过 `src/lib/game/types.ts` 或领域入口文件统一导出，不得有"散落导出"。`src/lib/game/typesExtension.ts` 的内容 SHALL 按域拆分并移入对应的 `types.ts` 文件中。
 
 #### Scenario: 导入路径规范
 - **WHEN** 组件或 Hook 需要某个类型

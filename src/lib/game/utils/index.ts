@@ -3,5 +3,6 @@
  */
 
 export * from './numberUtils';
+export * from './rng';
 export * from './saveUtils';
 export * from './slotUtils';
