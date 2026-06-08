@@ -23,13 +23,13 @@ import {
   getRealmMultiplier,
   getNextRealm,
   getNextMainRealmLevel,
-  getAvailableDifficultiesForRealm,
   getMaxLevel,
   getExperienceForLevel,
   getStatBaseForLevel,
   getStatPotentialForLevel,
 } from '../../data/realmData';
 import type { RealmSystem } from '../../data/realmData';
+import { getAvailableDifficultiesForRealm } from './adventureDifficulties';
 import {
   WORLD_DATA,
   WORLD_COEFFICIENTS,
