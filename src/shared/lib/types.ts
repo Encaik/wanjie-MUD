@@ -364,21 +364,21 @@ declare const WorldTypeBrand: unique symbol;
 export type ExtensibleWorldType = string & { [WorldTypeBrand]: true };
 
 /**
- * 世界类型（联合，当前主类型）
+ * 世界类型（可扩展字符串）
  *
- * 8 种内置世界类型。新世界类型将通过 Mod 系统注册。
- *
- * @deprecated 新代码应使用 ExtensibleWorldType + asWorldType()
- * 迁移完成后此类型将改为品牌字符串。
+ * 新世界类型通过 Mod 系统在 WorldDataRegistry 中注册。
+ * 不再硬编码联合类型——任何已注册的字符串 ID 都是有效的世界类型。
+ * 如需类型级校验，使用 ExtensibleWorldType + asWorldType()。
  */
-export type WorldType = '修仙' | '高武' | '科技' | '魔幻' | '异能' | '仙侠' | '武侠' | '末世';
+export type WorldType = string;
 
 /**
- * 8 个内置世界类型常量
+ * @deprecated 使用 WorldDataRegistry.getAllWorldTypes() 替代
  */
-export const BUILTIN_WORLD_TYPES: readonly string[] = [
-  '修仙', '高武', '科技', '魔幻', '异能', '仙侠', '武侠', '末世',
-] as const;
+export function getBuiltinWorldTypes(): string[] {
+  // Dynamic import not possible at module level; callers should use registry directly
+  return ['修仙', '高武', '科技', '魔幻', '异能', '仙侠', '武侠', '末世'];
+}
 
 // 世界难度等级（由世界系数决定）
 export type WorldDifficulty = '简单' | '普通' | '困难' | '噩梦' | '地狱' | '深渊';

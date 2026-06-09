@@ -30,6 +30,7 @@ import { ControlledTabs, TabsContent, TabsList, TabsTrigger } from '@/shared/ui/
 import { EQUIPMENT_NAMES } from '@/modules/equipment/data/equipment';
 import { TECHNIQUE_NAMES, RARITY_POWER_RANGE, RARITY_BONUS_RANGE } from '@/modules/techniques/data/techniques';
 import { Protagonist, CultivationPath, WorldType, ItemRarity, TechniqueType, EquipmentSlot } from '@/shared/lib/types';
+import { WorldDataRegistry } from '@/shared/lib/registry';
 
 interface DeveloperPanelProps {
   protagonist: Protagonist;
@@ -80,16 +81,14 @@ const PATH_OPTIONS = [
   { value: 'demon', label: '魔修' },
 ];
 
-const WORLD_TYPE_OPTIONS: { value: WorldType; label: string }[] = [
-  { value: '修仙', label: '修仙' },
-  { value: '高武', label: '高武' },
-  { value: '科技', label: '科技' },
-  { value: '魔幻', label: '魔幻' },
-  { value: '异能', label: '异能' },
-  { value: '仙侠', label: '仙侠' },
-  { value: '武侠', label: '武侠' },
-  { value: '末世', label: '末世' },
-];
+/** 从注册中心动态获取世界类型选项 */
+function getWorldTypeOptions(): { value: WorldType; label: string }[] {
+  const registry = WorldDataRegistry.getInstance();
+  return registry.getAllWorldTypeData().map(w => ({
+    value: w.id as WorldType,
+    label: w.name,
+  }));
+}
 
 const RARITY_OPTIONS: { value: ItemRarity; label: string; color: string }[] = [
   { value: '普通', label: '普通', color: 'text-gray-500' },
@@ -734,7 +733,7 @@ export function DeveloperPanel({
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      {WORLD_TYPE_OPTIONS.map(opt => (
+                      {getWorldTypeOptions().map(opt => (
                         <SelectItem key={opt.value} value={opt.value} className="text-xs">
                           {opt.label}
                         </SelectItem>

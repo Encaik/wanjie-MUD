@@ -12,7 +12,7 @@ import { InventoryItem, ItemRarity, WorldType } from '@/shared/lib/types';
 interface AdventureLootPanelProps {
   loot: InventoryItem[];
   experience?: number; // 待结算经验值
-  worldType?: WorldType; // 世界类型，用于统一术语
+  worldType: WorldType; // 世界类型（必填，无兜底默认值）
 }
 
 const rarityColorMap: Record<string, string> = {
@@ -31,7 +31,7 @@ const hiddenItemNames: Record<string, string> = {
 // 需要遮掩的品质
 const HIDDEN_RARITIES: ItemRarity[] = ['史诗', '传说'];
 
-export function AdventureLootPanel({ loot, experience = 0, worldType = '修仙' }: AdventureLootPanelProps) {
+export function AdventureLootPanel({ loot, experience = 0, worldType }: AdventureLootPanelProps) {
   if (loot.length === 0 && experience === 0) return null;
 
   // 获取世界术语

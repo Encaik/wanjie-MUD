@@ -1,52 +1,34 @@
 /**
  * 世界机制工厂
  *
- * 根据世界类型返回对应的 WorldMechanics 实现。
- * 每种世界类型有独立的术语和参数配置。
+ * 所有 WorldMechanics 通过 WorldMechanicsRegistry 获取。
+ * 不维护任何硬编码映射表，不包含任何世界类型的 import。
+ *
+ * 内置世界的注册由 registerBuiltin.ts 在应用启动时统一完成。
  */
-import type { WorldType } from '@/shared/lib/types';
-
-import { cultivationWorld } from './cultivationWorld';
-import { esperWorld } from './esperWorld';
-import { highMartialWorld } from './highMartialWorld';
-import { magicWorld } from './magicWorld';
-import { martialWorld } from './martialWorld';
-import { techWorld } from './techWorld';
-import { wastelandWorld } from './wastelandWorld';
-import { xiānxiáWorld } from './xiānxiáWorld';
 
 import type { WorldMechanics } from './types';
-
-/** 世界机制注册表（8 种世界类型各自独立实现） */
-const WORLD_MECHANICS: Record<WorldType, WorldMechanics> = {
-  '修仙': cultivationWorld,
-  '仙侠': xiānxiáWorld,
-  '高武': highMartialWorld,
-  '科技': techWorld,
-  '魔幻': magicWorld,
-  '异能': esperWorld,
-  '武侠': martialWorld,
-  '末世': wastelandWorld,
-};
+import { WorldMechanicsRegistry } from '@/shared/lib/registry/WorldMechanicsRegistry';
 
 /**
  * 获取世界机制
  *
- * @param worldType - 世界类型
+ * 从 WorldMechanicsRegistry 查询，未注册时抛出明确错误。
+ *
+ * @param worldType - 世界类型标识
  * @returns 对应的 WorldMechanics 实现
+ * @throws 如果 worldType 未注册
  */
-export function getWorldMechanics(worldType: WorldType): WorldMechanics {
-  return WORLD_MECHANICS[worldType] || cultivationWorld;
+export function getWorldMechanics(worldType: string): WorldMechanics {
+  return WorldMechanicsRegistry.getInstance().get(worldType);
 }
 
 /**
- * 检查某世界类型是否有独特的机制实现
+ * 检查某世界类型是否有注册的机制实现
  *
- * @param worldType - 世界类型
- * @returns 是否有独特机制
+ * @param worldType - 世界类型标识
+ * @returns 是否已注册
  */
-export function hasUniqueMechanics(worldType: WorldType): boolean {
-  // 修仙是入门世界，保持 baseline 无独特机制
-  // 其余 7 种世界类型各有独特玩法机制
-  return worldType !== '修仙';
+export function hasUniqueMechanics(worldType: string): boolean {
+  return WorldMechanicsRegistry.getInstance().has(worldType);
 }

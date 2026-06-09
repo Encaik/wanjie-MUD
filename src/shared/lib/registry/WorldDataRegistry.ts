@@ -22,6 +22,36 @@ import type {
 // 注册中心数据类型定义
 // ============================================
 
+/** 世界数值配置（全由注册数据提供，消费代码无硬编码兜底） */
+export interface WorldStatsData {
+  /** 基础生命值 */
+  baseHp: number;
+  /** 每级生命成长 */
+  hpPerLevel: number;
+  /** 每点体质增加的HP */
+  hpPerConstitution: number;
+  /** 基础攻击力 */
+  baseAttack: number;
+  /** 每级攻击成长 */
+  attackPerLevel: number;
+  /** 每点体质增加的攻击 */
+  attackPerConstitution: number;
+  /** 每点灵根增加的攻击 */
+  attackPerSpiritRoot: number;
+  /** 基础防御力 */
+  baseDefense: number;
+  /** 每级防御成长 */
+  defensePerLevel: number;
+  /** 每点意志增加的防御 */
+  defensePerWillpower: number;
+  /** 敌人额外攻击力系数 */
+  enemyAttackBonus: number;
+  /** 敌人额外防御力系数 */
+  enemyDefenseBonus: number;
+  /** 属性显示名映射（按世界类型差异化，如科技世界体质→体能） */
+  statDisplayNames: Record<string, string>;
+}
+
 /** 世界基本信息（对应 World 接口中的世界类型静态配置） */
 export interface WorldTypeData {
   /** 世界类型标识（如 "修仙"、"demon"） */
@@ -46,6 +76,12 @@ export interface WorldTypeData {
   dangers?: WorldImpactData[];
   /** 机缘描述池 */
   opportunities?: WorldImpactData[];
+  /** 完整数值配置（baseHp、hpPerLevel 等，必须由 Mod 数据提供） */
+  stats?: WorldStatsData;
+  /** 是否为核心内置世界（wanji-core 提供则为 true） */
+  builtin?: boolean;
+  /** 世界机制配置（修炼/战斗/探索参数，由 Mod JSON 提供） */
+  mechanics?: Record<string, unknown>;
 }
 
 /** 世界影响描述数据 */
@@ -554,4 +590,26 @@ export function assertWorldType(id: string): ExtensibleWorldType {
 export function getAllWorldTypeValues(): ExtensibleWorldType[] {
   const registry = WorldDataRegistry.getInstance();
   return registry.getAllWorldTypes() as ExtensibleWorldType[];
+}
+
+/**
+ * 类型守卫：检查一个值是否为有效的 ExtensibleWorldType
+ *
+ * 运行时校验 ID 是否在注册中心注册。
+ *
+ * @param value - 待检查的值
+ * @returns 如果是已注册的世界类型则返回 true
+ *
+ * @example
+ * ```typescript
+ * if (isExtensibleWorldType(someValue)) {
+ *   // someValue 被收窄为 ExtensibleWorldType
+ *   const world = generateWorld(1, someValue);
+ * }
+ * ```
+ */
+export function isExtensibleWorldType(value: unknown): value is ExtensibleWorldType {
+  if (typeof value !== 'string') return false;
+  const registry = WorldDataRegistry.getInstance();
+  return registry.isValidWorldType(value);
 }

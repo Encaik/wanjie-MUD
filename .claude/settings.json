@@ -46,7 +46,8 @@
       "Bash(pnpm lint *)",
       "Bash(cd /mnt/c/Users/encai/Desktop/wanjie-MUD && openspec new change \"world-first-selection-flow\")",
       "Read(//mnt/c/Users/encai/Desktop/**)",
-      "Bash(pnpm lint:strict)"
+      "Bash(pnpm lint:strict)",
+      "Bash(npx eslint *)"
     ]
   }
 }

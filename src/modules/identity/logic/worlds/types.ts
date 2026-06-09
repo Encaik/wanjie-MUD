@@ -5,10 +5,6 @@
  * 通过策略模式隔离世界差异化逻辑。
  */
 
-import type { BattleAction, ManualBattleState } from '@/modules/combat/logic/engine/types';
-import type { AutoBattleStrategy } from '@/modules/combat/logic/engine/types';
-import type { GameState } from '@/shared/lib/types';
-
 // ============================================
 // 修炼行为
 // ============================================
@@ -79,21 +75,25 @@ export interface WorldMechanics {
 
   /** 获取独特机制描述（用于 UI 展示） */
   getUniqueMechanicDescription: () => UniqueMechanicInfo;
+}
 
-  /** 自定义修炼成功率计算（可选，默认使用标准公式） */
-  customSuccessRate?: (baseRate: number, state: GameState) => number;
-
-  /** 自定义战斗招式列表（可选，基于 ManualBattleState） */
-  customCombatActions?: (state: import('@/modules/combat/logic/engine/types').ManualBattleState) => BattleAction[];
-
-  /** 自定义自动战斗策略（可选） */
-  customAutoStrategy?: (state: ManualBattleState, strategy: AutoBattleStrategy) => BattleAction;
-
-  /** 进入世界时的初始化钩子（可选） */
-  onWorldEnter?: (state: GameState) => GameState;
-
-  /** 离开世界时的清理钩子（可选） */
-  onWorldLeave?: (state: GameState) => GameState;
+/**
+ * 世界机制纯数据配置
+ *
+ * 替代手写 WorldMechanics TS 文件，所有世界机制的差异通过 JSON 数据注入。
+ * WorldMechanics 对象由 buildWorldMechanics() 根据此配置自动构造。
+ */
+export interface MechanicsConfig {
+  /** 世界类型标识 */
+  worldType: string;
+  /** 修炼参数 */
+  cultivation: WorldCultivationParams;
+  /** 战斗参数 */
+  combat: WorldCombatParams;
+  /** 探索参数 */
+  exploration: WorldExplorationParams;
+  /** 独特机制描述 */
+  uniqueMechanic: UniqueMechanicInfo;
 }
 
 /** 独特机制信息（用于 UI 展示） */

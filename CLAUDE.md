@@ -2,6 +2,8 @@
 
 ## Rules
 
+**语言要求：本项目所有对话、思考、回复必须使用中文。代码注释和 JSDoc 也使用中文。代码标识符（变量名、函数名）使用英文。**
+
 Before any code generation, read and follow these rules:
 
 - [Core Constraints](.claude/rules/core.md) — 四层架构、文件大小限制、目录职责、禁止行为

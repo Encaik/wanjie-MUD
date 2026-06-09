@@ -4,7 +4,7 @@
  * 玩家和敌人的数值都基于世界的属性进行计算
  */
 
-import { WorldType, WorldImpact, StatImpact, CellType, EnemyTier, WorldDifficulty, BUILTIN_WORLD_TYPES } from '@/shared/lib/types';
+import { WorldType, WorldImpact, StatImpact, CellType, EnemyTier, WorldDifficulty } from '@/shared/lib/types';
 import { WorldDataRegistry } from '@/shared/lib/registry';
 
 // 重新导出 EnemyTier（从 types 导入）
@@ -21,7 +21,7 @@ export function getWorldTypes(): WorldType[] {
 }
 
 /** @deprecated 使用 getWorldTypes() 替代 */
-export const WORLD_TYPES: WorldType[] = BUILTIN_WORLD_TYPES as unknown as WorldType[];
+export const WORLD_TYPES: WorldType[] = getWorldTypes();
 
 // ============================================
 // 世界系数系统
@@ -603,8 +603,8 @@ export type DifficultyLevel = keyof typeof DIFFICULTY_MULTIPLIERS;
 /**
  * 获取世界数据
  *
- * 所有数据通过 Mod 加载进入注册中心。
- * 如果注册中心无数据，抛出明确错误提示用户检查 Mod 加载。
+ * 所有数据完全通过 Mod 加载进入注册中心，无任何硬编码兜底。
+ * 如果注册中心无数据或 stats 字段缺失，抛出明确错误。
  */
 export function getWorldData(worldType: WorldType): WorldStats {
   const registry = WorldDataRegistry.getInstance();
@@ -612,28 +612,67 @@ export function getWorldData(worldType: WorldType): WorldStats {
   if (!data) {
     throw new Error(`世界数据未加载: "${worldType}"。请确保 wanjie-core Mod 已正确加载。`);
   }
+
+  const stats = data.stats;
+  if (!stats) {
+    throw new Error(
+      `世界 "${worldType}" 缺少数值配置 (stats)。请检查数据文件是否包含 stats 字段。`
+    );
+  }
+
+  // 校验必要字段完整性
+  const requiredStatFields = [
+    'baseHp', 'hpPerLevel', 'hpPerConstitution',
+    'baseAttack', 'attackPerLevel', 'attackPerConstitution', 'attackPerSpiritRoot',
+    'baseDefense', 'defensePerLevel', 'defensePerWillpower',
+    'enemyAttackBonus', 'enemyDefenseBonus',
+  ] as const;
+
+  for (const field of requiredStatFields) {
+    if (typeof stats[field] !== 'number') {
+      throw new Error(
+        `世界 "${worldType}" 的 stats.${field} 缺失或不是数字。` +
+        `请检查数据文件完整性。`
+      );
+    }
+  }
+
+  if (!stats.statDisplayNames || typeof stats.statDisplayNames !== 'object') {
+    throw new Error(
+      `世界 "${worldType}" 缺少 statDisplayNames 配置。请检查数据文件。`
+    );
+  }
+
   return {
     namePrefixes: data.namePrefixes,
     nameSuffixes: data.nameSuffixes,
     descriptions: data.descriptions,
     powerSystems: data.powerSystems ?? [],
     majorForces: data.majorForces ?? [],
-    dangers: (data.dangers ?? []).map(d => ({ description: d.description, impact: d.impact as StatImpact, impactDescription: d.impactDescription })),
-    opportunities: (data.opportunities ?? []).map(o => ({ description: o.description, impact: o.impact as StatImpact, impactDescription: o.impactDescription })),
+    dangers: (data.dangers ?? []).map(d => ({
+      description: d.description,
+      impact: d.impact as StatImpact,
+      impactDescription: d.impactDescription,
+    })),
+    opportunities: (data.opportunities ?? []).map(o => ({
+      description: o.description,
+      impact: o.impact as StatImpact,
+      impactDescription: o.impactDescription,
+    })),
     coefficient: data.baseCoefficient,
-    baseHp: 100,
-    hpPerLevel: 15,
-    hpPerConstitution: 10,
-    baseAttack: 12,
-    attackPerLevel: 2.0,
-    attackPerConstitution: 1.0,
-    attackPerSpiritRoot: 0.5,
-    baseDefense: 6,
-    defensePerLevel: 1.0,
-    defensePerWillpower: 0.8,
-    enemyAttackBonus: 0,
-    enemyDefenseBonus: 0,
-    statDisplayNames: {},
+    baseHp: stats.baseHp,
+    hpPerLevel: stats.hpPerLevel,
+    hpPerConstitution: stats.hpPerConstitution,
+    baseAttack: stats.baseAttack,
+    attackPerLevel: stats.attackPerLevel,
+    attackPerConstitution: stats.attackPerConstitution,
+    attackPerSpiritRoot: stats.attackPerSpiritRoot,
+    baseDefense: stats.baseDefense,
+    defensePerLevel: stats.defensePerLevel,
+    defensePerWillpower: stats.defensePerWillpower,
+    enemyAttackBonus: stats.enemyAttackBonus,
+    enemyDefenseBonus: stats.enemyDefenseBonus,
+    statDisplayNames: stats.statDisplayNames,
   };
 }
 
