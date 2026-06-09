@@ -21,7 +21,28 @@
       "mcp__codegraph__codegraph_files",
       "mcp__codegraph__codegraph_status",
       "Bash(pnpm ts-check *)",
-      "Bash(pnpm test *)"
+      "Bash(pnpm test *)",
+      "Bash(xargs sed -i \"s|from '@/lib/calculation|from '@/shared/lib/calculation|g\")",
+      "Bash(xargs sed -i \"s|from '@/lib/websocket|from '@/shared/lib/websocket|g\")",
+      "Bash(xargs sed -i \"s|from '@/utils'|from '@/shared/utils'|g\")",
+      "Bash(xargs sed -i \"s|from '@/lib/config|from '@/shared/config|g\")",
+      "Bash(xargs sed -i \"s|from '@/hooks/use-mobile'|from '@/shared/utils/use-mobile'|g\")",
+      "Bash(xargs sed -i \"s|from '@/hooks/useWebSocketConnection'|from '@/shared/lib/websocket/useWebSocketConnection'|g\")",
+      "Bash(xargs sed -i \"s|from '@/hooks/useMultiplayerHttp'|from '@/shared/lib/multiplayer/useMultiplayerHttp'|g\")",
+      "Bash(xargs sed -i \"s|from '@/contexts/WorldTextContext'|from '@/modules/narrative/WorldTextContext'|g\")",
+      "Bash(xargs sed -i \"s|from '@/lib/text'|from '@/modules/narrative'|g\")",
+      "Bash(xargs sed -i \"s|from '@/lib/game/utils/terminology'|from '@/modules/narrative/logic/terminology'|g\")",
+      "Bash(xargs sed -i \"s|from '@/lib/data/terminology'|from '@/modules/narrative/data/terminology'|g\")",
+      "Bash(xargs sed -i \"s|from '@/components/pages|from '@/views|g\")",
+      "Bash(xargs sed -i \"s|from '@/lib/game/utils/characterEvaluation'|from '@/modules/identity/logic/characterEvaluation'|g\")",
+      "Bash(xargs sed -i \"s|from '@/lib/game/utils/traits'|from '@/modules/identity/logic/traits'|g\")",
+      "Bash(xargs sed -i \"s|from '@/lib/game/utils/generators'|from '@/modules/identity/logic/generators'|g\")",
+      "Bash(xargs sed -i \"s|from '@/lib/game/worlds|from '@/modules/identity/logic/worlds|g\")",
+      "Bash(xargs sed -i \"s|from '@/lib/data/traits'|from '@/modules/identity/data/traits'|g\")",
+      "Bash(xargs sed -i \"s|from '@/lib/data/worldData'|from '@/modules/identity/data/worldData'|g\")",
+      "Bash(xargs sed -i \"s|from '@/lib/data/worldEffectsData'|from '@/modules/identity/data/worldEffectsData'|g\")",
+      "Bash(xargs sed -i \"s|from '@/lib/data/worldEffectsUtils'|from '@/modules/identity/data/worldEffectsUtils'|g\")",
+      "Bash(xargs sed -i \"s|from '@/lib/data/worldSystem'|from '@/modules/identity/data/worldSystem'|g\")"
     ]
   }
 }

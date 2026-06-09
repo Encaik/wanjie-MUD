@@ -1,0 +1,87 @@
+/**
+ * 初始游戏状态工厂函数
+ *
+ * 从 useGameState.tsx 提取，减少巨型文件体积。
+ */
+
+import type { GameState } from '@/shared/lib/types';
+import { DEFAULT_ASCENSION_FLOW_STATE } from '@/shared/lib/typesExtension';
+
+/** 创建初始游戏状态 */
+export function createInitialGameState(): GameState {
+  return {
+    phase: 'character-select',
+    characters: [],
+    worlds: [],
+    selectedCharacter: null,
+    selectedWorld: null,
+    protagonist: null,
+    currentEvent: null,
+    lastActionResult: null,
+    adventureGrid: null,
+    adventurePosition: null,
+    adventureConfig: null,
+    adventurePhase: 'select',
+    adventureLoot: [],
+    adventureExperience: 0,
+    currentTab: 'cultivation',
+    battleState: null,
+    activeBattle: null,
+    messages: [],
+    totalMessageCount: 0,
+    autoCultivating: false,
+    autoBattle: false,
+    lastExploreTime: 0,
+    crafting: null,
+    forging: null,
+    statistics: {
+      maxLevel: 1,
+      totalEnemiesKilled: 0,
+      totalBossKilled: 0,
+      totalEliteKilled: 0,
+      totalTechniquesCollected: 0,
+      totalEquipmentsCollected: 0,
+      totalAdventuresCompleted: 0,
+      clearedDifficulties: [],
+      totalCultivations: 0,
+      totalBreakthroughs: 0,
+      legendaryItemsObtained: 0,
+      hasFullEquipment: false,
+      maxLevelTechniques: 0,
+      maxLevelEquipments: 0,
+      collectedTechniqueNames: [],
+      collectedEquipmentNames: [],
+      pathSelected: false,
+      pathLevel: 0,
+      techniqueProficiencyXiaocheng: 0,
+      techniqueProficiencyDacheng: 0,
+      techniqueProficiencyHuajing: 0,
+      bondsActivated: 0,
+      bondLevel3Activated: false,
+      maxEnhancementLevel: 0,
+      factionJoined: false,
+      reputationFriendly: false,
+      reputationHonored: false,
+      reputationExalted: false,
+      achievementRewardsClaimed: 0,
+      totalItemsUsed: 0,
+      totalSpiritStonesGained: 0,
+      totalSpiritStonesSpent: 0,
+      totalMaterialsCollected: 0,
+      totalFragmentsCollected: 0,
+      totalEquipmentsCrafted: 0,
+      totalTechniquesSynthesized: 0,
+      totalContribution: 0,
+      totalDonations: 0,
+      totalSpiritStonesDonated: 0,
+      totalFragmentsSynthesized: 0,
+    },
+    unlockedAchievementIds: [],
+    claimedAchievementIds: [],
+    completedTutorialTaskIds: [],
+    devMode: undefined,
+    ascensionFlow: {
+      ...DEFAULT_ASCENSION_FLOW_STATE,
+    },
+  };
+}

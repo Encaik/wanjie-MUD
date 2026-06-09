@@ -5,110 +5,140 @@
 
 ---
 
-## 一、文件大小硬约束
+## 一、四层架构（MUST）
+
+项目采用四层架构，`src/` 下只有 4 个顶级目录：
+
+```
+src/
+├── app/       ← ① 入口：Next.js App Router 路由
+├── views/     ← ② 页面：与路由挂钩的页面级组件
+├── modules/   ← ③ 功能模块：15个自包含业务域
+└── shared/    ← ④ 公共：纯公共逻辑，方便复用
+```
+
+### 1.1 内容唯一原则（MUST）
+
+**同一份内容只在四层模型中的一个位置存在。禁止复制粘贴代码。**
+
+旧代码迁移时，旧位置可临时保留 barrel re-export（`export * from '新路径'`），过渡期后删除。
+
+### 1.2 新文件放置决策树
+
+```
+新文件是什么？
+├── Next.js 路由页面（page.tsx, layout.tsx）？ → app/
+├── 与路由挂钩的页面组件（组合模块 Panel）？    → views/<route>/
+├── 某个业务功能的逻辑/状态/组件/数据？        → modules/<domain>/
+└── 纯通用公共代码？                           → shared/
+```
+
+---
+
+## 二、文件大小硬约束
 
 | 文件类型 | 最大行数 | 级别 | 检查方式 |
 |----------|----------|------|----------|
-| 组件文件（`*.tsx`，非 UI 基础组件） | 300 | MUST | `pnpm check-sizes` |
+| 组件文件（`*.tsx`，非 shadcn/ui） | 300 | MUST | `pnpm check-sizes` |
 | Hook 文件（`use*.ts`/`use*.tsx`） | 200 | MUST | `pnpm check-sizes` |
-| 工具/逻辑模块（`lib/`，非 data 目录） | 500 | SHOULD | `pnpm check-sizes` |
-| 数据/配置文件（`lib/data/`、`lib/gameData/`） | 800 | SHOULD | `pnpm check-sizes` |
+| 逻辑模块（`logic/` 目录） | 500 | SHOULD | `pnpm check-sizes` |
+| 数据/配置文件（`data/` 目录） | 800 | SHOULD | `pnpm check-sizes` |
 
 **超限处理**：
 - 接近上限时（>80%）优先考虑拆分
 - 超过上限时必须拆分，不得继续增涨
 - 拆分后通过 `index.ts` 重新导出保持 API 兼容
 
-## 二、目录职责表
+---
 
-| 目录 | 允许 | 禁止 |
-|------|------|------|
-| `src/app/` | 页面路由、全局布局、metadata | 业务逻辑、复杂状态管理 |
-| `src/components/ui/` | shadcn/ui 官方组件 | **任何自定义代码** |
-| `src/components/game/` | 游戏 UI 组件 | 纯业务逻辑（应放 lib/） |
-| `src/components/pages/` | 页面级组件 | 跨页面使用的组件（应放 game/ 或 shared/） |
-| `src/components/shared/` | 跨模块共享的通用组件 | 游戏特定逻辑 |
-| `src/components/layout/` | 全局布局组件 | 业务逻辑 |
-| `src/features/` | 领域业务编排（组合 lib + hooks） | 纯 UI 组件（应放 components/） |
-| `src/hooks/` | React 状态管理、副作用处理 | 纯计算逻辑（应放 lib/）、UI 渲染 |
-| `src/lib/` | 纯函数、类型定义、数据配置、计算引擎 | **React 组件/Hook**、**DOM 操作**、**副作用** |
-| `src/lib/game/` | 游戏核心业务逻辑（纯函数） | React 相关代码、直接 HTTP 调用 |
-| `src/lib/data/` | 静态游戏数据配置 | 业务逻辑 |
-| `src/lib/calculation/` | 统一计算引擎 | 混入游戏特定逻辑 |
-| `src/storage/` | 数据持久化（Supabase/DB） | 业务规则 |
-| `src/types/` | 全局通用类型 | 重复定义 lib 中已有的类型 |
-| `src/contexts/` | React Context Provider | 复杂业务逻辑（应由 hooks 封装） |
-| `src/utils/` | 无领域逻辑的通用工具 | 游戏逻辑 |
-| `src/tests/` | 测试文件 | 生产代码 |
+## 三、目录职责表
 
-## 三、禁止行为清单（MUST NOT）
+| 目录 | 职责 | 允许 | 禁止 |
+|------|------|------|------|
+| `app/` | ① Next.js 路由入口 | layout.tsx, page.tsx, globals.css | 业务逻辑、状态管理 |
+| `views/` | ② 与路由挂钩的页面 | 组合各模块 Panel、管理页面切换和弹窗 | 业务逻辑（应放 modules/） |
+| `modules/<domain>/` | ③ 业务功能模块 | 类型、纯逻辑、状态、组件、数据、测试 | 跨模块通用代码（应放 shared/）、路由级页面（应放 views/） |
+| `shared/ui/` | ④ shadcn/ui 组件 | shadcn 官方组件 | **任何自定义代码** |
+| `shared/components/` | ④ 跨模块通用组件 | 多模块共用的 UI 组件 | 单一模块专用的组件（应放 modules/） |
+| `shared/lib/` | ④ 公共库 | 计算引擎、事件总线、核心类型、websocket、multiplayer | 业务逻辑（应放 modules/） |
+| `shared/utils/` | ④ 通用工具 | cn, logger, saveMigrator 等无领域逻辑的工具 | 游戏特定逻辑 |
+| `shared/config/` | ④ 环境配置 | 环境变量、模式判断 | 业务配置（应放 modules/） |
+| `shared/storage/` | ④ 数据持久化 | Supabase 客户端、数据库 schema | 业务规则 |
+| `components/ui/` | shadcn 源目录 | shadcn CLI 管理，**只读** | 自定义代码 |
+| `components/game/` | 待迁移的旧 UI | 仅存在于迁移过渡期 | 新代码 ❌ |
+| `hooks/` | 待迁移的旧 Hooks | 仅存在于迁移过渡期 | 新代码 ❌ |
+| `lib/` | 待迁移的旧 lib | 仅存在于迁移过渡期 | 新代码 ❌ |
+| `contexts/` | 待迁移的旧 Context | 仅存在于迁移过渡期 | 新代码 ❌ |
+| `types/` | 待清理的旧类型 | 仅存在于迁移过渡期 | 新代码 ❌、重复定义 ❌ |
 
-### 3.1 架构破坏
-- ❌ 在 `src/lib/` 中 import React 组件或 Hook（破坏依赖方向）
-- ❌ 在 `src/lib/` 中操作 DOM 或使用 `window` 对象
-- ❌ 在 `src/components/ui/` 中添加或修改文件
-- ❌ 在 `src/types/` 中重复定义 `src/lib/game/types.ts` 已有的类型
+---
 
-### 3.2 代码质量
+## 四、功能模块结构模板
+
+```
+modules/<domain>/
+├── index.ts          # 统一导出 + 模块对外契约
+├── types.ts          # 模块内类型定义（≤300行）
+├── state.ts          # 状态 Slice + Reducer（≤200行）
+├── events.ts         # 事件订阅处理器
+├── logic/            # 纯函数（每个 ≤500行）
+│   ├── index.ts
+│   └── __tests__/
+├── hooks/            # React Hooks（每个 ≤200行）
+│   └── index.ts
+├── components/       # UI 组件（每个 ≤300行）
+│   └── index.ts
+└── data/             # 静态配置（每个 ≤800行）
+    └── index.ts
+```
+
+---
+
+## 五、禁止行为清单（MUST NOT）
+
+### 5.1 架构破坏
+- ❌ 在 `shared/` 中放入业务逻辑（业务逻辑属于 `modules/`）
+- ❌ 在 `modules/` 中放入路由级页面（页面属于 `views/`）
+- ❌ 在 `shared/ui/` 中添加或修改文件（shadcn 源在 `components/ui/`）
+- ❌ 在模块 A 的 Hook 中直接修改模块 B 的 state slice
+- ❌ 在旧目录（`components/game/`、`hooks/`、`lib/`、`contexts/`、`types/`）中新增文件
+- ❌ 一份内容出现在两个位置（barrel re-export 除外）
+
+### 5.2 代码质量
 - ❌ 使用 `any` 类型（ESLint error，除非有 `eslint-disable` + JSDoc 说明）
-- ❌ 在组件内硬编码游戏数值（应放在 `balanceConfig.ts` 或对应 data 文件）
+- ❌ 在组件内硬编码游戏数值（应放在模块 `data/` 中）
 - ❌ 创建未在 `index.ts` 中导出的模块
-- ❌ 在组件内定义可复用的纯函数（应提取到 `lib/` 或 `utils/`）
+- ❌ 在组件内定义可复用的纯函数（应提取到模块 `logic/` 或 `shared/utils/`）
 - ❌ 直接修改 `useGameState` 返回的状态对象（破坏不可变性）
 - ❌ 创建功能重复的组件或模块（开发前必须先搜索现有代码）
 
-### 3.3 类型安全
+### 5.3 类型安全
 - ❌ 函数参数无类型标注
 - ❌ 函数返回值无类型标注（除非 void 且上下文明确）
 - ❌ 使用 `as` 类型断言绕过类型检查（除非有充分理由 + 注释）
 
-## 四、文件组织
+---
 
-### 4.1 模块结构模板
-```
-src/lib/game/<module>/
-├── types.ts         # 模块类型定义
-├── <module>.ts      # 主要业务逻辑
-├── index.ts         # 统一导出
-└── __tests__/       # 单元测试
-```
+## 六、导入路径
 
-### 4.2 导入路径
-- 跨模块导入：使用 `@/` 别名（如 `@/lib/game/types`）
-- 同模块导入：使用相对路径（如 `./types`）
+- 跨模块导入：使用 `@/` 别名（如 `@/modules/narrative`、`@/shared/lib/types`）
+- 同模块导入：使用相对路径（如 `./types`、`../logic/calculator`）
 - 禁止深层相对路径：`../../../` 超过 2 层时必须改用 `@/`
+- 旧路径 barrel 仍然可用，但新代码必须使用新路径
 
-### 4.3 新文件放置决策树
-```
-新文件是 React 组件？
-  ├── 是基础 UI 组件？→ src/components/ui/（仅 shadcn）
-  ├── 是游戏专用组件？→ src/components/game/<domain>/
-  ├── 是页面级组件？→ src/components/pages/<page>/
-  └── 是跨模块共享？→ src/components/shared/
+---
 
-新文件是 React Hook？
-  └── src/hooks/<domain>/
+## 七、变更约束
 
-新文件是纯函数/类型/数据？
-  ├── 是游戏业务逻辑？→ src/lib/game/<module>/
-  ├── 是游戏数据配置？→ src/lib/data/
-  ├── 是计算引擎相关？→ src/lib/calculation/
-  └── 是通用工具？→ src/utils/
-
-新文件是数据库操作？
-  └── src/storage/database/
-```
-
-## 五、变更约束
-
-### 5.1 变更前必须
+### 7.1 变更前必须
 1. 搜索现有代码：`grep "关键字" src/` 确认无重复
 2. 阅读相关 `types.ts`：避免重复定义类型
 3. 阅读相关 `index.ts`：了解现有导出
-4. 检查 `doc/architecture/module-map.md`：确认放置位置
+4. 确定文件应放在四层架构的哪一层
 
-### 5.2 变更后必须
+### 7.2 变更后必须
 1. 更新对应 `index.ts` 桶文件
 2. 运行 `pnpm ts-check` 确保类型正确
 3. 运行 `pnpm build` 确保构建成功
-4. 如果涉及 `lib/game/` 变更，运行 `pnpm test`
+4. 如果涉及模块 `logic/` 变更，运行 `pnpm test`
+5. 确认没有在旧目录中新增文件（迁移过渡期）
