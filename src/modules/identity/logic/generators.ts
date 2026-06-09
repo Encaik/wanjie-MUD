@@ -37,11 +37,7 @@ import {
   getStatPotentialForLevel,
 } from '@/modules/progression/data/realmCore';
 import { getAvailableDifficultiesForRealm } from '@/modules/exploration/logic/adventureDifficulties';
-import {
-  WORLD_DATA,
-  WORLD_COEFFICIENTS,
-  WORLD_TYPES,
-} from '@/modules/identity/data/worldData';
+// 世界数据通过 getWorldData() / getWorldTypes() 运行时从注册中心获取，不再使用模块级常量
 import {
   calculateWorldDifficultyCoefficient,
   getWorldDifficultyFromCoefficient,
@@ -96,8 +92,8 @@ function generateTraitFromDefinition(
   };
 }
 
-// 世界名称/描述等数据已统一迁移至 WORLD_DATA（src/modules/identity/data/worldData.ts）
-// generateWorld() 和 generateWorlds() 现在从 WORLD_DATA 读取所有世界配置
+// 世界名称/描述等数据通过 getWorldData() 从注册中心获取
+// generateWorld() 和 generateWorlds() 现在从 WorldDataRegistry 读取所有世界配置
 
 // 生成基础属性（所有角色相同的基础值）
 // 新结构：固定属性包含基础值50，成长属性初始为0
@@ -263,8 +259,15 @@ export function generateWorld(seed: string = '', ascensionCount: number = 0): Wo
   const actualSeed = seed || generateWorldSeed();
   const rng = createRng(actualSeed);
   const hash = hashString(actualSeed);
-  const type = WORLD_TYPES[Math.abs(hash) % WORLD_TYPES.length];
-  const worldData = WORLD_DATA[type];
+
+  // 运行时从注册中心获取世界类型列表（避免模块加载时序问题）
+  const worldTypes = getWorldTypes();
+  if (worldTypes.length === 0) {
+    throw new Error('无法生成世界：没有已注册的世界类型。请确保 Mod 数据已加载。');
+  }
+
+  const type = worldTypes[Math.abs(hash) % worldTypes.length];
+  const worldData = getWorldData(type);
   const name = randomItem(worldData.namePrefixes, rng) + randomItem(worldData.nameSuffixes, rng);
   const description = randomItem(worldData.descriptions, rng);
 
