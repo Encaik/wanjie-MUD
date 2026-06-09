@@ -1,5 +1,9 @@
 /**
  * 公告 Toast 组件
+ *
+ * 关键帧动画已迁移至 src/app/styles/animations.css：
+ * - @keyframes shrink — 进度条收缩
+ * - @keyframes glow   — 公告发光边框
  */
 
 'use client';
@@ -116,7 +120,7 @@ export function AnnouncementToast({
         </div>
       </div>
 
-      {/* 进度条 */}
+      {/* 进度条 — 使用 animations.css 中的 @keyframes shrink */}
       <div
         className="absolute bottom-0 left-0 h-1 bg-primary/30 transition-all"
         style={{
@@ -125,22 +129,6 @@ export function AnnouncementToast({
       />
     </Card>
   );
-}
-
-// 添加全局样式
-if (typeof document !== 'undefined') {
-  const style = document.createElement('style');
-  style.textContent = `
-    @keyframes shrink {
-      from { width: 100%; }
-      to { width: 0%; }
-    }
-    @keyframes glow {
-      0%, 100% { box-shadow: 0 0 10px var(--announcement-color); }
-      50% { box-shadow: 0 0 25px var(--announcement-color); }
-    }
-  `;
-  document.head.appendChild(style);
 }
 
 export default AnnouncementToast;

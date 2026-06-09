@@ -24,6 +24,16 @@ const worldAccent: Record<WorldType, string> = {
   '异能': 'text-indigo-400', '仙侠': 'text-teal-400', '武侠': 'text-stone-400', '末世': 'text-zinc-400',
 };
 
+/** 安全获取世界图标（未知类型使用默认值） */
+function safeWorldIcon(worldType: string): string {
+  return worldIcon[worldType as WorldType] ?? '🌐';
+}
+
+/** 安全获取世界主题色（未知类型使用默认值） */
+function safeWorldAccent(worldType: string): string {
+  return worldAccent[worldType as WorldType] ?? 'text-slate-400';
+}
+
 export function WorldInfoBar({ worldName, worldType, onBack }: WorldInfoBarProps) {
   const { displayNames } = useStatLabels(worldType);
 
@@ -34,8 +44,8 @@ export function WorldInfoBar({ worldName, worldType, onBack }: WorldInfoBarProps
         返回
       </Button>
 
-      <span className={cn('text-lg', worldAccent[worldType])} aria-hidden="true">
-        {worldIcon[worldType]}
+      <span className={cn('text-lg', safeWorldAccent(worldType))} aria-hidden="true">
+        {safeWorldIcon(worldType)}
       </span>
       <span className="text-sm font-semibold text-foreground font-serif">{worldName}</span>
 

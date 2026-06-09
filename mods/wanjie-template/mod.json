@@ -6,6 +6,7 @@
   "author": "你的名字",
   "gameVersion": ">=1.0.0",
   "dependencies": ["wanjie-core"],
+  "template": true,
   "contentTypes": ["world", "traits", "dangers", "opportunities", "realms", "factions", "names", "text"],
   "dataFiles": {
     "world": "data/world.json",

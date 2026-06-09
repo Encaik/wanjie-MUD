@@ -79,6 +79,12 @@ function buildMods() {
       const modJson = JSON.parse(fs.readFileSync(modJsonPath, 'utf-8'));
       const modId = modJson.id || entry.name;
 
+      // 跳过模板 Mod（template: true）
+      if (modJson.template === true) {
+        console.log(`  ⊘ ${entry.name} (id: ${modId}) — 模板，已跳过`);
+        continue;
+      }
+
       // 复制到目标
       const targetDir = path.join(MODS_TARGET, entry.name);
       copyDir(modDir, targetDir);

@@ -8,14 +8,15 @@
  * 4. 所有境界相关查询都基于世界存储的境界配置
  */
 
-import { 
-  calculateEnemyHp, 
-  calculateEnemyAttack, 
-  calculateEnemyDefense 
+import {
+  calculateEnemyHp,
+  calculateEnemyAttack,
+  calculateEnemyDefense
 } from '@/modules/progression/logic/balanceConfig';
 import { calculateEnemyCombatPower } from '@/modules/combat/logic/combatPower';
 import { calculateEnemyEnhancement } from '@/modules/combat/logic/enemy/enemyEnhancement';
 import type { WorldType, DungeonConfig } from '@/shared/lib/types';
+import { WorldDataRegistry } from '@/shared/lib/registry/WorldDataRegistry';
 import type { RealmSystem, RealmTier } from './realmCore';
 import { getRealmName, getRealmMultiplier } from './realmCore';
 
@@ -155,11 +156,32 @@ const randomKey = <T extends Record<string, unknown>>(obj: T): string => {
 
 /**
  * 为世界生成一套境界体系
- * 随机抽取大境界体系和小境界体系，组合成完整的境界名称
+ *
+ * 优先级：
+ * 1. WorldDataRegistry 中 Mod 注册的自定义境界体系
+ * 2. 内置静态数据 MAIN_REALM_SYSTEMS + SUB_REALM_SYSTEMS（8 种内置世界类型）
+ * 3. 兜底：使用"修仙"世界类型的默认体系
  */
 export function generateRealmSystem(worldType: WorldType): RealmSystem {
-  // 随机选择大境界体系
-  const mainRealms = MAIN_REALM_SYSTEMS[worldType];
+  // 优先检查 WorldDataRegistry 中是否有 Mod 注册的自定义境界体系
+  const registry = WorldDataRegistry.getInstance();
+  const customRealm = registry.getRealmSystem(worldType);
+  if (customRealm) {
+    return {
+      mainRealmName: customRealm.mainRealmName,
+      subRealmName: customRealm.subRealmName,
+      tiers: customRealm.tiers.map(t => ({
+        name: t.name,
+        subRealms: t.subRealms,
+        levelRange: t.levelRange,
+      })),
+      subRealmMultiplier: customRealm.subRealmMultiplier,
+      tierJumpMultiplier: customRealm.tierJumpMultiplier,
+    };
+  }
+
+  // 兜底：从内置静态数据生成
+  const mainRealms = MAIN_REALM_SYSTEMS[worldType] || MAIN_REALM_SYSTEMS['修仙'];
   const mainRealmName = randomKey(mainRealms);
   const mainRealmTiers = mainRealms[mainRealmName];
 
@@ -167,19 +189,19 @@ export function generateRealmSystem(worldType: WorldType): RealmSystem {
   const worldSubRealms = SUB_REALM_SYSTEMS[worldType] || SUB_REALM_SYSTEMS['修仙'];
   const subRealmName = randomKey(worldSubRealms);
   const subRealms = worldSubRealms[subRealmName];
-  
+
   // 组合生成完整境界层级
   const tiers: RealmTier[] = mainRealmTiers.map((tierName, index) => {
     const startLevel = index * 10 + 1;
     const endLevel = (index + 1) * 10;
-    
+
     return {
       name: tierName,
       subRealms: subRealms,
       levelRange: [startLevel, endLevel] as [number, number],
     };
   });
-  
+
   return {
     mainRealmName,
     subRealmName,

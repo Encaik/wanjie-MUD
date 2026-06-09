@@ -1,0 +1,116 @@
+/**
+ * 万界修行录 - 动画层
+ *
+ * 职责：所有 @keyframes 关键帧动画定义。
+ * 本文件只包含 @keyframes 块，不包含选择器或工具类。
+ * 工具类（.animate-*）在 base.css 的 @layer utilities 中定义。
+ */
+
+/* ========================================
+ * 残血蒙层动画
+ * ======================================== */
+
+/* 脉冲光晕动画 */
+@keyframes pulse-glow {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
+/* 微弱震动效果 */
+@keyframes subtle-shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-1px);
+  }
+  75% {
+    transform: translateX(1px);
+  }
+}
+
+/* 脉冲动画（用于警告文字） */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 0.3;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    opacity: 0.6;
+    transform: translate(-50%, -50%) scale(1.05);
+  }
+}
+
+/* ========================================
+ * 首页动效
+ * ======================================== */
+
+/* 浮动动画 - 用于背景符文 */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  25% {
+    transform: translateY(-12px) rotate(2deg);
+  }
+  50% {
+    transform: translateY(-6px) rotate(0deg);
+  }
+  75% {
+    transform: translateY(8px) rotate(-2deg);
+  }
+}
+
+/* 入场动画 - 淡入上移 */
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 按钮发光脉冲 */
+@keyframes button-glow {
+  0%, 100% {
+    opacity: 0.5;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.08);
+  }
+}
+
+/* 光晕旋转 */
+@keyframes glow-rotate {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+/* ========================================
+ * 公告 Toast 动画（从 AnnouncementToast.tsx 迁移）
+ * ======================================== */
+
+/* 进度条收缩 */
+@keyframes shrink {
+  from { width: 100%; }
+  to { width: 0%; }
+}
+
+/* 发光脉冲（用于公告边框） */
+@keyframes glow {
+  0%, 100% { box-shadow: 0 0 10px var(--announcement-color); }
+  50% { box-shadow: 0 0 25px var(--announcement-color); }
+}

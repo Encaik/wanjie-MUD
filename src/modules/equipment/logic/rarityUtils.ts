@@ -15,64 +15,71 @@ export const RARITY_NAMES: Record<ItemRarity, string> = {
   '神话': '神话',
 };
 
-/** 稀有度颜色 */
+/**
+ * 稀有度颜色 — 使用 quality-* 语义化变量
+ *
+ * 映射关系（对齐 8 级品质色系统）：
+ * 神话(传说品质) → mythic(红) | 传说(史诗品质) → legendary(橙)
+ * 史诗(稀有品质) → epic(黄) | 稀有(精良品质) → rare(紫)
+ * 普通(优秀品质) → common(绿)
+ */
 export const RARITY_COLORS: Record<ItemRarity, string> = {
-  '普通': 'text-gray-500',
-  '稀有': 'text-blue-500',
-  '史诗': 'text-purple-500',
-  '传说': 'text-yellow-500',
-  '神话': 'text-red-500',
+  '普通': 'text-quality-common',
+  '稀有': 'text-quality-rare',
+  '史诗': 'text-quality-epic',
+  '传说': 'text-quality-legendary',
+  '神话': 'text-quality-mythic',
 };
 
 /** 稀有度边框颜色 */
 export const RARITY_BORDER_COLORS: Record<ItemRarity, string> = {
-  '普通': 'border-gray-500',
-  '稀有': 'border-blue-500',
-  '史诗': 'border-purple-500',
-  '传说': 'border-yellow-500',
-  '神话': 'border-red-500',
+  '普通': 'border-quality-common',
+  '稀有': 'border-quality-rare',
+  '史诗': 'border-quality-epic',
+  '传说': 'border-quality-legendary',
+  '神话': 'border-quality-mythic',
 };
 
 /** 稀有度背景颜色 */
 export const RARITY_BG_COLORS: Record<ItemRarity, string> = {
-  '普通': 'bg-gray-500/10',
-  '稀有': 'bg-blue-500/10',
-  '史诗': 'bg-purple-500/10',
-  '传说': 'bg-yellow-500/10',
-  '神话': 'bg-red-500/10',
+  '普通': 'bg-quality-common/10',
+  '稀有': 'bg-quality-rare/10',
+  '史诗': 'bg-quality-epic/10',
+  '传说': 'bg-quality-legendary/10',
+  '神话': 'bg-quality-mythic/10',
 };
 
-/** 稀有度徽章样式 */
+/** 稀有度徽章样式 — 使用 quality-* 语义化变量 */
 export const RARITY_BADGE_STYLES: Record<ItemRarity, { border: string; bg: string; text: string; badge: string }> = {
-  '普通': { 
-    border: 'border-gray-400', 
-    bg: 'bg-gray-100 dark:bg-gray-800', 
-    text: 'text-gray-600 dark:text-gray-300',
-    badge: 'bg-gray-200 text-gray-700 dark:bg-gray-700 dark:text-gray-300',
+  '普通': {
+    border: 'border-quality-common',
+    bg: 'bg-quality-common/10',
+    text: 'text-quality-common',
+    badge: 'bg-quality-common/20 text-quality-common',
   },
-  '稀有': { 
-    border: 'border-blue-400', 
-    bg: 'bg-blue-50 dark:bg-blue-900/20', 
-    text: 'text-blue-600 dark:text-blue-300',
-    badge: 'bg-blue-100 text-blue-700 dark:bg-blue-800 dark:text-blue-200',
+  '稀有': {
+    border: 'border-quality-rare',
+    bg: 'bg-quality-rare/10',
+    text: 'text-quality-rare',
+    badge: 'bg-quality-rare/20 text-quality-rare',
   },
-  '史诗': { 
-    border: 'border-purple-400', 
-    bg: 'bg-purple-50 dark:bg-purple-900/20', 
-    text: 'text-purple-600 dark:text-purple-300',
-    badge: 'bg-purple-100 text-purple-700 dark:bg-purple-800 dark:text-purple-200',
+  '史诗': {
+    border: 'border-quality-epic',
+    bg: 'bg-quality-epic/10',
+    text: 'text-quality-epic',
+    badge: 'bg-quality-epic/20 text-quality-epic',
   },
-  '传说': { 
-    border: 'border-yellow-400', 
-    bg: 'bg-yellow-50 dark:bg-yellow-900/20', 
-    text: 'text-yellow-600 dark:text-yellow-300',
-    badge: 'bg-yellow-100 text-yellow-700 dark:bg-yellow-800 dark:text-yellow-200',
+  '传说': {
+    border: 'border-quality-legendary',
+    bg: 'bg-quality-legendary/10',
+    text: 'text-quality-legendary',
+    badge: 'bg-quality-legendary/20 text-quality-legendary',
   },
-  '神话': { 
-    border: 'border-red-400', 
-    bg: 'bg-red-50 dark:bg-red-900/20', 
-    text: 'text-red-600 dark:text-red-300',
-    badge: 'bg-red-100 text-red-700 dark:bg-red-800 dark:text-red-200',
+  '神话': {
+    border: 'border-quality-mythic',
+    bg: 'bg-quality-mythic/10',
+    text: 'text-quality-mythic',
+    badge: 'bg-quality-mythic/20 text-quality-mythic',
   },
 };
 

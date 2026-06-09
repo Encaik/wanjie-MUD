@@ -26,8 +26,24 @@ interface WorldSelectProps {
   onSelect: (world: World) => void;
 }
 
+/** 世界主题配置 */
+interface WorldThemeConfig {
+  icon: string;
+  gradient: string;
+  accent: string;
+  border: string;
+}
+
+/** 未知世界类型的默认主题 */
+const DEFAULT_WORLD_THEME: WorldThemeConfig = {
+  icon: '🌐',
+  gradient: 'from-slate-500/20 to-slate-600/10',
+  accent: 'text-slate-400',
+  border: 'border-slate-500/30',
+};
+
 // 世界类型视觉主题
-const worldTheme: Record<WorldType, { icon: string; gradient: string; accent: string; border: string }> = {
+const worldTheme: Record<WorldType, WorldThemeConfig> = {
   '修仙': { icon: '☯', gradient: 'from-amber-500/20 to-yellow-600/10', accent: 'text-amber-400', border: 'border-amber-500/30' },
   '高武': { icon: '⚔', gradient: 'from-red-500/20 to-orange-600/10', accent: 'text-red-400', border: 'border-red-500/30' },
   '科技': { icon: '⬡', gradient: 'from-cyan-500/20 to-blue-600/10', accent: 'text-cyan-400', border: 'border-cyan-500/30' },
@@ -37,6 +53,14 @@ const worldTheme: Record<WorldType, { icon: string; gradient: string; accent: st
   '武侠': { icon: '◇', gradient: 'from-stone-500/20 to-neutral-600/10', accent: 'text-stone-400', border: 'border-stone-500/30' },
   '末世': { icon: '◉', gradient: 'from-zinc-500/20 to-slate-700/10', accent: 'text-zinc-400', border: 'border-zinc-500/40' },
 };
+
+/**
+ * 安全获取世界主题配置
+ * 对未知世界类型返回默认主题，避免 Mod 注册的自定义世界类型导致崩溃
+ */
+function getWorldTheme(worldType: string): WorldThemeConfig {
+  return worldTheme[worldType as WorldType] ?? DEFAULT_WORLD_THEME;
+}
 
 // 难度样式
 const difficultyStyles: Record<WorldDifficulty, { badge: string }> = {
@@ -71,7 +95,7 @@ export function WorldSelect({ worlds, onSelect }: WorldSelectProps) {
         {/* 世界网格 */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {worlds.map((world, index) => {
-            const theme = worldTheme[world.type];
+            const theme = getWorldTheme(world.type);
             const isSelected = selectedId === world.id;
             const statLabels = getStatLabels(world.type);
 

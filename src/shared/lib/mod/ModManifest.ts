@@ -18,7 +18,8 @@ export type ModContentType =
   | 'factions'
   | 'names'
   | 'text'
-  | 'items';
+  | 'items'
+  | 'styles';
 
 /** 所有支持的 Mod 内容类型列表 */
 export const ALL_MOD_CONTENT_TYPES: ModContentType[] = [
@@ -31,6 +32,7 @@ export const ALL_MOD_CONTENT_TYPES: ModContentType[] = [
   'names',
   'text',
   'items',
+  'styles',
 ];
 
 /**
@@ -56,6 +58,8 @@ export interface ModManifest {
   dependencies: string[];
   /** 是否强制加载，失败时阻止游戏启动（默认 false） */
   required: boolean;
+  /** 是否为模板 Mod，模板不会被构建脚本注册（默认 false） */
+  template: boolean;
   /** 本 Mod 提供的内容类型 */
   contentTypes: ModContentType[];
   /** 内容类型到数据文件路径的映射 */
@@ -238,6 +242,7 @@ export function parseManifest(json: string): { manifest?: ModManifest; errors: M
     gameVersion: m.gameVersion as string,
     dependencies: (m.dependencies as string[]) ?? [],
     required: m.required === true,
+    template: m.template === true,
     contentTypes: m.contentTypes as ModContentType[],
     dataFiles: (m.dataFiles as Record<string, string>) ?? {},
   };

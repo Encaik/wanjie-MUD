@@ -1,0 +1,319 @@
+/**
+ * 万界修行录 - 主题层
+ *
+ * 职责：定义所有 CSS 自定义属性的具体值。
+ * 包含默认主题（:root）、暗色主题（.dark）、以及各世界主题。
+ *
+ * 主题说明：
+ * - 默认主题：米色系（温暖、古典、书卷气）
+ * - 暗色主题：深棕/墨色系（通过 .dark 类切换）
+ *
+ * 品质颜色（全局统一，从高到低）：
+ * - 红色(mythic)：传说品质，最高级
+ * - 橙色(legendary)：史诗品质
+ * - 黄色(epic)：稀有品质
+ * - 紫色(rare)：精良品质
+ * - 蓝色(uncommon)：优秀品质
+ * - 绿色(common)：普通品质
+ * - 灰色(poor)：劣质品质
+ * - 白色(basic)：基础品质，最低级
+ */
+
+/* ========================================
+ * 默认主题（米色系 — 温暖古典）
+ * ======================================== */
+:root {
+  /* 背景层 */
+  --background: oklch(0.96 0.012 75);
+  --foreground: oklch(0.22 0.035 55);
+
+  /* 卡片层 */
+  --card: oklch(0.99 0.006 75);
+  --card-foreground: oklch(0.22 0.035 55);
+
+  /* 弹出层 */
+  --popover: oklch(0.99 0.006 75);
+  --popover-foreground: oklch(0.22 0.035 55);
+
+  /* 主色调 - 琥珀棕 */
+  --primary: oklch(0.50 0.10 60);
+  --primary-foreground: oklch(0.98 0.01 75);
+
+  /* 次要色 */
+  --secondary: oklch(0.92 0.02 70);
+  --secondary-foreground: oklch(0.30 0.04 55);
+
+  /* 柔和色 */
+  --muted: oklch(0.94 0.015 72);
+  --muted-foreground: oklch(0.45 0.03 60);
+
+  /* 强调色 */
+  --accent: oklch(0.88 0.04 70);
+  --accent-foreground: oklch(0.25 0.04 55);
+
+  /* 危险色 */
+  --destructive: oklch(0.55 0.20 25);
+
+  /* 边框与输入 */
+  --border: oklch(0.88 0.02 70);
+  --input: oklch(0.92 0.015 72);
+  --ring: oklch(0.50 0.10 60);
+
+  /* 图表色 - 暖色系 */
+  --chart-1: oklch(0.65 0.12 55);
+  --chart-2: oklch(0.55 0.15 40);
+  --chart-3: oklch(0.50 0.10 75);
+  --chart-4: oklch(0.45 0.08 55);
+  --chart-5: oklch(0.60 0.06 70);
+
+  /* 圆角 */
+  --radius: 0.5rem;
+
+  /* 侧边栏 */
+  --sidebar: oklch(0.97 0.012 75);
+  --sidebar-foreground: oklch(0.22 0.035 55);
+  --sidebar-primary: oklch(0.50 0.10 60);
+  --sidebar-primary-foreground: oklch(0.98 0.01 75);
+  --sidebar-accent: oklch(0.92 0.025 70);
+  --sidebar-accent-foreground: oklch(0.25 0.04 55);
+  --sidebar-border: oklch(0.88 0.02 70);
+  --sidebar-ring: oklch(0.50 0.10 60);
+
+  /* 品质颜色 */
+  --quality-mythic: oklch(0.60 0.22 25);
+  --quality-legendary: oklch(0.70 0.17 55);
+  --quality-epic: oklch(0.85 0.15 90);
+  --quality-rare: oklch(0.55 0.20 300);
+  --quality-uncommon: oklch(0.55 0.15 250);
+  --quality-common: oklch(0.60 0.12 145);
+  --quality-poor: oklch(0.50 0.02 70);
+  --quality-basic: oklch(0.85 0.01 75);
+}
+
+/* ========================================
+ * 暗色主题（深墨色系）
+ * 启用方式：在 <html> 添加 .dark 类
+ * ======================================== */
+.dark {
+  /* 背景层 */
+  --background: oklch(0.18 0.02 55);
+  --foreground: oklch(0.92 0.015 70);
+
+  /* 卡片层 */
+  --card: oklch(0.22 0.025 55);
+  --card-foreground: oklch(0.92 0.015 70);
+
+  /* 弹出层 */
+  --popover: oklch(0.22 0.025 55);
+  --popover-foreground: oklch(0.92 0.015 70);
+
+  /* 主色调 - 金棕色 */
+  --primary: oklch(0.70 0.12 65);
+  --primary-foreground: oklch(0.15 0.02 55);
+
+  /* 次要色 */
+  --secondary: oklch(0.28 0.03 55);
+  --secondary-foreground: oklch(0.88 0.015 70);
+
+  /* 柔和色 */
+  --muted: oklch(0.25 0.025 55);
+  --muted-foreground: oklch(0.65 0.03 60);
+
+  /* 强调色 */
+  --accent: oklch(0.32 0.04 55);
+  --accent-foreground: oklch(0.90 0.015 70);
+
+  /* 危险色 */
+  --destructive: oklch(0.65 0.18 25);
+
+  /* 边框与输入 */
+  --border: oklch(0.30 0.02 55);
+  --input: oklch(0.25 0.025 55);
+  --ring: oklch(0.70 0.12 65);
+
+  /* 图表色 */
+  --chart-1: oklch(0.75 0.12 55);
+  --chart-2: oklch(0.65 0.15 40);
+  --chart-3: oklch(0.70 0.10 75);
+  --chart-4: oklch(0.55 0.08 55);
+  --chart-5: oklch(0.60 0.06 70);
+
+  /* 侧边栏 */
+  --sidebar: oklch(0.20 0.025 55);
+  --sidebar-foreground: oklch(0.90 0.015 70);
+  --sidebar-primary: oklch(0.70 0.12 65);
+  --sidebar-primary-foreground: oklch(0.15 0.02 55);
+  --sidebar-accent: oklch(0.28 0.04 55);
+  --sidebar-accent-foreground: oklch(0.88 0.015 70);
+  --sidebar-border: oklch(0.30 0.02 55);
+  --sidebar-ring: oklch(0.70 0.12 65);
+
+  /* 品质颜色 - 暗色模式下提高亮度 */
+  --quality-mythic: oklch(0.70 0.22 25);
+  --quality-legendary: oklch(0.75 0.18 55);
+  --quality-epic: oklch(0.88 0.15 90);
+  --quality-rare: oklch(0.65 0.20 300);
+  --quality-uncommon: oklch(0.65 0.15 250);
+  --quality-common: oklch(0.70 0.12 145);
+  --quality-poor: oklch(0.55 0.02 70);
+  --quality-basic: oklch(0.80 0.01 75);
+}
+
+/* ========================================
+ * 暗色模式变体 — 启用 Tailwind dark: 前缀
+ * ======================================== */
+@custom-variant dark (&:is(.dark *));
+
+/* ========================================
+ * 世界主题 — 通过 data-world 属性切换
+ *
+ * 每种世界覆盖 7 个关键变量：
+ * --primary, --primary-foreground, --accent,
+ * --background, --foreground, --border, --ring
+ *
+ * 暗色变体在对应的 [data-world].dark 选择器中定义。
+ * ======================================== */
+
+/* 修仙 — 温暖琥珀（与默认一致，作为显式声明保持完整性） */
+[data-world="cultivation"] {
+  --primary: oklch(0.50 0.10 60);
+  --accent: oklch(0.88 0.04 70);
+  --background: oklch(0.96 0.012 75);
+  --foreground: oklch(0.22 0.035 55);
+  --border: oklch(0.85 0.03 70);
+  --ring: oklch(0.55 0.10 60);
+}
+[data-world="cultivation"].dark {
+  --primary: oklch(0.70 0.12 65);
+  --accent: oklch(0.32 0.04 55);
+  --background: oklch(0.18 0.02 55);
+  --foreground: oklch(0.92 0.015 70);
+  --border: oklch(0.28 0.03 55);
+  --ring: oklch(0.70 0.12 65);
+}
+
+/* 高武 — 战斗深红 */
+[data-world="martial"] {
+  --primary: oklch(0.48 0.18 20);
+  --accent: oklch(0.82 0.06 25);
+  --background: oklch(0.95 0.01 30);
+  --foreground: oklch(0.18 0.02 20);
+  --border: oklch(0.80 0.02 30);
+  --ring: oklch(0.50 0.18 20);
+}
+[data-world="martial"].dark {
+  --primary: oklch(0.65 0.18 22);
+  --accent: oklch(0.30 0.05 25);
+  --background: oklch(0.15 0.02 25);
+  --foreground: oklch(0.90 0.01 30);
+  --border: oklch(0.28 0.03 25);
+  --ring: oklch(0.68 0.18 22);
+}
+
+/* 科技 — 冷峻金属蓝 */
+[data-world="tech"] {
+  --primary: oklch(0.50 0.13 245);
+  --accent: oklch(0.85 0.03 240);
+  --background: oklch(0.96 0.005 250);
+  --foreground: oklch(0.18 0.015 250);
+  --border: oklch(0.82 0.015 245);
+  --ring: oklch(0.55 0.13 245);
+}
+[data-world="tech"].dark {
+  --primary: oklch(0.68 0.12 245);
+  --accent: oklch(0.25 0.03 240);
+  --background: oklch(0.16 0.01 245);
+  --foreground: oklch(0.90 0.01 245);
+  --border: oklch(0.26 0.02 245);
+  --ring: oklch(0.72 0.12 245);
+}
+
+/* 魔幻 — 神秘深邃紫 */
+[data-world="magic"] {
+  --primary: oklch(0.50 0.17 300);
+  --accent: oklch(0.85 0.05 295);
+  --background: oklch(0.95 0.01 290);
+  --foreground: oklch(0.18 0.02 290);
+  --border: oklch(0.82 0.02 295);
+  --ring: oklch(0.55 0.17 300);
+}
+[data-world="magic"].dark {
+  --primary: oklch(0.68 0.16 300);
+  --accent: oklch(0.26 0.05 295);
+  --background: oklch(0.15 0.015 295);
+  --foreground: oklch(0.90 0.01 290);
+  --border: oklch(0.24 0.03 295);
+  --ring: oklch(0.72 0.16 300);
+}
+
+/* 异能 — 前卫青绿 */
+[data-world="esper"] {
+  --primary: oklch(0.50 0.10 170);
+  --accent: oklch(0.85 0.04 165);
+  --background: oklch(0.96 0.005 175);
+  --foreground: oklch(0.18 0.015 175);
+  --border: oklch(0.82 0.015 170);
+  --ring: oklch(0.55 0.10 170);
+}
+[data-world="esper"].dark {
+  --primary: oklch(0.68 0.10 170);
+  --accent: oklch(0.25 0.04 165);
+  --background: oklch(0.16 0.01 170);
+  --foreground: oklch(0.90 0.01 170);
+  --border: oklch(0.26 0.02 170);
+  --ring: oklch(0.72 0.10 170);
+}
+
+/* 仙侠 — 飘逸金白 */
+[data-world="immortal"] {
+  --primary: oklch(0.60 0.08 90);
+  --accent: oklch(0.88 0.03 85);
+  --background: oklch(0.97 0.003 90);
+  --foreground: oklch(0.20 0.02 85);
+  --border: oklch(0.85 0.02 85);
+  --ring: oklch(0.65 0.08 90);
+}
+[data-world="immortal"].dark {
+  --primary: oklch(0.75 0.08 90);
+  --accent: oklch(0.30 0.03 85);
+  --background: oklch(0.18 0.01 85);
+  --foreground: oklch(0.92 0.01 85);
+  --border: oklch(0.28 0.02 85);
+  --ring: oklch(0.78 0.08 90);
+}
+
+/* 武侠 — 质朴墨绿 */
+[data-world="wuxia"] {
+  --primary: oklch(0.42 0.08 145);
+  --accent: oklch(0.82 0.03 140);
+  --background: oklch(0.95 0.01 135);
+  --foreground: oklch(0.18 0.02 140);
+  --border: oklch(0.78 0.02 140);
+  --ring: oklch(0.45 0.08 145);
+}
+[data-world="wuxia"].dark {
+  --primary: oklch(0.60 0.08 145);
+  --accent: oklch(0.24 0.03 140);
+  --background: oklch(0.15 0.015 140);
+  --foreground: oklch(0.90 0.01 135);
+  --border: oklch(0.24 0.02 140);
+  --ring: oklch(0.65 0.08 145);
+}
+
+/* 末世 — 荒凉锈橙 */
+[data-world="apocalypse"] {
+  --primary: oklch(0.44 0.08 45);
+  --accent: oklch(0.75 0.03 40);
+  --background: oklch(0.93 0.005 50);
+  --foreground: oklch(0.20 0.01 45);
+  --border: oklch(0.78 0.015 45);
+  --ring: oklch(0.48 0.08 45);
+}
+[data-world="apocalypse"].dark {
+  --primary: oklch(0.60 0.08 45);
+  --accent: oklch(0.22 0.03 40);
+  --background: oklch(0.13 0.01 45);
+  --foreground: oklch(0.88 0.01 45);
+  --border: oklch(0.22 0.015 45);
+  --ring: oklch(0.64 0.08 45);
+}

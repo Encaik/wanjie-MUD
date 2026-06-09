@@ -455,16 +455,38 @@ const WASTELAND_TRAIT_POOL = {
 /**
  * 从注册中心获取词条池
  *
+ * 优先从 WorldDataRegistry 获取 Mod 注册的词条池，
+ * 如果注册中心数据为空（Mod 尚未迁移词条数据），则回退到静态数据。
+ *
  * @param worldType - 世界类型标识
- * @returns 词条池数据，未加载时抛出错误
+ * @returns 词条池数据
  */
 export function getTraitPoolFromRegistry(worldType: string) {
   const registry = WorldDataRegistry.getInstance();
   const pool = registry.getTraitPool(worldType);
-  if (!pool) {
-    throw new Error(`词条池未加载: "${worldType}"。请确保 wanjie-core Mod 已正确加载。`);
+
+  // 如果注册中心有非空数据，使用注册中心数据
+  if (pool && !isTraitPoolEmpty(pool)) {
+    return pool;
   }
-  return pool;
+
+  // 回退到静态数据
+  const fallback = WORLD_TRAIT_DEFINITIONS[worldType as WorldType]
+    ?? WORLD_TRAIT_DEFINITIONS['修仙'];
+  return fallback;
+}
+
+/** 检查词条池是否所有子池都为空 */
+function isTraitPoolEmpty(pool: {
+  origin: Record<string, unknown[]>;
+  trait: Record<string, unknown[]>;
+  personality: Record<string, unknown[]>;
+  talent: Record<string, unknown[]>;
+}): boolean {
+  const allEmpty = (cat: Record<string, unknown[]>) =>
+    Object.values(cat).every(arr => arr.length === 0);
+  return allEmpty(pool.origin) && allEmpty(pool.trait)
+    && allEmpty(pool.personality) && allEmpty(pool.talent);
 }
 
 /** @deprecated 使用 getTraitPoolFromRegistry() 替代 */

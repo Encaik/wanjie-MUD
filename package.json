@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "build": "npx tsx scripts/build-mods.ts && next build",
+    "build:github": "npx tsx scripts/build-mods.ts && BASE_PATH=/wanjie-MUD next build",
     "dev": "next dev",
     "lint": "eslint",
     "lint:strict": "eslint . --max-warnings 0 && bash scripts/check-file-sizes.sh",

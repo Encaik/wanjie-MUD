@@ -36,6 +36,11 @@ const worldCardBorder: Record<WorldType, string> = {
   '末世': 'hover:border-zinc-500/50 border-zinc-500/20',
 };
 
+/** 安全获取世界卡牌边框样式（未知类型使用默认值） */
+function safeWorldCardBorder(worldType: string): string {
+  return worldCardBorder[worldType as WorldType] ?? 'hover:border-slate-500/50 border-slate-500/20';
+}
+
 // 性别样式配置
 const genderStyles = {
   '男': {
@@ -239,7 +244,7 @@ export function CharacterSelect({ characters, onSelect, onRefresh, worldType = '
                 key={character.id}
                 className={cn(
                   "cursor-pointer transition-all duration-200 hover:shadow-md border-2",
-                  worldCardBorder[worldType]
+                  safeWorldCardBorder(worldType || '修仙')
                 )}
                 onClick={() => onSelect(character)}
               >

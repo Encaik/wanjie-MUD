@@ -1,0 +1,100 @@
+/**
+ * 万界修行录 - 设计令牌层
+ *
+ * 职责：将 CSS 自定义属性桥接到 Tailwind CSS 类名。
+ * 本文件只包含 @theme inline 声明，不定义任何颜色值。
+ * 颜色值在 themes.css 中定义，由本文件引用。
+ *
+ * 注意：tailwindcss / tw-animate-css 由 index.css 统一导入，
+ * 确保 @theme inline 在 PostCSS 处理 Tailwind 之后执行。
+ *
+ * 使用规范：
+ * - 所有颜色必须使用语义化变量（如 bg-background, text-foreground）
+ * - 禁止硬编码颜色值（如 #fff, rgb(), rgba()）
+ * - 禁止使用 Tailwind 原生色盘（如 bg-amber-500, text-gray-900）
+ * - 如需调整透明度，使用 / 修饰符（如 bg-primary/50, text-muted-foreground/80）
+ */
+
+@theme inline {
+  /* ========================================
+   * 颜色令牌 — 桥接到 CSS 变量
+   * ======================================== */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  /* 图表色 */
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+
+  /* 侧边栏 */
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  /* ========================================
+   * 品质颜色令牌（全局统一，从高到低）
+   * 红色(mythic) > 橙色(legendary) > 黄色(epic) > 紫色(rare) >
+   * 蓝色(uncommon) > 绿色(common) > 灰色(poor) > 白色(basic)
+   * ======================================== */
+  --color-quality-mythic: var(--quality-mythic);
+  --color-quality-legendary: var(--quality-legendary);
+  --color-quality-epic: var(--quality-epic);
+  --color-quality-rare: var(--quality-rare);
+  --color-quality-uncommon: var(--quality-uncommon);
+  --color-quality-common: var(--quality-common);
+  --color-quality-poor: var(--quality-poor);
+  --color-quality-basic: var(--quality-basic);
+
+  /* ========================================
+   * 圆角令牌
+   * ======================================== */
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --radius-4xl: calc(var(--radius) + 16px);
+
+  /* ========================================
+   * 字体令牌
+   * ======================================== */
+  --font-sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  --font-serif: "Noto Serif SC", "Songti SC", "SimSun", ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+
+  /* ========================================
+   * 阴影令牌
+   * ======================================== */
+  --shadow-2xs: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+}

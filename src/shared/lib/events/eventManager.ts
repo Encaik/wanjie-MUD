@@ -30,6 +30,9 @@ export enum GameEventType {
   FULL_EQUIPPED = 'full_equipped',             // 全身装备
   TECHNIQUE_MAX_LEVEL = 'technique_max_level', // 功法满级
   EQUIPMENT_MAX_LEVEL = 'equipment_max_level', // 装备满级
+
+  // 世界/主题相关
+  WORLD_CHANGED = 'world_changed',             // 世界切换
 }
 
 /** 事件数据类型映射 */
@@ -99,6 +102,10 @@ export interface EventPayloadMap {
   [GameEventType.EQUIPMENT_MAX_LEVEL]: {
     equipmentId: string;
     equipmentName: string;
+  };
+  [GameEventType.WORLD_CHANGED]: {
+    worldType: import('@/shared/lib/types').WorldType;
+    previousWorldType?: import('@/shared/lib/types').WorldType;
   };
 }
 

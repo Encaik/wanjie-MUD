@@ -1,0 +1,45 @@
+/**
+ * 万界修行录 - 基础样式层
+ *
+ * 职责：全局基础样式重置 + 动画工具类。
+ * - @layer base：全局元素样式（body、* 重置）
+ * - @layer utilities：动画工具类（.animate-*）
+ */
+
+/* ========================================
+ * 全局基础样式
+ * ======================================== */
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground font-serif;
+  }
+}
+
+/* ========================================
+ * 动画工具类
+ * 对应的 @keyframes 定义在 animations.css 中
+ * ======================================== */
+@layer utilities {
+  .animate-float {
+    animation: float ease-in-out infinite;
+  }
+
+  .animate-pulse-glow {
+    animation: pulse-glow 2.5s ease-in-out infinite;
+  }
+
+  .animate-fade-in-up {
+    animation: fade-in-up 0.8s ease-out forwards;
+  }
+
+  .animate-button-glow {
+    animation: button-glow 3s ease-in-out infinite;
+  }
+
+  .animate-glow-rotate {
+    animation: glow-rotate 12s linear infinite;
+  }
+}

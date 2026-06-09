@@ -177,7 +177,7 @@ export class ModLoader {
           const errorMsg = err instanceof Error ? err.message : '未知错误';
           const placeholderManifest: ModManifest = {
             id: entry.id, name: entry.id, version: '?', description: '', author: '?',
-            gameVersion: '?', dependencies: [], required: false, contentTypes: [], dataFiles: {},
+            gameVersion: '?', dependencies: [], required: false, template: false, contentTypes: [], dataFiles: {},
           };
           this.loadedMods.push({ manifest: placeholderManifest, status: 'error', error: errorMsg });
 
@@ -331,6 +331,13 @@ export class ModLoader {
 
       try {
         const url = `${baseUrl}/${dataPath}`;
+
+        // styles 内容类型：加载 CSS 文本并通过 StyleLoader 注入
+        if (contentType === 'styles') {
+          await this.loadModStyles(modId, url);
+          continue;
+        }
+
         const response = await fetch(url);
         if (!response.ok) {
           console.warn(`[ModLoader] 无法加载 "${modId}" 的数据文件: ${dataPath} (HTTP ${response.status})`);
@@ -342,6 +349,38 @@ export class ModLoader {
         console.warn(`[ModLoader] 加载 "${modId}" 的数据文件 "${dataPath}" 失败:`, err);
         // 单个文件失败不阻塞其他文件
       }
+    }
+  }
+
+  /**
+   * 加载 Mod 提供的 CSS 样式文件并通过 StyleLoader 注入
+   *
+   * @param modId - Mod ID
+   * @param cssUrl - CSS 文件 URL
+   */
+  private async loadModStyles(modId: string, cssUrl: string): Promise<void> {
+    try {
+      const response = await fetch(cssUrl);
+      if (!response.ok) {
+        console.warn(`[ModLoader] Mod "${modId}" 样式文件加载失败: HTTP ${response.status}`);
+        // 触发 StyleLoader 错误回调
+        const { StyleLoader } = await import('@/modules/theme/logic/styleLoader');
+        StyleLoader.getInstance().triggerError(modId, new Error(`HTTP ${response.status}`));
+        return;
+      }
+      const cssContent = await response.text();
+      // 动态导入 StyleLoader 以避免对主题模块的硬依赖
+      const { StyleLoader } = await import('@/modules/theme/logic/styleLoader');
+      const styleLoader = StyleLoader.getInstance();
+
+      // 计算优先级：基础 Mod 优先级 3，依赖项每增加一层 +1
+      const priority = 3;
+      styleLoader.injectModStyles(modId, cssContent, priority);
+      console.log(`[ModLoader] Mod "${modId}": 注入样式成功`);
+    } catch (err) {
+      const error = err instanceof Error ? err : new Error(String(err));
+      console.warn(`[ModLoader] Mod "${modId}" 样式注入失败:`, error.message);
+      // 不阻塞其他 Mod
     }
   }
 

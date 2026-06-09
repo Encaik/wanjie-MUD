@@ -36,8 +36,8 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Build static site
-        run: pnpm build
+      - name: Build static site (GitHub Pages)
+        run: pnpm build:github
 
       - name: Create .nojekyll
         run: touch out/.nojekyll

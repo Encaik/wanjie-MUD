@@ -27,6 +27,11 @@ const worldIcon: Record<WorldType, string> = {
   '异能': '◈', '仙侠': '◆', '武侠': '◇', '末世': '◉',
 };
 
+/** 安全获取世界图标（未知类型使用默认值） */
+function safeWorldIcon(worldType?: string): string {
+  return worldIcon[(worldType ?? '修仙') as WorldType] ?? '🌐';
+}
+
 // 世界风味确认按钮文案
 const confirmText: Record<WorldType, string> = {
   '修仙': '踏上仙途', '仙侠': '踏上仙途',
@@ -34,6 +39,11 @@ const confirmText: Record<WorldType, string> = {
   '科技': '启动征程', '魔幻': '启程冒险',
   '异能': '觉醒启程', '末世': '踏入废土',
 };
+
+/** 安全获取确认按钮文案（未知类型使用默认值） */
+function safeConfirmText(worldType?: string): string {
+  return confirmText[(worldType ?? '修仙') as WorldType] ?? '开启旅程';
+}
 
 // 格式化文本（保留原有逻辑）
 function formatText(text: string) {
@@ -134,7 +144,7 @@ export function BackstoryView({ backstory, onConfirm, characterName, worldName, 
                   <div className="min-w-0 flex-1">
                     <div className="text-xs text-muted-foreground">降临之地</div>
                     <div className="text-sm font-semibold text-foreground font-serif truncate">
-                      <span className="mr-1.5">{worldIcon[worldType]}</span>
+                      <span className="mr-1.5">{safeWorldIcon(worldType)}</span>
                       {worldName}
                     </div>
                   </div>
@@ -179,7 +189,7 @@ export function BackstoryView({ backstory, onConfirm, characterName, worldName, 
             className="transition-all duration-300 shadow-md hover:shadow-lg font-serif tracking-wide"
           >
             <Sparkles className="w-4 h-4 mr-2" />
-            {confirmText[worldType]}
+            {safeConfirmText(worldType)}
           </Button>
         </div>
       </div>
