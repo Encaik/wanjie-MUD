@@ -362,7 +362,8 @@ export interface WorldFaction {
 
 // 世界信息
 export interface World {
-  id: number;
+  /** 世界唯一标识（固定长度随机字符串种子） */
+  id: string;
   name: string;
   type: WorldType;
   description: string;

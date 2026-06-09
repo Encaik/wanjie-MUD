@@ -1,15 +1,15 @@
 {
-  "id": 5,
-  "name": "昆仑洞天",
-  "type": "仙侠",
-  "description": "剑仙纵横，御剑乘风，逍遥天地",
-  "powerSystem": "剑徒 → 剑士 → 剑客 → 剑师 → 大剑师 → 剑王 → 剑皇 → 剑帝 → 剑圣 → 剑仙",
+  "id": "i8j9k0l1",
+  "name": "末世废墟",
+  "type": "末世",
+  "description": "废土之上，适者生存，人性与兽性交织",
+  "powerSystem": "一阶 → 二阶 → 三阶 → 四阶 → 五阶 → 六阶 → 七阶 → 八阶 → 九阶 → 十阶",
   "realmSystem": {
-    "mainRealmName": "剑道修行",
+    "mainRealmName": "阶位体系",
     "subRealmName": "一二三四阶",
     "tiers": [
       {
-        "name": "剑徒",
+        "name": "一阶",
         "subRealms": [
           "一阶",
           "二阶",
@@ -28,7 +28,7 @@
         ]
       },
       {
-        "name": "剑士",
+        "name": "二阶",
         "subRealms": [
           "一阶",
           "二阶",
@@ -47,7 +47,7 @@
         ]
       },
       {
-        "name": "剑客",
+        "name": "三阶",
         "subRealms": [
           "一阶",
           "二阶",
@@ -66,7 +66,7 @@
         ]
       },
       {
-        "name": "剑师",
+        "name": "四阶",
         "subRealms": [
           "一阶",
           "二阶",
@@ -85,7 +85,7 @@
         ]
       },
       {
-        "name": "大剑师",
+        "name": "五阶",
         "subRealms": [
           "一阶",
           "二阶",
@@ -104,7 +104,7 @@
         ]
       },
       {
-        "name": "剑王",
+        "name": "六阶",
         "subRealms": [
           "一阶",
           "二阶",
@@ -123,7 +123,7 @@
         ]
       },
       {
-        "name": "剑皇",
+        "name": "七阶",
         "subRealms": [
           "一阶",
           "二阶",
@@ -142,7 +142,7 @@
         ]
       },
       {
-        "name": "剑帝",
+        "name": "八阶",
         "subRealms": [
           "一阶",
           "二阶",
@@ -161,7 +161,7 @@
         ]
       },
       {
-        "name": "剑圣",
+        "name": "九阶",
         "subRealms": [
           "一阶",
           "二阶",
@@ -180,7 +180,7 @@
         ]
       },
       {
-        "name": "剑仙",
+        "name": "十阶",
         "subRealms": [
           "一阶",
           "二阶",
@@ -200,29 +200,35 @@
       }
     ]
   },
-  "majorForces": "剑仙门派之云霄剑宗、仙丹宗与散修联盟",
+  "majorForces": "幸存者联盟、避难所联盟、进化者联盟与掠夺者联盟",
   "factions": [
     {
-      "id": "xianxia_cloud_sect",
-      "name": "云霄剑宗",
-      "type": "宗门",
-      "description": "云雾缭绕的剑修圣地，剑法飘逸。"
-    },
-    {
-      "id": "xianxia_dan_sect",
-      "name": "仙丹宗",
-      "type": "宗门",
-      "description": "丹道圣地，可炼制各种仙丹灵药。"
-    },
-    {
-      "id": "xianxia_free",
-      "name": "散修联盟",
+      "id": "apocalypse_survivor",
+      "name": "幸存者联盟",
       "type": "联盟",
-      "description": "散修聚集之地，互通有无。"
+      "description": "废土上最大的人类幸存者组织，拥有多个基地。"
+    },
+    {
+      "id": "apocalypse_vault",
+      "name": "避难所联盟",
+      "type": "联盟",
+      "description": "战前避难所的联合体，科技实力强大。"
+    },
+    {
+      "id": "apocalypse_mutant",
+      "name": "进化者联盟",
+      "type": "联盟",
+      "description": "变异进化者的组织，成员拥有强大的变异能力。"
+    },
+    {
+      "id": "apocalypse_raider",
+      "name": "掠夺者联盟",
+      "type": "联盟",
+      "description": "废土掠夺者的松散联盟，行事不择手段。"
     }
   ],
-  "baseCoefficient": 1.3,
-  "actualCoefficient": 1.3,
+  "baseCoefficient": 1.5,
+  "actualCoefficient": 1.5,
   "difficulty": "困难",
   "dangers": [
     {
@@ -262,6 +268,27 @@
       },
       "duration": 0,
       "opportunityLevel": 2
+    },
+    {
+      "id": "great_enlightenment",
+      "type": "stat_buff",
+      "name": "大彻大悟",
+      "description": "获得大机缘，属性大幅提升",
+      "triggerCondition": {
+        "type": "on_enter",
+        "chance": 0.2
+      },
+      "effect": {
+        "statModifications": {
+          "体质": 4,
+          "灵根": 4,
+          "悟性": 3,
+          "意志": 2,
+          "幸运": 2
+        }
+      },
+      "duration": -1,
+      "opportunityLevel": 4
     }
   ],
   "ratingScore": 0

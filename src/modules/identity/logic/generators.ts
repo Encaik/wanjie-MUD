@@ -44,7 +44,7 @@ import {
   generateWorldOpportunities,
   getWorldBaseCoefficient,
 } from '@/modules/identity/data/worldSystem';
-import { createRng } from '@/shared/utils/rng';
+import { createRng, hashString } from '@/shared/utils/rng';
 
 // 重新导出境界相关函数，供其他模块使用
 export { 
@@ -231,22 +231,45 @@ export function getWorldTerms(worldType: WorldType) {
   return getTerminology(worldType);
 }
 
-// 生成世界（seed 即为 world.id，用作 createRng 的种子，确保确定性）
-export function generateWorld(seed: number, ascensionCount: number = 0): World {
-  const rng = createRng(seed);
-  const type = worldTypes[Math.abs(seed) % worldTypes.length];
-  const name = randomItem(worldPrefixes[type], rng) + randomItem(worldSuffixes[type], rng);
-  const description = randomItem(worldDescriptions[type], rng);
+/** 世界种子长度（固定长度随机字符串） */
+export const WORLD_SEED_LENGTH = 8;
+
+/**
+ * 生成固定长度的随机字符串种子
+ * 由字母和数字组成，无意义，仅用于 createRng 的确定性生成。
+ */
+export function generateWorldSeed(): string {
+  const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
+  let result = '';
+  for (let i = 0; i < WORLD_SEED_LENGTH; i++) {
+    result += chars[Math.floor(Math.random() * chars.length)];
+  }
+  return result;
+}
+
+/**
+ * 生成世界
+ *
+ * @param seed - 世界种子字符串，为空时自动调用 generateWorldSeed() 生成
+ * @param ascensionCount - 飞升次数（影响难度系数）
+ * @returns 生成的世界（id = seed）
+ */
+export function generateWorld(seed: string = '', ascensionCount: number = 0): World {
+  const actualSeed = seed || generateWorldSeed();
+  const rng = createRng(actualSeed);
+  const hash = hashString(actualSeed);
+  const type = WORLD_TYPES[Math.abs(hash) % WORLD_TYPES.length];
+  const worldData = WORLD_DATA[type];
+  const name = randomItem(worldData.namePrefixes, rng) + randomItem(worldData.nameSuffixes, rng);
+  const description = randomItem(worldData.descriptions, rng);
 
   // 生成境界系统
   const realmSystem = generateRealmSystem(type);
   const powerSystem = getPowerSystemDescription(realmSystem);
 
-
   // 生成势力列表
   const factions = generateWorldFactions(type);
   const majorForces = generateFactionDescription(type, factions);
-
 
   // 计算难度系数
   const baseCoefficient = getWorldBaseCoefficient(type);
@@ -261,7 +284,7 @@ export function generateWorld(seed: number, ascensionCount: number = 0): World {
   const ratingScore = 0;
 
   return {
-    id: seed,
+    id: actualSeed,
     name,
     type,
     description,
@@ -279,16 +302,16 @@ export function generateWorld(seed: number, ascensionCount: number = 0): World {
 }
 
 /** 默认世界种子（对应 8 种世界类型各一个） */
-export const DEFAULT_WORLD_SEEDS: readonly number[] = [0, 1, 2, 3, 4, 5, 6, 7];
+export const DEFAULT_WORLD_SEEDS: readonly string[] = ['a0b1c2d3', 'e4f5g6h7', 'i8j9k0l1', 'm2n3o4p5', 'q6r7s8t9', 'u0v1w2x3', 'y4z5a6b7', 'c8d9e0f1'];
 
 /**
  * 按种子列表生成世界
  *
- * @param seeds - 世界种子列表（每个种子确定生成一个世界）
+ * @param seeds - 世界种子字符串列表
  * @param ascensionCount - 飞升次数（影响难度系数）
  * @returns 生成的世界列表
  */
-export function generateWorlds(seeds: number[] = [...DEFAULT_WORLD_SEEDS], ascensionCount: number = 0): World[] {
+export function generateWorlds(seeds: string[] = [...DEFAULT_WORLD_SEEDS], ascensionCount: number = 0): World[] {
   return seeds.map(seed => generateWorld(seed, ascensionCount));
 }
 

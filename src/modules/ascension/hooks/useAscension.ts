@@ -383,7 +383,7 @@ export function useGameAscension({
       
       const newWorldObj: World = {
         ...prev.protagonist.world,
-        id: Date.now(),
+        id: String(Date.now()),
         name: newWorld.name,
         type: newWorld.type,
         description: newWorld.description,

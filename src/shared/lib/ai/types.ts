@@ -10,7 +10,7 @@ import type { NPC } from '@/modules/npc/types';
 
 /** AI 生成上下文（从已生成的世界提取） */
 export interface AIGenerationContext {
-  seed: number;
+  seed: string;
   worldType: string;
   worldName: string;
   worldDescription: string;

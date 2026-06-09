@@ -1,0 +1,275 @@
+{
+  "id": "q6r7s8t9",
+  "name": "末世世界",
+  "type": "末世",
+  "description": "文明崩塌，变异横行，幸存者挣扎求生",
+  "powerSystem": "普通幸存者 → 初级觉醒者 → 中级觉醒者 → 高级觉醒者 → 精英觉醒者 → 超级觉醒者 → 变异觉醒者 → 完美觉醒者 → 终极觉醒者 → 进化之神",
+  "realmSystem": {
+    "mainRealmName": "变异等级",
+    "subRealmName": "LV等级",
+    "tiers": [
+      {
+        "name": "普通幸存者",
+        "subRealms": [
+          "LV1",
+          "LV2",
+          "LV3",
+          "LV4",
+          "LV5",
+          "LV6",
+          "LV7",
+          "LV8",
+          "LV9",
+          "LV10"
+        ],
+        "levelRange": [
+          1,
+          10
+        ]
+      },
+      {
+        "name": "初级觉醒者",
+        "subRealms": [
+          "LV1",
+          "LV2",
+          "LV3",
+          "LV4",
+          "LV5",
+          "LV6",
+          "LV7",
+          "LV8",
+          "LV9",
+          "LV10"
+        ],
+        "levelRange": [
+          11,
+          20
+        ]
+      },
+      {
+        "name": "中级觉醒者",
+        "subRealms": [
+          "LV1",
+          "LV2",
+          "LV3",
+          "LV4",
+          "LV5",
+          "LV6",
+          "LV7",
+          "LV8",
+          "LV9",
+          "LV10"
+        ],
+        "levelRange": [
+          21,
+          30
+        ]
+      },
+      {
+        "name": "高级觉醒者",
+        "subRealms": [
+          "LV1",
+          "LV2",
+          "LV3",
+          "LV4",
+          "LV5",
+          "LV6",
+          "LV7",
+          "LV8",
+          "LV9",
+          "LV10"
+        ],
+        "levelRange": [
+          31,
+          40
+        ]
+      },
+      {
+        "name": "精英觉醒者",
+        "subRealms": [
+          "LV1",
+          "LV2",
+          "LV3",
+          "LV4",
+          "LV5",
+          "LV6",
+          "LV7",
+          "LV8",
+          "LV9",
+          "LV10"
+        ],
+        "levelRange": [
+          41,
+          50
+        ]
+      },
+      {
+        "name": "超级觉醒者",
+        "subRealms": [
+          "LV1",
+          "LV2",
+          "LV3",
+          "LV4",
+          "LV5",
+          "LV6",
+          "LV7",
+          "LV8",
+          "LV9",
+          "LV10"
+        ],
+        "levelRange": [
+          51,
+          60
+        ]
+      },
+      {
+        "name": "变异觉醒者",
+        "subRealms": [
+          "LV1",
+          "LV2",
+          "LV3",
+          "LV4",
+          "LV5",
+          "LV6",
+          "LV7",
+          "LV8",
+          "LV9",
+          "LV10"
+        ],
+        "levelRange": [
+          61,
+          70
+        ]
+      },
+      {
+        "name": "完美觉醒者",
+        "subRealms": [
+          "LV1",
+          "LV2",
+          "LV3",
+          "LV4",
+          "LV5",
+          "LV6",
+          "LV7",
+          "LV8",
+          "LV9",
+          "LV10"
+        ],
+        "levelRange": [
+          71,
+          80
+        ]
+      },
+      {
+        "name": "终极觉醒者",
+        "subRealms": [
+          "LV1",
+          "LV2",
+          "LV3",
+          "LV4",
+          "LV5",
+          "LV6",
+          "LV7",
+          "LV8",
+          "LV9",
+          "LV10"
+        ],
+        "levelRange": [
+          81,
+          90
+        ]
+      },
+      {
+        "name": "进化之神",
+        "subRealms": [
+          "LV1",
+          "LV2",
+          "LV3",
+          "LV4",
+          "LV5",
+          "LV6",
+          "LV7",
+          "LV8",
+          "LV9",
+          "LV10"
+        ],
+        "levelRange": [
+          91,
+          100
+        ]
+      }
+    ]
+  },
+  "majorForces": "幸存者联盟、避难所联盟、进化者联盟与掠夺者联盟",
+  "factions": [
+    {
+      "id": "apocalypse_survivor",
+      "name": "幸存者联盟",
+      "type": "联盟",
+      "description": "废土上最大的人类幸存者组织，拥有多个基地。"
+    },
+    {
+      "id": "apocalypse_vault",
+      "name": "避难所联盟",
+      "type": "联盟",
+      "description": "战前避难所的联合体，科技实力强大。"
+    },
+    {
+      "id": "apocalypse_mutant",
+      "name": "进化者联盟",
+      "type": "联盟",
+      "description": "变异进化者的组织，成员拥有强大的变异能力。"
+    },
+    {
+      "id": "apocalypse_raider",
+      "name": "掠夺者联盟",
+      "type": "联盟",
+      "description": "废土掠夺者的松散联盟，行事不择手段。"
+    }
+  ],
+  "baseCoefficient": 1.5,
+  "actualCoefficient": 1.5,
+  "difficulty": "困难",
+  "dangers": [
+    {
+      "id": "reduced_insight",
+      "type": "stat_debuff",
+      "name": "悟性压制",
+      "description": "天机混乱，领悟效率下降",
+      "triggerCondition": {
+        "type": "on_enter",
+        "chance": 1
+      },
+      "effect": {
+        "statModifications": {
+          "悟性": -2,
+          "灵根": -1
+        }
+      },
+      "duration": -1,
+      "dispellable": false,
+      "dangerLevel": 2
+    }
+  ],
+  "opportunities": [
+    {
+      "id": "lucky_star",
+      "type": "rare_drop",
+      "name": "吉星高照",
+      "description": "运势大好，掉落稀有物品概率大幅提升",
+      "triggerCondition": {
+        "type": "on_enter",
+        "chance": 0.25
+      },
+      "effect": {
+        "dropBonus": {
+          "rarityBoost": 2,
+          "extraDropChance": 0.35
+        }
+      },
+      "duration": -1,
+      "opportunityLevel": 4
+    }
+  ],
+  "ratingScore": 0
+}

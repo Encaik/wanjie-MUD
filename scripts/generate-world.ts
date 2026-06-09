@@ -2,12 +2,12 @@
  * 世界生成 CLI 工具
  *
  * 按种子确定性生成世界，写入 src/modules/identity/data/worlds/ 目录。
- * 支持 --ai 参数调用 Anthropic API 自动生成专属剧情和 NPC。
+ * 支持 --ai 参数调用 AI API 自动生成专属剧情和 NPC。
  *
  * 使用:
- *   npx tsx scripts/generate-world.ts --seed=12345
- *   npx tsx scripts/generate-world.ts --seed=12345 --force
- *   npx tsx scripts/generate-world.ts --seed=12345 --ai
+ *   npx tsx scripts/generate-world.ts --seed=abc12345
+ *   npx tsx scripts/generate-world.ts --seed=abc12345 --force
+ *   npx tsx scripts/generate-world.ts --seed=abc12345 --ai
  *   npx tsx scripts/generate-world.ts --all
  *   npx tsx scripts/generate-world.ts --all --ai
  *
@@ -32,18 +32,21 @@ const NPCS_DIR = path.resolve(import.meta.dirname, '../src/modules/npc/data/npcs
 // 碰撞检查 / 文件操作
 // ============================================
 
+/** 种子文件名校验正则（字母数字 8 位） */
+const SEED_FILE_RE = /^world_([a-z0-9]+)\.json$/;
+
 /** 获取某个 seed 对应的 JSON 路径 */
-function worldFilePath(seed: number): string {
+function worldFilePath(seed: string): string {
   return path.join(WORLDS_DIR, `world_${seed}.json`);
 }
 
 /** 检查世界是否已存在 */
-function worldExists(seed: number): boolean {
+function worldExists(seed: string): boolean {
   return fs.existsSync(worldFilePath(seed));
 }
 
 /** 加载已存在的世界 JSON */
-function loadWorld(seed: number): World {
+function loadWorld(seed: string): World {
   const raw = fs.readFileSync(worldFilePath(seed), 'utf-8');
   return JSON.parse(raw) as World;
 }
@@ -52,18 +55,19 @@ function loadWorld(seed: number): World {
 // Barrel 维护
 // ============================================
 
-/** 扫描目录中所有 world_*.json，返回种子列表（已排序） */
-function scanExistingSeeds(): number[] {
+/** 扫描目录中所有 world_*.json，返回种子列表 */
+function scanExistingSeeds(): string[] {
   if (!fs.existsSync(WORLDS_DIR)) return [];
 
   return fs.readdirSync(WORLDS_DIR)
-    .filter(f => /^world_\d+\.json$/.test(f))
-    .map(f => parseInt(f.match(/^world_(\d+)\.json$/)?.[1] ?? '0', 10))
-    .sort((a, b) => a - b);
+    .filter(f => SEED_FILE_RE.test(f))
+    .map(f => f.match(SEED_FILE_RE)?.[1] ?? '')
+    .filter(Boolean)
+    .sort();
 }
 
 /** 重新生成 barrel index.ts */
-function regenerateBarrel(seeds: number[]): void {
+function regenerateBarrel(seeds: string[]): void {
   const aliases = seeds.map((s, i) => `import w${i} from './world_${s}.json';`);
   const items = seeds.map((_, i) => `  w${i} as unknown as World`);
 
@@ -104,7 +108,7 @@ async function generateAIContent(world: World): Promise<World> {
     factions: world.factions.map(f => ({ id: f.id, name: f.name })),
   };
 
-  console.log('  🤖 调用 Anthropic API 生成剧情和 NPC…');
+  console.log('  🤖 调用 AI API 生成剧情和 NPC…');
   const result = await generatePlotWithAI(ctx);
 
   // 保存剧情
@@ -143,7 +147,7 @@ async function generateAIContent(world: World): Promise<World> {
 // ============================================
 
 /** 生成单个世界并写入文件 */
-async function generateSingleWorld(seed: number, force: boolean, useAI: boolean): Promise<void> {
+async function generateSingleWorld(seed: string, force: boolean, useAI: boolean): Promise<void> {
   const isNew = !worldExists(seed) || force;
 
   let world: World;
@@ -165,9 +169,7 @@ async function generateSingleWorld(seed: number, force: boolean, useAI: boolean)
 
   // 如果 world 有更新或是新建的，写入文件
   if (isNew || useAI) {
-    // 先写 world JSON（可能含 specialPlot）
-    const updatedWorldsDir = WORLDS_DIR;
-    fs.mkdirSync(updatedWorldsDir, { recursive: true });
+    fs.mkdirSync(WORLDS_DIR, { recursive: true });
     fs.writeFileSync(worldFilePath(world.id), JSON.stringify(world, null, 2));
     console.log(`  ✓ world_${world.id}.json ${isNew ? '已写入' : '已更新'}`);
   }
@@ -185,7 +187,6 @@ async function generateAllDefault(force: boolean, useAI: boolean): Promise<void>
       continue;
     }
 
-    // force 模式或新世界 → 重新生成；已有世界且不用 AI → 加载已有
     const shouldRegenerate = force || !worldExists(seed);
     let world = shouldRegenerate ? generateWorld(seed) : loadWorld(seed);
 
@@ -221,17 +222,17 @@ async function main(): Promise<void> {
   const seedArg = args.find(a => a.startsWith('--seed='));
   if (!seedArg) {
     console.error('用法:');
-    console.error('  npx tsx scripts/generate-world.ts --seed=<数字>');
-    console.error('  npx tsx scripts/generate-world.ts --seed=<数字> --force');
-    console.error('  npx tsx scripts/generate-world.ts --seed=<数字> --ai');
+    console.error('  npx tsx scripts/generate-world.ts --seed=<种子字符串>');
+    console.error('  npx tsx scripts/generate-world.ts --seed=<种子字符串> --force');
+    console.error('  npx tsx scripts/generate-world.ts --seed=<种子字符串> --ai');
     console.error('  npx tsx scripts/generate-world.ts --all');
     console.error('  npx tsx scripts/generate-world.ts --all --ai');
     process.exit(1);
   }
 
-  const seed = parseInt(seedArg.replace('--seed=', ''), 10);
-  if (isNaN(seed)) {
-    console.error(`❌ 无效的 seed: ${seedArg}`);
+  const seed = seedArg.replace('--seed=', '');
+  if (!seed) {
+    console.error('❌ seed 不能为空');
     process.exit(1);
   }
 
