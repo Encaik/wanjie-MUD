@@ -64,6 +64,8 @@ export interface ModManifest {
   contentTypes: ModContentType[];
   /** 内容类型到数据文件路径的映射 */
   dataFiles: Record<string, string>;
+  /** 固化世界模板 ID 列表（对应 templates/worlds/{id}.json） */
+  worldTemplates?: string[];
 }
 
 /** Mod 加载失败错误 */
@@ -245,6 +247,7 @@ export function parseManifest(json: string): { manifest?: ModManifest; errors: M
     template: m.template === true,
     contentTypes: m.contentTypes as ModContentType[],
     dataFiles: (m.dataFiles as Record<string, string>) ?? {},
+    worldTemplates: Array.isArray(m.worldTemplates) ? (m.worldTemplates as string[]) : undefined,
   };
 
   return { manifest, errors: [] };

@@ -2,9 +2,8 @@
 
 import { useState, useEffect } from 'react';
 
-import { 
+import {
   Globe, Sparkles, ChevronRight, RotateCcw,
-  Mountain, Sword, Cpu, Wand2, Zap, Trees, Heart,
   AlertTriangle, Star
 } from 'lucide-react';
 
@@ -20,6 +19,7 @@ import {
   DialogFooter,
 } from '@/shared/ui/dialog';
 import { WORLD_NAME_GENERATORS } from '@/modules/ascension/data/ascensionData';
+import { getWorldVisualConfig } from '@/shared/lib/registry';
 import { WorldType } from '@/shared/lib/types';
 import { NewWorldInfo } from '@/shared/lib/typesExtension';
 
@@ -31,30 +31,6 @@ interface WorldRevealProps {
   onConfirm: () => void;
   onReroll: () => void;
 }
-
-// 世界类型图标
-const WORLD_ICONS: Record<WorldType, React.ReactNode> = {
-  '修仙': <Mountain className="w-8 h-8" />,
-  '高武': <Sword className="w-8 h-8" />,
-  '科技': <Cpu className="w-8 h-8" />,
-  '魔幻': <Wand2 className="w-8 h-8" />,
-  '异能': <Zap className="w-8 h-8" />,
-  '仙侠': <Trees className="w-8 h-8" />,
-  '武侠': <Sword className="w-8 h-8" />,
-  '末世': <Heart className="w-8 h-8" />,
-};
-
-// 世界类型颜色
-const WORLD_COLORS: Record<WorldType, string> = {
-  '修仙': 'from-purple-500 to-blue-500',
-  '高武': 'from-red-500 to-orange-500',
-  '科技': 'from-cyan-500 to-blue-500',
-  '魔幻': 'from-pink-500 to-purple-500',
-  '异能': 'from-yellow-500 to-orange-500',
-  '仙侠': 'from-emerald-500 to-teal-500',
-  '武侠': 'from-amber-500 to-yellow-500',
-  '末世': 'from-gray-500 to-red-500',
-};
 
 export function WorldReveal({
   open,
@@ -134,7 +110,7 @@ export function WorldReveal({
 
         {/* 世界揭示内容 */}
         {showContent && (
-          <Card className={`bg-gradient-to-br ${WORLD_COLORS[newWorld.type]} border-0 text-white overflow-hidden`}>
+          <Card className={`bg-gradient-to-br ${getWorldVisualConfig(newWorld.type).colorGradient} border-0 text-white overflow-hidden`}>
             <div className="absolute inset-0 bg-black/20" />
             <CardHeader className="relative z-10 text-center pb-2">
               <div className="flex items-center justify-center gap-2 mb-2">
@@ -146,7 +122,7 @@ export function WorldReveal({
                 {newWorld.name}
               </DialogTitle>
               <DialogDescription className="text-white/80">
-                {WORLD_ICONS[newWorld.type]}
+                <span className="text-2xl">{getWorldVisualConfig(newWorld.type).icon}</span>
                 <span className="ml-2">{newWorld.type}世界</span>
               </DialogDescription>
             </CardHeader>

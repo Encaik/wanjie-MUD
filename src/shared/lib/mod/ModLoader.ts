@@ -34,6 +34,8 @@ import type {
   RealmSystemData,
   WorldTextData,
 } from '@/shared/lib/registry/WorldDataRegistry';
+import { validateWorldTemplate } from '@/shared/lib/world/validateWorldTemplate';
+import type { WorldTemplate } from '@/shared/lib/world/types';
 
 // ============================================
 // Mod 索引类型
@@ -348,6 +350,48 @@ export class ModLoader {
       } catch (err) {
         console.warn(`[ModLoader] 加载 "${modId}" 的数据文件 "${dataPath}" 失败:`, err);
         // 单个文件失败不阻塞其他文件
+      }
+    }
+
+    // 加载固化世界模板（如果 mod 声明了 worldTemplates）
+    if (manifest.worldTemplates && manifest.worldTemplates.length > 0) {
+      await this.loadTemplateWorlds(modId, baseUrl, manifest);
+    }
+  }
+
+  /**
+   * 加载固化世界模板文件
+   *
+   * 为 mod.json 中声明的每个 worldTemplates 条目加载
+   * templates/worlds/{id}.json 文件，校验后注册到 WorldDataRegistry。
+   */
+  private async loadTemplateWorlds(modId: string, baseUrl: string, manifest: ModManifest): Promise<void> {
+    for (const templateId of manifest.worldTemplates ?? []) {
+      const url = `${baseUrl}/templates/worlds/${templateId}.json`;
+      try {
+        const response = await fetch(url);
+        if (!response.ok) {
+          console.warn(`[ModLoader] 无法加载固化世界模板: "${templateId}" (HTTP ${response.status})`);
+          continue;
+        }
+        const data = await response.json();
+
+        // 校验模板结构
+        const result = validateWorldTemplate(data);
+        if (!result.valid) {
+          console.warn(
+            `[ModLoader] 固化世界模板 "${templateId}" 校验失败:`,
+            result.errors.join('; ')
+          );
+          continue;
+        }
+
+        // 注册到 WorldDataRegistry
+        const template = data as WorldTemplate;
+        this.registry.registerWorldTemplate(template);
+        console.log(`[ModLoader] Mod "${modId}": 注册固化世界模板 "${templateId}" (${template.world.name})`);
+      } catch (err) {
+        console.warn(`[ModLoader] 加载固化世界模板 "${templateId}" 失败:`, err);
       }
     }
   }

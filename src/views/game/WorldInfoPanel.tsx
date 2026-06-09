@@ -1,14 +1,10 @@
 'use client';
 
-import { 
-  Globe, 
-  Building2, 
+import {
+  Globe,
+  Building2,
   Zap,
   AlertTriangle,
-  Shield,
-  Swords,
-  Sparkles,
-  Target,
   Star,
   Skull
 } from 'lucide-react';
@@ -29,65 +25,9 @@ import {
   getOpportunityLevelStyle,
   generateLevelStars,
 } from '@/modules/identity/data/worldEffectsUtils';
-import { World, Protagonist, WorldType, WorldDifficulty } from '@/shared/lib/types';
+import { getWorldVisualConfig } from '@/shared/lib/registry';
+import { World, Protagonist, WorldDifficulty } from '@/shared/lib/types';
 import { cn } from '@/shared/utils';
-
-// 世界类型颜色配置 - 与个人信息面板风格一致
-const worldTypeConfig: Record<WorldType, { 
-  bg: string; 
-  border: string; 
-  text: string; 
-  icon: typeof Globe;
-}> = {
-  '修仙': { 
-    bg: 'bg-gradient-to-br from-amber-50 to-yellow-50 dark:from-amber-950/30 dark:to-yellow-950/30', 
-    border: 'border-amber-200/50 dark:border-amber-800/50', 
-    text: 'text-amber-600 dark:text-amber-400',
-    icon: Sparkles
-  },
-  '高武': { 
-    bg: 'bg-gradient-to-br from-red-50 to-orange-50 dark:from-red-950/30 dark:to-orange-950/30', 
-    border: 'border-red-200/50 dark:border-red-800/50', 
-    text: 'text-red-600 dark:text-red-400',
-    icon: Swords
-  },
-  '科技': { 
-    bg: 'bg-gradient-to-br from-slate-50 to-zinc-50 dark:from-slate-950/30 dark:to-zinc-950/30', 
-    border: 'border-slate-200/50 dark:border-slate-800/50', 
-    text: 'text-slate-600 dark:text-slate-400',
-    icon: Globe
-  },
-  '魔幻': { 
-    bg: 'bg-gradient-to-br from-purple-50 to-violet-50 dark:from-purple-950/30 dark:to-violet-950/30', 
-    border: 'border-purple-200/50 dark:border-purple-800/50', 
-    text: 'text-purple-600 dark:text-purple-400',
-    icon: Zap
-  },
-  '异能': { 
-    bg: 'bg-gradient-to-br from-cyan-50 to-teal-50 dark:from-cyan-950/30 dark:to-teal-950/30', 
-    border: 'border-cyan-200/50 dark:border-cyan-800/50', 
-    text: 'text-cyan-600 dark:text-cyan-400',
-    icon: Zap
-  },
-  '仙侠': { 
-    bg: 'bg-gradient-to-br from-emerald-50 to-green-50 dark:from-emerald-950/30 dark:to-green-950/30', 
-    border: 'border-emerald-200/50 dark:border-emerald-800/50', 
-    text: 'text-emerald-600 dark:text-emerald-400',
-    icon: Sparkles
-  },
-  '武侠': { 
-    bg: 'bg-gradient-to-br from-stone-50 to-neutral-50 dark:from-stone-950/30 dark:to-neutral-950/30', 
-    border: 'border-stone-200/50 dark:border-stone-800/50', 
-    text: 'text-stone-600 dark:text-stone-400',
-    icon: Swords
-  },
-  '末世': { 
-    bg: 'bg-gradient-to-br from-gray-50 to-slate-50 dark:from-gray-950/30 dark:to-slate-950/30', 
-    border: 'border-gray-200/50 dark:border-gray-800/50', 
-    text: 'text-gray-600 dark:text-gray-400',
-    icon: Shield
-  },
-};
 
 // 难度配置
 const DIFFICULTY_CONFIG: Record<WorldDifficulty, { color: string; bg: string; text: string }> = {
@@ -105,19 +45,18 @@ interface WorldInfoPanelProps {
 }
 
 export function WorldInfoPanel({ world, protagonist }: WorldInfoPanelProps) {
-  const typeConfig = worldTypeConfig[world.type];
+  const visualConfig = getWorldVisualConfig(world.type);
   const difficultyConfig = DIFFICULTY_CONFIG[world.difficulty];
-  const TypeIcon = typeConfig.icon;
-  
+
   // 计算世界进度
-  const worldProgress = protagonist?.level 
+  const worldProgress = protagonist?.level
     ? Math.min(100, (protagonist.level / 100) * 100)
     : 0;
-  
+
   // 获取当前境界索引
   const currentRealmIndex = world.realmSystem.tiers.findIndex(
-    tier => protagonist?.level && 
-      protagonist.level >= tier.levelRange[0] && 
+    tier => protagonist?.level &&
+      protagonist.level >= tier.levelRange[0] &&
       protagonist.level <= tier.levelRange[1]
   );
 
@@ -132,17 +71,17 @@ export function WorldInfoPanel({ world, protagonist }: WorldInfoPanelProps) {
       </CardHeader>
       <CardContent className="pt-0 pb-2 space-y-2">
         {/* 世界类型卡片 - 类似属性展示 */}
-        <div className={`p-2 rounded-lg ${typeConfig.bg} border ${typeConfig.border}`}>
+        <div className={`p-2 rounded-lg ${visualConfig.bgGradient} border ${visualConfig.borderColor}`}>
           <div className="flex items-center justify-between mb-1.5">
             <div className="flex items-center gap-1.5">
-              <TypeIcon className={`w-4 h-4 ${typeConfig.text}`} />
+              <span className={visualConfig.accentColor}>{visualConfig.icon}</span>
               <span className="text-xs font-medium">{world.type}世界</span>
             </div>
             <div className="flex items-center gap-2">
               <Badge variant="outline" className={`text-[10px] ${difficultyConfig.bg} ${difficultyConfig.text}`}>
                 {world.difficulty}
               </Badge>
-              <span className={`text-sm font-bold ${typeConfig.text}`}>
+              <span className={cn('text-sm font-bold', visualConfig.accentColor)}>
                 ×{(world.actualCoefficient ?? 1.0).toFixed(2)}
               </span>
             </div>

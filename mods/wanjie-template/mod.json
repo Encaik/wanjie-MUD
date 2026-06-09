@@ -17,5 +17,6 @@
     "factions": "data/factions.json",
     "names": "data/names.json",
     "text": "data/text.json"
-  }
+  },
+  "worldTemplates": ["huanjing"]
 }

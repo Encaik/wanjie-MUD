@@ -15,7 +15,10 @@ import w5 from './world_q6r7s8t9.json';
 import w6 from './world_u0v1w2x3.json';
 import w7 from './world_y4z5a6b7.json';
 
-/** 所有已生成的世界列表 */
+/**
+ * 所有已生成的世界列表
+ * @deprecated 使用 WorldProviderRegistry + WorldPool 替代。预生成 JSON 仅作为过渡兼容。
+ */
 export const AVAILABLE_WORLDS: readonly World[] = [
   w0 as unknown as World,
   w1 as unknown as World,

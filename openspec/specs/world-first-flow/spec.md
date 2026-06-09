@@ -16,8 +16,9 @@ TBD — see change world-first-selection-flow for full context.
 
 #### Scenario: 首页点击开始新游戏
 - **WHEN** 用户在首页点击"开始新游戏"
-- **THEN** 系统 SHALL 生成 8 个世界并跳转到 `/world-select` 页面
+- **THEN** 系统 SHALL 通过 `WorldPoolEngine.generatePool()` 生成世界列表并跳转到 `/world-select` 页面
 - **AND** 系统 SHALL NOT 在此时生成角色
+- **AND** 世界列表 SHALL 包含已评分高分世界和随机新世界的混合
 
 #### Scenario: 世界选择后进入角色选择
 - **WHEN** 用户在世界选择页选中一个世界
@@ -64,7 +65,7 @@ TBD — see change world-first-selection-flow for full context.
 
 #### Scenario: Mod 加载完成后开始新游戏
 - **WHEN** Mod 加载阶段为 `ready` 且用户点击"踏入万界"
-- **THEN** 系统 SHALL 生成世界列表并跳转到 `/world-select`
+- **THEN** 系统 SHALL 通过 WorldPool 生成混合世界列表并跳转到 `/world-select`
 
 ### Requirement: 世界选择页无需前置角色
 
@@ -74,6 +75,21 @@ TBD — see change world-first-selection-flow for full context.
 - **WHEN** `startNewGame()` 被调用后跳转到 `/world-select`
 - **THEN** 页面 SHALL 正常渲染世界列表
 - **AND** SHALL NOT 因 `selectedCharacter` 为空而重定向
+
+### Requirement: 世界列表来自 WorldPool 引擎
+
+世界选择页面的世界列表 SHALL 由 `WorldPoolEngine.generatePool()` 产出，SHALL NOT 来自硬编码种子数组或预生成 JSON 文件。
+
+#### Scenario: WorldSelect 使用 WorldPool
+- **WHEN** WorldSelect 组件需要世界列表
+- **THEN** SHALL 调用封装了 `WorldPoolEngine` 的 Hook 获取世界列表
+- **AND** SHALL NOT 直接 import `generateWorlds()` 或 `DEFAULT_WORLD_SEEDS`
+- **AND** SHALL NOT 直接 import `AVAILABLE_WORLDS`
+
+#### Scenario: 世界列表包含来源标记
+- **WHEN** WorldSelect 渲染世界卡片列表
+- **THEN** 每个世界卡片 SHALL 能区分来源类型（已评分/随机/模板）
+- **AND** 已评分世界 SHALL 展示评分星级，模板世界 SHALL 展示精选标签
 
 ## REMOVED Requirements
 

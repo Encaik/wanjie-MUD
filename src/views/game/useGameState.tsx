@@ -17,7 +17,10 @@ import { executeCultivation, getMaxExperience } from '@/modules/progression/logi
 import { generateEquipment } from '@/modules/equipment/logic/equipment';
 import { updateTaskProgress, applyMentalChange } from '@/shared/lib/expansionLogic';
 import { processExperienceGain, calculateBreakthroughTransfer } from '@/modules/progression/logic/experienceSystem';
-import { generateCharacters, generateWorlds, generateBackstory } from '@/modules/identity/logic/generators';
+import { generateCharacters, generateBackstory } from '@/modules/identity/logic/generators';
+import { WorldProviderRegistry } from '@/shared/lib/world/WorldProviderRegistry';
+import { buildWorldPool } from '@/shared/lib/world/WorldPoolEngine';
+import type { WorldRatingsMap } from '@/shared/lib/world/types';
 import type { SeclusionType } from '@/modules/progression/logic/seclusion';
 import type { TowerEnemy } from '@/modules/tower/logic/types';
 import { createDefaultTowerProgress } from '@/modules/tower/logic/types';
@@ -582,12 +585,23 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
   // 这里不再重复实现，避免重复调用
   // ========================================
 
-  // 开始新游戏：先生成世界列表，由玩家先选世界
+  // 开始新游戏：通过 WorldPool 混合已评分世界 + 随机新世界
   const startNewGame = useCallback(() => {
+    const providers = WorldProviderRegistry.getInstance().getAll();
+    let ratings: WorldRatingsMap = {};
+    try {
+      const raw = localStorage.getItem('world-ratings');
+      if (raw) ratings = JSON.parse(raw) as WorldRatingsMap;
+    } catch { /* 忽略解析错误 */ }
+
+    const entries = providers.length > 0
+      ? buildWorldPool(providers, ratings)
+      : [];
+
     setGameState(prev => ({
       ...createInitialGameState(),
       phase: 'world-select',
-      worlds: generateWorlds(),
+      worlds: entries.map(e => e.world),
     }));
   }, []);
 

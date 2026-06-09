@@ -10,7 +10,8 @@ import {
 } from '@/modules/identity/data/worldEffectsUtils';
 import { getWorldMechanics } from '@/modules/identity/logic/worlds/factory';
 import { RealmTable } from '@/shared/components';
-import type { World, WorldType, WorldDifficulty } from '@/shared/lib/types';
+import { getWorldVisualConfig } from '@/shared/lib/registry';
+import type { World, WorldDifficulty } from '@/shared/lib/types';
 import { Badge } from '@/shared/ui/badge';
 import { Button } from '@/shared/ui/button';
 import { Card, CardContent } from '@/shared/ui/card';
@@ -24,42 +25,6 @@ import { cn } from '@/shared/utils';
 interface WorldSelectProps {
   worlds: World[];
   onSelect: (world: World) => void;
-}
-
-/** 世界主题配置 */
-interface WorldThemeConfig {
-  icon: string;
-  gradient: string;
-  accent: string;
-  border: string;
-}
-
-/** 未知世界类型的默认主题 */
-const DEFAULT_WORLD_THEME: WorldThemeConfig = {
-  icon: '🌐',
-  gradient: 'from-slate-500/20 to-slate-600/10',
-  accent: 'text-slate-400',
-  border: 'border-slate-500/30',
-};
-
-// 世界类型视觉主题
-const worldTheme: Record<WorldType, WorldThemeConfig> = {
-  '修仙': { icon: '☯', gradient: 'from-amber-500/20 to-yellow-600/10', accent: 'text-amber-400', border: 'border-amber-500/30' },
-  '高武': { icon: '⚔', gradient: 'from-red-500/20 to-orange-600/10', accent: 'text-red-400', border: 'border-red-500/30' },
-  '科技': { icon: '⬡', gradient: 'from-cyan-500/20 to-blue-600/10', accent: 'text-cyan-400', border: 'border-cyan-500/30' },
-  '魔幻': { icon: '✦', gradient: 'from-purple-500/20 to-violet-600/10', accent: 'text-purple-400', border: 'border-purple-500/30' },
-  '异能': { icon: '◈', gradient: 'from-indigo-500/20 to-blue-600/10', accent: 'text-indigo-400', border: 'border-indigo-500/30' },
-  '仙侠': { icon: '◆', gradient: 'from-teal-500/20 to-emerald-600/10', accent: 'text-teal-400', border: 'border-teal-500/30' },
-  '武侠': { icon: '◇', gradient: 'from-stone-500/20 to-neutral-600/10', accent: 'text-stone-400', border: 'border-stone-500/30' },
-  '末世': { icon: '◉', gradient: 'from-zinc-500/20 to-slate-700/10', accent: 'text-zinc-400', border: 'border-zinc-500/40' },
-};
-
-/**
- * 安全获取世界主题配置
- * 对未知世界类型返回默认主题，避免 Mod 注册的自定义世界类型导致崩溃
- */
-function getWorldTheme(worldType: string): WorldThemeConfig {
-  return worldTheme[worldType as WorldType] ?? DEFAULT_WORLD_THEME;
 }
 
 // 难度样式
@@ -95,7 +60,7 @@ export function WorldSelect({ worlds, onSelect }: WorldSelectProps) {
         {/* 世界网格 */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {worlds.map((world, index) => {
-            const theme = getWorldTheme(world.type);
+            const visualConfig = getWorldVisualConfig(world.type);
             const isSelected = selectedId === world.id;
             const statLabels = getStatLabels(world.type);
 
@@ -104,7 +69,7 @@ export function WorldSelect({ worlds, onSelect }: WorldSelectProps) {
                 key={world.id}
                 className={cn(
                   'cursor-pointer transition-all duration-300 border-2 flex flex-col relative overflow-hidden',
-                  theme.border,
+                  visualConfig.borderColor,
                   isSelected
                     ? 'scale-[1.02] shadow-lg shadow-primary/10 z-10'
                     : 'hover:shadow-md hover:scale-[1.01]',
@@ -113,13 +78,13 @@ export function WorldSelect({ worlds, onSelect }: WorldSelectProps) {
                 onClick={() => setSelectedId(isSelected ? null : world.id)}
               >
                 {/* 世界类型渐变背景 */}
-                <div className={cn('absolute inset-0 bg-gradient-to-br opacity-30 pointer-events-none', theme.gradient)} />
+                <div className={cn('absolute inset-0 bg-gradient-to-br opacity-30 pointer-events-none', visualConfig.gradientClass)} />
 
                 <CardContent className="p-4 flex flex-col flex-1 relative">
                   {/* 头部 */}
                   <div className="flex items-center justify-between mb-2">
                     <div className="flex items-center gap-2">
-                      <span className="text-xl" aria-hidden="true">{theme.icon}</span>
+                      <span className="text-xl" aria-hidden="true">{visualConfig.icon}</span>
                       <h3 className="text-base font-bold text-foreground font-serif">{world.name}</h3>
                     </div>
                     <Badge variant="outline" className={cn('text-[10px]', difficultyStyles[world.difficulty].badge)}>
@@ -129,7 +94,7 @@ export function WorldSelect({ worlds, onSelect }: WorldSelectProps) {
 
                   {/* 新手/挑战标记 */}
                   <div className="flex gap-1 mb-2">
-                    <Badge className={cn('text-[10px]', theme.accent, theme.border.replace('border', 'bg').replace('/30', '/15'))}>
+                    <Badge className={cn('text-[10px]', visualConfig.accentColor, visualConfig.borderColor.replace('border', 'bg').replace('/30', '/15'))}>
                       {world.type}
                     </Badge>
                     {world.baseCoefficient <= 1.0 && (

@@ -17,10 +17,37 @@ import type {
   StatName,
   ExtensibleWorldType,
 } from '@/shared/lib/types';
+import type { WorldTemplate } from '@/shared/lib/world/types';
 
 // ============================================
 // 注册中心数据类型定义
 // ============================================
+
+/** 世界视觉配置（图标、强调色、渐变等，由 Mod 数据提供，消除硬编码） */
+export interface WorldVisualConfig {
+  /** 图标（emoji 字符，如 "☯"、"⚔"） */
+  icon: string;
+  /** 强调文字颜色（Tailwind CSS class，如 "text-amber-400"） */
+  accentColor: string;
+  /** 卡片渐变背景（Tailwind CSS class，如 "from-amber-500/20 to-yellow-600/10"） */
+  gradientClass: string;
+  /** 边框颜色（Tailwind CSS class，如 "border-amber-500/30"） */
+  borderColor: string;
+  /** 卡片完整背景（Tailwind CSS class，含 dark 模式，如 "bg-gradient-to-br from-amber-50 to-yellow-50 dark:from-amber-950/30 dark:to-yellow-950/30"） */
+  bgGradient: string;
+  /** 覆盖层渐变色（用于 WorldReveal 揭示动画，如 "from-purple-500 to-blue-500"） */
+  colorGradient: string;
+}
+
+/** 默认视觉配置（用于未知世界类型的 fallback） */
+export const DEFAULT_VISUAL_CONFIG: WorldVisualConfig = {
+  icon: '🌐',
+  accentColor: 'text-slate-400',
+  gradientClass: 'from-slate-500/20 to-slate-600/10',
+  borderColor: 'border-slate-500/30',
+  bgGradient: 'bg-gradient-to-br from-slate-50 to-zinc-50 dark:from-slate-950/30 dark:to-zinc-950/30',
+  colorGradient: 'from-slate-500 to-gray-500',
+};
 
 /** 世界数值配置（全由注册数据提供，消费代码无硬编码兜底） */
 export interface WorldStatsData {
@@ -82,6 +109,8 @@ export interface WorldTypeData {
   builtin?: boolean;
   /** 世界机制配置（修炼/战斗/探索参数，由 Mod JSON 提供） */
   mechanics?: Record<string, unknown>;
+  /** 视觉配置（图标、强调色、渐变、主题等，由 Mod JSON 提供） */
+  visualConfig?: WorldVisualConfig;
 }
 
 /** 世界影响描述数据 */
@@ -267,6 +296,9 @@ export class WorldDataRegistry {
 
   /** 世界系数（key: worldTypeId） */
   private coefficients: Map<string, number> = new Map();
+
+  /** 固化世界模板（key: templateId） */
+  private worldTemplates: Map<string, WorldTemplate> = new Map();
 
   private constructor() {}
 
@@ -465,6 +497,28 @@ export class WorldDataRegistry {
   }
 
   // ============================================
+  // 固化世界模板
+  // ============================================
+
+  /** 注册固化世界模板 */
+  registerWorldTemplate(template: WorldTemplate): void {
+    if (this.worldTemplates.has(template.id)) {
+      console.warn(`[WorldDataRegistry] 覆盖已注册的世界模板: ${template.id}`);
+    }
+    this.worldTemplates.set(template.id, template);
+  }
+
+  /** 获取固化世界模板 */
+  getWorldTemplate(id: string): WorldTemplate | undefined {
+    return this.worldTemplates.get(id);
+  }
+
+  /** 获取所有固化世界模板 */
+  getAllWorldTemplates(): WorldTemplate[] {
+    return Array.from(this.worldTemplates.values());
+  }
+
+  // ============================================
   // 奖励系数
   // ============================================
 
@@ -608,6 +662,20 @@ export function getAllWorldTypeValues(): ExtensibleWorldType[] {
  * }
  * ```
  */
+/**
+ * 获取世界类型的视觉配置
+ *
+ * 从注册中心读取，如果世界类型未注册或无 visualConfig 则返回默认配置。
+ *
+ * @param worldType - 世界类型 ID 字符串
+ * @returns 视觉配置（绝不会返回 undefined）
+ */
+export function getWorldVisualConfig(worldType: string): WorldVisualConfig {
+  const registry = WorldDataRegistry.getInstance();
+  const data = registry.getWorldType(worldType);
+  return data?.visualConfig ?? DEFAULT_VISUAL_CONFIG;
+}
+
 export function isExtensibleWorldType(value: unknown): value is ExtensibleWorldType {
   if (typeof value !== 'string') return false;
   const registry = WorldDataRegistry.getInstance();

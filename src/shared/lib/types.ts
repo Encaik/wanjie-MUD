@@ -400,8 +400,16 @@ export interface WorldFaction {
 
 // 世界信息
 export interface World {
-  /** 世界唯一标识（固定长度随机字符串种子） */
+  /**
+   * 世界唯一标识
+   *
+   * 格式：
+   *   随机生成世界: {providerId}:{worldType}:{seed}（如 "wanjie-core:修仙:a0b1c2d3"）
+   *   固化模板世界: {providerId}:tpl:{templateId}（如 "wanjie-template:tpl:huanjing"）
+   */
   id: string;
+  /** 世界生成时的游戏版本号（semver 格式，如 "0.1.0"） */
+  gameVersion: string;
   name: string;
   type: WorldType;
   description: string;
@@ -410,7 +418,7 @@ export interface World {
   majorForces: string; // 主要势力描述（兼容旧代码）
   /** 具体势力列表（新生成） */
   factions: WorldFaction[];
-  
+
   // === 难度系统 ===
   /** 世界基础系数（固定值，根据世界类型） */
   baseCoefficient: number;
@@ -426,7 +434,7 @@ export interface World {
   opportunities: import('@/modules/identity/data/worldEffectsData').WorldOpportunity[];
 
   // === 综合评价 ===
-  /** 世界综合评价分数（1-100，由生成时计算） */
+  /** 世界综合评价分数（1-100，由评分系统计算，生成时默认为 0） */
   ratingScore: number;
 
   // === 特殊剧情 ===

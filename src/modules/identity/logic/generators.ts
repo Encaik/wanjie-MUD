@@ -11,6 +11,7 @@ import {
   QUALITY_CONFIG
 } from './traits';
 import { Character, World, CharacterStats, WorldType, ImpactfulTrait, ImpactLevel, StatImpact, WorldFaction } from '@/shared/lib/types';
+import { GAME_VERSION } from '@/shared/config/version';
 import { WorldDataRegistry } from '@/shared/lib/registry';
 import {
   generateWorldFactions,
@@ -293,6 +294,7 @@ export function generateWorld(seed: string = '', ascensionCount: number = 0): Wo
 
   return {
     id: actualSeed,
+    gameVersion: GAME_VERSION,
     name,
     type,
     description,
@@ -309,7 +311,10 @@ export function generateWorld(seed: string = '', ascensionCount: number = 0): Wo
   };
 }
 
-/** 默认世界种子（对应 8 种世界类型各一个） */
+/**
+ * 默认世界种子（对应 8 种世界类型各一个）
+ * @deprecated 使用 WorldProviderRegistry 和 WorldPool 替代。不应直接调用 generateWorlds(DEFAULT_WORLD_SEEDS)。
+ */
 export const DEFAULT_WORLD_SEEDS: readonly string[] = ['a0b1c2d3', 'e4f5g6h7', 'i8j9k0l1', 'm2n3o4p5', 'q6r7s8t9', 'u0v1w2x3', 'y4z5a6b7', 'c8d9e0f1'];
 
 /**

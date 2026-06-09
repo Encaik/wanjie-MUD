@@ -1,0 +1,77 @@
+{
+  "id": "huanjing",
+  "gameVersion": "0.1.0",
+  "protected": false,
+  "tags": ["幻境", "入门", "教程"],
+  "author": "wanjie-team",
+  "previewText": "一片由梦境编织的奇异世界，虚虚实实，真假难辨。适合初次踏入万界的修行者。",
+  "world": {
+    "name": "幻梦仙境",
+    "type": "修仙",
+    "gameVersion": "0.1.0",
+    "description": "天地万物皆由梦境构成，虚虚实实，真假难辨。在这里，想象力就是最强的力量，心之所向即为现实。",
+    "powerSystem": "以梦入道，幻境之中修得真我。梦境深处的力量，等待觉醒。",
+    "realmSystem": {
+      "mainRealmName": "梦境",
+      "subRealmName": "层",
+      "tiers": [
+        { "name": "浅梦", "subRealms": ["入梦", "知梦", "控梦"], "levelRange": [1, 15] },
+        { "name": "深梦", "subRealms": ["探梦", "驭梦", "化梦"], "levelRange": [16, 35] },
+        { "name": "真梦", "subRealms": ["梦主", "梦境师", "梦界主"], "levelRange": [36, 60] },
+        { "name": "无梦", "subRealms": ["醒梦", "破梦", "创梦"], "levelRange": [61, 85] },
+        { "name": "太虚", "subRealms": ["虚境", "无境", "道境"], "levelRange": [86, 100] }
+      ]
+    },
+    "majorForces": "梦境议会统领各层梦境，守护者与梦魇之主对峙千年",
+    "factions": [
+      {
+        "id": "dream_council",
+        "name": "梦境议会",
+        "type": "议会",
+        "description": "由各层梦境最强者组成的统治机构，维护梦境世界的秩序与平衡",
+        "worldTypeId": "修仙"
+      },
+      {
+        "id": "nightmare_legion",
+        "name": "梦魇军团",
+        "type": "军团",
+        "description": "诞生于人类噩梦中的扭曲存在，不断侵蚀梦境边界",
+        "worldTypeId": "修仙"
+      },
+      {
+        "id": "dreamwalkers",
+        "name": "逐梦者公会",
+        "type": "公会",
+        "description": "自由梦境探险者的联盟，探索未知梦境深处的秘密",
+        "worldTypeId": "修仙"
+      }
+    ],
+    "dangers": [
+      {
+        "name": "噩梦侵蚀",
+        "description": "噩梦中的恐怖存在不断侵蚀梦境边界，污染梦境能量",
+        "dangerLevel": 2
+      },
+      {
+        "name": "梦境崩塌",
+        "description": "梦境世界的不稳定区域随时可能崩塌，卷入虚无",
+        "dangerLevel": 3
+      }
+    ],
+    "opportunities": [
+      {
+        "name": "梦境共鸣",
+        "description": "与梦境本源产生共鸣，获得梦境特有的修炼感悟",
+        "opportunityLevel": 2
+      },
+      {
+        "name": "幻梦宝物",
+        "description": "在梦境深处发现由纯粹想象力凝结的宝物",
+        "opportunityLevel": 3
+      }
+    ],
+    "baseCoefficient": 0.8,
+    "actualCoefficient": 0.8,
+    "difficulty": "简单"
+  }
+}

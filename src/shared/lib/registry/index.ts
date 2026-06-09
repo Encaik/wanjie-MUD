@@ -9,10 +9,13 @@ export {
   asWorldType,
   assertWorldType,
   getAllWorldTypeValues,
+  getWorldVisualConfig,
+  DEFAULT_VISUAL_CONFIG,
 } from './WorldDataRegistry';
 
 export type {
   WorldTypeData,
+  WorldVisualConfig,
   WorldImpactData,
   TriggerConditionData,
   DangerEffectData,

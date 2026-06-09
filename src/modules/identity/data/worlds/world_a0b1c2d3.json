@@ -270,5 +270,6 @@
       "opportunityLevel": 3
     }
   ],
-  "ratingScore": 0
+  "ratingScore": 0,
+  "gameVersion": "0.1.0"
 }
