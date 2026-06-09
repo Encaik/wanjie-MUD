@@ -1,14 +1,8 @@
-# world-data-consolidation
+# world-data-consolidation (delta)
 
-## Purpose
+修仙与仙侠数据源差异化：消除两个世界共用姓名池和过度相似的配置，确保 WORL_DATA 中每个世界的数据独立且差异明显。
 
-TBD — see change world-first-selection-flow for full context.
-
-# world-data-consolidation
-
-世界数据整合为单一数据源，删除所有重复定义，确保 WORLD_DATA 是世界的唯一配置来源。
-
-## ADDED Requirements
+## MODIFIED Requirements
 
 ### Requirement: WORLD_DATA 为世界配置唯一数据源
 
@@ -30,31 +24,7 @@ TBD — see change world-first-selection-flow for full context.
 - **AND** `descriptions` SHALL 反映不同的世界观（修仙：长生修仙，仙侠：剑道修行）
 - **AND** `dangers` 和 `opportunities` 的 `description` 文本 SHALL 各自独立
 
-### Requirement: WORLD_COEFFICIENTS 全局唯一
-
-世界系数 `WORLD_COEFFICIENTS` SHALL 仅在 `src/modules/identity/data/worldData.ts` 中定义一份，所有其他模块 SHALL 从此处导入。
-
-#### Scenario: combat 模块使用统一系数
-- **WHEN** `combat/logic/statsCalc.ts` 需要获取世界系数
-- **THEN** SHALL 从 `@/modules/identity/data/worldData` 导入 `WORLD_COEFFICIENTS`
-- **AND** SHALL NOT 在本地重新定义 `WORLD_COEFFICIENTS`
-
-#### Scenario: 系数数值一致性
-- **WHEN** 获取任意世界类型的系数
-- **THEN** 世界生成和战斗计算中使用同一个数值
-- **AND** 系数语义全局一致（表示世界基础难度）
-
-### Requirement: WorldStats 结构包含属性显示名
-
-`WorldStats` 接口 SHALL 包含 `statDisplayNames` 字段，定义该世界的 5 个属性显示名映射。
-
-#### Scenario: WorldStats 包含 statDisplayNames
-- **WHEN** 读取 `WORLD_DATA['科技']`
-- **THEN** SHALL 包含 `statDisplayNames: { '体质': '体能', '灵根': '智力', '悟性': '反应', '幸运': '技术', '意志': '魅力' }`
-
-#### Scenario: 旧世界数据迁移
-- **WHEN** 加载旧版本存档
-- **THEN** 缺少 `statDisplayNames` 的世界数据 SHALL 使用修仙默认值填充
+## ADDED Requirements
 
 ### Requirement: 仙侠世界独立姓名池
 

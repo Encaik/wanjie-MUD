@@ -2,12 +2,13 @@
 
 import { useState } from 'react';
 
-import { Compass, Skull, Sparkles, ChevronRight, Sword } from 'lucide-react';
+import { Compass, Skull, Sparkles, ChevronRight, Sword, Info } from 'lucide-react';
 
 import { getStatLabels } from '@/modules/identity/data/statDisplayNames';
 import {
   generateLevelStars,
 } from '@/modules/identity/data/worldEffectsUtils';
+import { getWorldMechanics } from '@/modules/identity/logic/worlds/factory';
 import { RealmTable } from '@/shared/components';
 import type { World, WorldType, WorldDifficulty } from '@/shared/lib/types';
 import { Badge } from '@/shared/ui/badge';
@@ -151,6 +152,24 @@ export function WorldSelect({ worlds, onSelect }: WorldSelectProps) {
                           <RealmTable realmSystem={world.realmSystem} compact />
                         </div>
                       </div>
+
+                      {/* 独特机制 */}
+                      {(() => {
+                        const mech = getWorldMechanics(world.type).getUniqueMechanicDescription();
+                        return (
+                          <div className="bg-primary/5 rounded-md p-2 border border-primary/10">
+                            <div className="flex items-center gap-1 mb-1">
+                              <Info className="w-3 h-3 text-primary/60" />
+                              <span className="text-[10px] text-primary/80 font-medium">
+                                独特机制 · {mech.name}
+                              </span>
+                            </div>
+                            <p className="text-[10px] text-muted-foreground leading-relaxed">
+                              {mech.description}
+                            </p>
+                          </div>
+                        );
+                      })()}
 
                       {/* 危险 */}
                       {world.dangers.length > 0 && (

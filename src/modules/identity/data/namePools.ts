@@ -19,6 +19,13 @@ const CULTIVATION_NAMES: NamePool = {
   femaleNames: ['清雪', '梦璃', '紫嫣', '灵韵', '月华', '霜华', '诗涵', '雨萱', '若烟', '玉瑶', '诗韵', '凌霜', '明月', '紫霞'],
 };
 
+/** 仙侠 — 剑修古风 */
+const XIANXIA_NAMES: NamePool = {
+  surnames: ['剑', '凌', '萧', '叶', '云', '白', '苏', '柳', '沈', '楚', '宫', '凤', '龙', '墨', '花', '慕', '容', '裴', '殷', '薛'],
+  maleNames: ['剑心', '凌霄', '破天', '长风', '星辰', '孤鸿', '问剑', '飞羽', '惊鸿', '无痕', '一剑', '天涯', '追云', '斩月'],
+  femaleNames: ['剑兰', '凌霜', '紫英', '青鸾', '凤歌', '霓裳', '秋水', '雪见', '寒梅', '清歌', '月华', '飞燕', '云裳', '玉剑'],
+};
+
 /** 高武/武侠 — 中文古风 + 复姓 */
 const MARTIAL_NAMES: NamePool = {
   surnames: ['慕容', '南宫', '欧阳', '独孤', '上官', '李', '王', '张', '刘', '陈', '杨', '赵', '黄', '周', '吴', '徐', '孙', '铁', '石', '雷'],
@@ -57,7 +64,7 @@ const WASTELAND_NAMES: NamePool = {
 /** 世界姓名池映射 */
 export const WORLD_NAME_POOLS: Record<WorldType, NamePool> = {
   '修仙': CULTIVATION_NAMES,
-  '仙侠': CULTIVATION_NAMES,
+  '仙侠': XIANXIA_NAMES,
   '高武': MARTIAL_NAMES,
   '武侠': MARTIAL_NAMES,
   '科技': TECH_NAMES,

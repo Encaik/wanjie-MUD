@@ -5,15 +5,17 @@
  * 每种世界类型有独立的术语和参数配置。
  */
 import type { WorldType } from '@/shared/lib/types';
-import type { WorldMechanics } from './types';
+
 import { cultivationWorld } from './cultivationWorld';
-import { xiānxiáWorld } from './xiānxiáWorld';
-import { highMartialWorld } from './highMartialWorld';
-import { techWorld } from './techWorld';
-import { martialWorld } from './martialWorld';
-import { magicWorld } from './magicWorld';
 import { esperWorld } from './esperWorld';
+import { highMartialWorld } from './highMartialWorld';
+import { magicWorld } from './magicWorld';
+import { martialWorld } from './martialWorld';
+import { techWorld } from './techWorld';
 import { wastelandWorld } from './wastelandWorld';
+import { xiānxiáWorld } from './xiānxiáWorld';
+
+import type { WorldMechanics } from './types';
 
 /** 世界机制注册表（8 种世界类型各自独立实现） */
 const WORLD_MECHANICS: Record<WorldType, WorldMechanics> = {
@@ -44,5 +46,7 @@ export function getWorldMechanics(worldType: WorldType): WorldMechanics {
  * @returns 是否有独特机制
  */
 export function hasUniqueMechanics(worldType: WorldType): boolean {
-  return ['科技', '武侠', '魔幻', '末世'].includes(worldType);
+  // 修仙是入门世界，保持 baseline 无独特机制
+  // 其余 7 种世界类型各有独特玩法机制
+  return worldType !== '修仙';
 }

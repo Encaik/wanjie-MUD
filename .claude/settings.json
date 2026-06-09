@@ -45,7 +45,8 @@
       "Bash(xargs sed -i \"s|from '@/lib/data/worldSystem'|from '@/modules/identity/data/worldSystem'|g\")",
       "Bash(pnpm lint *)",
       "Bash(cd /mnt/c/Users/encai/Desktop/wanjie-MUD && openspec new change \"world-first-selection-flow\")",
-      "Read(//mnt/c/Users/encai/Desktop/**)"
+      "Read(//mnt/c/Users/encai/Desktop/**)",
+      "Bash(pnpm lint:strict)"
     ]
   }
 }

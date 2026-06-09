@@ -39,6 +39,10 @@ export {
   getWorldBaseCoefficient,
 } from './data/worldSystem';
 
+// —— 世界审查工具 ——
+export { calculateDifferentiationScore, findHighOverlapPairs, generateAuditReport, runAudit } from './logic/worldAudit';
+export type { DifferentiationScore, WorldPairSimilarity } from './logic/worldAudit';
+
 // —— 重新导出（generators 中已重新导出这些）——
 export {
   getRealmName,

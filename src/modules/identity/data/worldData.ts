@@ -141,9 +141,9 @@ export const WORLD_DATA: Record<WorldType, WorldStats> = {
     namePrefixes: ['青云', '紫霄', '太虚', '玄天', '昆仑', '蓬莱'],
     nameSuffixes: ['界', '域', '天', '境', '州'],
     descriptions: [
-      '灵气充沛，仙门林立，修士们追求长生大道',
-      '宗门遍布，灵脉纵横，是修仙者的圣地',
-      '仙气缥缈，洞天福地众多，传说中有仙人飞升之地',
+      '灵气充沛，仙门林立，修士们追求长生大道，适合初入万界的修行者',
+      '宗门遍布，灵脉纵横，是修仙者的圣地，万界之旅的起点',
+      '仙气缥缈，洞天福地众多，传说中有仙人飞升之地，万物皆可修炼',
     ],
     powerSystems: [
       '炼气化神，以灵力为根基，追求天人合一',
@@ -164,7 +164,7 @@ export const WORLD_DATA: Record<WorldType, WorldStats> = {
       { description: '获得仙缘传承', impact: { 灵根: 2 }, impactDescription: '灵根+2' },
       { description: '悟道突破', impact: { 意志: 2 }, impactDescription: '意志+2' },
     ],
-    coefficient: 1.1,   // 普通
+    coefficient: 1.0,   // 简单（入门世界）
     baseHp: 100,
     hpPerLevel: 15,
     hpPerConstitution: 10,
@@ -508,19 +508,19 @@ export const WORLD_DATA: Record<WorldType, WorldStats> = {
       { description: '获得进化能力', impact: { 灵根: 2 }, impactDescription: '灵根+2' },
       { description: '找到文明遗物', impact: { 意志: 2 }, impactDescription: '意志+2' },
     ],
-    coefficient: 1.5,   // 噩梦
-    baseHp: 120,
+    coefficient: 1.5,   // 困难（基础）+ 飞升加成后可达噩梦/地狱/深渊
+    baseHp: 90,
     hpPerLevel: 20,
     hpPerConstitution: 15,
-    baseAttack: 16,
+    baseAttack: 12,
     attackPerLevel: 2.5,
     attackPerConstitution: 1.3,
     attackPerSpiritRoot: 0.3,
     baseDefense: 10,
     defensePerLevel: 1.5,
     defensePerWillpower: 1.0,
-    enemyAttackBonus: 0.2,
-    enemyDefenseBonus: 0.15,
+    enemyAttackBonus: 0.3,
+    enemyDefenseBonus: 0.25,
 
     statDisplayNames: {
       '体质': '体质',
