@@ -49,7 +49,7 @@ const difficultyStyles: Record<WorldDifficulty, { badge: string }> = {
 };
 
 export function WorldSelect({ worlds, onSelect }: WorldSelectProps) {
-  const [selectedId, setSelectedId] = useState<number | null>(null);
+  const [selectedId, setSelectedId] = useState<string | null>(null);
 
   return (
     <div className="min-h-dvh md:min-h-screen bg-background overflow-auto">

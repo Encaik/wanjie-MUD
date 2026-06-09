@@ -1,0 +1,295 @@
+{
+  "id": "i8j9k0l1",
+  "name": "末世废墟",
+  "type": "末世",
+  "description": "废土之上，适者生存，人性与兽性交织",
+  "powerSystem": "一阶 → 二阶 → 三阶 → 四阶 → 五阶 → 六阶 → 七阶 → 八阶 → 九阶 → 十阶",
+  "realmSystem": {
+    "mainRealmName": "阶位体系",
+    "subRealmName": "一二三四阶",
+    "tiers": [
+      {
+        "name": "一阶",
+        "subRealms": [
+          "一阶",
+          "二阶",
+          "三阶",
+          "四阶",
+          "五阶",
+          "六阶",
+          "七阶",
+          "八阶",
+          "九阶",
+          "十阶"
+        ],
+        "levelRange": [
+          1,
+          10
+        ]
+      },
+      {
+        "name": "二阶",
+        "subRealms": [
+          "一阶",
+          "二阶",
+          "三阶",
+          "四阶",
+          "五阶",
+          "六阶",
+          "七阶",
+          "八阶",
+          "九阶",
+          "十阶"
+        ],
+        "levelRange": [
+          11,
+          20
+        ]
+      },
+      {
+        "name": "三阶",
+        "subRealms": [
+          "一阶",
+          "二阶",
+          "三阶",
+          "四阶",
+          "五阶",
+          "六阶",
+          "七阶",
+          "八阶",
+          "九阶",
+          "十阶"
+        ],
+        "levelRange": [
+          21,
+          30
+        ]
+      },
+      {
+        "name": "四阶",
+        "subRealms": [
+          "一阶",
+          "二阶",
+          "三阶",
+          "四阶",
+          "五阶",
+          "六阶",
+          "七阶",
+          "八阶",
+          "九阶",
+          "十阶"
+        ],
+        "levelRange": [
+          31,
+          40
+        ]
+      },
+      {
+        "name": "五阶",
+        "subRealms": [
+          "一阶",
+          "二阶",
+          "三阶",
+          "四阶",
+          "五阶",
+          "六阶",
+          "七阶",
+          "八阶",
+          "九阶",
+          "十阶"
+        ],
+        "levelRange": [
+          41,
+          50
+        ]
+      },
+      {
+        "name": "六阶",
+        "subRealms": [
+          "一阶",
+          "二阶",
+          "三阶",
+          "四阶",
+          "五阶",
+          "六阶",
+          "七阶",
+          "八阶",
+          "九阶",
+          "十阶"
+        ],
+        "levelRange": [
+          51,
+          60
+        ]
+      },
+      {
+        "name": "七阶",
+        "subRealms": [
+          "一阶",
+          "二阶",
+          "三阶",
+          "四阶",
+          "五阶",
+          "六阶",
+          "七阶",
+          "八阶",
+          "九阶",
+          "十阶"
+        ],
+        "levelRange": [
+          61,
+          70
+        ]
+      },
+      {
+        "name": "八阶",
+        "subRealms": [
+          "一阶",
+          "二阶",
+          "三阶",
+          "四阶",
+          "五阶",
+          "六阶",
+          "七阶",
+          "八阶",
+          "九阶",
+          "十阶"
+        ],
+        "levelRange": [
+          71,
+          80
+        ]
+      },
+      {
+        "name": "九阶",
+        "subRealms": [
+          "一阶",
+          "二阶",
+          "三阶",
+          "四阶",
+          "五阶",
+          "六阶",
+          "七阶",
+          "八阶",
+          "九阶",
+          "十阶"
+        ],
+        "levelRange": [
+          81,
+          90
+        ]
+      },
+      {
+        "name": "十阶",
+        "subRealms": [
+          "一阶",
+          "二阶",
+          "三阶",
+          "四阶",
+          "五阶",
+          "六阶",
+          "七阶",
+          "八阶",
+          "九阶",
+          "十阶"
+        ],
+        "levelRange": [
+          91,
+          100
+        ]
+      }
+    ]
+  },
+  "majorForces": "幸存者联盟、避难所联盟、进化者联盟与掠夺者联盟",
+  "factions": [
+    {
+      "id": "apocalypse_survivor",
+      "name": "幸存者联盟",
+      "type": "联盟",
+      "description": "废土上最大的人类幸存者组织，拥有多个基地。"
+    },
+    {
+      "id": "apocalypse_vault",
+      "name": "避难所联盟",
+      "type": "联盟",
+      "description": "战前避难所的联合体，科技实力强大。"
+    },
+    {
+      "id": "apocalypse_mutant",
+      "name": "进化者联盟",
+      "type": "联盟",
+      "description": "变异进化者的组织，成员拥有强大的变异能力。"
+    },
+    {
+      "id": "apocalypse_raider",
+      "name": "掠夺者联盟",
+      "type": "联盟",
+      "description": "废土掠夺者的松散联盟，行事不择手段。"
+    }
+  ],
+  "baseCoefficient": 1.5,
+  "actualCoefficient": 1.5,
+  "difficulty": "困难",
+  "dangers": [
+    {
+      "id": "weak_enemies",
+      "type": "enemy_buff",
+      "name": "敌强我弱",
+      "description": "此地敌人实力略胜一筹",
+      "triggerCondition": {
+        "type": "on_battle_start",
+        "chance": 1
+      },
+      "effect": {
+        "enemyBuffs": {
+          "attackBonus": 0.1,
+          "defenseBonus": 0.1
+        }
+      },
+      "duration": 0,
+      "dispellable": false,
+      "dangerLevel": 2
+    }
+  ],
+  "opportunities": [
+    {
+      "id": "treasure_vein",
+      "type": "resource_gain",
+      "name": "灵脉矿藏",
+      "description": "发现灵脉，每次探索额外获得灵石",
+      "triggerCondition": {
+        "type": "on_explore",
+        "chance": 0.35
+      },
+      "effect": {
+        "resourceGains": {
+          "spiritStones": 80
+        }
+      },
+      "duration": 0,
+      "opportunityLevel": 2
+    },
+    {
+      "id": "great_enlightenment",
+      "type": "stat_buff",
+      "name": "大彻大悟",
+      "description": "获得大机缘，属性大幅提升",
+      "triggerCondition": {
+        "type": "on_enter",
+        "chance": 0.2
+      },
+      "effect": {
+        "statModifications": {
+          "体质": 4,
+          "灵根": 4,
+          "悟性": 3,
+          "意志": 2,
+          "幸运": 2
+        }
+      },
+      "duration": -1,
+      "opportunityLevel": 4
+    }
+  ],
+  "ratingScore": 0
+}

@@ -1,0 +1,274 @@
+{
+  "id": "a0b1c2d3",
+  "name": "荒芜之地",
+  "type": "末世",
+  "description": "核战后的人类文明，在废墟中寻找希望",
+  "powerSystem": "普通幸存者 → 初级觉醒者 → 中级觉醒者 → 高级觉醒者 → 精英觉醒者 → 超级觉醒者 → 变异觉醒者 → 完美觉醒者 → 终极觉醒者 → 进化之神",
+  "realmSystem": {
+    "mainRealmName": "变异等级",
+    "subRealmName": "数字层",
+    "tiers": [
+      {
+        "name": "普通幸存者",
+        "subRealms": [
+          "第一层",
+          "第二层",
+          "第三层",
+          "第四层",
+          "第五层",
+          "第六层",
+          "第七层",
+          "第八层",
+          "第九层",
+          "第十层"
+        ],
+        "levelRange": [
+          1,
+          10
+        ]
+      },
+      {
+        "name": "初级觉醒者",
+        "subRealms": [
+          "第一层",
+          "第二层",
+          "第三层",
+          "第四层",
+          "第五层",
+          "第六层",
+          "第七层",
+          "第八层",
+          "第九层",
+          "第十层"
+        ],
+        "levelRange": [
+          11,
+          20
+        ]
+      },
+      {
+        "name": "中级觉醒者",
+        "subRealms": [
+          "第一层",
+          "第二层",
+          "第三层",
+          "第四层",
+          "第五层",
+          "第六层",
+          "第七层",
+          "第八层",
+          "第九层",
+          "第十层"
+        ],
+        "levelRange": [
+          21,
+          30
+        ]
+      },
+      {
+        "name": "高级觉醒者",
+        "subRealms": [
+          "第一层",
+          "第二层",
+          "第三层",
+          "第四层",
+          "第五层",
+          "第六层",
+          "第七层",
+          "第八层",
+          "第九层",
+          "第十层"
+        ],
+        "levelRange": [
+          31,
+          40
+        ]
+      },
+      {
+        "name": "精英觉醒者",
+        "subRealms": [
+          "第一层",
+          "第二层",
+          "第三层",
+          "第四层",
+          "第五层",
+          "第六层",
+          "第七层",
+          "第八层",
+          "第九层",
+          "第十层"
+        ],
+        "levelRange": [
+          41,
+          50
+        ]
+      },
+      {
+        "name": "超级觉醒者",
+        "subRealms": [
+          "第一层",
+          "第二层",
+          "第三层",
+          "第四层",
+          "第五层",
+          "第六层",
+          "第七层",
+          "第八层",
+          "第九层",
+          "第十层"
+        ],
+        "levelRange": [
+          51,
+          60
+        ]
+      },
+      {
+        "name": "变异觉醒者",
+        "subRealms": [
+          "第一层",
+          "第二层",
+          "第三层",
+          "第四层",
+          "第五层",
+          "第六层",
+          "第七层",
+          "第八层",
+          "第九层",
+          "第十层"
+        ],
+        "levelRange": [
+          61,
+          70
+        ]
+      },
+      {
+        "name": "完美觉醒者",
+        "subRealms": [
+          "第一层",
+          "第二层",
+          "第三层",
+          "第四层",
+          "第五层",
+          "第六层",
+          "第七层",
+          "第八层",
+          "第九层",
+          "第十层"
+        ],
+        "levelRange": [
+          71,
+          80
+        ]
+      },
+      {
+        "name": "终极觉醒者",
+        "subRealms": [
+          "第一层",
+          "第二层",
+          "第三层",
+          "第四层",
+          "第五层",
+          "第六层",
+          "第七层",
+          "第八层",
+          "第九层",
+          "第十层"
+        ],
+        "levelRange": [
+          81,
+          90
+        ]
+      },
+      {
+        "name": "进化之神",
+        "subRealms": [
+          "第一层",
+          "第二层",
+          "第三层",
+          "第四层",
+          "第五层",
+          "第六层",
+          "第七层",
+          "第八层",
+          "第九层",
+          "第十层"
+        ],
+        "levelRange": [
+          91,
+          100
+        ]
+      }
+    ]
+  },
+  "majorForces": "幸存者联盟、避难所联盟、进化者联盟与掠夺者联盟",
+  "factions": [
+    {
+      "id": "apocalypse_survivor",
+      "name": "幸存者联盟",
+      "type": "联盟",
+      "description": "废土上最大的人类幸存者组织，拥有多个基地。"
+    },
+    {
+      "id": "apocalypse_vault",
+      "name": "避难所联盟",
+      "type": "联盟",
+      "description": "战前避难所的联合体，科技实力强大。"
+    },
+    {
+      "id": "apocalypse_mutant",
+      "name": "进化者联盟",
+      "type": "联盟",
+      "description": "变异进化者的组织，成员拥有强大的变异能力。"
+    },
+    {
+      "id": "apocalypse_raider",
+      "name": "掠夺者联盟",
+      "type": "联盟",
+      "description": "废土掠夺者的松散联盟，行事不择手段。"
+    }
+  ],
+  "baseCoefficient": 1.5,
+  "actualCoefficient": 1.5,
+  "difficulty": "困难",
+  "dangers": [
+    {
+      "id": "chaotic_elements",
+      "type": "stat_debuff",
+      "name": "元素紊乱",
+      "description": "元素之力紊乱，战斗能力略微下降",
+      "triggerCondition": {
+        "type": "on_enter",
+        "chance": 1
+      },
+      "effect": {
+        "statModifications": {
+          "体质": -1
+        }
+      },
+      "duration": -1,
+      "dispellable": false,
+      "dangerLevel": 1
+    }
+  ],
+  "opportunities": [
+    {
+      "id": "ancient_realm",
+      "type": "special_ability",
+      "name": "上古遗迹",
+      "description": "进入上古修士留下的遗迹，获得额外经验",
+      "triggerCondition": {
+        "type": "on_enter",
+        "chance": 0.3
+      },
+      "effect": {
+        "specialEffects": {
+          "type": "double_exp",
+          "value": 1.5
+        }
+      },
+      "duration": -1,
+      "opportunityLevel": 3
+    }
+  ],
+  "ratingScore": 0
+}

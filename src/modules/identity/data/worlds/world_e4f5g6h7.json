@@ -1,0 +1,304 @@
+{
+  "id": "e4f5g6h7",
+  "name": "末世废墟",
+  "type": "末世",
+  "description": "文明崩塌，变异横行，幸存者挣扎求生",
+  "powerSystem": "一阶 → 二阶 → 三阶 → 四阶 → 五阶 → 六阶 → 七阶 → 八阶 → 九阶 → 十阶",
+  "realmSystem": {
+    "mainRealmName": "阶位体系",
+    "subRealmName": "数字层",
+    "tiers": [
+      {
+        "name": "一阶",
+        "subRealms": [
+          "第一层",
+          "第二层",
+          "第三层",
+          "第四层",
+          "第五层",
+          "第六层",
+          "第七层",
+          "第八层",
+          "第九层",
+          "第十层"
+        ],
+        "levelRange": [
+          1,
+          10
+        ]
+      },
+      {
+        "name": "二阶",
+        "subRealms": [
+          "第一层",
+          "第二层",
+          "第三层",
+          "第四层",
+          "第五层",
+          "第六层",
+          "第七层",
+          "第八层",
+          "第九层",
+          "第十层"
+        ],
+        "levelRange": [
+          11,
+          20
+        ]
+      },
+      {
+        "name": "三阶",
+        "subRealms": [
+          "第一层",
+          "第二层",
+          "第三层",
+          "第四层",
+          "第五层",
+          "第六层",
+          "第七层",
+          "第八层",
+          "第九层",
+          "第十层"
+        ],
+        "levelRange": [
+          21,
+          30
+        ]
+      },
+      {
+        "name": "四阶",
+        "subRealms": [
+          "第一层",
+          "第二层",
+          "第三层",
+          "第四层",
+          "第五层",
+          "第六层",
+          "第七层",
+          "第八层",
+          "第九层",
+          "第十层"
+        ],
+        "levelRange": [
+          31,
+          40
+        ]
+      },
+      {
+        "name": "五阶",
+        "subRealms": [
+          "第一层",
+          "第二层",
+          "第三层",
+          "第四层",
+          "第五层",
+          "第六层",
+          "第七层",
+          "第八层",
+          "第九层",
+          "第十层"
+        ],
+        "levelRange": [
+          41,
+          50
+        ]
+      },
+      {
+        "name": "六阶",
+        "subRealms": [
+          "第一层",
+          "第二层",
+          "第三层",
+          "第四层",
+          "第五层",
+          "第六层",
+          "第七层",
+          "第八层",
+          "第九层",
+          "第十层"
+        ],
+        "levelRange": [
+          51,
+          60
+        ]
+      },
+      {
+        "name": "七阶",
+        "subRealms": [
+          "第一层",
+          "第二层",
+          "第三层",
+          "第四层",
+          "第五层",
+          "第六层",
+          "第七层",
+          "第八层",
+          "第九层",
+          "第十层"
+        ],
+        "levelRange": [
+          61,
+          70
+        ]
+      },
+      {
+        "name": "八阶",
+        "subRealms": [
+          "第一层",
+          "第二层",
+          "第三层",
+          "第四层",
+          "第五层",
+          "第六层",
+          "第七层",
+          "第八层",
+          "第九层",
+          "第十层"
+        ],
+        "levelRange": [
+          71,
+          80
+        ]
+      },
+      {
+        "name": "九阶",
+        "subRealms": [
+          "第一层",
+          "第二层",
+          "第三层",
+          "第四层",
+          "第五层",
+          "第六层",
+          "第七层",
+          "第八层",
+          "第九层",
+          "第十层"
+        ],
+        "levelRange": [
+          81,
+          90
+        ]
+      },
+      {
+        "name": "十阶",
+        "subRealms": [
+          "第一层",
+          "第二层",
+          "第三层",
+          "第四层",
+          "第五层",
+          "第六层",
+          "第七层",
+          "第八层",
+          "第九层",
+          "第十层"
+        ],
+        "levelRange": [
+          91,
+          100
+        ]
+      }
+    ]
+  },
+  "majorForces": "幸存者联盟、避难所联盟、进化者联盟与掠夺者联盟",
+  "factions": [
+    {
+      "id": "apocalypse_survivor",
+      "name": "幸存者联盟",
+      "type": "联盟",
+      "description": "废土上最大的人类幸存者组织，拥有多个基地。"
+    },
+    {
+      "id": "apocalypse_vault",
+      "name": "避难所联盟",
+      "type": "联盟",
+      "description": "战前避难所的联合体，科技实力强大。"
+    },
+    {
+      "id": "apocalypse_mutant",
+      "name": "进化者联盟",
+      "type": "联盟",
+      "description": "变异进化者的组织，成员拥有强大的变异能力。"
+    },
+    {
+      "id": "apocalypse_raider",
+      "name": "掠夺者联盟",
+      "type": "联盟",
+      "description": "废土掠夺者的松散联盟，行事不择手段。"
+    }
+  ],
+  "baseCoefficient": 1.5,
+  "actualCoefficient": 1.5,
+  "difficulty": "困难",
+  "dangers": [
+    {
+      "id": "demon_erosion",
+      "type": "resource_drain",
+      "name": "魔气侵蚀",
+      "description": "魔气弥漫，每回合损失少量生命",
+      "triggerCondition": {
+        "type": "on_turn",
+        "chance": 0.3
+      },
+      "effect": {
+        "resourceModifications": {
+          "hp": -5
+        }
+      },
+      "duration": 0,
+      "dispellable": true,
+      "dangerLevel": 2
+    }
+  ],
+  "opportunities": [
+    {
+      "id": "battle_insight",
+      "type": "stat_buff",
+      "name": "战斗领悟",
+      "description": "战斗中容易领悟，属性提升",
+      "triggerCondition": {
+        "type": "on_enter",
+        "chance": 1
+      },
+      "effect": {
+        "statModifications": {
+          "体质": 2,
+          "灵根": 2,
+          "意志": 1
+        }
+      },
+      "duration": -1,
+      "opportunityLevel": 2
+    },
+    {
+      "id": "immortal_favor",
+      "type": "favorable_event",
+      "name": "仙人垂青",
+      "description": "获得仙人庇护，经验翻倍、伤害减免30%、掉落提升",
+      "triggerCondition": {
+        "type": "on_enter",
+        "chance": 0.08
+      },
+      "effect": {
+        "specialEffects": {
+          "type": "double_exp",
+          "value": 2
+        },
+        "statModifications": {
+          "幸运": 3
+        },
+        "dropBonus": {
+          "rarityBoost": 2,
+          "extraDropChance": 0.4
+        }
+      },
+      "duration": -1,
+      "opportunityLevel": 5,
+      "conflictsWith": [
+        "no_healing",
+        "heavy_curse"
+      ]
+    }
+  ],
+  "ratingScore": 0
+}

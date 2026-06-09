@@ -1,0 +1,269 @@
+{
+  "id": "y4z5a6b7",
+  "name": "仙云界",
+  "type": "仙侠",
+  "description": "剑气纵横，侠客仗剑行走天涯",
+  "powerSystem": "炼气 → 筑基 → 金丹 → 元婴 → 化神 → 炼虚 → 合体 → 大乘 → 渡劫 → 真仙",
+  "realmSystem": {
+    "mainRealmName": "道家飞升",
+    "subRealmName": "入门至大成",
+    "tiers": [
+      {
+        "name": "炼气",
+        "subRealms": [
+          "入门",
+          "初窥",
+          "小成",
+          "精通",
+          "大成",
+          "圆满",
+          "入道",
+          "通神",
+          "化境",
+          "证道"
+        ],
+        "levelRange": [
+          1,
+          10
+        ]
+      },
+      {
+        "name": "筑基",
+        "subRealms": [
+          "入门",
+          "初窥",
+          "小成",
+          "精通",
+          "大成",
+          "圆满",
+          "入道",
+          "通神",
+          "化境",
+          "证道"
+        ],
+        "levelRange": [
+          11,
+          20
+        ]
+      },
+      {
+        "name": "金丹",
+        "subRealms": [
+          "入门",
+          "初窥",
+          "小成",
+          "精通",
+          "大成",
+          "圆满",
+          "入道",
+          "通神",
+          "化境",
+          "证道"
+        ],
+        "levelRange": [
+          21,
+          30
+        ]
+      },
+      {
+        "name": "元婴",
+        "subRealms": [
+          "入门",
+          "初窥",
+          "小成",
+          "精通",
+          "大成",
+          "圆满",
+          "入道",
+          "通神",
+          "化境",
+          "证道"
+        ],
+        "levelRange": [
+          31,
+          40
+        ]
+      },
+      {
+        "name": "化神",
+        "subRealms": [
+          "入门",
+          "初窥",
+          "小成",
+          "精通",
+          "大成",
+          "圆满",
+          "入道",
+          "通神",
+          "化境",
+          "证道"
+        ],
+        "levelRange": [
+          41,
+          50
+        ]
+      },
+      {
+        "name": "炼虚",
+        "subRealms": [
+          "入门",
+          "初窥",
+          "小成",
+          "精通",
+          "大成",
+          "圆满",
+          "入道",
+          "通神",
+          "化境",
+          "证道"
+        ],
+        "levelRange": [
+          51,
+          60
+        ]
+      },
+      {
+        "name": "合体",
+        "subRealms": [
+          "入门",
+          "初窥",
+          "小成",
+          "精通",
+          "大成",
+          "圆满",
+          "入道",
+          "通神",
+          "化境",
+          "证道"
+        ],
+        "levelRange": [
+          61,
+          70
+        ]
+      },
+      {
+        "name": "大乘",
+        "subRealms": [
+          "入门",
+          "初窥",
+          "小成",
+          "精通",
+          "大成",
+          "圆满",
+          "入道",
+          "通神",
+          "化境",
+          "证道"
+        ],
+        "levelRange": [
+          71,
+          80
+        ]
+      },
+      {
+        "name": "渡劫",
+        "subRealms": [
+          "入门",
+          "初窥",
+          "小成",
+          "精通",
+          "大成",
+          "圆满",
+          "入道",
+          "通神",
+          "化境",
+          "证道"
+        ],
+        "levelRange": [
+          81,
+          90
+        ]
+      },
+      {
+        "name": "真仙",
+        "subRealms": [
+          "入门",
+          "初窥",
+          "小成",
+          "精通",
+          "大成",
+          "圆满",
+          "入道",
+          "通神",
+          "化境",
+          "证道"
+        ],
+        "levelRange": [
+          91,
+          100
+        ]
+      }
+    ]
+  },
+  "majorForces": "剑仙门派之天剑门、仙丹宗与散修联盟",
+  "factions": [
+    {
+      "id": "xianxia_sword_sect",
+      "name": "天剑门",
+      "type": "宗门",
+      "description": "剑道至高宗门，剑仙传承千古。"
+    },
+    {
+      "id": "xianxia_dan_sect",
+      "name": "仙丹宗",
+      "type": "宗门",
+      "description": "丹道圣地，可炼制各种仙丹灵药。"
+    },
+    {
+      "id": "xianxia_free",
+      "name": "散修联盟",
+      "type": "联盟",
+      "description": "散修聚集之地，互通有无。"
+    }
+  ],
+  "baseCoefficient": 1.3,
+  "actualCoefficient": 1.3,
+  "difficulty": "困难",
+  "dangers": [
+    {
+      "id": "weak_enemies",
+      "type": "enemy_buff",
+      "name": "敌强我弱",
+      "description": "此地敌人实力略胜一筹",
+      "triggerCondition": {
+        "type": "on_battle_start",
+        "chance": 1
+      },
+      "effect": {
+        "enemyBuffs": {
+          "attackBonus": 0.1,
+          "defenseBonus": 0.1
+        }
+      },
+      "duration": 0,
+      "dispellable": false,
+      "dangerLevel": 2
+    }
+  ],
+  "opportunities": [
+    {
+      "id": "ancient_realm",
+      "type": "special_ability",
+      "name": "上古遗迹",
+      "description": "进入上古修士留下的遗迹，获得额外经验",
+      "triggerCondition": {
+        "type": "on_enter",
+        "chance": 0.3
+      },
+      "effect": {
+        "specialEffects": {
+          "type": "double_exp",
+          "value": 1.5
+        }
+      },
+      "duration": -1,
+      "opportunityLevel": 3
+    }
+  ],
+  "ratingScore": 0
+}

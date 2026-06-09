@@ -1,22 +1,37 @@
 /**
+ * 将字符串 hash 为 32 位整数（FNV-1a 简化版）
+ */
+export function hashString(str: string): number {
+  let hash = 0x811c9dc5;
+  for (let i = 0; i < str.length; i++) {
+    hash ^= str.charCodeAt(i);
+    hash = Math.imul(hash, 0x01000193);
+  }
+  return hash;
+}
+
+/**
  * 确定性随机数生成器（RNG）
  *
- * 使用 Mulberry32 算法，接受数字种子，返回可复现的随机序列。
+ * 使用 Mulberry32 算法，接受数字或字符串种子，返回可复现的随机序列。
  * 替代 Math.random() 用于 lib/game/ 中的纯函数，确保相同输入 → 相同输出。
  *
  * 使用示例：
  * ```ts
- * const rng = createRng(42);
+ * const rng = createRng('abc123');
  * const roll = rng(); // 0.0 ~ 1.0 的伪随机数
  * const dice = Math.floor(rng() * 6) + 1; // 1~6
  * ```
  *
- * @param seed - 数字种子（整数）
+ * @param seed - 数字种子（整数）或字符串种子（自动 hash 为数字）
  * @returns 返回一个无参函数，每次调用返回 [0, 1) 区间的伪随机数
  */
-export function createRng(seed: number): () => number {
-  // Mulberry32 — 简单快速的 32 位 PRNG
-  let state = seed | 0;
+export function createRng(seed: number | string): () => number {
+  // 字符串种子：hash 为数字
+  const numericSeed = typeof seed === 'string'
+    ? hashString(seed)
+    : seed;
+  let state = numericSeed | 0;
 
   return function next(): number {
     state = (state + 0x6d2b79f5) | 0;
