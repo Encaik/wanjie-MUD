@@ -42,7 +42,8 @@
       "Bash(xargs sed -i \"s|from '@/lib/data/worldData'|from '@/modules/identity/data/worldData'|g\")",
       "Bash(xargs sed -i \"s|from '@/lib/data/worldEffectsData'|from '@/modules/identity/data/worldEffectsData'|g\")",
       "Bash(xargs sed -i \"s|from '@/lib/data/worldEffectsUtils'|from '@/modules/identity/data/worldEffectsUtils'|g\")",
-      "Bash(xargs sed -i \"s|from '@/lib/data/worldSystem'|from '@/modules/identity/data/worldSystem'|g\")"
+      "Bash(xargs sed -i \"s|from '@/lib/data/worldSystem'|from '@/modules/identity/data/worldSystem'|g\")",
+      "Bash(pnpm lint *)"
     ]
   }
 }

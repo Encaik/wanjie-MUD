@@ -58,27 +58,28 @@ export function CooldownButton({
       disabled={disabled || isOnCooldown}
       onClick={handleClick}
     >
-      {/* CD蒙层 - 从左到右的进度条 */}
+      {/* CD蒙层 - 墨韵渐变（从左到右如运功聚气） */}
       {isOnCooldown && (
-        <div 
-          className="absolute inset-0 bg-black/60 pointer-events-none z-10"
+        <div
+          data-slot="cooldown-overlay"
+          className="absolute inset-0 bg-gradient-to-t from-primary/40 via-primary/15 to-transparent pointer-events-none z-10"
           style={{
             clipPath: `inset(0 ${(1 - progress) * 100}% 0 0)`
           }}
         />
       )}
-      
+
       {/* 按钮内容 */}
       <span className={cn(
         "flex items-center justify-center gap-1.5 transition-opacity",
-        isOnCooldown && "opacity-30"
+        isOnCooldown && "opacity-40"
       )}>
         {children}
       </span>
-      
+
       {/* CD时间显示 */}
       {isOnCooldown && (
-        <span className="absolute inset-0 flex items-center justify-center text-white font-bold text-sm z-20 drop-shadow-md">
+        <span className="absolute inset-0 flex items-center justify-center text-primary-foreground font-serif font-medium text-sm z-20 drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)]">
           {(remaining / 1000).toFixed(1)}s
         </span>
       )}
