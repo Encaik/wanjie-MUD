@@ -10,7 +10,7 @@
 import { useCallback, useState } from 'react';
 
 import type { Announcement, AnnouncementRequest } from '@/modules/social/announcementTypes';
-import type { PlayerOnlineState, AllLeaderboards } from '@/types/multiplayer';
+import type { PlayerOnlineState, AllLeaderboards } from '@/modules/social/multiplayerTypes';
 
 /** Hook 配置 */
 interface UseMultiplayerHttpOptions {

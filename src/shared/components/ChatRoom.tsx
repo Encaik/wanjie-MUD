@@ -10,7 +10,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/card';
 import { Input } from '@/shared/ui/input';
 import { ScrollArea } from '@/shared/ui/scroll-area';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/shared/ui/tooltip';
-import { ChatMessage, OnlinePlayer } from '@/types/chat';
+import { ChatMessage, OnlinePlayer } from '@/modules/social/chatTypes';
 
 
 interface ChatRoomProps {

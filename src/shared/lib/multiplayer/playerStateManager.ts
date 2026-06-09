@@ -15,7 +15,7 @@ import type {
   LeaderboardEntry,
   LeaderboardType,
   AllLeaderboards,
-} from '@/types/multiplayer';
+} from '@/modules/social/multiplayerTypes';
 
 import { WS_CONFIG } from '../websocket/types';
 

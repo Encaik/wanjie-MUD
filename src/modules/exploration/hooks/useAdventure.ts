@@ -754,14 +754,14 @@ export function useGameAdventure({
           if (fragmentData) {
             if (lostFragment.type === 'technique') {
               const idx = currentFragmentInventory.techniqueFragments.findIndex(
-                f => f.id === fragmentData.id
+                (f: any) => f.id === fragmentData.id
               );
               if (idx !== -1) {
                 currentFragmentInventory.techniqueFragments.splice(idx, 1);
               }
             } else {
               const idx = currentFragmentInventory.equipmentFragments.findIndex(
-                f => f.id === fragmentData.id
+                (f: any) => f.id === fragmentData.id
               );
               if (idx !== -1) {
                 currentFragmentInventory.equipmentFragments.splice(idx, 1);
@@ -1227,14 +1227,14 @@ export function useGameAdventure({
               if (fragmentData) {
                 if (lostFragment.type === 'technique') {
                   const idx = currentFragmentInventory.techniqueFragments.findIndex(
-                    f => f.id === fragmentData.id
+                    (f: any) => f.id === fragmentData.id
                   );
                   if (idx !== -1) {
                     currentFragmentInventory.techniqueFragments.splice(idx, 1);
                   }
                 } else {
                   const idx = currentFragmentInventory.equipmentFragments.findIndex(
-                    f => f.id === fragmentData.id
+                    (f: any) => f.id === fragmentData.id
                   );
                   if (idx !== -1) {
                     currentFragmentInventory.equipmentFragments.splice(idx, 1);
@@ -2101,14 +2101,14 @@ export function useGameAdventure({
           if (fragmentData) {
             if (lostFragment.type === 'technique') {
               const idx = currentFragmentInventory.techniqueFragments.findIndex(
-                f => f.id === fragmentData.id
+                (f: any) => f.id === fragmentData.id
               );
               if (idx !== -1) {
                 currentFragmentInventory.techniqueFragments.splice(idx, 1);
               }
             } else {
               const idx = currentFragmentInventory.equipmentFragments.findIndex(
-                f => f.id === fragmentData.id
+                (f: any) => f.id === fragmentData.id
               );
               if (idx !== -1) {
                 currentFragmentInventory.equipmentFragments.splice(idx, 1);

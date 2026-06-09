@@ -8,7 +8,7 @@
 import type { AdventureCell, CellType } from '@/shared/lib/types';
 import type { FogCell, FogCellState, PathHint, PathHintType, PathRiskType, RevealedMap, BossWarningState } from './types';
 import { PATH_HINT_TEXTS, PATH_CONFIGS, BOSS_WARNING_TEXTS } from './types';
-import { getAdjacentCells } from '@/modules/exploration/hooks';
+import { getAdjacentCells } from '@/modules/exploration/logic/adventure/adventure';
 
 // ============================================
 // 迷雾计算

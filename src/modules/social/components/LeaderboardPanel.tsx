@@ -13,7 +13,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/card';
 import { ScrollArea } from '@/shared/ui/scroll-area';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/shared/ui/tabs';
 import { cn } from '@/shared/utils';
-import type { AllLeaderboards, LeaderboardEntry, LeaderboardType } from '@/types/multiplayer';
+import type { AllLeaderboards, LeaderboardEntry, LeaderboardType } from '@/modules/social/multiplayerTypes';
 
 /** 排行榜配置 */
 const LEADERBOARD_CONFIG: Record<LeaderboardType, {

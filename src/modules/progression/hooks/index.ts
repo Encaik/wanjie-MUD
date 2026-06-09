@@ -1,2 +1,2 @@
 export { useGameCultivation } from './useCultivation';
-export { useGameSeclusion } from './useSeclusion';
+export { useSeclusion } from './useSeclusion';

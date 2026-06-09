@@ -12,7 +12,7 @@ import { generateId } from '@/modules/identity/logic/generators';
 import {
   addMessage as dbAddMessage,
   getMessagesPage,
-} from '@/lib/game/utils/messageDB';
+} from '@/shared/lib/messageDB';
 import { MessageRecord } from '@/shared/lib/types';
 import { MESSAGE_CONFIG } from '@/shared/lib/types';
 

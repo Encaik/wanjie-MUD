@@ -15,7 +15,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { WS_CONFIG, WSMessage, WSConnectionState, WSAuthPayload, WSAuthSuccessPayload } from '@/shared/lib/websocket/types';
 import type { Announcement, AnnouncementRequest } from '@/modules/social/announcementTypes';
-import type { PlayerOnlineState, AllLeaderboards } from '@/types/multiplayer';
+import type { PlayerOnlineState, AllLeaderboards } from '@/modules/social/multiplayerTypes';
 
 /** Hook 配置 */
 interface UseWebSocketConnectionOptions {

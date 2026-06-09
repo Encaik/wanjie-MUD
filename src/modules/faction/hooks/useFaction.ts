@@ -45,7 +45,7 @@ import {
   createDefaultCommissionState,
 } from '@/shared/lib/typesExtension';
 
-import { addToInventory } from '@/views/game/utils/inventoryUtils';
+import { addToInventory } from '@/modules/equipment/hooks/inventoryUtils';
 
 
 interface UseGameFactionProps {

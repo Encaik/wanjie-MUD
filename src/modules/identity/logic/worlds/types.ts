@@ -82,7 +82,7 @@ export interface WorldMechanics {
   customSuccessRate?: (baseRate: number, state: GameState) => number;
 
   /** 自定义战斗招式列表（可选，基于 ManualBattleState） */
-  customCombatActions?: (state: import('@/lib/game/combat/types').ManualBattleState) => BattleAction[];
+  customCombatActions?: (state: import('@/modules/combat/logic/engine/types').ManualBattleState) => BattleAction[];
 
   /** 自定义自动战斗策略（可选） */
   customAutoStrategy?: (state: ManualBattleState, strategy: AutoBattleStrategy) => BattleAction;

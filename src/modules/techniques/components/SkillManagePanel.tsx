@@ -37,7 +37,7 @@ import {
   quickEquipSkill,
   quickEquipTechnique,
 } from '@/modules/techniques/logic/skillEquipSystem';
-import { TechniqueSkill, WeaponTechnique } from '@/lib/game/skill/skillTypes';
+import { TechniqueSkill, WeaponTechnique } from '@/modules/techniques/logic/skillTypes';
 import { Technique, Equipment } from '@/shared/lib/types';
 
 // ============================================

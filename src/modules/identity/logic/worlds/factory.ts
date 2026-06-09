@@ -6,7 +6,7 @@
  */
 
 import type { WorldMechanics } from './types';
-import { cultivationWorld } from '@/modules/progression/hooksWorld';
+import { cultivationWorld } from './cultivationWorld';
 import { techWorld } from './techWorld';
 import { martialWorld } from './martialWorld';
 import { magicWorld } from './magicWorld';

@@ -6,7 +6,7 @@ import type { Announcement, AnnouncementRequest } from '@/modules/social/announc
 import type {
   PlayerOnlineState,
   AllLeaderboards,
-} from '@/types/multiplayer';
+} from '@/modules/social/multiplayerTypes';
 
 // ========== 连接状态 ==========
 

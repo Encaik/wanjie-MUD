@@ -46,8 +46,8 @@ export function InventoryPanel({
   const globalProtagonist = useGlobalState ? useProtagonist() : null;
   
   // 优先使用 props，其次使用全局状态
-  const inventory = propsInventory ?? globalInventory?.inventory ?? [];
-  const activeEffects = propsEffects ?? globalInventory?.activeEffects ?? [];
+  const inventory: InventoryItem[] = propsInventory ?? globalInventory?.inventory ?? [];
+  const activeEffects: ActiveEffect[] = propsEffects ?? globalInventory?.activeEffects ?? [];
   const onUseItem = propsUseItem ?? globalInventory?.useItem ?? (() => {});
   const worldType = propsWorldType ?? globalProtagonist?.world.type;
   
@@ -65,9 +65,9 @@ export function InventoryPanel({
   // 按类型分组道具
   const itemsByType = {
     all: sortedInventory,
-    丹药: inventory.filter(i => i.definition.type === '丹药'),
-    材料: inventory.filter(i => i.definition.type === '材料'),
-    其他: inventory.filter(i => !['丹药', '材料', '灵石'].includes(i.definition.type)),
+    丹药: inventory.filter((i: InventoryItem) => i.definition.type === '丹药'),
+    材料: inventory.filter((i: InventoryItem) => i.definition.type === '材料'),
+    其他: inventory.filter((i: InventoryItem) => !['丹药', '材料', '灵石'].includes(i.definition.type)),
   };
   
   // 内部 tab 状态 - 避免重新渲染时重置

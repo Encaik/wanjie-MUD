@@ -10,7 +10,7 @@ import { RealmSystem } from '@/modules/progression/data/realmData';
 import { getRealmName } from '@/modules/progression/data/realmData';
 import { MessageRecord } from '@/shared/lib/types';
 import type { Announcement } from '@/modules/social/announcementTypes';
-import type { AllLeaderboards } from '@/types/multiplayer';
+import type { AllLeaderboards } from '@/modules/social/multiplayerTypes';
 
 import { AnnouncementHistory } from '@/modules/social/components';
 import { LeaderboardPanel } from '@/modules/social/components';
