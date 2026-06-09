@@ -1,0 +1,287 @@
+{
+  "id": "u0v1w2x3",
+  "name": "玄武大陆",
+  "type": "高武",
+  "description": "宗门林立，武道传承源远流长",
+  "powerSystem": "武徒 → 武士 → 武师 → 武将 → 武王 → 武皇 → 武帝 → 武圣 → 武神 → 武尊",
+  "realmSystem": {
+    "mainRealmName": "武道修行",
+    "subRealmName": "数字层",
+    "tiers": [
+      {
+        "name": "武徒",
+        "subRealms": [
+          "第一层",
+          "第二层",
+          "第三层",
+          "第四层",
+          "第五层",
+          "第六层",
+          "第七层",
+          "第八层",
+          "第九层",
+          "第十层"
+        ],
+        "levelRange": [
+          1,
+          10
+        ]
+      },
+      {
+        "name": "武士",
+        "subRealms": [
+          "第一层",
+          "第二层",
+          "第三层",
+          "第四层",
+          "第五层",
+          "第六层",
+          "第七层",
+          "第八层",
+          "第九层",
+          "第十层"
+        ],
+        "levelRange": [
+          11,
+          20
+        ]
+      },
+      {
+        "name": "武师",
+        "subRealms": [
+          "第一层",
+          "第二层",
+          "第三层",
+          "第四层",
+          "第五层",
+          "第六层",
+          "第七层",
+          "第八层",
+          "第九层",
+          "第十层"
+        ],
+        "levelRange": [
+          21,
+          30
+        ]
+      },
+      {
+        "name": "武将",
+        "subRealms": [
+          "第一层",
+          "第二层",
+          "第三层",
+          "第四层",
+          "第五层",
+          "第六层",
+          "第七层",
+          "第八层",
+          "第九层",
+          "第十层"
+        ],
+        "levelRange": [
+          31,
+          40
+        ]
+      },
+      {
+        "name": "武王",
+        "subRealms": [
+          "第一层",
+          "第二层",
+          "第三层",
+          "第四层",
+          "第五层",
+          "第六层",
+          "第七层",
+          "第八层",
+          "第九层",
+          "第十层"
+        ],
+        "levelRange": [
+          41,
+          50
+        ]
+      },
+      {
+        "name": "武皇",
+        "subRealms": [
+          "第一层",
+          "第二层",
+          "第三层",
+          "第四层",
+          "第五层",
+          "第六层",
+          "第七层",
+          "第八层",
+          "第九层",
+          "第十层"
+        ],
+        "levelRange": [
+          51,
+          60
+        ]
+      },
+      {
+        "name": "武帝",
+        "subRealms": [
+          "第一层",
+          "第二层",
+          "第三层",
+          "第四层",
+          "第五层",
+          "第六层",
+          "第七层",
+          "第八层",
+          "第九层",
+          "第十层"
+        ],
+        "levelRange": [
+          61,
+          70
+        ]
+      },
+      {
+        "name": "武圣",
+        "subRealms": [
+          "第一层",
+          "第二层",
+          "第三层",
+          "第四层",
+          "第五层",
+          "第六层",
+          "第七层",
+          "第八层",
+          "第九层",
+          "第十层"
+        ],
+        "levelRange": [
+          71,
+          80
+        ]
+      },
+      {
+        "name": "武神",
+        "subRealms": [
+          "第一层",
+          "第二层",
+          "第三层",
+          "第四层",
+          "第五层",
+          "第六层",
+          "第七层",
+          "第八层",
+          "第九层",
+          "第十层"
+        ],
+        "levelRange": [
+          81,
+          90
+        ]
+      },
+      {
+        "name": "武尊",
+        "subRealms": [
+          "第一层",
+          "第二层",
+          "第三层",
+          "第四层",
+          "第五层",
+          "第六层",
+          "第七层",
+          "第八层",
+          "第九层",
+          "第十层"
+        ],
+        "levelRange": [
+          91,
+          100
+        ]
+      }
+    ]
+  },
+  "majorForces": "武道圣地之武道圣地、上古血脉之凤族与天武皇朝",
+  "factions": [
+    {
+      "id": "wu_saint_land",
+      "name": "武道圣地",
+      "type": "宗门",
+      "description": "天下武道之源，传承最古老的武学秘典。"
+    },
+    {
+      "id": "wu_phoenix_clan",
+      "name": "凤族",
+      "type": "家族",
+      "description": "凤凰血脉传承者，掌控火焰之力。"
+    },
+    {
+      "id": "wu_empire",
+      "name": "天武皇朝",
+      "type": "皇朝",
+      "description": "以武立国的强大皇朝，疆域辽阔，武者众多。"
+    }
+  ],
+  "baseCoefficient": 1.3,
+  "actualCoefficient": 1.3,
+  "difficulty": "困难",
+  "dangers": [
+    {
+      "id": "reduced_insight",
+      "type": "stat_debuff",
+      "name": "悟性压制",
+      "description": "天机混乱，领悟效率下降",
+      "triggerCondition": {
+        "type": "on_enter",
+        "chance": 1
+      },
+      "effect": {
+        "statModifications": {
+          "悟性": -2,
+          "灵根": -1
+        }
+      },
+      "duration": -1,
+      "dispellable": false,
+      "dangerLevel": 2
+    }
+  ],
+  "opportunities": [
+    {
+      "id": "double_harvest",
+      "type": "special_ability",
+      "name": "双倍收获",
+      "description": "战斗奖励翻倍",
+      "triggerCondition": {
+        "type": "on_battle_end",
+        "chance": 0.4
+      },
+      "effect": {
+        "specialEffects": {
+          "type": "double_drop",
+          "value": 2
+        }
+      },
+      "duration": 0,
+      "opportunityLevel": 4
+    },
+    {
+      "id": "lucky_star",
+      "type": "rare_drop",
+      "name": "吉星高照",
+      "description": "运势大好，掉落稀有物品概率大幅提升",
+      "triggerCondition": {
+        "type": "on_enter",
+        "chance": 0.25
+      },
+      "effect": {
+        "dropBonus": {
+          "rarityBoost": 2,
+          "extraDropChance": 0.35
+        }
+      },
+      "duration": -1,
+      "opportunityLevel": 4
+    }
+  ],
+  "ratingScore": 0
+}

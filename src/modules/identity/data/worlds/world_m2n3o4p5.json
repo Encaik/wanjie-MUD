@@ -1,0 +1,269 @@
+{
+  "id": "m2n3o4p5",
+  "name": "麒麟界",
+  "type": "高武",
+  "description": "宗门林立，武道传承源远流长",
+  "powerSystem": "淬体 → 通脉 → 聚气 → 凝元 → 化劲 → 宗师 → 大宗师 → 武圣 → 武神 → 武道至尊",
+  "realmSystem": {
+    "mainRealmName": "气血武道",
+    "subRealmName": "数字层",
+    "tiers": [
+      {
+        "name": "淬体",
+        "subRealms": [
+          "第一层",
+          "第二层",
+          "第三层",
+          "第四层",
+          "第五层",
+          "第六层",
+          "第七层",
+          "第八层",
+          "第九层",
+          "第十层"
+        ],
+        "levelRange": [
+          1,
+          10
+        ]
+      },
+      {
+        "name": "通脉",
+        "subRealms": [
+          "第一层",
+          "第二层",
+          "第三层",
+          "第四层",
+          "第五层",
+          "第六层",
+          "第七层",
+          "第八层",
+          "第九层",
+          "第十层"
+        ],
+        "levelRange": [
+          11,
+          20
+        ]
+      },
+      {
+        "name": "聚气",
+        "subRealms": [
+          "第一层",
+          "第二层",
+          "第三层",
+          "第四层",
+          "第五层",
+          "第六层",
+          "第七层",
+          "第八层",
+          "第九层",
+          "第十层"
+        ],
+        "levelRange": [
+          21,
+          30
+        ]
+      },
+      {
+        "name": "凝元",
+        "subRealms": [
+          "第一层",
+          "第二层",
+          "第三层",
+          "第四层",
+          "第五层",
+          "第六层",
+          "第七层",
+          "第八层",
+          "第九层",
+          "第十层"
+        ],
+        "levelRange": [
+          31,
+          40
+        ]
+      },
+      {
+        "name": "化劲",
+        "subRealms": [
+          "第一层",
+          "第二层",
+          "第三层",
+          "第四层",
+          "第五层",
+          "第六层",
+          "第七层",
+          "第八层",
+          "第九层",
+          "第十层"
+        ],
+        "levelRange": [
+          41,
+          50
+        ]
+      },
+      {
+        "name": "宗师",
+        "subRealms": [
+          "第一层",
+          "第二层",
+          "第三层",
+          "第四层",
+          "第五层",
+          "第六层",
+          "第七层",
+          "第八层",
+          "第九层",
+          "第十层"
+        ],
+        "levelRange": [
+          51,
+          60
+        ]
+      },
+      {
+        "name": "大宗师",
+        "subRealms": [
+          "第一层",
+          "第二层",
+          "第三层",
+          "第四层",
+          "第五层",
+          "第六层",
+          "第七层",
+          "第八层",
+          "第九层",
+          "第十层"
+        ],
+        "levelRange": [
+          61,
+          70
+        ]
+      },
+      {
+        "name": "武圣",
+        "subRealms": [
+          "第一层",
+          "第二层",
+          "第三层",
+          "第四层",
+          "第五层",
+          "第六层",
+          "第七层",
+          "第八层",
+          "第九层",
+          "第十层"
+        ],
+        "levelRange": [
+          71,
+          80
+        ]
+      },
+      {
+        "name": "武神",
+        "subRealms": [
+          "第一层",
+          "第二层",
+          "第三层",
+          "第四层",
+          "第五层",
+          "第六层",
+          "第七层",
+          "第八层",
+          "第九层",
+          "第十层"
+        ],
+        "levelRange": [
+          81,
+          90
+        ]
+      },
+      {
+        "name": "武道至尊",
+        "subRealms": [
+          "第一层",
+          "第二层",
+          "第三层",
+          "第四层",
+          "第五层",
+          "第六层",
+          "第七层",
+          "第八层",
+          "第九层",
+          "第十层"
+        ],
+        "levelRange": [
+          91,
+          100
+        ]
+      }
+    ]
+  },
+  "majorForces": "武道圣地之武道圣地、上古血脉之龙族与天武皇朝",
+  "factions": [
+    {
+      "id": "wu_saint_land",
+      "name": "武道圣地",
+      "type": "宗门",
+      "description": "天下武道之源，传承最古老的武学秘典。"
+    },
+    {
+      "id": "wu_dragon_clan",
+      "name": "龙族",
+      "type": "家族",
+      "description": "上古龙族后裔，血脉强大，天生神力。"
+    },
+    {
+      "id": "wu_empire",
+      "name": "天武皇朝",
+      "type": "皇朝",
+      "description": "以武立国的强大皇朝，疆域辽阔，武者众多。"
+    }
+  ],
+  "baseCoefficient": 1.3,
+  "actualCoefficient": 1.3,
+  "difficulty": "困难",
+  "dangers": [
+    {
+      "id": "weak_enemies",
+      "type": "enemy_buff",
+      "name": "敌强我弱",
+      "description": "此地敌人实力略胜一筹",
+      "triggerCondition": {
+        "type": "on_battle_start",
+        "chance": 1
+      },
+      "effect": {
+        "enemyBuffs": {
+          "attackBonus": 0.1,
+          "defenseBonus": 0.1
+        }
+      },
+      "duration": 0,
+      "dispellable": false,
+      "dangerLevel": 2
+    }
+  ],
+  "opportunities": [
+    {
+      "id": "lucky_star",
+      "type": "rare_drop",
+      "name": "吉星高照",
+      "description": "运势大好，掉落稀有物品概率大幅提升",
+      "triggerCondition": {
+        "type": "on_enter",
+        "chance": 0.25
+      },
+      "effect": {
+        "dropBonus": {
+          "rarityBoost": 2,
+          "extraDropChance": 0.35
+        }
+      },
+      "duration": -1,
+      "opportunityLevel": 4
+    }
+  ],
+  "ratingScore": 0
+}
