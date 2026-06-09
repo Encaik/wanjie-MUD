@@ -6,3 +6,6 @@ export { MentalStateCard } from './MentalStateCard';
 export { useInventory, useProtagonist, useProtagonistInfo, useTechniques, useHpMp, useStats, useCombatStats, useExperience, useGamePhase } from './useGameHooks';
 export { RankDetailDialog } from './RankDetailDialog';
 export { ReputationDetailDialog } from './ReputationDetailDialog';
+
+// 游戏状态管理与路由守卫
+export { GameProvider, useGame, getRouteGuard } from './useGameState';

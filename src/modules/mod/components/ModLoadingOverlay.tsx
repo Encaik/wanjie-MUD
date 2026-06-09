@@ -1,7 +1,11 @@
 /**
  * 组件：ModLoadingOverlay
  *
- * Mod 加载期间的全局遮罩层。
+ * **@deprecated** 自 optimize-startup-flow 变更为弃用。
+ * Mod 加载进度已整合到 StartScreen 中，不再使用独立全屏遮罩。
+ * 保留此文件以兼容可能的 fallback 场景。
+ *
+ * Mod 加载期间的全局遮罩层（已弃用）。
  * - 加载中：显示动画 + 进度条
  * - 致命错误：显示错误页面
  * - 加载完成：渲染子组件

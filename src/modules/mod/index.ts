@@ -8,6 +8,9 @@
 export { useModLoader } from './hooks/useModLoader';
 export type { ModLoaderState, ModLoadPhase, ModLoadWarning } from './hooks/useModLoader';
 
+// Context
+export { useModContext } from './components/ModInitProvider';
+
 // Components
 export { ModInitProvider } from './components/ModInitProvider';
 export { ModLoadingOverlay } from './components/ModLoadingOverlay';

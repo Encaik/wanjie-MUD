@@ -1,29 +1,29 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 
 import { useRouter } from 'next/navigation';
 
 import { CharacterSelect } from '@/views/character-select/CharacterSelect';
-import { useGame } from '@/views/game/useGameState';
+import { useGame, getRouteGuard } from '@/views/game/useGameState';
 
 export default function CharacterSelectPage() {
   const router = useRouter();
   const { gameState, selectCharacter, refreshCharacters } = useGame();
+  const redirectedRef = useRef(false);
 
-  // Redirect if not in character-select phase
+  // 同步计算重定向目标
+  const redirectTo = getRouteGuard('/character-select', gameState);
+
   useEffect(() => {
-    if (gameState.phase === 'playing' && gameState.protagonist) {
-      router.replace('/game');
-    } else if (gameState.phase === 'world-select') {
-      router.replace('/world-select');
-    } else if (gameState.phase === 'backstory' && gameState.protagonist) {
-      router.replace('/backstory');
-    } else if (gameState.characters.length === 0 && gameState.phase === 'character-select') {
-      // Need to go back to world select
-      router.replace('/world-select');
+    if (redirectTo && !redirectedRef.current) {
+      redirectedRef.current = true;
+      router.replace(redirectTo);
     }
-  }, [gameState.phase, gameState.protagonist, gameState.selectedWorld, gameState.characters.length, router]);
+  }, [redirectTo, router]);
+
+  // 需要重定向时不渲染页面内容
+  if (redirectTo) return null;
 
   const handleSelect = (character: Parameters<typeof selectCharacter>[0]) => {
     selectCharacter(character);

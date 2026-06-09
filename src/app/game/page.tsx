@@ -1,35 +1,33 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 
 import { useRouter } from 'next/navigation';
 
 import { MainGame } from '@/views/game/MainGame';
-import { useGame } from '@/views/game/useGameState';
+import { useGame, getRouteGuard } from '@/views/game/useGameState';
 
 export default function GamePage() {
   const router = useRouter();
   const game = useGame();
   const { gameState } = game;
+  const redirectedRef = useRef(false);
 
-  // Redirect if not playing
+  // 同步计算重定向目标
+  const redirectTo = getRouteGuard('/game', gameState);
+
   useEffect(() => {
-    if (!gameState.protagonist && gameState.phase !== 'playing') {
-      if (gameState.selectedCharacter && gameState.selectedWorld) {
-        router.replace('/backstory');
-      } else if (gameState.selectedWorld) {
-        router.replace('/character-select');
-      } else if (gameState.worlds.length > 0) {
-        router.replace('/world-select');
-      } else {
-        router.replace('/');
-      }
+    if (redirectTo && !redirectedRef.current) {
+      redirectedRef.current = true;
+      router.replace(redirectTo);
     }
-  }, [gameState.phase, gameState.protagonist, gameState.worlds.length, gameState.selectedCharacter, gameState.selectedWorld, router]);
+  }, [redirectTo, router]);
 
-  if (!gameState.protagonist) {
-    return <div className="min-h-screen flex items-center justify-center">加载中...</div>;
-  }
+  // 需要重定向时不渲染页面内容
+  if (redirectTo) return null;
+
+  // 守卫通过后 protagonist 一定存在
+  if (!gameState.protagonist) return null;
 
   return (
     <MainGame

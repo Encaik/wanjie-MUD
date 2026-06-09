@@ -1,39 +1,37 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 
 import { useRouter } from 'next/navigation';
 
 import { BackstoryView } from '@/views/backstory/BackstoryView';
-import { useGame } from '@/views/game/useGameState';
+import { useGame, getRouteGuard } from '@/views/game/useGameState';
 
 export default function BackstoryPage() {
   const router = useRouter();
   const { gameState, confirmBackstory } = useGame();
+  const redirectedRef = useRef(false);
 
-  // Redirect if not in backstory phase
+  // 同步计算重定向目标
+  const redirectTo = getRouteGuard('/backstory', gameState);
+
   useEffect(() => {
-    if (!gameState.protagonist) {
-      if (gameState.selectedCharacter && gameState.selectedWorld) {
-        router.replace('/character-select');
-      } else if (gameState.selectedWorld) {
-        router.replace('/character-select');
-      } else {
-        router.replace('/world-select');
-      }
-    } else if (gameState.phase === 'playing') {
-      router.replace('/game');
+    if (redirectTo && !redirectedRef.current) {
+      redirectedRef.current = true;
+      router.replace(redirectTo);
     }
-  }, [gameState.phase, gameState.protagonist, gameState.selectedCharacter, gameState.selectedWorld, router]);
+  }, [redirectTo, router]);
+
+  // 需要重定向时不渲染页面内容
+  if (redirectTo) return null;
+
+  // protagonist 在守卫通过后一定存在
+  if (!gameState.protagonist) return null;
 
   const handleConfirm = () => {
     confirmBackstory();
     router.push('/game');
   };
-
-  if (!gameState.protagonist) {
-    return <div className="min-h-screen flex items-center justify-center">加载中...</div>;
-  }
 
   return (
     <BackstoryView

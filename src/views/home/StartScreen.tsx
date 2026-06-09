@@ -1,11 +1,12 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 
-import { Sparkles, Upload, X } from 'lucide-react';
+import { Loader2, Sparkles, Upload, X } from 'lucide-react';
 
 import { Button } from '@/shared/ui/button';
 import { Card, CardContent } from '@/shared/ui/card';
+import type { ModLoaderState } from '@/modules/mod/hooks/useModLoader';
 
 /** 背景浮动的修行符文 */
 const FLOATING_RUNES = [
@@ -34,10 +35,34 @@ const LIGHT_DOTS = [
 interface StartScreenProps {
   onStart: () => void;
   onImportSave?: (jsonString: string) => void;
+  /** Mod 加载状态（来自 ModContext），加载完成前禁用"踏入万界"按钮 */
+  modLoadState?: ModLoaderState;
 }
 
-export function StartScreen({ onStart, onImportSave }: StartScreenProps) {
+export function StartScreen({ onStart, onImportSave, modLoadState }: StartScreenProps) {
   const [importError, setImportError] = useState<string | null>(null);
+  /** 控制加载完成后的淡入动画 */
+  const [showContent, setShowContent] = useState(false);
+  const prevPhaseRef = useRef(modLoadState?.phase);
+
+  // 加载完成时触发淡入过渡
+  useEffect(() => {
+    if (
+      prevPhaseRef.current === 'loading' &&
+      modLoadState?.phase === 'ready'
+    ) {
+      const timer = setTimeout(() => setShowContent(true), 50);
+      return () => clearTimeout(timer);
+    }
+    if (modLoadState?.phase === 'ready') {
+      setShowContent(true);
+    }
+    prevPhaseRef.current = modLoadState?.phase;
+  }, [modLoadState?.phase]);
+
+  const isLoading = modLoadState?.phase === 'loading';
+  const hasError = modLoadState?.phase === 'error';
+  const isReady = modLoadState?.phase === 'ready' || !modLoadState;
 
   const handleImport = () => {
     setImportError(null);
@@ -167,68 +192,126 @@ export function StartScreen({ onStart, onImportSave }: StartScreenProps) {
             <div className="flex-1 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
           </div>
 
-          {/* ===== 描述文字 ===== */}
-          <p className="text-sm text-muted-foreground/80 leading-relaxed tracking-wide">
-            万界之门已开启，星辰指引着命运的方向。
-            <br />
-            择一方天地，书写属于你的不朽传奇。
-          </p>
-
-          {/* ===== 开始按钮（带光晕） ===== */}
-          <div className="relative pt-1">
-            {/* 按钮外光晕 */}
-            <div
-              className="absolute inset-0 rounded-lg bg-primary/15 blur-xl"
-              style={{ animation: 'button-glow 3s ease-in-out infinite' }}
-            />
-            <Button
-              size="lg"
-              onClick={onStart}
-              className="relative w-full text-base font-semibold tracking-[0.15em] font-serif
-                transition-all duration-500
-                hover:scale-[1.03] hover:shadow-lg hover:shadow-primary/20
-                active:scale-[0.98]"
-            >
-              <Sparkles className="w-4 h-4 mr-2" />
-              踏入万界
-            </Button>
-          </div>
-
-          {/* ===== 导入存档按钮 ===== */}
-          {onImportSave && (
-            <Button
-              variant="outline"
-              size="lg"
-              onClick={handleImport}
-              className="w-full transition-all duration-300 hover:border-primary/30 hover:bg-primary/5"
-            >
-              <Upload className="w-4 h-4 mr-2" />
-              导入存档
-            </Button>
-          )}
-
-          {/* ===== 导入错误提示 ===== */}
-          {importError && (
-            <div
-              className="flex items-center gap-1.5 p-2.5 rounded-md bg-destructive/10 border border-destructive/30 text-destructive text-xs"
-              style={{ animation: 'fade-in-up 0.4s ease-out forwards' }}
-            >
-              <X className="w-3.5 h-3.5 shrink-0" />
-              <span>{importError}</span>
-              <button
-                className="ml-auto p-0.5 rounded hover:bg-destructive/20 transition-colors"
-                onClick={() => setImportError(null)}
-                aria-label="关闭错误提示"
-              >
-                <X className="w-3 h-3" />
-              </button>
+          {/* ===== Mod 加载进度（加载阶段） ===== */}
+          {isLoading && modLoadState && (
+            <div className="space-y-5">
+              <div className="flex flex-col items-center gap-4">
+                <Loader2 className="h-10 w-10 animate-spin text-primary" />
+                <div className="text-center">
+                  <p className="text-base font-medium text-foreground">
+                    正在加载世界数据...
+                  </p>
+                  <p className="text-sm text-muted-foreground mt-1">
+                    {modLoadState.progress.current} / {modLoadState.progress.total}
+                  </p>
+                </div>
+              </div>
+              {/* 进度条 */}
+              <div className="h-2 w-full overflow-hidden rounded-full bg-muted">
+                <div
+                  className="h-full bg-primary transition-all duration-500 ease-out"
+                  style={{
+                    width: `${modLoadState.progress.total > 0 ? Math.round((modLoadState.progress.current / modLoadState.progress.total) * 100) : 0}%`,
+                  }}
+                />
+              </div>
             </div>
           )}
 
-          {/* ===== 底部提示 ===== */}
-          <p className="text-xs text-muted-foreground/50 tracking-wide">
-            导入存档将覆盖当前游戏进度（消息记录不包含在存档中）
-          </p>
+          {/* ===== Mod 加载错误 ===== */}
+          {hasError && modLoadState && (
+            <div className="space-y-4">
+              <div className="flex flex-col items-center gap-3">
+                <span className="text-4xl">⚠️</span>
+                <h2 className="text-lg font-bold text-destructive">数据加载失败</h2>
+                <p className="text-sm text-muted-foreground">
+                  {modLoadState.fatalError ?? '未知错误'}
+                </p>
+              </div>
+              <Button
+                variant="destructive"
+                size="lg"
+                onClick={() => window.location.reload()}
+                className="w-full"
+              >
+                刷新页面
+              </Button>
+            </div>
+          )}
+
+          {/* ===== 正常内容（加载完成后淡入） ===== */}
+          {isReady && (
+            <div
+              className="space-y-5 transition-all duration-500"
+              style={{
+                opacity: showContent ? 1 : 0,
+                transform: showContent ? 'translateY(0)' : 'translateY(8px)',
+              }}
+            >
+              {/* ===== 描述文字 ===== */}
+              <p className="text-sm text-muted-foreground/80 leading-relaxed tracking-wide">
+                万界之门已开启，星辰指引着命运的方向。
+                <br />
+                择一方天地，书写属于你的不朽传奇。
+              </p>
+
+              {/* ===== 开始按钮（带光晕） ===== */}
+              <div className="relative pt-1">
+                {/* 按钮外光晕 */}
+                <div
+                  className="absolute inset-0 rounded-lg bg-primary/15 blur-xl"
+                  style={{ animation: 'button-glow 3s ease-in-out infinite' }}
+                />
+                <Button
+                  size="lg"
+                  onClick={onStart}
+                  className="relative w-full text-base font-semibold tracking-[0.15em] font-serif
+                    transition-all duration-500
+                    hover:scale-[1.03] hover:shadow-lg hover:shadow-primary/20
+                    active:scale-[0.98]"
+                >
+                  <Sparkles className="w-4 h-4 mr-2" />
+                  踏入万界
+                </Button>
+              </div>
+
+              {/* ===== 导入存档按钮 ===== */}
+              {onImportSave && (
+                <Button
+                  variant="outline"
+                  size="lg"
+                  onClick={handleImport}
+                  className="w-full transition-all duration-300 hover:border-primary/30 hover:bg-primary/5"
+                >
+                  <Upload className="w-4 h-4 mr-2" />
+                  导入存档
+                </Button>
+              )}
+
+              {/* ===== 导入错误提示 ===== */}
+              {importError && (
+                <div
+                  className="flex items-center gap-1.5 p-2.5 rounded-md bg-destructive/10 border border-destructive/30 text-destructive text-xs"
+                  style={{ animation: 'fade-in-up 0.4s ease-out forwards' }}
+                >
+                  <X className="w-3.5 h-3.5 shrink-0" />
+                  <span>{importError}</span>
+                  <button
+                    className="ml-auto p-0.5 rounded hover:bg-destructive/20 transition-colors"
+                    onClick={() => setImportError(null)}
+                    aria-label="关闭错误提示"
+                  >
+                    <X className="w-3 h-3" />
+                  </button>
+                </div>
+              )}
+
+              {/* ===== 底部提示 ===== */}
+              <p className="text-xs text-muted-foreground/50 tracking-wide">
+                导入存档将覆盖当前游戏进度（消息记录不包含在存档中）
+              </p>
+            </div>
+          )}
         </CardContent>
       </Card>
     </div>
