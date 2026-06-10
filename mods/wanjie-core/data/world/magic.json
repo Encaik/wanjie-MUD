@@ -1,0 +1,478 @@
+{
+  "id": 4,
+  "type": "magic",
+  "name": "魔幻世界",
+  "description": "魔法元素充盈，法师与龙共存",
+  "baseCoefficient": 1.1,
+  "namePrefixes": [
+    "艾泽",
+    "诺瓦",
+    "奥兰",
+    "神秘",
+    "永恒",
+    "圣光"
+  ],
+  "nameSuffixes": [
+    "大陆",
+    "王国",
+    "领域",
+    "森林",
+    "帝国"
+  ],
+  "descriptions": [
+    "魔法元素充盈，法师与龙共存",
+    "精灵与矮人世代居住，魔法文明辉煌",
+    "诸神的恩赐洒满大地，魔法至上的世界"
+  ],
+  "powerSystems": [
+    "元素魔法与奥术之力，法师追求真理",
+    "神术与魔法并存，信仰与知识同行"
+  ],
+  "majorForces": [
+    "魔法议会统领各元素学派",
+    "三大帝国与精灵联盟对峙",
+    "教会与法师协会分庭抗礼"
+  ],
+  "worldDangers": [
+    {
+      "description": "魔王苏醒",
+      "impact": {
+        "体质": -1
+      },
+      "impactDescription": "体质-1"
+    },
+    {
+      "description": "魔力潮汐",
+      "impact": {
+        "灵根": -1
+      },
+      "impactDescription": "灵根-1"
+    },
+    {
+      "description": "黑暗降临",
+      "impact": {
+        "意志": -1
+      },
+      "impactDescription": "意志-1"
+    }
+  ],
+  "worldOpportunities": [
+    {
+      "description": "获得魔法传承",
+      "impact": {
+        "体质": 2
+      },
+      "impactDescription": "体质+2"
+    },
+    {
+      "description": "契约元素之灵",
+      "impact": {
+        "灵根": 2
+      },
+      "impactDescription": "灵根+2"
+    },
+    {
+      "description": "获得神器认可",
+      "impact": {
+        "意志": 2
+      },
+      "impactDescription": "意志+2"
+    }
+  ],
+  "stats": {
+    "baseHp": 95,
+    "hpPerLevel": 14,
+    "hpPerConstitution": 9,
+    "baseAttack": 13,
+    "attackPerLevel": 2.1,
+    "attackPerConstitution": 0.8,
+    "attackPerSpiritRoot": 0.8,
+    "baseDefense": 7,
+    "defensePerLevel": 1,
+    "defensePerWillpower": 0.9,
+    "enemyAttackBonus": 0.05,
+    "enemyDefenseBonus": 0.05,
+    "statDisplayNames": {
+      "体质": "力量",
+      "灵根": "魔力",
+      "悟性": "感知",
+      "幸运": "魅力",
+      "意志": "精神"
+    }
+  },
+  "visualConfig": {
+    "icon": "✦",
+    "accentColor": "text-purple-400",
+    "gradientClass": "from-purple-500/20 to-violet-600/10",
+    "borderColor": "border-purple-500/30",
+    "bgGradient": "bg-gradient-to-br from-purple-50 to-violet-50 dark:from-purple-950/30 dark:to-violet-950/30",
+    "colorGradient": "from-pink-500 to-purple-500"
+  },
+  "mechanics": {
+    "worldType": "魔幻",
+    "cultivation": {
+      "resourceName": "魔晶",
+      "actionName": "冥想",
+      "baseCost": 20,
+      "useStandardFormula": true,
+      "successRateModifier": 0
+    },
+    "combat": {
+      "mpName": "法力值",
+      "abilityName": "法术",
+      "basicAttackName": "魔力冲击"
+    },
+    "exploration": {
+      "exploreName": "冒险",
+      "hasSpecialMechanics": true
+    },
+    "uniqueMechanic": {
+      "name": "法术记忆",
+      "description": "最多记忆4个法术到槽位中，战斗中只能使用已记忆的法术。探索时可在魔力节点更换法术，策略搭配是关键。",
+      "icon": "BookOpen"
+    }
+  },
+  "dangers": [
+    {
+      "id": "chaotic_elements",
+      "type": "stat_debuff",
+      "name": "元素紊乱",
+      "description": "元素之力紊乱，战斗能力略微下降",
+      "triggerCondition": {
+        "type": "on_enter",
+        "chance": 1
+      },
+      "effect": {
+        "statModifications": {
+          "体质": -1
+        }
+      },
+      "duration": -1,
+      "dispellable": false,
+      "dangerLevel": 1
+    },
+    {
+      "id": "demon_erosion",
+      "type": "resource_drain",
+      "name": "魔气侵蚀",
+      "description": "魔气弥漫，每回合损失少量生命",
+      "triggerCondition": {
+        "type": "on_turn",
+        "chance": 0.3
+      },
+      "effect": {
+        "resourceModifications": {
+          "hp": -5
+        }
+      },
+      "duration": 0,
+      "dispellable": true,
+      "dangerLevel": 2
+    },
+    {
+      "id": "spirit_drain",
+      "type": "resource_drain",
+      "name": "灵力枯竭",
+      "description": "灵力流失加剧，每回合损失法力",
+      "triggerCondition": {
+        "type": "on_turn",
+        "chance": 0.25
+      },
+      "effect": {
+        "resourceModifications": {
+          "mp": -8
+        }
+      },
+      "duration": 0,
+      "dispellable": true,
+      "dangerLevel": 2
+    },
+    {
+      "id": "cursed_ground",
+      "type": "resource_drain",
+      "name": "诅咒之地",
+      "description": "受到诅咒，每回合损失生命和法力",
+      "triggerCondition": {
+        "type": "on_turn",
+        "chance": 0.4
+      },
+      "effect": {
+        "resourceModifications": {
+          "hp": -8,
+          "mp": -5
+        }
+      },
+      "duration": 0,
+      "dispellable": true,
+      "dangerLevel": 3
+    }
+  ],
+  "opportunities": [
+    {
+      "id": "abundant_lingqi",
+      "type": "stat_buff",
+      "name": "灵气充沛",
+      "description": "此地灵气充沛，修炼效率提升",
+      "triggerCondition": {
+        "type": "on_enter",
+        "chance": 1
+      },
+      "effect": {
+        "statModifications": {
+          "灵根": 2
+        }
+      },
+      "duration": -1,
+      "opportunityLevel": 1,
+      "conflictsWith": [
+        "weak_lingqi"
+      ]
+    },
+    {
+      "id": "harmonious_elements",
+      "type": "stat_buff",
+      "name": "元素和谐",
+      "description": "元素之力和谐，战斗能力略微提升",
+      "triggerCondition": {
+        "type": "on_enter",
+        "chance": 1
+      },
+      "effect": {
+        "statModifications": {
+          "体质": 2
+        }
+      },
+      "duration": -1,
+      "opportunityLevel": 1
+    }
+  ],
+  "realmSystem": {
+    "mainRealmName": "魔法位阶",
+    "subRealmName": "环",
+    "tiers": [
+      {
+        "name": "炼气期",
+        "subRealms": [
+          "一阶",
+          "二阶",
+          "三阶",
+          "四阶",
+          "五阶",
+          "六阶",
+          "七阶",
+          "八阶",
+          "九阶",
+          "十阶"
+        ],
+        "levelRange": [
+          1,
+          10
+        ]
+      },
+      {
+        "name": "筑基期",
+        "subRealms": [
+          "一重",
+          "二重",
+          "三重",
+          "四重",
+          "五重",
+          "六重",
+          "七重",
+          "八重",
+          "九重",
+          "十重"
+        ],
+        "levelRange": [
+          11,
+          20
+        ]
+      },
+      {
+        "name": "金丹期",
+        "subRealms": [
+          "一转",
+          "二转",
+          "三转",
+          "四转",
+          "五转",
+          "六转",
+          "七转",
+          "八转",
+          "九转",
+          "十转"
+        ],
+        "levelRange": [
+          21,
+          30
+        ]
+      },
+      {
+        "name": "元婴期",
+        "subRealms": [
+          "一层",
+          "二层",
+          "三层",
+          "四层",
+          "五层",
+          "六层",
+          "七层",
+          "八层",
+          "九层",
+          "十层"
+        ],
+        "levelRange": [
+          31,
+          40
+        ]
+      },
+      {
+        "name": "化神期",
+        "subRealms": [
+          "初期",
+          "中期",
+          "后期",
+          "巅峰",
+          "圆满",
+          "大成",
+          "入圣",
+          "超凡",
+          "脱俗",
+          "归真"
+        ],
+        "levelRange": [
+          41,
+          50
+        ]
+      }
+    ],
+    "subRealmMultiplier": 1.05,
+    "tierJumpMultiplier": 1.3
+  },
+  "factions": {
+    "templates": [
+      {
+        "id": "魔幻_faction_0",
+        "name": "魔法议会统领各元素学派",
+        "type": "魔幻",
+        "description": "魔幻世界的主要势力",
+        "worldTypeId": "魔幻"
+      },
+      {
+        "id": "魔幻_faction_1",
+        "name": "三大帝国与精灵联盟对峙",
+        "type": "魔幻",
+        "description": "魔幻世界的主要势力",
+        "worldTypeId": "魔幻"
+      },
+      {
+        "id": "魔幻_faction_2",
+        "name": "教会与法师协会分庭抗礼",
+        "type": "魔幻",
+        "description": "魔幻世界的主要势力",
+        "worldTypeId": "魔幻"
+      }
+    ]
+  },
+  "traits": {
+    "origin": {
+      "legendary": [],
+      "epic": [],
+      "rare": [],
+      "uncommon": [],
+      "common": []
+    },
+    "trait": {
+      "legendary": [],
+      "epic": [],
+      "rare": [],
+      "uncommon": [],
+      "common": []
+    },
+    "personality": {
+      "legendary": [],
+      "epic": [],
+      "rare": [],
+      "uncommon": [],
+      "common": []
+    },
+    "talent": {
+      "legendary": [],
+      "epic": [],
+      "rare": [],
+      "uncommon": [],
+      "common": []
+    }
+  },
+  "names": {
+    "surnames": [
+      "艾泽",
+      "诺瓦",
+      "奥兰",
+      "神秘",
+      "永恒",
+      "圣光"
+    ],
+    "maleNames": [
+      "天",
+      "云",
+      "风",
+      "雷",
+      "阳",
+      "星",
+      "辰",
+      "明",
+      "玄",
+      "浩"
+    ],
+    "femaleNames": [
+      "月",
+      "雪",
+      "瑶",
+      "紫",
+      "清",
+      "灵",
+      "玉",
+      "霜",
+      "萱",
+      "薇"
+    ]
+  },
+  "text": {
+    "stats": {
+      "body": "体质",
+      "spiritRoot": "灵根",
+      "comprehension": "悟性",
+      "luck": "幸运",
+      "willpower": "意志"
+    },
+    "terminology": {
+      "resource": "魔力晶石",
+      "power": "魔力",
+      "cultivation": "修炼",
+      "breakthrough": "突破位阶"
+    },
+    "paths": {
+      "body": {
+        "name": "体修",
+        "description": "以身体力量为本的修行之道"
+      },
+      "spiritRoot": {
+        "name": "灵修",
+        "description": "以灵力为核心的修行之道"
+      },
+      "comprehension": {
+        "name": "悟道",
+        "description": "以悟性为根基的修行之道"
+      },
+      "luck": {
+        "name": "气运",
+        "description": "以气运为根基的修行之道"
+      },
+      "willpower": {
+        "name": "意志",
+        "description": "以意志力为核心的修行之道"
+      }
+    }
+  }
+}

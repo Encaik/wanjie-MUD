@@ -24,7 +24,8 @@ import type {
 
 function makeTestWorldType(overrides: Partial<WorldTypeData> = {}): WorldTypeData {
   return {
-    id: 'test-world',
+    id: 999,
+    type: 'test-world',
     name: '测试世界',
     description: '用于单元测试的虚拟世界类型',
     baseCoefficient: 1.2,
@@ -94,9 +95,9 @@ describe('WorldDataRegistry', () => {
 
   it('should list all registered world types', () => {
     const registry = WorldDataRegistry.getInstance();
-    registry.registerWorldType(makeTestWorldType({ id: 'a' }));
-    registry.registerWorldType(makeTestWorldType({ id: 'b' }));
-    registry.registerWorldType(makeTestWorldType({ id: 'c' }));
+    registry.registerWorldType(makeTestWorldType({ type: 'a' }));
+    registry.registerWorldType(makeTestWorldType({ type: 'b' }));
+    registry.registerWorldType(makeTestWorldType({ type: 'c' }));
 
     const ids = registry.getAllWorldTypes();
     expect(ids).toEqual(['a', 'b', 'c']);
@@ -104,7 +105,7 @@ describe('WorldDataRegistry', () => {
 
   it('should validate registered world types', () => {
     const registry = WorldDataRegistry.getInstance();
-    registry.registerWorldType(makeTestWorldType({ id: 'valid' }));
+    registry.registerWorldType(makeTestWorldType({ type: 'valid' }));
 
     expect(registry.isValidWorldType('valid')).toBe(true);
     expect(registry.isValidWorldType('invalid')).toBe(false);
@@ -112,8 +113,8 @@ describe('WorldDataRegistry', () => {
 
   it('should overwrite existing world type with warning', () => {
     const registry = WorldDataRegistry.getInstance();
-    registry.registerWorldType(makeTestWorldType({ id: 'dup', name: '原始' }));
-    registry.registerWorldType(makeTestWorldType({ id: 'dup', name: '覆盖' }));
+    registry.registerWorldType(makeTestWorldType({ type: 'dup', name: '原始' }));
+    registry.registerWorldType(makeTestWorldType({ type: 'dup', name: '覆盖' }));
 
     const retrieved = registry.getWorldType('dup');
     expect(retrieved!.name).toBe('覆盖');
@@ -278,8 +279,8 @@ describe('WorldDataRegistry', () => {
   it('should batch register world types', () => {
     const registry = WorldDataRegistry.getInstance();
     registry.registerWorldTypes([
-      makeTestWorldType({ id: 'w1' }),
-      makeTestWorldType({ id: 'w2' }),
+      makeTestWorldType({ type: 'w1' }),
+      makeTestWorldType({ type: 'w2' }),
     ]);
     expect(registry.getAllWorldTypes()).toEqual(['w1', 'w2']);
   });
@@ -301,7 +302,7 @@ describe('asWorldType', () => {
 
   it('should return WorldType for registered id', () => {
     const registry = WorldDataRegistry.getInstance();
-    registry.registerWorldType(makeTestWorldType({ id: 'cultivation' }));
+    registry.registerWorldType(makeTestWorldType({ type: 'cultivation' }));
     const result = asWorldType('cultivation');
     expect(result).toBe('cultivation');
   });
@@ -319,7 +320,7 @@ describe('assertWorldType', () => {
 
   it('should return WorldType for registered id', () => {
     const registry = WorldDataRegistry.getInstance();
-    registry.registerWorldType(makeTestWorldType({ id: 'cultivation' }));
+    registry.registerWorldType(makeTestWorldType({ type: 'cultivation' }));
     expect(assertWorldType('cultivation')).toBe('cultivation');
   });
 
@@ -337,8 +338,8 @@ describe('getAllWorldTypeValues', () => {
 
   it('should return all registered world type ids', () => {
     const registry = WorldDataRegistry.getInstance();
-    registry.registerWorldType(makeTestWorldType({ id: 'a' }));
-    registry.registerWorldType(makeTestWorldType({ id: 'b' }));
+    registry.registerWorldType(makeTestWorldType({ type: 'a' }));
+    registry.registerWorldType(makeTestWorldType({ type: 'b' }));
     expect(getAllWorldTypeValues()).toEqual(['a', 'b']);
   });
 });

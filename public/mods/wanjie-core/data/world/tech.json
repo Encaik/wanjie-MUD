@@ -1,0 +1,442 @@
+{
+  "id": 3,
+  "type": "tech",
+  "name": "科技世界",
+  "description": "科技高度发达，星际航行已是常态",
+  "baseCoefficient": 1.2,
+  "namePrefixes": [
+    "星际",
+    "银河",
+    "机械",
+    "赛博",
+    "量子",
+    "虚空"
+  ],
+  "nameSuffixes": [
+    "联邦",
+    "帝国",
+    "联盟",
+    "领域",
+    "世界"
+  ],
+  "descriptions": [
+    "科技高度发达，星际航行已是常态",
+    "机械与人工智能共存，赛博文明繁荣",
+    "量子科技突破，人类征服星辰大海"
+  ],
+  "powerSystems": [
+    "基因改造与机械飞升，科技改变命运",
+    "纳米技术与AI融合，追求永生之道"
+  ],
+  "majorForces": [
+    "三大星际财团掌控资源",
+    "联邦政府与反叛军对峙",
+    "AI联盟与人类政权共存"
+  ],
+  "worldDangers": [
+    {
+      "description": "AI叛乱",
+      "impact": {
+        "体质": -1
+      },
+      "impactDescription": "体质-1"
+    },
+    {
+      "description": "基因崩溃",
+      "impact": {
+        "灵根": -1
+      },
+      "impactDescription": "灵根-1"
+    },
+    {
+      "description": "星际战争",
+      "impact": {
+        "意志": -1
+      },
+      "impactDescription": "意志-1"
+    }
+  ],
+  "worldOpportunities": [
+    {
+      "description": "获得基因改造",
+      "impact": {
+        "体质": 2
+      },
+      "impactDescription": "体质+2"
+    },
+    {
+      "description": "接入超级AI",
+      "impact": {
+        "灵根": 2
+      },
+      "impactDescription": "灵根+2"
+    },
+    {
+      "description": "获得纳米装甲",
+      "impact": {
+        "意志": 2
+      },
+      "impactDescription": "意志+2"
+    }
+  ],
+  "stats": {
+    "baseHp": 90,
+    "hpPerLevel": 12,
+    "hpPerConstitution": 8,
+    "baseAttack": 15,
+    "attackPerLevel": 2.5,
+    "attackPerConstitution": 0.6,
+    "attackPerSpiritRoot": 1,
+    "baseDefense": 5,
+    "defensePerLevel": 0.8,
+    "defensePerWillpower": 1,
+    "enemyAttackBonus": 0.15,
+    "enemyDefenseBonus": 0,
+    "statDisplayNames": {
+      "体质": "体能",
+      "灵根": "智力",
+      "悟性": "反应",
+      "幸运": "技术",
+      "意志": "魅力"
+    }
+  },
+  "visualConfig": {
+    "icon": "⬡",
+    "accentColor": "text-cyan-400",
+    "gradientClass": "from-cyan-500/20 to-blue-600/10",
+    "borderColor": "border-cyan-500/30",
+    "bgGradient": "bg-gradient-to-br from-slate-50 to-zinc-50 dark:from-slate-950/30 dark:to-zinc-950/30",
+    "colorGradient": "from-cyan-500 to-blue-500"
+  },
+  "mechanics": {
+    "worldType": "科技",
+    "cultivation": {
+      "resourceName": "科技点",
+      "actionName": "研究",
+      "baseCost": 20,
+      "useStandardFormula": true,
+      "successRateModifier": 0
+    },
+    "combat": {
+      "mpName": "能量",
+      "abilityName": "义体模块",
+      "basicAttackName": "充能攻击"
+    },
+    "exploration": {
+      "exploreName": "任务",
+      "hasSpecialMechanics": true
+    },
+    "uniqueMechanic": {
+      "name": "芯片研究",
+      "description": "消耗科技点研究芯片提升等级，义体模块三槽位（脑部/手臂/躯干）提供强大战斗能力，注意过热冷却。研究成功率+5%。",
+      "icon": "Cpu"
+    }
+  },
+  "dangers": [
+    {
+      "id": "restless_mind",
+      "type": "stat_debuff",
+      "name": "心神不宁",
+      "description": "此地磁场异常，心神难以安定",
+      "triggerCondition": {
+        "type": "on_enter",
+        "chance": 1
+      },
+      "effect": {
+        "statModifications": {
+          "悟性": -1
+        }
+      },
+      "duration": -1,
+      "dispellable": false,
+      "dangerLevel": 1
+    },
+    {
+      "id": "weak_enemies",
+      "type": "enemy_buff",
+      "name": "敌强我弱",
+      "description": "此地敌人实力略胜一筹",
+      "triggerCondition": {
+        "type": "on_battle_start",
+        "chance": 1
+      },
+      "effect": {
+        "enemyBuffs": {
+          "attackBonus": 0.1,
+          "defenseBonus": 0.1
+        }
+      },
+      "duration": 0,
+      "dispellable": false,
+      "dangerLevel": 2
+    },
+    {
+      "id": "enemy_territory",
+      "type": "enemy_buff",
+      "name": "敌人领地",
+      "description": "此处为敌人领地，敌人战斗力提升20%",
+      "triggerCondition": {
+        "type": "on_battle_start",
+        "chance": 1
+      },
+      "effect": {
+        "enemyBuffs": {
+          "attackBonus": 0.2,
+          "defenseBonus": 0.15,
+          "hpBonus": 0.15
+        }
+      },
+      "duration": 0,
+      "dispellable": false,
+      "dangerLevel": 3
+    }
+  ],
+  "opportunities": [
+    {
+      "id": "clear_mind",
+      "type": "stat_buff",
+      "name": "心神清明",
+      "description": "此地磁场温和，心神安定",
+      "triggerCondition": {
+        "type": "on_enter",
+        "chance": 1
+      },
+      "effect": {
+        "statModifications": {
+          "悟性": 2
+        }
+      },
+      "duration": -1,
+      "opportunityLevel": 1
+    }
+  ],
+  "realmSystem": {
+    "mainRealmName": "进化等级",
+    "subRealmName": "级",
+    "tiers": [
+      {
+        "name": "炼气期",
+        "subRealms": [
+          "一阶",
+          "二阶",
+          "三阶",
+          "四阶",
+          "五阶",
+          "六阶",
+          "七阶",
+          "八阶",
+          "九阶",
+          "十阶"
+        ],
+        "levelRange": [
+          1,
+          10
+        ]
+      },
+      {
+        "name": "筑基期",
+        "subRealms": [
+          "一重",
+          "二重",
+          "三重",
+          "四重",
+          "五重",
+          "六重",
+          "七重",
+          "八重",
+          "九重",
+          "十重"
+        ],
+        "levelRange": [
+          11,
+          20
+        ]
+      },
+      {
+        "name": "金丹期",
+        "subRealms": [
+          "一转",
+          "二转",
+          "三转",
+          "四转",
+          "五转",
+          "六转",
+          "七转",
+          "八转",
+          "九转",
+          "十转"
+        ],
+        "levelRange": [
+          21,
+          30
+        ]
+      },
+      {
+        "name": "元婴期",
+        "subRealms": [
+          "一层",
+          "二层",
+          "三层",
+          "四层",
+          "五层",
+          "六层",
+          "七层",
+          "八层",
+          "九层",
+          "十层"
+        ],
+        "levelRange": [
+          31,
+          40
+        ]
+      },
+      {
+        "name": "化神期",
+        "subRealms": [
+          "初期",
+          "中期",
+          "后期",
+          "巅峰",
+          "圆满",
+          "大成",
+          "入圣",
+          "超凡",
+          "脱俗",
+          "归真"
+        ],
+        "levelRange": [
+          41,
+          50
+        ]
+      }
+    ],
+    "subRealmMultiplier": 1.05,
+    "tierJumpMultiplier": 1.3
+  },
+  "factions": {
+    "templates": [
+      {
+        "id": "科技_faction_0",
+        "name": "三大星际财团掌控资源",
+        "type": "科技",
+        "description": "科技世界的主要势力",
+        "worldTypeId": "科技"
+      },
+      {
+        "id": "科技_faction_1",
+        "name": "联邦政府与反叛军对峙",
+        "type": "科技",
+        "description": "科技世界的主要势力",
+        "worldTypeId": "科技"
+      },
+      {
+        "id": "科技_faction_2",
+        "name": "AI联盟与人类政权共存",
+        "type": "科技",
+        "description": "科技世界的主要势力",
+        "worldTypeId": "科技"
+      }
+    ]
+  },
+  "traits": {
+    "origin": {
+      "legendary": [],
+      "epic": [],
+      "rare": [],
+      "uncommon": [],
+      "common": []
+    },
+    "trait": {
+      "legendary": [],
+      "epic": [],
+      "rare": [],
+      "uncommon": [],
+      "common": []
+    },
+    "personality": {
+      "legendary": [],
+      "epic": [],
+      "rare": [],
+      "uncommon": [],
+      "common": []
+    },
+    "talent": {
+      "legendary": [],
+      "epic": [],
+      "rare": [],
+      "uncommon": [],
+      "common": []
+    }
+  },
+  "names": {
+    "surnames": [
+      "星际",
+      "银河",
+      "机械",
+      "赛博",
+      "量子",
+      "虚空"
+    ],
+    "maleNames": [
+      "天",
+      "云",
+      "风",
+      "雷",
+      "阳",
+      "星",
+      "辰",
+      "明",
+      "玄",
+      "浩"
+    ],
+    "femaleNames": [
+      "月",
+      "雪",
+      "瑶",
+      "紫",
+      "清",
+      "灵",
+      "玉",
+      "霜",
+      "萱",
+      "薇"
+    ]
+  },
+  "text": {
+    "stats": {
+      "body": "体质",
+      "spiritRoot": "灵根",
+      "comprehension": "悟性",
+      "luck": "幸运",
+      "willpower": "意志"
+    },
+    "terminology": {
+      "resource": "能量块",
+      "power": "能量",
+      "cultivation": "进化",
+      "breakthrough": "突破限制"
+    },
+    "paths": {
+      "body": {
+        "name": "体修",
+        "description": "以身体力量为本的修行之道"
+      },
+      "spiritRoot": {
+        "name": "灵修",
+        "description": "以灵力为核心的修行之道"
+      },
+      "comprehension": {
+        "name": "悟道",
+        "description": "以悟性为根基的修行之道"
+      },
+      "luck": {
+        "name": "气运",
+        "description": "以气运为根基的修行之道"
+      },
+      "willpower": {
+        "name": "意志",
+        "description": "以意志力为核心的修行之道"
+      }
+    }
+  }
+}

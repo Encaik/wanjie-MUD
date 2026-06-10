@@ -85,7 +85,7 @@ const PATH_OPTIONS = [
 function getWorldTypeOptions(): { value: WorldType; label: string }[] {
   const registry = WorldDataRegistry.getInstance();
   return registry.getAllWorldTypeData().map(w => ({
-    value: w.id as WorldType,
+    value: w.type as WorldType,
     label: w.name,
   }));
 }

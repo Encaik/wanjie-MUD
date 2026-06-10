@@ -62,8 +62,16 @@ export interface ModManifest {
   template: boolean;
   /** 本 Mod 提供的内容类型 */
   contentTypes: ModContentType[];
-  /** 内容类型到数据文件路径的映射 */
-  dataFiles: Record<string, string>;
+  /**
+   * 内容类型到数据文件路径的映射
+   *
+   * 支持两种格式：
+   * - 字符串：指向单个 JSON 文件（向后兼容），如 `"data/worlds.json"`
+   * - 字符串数组：指向多个独立 JSON 文件，如 `["data/world/cultivation.json", "data/world/martial.json"]`
+   *
+   * 数组模式下每个文件包含一个独立条目，按数组顺序依次加载注册。
+   */
+  dataFiles: Record<string, string | string[]>;
   /** 固化世界模板 ID 列表（对应 templates/worlds/{id}.json） */
   worldTemplates?: string[];
 }
@@ -205,8 +213,21 @@ export function validateManifest(data: unknown): ManifestValidationError[] {
       errors.push({ path: 'dataFiles', message: '必须为对象' });
     } else {
       for (const [key, value] of Object.entries(m.dataFiles as Record<string, unknown>)) {
-        if (typeof value !== 'string') {
-          errors.push({ path: `dataFiles.${key}`, message: '必须为字符串（数据文件路径）' });
+        if (typeof value === 'string') {
+          // 单文件路径：OK
+        } else if (Array.isArray(value)) {
+          // 数组模式：每个元素必须是非空字符串，数组不能为空
+          if (value.length === 0) {
+            errors.push({ path: `dataFiles.${key}`, message: '数组不能为空' });
+          } else {
+            for (let i = 0; i < value.length; i++) {
+              if (typeof value[i] !== 'string' || value[i].length === 0) {
+                errors.push({ path: `dataFiles.${key}[${i}]`, message: '必须为非空字符串（数据文件路径）' });
+              }
+            }
+          }
+        } else {
+          errors.push({ path: `dataFiles.${key}`, message: '必须为字符串或字符串数组（数据文件路径）' });
         }
       }
     }
@@ -246,7 +267,7 @@ export function parseManifest(json: string): { manifest?: ModManifest; errors: M
     required: m.required === true,
     template: m.template === true,
     contentTypes: m.contentTypes as ModContentType[],
-    dataFiles: (m.dataFiles as Record<string, string>) ?? {},
+    dataFiles: (m.dataFiles as Record<string, string | string[]>) ?? {},
     worldTemplates: Array.isArray(m.worldTemplates) ? (m.worldTemplates as string[]) : undefined,
   };
 

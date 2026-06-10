@@ -1,0 +1,473 @@
+{
+  "id": 8,
+  "type": "apocalypse",
+  "name": "末世世界",
+  "description": "文明崩塌，变异横行，幸存者挣扎求生",
+  "baseCoefficient": 1.5,
+  "namePrefixes": [
+    "废土",
+    "荒芜",
+    "末世",
+    "崩坏",
+    "毁灭",
+    "残存"
+  ],
+  "nameSuffixes": [
+    "世界",
+    "之地",
+    "废墟",
+    "区域",
+    "疆域"
+  ],
+  "descriptions": [
+    "文明崩塌，变异横行，幸存者挣扎求生",
+    "废土之上，适者生存，人性与兽性交织",
+    "核战后的人类文明，在废墟中寻找希望"
+  ],
+  "powerSystems": [
+    "变异进化，适应废土，成为新时代的霸主",
+    "科技残存，基因改造，在末世中崛起"
+  ],
+  "majorForces": [
+    "幸存者联盟与掠夺者对峙",
+    "变异生物与人类争夺领地",
+    "避难所联盟掌控资源"
+  ],
+  "worldDangers": [
+    {
+      "description": "变异兽潮",
+      "impact": {
+        "体质": -1
+      },
+      "impactDescription": "体质-1"
+    },
+    {
+      "description": "辐射扩散",
+      "impact": {
+        "灵根": -1
+      },
+      "impactDescription": "灵根-1"
+    },
+    {
+      "description": "资源匮乏",
+      "impact": {
+        "意志": -1
+      },
+      "impactDescription": "意志-1"
+    }
+  ],
+  "worldOpportunities": [
+    {
+      "description": "发现避难所",
+      "impact": {
+        "体质": 2
+      },
+      "impactDescription": "体质+2"
+    },
+    {
+      "description": "获得进化能力",
+      "impact": {
+        "灵根": 2
+      },
+      "impactDescription": "灵根+2"
+    },
+    {
+      "description": "找到文明遗物",
+      "impact": {
+        "意志": 2
+      },
+      "impactDescription": "意志+2"
+    }
+  ],
+  "stats": {
+    "baseHp": 90,
+    "hpPerLevel": 20,
+    "hpPerConstitution": 15,
+    "baseAttack": 12,
+    "attackPerLevel": 2.5,
+    "attackPerConstitution": 1.3,
+    "attackPerSpiritRoot": 0.3,
+    "baseDefense": 10,
+    "defensePerLevel": 1.5,
+    "defensePerWillpower": 1,
+    "enemyAttackBonus": 0.3,
+    "enemyDefenseBonus": 0.25,
+    "statDisplayNames": {
+      "体质": "体质",
+      "灵根": "适应性",
+      "悟性": "洞察",
+      "幸运": "运气",
+      "意志": "意志"
+    }
+  },
+  "visualConfig": {
+    "icon": "◉",
+    "accentColor": "text-zinc-400",
+    "gradientClass": "from-zinc-500/20 to-slate-700/10",
+    "borderColor": "border-zinc-500/40",
+    "bgGradient": "bg-gradient-to-br from-gray-50 to-slate-50 dark:from-gray-950/30 dark:to-slate-950/30",
+    "colorGradient": "from-gray-500 to-red-500"
+  },
+  "mechanics": {
+    "worldType": "末世",
+    "cultivation": {
+      "resourceName": "变异点数",
+      "actionName": "进化",
+      "baseCost": 10,
+      "useStandardFormula": true,
+      "successRateModifier": -0.05
+    },
+    "combat": {
+      "mpName": "体力",
+      "abilityName": "变异能力",
+      "basicAttackName": "徒手攻击"
+    },
+    "exploration": {
+      "exploreName": "废土探索",
+      "hasSpecialMechanics": true,
+      "survivalResources": [
+        {
+          "name": "饱腹度",
+          "maxValue": 100,
+          "dailyConsumption": 10
+        },
+        {
+          "name": "水源",
+          "maxValue": 100,
+          "dailyConsumption": 8
+        }
+      ]
+    },
+    "uniqueMechanic": {
+      "name": "生存资源",
+      "description": "管理饱腹度和水源两项生存资源，每日自动消耗。探索废土获取补给，资源耗尽将损失生命。还可解锁变异能力树获得特殊能力。",
+      "icon": "Skull"
+    }
+  },
+  "dangers": [
+    {
+      "id": "restless_mind",
+      "type": "stat_debuff",
+      "name": "心神不宁",
+      "description": "此地磁场异常，心神难以安定",
+      "triggerCondition": {
+        "type": "on_enter",
+        "chance": 1
+      },
+      "effect": {
+        "statModifications": {
+          "悟性": -1
+        }
+      },
+      "duration": -1,
+      "dispellable": false,
+      "dangerLevel": 1
+    },
+    {
+      "id": "demon_erosion",
+      "type": "resource_drain",
+      "name": "魔气侵蚀",
+      "description": "魔气弥漫，每回合损失少量生命",
+      "triggerCondition": {
+        "type": "on_turn",
+        "chance": 0.3
+      },
+      "effect": {
+        "resourceModifications": {
+          "hp": -5
+        }
+      },
+      "duration": 0,
+      "dispellable": true,
+      "dangerLevel": 2
+    },
+    {
+      "id": "weak_enemies",
+      "type": "enemy_buff",
+      "name": "敌强我弱",
+      "description": "此地敌人实力略胜一筹",
+      "triggerCondition": {
+        "type": "on_battle_start",
+        "chance": 1
+      },
+      "effect": {
+        "enemyBuffs": {
+          "attackBonus": 0.1,
+          "defenseBonus": 0.1
+        }
+      },
+      "duration": 0,
+      "dispellable": false,
+      "dangerLevel": 2
+    },
+    {
+      "id": "enemy_territory",
+      "type": "enemy_buff",
+      "name": "敌人领地",
+      "description": "此处为敌人领地，敌人战斗力提升20%",
+      "triggerCondition": {
+        "type": "on_battle_start",
+        "chance": 1
+      },
+      "effect": {
+        "enemyBuffs": {
+          "attackBonus": 0.2,
+          "defenseBonus": 0.15,
+          "hpBonus": 0.15
+        }
+      },
+      "duration": 0,
+      "dispellable": false,
+      "dangerLevel": 3
+    },
+    {
+      "id": "cursed_ground",
+      "type": "resource_drain",
+      "name": "诅咒之地",
+      "description": "受到诅咒，每回合损失生命和法力",
+      "triggerCondition": {
+        "type": "on_turn",
+        "chance": 0.4
+      },
+      "effect": {
+        "resourceModifications": {
+          "hp": -8,
+          "mp": -5
+        }
+      },
+      "duration": 0,
+      "dispellable": true,
+      "dangerLevel": 3
+    }
+  ],
+  "opportunities": [],
+  "realmSystem": {
+    "mainRealmName": "进化等级",
+    "subRealmName": "阶",
+    "tiers": [
+      {
+        "name": "炼气期",
+        "subRealms": [
+          "一阶",
+          "二阶",
+          "三阶",
+          "四阶",
+          "五阶",
+          "六阶",
+          "七阶",
+          "八阶",
+          "九阶",
+          "十阶"
+        ],
+        "levelRange": [
+          1,
+          10
+        ]
+      },
+      {
+        "name": "筑基期",
+        "subRealms": [
+          "一重",
+          "二重",
+          "三重",
+          "四重",
+          "五重",
+          "六重",
+          "七重",
+          "八重",
+          "九重",
+          "十重"
+        ],
+        "levelRange": [
+          11,
+          20
+        ]
+      },
+      {
+        "name": "金丹期",
+        "subRealms": [
+          "一转",
+          "二转",
+          "三转",
+          "四转",
+          "五转",
+          "六转",
+          "七转",
+          "八转",
+          "九转",
+          "十转"
+        ],
+        "levelRange": [
+          21,
+          30
+        ]
+      },
+      {
+        "name": "元婴期",
+        "subRealms": [
+          "一层",
+          "二层",
+          "三层",
+          "四层",
+          "五层",
+          "六层",
+          "七层",
+          "八层",
+          "九层",
+          "十层"
+        ],
+        "levelRange": [
+          31,
+          40
+        ]
+      },
+      {
+        "name": "化神期",
+        "subRealms": [
+          "初期",
+          "中期",
+          "后期",
+          "巅峰",
+          "圆满",
+          "大成",
+          "入圣",
+          "超凡",
+          "脱俗",
+          "归真"
+        ],
+        "levelRange": [
+          41,
+          50
+        ]
+      }
+    ],
+    "subRealmMultiplier": 1.05,
+    "tierJumpMultiplier": 1.3
+  },
+  "factions": {
+    "templates": [
+      {
+        "id": "末世_faction_0",
+        "name": "幸存者联盟与掠夺者对峙",
+        "type": "末世",
+        "description": "末世世界的主要势力",
+        "worldTypeId": "末世"
+      },
+      {
+        "id": "末世_faction_1",
+        "name": "变异生物与人类争夺领地",
+        "type": "末世",
+        "description": "末世世界的主要势力",
+        "worldTypeId": "末世"
+      },
+      {
+        "id": "末世_faction_2",
+        "name": "避难所联盟掌控资源",
+        "type": "末世",
+        "description": "末世世界的主要势力",
+        "worldTypeId": "末世"
+      }
+    ]
+  },
+  "traits": {
+    "origin": {
+      "legendary": [],
+      "epic": [],
+      "rare": [],
+      "uncommon": [],
+      "common": []
+    },
+    "trait": {
+      "legendary": [],
+      "epic": [],
+      "rare": [],
+      "uncommon": [],
+      "common": []
+    },
+    "personality": {
+      "legendary": [],
+      "epic": [],
+      "rare": [],
+      "uncommon": [],
+      "common": []
+    },
+    "talent": {
+      "legendary": [],
+      "epic": [],
+      "rare": [],
+      "uncommon": [],
+      "common": []
+    }
+  },
+  "names": {
+    "surnames": [
+      "废土",
+      "荒芜",
+      "末世",
+      "崩坏",
+      "毁灭",
+      "残存"
+    ],
+    "maleNames": [
+      "天",
+      "云",
+      "风",
+      "雷",
+      "阳",
+      "星",
+      "辰",
+      "明",
+      "玄",
+      "浩"
+    ],
+    "femaleNames": [
+      "月",
+      "雪",
+      "瑶",
+      "紫",
+      "清",
+      "灵",
+      "玉",
+      "霜",
+      "萱",
+      "薇"
+    ]
+  },
+  "text": {
+    "stats": {
+      "body": "体质",
+      "spiritRoot": "灵根",
+      "comprehension": "悟性",
+      "luck": "幸运",
+      "willpower": "意志"
+    },
+    "terminology": {
+      "resource": "灵石",
+      "power": "灵力",
+      "cultivation": "变异",
+      "breakthrough": "突破"
+    },
+    "paths": {
+      "body": {
+        "name": "体修",
+        "description": "以身体力量为本的修行之道"
+      },
+      "spiritRoot": {
+        "name": "灵修",
+        "description": "以灵力为核心的修行之道"
+      },
+      "comprehension": {
+        "name": "悟道",
+        "description": "以悟性为根基的修行之道"
+      },
+      "luck": {
+        "name": "气运",
+        "description": "以气运为根基的修行之道"
+      },
+      "willpower": {
+        "name": "意志",
+        "description": "以意志力为核心的修行之道"
+      }
+    }
+  }
+}

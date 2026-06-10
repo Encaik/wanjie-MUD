@@ -317,6 +317,13 @@ export class ModLoader {
   /**
    * 加载 Mod 数据文件并注册到 WorldDataRegistry
    *
+   * 支持两种 dataFiles 格式：
+   * - 字符串：单一数据文件（向后兼容），如 `"data/worlds.json"`
+   * - 字符串数组：多个独立数据文件，如 `["data/world/cultivation.json", ...]`
+   *
+   * 数组模式下每个文件包含一个独立条目，按数组顺序依次加载和注册。
+   * 单个文件失败不影响其他文件。
+   *
    * @param modId - Mod ID
    * @param manifest - Mod 清单
    */
@@ -325,31 +332,36 @@ export class ModLoader {
 
     // 按 contentTypes 顺序加载
     for (const contentType of manifest.contentTypes) {
-      const dataPath = manifest.dataFiles[contentType];
-      if (!dataPath) {
+      const dataPathValue = manifest.dataFiles[contentType];
+      if (!dataPathValue) {
         console.warn(`[ModLoader] Mod "${modId}" 的 contentTypes 包含 "${contentType}" 但 dataFiles 中未配置路径，跳过`);
         continue;
       }
 
-      try {
-        const url = `${baseUrl}/${dataPath}`;
+      // 归一化为数组处理
+      const dataPaths = Array.isArray(dataPathValue) ? dataPathValue : [dataPathValue];
 
-        // styles 内容类型：加载 CSS 文本并通过 StyleLoader 注入
-        if (contentType === 'styles') {
-          await this.loadModStyles(modId, url);
-          continue;
-        }
+      for (const dataPath of dataPaths) {
+        try {
+          const url = `${baseUrl}/${dataPath}`;
 
-        const response = await fetch(url);
-        if (!response.ok) {
-          console.warn(`[ModLoader] 无法加载 "${modId}" 的数据文件: ${dataPath} (HTTP ${response.status})`);
-          continue;
+          // styles 内容类型：加载 CSS 文本并通过 StyleLoader 注入
+          if (contentType === 'styles') {
+            await this.loadModStyles(modId, url);
+            continue;
+          }
+
+          const response = await fetch(url);
+          if (!response.ok) {
+            console.warn(`[ModLoader] 无法加载 "${modId}" 的数据文件: ${dataPath} (HTTP ${response.status})`);
+            continue;
+          }
+          const data = await response.json();
+          this.registerData(modId, contentType, data, manifest, Array.isArray(dataPathValue));
+        } catch (err) {
+          console.warn(`[ModLoader] 加载 "${modId}" 的数据文件 "${dataPath}" 失败:`, err);
+          // 单个文件失败不阻塞其他文件
         }
-        const data = await response.json();
-        this.registerData(modId, contentType, data, manifest);
-      } catch (err) {
-        console.warn(`[ModLoader] 加载 "${modId}" 的数据文件 "${dataPath}" 失败:`, err);
-        // 单个文件失败不阻塞其他文件
       }
     }
 
@@ -430,95 +442,81 @@ export class ModLoader {
 
   /**
    * 将已加载的数据注册到 WorldDataRegistry
+   *
+   * world 文件为自包含格式，每个文件包含一个世界的全部数据：
+   * 世界信息 + 境界 + 势力 + 姓名 + 文案 + 词条 + 危险 + 机缘
+   *
+   * @param modId - Mod ID
+   * @param contentType - 内容类型
+   * @param data - 已解析的 JSON 数据
+   * @param _manifest - Mod 清单（未使用）
+   * @param isArrayMode - 是否为数组模式（world 必须是数组模式）
    */
   private registerData(
     modId: string,
     contentType: string,
     data: unknown,
-    manifest: ModManifest
+    _manifest: ModManifest,
+    isArrayMode = false
   ): void {
-    switch (contentType) {
-      case 'world': {
-        const worlds = data as Record<string, unknown>;
-        const worldList = (worlds.worlds || worlds.data || []) as WorldTypeData[];
-        if (Array.isArray(worldList)) {
-          this.registry.registerWorldTypes(worldList);
-          console.log(`[ModLoader] Mod "${modId}": 注册了 ${worldList.length} 个世界类型`);
-        }
-        break;
-      }
-      case 'traits': {
-        const traits = data as Record<string, Record<string, TraitPoolData>>;
-        // 格式: { "worldTypeId": { TraitPoolData } }
-        const traitMap = traits.traits || traits;
-        for (const [worldTypeId, pool] of Object.entries(traitMap)) {
-          if (pool && typeof pool === 'object') {
-            this.registry.registerTraitPool(worldTypeId, pool as unknown as TraitPoolData);
-          }
-        }
-        console.log(`[ModLoader] Mod "${modId}": 注册了词条池`);
-        break;
-      }
-      case 'dangers': {
-        const dangers = data as Record<string, unknown>;
-        const dangerList = (dangers.dangers || dangers.data || []) as DangerData[];
-        if (Array.isArray(dangerList)) {
-          this.registry.registerDangers(dangerList);
-          console.log(`[ModLoader] Mod "${modId}": 注册了 ${dangerList.length} 个危险效果`);
-        }
-        break;
-      }
-      case 'opportunities': {
-        const opportunities = data as Record<string, unknown>;
-        const oppList = (opportunities.opportunities || opportunities.data || []) as OpportunityData[];
-        if (Array.isArray(oppList)) {
-          this.registry.registerOpportunities(oppList);
-          console.log(`[ModLoader] Mod "${modId}": 注册了 ${oppList.length} 个机缘效果`);
-        }
-        break;
-      }
-      case 'realms': {
-        const realms = data as Record<string, RealmSystemData>;
-        for (const [worldTypeId, realm] of Object.entries(realms)) {
-          if (realm && typeof realm === 'object') {
-            this.registry.registerRealmSystem(worldTypeId, realm);
-          }
-        }
-        console.log(`[ModLoader] Mod "${modId}": 注册了境界体系`);
-        break;
-      }
-      case 'factions': {
-        const factions = data as Record<string, unknown>;
-        const factionList = (factions.factions || factions.data || []) as FactionTemplateData[];
-        if (Array.isArray(factionList)) {
-          this.registry.registerFactionTemplates(factionList);
-          console.log(`[ModLoader] Mod "${modId}": 注册了 ${factionList.length} 个势力模板`);
-        }
-        break;
-      }
-      case 'names': {
-        const names = data as Record<string, NamePoolData>;
-        for (const [worldTypeId, pool] of Object.entries(names)) {
-          if (pool && typeof pool === 'object') {
-            this.registry.registerNamePool(worldTypeId, pool);
-          }
-        }
-        console.log(`[ModLoader] Mod "${modId}": 注册了姓名池`);
-        break;
-      }
-      case 'text': {
-        const texts = data as Record<string, WorldTextData>;
-        for (const [worldTypeId, text] of Object.entries(texts)) {
-          if (text && typeof text === 'object') {
-            this.registry.registerWorldText(worldTypeId, text);
-          }
-        }
-        console.log(`[ModLoader] Mod "${modId}": 注册了世界观文案`);
-        break;
-      }
-      default:
-        console.warn(`[ModLoader] Mod "${modId}": 未知的内容类型 "${contentType}"，跳过`);
+    if (contentType !== 'world') {
+      console.warn(`[ModLoader] Mod "${modId}": 未知的内容类型 "${contentType}"，跳过`);
+      return;
     }
+
+    if (!isArrayMode || !data || typeof data !== 'object' || Array.isArray(data)) {
+      console.warn(`[ModLoader] Mod "${modId}": world 类型必须使用数组模式，跳过`);
+      return;
+    }
+
+    const world = data as Record<string, unknown>;
+    const worldType = (world.type as string) || 'unknown';
+
+    // 注册世界类型
+    this.registry.registerWorldType(world as unknown as WorldTypeData);
+
+    // 注册境界体系
+    if (world.realmSystem && typeof world.realmSystem === 'object') {
+      this.registry.registerRealmSystem(worldType, world.realmSystem as RealmSystemData);
+    }
+
+    // 注册势力模板
+    if (world.factions && typeof world.factions === 'object') {
+      const factionData = world.factions as Record<string, unknown>;
+      const templates = factionData.templates;
+      if (Array.isArray(templates)) {
+        for (const tpl of templates) {
+          this.registry.registerFactionTemplate(tpl as FactionTemplateData);
+        }
+      }
+    }
+
+    // 注册词条池
+    if (world.traits && typeof world.traits === 'object') {
+      this.registry.registerTraitPool(worldType, world.traits as TraitPoolData);
+    }
+
+    // 注册姓名池
+    if (world.names && typeof world.names === 'object') {
+      this.registry.registerNamePool(worldType, world.names as NamePoolData);
+    }
+
+    // 注册世界观文案
+    if (world.text && typeof world.text === 'object') {
+      this.registry.registerWorldText(worldType, world.text as WorldTextData);
+    }
+
+    // 注册危险效果
+    if (Array.isArray(world.dangers)) {
+      this.registry.registerDangers(world.dangers as DangerData[]);
+    }
+
+    // 注册机缘效果
+    if (Array.isArray(world.opportunities)) {
+      this.registry.registerOpportunities(world.opportunities as OpportunityData[]);
+    }
+
+    console.log(`[ModLoader] Mod "${modId}": 注册了世界 "${worldType}"（含境界/势力/姓名/文案/词条/危险/机缘）`);
   }
 
   /**

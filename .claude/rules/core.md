@@ -115,8 +115,10 @@ modules/<domain>/
 - ❌ 在模块 A 的 Hook 中直接修改模块 B 的 state slice
 - ❌ 在旧目录（`components/game/`、`hooks/`、`lib/`、`contexts/`、`types/`）中新增文件
 - ❌ 一份内容出现在两个位置（barrel re-export 除外）
+- ❌ 在 `public/mods/` 中直接编辑 Mod 源文件（源文件在根目录 `mods/`，`public/mods/` 是构建产物）
 
 ### 5.2 代码质量
+- ❌ 在开发期间编写过渡兼容代码（`@deprecated`、`legacyId`、旧格式兼容分支等）——一次完全迁移，不留冗余逻辑
 - ❌ 使用 `any` 类型（ESLint error，除非有 `eslint-disable` + JSDoc 说明）
 - ❌ 在组件内硬编码游戏数值（应放在模块 `data/` 中）
 - ❌ 创建未在 `index.ts` 中导出的模块
