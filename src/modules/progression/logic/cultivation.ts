@@ -1,9 +1,9 @@
-import { GAME_CONSTANTS } from '@/shared/utils/constants';
-import { getItemById, spiritStoneItems, breakthroughItems } from '@/modules/equipment/logic/items';
-import { getExperienceForLevel, getActualStatCap } from '@/modules/progression/logic/realmSystem';
-import { getTerminology } from '@/modules/narrative/logic/terminology';
-import { Protagonist, CultivationResult, CharacterStats, WorldType, ActiveEffect, InventoryItem, createInventoryItem, getFinalStats, LegacyStats, StatKey, GrowthStats } from '@/core/types';
-import { getMaxLevel } from '@/modules/progression/data/realmData';
+import {  GAME_CONSTANTS } from '@/shared/utils/constants';
+import {  getItemById, spiritStoneItems, breakthroughItems } from '@/modules/equipment/logic/items';
+import {  getExperienceForLevel, getActualStatCap } from '@/modules/progression/logic/realmSystem';
+import {  getTerminology } from '@/modules/narrative/logic/terminology';
+import { FlatStats, Protagonist, CultivationResult, CharacterStats, WorldType, ActiveEffect, InventoryItem, createInventoryItem, getFinalStats, StatKey, GrowthStats } from '@/core/types';
+import {  getMaxLevel } from '@/modules/progression/data/realmData';
 
 // 重新导出 getMaxLevel
 export { getMaxLevel } from '@/modules/progression/data/realmData';
@@ -383,7 +383,7 @@ export function executeCultivation(protagonist: Protagonist): CultivationResult 
         灵根: random(1, 2),
       };
       const boostMultiplier = cultivationBoost / 100;
-      const statGains: Partial<LegacyStats> = {
+      const statGains: Partial<FlatStats> = {
         体质: Math.max(1, Math.floor(baseGains.体质 * (1 + boostMultiplier) * penaltyMultiplier)),
         灵根: Math.max(1, Math.floor(baseGains.灵根 * (1 + boostMultiplier) * penaltyMultiplier)),
       };
@@ -425,8 +425,8 @@ export function executeCultivation(protagonist: Protagonist): CultivationResult 
     const totalExpGain = Math.floor((baseExpGain + expBoost) * penaltyMultiplier);
     
     // 计算属性：基础值，丹药仅提供少量加成（约20%效果）
-    const statGains: Partial<LegacyStats> = {};
-    const boostGains: Partial<LegacyStats> = {}; // 丹药加成值
+    const statGains: Partial<FlatStats> = {};
+    const boostGains: Partial<FlatStats> = {}; // 丹药加成值
     
     for (const name of ['体质', '灵根', '意志'] as const) {
       const base = baseGains[name];

@@ -12,12 +12,16 @@
  * @module shared/lib/registry
  */
 
+import { createLogger } from '@/core/logger';
 import type {
   ImpactLevel,
   StatName,
   ExtensibleWorldType,
 } from '@/core/types';
 import type { WorldTemplate } from '@/core/world/types';
+
+/** WorldDataRegistry 日志记录器 */
+const log = createLogger('WorldDataRegistry');
 
 // ============================================
 // 注册中心数据类型定义
@@ -81,9 +85,11 @@ export interface WorldStatsData {
 
 /** 世界基本信息（对应 World 接口中的世界类型静态配置） */
 export interface WorldTypeData {
-  /** 世界类型标识（如 "修仙"、"demon"） */
-  id: string;
-  /** 世界类型显示名称 */
+  /** 世界数字编号（如 1、2，用于存储/序列化） */
+  id: number;
+  /** 世界类型英文标识（kebab-case，如 "cultivation"、"martial"，用于代码索引和文件命名） */
+  type: string;
+  /** 世界类型显示名称（中文，如 "修仙世界"、"高武世界"） */
   name: string;
   /** 世界类型描述 */
   description: string;
@@ -267,7 +273,7 @@ export class WorldDataRegistry {
 
   // ===== 内部存储 =====
 
-  /** 世界类型数据（key: worldTypeId） */
+  /** 世界类型数据（key: 英文 type） */
   private worldTypes: Map<string, WorldTypeData> = new Map();
 
   /** 境界体系（key: worldTypeId） */
@@ -321,16 +327,21 @@ export class WorldDataRegistry {
 
   /** 注册世界类型 */
   registerWorldType(data: WorldTypeData): void {
-    const existing = this.worldTypes.get(data.id);
+    const key = data.type;
+    const existing = this.worldTypes.get(key);
     if (existing) {
-      console.warn(`[WorldDataRegistry] 覆盖已注册的世界类型: ${data.id}`);
+      log.warn(`覆盖已注册的世界类型: ${key}`);
     }
-    this.worldTypes.set(data.id, { ...data });
+    this.worldTypes.set(key, { ...data });
   }
 
-  /** 获取世界类型数据 */
-  getWorldType(id: string): WorldTypeData | undefined {
-    return this.worldTypes.get(id);
+  /**
+   * 根据英文 type 获取世界类型数据
+   *
+   * @param type - 世界英文标识（如 "cultivation"）
+   */
+  getWorldType(type: string): WorldTypeData | undefined {
+    return this.worldTypes.get(type);
   }
 
   /** 获取所有已注册的世界类型 ID */
@@ -355,7 +366,7 @@ export class WorldDataRegistry {
   /** 注册境界体系 */
   registerRealmSystem(worldTypeId: string, realm: RealmSystemData): void {
     if (this.realmSystems.has(worldTypeId)) {
-      console.warn(`[WorldDataRegistry] 覆盖已注册的境界体系: ${worldTypeId}`);
+      log.warn(`覆盖已注册的境界体系: ${worldTypeId}`);
     }
     this.realmSystems.set(worldTypeId, { ...realm });
   }
@@ -503,7 +514,7 @@ export class WorldDataRegistry {
   /** 注册固化世界模板 */
   registerWorldTemplate(template: WorldTemplate): void {
     if (this.worldTemplates.has(template.id)) {
-      console.warn(`[WorldDataRegistry] 覆盖已注册的世界模板: ${template.id}`);
+      log.warn(`覆盖已注册的世界模板: ${template.id}`);
     }
     this.worldTemplates.set(template.id, template);
   }
@@ -617,7 +628,7 @@ export function asWorldType(id: string): ExtensibleWorldType | undefined {
   if (registry.isValidWorldType(id)) {
     return id as ExtensibleWorldType;
   }
-  console.warn(`[WorldDataRegistry] 未注册的世界类型: "${id}"`);
+  log.warn(`未注册的世界类型: "${id}"`);
   return undefined;
 }
 

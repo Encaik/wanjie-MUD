@@ -10,7 +10,7 @@ import { useState, useEffect } from 'react';
 
 import { Flame, Clock, ChevronLeft, ChevronRight } from 'lucide-react';
 
-import { getRarityStyle } from '@/shared/ui/item-tooltip';
+import { getRarityStyle } from '@/modules/theme/data/rarityStyles';
 import { CurrencyService } from '@/modules/economy/logic/shop/currencyService';
 import { DailySaleService } from '@/modules/economy/logic/shop/dailySaleService';
 import { getProductConfig } from '@/modules/economy/logic/shop/productConfigs';

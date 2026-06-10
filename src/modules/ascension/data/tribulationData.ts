@@ -3,8 +3,8 @@
  * 定义不同境界的渡劫难度、奖励和惩罚
  */
 
-import { LegacyStats, StatKey } from '@/core/types';
-import { TribulationConfig } from '@/core/types';
+import { FlatStats, StatKey } from '@/core/types';
+import {  TribulationConfig } from '@/core/types';
 
 // 渡劫配置 - 每10级触发一次
 export const TRIBULATION_CONFIGS: TribulationConfig[] = [
@@ -137,7 +137,7 @@ export function getNextTribulationLevel(currentLevel: number): number | null {
 // 计算渡劫成功率
 export function calculateSuccessRate(
   config: TribulationConfig,
-  stats: LegacyStats
+  stats: FlatStats
 ): number {
   let rate = config.baseSuccessRate;
   

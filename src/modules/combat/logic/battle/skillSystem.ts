@@ -145,8 +145,7 @@ export function generateSkillsFromEquippedTechniques(
 }
 
 /**
- * 从功法生成战斗技能（兼容旧接口，根据功法属性计算）
- * @deprecated 建议使用 generateSkillFromTechniqueSkill
+ * 从功法生成战斗技能（根据功法属性计算）
  */
 export function generateSkillFromTechnique(technique: Technique): BattleSkill {
   const config = RARITY_SKILL_CONFIG[technique.rarity];
@@ -303,8 +302,7 @@ export function generateCombatSkillsFromEquippedWeapons(
 }
 
 /**
- * 从装备生成斗技（兼容旧接口，根据装备属性计算）
- * @deprecated 建议使用 generateBattleSkillFromWeaponTechnique
+ * 从装备生成斗技（根据装备属性计算）
  */
 export function generateCombatTechniqueFromEquipment(equipment: Equipment): BattleSkill | null {
   // 只有武器才能生成斗技
@@ -391,7 +389,7 @@ function generateSkillDescription(
  * 生成随机特殊效果
  *
  * @param rarity - 物品稀有度
- * @param rng - 可选随机数生成器，默认使用 Math.random（向后兼容）
+ * @param rng - 可选随机数生成器，默认使用 Math.random
  */
 function generateRandomSpecialEffect(
   rarity: ItemRarity,
@@ -593,7 +591,7 @@ function getElementMultiplier(attacker: string, defender: string): number {
  * @param skill - 使用的战斗技能
  * @param baseAttack - 基础攻击力
  * @param state - 扩展战斗状态
- * @param rng - 可选随机数生成器，默认使用 Math.random（向后兼容）
+ * @param rng - 可选随机数生成器，默认使用 Math.random
  */
 export function calculateSkillDamage(
   skill: BattleSkill,

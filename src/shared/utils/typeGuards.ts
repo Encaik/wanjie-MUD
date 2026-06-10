@@ -5,6 +5,10 @@
 
 import { Protagonist, InventoryItem, Technique, Equipment, CharacterStats, AchievementStatus, StatKey } from '@/core/types';
 import { TechniqueExtension, EquipmentExtension } from '@/core/types';
+import { createLogger } from '@/core/logger';
+
+/** TypeGuards 日志记录器 */
+const log = createLogger('TypeGuards');
 
 /**
  * 类型守卫：检查是否为有效数组
@@ -207,7 +211,7 @@ export function castArray<T>(
  */
 export function cast<T>(value: unknown, _type: string): T {
   if (process.env.NODE_ENV === 'development') {
-    console.warn(`[类型警告] 强制类型转换: ${_type}`);
+        log.warn(`强制类型转换: ${_type}`);
   }
   return value as T;
 }

@@ -1,8 +1,8 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import {  useState, useEffect, useRef } from 'react';
 
-import {
+import { 
   Shield,
   Swords,
   Sparkles,
@@ -17,10 +17,10 @@ import {
   Minus
 } from 'lucide-react';
 
-import { Badge } from '@/shared/ui/badge';
-import { Button } from '@/shared/ui/button';
-import { Card, CardContent } from '@/shared/ui/card';
-import {
+import {  Badge } from '@/shared/ui/badge';
+import {  Button } from '@/shared/ui/button';
+import {  Card, CardContent } from '@/shared/ui/card';
+import { 
   Dialog,
   DialogContent,
   DialogDescription,
@@ -28,23 +28,23 @@ import {
   DialogTitle,
   DialogFooter,
 } from '@/shared/ui/dialog';
-import {
+import { 
   CULTIVATION_PATHS,
   checkPathUnlockConditions,
   getPathLevelExp,
   PATH_LEVEL_CONFIG,
 } from '@/modules/progression/data/cultivationPathData';
-import { CharacterStats, WorldType, LegacyStats } from '@/core/types';
-import {
+import { FlatStats, CharacterStats, WorldType } from '@/core/types';
+import { 
   CultivationPath,
 } from '@/core/types';
-import { getWorldText } from '@/modules/narrative/logic/WorldTextManager';
+import {  getWorldText } from '@/modules/narrative/logic/WorldTextManager';
 
 interface CultivationPathSelectProps {
   isOpen: boolean;
   onClose: () => void;
   playerLevel: number;
-  playerStats: LegacyStats;
+  playerStats: FlatStats;
   currentPath: CultivationPath | null;
   pathLevel?: number;  // 当前流派等级
   worldType: WorldType;  // 当前世界观

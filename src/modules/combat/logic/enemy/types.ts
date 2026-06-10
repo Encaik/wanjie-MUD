@@ -8,15 +8,14 @@
  */
 
 import { BattleSkill } from '@/modules/combat/logic/battle/types';
-import { 
-  WorldType, 
-  EnemyTier, 
-  Technique, 
-  Equipment, 
+import {
+  WorldType,
+  EnemyTier,
+  Technique,
+  Equipment,
   ItemRarity,
-  Element,
-  WeaponCategory,
-} from '@/shared/lib/types';
+} from '@/core/types';
+import type { Element, WeaponCategory } from '@/modules/combat/logic/restraintSystem';
 
 // ============================================
 // 行为类型
@@ -383,4 +382,5 @@ export interface SkillPriority {
 // ============================================
 
 // 重新导出现有类型以便使用
-export type { EnemyTier, Element, WeaponCategory, ItemRarity } from '@/shared/lib/types';
+export type { EnemyTier, ItemRarity } from '@/core/types';
+export type { Element, WeaponCategory } from '@/modules/combat/logic/restraintSystem';

@@ -3,7 +3,8 @@
  * 订阅游戏事件，根据配置判断成就解锁
  */
 
-import { GameEventType, GameEvent, gameEventManager } from '@/core/events/eventManager';
+import type { GameEvent } from '@/core/events';
+import { on } from '@/core/events';
 import { GameStatistics, AchievementStatus } from '@/core/types';
 
 // ============================================
@@ -14,7 +15,7 @@ import { GameStatistics, AchievementStatus } from '@/core/types';
 export interface AchievementCondition {
   type: 'once' | 'accumulate' | 'accumulate_unique' | 'compare';
   // accumulate/accumulate_unique
-  event?: GameEventType;
+  event?: string;
   field?: string; // 用于 unique 去重 或 compare 字段名
   target?: number;
   // compare
@@ -36,7 +37,7 @@ export interface AchievementConfig {
   description: string;
   type: string;
   icon: string;
-  triggerEvent: GameEventType;
+  triggerEvent: string;
   condition: AchievementCondition;
   rewards: AchievementReward;
   rarity: string;
@@ -116,14 +117,14 @@ export class AchievementSystem {
    */
   private subscribeToEvents(): void {
     // 获取所有需要监听的事件类型
-    const eventTypes = new Set<GameEventType>();
+    const eventTypes = new Set<string>();
     this.configs.forEach(config => {
       eventTypes.add(config.triggerEvent);
     });
 
     // 订阅每个事件
     eventTypes.forEach(eventType => {
-      const unsubscriber = gameEventManager.addListener(eventType, (event) => {
+      const unsubscriber = on(eventType, (event) => {
         this.handleEvent(event);
       });
       this.unsubscribers.push(unsubscriber);
@@ -211,25 +212,25 @@ export class AchievementSystem {
   /**
    * 获取累计计数
    */
-  private getAccumulatedCount(eventType: GameEventType, statistics: GameStatistics): number {
+  private getAccumulatedCount(eventType: string, statistics: GameStatistics): number {
     switch (eventType) {
-      case GameEventType.MONSTER_KILLED:
+      case 'combat:monster_killed':
         return statistics.totalEnemiesKilled;
-      case GameEventType.BOSS_KILLED:
+      case 'combat:boss_killed':
         return statistics.totalBossKilled;
-      case GameEventType.ELITE_KILLED:
+      case 'combat:elite_killed':
         return statistics.totalEliteKilled;
-      case GameEventType.ADVENTURE_COMPLETED:
+      case 'progression:adventure_completed':
         return statistics.totalAdventuresCompleted;
-      case GameEventType.CULTIVATION_DONE:
+      case 'progression:cultivation_done':
         return statistics.totalCultivations;
-      case GameEventType.TECHNIQUE_COLLECTED:
+      case 'collection:technique_collected':
         return statistics.totalTechniquesCollected;
-      case GameEventType.EQUIPMENT_COLLECTED:
+      case 'collection:equipment_collected':
         return statistics.totalEquipmentsCollected;
-      case GameEventType.LEGENDARY_OBTAINED:
+      case 'collection:legendary_obtained':
         return statistics.legendaryItemsObtained;
-      case GameEventType.REALM_BREAKTHROUGH:
+      case 'progression:realm_breakthrough':
         return statistics.totalBreakthroughs;
       default:
         return 0;
@@ -239,11 +240,11 @@ export class AchievementSystem {
   /**
    * 获取去重计数
    */
-  private getUniqueCount(eventType: GameEventType, statistics: GameStatistics): number {
+  private getUniqueCount(eventType: string, statistics: GameStatistics): number {
     switch (eventType) {
-      case GameEventType.TECHNIQUE_COLLECTED:
+      case 'collection:technique_collected':
         return statistics.collectedTechniqueNames.length;
-      case GameEventType.EQUIPMENT_COLLECTED:
+      case 'collection:equipment_collected':
         return statistics.collectedEquipmentNames.length;
       default:
         return 0;

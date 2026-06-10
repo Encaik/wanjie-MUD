@@ -4,14 +4,19 @@
  * 管理所有已注册的效果，提供索引和查询功能
  */
 
-import { MAX_ACTIVE_EFFECTS, LOG_PREFIX, PRIORITY_ORDER } from '../constants';
-import { 
-  UnifiedEffect, 
-  CalculableStat, 
-  EffectSourceType, 
+import { createLogger } from '@/core/logger';
+
+import { MAX_ACTIVE_EFFECTS, PRIORITY_ORDER } from '../constants';
+import {
+  UnifiedEffect,
+  CalculableStat,
+  EffectSourceType,
   EffectPriority,
   AggregatedEffects,
 } from '../types';
+
+/** Calculation 日志记录器 */
+const log = createLogger('Calculation');
 
 // ============================================
 // 效果注册表
@@ -37,7 +42,7 @@ export class EffectRegistry {
     // 检查数量限制
     if (this.effects.length >= MAX_ACTIVE_EFFECTS) {
       if (process.env.NODE_ENV === 'development') {
-        console.warn(`${LOG_PREFIX} 效果数量已达上限 ${MAX_ACTIVE_EFFECTS}`);
+        log.warn(`效果数量已达上限 ${MAX_ACTIVE_EFFECTS}`);
       }
       return;
     }
@@ -45,7 +50,7 @@ export class EffectRegistry {
     // 检查重复ID
     if (this.has(effect.id)) {
       if (process.env.NODE_ENV === 'development') {
-        console.warn(`${LOG_PREFIX} 效果已存在: ${effect.id}, 更新效果`);
+        log.warn(`效果已存在: ${effect.id}, 更新效果`);
       }
       this.unregister(effect.id);
     }

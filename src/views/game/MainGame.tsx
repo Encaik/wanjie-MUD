@@ -16,6 +16,10 @@ import { TowerEnemy, createDefaultTowerProgress } from '@/modules/tower/logic/ty
 import { Protagonist, ActionResult, ActionTab, BattleState, DungeonConfig, Technique, TechniqueType, InventoryItem, Equipment, EquipmentSlot, ItemDefinition, CraftingState, ForgingState, AchievementStatus, CollectionStatus, GameStatistics, CultivationPath, ItemRarity, MessageRecord, getFinalStats } from '@/core/types';
 import type { SeclusionType } from '@/modules/progression/logic/seclusion';
 import { TimeSystemState } from '@/modules/time/logic/timeSystem';
+import { createLogger } from '@/core/logger';
+
+/** MainGame 日志记录器 */
+const log = createLogger('MainGame');
 
 // Tab panels
 import { AchievementPanel } from '@/modules/collection/components/AchievementPanel';
@@ -49,7 +53,7 @@ import { BattleDialog } from '@/modules/combat/components/BattleDialog';
 
 // Shared
 import { CharacterInfoInline } from '@/shared/components/CharacterInfo';
-import { GameHeader } from '@/shared/components/Header';
+import { GameHeader } from '@/views/game/GameHeader';
 import { AdventureLootPanel } from '@/shared/components/AdventureLootPanel';
 import { DeveloperPanel } from '@/shared/components/DeveloperPanel';
 import { CriticalHealthOverlay } from '@/shared/components/CriticalHealthOverlay';
@@ -387,10 +391,10 @@ export function MainGame({
   
   // 调试日志
   useEffect(() => {
-    console.log('[MainGame] ascensionFlow updated:', ascensionFlow);
-    console.log('[MainGame] showGuardianBattle:', showGuardianBattle);
-    console.log('[MainGame] showInheritanceSelect:', showInheritanceSelect);
-    console.log('[MainGame] showWorldReveal:', showWorldReveal);
+    log.info('ascensionFlow updated:', ascensionFlow);
+    log.info('showGuardianBattle:', showGuardianBattle);
+    log.info('showInheritanceSelect:', showInheritanceSelect);
+    log.info('showWorldReveal:', showWorldReveal);
   }, [ascensionFlow, showGuardianBattle, showInheritanceSelect, showWorldReveal]);
   
   // 同步protagonist的mentalState变化

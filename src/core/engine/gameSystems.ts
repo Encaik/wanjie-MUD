@@ -3,10 +3,14 @@
  * 统一管理事件系统、成就系统、图鉴系统
  */
 
+import { emit, gameEventBus } from '@/core/events';
+import { createLogger } from '@/core/logger';
+import { GameStatistics, Technique, Equipment } from '@/core/types';
 import { achievementSystem, AchievementConfig } from '@/modules/collection/logic/achievement/achievementSystem';
 import { collectionSystem, BondConfig } from '@/modules/collection/logic/collectionSystem';
-import { gameEventManager, GameEventType, EventPayloadMap, triggerEvent } from '@/core/events/eventManager';
-import { GameStatistics, Technique, Equipment } from '@/core/types';
+
+/** GameSystems 日志记录器 */
+const log = createLogger('GameSystems');
 
 // ============================================
 // 内联配置（避免异步加载）
@@ -19,7 +23,7 @@ const ACHIEVEMENT_CONFIGS: AchievementConfig[] = [
     description: "角色等级达到10级",
     type: "level",
     icon: "trophy",
-    triggerEvent: GameEventType.LEVEL_UP,
+    triggerEvent: 'progression:level_up',
     condition: { type: "compare", field: "newLevel", operator: ">=", value: 10 },
     rewards: { experience: 100, stats: { "体质": 5 } },
     rarity: "普通"
@@ -30,7 +34,7 @@ const ACHIEVEMENT_CONFIGS: AchievementConfig[] = [
     description: "角色等级达到30级",
     type: "level",
     icon: "trophy",
-    triggerEvent: GameEventType.LEVEL_UP,
+    triggerEvent: 'progression:level_up',
     condition: { type: "compare", field: "newLevel", operator: ">=", value: 30 },
     rewards: { experience: 500, stats: { "体质": 10, "灵根": 5 } },
     rarity: "稀有"
@@ -41,7 +45,7 @@ const ACHIEVEMENT_CONFIGS: AchievementConfig[] = [
     description: "角色等级达到50级",
     type: "level",
     icon: "trophy",
-    triggerEvent: GameEventType.LEVEL_UP,
+    triggerEvent: 'progression:level_up',
     condition: { type: "compare", field: "newLevel", operator: ">=", value: 50 },
     rewards: { experience: 2000, stats: { "体质": 20, "灵根": 10, "悟性": 5 } },
     rarity: "史诗"
@@ -52,7 +56,7 @@ const ACHIEVEMENT_CONFIGS: AchievementConfig[] = [
     description: "角色等级达到100级",
     type: "level",
     icon: "trophy",
-    triggerEvent: GameEventType.LEVEL_UP,
+    triggerEvent: 'progression:level_up',
     condition: { type: "compare", field: "newLevel", operator: ">=", value: 100 },
     rewards: { experience: 10000, stats: { "体质": 50, "灵根": 30, "悟性": 20, "意志": 20 } },
     rarity: "传说"
@@ -63,8 +67,8 @@ const ACHIEVEMENT_CONFIGS: AchievementConfig[] = [
     description: "累计击败10个敌人",
     type: "combat",
     icon: "swords",
-    triggerEvent: GameEventType.MONSTER_KILLED,
-    condition: { type: "accumulate", event: GameEventType.MONSTER_KILLED, target: 10 },
+    triggerEvent: 'combat:monster_killed',
+    condition: { type: "accumulate", event: 'combat:monster_killed', target: 10 },
     rewards: { experience: 50 },
     rarity: "普通"
   },
@@ -74,8 +78,8 @@ const ACHIEVEMENT_CONFIGS: AchievementConfig[] = [
     description: "累计击败100个敌人",
     type: "combat",
     icon: "swords",
-    triggerEvent: GameEventType.MONSTER_KILLED,
-    condition: { type: "accumulate", event: GameEventType.MONSTER_KILLED, target: 100 },
+    triggerEvent: 'combat:monster_killed',
+    condition: { type: "accumulate", event: 'combat:monster_killed', target: 100 },
     rewards: { experience: 200, stats: { "体质": 5 } },
     rarity: "稀有"
   },
@@ -85,8 +89,8 @@ const ACHIEVEMENT_CONFIGS: AchievementConfig[] = [
     description: "击败第一个Boss",
     type: "combat",
     icon: "swords",
-    triggerEvent: GameEventType.BOSS_KILLED,
-    condition: { type: "accumulate", event: GameEventType.BOSS_KILLED, target: 1 },
+    triggerEvent: 'combat:boss_killed',
+    condition: { type: "accumulate", event: 'combat:boss_killed', target: 1 },
     rewards: { experience: 300, stats: { "意志": 5 } },
     rarity: "稀有"
   },
@@ -96,8 +100,8 @@ const ACHIEVEMENT_CONFIGS: AchievementConfig[] = [
     description: "累计击败5个Boss",
     type: "combat",
     icon: "swords",
-    triggerEvent: GameEventType.BOSS_KILLED,
-    condition: { type: "accumulate", event: GameEventType.BOSS_KILLED, target: 5 },
+    triggerEvent: 'combat:boss_killed',
+    condition: { type: "accumulate", event: 'combat:boss_killed', target: 5 },
     rewards: { experience: 1000, stats: { "体质": 10, "意志": 10 } },
     rarity: "史诗"
   },
@@ -107,8 +111,8 @@ const ACHIEVEMENT_CONFIGS: AchievementConfig[] = [
     description: "收集5种不同的功法",
     type: "collection",
     icon: "package",
-    triggerEvent: GameEventType.TECHNIQUE_COLLECTED,
-    condition: { type: "accumulate_unique", event: GameEventType.TECHNIQUE_COLLECTED, field: "techniqueName", target: 5 },
+    triggerEvent: 'collection:technique_collected',
+    condition: { type: "accumulate_unique", event: 'collection:technique_collected', field: "techniqueName", target: 5 },
     rewards: { experience: 100 },
     rarity: "普通"
   },
@@ -118,8 +122,8 @@ const ACHIEVEMENT_CONFIGS: AchievementConfig[] = [
     description: "收集20种不同的功法",
     type: "collection",
     icon: "package",
-    triggerEvent: GameEventType.TECHNIQUE_COLLECTED,
-    condition: { type: "accumulate_unique", event: GameEventType.TECHNIQUE_COLLECTED, field: "techniqueName", target: 20 },
+    triggerEvent: 'collection:technique_collected',
+    condition: { type: "accumulate_unique", event: 'collection:technique_collected', field: "techniqueName", target: 20 },
     rewards: { experience: 500, stats: { "悟性": 10 } },
     rarity: "稀有"
   },
@@ -129,8 +133,8 @@ const ACHIEVEMENT_CONFIGS: AchievementConfig[] = [
     description: "收集6种不同的装备",
     type: "collection",
     icon: "shield",
-    triggerEvent: GameEventType.EQUIPMENT_COLLECTED,
-    condition: { type: "accumulate_unique", event: GameEventType.EQUIPMENT_COLLECTED, field: "equipmentName", target: 6 },
+    triggerEvent: 'collection:equipment_collected',
+    condition: { type: "accumulate_unique", event: 'collection:equipment_collected', field: "equipmentName", target: 6 },
     rewards: { experience: 100 },
     rarity: "普通"
   },
@@ -140,8 +144,8 @@ const ACHIEVEMENT_CONFIGS: AchievementConfig[] = [
     description: "完成1次秘境探索",
     type: "exploration",
     icon: "map",
-    triggerEvent: GameEventType.ADVENTURE_COMPLETED,
-    condition: { type: "accumulate", event: GameEventType.ADVENTURE_COMPLETED, target: 1 },
+    triggerEvent: 'progression:adventure_completed',
+    condition: { type: "accumulate", event: 'progression:adventure_completed', target: 1 },
     rewards: { experience: 100 },
     rarity: "普通"
   },
@@ -151,8 +155,8 @@ const ACHIEVEMENT_CONFIGS: AchievementConfig[] = [
     description: "完成10次秘境探索",
     type: "exploration",
     icon: "map",
-    triggerEvent: GameEventType.ADVENTURE_COMPLETED,
-    condition: { type: "accumulate", event: GameEventType.ADVENTURE_COMPLETED, target: 10 },
+    triggerEvent: 'progression:adventure_completed',
+    condition: { type: "accumulate", event: 'progression:adventure_completed', target: 10 },
     rewards: { experience: 500, stats: { "幸运": 5 } },
     rarity: "稀有"
   },
@@ -162,8 +166,8 @@ const ACHIEVEMENT_CONFIGS: AchievementConfig[] = [
     description: "累计修炼100次",
     type: "cultivation",
     icon: "sparkles",
-    triggerEvent: GameEventType.CULTIVATION_DONE,
-    condition: { type: "accumulate", event: GameEventType.CULTIVATION_DONE, target: 100 },
+    triggerEvent: 'progression:cultivation_done',
+    condition: { type: "accumulate", event: 'progression:cultivation_done', target: 100 },
     rewards: { experience: 300, stats: { "意志": 5 } },
     rarity: "普通"
   },
@@ -173,8 +177,8 @@ const ACHIEVEMENT_CONFIGS: AchievementConfig[] = [
     description: "获得第一件传说品质物品",
     type: "special",
     icon: "star",
-    triggerEvent: GameEventType.LEGENDARY_OBTAINED,
-    condition: { type: "accumulate", event: GameEventType.LEGENDARY_OBTAINED, target: 1 },
+    triggerEvent: 'collection:legendary_obtained',
+    condition: { type: "accumulate", event: 'collection:legendary_obtained', target: 1 },
     rewards: { experience: 1000, stats: { "幸运": 10 } },
     rarity: "史诗"
   },
@@ -184,7 +188,7 @@ const ACHIEVEMENT_CONFIGS: AchievementConfig[] = [
     description: "所有装备槽位都已装备",
     type: "special",
     icon: "star",
-    triggerEvent: GameEventType.FULL_EQUIPPED,
+    triggerEvent: 'collection:full_equipped',
     condition: { type: "once" },
     rewards: { experience: 500, stats: { "体质": 10, "意志": 5 } },
     rarity: "稀有"
@@ -195,7 +199,7 @@ const ACHIEVEMENT_CONFIGS: AchievementConfig[] = [
     description: "将一本功法升至满级",
     type: "special",
     icon: "star",
-    triggerEvent: GameEventType.TECHNIQUE_MAX_LEVEL,
+    triggerEvent: 'collection:technique_max_level',
     condition: { type: "once" },
     rewards: { experience: 800, stats: { "悟性": 15 } },
     rarity: "史诗"
@@ -391,7 +395,7 @@ class GameSystemsManager {
     collectionSystem.initializeWithConfig(BOND_CONFIGS);
 
     this.initialized = true;
-    console.log('[GameSystems] All systems initialized');
+    log.info('All systems initialized');
   }
 
   /**
@@ -400,24 +404,24 @@ class GameSystemsManager {
   
   /** 触发等级提升事件 */
   triggerLevelUp(oldLevel: number, newLevel: number): void {
-    triggerEvent(GameEventType.LEVEL_UP, { oldLevel, newLevel });
+    emit('progression:level_up', { oldLevel, newLevel });
   }
 
   /** 触发怪物击杀事件 */
   triggerMonsterKilled(enemyName: string, enemyTier: 'normal' | 'elite' | 'miniboss' | 'boss', enemyLevel: number): void {
-    triggerEvent(GameEventType.MONSTER_KILLED, { enemyName, enemyTier, enemyLevel });
+    emit('combat:monster_killed', { enemyName, enemyTier, enemyLevel });
     
     // 同时触发特定类型事件
     if (enemyTier === 'boss') {
-      triggerEvent(GameEventType.BOSS_KILLED, { bossName: enemyName, bossLevel: enemyLevel });
+      emit('combat:boss_killed', { bossName: enemyName, bossLevel: enemyLevel });
     } else if (enemyTier === 'elite') {
-      triggerEvent(GameEventType.ELITE_KILLED, { eliteName: enemyName, eliteLevel: enemyLevel });
+      emit('combat:elite_killed', { eliteName: enemyName, eliteLevel: enemyLevel });
     }
   }
 
   /** 触发功法收集事件 */
   triggerTechniqueCollected(technique: Technique): void {
-    triggerEvent(GameEventType.TECHNIQUE_COLLECTED, {
+    emit('collection:technique_collected', {
       techniqueId: technique.id,
       techniqueName: technique.name,
       techniqueType: technique.type,
@@ -427,7 +431,7 @@ class GameSystemsManager {
 
     // 传说品质触发特殊事件
     if (technique.rarity === '传说') {
-      triggerEvent(GameEventType.LEGENDARY_OBTAINED, {
+      emit('collection:legendary_obtained', {
         itemType: 'technique',
         itemName: technique.name,
       });
@@ -436,7 +440,7 @@ class GameSystemsManager {
 
   /** 触发装备收集事件 */
   triggerEquipmentCollected(equipment: Equipment): void {
-    triggerEvent(GameEventType.EQUIPMENT_COLLECTED, {
+    emit('collection:equipment_collected', {
       equipmentId: equipment.id,
       equipmentName: equipment.name,
       slot: equipment.slot,
@@ -446,7 +450,7 @@ class GameSystemsManager {
 
     // 传说品质触发特殊事件
     if (equipment.rarity === '传说') {
-      triggerEvent(GameEventType.LEGENDARY_OBTAINED, {
+      emit('collection:legendary_obtained', {
         itemType: 'equipment',
         itemName: equipment.name,
       });
@@ -455,15 +459,15 @@ class GameSystemsManager {
 
   /** 触发秘境完成事件 */
   triggerAdventureCompleted(dungeonName: string, difficulty: string, rewards: any): void {
-    triggerEvent(GameEventType.ADVENTURE_COMPLETED, { dungeonName, difficulty, rewards });
+    emit('progression:adventure_completed', { dungeonName, difficulty, rewards });
   }
 
   /** 触发修炼完成事件 */
   triggerCultivationDone(statGains: Record<string, number>, breakthroughAttempt: boolean, breakthroughSuccess: boolean): void {
-    triggerEvent(GameEventType.CULTIVATION_DONE, { statGains, breakthroughAttempt, breakthroughSuccess });
+    emit('progression:cultivation_done', { statGains, breakthroughAttempt, breakthroughSuccess });
     
     if (breakthroughSuccess) {
-      triggerEvent(GameEventType.REALM_BREAKTHROUGH, {
+      emit('progression:realm_breakthrough', {
         oldRealm: '',
         newRealm: '',
       });
@@ -472,17 +476,17 @@ class GameSystemsManager {
 
   /** 触发全装备事件 */
   triggerFullEquipped(equippedSlots: string[]): void {
-    triggerEvent(GameEventType.FULL_EQUIPPED, { equippedSlots });
+    emit('collection:full_equipped', { equippedSlots });
   }
 
   /** 触发功法满级事件 */
   triggerTechniqueMaxLevel(techniqueId: string, techniqueName: string): void {
-    triggerEvent(GameEventType.TECHNIQUE_MAX_LEVEL, { techniqueId, techniqueName });
+    emit('collection:technique_max_level', { techniqueId, techniqueName });
   }
 
   /** 触发装备满级事件 */
   triggerEquipmentMaxLevel(equipmentId: string, equipmentName: string): void {
-    triggerEvent(GameEventType.EQUIPMENT_MAX_LEVEL, { equipmentId, equipmentName });
+    emit('collection:equipment_max_level', { equipmentId, equipmentName });
   }
 
   /**
@@ -502,7 +506,7 @@ class GameSystemsManager {
   destroy(): void {
     achievementSystem.destroy();
     collectionSystem.destroy();
-    gameEventManager.removeAllListeners();
+    gameEventBus.removeAllListeners();
     this.initialized = false;
   }
 }

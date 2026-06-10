@@ -7,7 +7,8 @@
  * 3. 清晰的行动顺序管理
  */
 
-import { EnemyTier, Element, WeaponCategory } from '@/shared/lib/types';
+import type { EnemyTier } from '@/core/types';
+import type { Element, WeaponCategory } from '@/modules/combat/logic/restraintSystem';
 import { BattleSkill } from './types';
 import { EnemyAttributes } from '@/modules/combat/logic/restraintSystem';
 

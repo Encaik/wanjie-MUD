@@ -48,6 +48,74 @@ function copyDir(src: string, dest: string) {
   }
 }
 
+/**
+ * 合并 Mod 的分散 JSON 数据文件为单个 data.json
+ *
+ * 读取 mod.json 的 dataFiles 字段，按 content type 分组读取各文件，
+ * 合并后写入目标目录的 data.json。
+ *
+ * world 类型数据以每个文件的 type 字段为 key 合并为对象映射。
+ */
+function bundleModData(modDir: string, targetDir: string, modJson: Record<string, unknown>) {
+  const dataFiles = modJson.dataFiles as Record<string, string | string[]> | undefined;
+  if (!dataFiles || Object.keys(dataFiles).length === 0) {
+    return;
+  }
+
+  const merged: Record<string, unknown> = {};
+
+  for (const [contentType, dataPathValue] of Object.entries(dataFiles)) {
+    // 归一化为数组处理
+    const dataPaths = Array.isArray(dataPathValue) ? dataPathValue : [dataPathValue];
+    const isArrayMode = Array.isArray(dataPathValue);
+    const entries: Record<string, unknown> = {};
+
+    for (const dataPath of dataPaths) {
+      const filePath = path.join(modDir, dataPath);
+      if (!fs.existsSync(filePath)) {
+        console.warn(`  ⚠ 数据文件不存在，跳过: ${dataPath}`);
+        continue;
+      }
+
+      try {
+        const content = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+
+        if (contentType === 'world' && isArrayMode && content && typeof content === 'object' && !Array.isArray(content)) {
+          // world 类型：以 type 字段为 key 合并
+          const worldType = (content as Record<string, unknown>).type as string;
+          if (worldType) {
+            entries[worldType] = content;
+          } else {
+            console.warn(`  ⚠ world 数据文件缺少 type 字段，跳过: ${dataPath}`);
+          }
+        } else {
+          // 其他类型：直接使用内容（单文件用内容本身，多文件用数组合并）
+          if (isArrayMode) {
+            entries[dataPath] = content;
+          } else {
+            merged[contentType] = content;
+          }
+        }
+      } catch (err) {
+        console.warn(`  ⚠ 解析数据文件失败: ${dataPath}`, err);
+      }
+    }
+
+    // world 类型或数组模式写回合并结果
+    if (contentType === 'world' && isArrayMode && Object.keys(entries).length > 0) {
+      merged[contentType] = entries;
+    } else if (!isArrayMode) {
+      // 单文件模式已在上面直接赋值
+    }
+  }
+
+  if (Object.keys(merged).length > 0) {
+    const outputPath = path.join(targetDir, 'data.json');
+    fs.writeFileSync(outputPath, JSON.stringify(merged), 'utf-8');
+    console.log(`  ✓ 生成合并数据: data.json (${Object.keys(merged).join(', ')})`);
+  }
+}
+
 function buildMods() {
   console.log('\n🔧 构建 Mod 数据...\n');
 
@@ -91,6 +159,9 @@ function buildMods() {
       // 复制到目标
       const targetDir = path.join(MODS_TARGET, entry.name);
       copyDir(modDir, targetDir);
+
+      // 合并分散的数据文件为 data.json
+      bundleModData(modDir, targetDir, modJson);
 
       modList.mods.push({ id: modId, path: entry.name });
       console.log(`  ✓ ${entry.name} (id: ${modId})`);

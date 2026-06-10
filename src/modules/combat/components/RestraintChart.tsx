@@ -15,12 +15,11 @@ import {
   getElementIcon,
   getWeaponCategoryIcon,
 } from '@/modules/combat/logic/restraintSystem';
+import type { Element, WeaponCategory } from '@/modules/combat/logic/restraintSystem';
 import {
-  Element,
-  WeaponCategory,
   ELEMENT_NAMES,
   WEAPON_CATEGORY_NAMES,
-} from '@/shared/lib/types';
+} from '@/modules/combat/logic/restraintSystem';
 import { cn } from '@/shared/utils';
 
 // 元素颜色映射

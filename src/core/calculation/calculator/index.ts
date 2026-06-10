@@ -4,6 +4,8 @@
  * 提供完整的数值计算入口，整合上下文构建、效果收集、计算处理
  */
 
+import { createLogger } from '@/core/logger';
+
 import {
   AllAdapters,
   EquipmentAdapter,
@@ -16,7 +18,7 @@ import {
   RealmAdapter,
 } from '../adapters';
 import { BoundaryChecker } from '../boundary';
-import { LOG_PREFIX, getStatBounds, ENABLE_EFFECT_TRACING } from '../constants';
+import { getStatBounds, ENABLE_EFFECT_TRACING } from '../constants';
 import { ContextBuilder } from '../context/builder';
 import { CalculationContext } from '../context/types';
 import { EffectRegistry, EffectProcessor } from '../effect';
@@ -27,6 +29,9 @@ import {
   CalculationResult,
   EffectSourceType,
 } from '../types';
+
+/** Calculation 日志记录器 */
+const log = createLogger('Calculation');
 
 // ============================================
 // 统一计算器
@@ -193,7 +198,7 @@ export class UnifiedCalculator {
     
     // 日志
     if (ENABLE_EFFECT_TRACING) {
-      console.log(`${LOG_PREFIX} 收集效果: ${this.registry.size} 个`);
+      log.info(`收集效果: ${this.registry.size} 个`);
     }
   }
   

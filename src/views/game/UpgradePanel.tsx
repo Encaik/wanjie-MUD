@@ -8,7 +8,7 @@ import { Badge } from '@/shared/ui/badge';
 import { Button } from '@/shared/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/card';
 import { Checkbox } from '@/shared/ui/checkbox';
-import { getRarityStyle } from '@/shared/ui/item-tooltip';
+import { getRarityStyle } from '@/modules/theme/data/rarityStyles';
 import { Progress } from '@/shared/ui/progress';
 import { ScrollArea } from '@/shared/ui/scroll-area';
 import { 

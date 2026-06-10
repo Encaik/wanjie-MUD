@@ -13,16 +13,15 @@ import {
 } from './types';
 import { BattleSkill } from '@/modules/combat/logic/battle/types';
 import { ELEMENTS, WEAPON_CATEGORIES } from '@/modules/combat/logic/statsCalc';
-import { 
-  Technique, 
-  Equipment, 
+import {
+  Technique,
+  Equipment,
   ItemRarity,
   TechniqueType,
   EquipmentSlot,
   WorldType,
-  Element,
-  WeaponCategory,
-} from '@/shared/lib/types';
+} from '@/core/types';
+import type { Element, WeaponCategory } from '@/modules/combat/logic/restraintSystem';
 
 // ============================================
 // 工具函数

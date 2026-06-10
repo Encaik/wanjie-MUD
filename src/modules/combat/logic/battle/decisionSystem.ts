@@ -426,7 +426,7 @@ function executeNormalAttack(state: ExtendedBattleState, rng: () => number = Mat
   // 应用伤害
   if (targetEnemy) {
     applyDamageToEnemy(targetEnemy, damage);
-    // 同步更新向后兼容字段
+    // 同步首个敌人快捷字段
     state.enemyCurrentHp = targetEnemy.currentHp;
   } else {
     state.enemyCurrentHp = applyDamage(state.enemyCurrentHp, damage, state.enemyMaxHp);
@@ -1069,7 +1069,7 @@ export function executeTurn(
     return result;
   }
   
-  // 向后兼容：检查单敌人是否死亡
+  // 无多敌人时检查单敌人死亡状态
   if (state.enemyCurrentHp <= 0 && state.enemies.length === 0) {
     state.isOver = true;
     state.victory = true;
@@ -1141,7 +1141,7 @@ export function executeTurn(
     updateEnemyBuffs(enemy);
   });
   
-  // 向后兼容：更新单敌人的冷却
+  // 更新单敌人技能冷却
   if (state.enemySkillCooldowns) {
     state.enemySkillCooldowns.forEach((remaining, skillId) => {
       if (remaining > 0) {

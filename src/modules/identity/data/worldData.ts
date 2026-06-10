@@ -147,7 +147,7 @@ export interface WorldStats {
 /**
  * @deprecated 数据已迁移到 mods/wanjie-core/data/worlds.json。
  * 请使用 getWorldData() 函数（内部从 WorldDataRegistry 读取）。
- * 此常量仅为向后兼容保留，将在后续版本中移除。
+ * 此常量保留用于简化世界类型枚举。
  */
 export const WORLD_DATA: Record<string, WorldStats> = {
   '修仙': {

@@ -643,11 +643,11 @@ export function synthesizeFragmentByName(
 }
 
 // ============================================
-// 兼容旧版 API（用于 UI 组件）
+// 碎片分组 API（用于 UI 组件）
 // ============================================
 
-/** 旧版碎片分组（按稀有度） */
-export interface LegacyFragmentGroup {
+/** 碎片分组（按稀有度） */
+export interface RarityFragmentGroup {
   type: FragmentType;
   rarity: ItemRarity;
   count: number;
@@ -656,11 +656,11 @@ export interface LegacyFragmentGroup {
 }
 
 /**
- * 获取碎片分组（按稀有度，兼容旧 UI）
+ * 获取碎片分组（按稀有度，）
  * @deprecated 请使用 getFragmentGroupsByName
  */
-export function getFragmentGroups(inventory: FragmentInventory): LegacyFragmentGroup[] {
-  const groups: LegacyFragmentGroup[] = [];
+export function getRarityFragmentGroups(inventory: FragmentInventory): RarityFragmentGroup[] {
+  const groups: RarityFragmentGroup[] = [];
   
   for (const rarity of RARITY_ORDER) {
     const techniqueCount = inventory.techniqueFragments.filter(f => f.rarity === rarity).length;
@@ -690,11 +690,11 @@ export function getFragmentGroups(inventory: FragmentInventory): LegacyFragmentG
 }
 
 /**
- * 获取所有碎片分组（包括数量为0的，兼容旧 UI）
+ * 获取所有碎片分组（包括数量为0的，）
  * @deprecated 请使用 getFragmentGroupsByName
  */
-export function getAllFragmentGroups(inventory: FragmentInventory): LegacyFragmentGroup[] {
-  const groups: LegacyFragmentGroup[] = [];
+export function getAllRarityFragmentGroups(inventory: FragmentInventory): RarityFragmentGroup[] {
+  const groups: RarityFragmentGroup[] = [];
   
   for (const rarity of RARITY_ORDER) {
     const techniqueCount = inventory.techniqueFragments.filter(f => f.rarity === rarity).length;
@@ -720,7 +720,7 @@ export function getAllFragmentGroups(inventory: FragmentInventory): LegacyFragme
 }
 
 /**
- * 按稀有度合成功法碎片（兼容旧 API）
+ * 按稀有度合成功法碎片
  * @deprecated 请使用 synthesizeFragmentByName
  */
 export function synthesizeTechniqueFragmentsByRarity(
@@ -770,7 +770,7 @@ export function synthesizeTechniqueFragmentsByRarity(
 }
 
 /**
- * 按稀有度重铸装备碎片（兼容旧 API）
+ * 按稀有度重铸装备碎片
  * @deprecated 请使用 synthesizeFragmentByName
  */
 export function reforgeEquipmentFragmentsByRarity(
@@ -820,10 +820,9 @@ export function reforgeEquipmentFragmentsByRarity(
 }
 
 /**
- * 统一合成入口（兼容旧 API）
- * @deprecated 请使用 synthesizeFragmentByName
+ * 统一合成入口（按稀有度合成）
  */
-export function synthesizeFragmentGroup(
+export function synthesizeRarityFragmentGroup(
   inventory: FragmentInventory,
   type: FragmentType,
   rarity: ItemRarity,

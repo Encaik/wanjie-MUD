@@ -1,0 +1,442 @@
+{
+  "id": 5,
+  "type": "psi",
+  "name": "异能世界",
+  "description": "异能觉醒者遍布都市，隐藏在普通人之中",
+  "baseCoefficient": 1.2,
+  "namePrefixes": [
+    "觉醒",
+    "变异",
+    "超凡",
+    "进化",
+    "源能",
+    "异变"
+  ],
+  "nameSuffixes": [
+    "都市",
+    "世界",
+    "领域",
+    "区",
+    "城"
+  ],
+  "descriptions": [
+    "异能觉醒者遍布都市，隐藏在普通人之中",
+    "源能爆发，异能者改变世界格局",
+    "变异与进化并行，人类站在进化十字路口"
+  ],
+  "powerSystems": [
+    "基因觉醒与异能开发，突破人类极限",
+    "源能觉醒，探索心灵深处的力量"
+  ],
+  "majorForces": [
+    "异能管理局与反抗组织对立",
+    "三大财团暗中操控异能者",
+    "国际异能联盟维稳全球"
+  ],
+  "worldDangers": [
+    {
+      "description": "异能暴走",
+      "impact": {
+        "体质": -1
+      },
+      "impactDescription": "体质-1"
+    },
+    {
+      "description": "组织追杀",
+      "impact": {
+        "灵根": -1
+      },
+      "impactDescription": "灵根-1"
+    },
+    {
+      "description": "异兽入侵",
+      "impact": {
+        "意志": -1
+      },
+      "impactDescription": "意志-1"
+    }
+  ],
+  "worldOpportunities": [
+    {
+      "description": "二次觉醒",
+      "impact": {
+        "体质": 2
+      },
+      "impactDescription": "体质+2"
+    },
+    {
+      "description": "获得异能结晶",
+      "impact": {
+        "灵根": 2
+      },
+      "impactDescription": "灵根+2"
+    },
+    {
+      "description": "异能融合",
+      "impact": {
+        "意志": 2
+      },
+      "impactDescription": "意志+2"
+    }
+  ],
+  "stats": {
+    "baseHp": 85,
+    "hpPerLevel": 13,
+    "hpPerConstitution": 8,
+    "baseAttack": 14,
+    "attackPerLevel": 2.3,
+    "attackPerConstitution": 0.9,
+    "attackPerSpiritRoot": 0.7,
+    "baseDefense": 6,
+    "defensePerLevel": 1.1,
+    "defensePerWillpower": 0.7,
+    "enemyAttackBonus": 0.1,
+    "enemyDefenseBonus": 0.05,
+    "statDisplayNames": {
+      "体质": "体能",
+      "灵根": "源能",
+      "悟性": "感知",
+      "幸运": "幸运",
+      "意志": "意志"
+    }
+  },
+  "visualConfig": {
+    "icon": "◈",
+    "accentColor": "text-indigo-400",
+    "gradientClass": "from-indigo-500/20 to-blue-600/10",
+    "borderColor": "border-indigo-500/30",
+    "bgGradient": "bg-gradient-to-br from-cyan-50 to-teal-50 dark:from-cyan-950/30 dark:to-teal-950/30",
+    "colorGradient": "from-yellow-500 to-orange-500"
+  },
+  "mechanics": {
+    "worldType": "异能",
+    "cultivation": {
+      "resourceName": "源能",
+      "actionName": "觉醒",
+      "baseCost": 15,
+      "useStandardFormula": true,
+      "successRateModifier": 0.05
+    },
+    "combat": {
+      "mpName": "念力",
+      "abilityName": "超能力",
+      "basicAttackName": "念力冲击"
+    },
+    "exploration": {
+      "exploreName": "巡逻",
+      "hasSpecialMechanics": true
+    },
+    "uniqueMechanic": {
+      "name": "源能共鸣",
+      "description": "每次探索后随机获得一个临时超能力，持续数次探索或战斗。源能觉醒，能力千变万化，每次都有不同体验。",
+      "icon": "Zap"
+    }
+  },
+  "dangers": [
+    {
+      "id": "restless_mind",
+      "type": "stat_debuff",
+      "name": "心神不宁",
+      "description": "此地磁场异常，心神难以安定",
+      "triggerCondition": {
+        "type": "on_enter",
+        "chance": 1
+      },
+      "effect": {
+        "statModifications": {
+          "悟性": -1
+        }
+      },
+      "duration": -1,
+      "dispellable": false,
+      "dangerLevel": 1
+    },
+    {
+      "id": "reduced_insight",
+      "type": "stat_debuff",
+      "name": "悟性压制",
+      "description": "天机混乱，领悟效率下降",
+      "triggerCondition": {
+        "type": "on_enter",
+        "chance": 1
+      },
+      "effect": {
+        "statModifications": {
+          "悟性": -2,
+          "灵根": -1
+        }
+      },
+      "duration": -1,
+      "dispellable": false,
+      "dangerLevel": 2
+    },
+    {
+      "id": "enemy_territory",
+      "type": "enemy_buff",
+      "name": "敌人领地",
+      "description": "此处为敌人领地，敌人战斗力提升20%",
+      "triggerCondition": {
+        "type": "on_battle_start",
+        "chance": 1
+      },
+      "effect": {
+        "enemyBuffs": {
+          "attackBonus": 0.2,
+          "defenseBonus": 0.15,
+          "hpBonus": 0.15
+        }
+      },
+      "duration": 0,
+      "dispellable": false,
+      "dangerLevel": 3
+    }
+  ],
+  "opportunities": [
+    {
+      "id": "clear_mind",
+      "type": "stat_buff",
+      "name": "心神清明",
+      "description": "此地磁场温和，心神安定",
+      "triggerCondition": {
+        "type": "on_enter",
+        "chance": 1
+      },
+      "effect": {
+        "statModifications": {
+          "悟性": 2
+        }
+      },
+      "duration": -1,
+      "opportunityLevel": 1
+    }
+  ],
+  "realmSystem": {
+    "mainRealmName": "觉醒等级",
+    "subRealmName": "阶",
+    "tiers": [
+      {
+        "name": "炼气期",
+        "subRealms": [
+          "一阶",
+          "二阶",
+          "三阶",
+          "四阶",
+          "五阶",
+          "六阶",
+          "七阶",
+          "八阶",
+          "九阶",
+          "十阶"
+        ],
+        "levelRange": [
+          1,
+          10
+        ]
+      },
+      {
+        "name": "筑基期",
+        "subRealms": [
+          "一重",
+          "二重",
+          "三重",
+          "四重",
+          "五重",
+          "六重",
+          "七重",
+          "八重",
+          "九重",
+          "十重"
+        ],
+        "levelRange": [
+          11,
+          20
+        ]
+      },
+      {
+        "name": "金丹期",
+        "subRealms": [
+          "一转",
+          "二转",
+          "三转",
+          "四转",
+          "五转",
+          "六转",
+          "七转",
+          "八转",
+          "九转",
+          "十转"
+        ],
+        "levelRange": [
+          21,
+          30
+        ]
+      },
+      {
+        "name": "元婴期",
+        "subRealms": [
+          "一层",
+          "二层",
+          "三层",
+          "四层",
+          "五层",
+          "六层",
+          "七层",
+          "八层",
+          "九层",
+          "十层"
+        ],
+        "levelRange": [
+          31,
+          40
+        ]
+      },
+      {
+        "name": "化神期",
+        "subRealms": [
+          "初期",
+          "中期",
+          "后期",
+          "巅峰",
+          "圆满",
+          "大成",
+          "入圣",
+          "超凡",
+          "脱俗",
+          "归真"
+        ],
+        "levelRange": [
+          41,
+          50
+        ]
+      }
+    ],
+    "subRealmMultiplier": 1.05,
+    "tierJumpMultiplier": 1.3
+  },
+  "factions": {
+    "templates": [
+      {
+        "id": "异能_faction_0",
+        "name": "异能管理局与反抗组织对立",
+        "type": "异能",
+        "description": "异能世界的主要势力",
+        "worldTypeId": "异能"
+      },
+      {
+        "id": "异能_faction_1",
+        "name": "三大财团暗中操控异能者",
+        "type": "异能",
+        "description": "异能世界的主要势力",
+        "worldTypeId": "异能"
+      },
+      {
+        "id": "异能_faction_2",
+        "name": "国际异能联盟维稳全球",
+        "type": "异能",
+        "description": "异能世界的主要势力",
+        "worldTypeId": "异能"
+      }
+    ]
+  },
+  "traits": {
+    "origin": {
+      "legendary": [],
+      "epic": [],
+      "rare": [],
+      "uncommon": [],
+      "common": []
+    },
+    "trait": {
+      "legendary": [],
+      "epic": [],
+      "rare": [],
+      "uncommon": [],
+      "common": []
+    },
+    "personality": {
+      "legendary": [],
+      "epic": [],
+      "rare": [],
+      "uncommon": [],
+      "common": []
+    },
+    "talent": {
+      "legendary": [],
+      "epic": [],
+      "rare": [],
+      "uncommon": [],
+      "common": []
+    }
+  },
+  "names": {
+    "surnames": [
+      "觉醒",
+      "变异",
+      "超凡",
+      "进化",
+      "源能",
+      "异变"
+    ],
+    "maleNames": [
+      "天",
+      "云",
+      "风",
+      "雷",
+      "阳",
+      "星",
+      "辰",
+      "明",
+      "玄",
+      "浩"
+    ],
+    "femaleNames": [
+      "月",
+      "雪",
+      "瑶",
+      "紫",
+      "清",
+      "灵",
+      "玉",
+      "霜",
+      "萱",
+      "薇"
+    ]
+  },
+  "text": {
+    "stats": {
+      "body": "体质",
+      "spiritRoot": "灵根",
+      "comprehension": "悟性",
+      "luck": "幸运",
+      "willpower": "意志"
+    },
+    "terminology": {
+      "resource": "灵石",
+      "power": "灵力",
+      "cultivation": "修炼",
+      "breakthrough": "突破"
+    },
+    "paths": {
+      "body": {
+        "name": "体修",
+        "description": "以身体力量为本的修行之道"
+      },
+      "spiritRoot": {
+        "name": "灵修",
+        "description": "以灵力为核心的修行之道"
+      },
+      "comprehension": {
+        "name": "悟道",
+        "description": "以悟性为根基的修行之道"
+      },
+      "luck": {
+        "name": "气运",
+        "description": "以气运为根基的修行之道"
+      },
+      "willpower": {
+        "name": "意志",
+        "description": "以意志力为核心的修行之道"
+      }
+    }
+  }
+}

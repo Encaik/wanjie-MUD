@@ -4,7 +4,7 @@
  * 流派提供差异化成长方向，让玩家有明确的选择感
  */
 
-import { LegacyStats, StatKey } from '@/core/types';
+import { FlatStats, StatKey } from '@/core/types';
 
 // 修炼流派类型
 export type CultivationPath = 'body' | 'sword' | 'spell' | 'alchemy' | 'demon';
@@ -63,7 +63,7 @@ export interface PathSkill {
   description: string;
   effect: {
     type: 'passive' | 'active';
-    statBonus?: Partial<LegacyStats>;
+    statBonus?: Partial<FlatStats>;
     multiplier?: { stat: StatKey; value: number };
     special?: string;
   };
@@ -85,7 +85,7 @@ export interface PathConfig {
   // 解锁条件
   unlockConditions: {
     level: number;
-    stats: Partial<LegacyStats>;
+    stats: Partial<FlatStats>;
   };
   // 流派行为经验配置 - 完成特定行为获得流派经验
   actionExp: PathActionExp[];
@@ -320,7 +320,7 @@ export function getPathLevelExp(level: number): number {
 export function checkPathUnlockConditions(
   path: CultivationPath,
   playerLevel: number,
-  playerStats: LegacyStats
+  playerStats: FlatStats
 ): { canUnlock: boolean; reason: string } {
   const config = CULTIVATION_PATHS[path];
   
@@ -348,11 +348,11 @@ export function getActivePathSkills(path: CultivationPath | null, pathLevel: num
 export function calculatePathStatBonus(
   path: CultivationPath | null,
   pathLevel: number
-): Partial<LegacyStats> {
+): Partial<FlatStats> {
   if (!path || pathLevel < 1) return {};
   
   const skills = getActivePathSkills(path, pathLevel);
-  const bonus: Partial<LegacyStats> = {};
+  const bonus: Partial<FlatStats> = {};
   
   for (const skill of skills) {
     if (skill.effect.statBonus) {

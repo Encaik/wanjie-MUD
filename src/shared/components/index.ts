@@ -1,5 +1,5 @@
 // Shared game components
-export { GameHeader } from './Header';
+export { GameHeader } from '@/views/game/GameHeader';
 export { ChatRoom } from './ChatRoom';
 export { MessagePanel } from './MessagePanel';
 export { ResultDisplay } from './ResultDisplay';

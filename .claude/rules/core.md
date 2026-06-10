@@ -114,9 +114,11 @@ modules/<domain>/
 - ❌ 在 `shared/ui/` 中添加或修改文件（shadcn 源在 `components/ui/`）
 - ❌ 在模块 A 的 Hook 中直接修改模块 B 的 state slice
 - ❌ 在旧目录（`components/game/`、`hooks/`、`lib/`、`contexts/`、`types/`）中新增文件
-- ❌ 一份内容出现在两个位置（barrel re-export 除外）
+- ❌ 一份内容出现在两个位置
+- ❌ 在 `public/mods/` 中直接编辑 Mod 源文件（源文件在根目录 `mods/`，`public/mods/` 是构建产物）
 
 ### 5.2 代码质量
+- ❌ 在开发期间编写过渡兼容代码：禁止 `@deprecated` barrel re-export、`LegacyXxx` 类型别名、"向后兼容"包装函数、"兼容旧版"兜底方案等——一次完全迁移，不留冗余逻辑
 - ❌ 使用 `any` 类型（ESLint error，除非有 `eslint-disable` + JSDoc 说明）
 - ❌ 在组件内硬编码游戏数值（应放在模块 `data/` 中）
 - ❌ 创建未在 `index.ts` 中导出的模块
@@ -129,6 +131,13 @@ modules/<domain>/
 - ❌ 函数返回值无类型标注（除非 void 且上下文明确）
 - ❌ 使用 `as` 类型断言绕过类型检查（除非有充分理由 + 注释）
 
+### 5.4 核心基础设施复用（MUST）
+
+- ❌ 在 `core/` 之外重新实现 `core/` 已有的功能（如自己写 logger、自己写事件总线、自己写计算引擎）
+- ❌ 绕过 `core/` 提供的 API 直接用底层方式实现（如用 `console.log` 代替 `createLogger()`、用自定义事件代替 `gameEventBus`）
+- ❌ 在 `modules/` 或 `shared/` 中创建与 `core/` 功能重复的系统
+- ✅ 开发前必须确认 `core/` 中是否已有对应能力：`core/logger/`（系统日志）、`core/message-log/`（玩家消息）、`core/events/`（事件总线）、`core/calculation/`（数值计算）、`core/types/`（核心类型）、`core/world/`（世界系统）、`core/registry/`（数据注册）、`core/engine/`（引擎集成）
+
 ---
 
 ## 六、导入路径
@@ -136,7 +145,6 @@ modules/<domain>/
 - 跨模块导入：使用 `@/` 别名（如 `@/modules/narrative`、`@/core/types`、`@/shared/utils/cn`）
 - 同模块导入：使用相对路径（如 `./types`、`../logic/calculator`）
 - 禁止深层相对路径：`../../../` 超过 2 层时必须改用 `@/`
-- 旧路径 barrel 仍然可用，但新代码必须使用新路径
 - 核心系统导入：使用 `@/core/events`、`@/core/types`、`@/core/calculation` 等
 
 ---

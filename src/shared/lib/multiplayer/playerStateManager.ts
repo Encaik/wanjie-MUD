@@ -7,7 +7,7 @@
  * 3. 提供排行榜数据
  */
 
-import type { WorldType } from '@/shared/lib/types';
+import type { WorldType } from '@/core/types';
 import type {
   PlayerOnlineState,
   PlayerState,

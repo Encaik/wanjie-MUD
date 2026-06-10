@@ -228,7 +228,7 @@ export function generateCharacters(worldType: WorldType = '修仙'): Character[]
   return selected.map((c, i) => ({ ...c, id: i + 1 }));
 }
 
-// 获取世界术语（兼容旧代码）
+// 获取世界术语
 export function getWorldTerms(worldType: WorldType) {
   return getTerminology(worldType);
 }

@@ -5,7 +5,7 @@
  * 套装：收集特定装备触发套装效果
  */
 
-import { ItemRarity, EquipmentSlot, LegacyStats, StatKey } from '@/core/types';
+import { FlatStats, ItemRarity, EquipmentSlot, StatKey } from '@/core/types';
 
 // ============================================
 // 词缀系统
@@ -163,7 +163,7 @@ export function rollRandomAffix(rarity: ItemRarity, type: AffixType): EquipmentA
 export interface SetBonusLevel {
   requiredPieces: number;
   effects: {
-    stats?: Partial<LegacyStats>;
+    stats?: Partial<FlatStats>;
     power?: number;
     bonus?: number;
     special?: { id: string; name: string; description: string };

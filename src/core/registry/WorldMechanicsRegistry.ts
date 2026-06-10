@@ -12,7 +12,11 @@
  * @module shared/lib/registry
  */
 
+import { createLogger } from '@/core/logger';
 import type { WorldMechanics } from '@/modules/identity/logic/worlds/types';
+
+/** WorldMechanicsRegistry 日志记录器 */
+const log = createLogger('WorldMechanicsRegistry');
 
 // ============================================
 // 注册表实现
@@ -61,8 +65,7 @@ export class WorldMechanicsRegistry {
    */
   register(worldTypeId: string, mechanics: WorldMechanics): void {
     if (this.mechanics.has(worldTypeId)) {
-      console.warn(`[WorldMechanicsRegistry] 覆盖已注册的世界机制: ${worldTypeId}`);
-    }
+      log.warn(`覆盖已注册的世界机制: ${worldTypeId}`);    }
     this.mechanics.set(worldTypeId, mechanics);
   }
 

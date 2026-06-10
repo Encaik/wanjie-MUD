@@ -4,7 +4,7 @@
  * 定义哪些游戏事件会触发全服公告，以及公告的模板配置
  */
 
-import { GameEventType, type AnnouncementType, type AnnouncementPriority, type AnnouncementTriggerConfig, type GameEvent } from '@/modules/social/announcementTypes';
+import { AnnouncementEventType, type AnnouncementType, type AnnouncementPriority, type AnnouncementTriggerConfig, type AnnouncementGameEvent } from '@/modules/social/announcementTypes';
 
 /**
  * 公告触发规则配置
@@ -15,10 +15,10 @@ import { GameEventType, type AnnouncementType, type AnnouncementPriority, type A
  * - cooldown: 冷却时间（毫秒），同类型/同玩家需要间隔多久才能再次触发
  * - condition: 触发条件（可选，用于更细粒度的控制）
  */
-export const ANNOUNCEMENT_TRIGGERS: Record<GameEventType, AnnouncementTriggerConfig> = {
+export const ANNOUNCEMENT_TRIGGERS: Record<AnnouncementEventType, AnnouncementTriggerConfig> = {
   // ========== 飞升相关 ==========
   
-  [GameEventType.ASCENSION_SUCCESS]: {
+  [AnnouncementEventType.ASCENSION_SUCCESS]: {
     type: 'ascension',
     priority: 'legendary',
     cooldown: 0, // 飞升公告无冷却
@@ -28,7 +28,7 @@ export const ANNOUNCEMENT_TRIGGERS: Record<GameEventType, AnnouncementTriggerCon
     },
   },
   
-  [GameEventType.ASCENSION_FAILURE]: {
+  [AnnouncementEventType.ASCENSION_FAILURE]: {
     type: 'ascension',
     priority: 'epic',
     cooldown: 60000, // 1分钟冷却
@@ -40,11 +40,11 @@ export const ANNOUNCEMENT_TRIGGERS: Record<GameEventType, AnnouncementTriggerCon
   
   // ========== 战斗相关 ==========
   
-  [GameEventType.DEFEAT_BOSS]: {
+  [AnnouncementEventType.DEFEAT_BOSS]: {
     type: 'boss',
     priority: 'epic',
     cooldown: 300000, // 5分钟冷却
-    condition: (event: GameEvent) => {
+    condition: (event: AnnouncementGameEvent) => {
       // 只有击败高等级 Boss 才公告
       return (event.data?.bossLevel as number) >= 50;
     },
@@ -54,11 +54,11 @@ export const ANNOUNCEMENT_TRIGGERS: Record<GameEventType, AnnouncementTriggerCon
     },
   },
   
-  [GameEventType.PVP_VICTORY]: {
+  [AnnouncementEventType.PVP_VICTORY]: {
     type: 'pvp',
     priority: 'rare',
     cooldown: 300000, // 5分钟冷却
-    condition: (event: GameEvent) => {
+    condition: (event: AnnouncementGameEvent) => {
       // 只有击败高战力玩家才公告
       return (event.data?.enemyCombatPower as number) >= 100000;
     },
@@ -70,7 +70,7 @@ export const ANNOUNCEMENT_TRIGGERS: Record<GameEventType, AnnouncementTriggerCon
   
   // ========== 物品相关 ==========
   
-  [GameEventType.OBTAIN_LEGENDARY]: {
+  [AnnouncementEventType.OBTAIN_LEGENDARY]: {
     type: 'item',
     priority: 'legendary',
     cooldown: 0, // 传说物品无冷却
@@ -80,7 +80,7 @@ export const ANNOUNCEMENT_TRIGGERS: Record<GameEventType, AnnouncementTriggerCon
     },
   },
   
-  [GameEventType.OBTAIN_MYTHIC]: {
+  [AnnouncementEventType.OBTAIN_MYTHIC]: {
     type: 'item',
     priority: 'mythic',
     cooldown: 0, // 神话物品无冷却
@@ -90,11 +90,11 @@ export const ANNOUNCEMENT_TRIGGERS: Record<GameEventType, AnnouncementTriggerCon
     },
   },
   
-  [GameEventType.SYNTHESIS_SUCCESS]: {
+  [AnnouncementEventType.SYNTHESIS_SUCCESS]: {
     type: 'synthesis',
     priority: 'rare',
     cooldown: 180000, // 3分钟冷却
-    condition: (event: GameEvent) => {
+    condition: (event: AnnouncementGameEvent) => {
       // 只有合成史诗及以上品质才公告
       return ['epic', 'legendary', 'mythic'].includes(event.data?.itemQuality as string);
     },
@@ -106,11 +106,11 @@ export const ANNOUNCEMENT_TRIGGERS: Record<GameEventType, AnnouncementTriggerCon
   
   // ========== 成就相关 ==========
   
-  [GameEventType.ACHIEVEMENT_UNLOCK]: {
+  [AnnouncementEventType.ACHIEVEMENT_UNLOCK]: {
     type: 'achievement',
     priority: 'rare',
     cooldown: 60000, // 1分钟冷却
-    condition: (event: GameEvent) => {
+    condition: (event: AnnouncementGameEvent) => {
       // 只有解锁稀有及以上成就才公告
       return event.data?.achievementRarity !== 'common';
     },
@@ -122,7 +122,7 @@ export const ANNOUNCEMENT_TRIGGERS: Record<GameEventType, AnnouncementTriggerCon
   
   // ========== 势力相关 ==========
   
-  [GameEventType.FACTION_JOIN]: {
+  [AnnouncementEventType.FACTION_JOIN]: {
     type: 'faction',
     priority: 'common',
     cooldown: 0,
@@ -132,11 +132,11 @@ export const ANNOUNCEMENT_TRIGGERS: Record<GameEventType, AnnouncementTriggerCon
     },
   },
   
-  [GameEventType.FACTION_CONTRIBUTE]: {
+  [AnnouncementEventType.FACTION_CONTRIBUTE]: {
     type: 'faction',
     priority: 'common',
     cooldown: 600000, // 10分钟冷却
-    condition: (event: GameEvent) => {
+    condition: (event: AnnouncementGameEvent) => {
       // 只有高贡献才公告
       return (event.data?.contribution as number) >= 1000;
     },
@@ -148,7 +148,7 @@ export const ANNOUNCEMENT_TRIGGERS: Record<GameEventType, AnnouncementTriggerCon
   
   // ========== 其他 ==========
   
-  [GameEventType.DISCOVERY]: {
+  [AnnouncementEventType.DISCOVERY]: {
     type: 'discovery',
     priority: 'rare',
     cooldown: 300000, // 5分钟冷却
@@ -246,7 +246,7 @@ export const ANNOUNCEMENT_PRIORITY_CONFIG: Record<AnnouncementPriority, {
 /**
  * 检查事件是否应该触发公告
  */
-export function shouldTriggerAnnouncement(event: GameEvent): boolean {
+export function shouldTriggerAnnouncement(event: AnnouncementGameEvent): boolean {
   const config = ANNOUNCEMENT_TRIGGERS[event.type];
   if (!config) return false;
   
@@ -261,6 +261,6 @@ export function shouldTriggerAnnouncement(event: GameEvent): boolean {
 /**
  * 获取公告配置
  */
-export function getAnnouncementConfig(eventType: GameEventType): AnnouncementTriggerConfig | undefined {
+export function getAnnouncementConfig(eventType: AnnouncementEventType): AnnouncementTriggerConfig | undefined {
   return ANNOUNCEMENT_TRIGGERS[eventType];
 }

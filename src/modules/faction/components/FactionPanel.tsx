@@ -56,14 +56,16 @@ import {
   getFactionById, 
   calculateFactionBonuses,
 } from '@/modules/faction/data/factionData';
-import { WorldType, Faction, FactionTypeNames, WorldFaction } from '@/shared/lib/types';
-import { 
-  TaskRoundState, 
-  CommissionState, 
+import type { WorldType, WorldFaction } from '@/core/types';
+import type { Faction } from '@/modules/faction/data/factionData';
+import { FactionTypeNames } from '@/modules/faction/data/factionData';
+import type {
+  TaskRoundState,
+  CommissionState,
   CommissionProgress,
   FactionProgress,
   ReputationLevel,
-} from '@/shared/lib/types';
+} from '@/core/types';
 import { 
   REPUTATION_LEVELS,
   DAILY_TASK_ROUND,
@@ -102,7 +104,7 @@ interface FactionPanelProps {
   spiritStoneCount?: number;
   onDonate?: (amount: number) => { success: boolean; message: string };
   playerLevel?: number;
-  // 废弃属性（保持向后兼容）
+  // 可选属性
   onRefreshTasks?: () => { success: boolean; message: string };
   currentEvent?: unknown;
   onExplore?: () => void;
@@ -374,7 +376,7 @@ export function FactionPanel({
   // 渲染任务轮次状态
   const renderTaskRoundStatus = (round: TaskRoundState, roundType: 'daily' | 'weekly') => {
     const config = roundType === 'daily' ? DAILY_TASK_ROUND : WEEKLY_TASK_ROUND;
-    // 确保 roundLimit 有有效值（兼容旧存档）
+    // 确保 roundLimit 有有效值
     const roundLimit = round.roundLimit || config.maxTasksPerRound;
     const isCooldownActive = round.roundCooldownEnd && Date.now() < round.roundCooldownEnd;
     const cooldownRemaining = isCooldownActive ? (round.roundCooldownEnd || 0) - Date.now() : 0;
@@ -428,7 +430,7 @@ export function FactionPanel({
     const target = progress?.target || taskConfig.requirements[0]?.count || 1;
     
     // 检查轮次是否可用
-    // 确保 roundLimit 有有效值（兼容旧存档）
+    // 确保 roundLimit 有有效值
     const roundLimit = round.roundLimit || (roundType === 'daily' ? 5 : 10);
     const isRoundCooldown = round.roundCooldownEnd && Date.now() < round.roundCooldownEnd;
     const isRoundFull = round.completedInRound >= roundLimit;

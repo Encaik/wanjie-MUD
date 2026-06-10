@@ -7,22 +7,21 @@
  * 3. 接口抽象，便于扩展
  */
 
-import { RestraintResult, EnemyAttributes } from '@/modules/combat/logic/restraintSystem';
-import { 
-  Technique, 
-  Equipment, 
-  InventoryItem, 
-  ActiveEffect, 
-  Element, 
-  WeaponCategory,
+import {  RestraintResult, EnemyAttributes } from '@/modules/combat/logic/restraintSystem';
+import {
+  FlatStats,
+  Technique,
+  Equipment,
+  InventoryItem,
+  ActiveEffect,
   EnemyTier,
   ItemRarity,
   CharacterStats,
   BattleLog,
   BattleState,
   Protagonist,
-  LegacyStats,
-} from '@/shared/lib/types';
+} from '@/core/types';
+import type { Element, WeaponCategory } from '@/modules/combat/logic/restraintSystem';
 
 // ============================================
 // 战斗行动类型
@@ -323,23 +322,13 @@ export interface ExtendedBattleState extends BattleState {
   /** 当前选中的敌人索引（玩家选择攻击目标） */
   selectedEnemyIndex: number;
   
-  // ============================================
-  // 单敌人兼容字段（已废弃，保留向后兼容）
-  // ============================================
-  
-  /** @deprecated 使用 enemies[0].attributes 代替 */
+  // 首个敌人快捷访问器（对应 enemies[0] 的各项属性）
   enemyAttributes: EnemyAttributes;
-  /** @deprecated 使用 enemies[0].skills 代替 */
   enemySkills?: BattleSkill[];
-  /** @deprecated 使用 enemies[0].skillCooldowns 代替 */
   enemySkillCooldowns?: Map<string, number>;
-  /** @deprecated 使用 enemies[0].currentMp 代替 */
   enemyCurrentMp?: number;
-  /** @deprecated 使用 enemies[0].maxMp 代替 */
   enemyMaxMp?: number;
-  /** @deprecated 使用 enemies[0].isStunned 代替 */
   enemyStunned?: boolean;
-  /** @deprecated 使用 enemies[0].stunRounds 代替 */
   enemyStunRounds?: number;
   /** 敌人增强描述 */
   enemyEnhancementDesc?: string;
@@ -676,7 +665,7 @@ export interface ComboEvent {
 export interface PlayerData {
   name: string;
   level: number;
-  attributes: LegacyStats;
+  attributes: FlatStats;
   health?: number;
   mana?: number;
   /** 最大生命值 - 使用玩家实际属性 */

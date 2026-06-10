@@ -14,7 +14,7 @@ export type {
   GrowthStats,
   CharacterStats,
   StatKey,
-  LegacyStats,
+  FlatStats,
   StatName,
   StatImpact,
   ImpactfulTrait,
@@ -96,7 +96,6 @@ export type {
 export {
   getFinalStats,
   getStatKeys,
-  createCombinedStats,
   createDefaultStats,
   fromOldStats,
   createStatsWithBonuses,

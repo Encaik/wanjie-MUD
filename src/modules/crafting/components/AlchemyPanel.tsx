@@ -6,7 +6,7 @@ import { FlaskConical, Clock, Package, AlertCircle } from 'lucide-react';
 
 import { Badge } from '@/shared/ui/badge';
 import { Button } from '@/shared/ui/button';
-import { getRarityStyle } from '@/shared/ui/item-tooltip';
+import { getRarityStyle } from '@/modules/theme/data/rarityStyles';
 import { 
   ALCHEMY_RECIPES, 
   ALCHEMY_MATERIALS, 

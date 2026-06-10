@@ -3,7 +3,7 @@
  * 定义穿越守卫、世界生成、飞升奖励等配置
  */
 
-import { WorldType, LegacyStats } from '@/core/types';
+import { FlatStats, WorldType } from '@/core/types';
 
 // ============================================
 // 穿越守卫配置
@@ -425,7 +425,7 @@ export const WORLD_FEATURES: Record<WorldType, string[]> = {
  * 飞升里程碑奖励
  */
 export interface AscensionMilestone {
-  statBonus: Partial<LegacyStats>;
+  statBonus: Partial<FlatStats>;
   title: string;
   ability: string;
   description: string;
