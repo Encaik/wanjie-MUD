@@ -1,34 +1,5 @@
 /**
- * Mod 系统 — 桶导出
- *
- * @module shared/lib/mod
+ * Barrel re-export — Mod 系统
+ * @deprecated 使用 @/core/mod 代替。旧路径保留用于向后兼容。
  */
-
-export { ModLoader } from './ModLoader';
-
-export {
-  validateManifest,
-  parseManifest,
-  ALL_MOD_CONTENT_TYPES,
-  ModLoadError,
-} from './ModManifest';
-
-export type {
-  ModManifest,
-  ModContentType,
-  ModLoadStatus,
-  LoadedMod,
-  ModLoadProgressEvent,
-  ModLoadCompleteEvent,
-  ManifestValidationError,
-} from './ModManifest';
-
-export type {
-  ModProgressCallback,
-  ModCompleteCallback,
-} from './ModLoader';
-
-export {
-  validateModData,
-  validateMod,
-} from './ModValidator';
+export * from '@/core/mod';

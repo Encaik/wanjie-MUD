@@ -4,7 +4,7 @@
  * 装备多个相关功法时触发羁绊效果，鼓励玩家搭配而非只装最强
  */
 
-import { ItemRarity } from '@/shared/lib/types';
+import { ItemRarity } from '@/core/types';
 
 // 羁绊等级
 export interface BondLevelConfig {

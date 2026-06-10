@@ -4,8 +4,8 @@
  * 不同世界类型使用不同的出身/特质/性格/天赋词条集合。
  * 当前实现：为科技/魔幻/末世提供专属词条覆盖，其他世界沿用修仙词条（后续迭代补充）。
  */
-import type { WorldType } from '@/shared/lib/types';
-import { WorldDataRegistry } from '@/shared/lib/registry';
+import type { WorldType } from '@/core/types';
+import { WorldDataRegistry } from '@/core/registry';
 
 /**
  * 世界词条池配置

@@ -4,7 +4,7 @@
  * @module modules/world-rating
  */
 
-import type { RatingData, WorldRatingsMap } from '@/shared/lib/world/types';
+import type { RatingData, WorldRatingsMap } from '@/core/world/types';
 
 /** 评分存储（key: worldId, value: RatingData） */
 export type WorldRatingsStore = WorldRatingsMap;

@@ -15,8 +15,8 @@ import {
 } from '@/modules/progression/logic/balanceConfig';
 import { calculateEnemyCombatPower } from '@/modules/combat/logic/combatPower';
 import { calculateEnemyEnhancement } from '@/modules/combat/logic/enemy/enemyEnhancement';
-import type { WorldType, DungeonConfig } from '@/shared/lib/types';
-import { WorldDataRegistry } from '@/shared/lib/registry/WorldDataRegistry';
+import type { WorldType, DungeonConfig } from '@/core/types';
+import { WorldDataRegistry } from '@/core/registry/WorldDataRegistry';
 import type { RealmSystem, RealmTier } from './realmCore';
 import { getRealmName, getRealmMultiplier } from './realmCore';
 

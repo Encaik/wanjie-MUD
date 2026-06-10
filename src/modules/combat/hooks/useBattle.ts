@@ -22,8 +22,8 @@ import type {
   CombatTechniqueSlot,
   AutoBattleStrategy,
 } from '@/modules/combat/logic/engine/types';
-import type { Protagonist, Technique } from '@/shared/lib/types';
-import { getFinalStats } from '@/shared/lib/types';
+import type { Protagonist, Technique } from '@/core/types';
+import { getFinalStats } from '@/core/types';
 import {
   calculatePlayerMaxHp,
   calculatePlayerMaxMp,

@@ -13,7 +13,7 @@
  */
 
 import { StatisticsEventType } from '@/modules/collection/logic/statistics/statisticsSystem';
-import { GameStatistics } from '@/shared/lib/types';
+import { GameStatistics } from '@/core/types';
 
 // ============================================
 // 任务需求类型定义

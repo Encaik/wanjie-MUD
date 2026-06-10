@@ -17,7 +17,7 @@ import {
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/card';
 import { calculateStatisticsSummary, StatisticsSummary } from '@/modules/collection/logic/statistics/statisticsSystem';
-import { GameStatistics, Protagonist, getFinalStats } from '@/shared/lib/types';
+import { GameStatistics, Protagonist, getFinalStats } from '@/core/types';
 import { cn } from '@/shared/utils';
 
 interface StatisticsPanelProps {

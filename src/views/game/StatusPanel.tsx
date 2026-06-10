@@ -14,7 +14,7 @@ import {
   useCombatStats 
 } from '@/views/game/useGameHooks';
 import { calculatePlayerCombatPower, getCombatPowerRank, formatCombatPower } from '@/modules/combat/logic/combatPower';
-import { Protagonist, getFinalStats } from '@/shared/lib/types';
+import { Protagonist, getFinalStats } from '@/core/types';
 
 // 属性图标和颜色配置
 const statConfig = [

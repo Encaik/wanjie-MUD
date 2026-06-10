@@ -3,7 +3,7 @@
  * 防止数组越界（修复 BUG-007）
  */
 
-import { Technique, Equipment, TECHNIQUE_SLOT_COUNT } from '@/shared/lib/types';
+import { Technique, Equipment, TECHNIQUE_SLOT_COUNT } from '@/core/types';
 
 /**
  * 获取功法槽位数量

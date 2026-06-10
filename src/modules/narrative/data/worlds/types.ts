@@ -5,7 +5,7 @@
  * 添加新世界观只需复制一个文件然后修改内容
  */
 
-import { WorldType } from '@/shared/lib/types';
+import { WorldType } from '@/core/types';
 
 /**
  * 术语文案

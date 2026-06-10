@@ -24,8 +24,8 @@ import {
   createGuardianBattleState, 
   executeBattleRound,
 } from '@/modules/ascension/logic/ascensionLogic';
-import { BattleState, BattleLog, Protagonist, getFinalStats } from '@/shared/lib/types';
-import { GuardianBattleState } from '@/shared/lib/typesExtension';
+import { BattleState, BattleLog, Protagonist, getFinalStats } from '@/core/types';
+import { GuardianBattleState } from '@/core/types';
 
 // 战斗结果类型
 interface BattleResult {

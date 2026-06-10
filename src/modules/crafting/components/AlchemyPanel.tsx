@@ -16,7 +16,7 @@ import {
   PillQuality,
   AlchemyRecipe,
 } from '@/modules/crafting/data/alchemyRecipes';
-import { InventoryItem, ItemRarity, CraftingState } from '@/shared/lib/types';
+import { InventoryItem, ItemRarity, CraftingState } from '@/core/types';
 import { cn } from '@/shared/utils';
 
 interface AlchemyPanelProps {

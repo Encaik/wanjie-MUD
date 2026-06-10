@@ -4,8 +4,8 @@
  * 从 useGameState.tsx 提取，减少巨型文件体积。
  */
 
-import type { GameState } from '@/shared/lib/types';
-import { DEFAULT_ASCENSION_FLOW_STATE } from '@/shared/lib/typesExtension';
+import type { GameState } from '@/core/types';
+import { DEFAULT_ASCENSION_FLOW_STATE } from '@/core/types';
 
 /** 创建初始游戏状态 */
 export function createInitialGameState(): GameState {

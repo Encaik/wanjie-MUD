@@ -5,7 +5,7 @@
  * 支持 AI 对话标识，为后续 AI 驱动对话做准备。
  */
 
-import type { CharacterStats } from '@/shared/lib/types';
+import type { CharacterStats } from '@/core/types';
 
 /**
  * NPC 定义

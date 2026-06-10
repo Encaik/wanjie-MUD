@@ -17,7 +17,7 @@ import {
 import { EquipmentAffix, AffixType, AffixEffect } from '@/modules/equipment/data/equipmentAffixData';
 import { CurrencyService } from '../shop/currencyService';
 import { PlayerCurrencies, CurrencyType } from '../shop/types';
-import { Protagonist, Equipment, Technique, ItemRarity, StatKey } from '@/shared/lib/types';
+import { Protagonist, Equipment, Technique, ItemRarity, StatKey } from '@/core/types';
 
 /**
  * 灵石消耗服务

@@ -67,7 +67,7 @@ import {
   Equipment,
   WorldType,
   getFinalStats,
-} from '@/shared/lib/types';
+} from '@/core/types';
 import { 
   getEnemyTierFromCellType, 
   getEnemyTierConfig 

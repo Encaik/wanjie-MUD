@@ -13,10 +13,10 @@ import { calculatePlayerMaxHp, calculatePlayerMaxMp } from '@/modules/progressio
 import { executeCultivation, getMaxExperience } from '@/modules/progression/logic/cultivation';
 import { executeCultivationWithStrategy } from '@/modules/progression/logic/cultivationStrategy';
 import type { CultivationStrategy } from '@/modules/progression/logic/types';
-import { applyMentalChange } from '@/shared/lib/expansionLogic';
-import { updateTaskProgress } from '@/shared/lib/expansionLogic';
+import { applyMentalChange } from '@/core/engine';
+import { updateTaskProgress } from '@/core/engine';
 import { processExperienceGain, calculateBreakthroughTransfer } from '@/modules/progression/logic/experienceSystem';
-import { gameSystems } from '@/shared/lib/gameSystems';
+import { gameSystems } from '@/core/engine';
 import { getRealmName } from '@/modules/identity/logic/generators';
 import { applyGrowthStatChanges, getGrowthStatCap } from '@/modules/progression/logic/realmSystem';
 import { consumeGameTime, ACTION_TIME_COST } from '@/modules/time/logic/timeSystem';
@@ -26,8 +26,8 @@ import {
   InventoryItem,
   ActiveEffect,
   GrowthStats,
-} from '@/shared/lib/types';
-import { DEFAULT_PROTAGONIST_EXTENSION, MentalState } from '@/shared/lib/typesExtension';
+} from '@/core/types';
+import { DEFAULT_PROTAGONIST_EXTENSION, MentalState } from '@/core/types';
 
 import { removeFromInventory } from '@/modules/equipment/hooks/inventoryUtils';
 

@@ -26,7 +26,7 @@ import {
   calculateDangerCount,
   calculateOpportunityCount,
 } from './worldEffectsData';
-import { WorldType, WorldDifficulty } from '@/shared/lib/types';
+import { WorldType, WorldDifficulty } from '@/core/types';
 
 // ============================================
 // 常量定义

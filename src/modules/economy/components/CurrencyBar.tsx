@@ -9,7 +9,7 @@
 import { getResourceName } from '@/modules/equipment/logic/items';
 import { CurrencyService } from '@/modules/economy/logic/shop/currencyService';
 import { PlayerCurrencies, CurrencyType, CURRENCY_CONFIGS } from '@/modules/economy/logic/shop/types';
-import { WorldType } from '@/shared/lib/types';
+import { WorldType } from '@/core/types';
 import { cn } from '@/shared/utils';
 
 interface CurrencyBarProps {

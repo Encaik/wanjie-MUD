@@ -8,7 +8,7 @@ import { Badge } from '@/shared/ui/badge';
 import { Button } from '@/shared/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/card';
 import { getDungeonInfo } from '@/modules/narrative/logic/terminology';
-import { DungeonConfig, WorldType, Protagonist } from '@/shared/lib/types';
+import { DungeonConfig, WorldType, Protagonist } from '@/core/types';
 
 
 

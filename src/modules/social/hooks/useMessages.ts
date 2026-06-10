@@ -12,9 +12,9 @@ import { generateId } from '@/modules/identity/logic/generators';
 import {
   addMessage as dbAddMessage,
   getMessagesPage,
-} from '@/shared/lib/messageDB';
-import { MessageRecord } from '@/shared/lib/types';
-import { MESSAGE_CONFIG } from '@/shared/lib/types';
+} from '@/core/engine';
+import { MessageRecord } from '@/core/types';
+import { MESSAGE_CONFIG } from '@/core/types';
 
 interface UseGameMessagesProps {
   gameId: string;

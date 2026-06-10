@@ -16,7 +16,7 @@ import {
   getDefaultRealTimeState,
 } from './timeSystem';
 import { TOWER_CONFIG } from '@/modules/tower/logic/types';
-import { Protagonist } from '@/shared/lib/types';
+import { Protagonist } from '@/core/types';
 
 // ============================================
 // 类型定义

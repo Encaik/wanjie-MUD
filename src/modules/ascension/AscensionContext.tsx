@@ -8,8 +8,8 @@ import type {
   NewWorldInfo, 
   DiscoveredWorld,
   AscensionChallengeResult,
-} from '@/shared/lib/typesExtension';
-import { DEFAULT_ASCENSION_FLOW_STATE } from '@/shared/lib/typesExtension';
+} from '@/core/types';
+import { DEFAULT_ASCENSION_FLOW_STATE } from '@/core/types';
 
 /**
  * Ascension Context

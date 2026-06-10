@@ -52,7 +52,7 @@ import {
   TriggeredEvent,
 } from '@/modules/combat/logic/battle';
 import type { TowerEnemy } from '@/modules/tower/logic/types';
-import { Protagonist, CellType, DungeonConfig, BattleResult } from '@/shared/lib/types';
+import { Protagonist, CellType, DungeonConfig, BattleResult } from '@/core/types';
 
 import { BattleLogList } from './BattleLogList';
 import { CombatantPanel } from './CombatantPanel';

@@ -23,7 +23,7 @@ import {
   TechniqueType, 
   ItemRarity, 
   WorldType 
-} from '@/shared/lib/types';
+} from '@/core/types';
 
 // 导入配置数据
 import {

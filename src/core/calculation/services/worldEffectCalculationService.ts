@@ -11,7 +11,7 @@ import {
 } from '@/modules/identity/data/worldEffectsData';
 import { calculateWorldRewardCoefficient } from '@/modules/identity/data/worldSystem';
 import { Enemy } from '@/modules/combat/logic/enemy/types';
-import { Protagonist, World, StatName } from '@/shared/lib/types';
+import { Protagonist, World, StatName } from '@/core/types';
 import { WorldDangerAdapter, WorldOpportunityAdapter } from '../adapters/worldEffectAdapter';
 import { UnifiedCalculator, getCalculator } from '../calculator';
 import { LOG_PREFIX } from '../constants';

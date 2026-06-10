@@ -1,7 +1,7 @@
 'use client';
 
 import { ScrollArea } from '@/shared/ui/scroll-area';
-import { BattleState, Technique, Equipment } from '@/shared/lib/types';
+import { BattleState, Technique, Equipment } from '@/core/types';
 
 import { BattleResultDialog } from '@/modules/combat/components';
 

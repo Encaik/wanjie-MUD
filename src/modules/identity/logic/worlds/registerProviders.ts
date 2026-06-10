@@ -7,9 +7,9 @@
  * @module modules/identity/logic/worlds
  */
 
-import { WorldDataRegistry } from '@/shared/lib/registry';
-import { WorldProviderRegistry } from '@/shared/lib/world/WorldProviderRegistry';
-import { TemplateWorldProvider } from '@/shared/lib/world/TemplateWorldProvider';
+import { WorldDataRegistry } from '@/core/registry';
+import { WorldProviderRegistry } from '@/core/world/WorldProviderRegistry';
+import { TemplateWorldProvider } from '@/core/world/TemplateWorldProvider';
 import { ModRandomWorldProvider } from './ModRandomWorldProvider';
 
 /**

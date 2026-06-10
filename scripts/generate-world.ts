@@ -78,7 +78,7 @@ function regenerateBarrel(seeds: string[]): void {
  * 新增世界请运行：npx tsx scripts/generate-world.ts --seed=<新种子>
  */
 
-import type { World } from '@/shared/lib/types';
+import type { World } from '@/core/types';
 ${aliases.join('\n')}
 
 /** 所有已生成的世界列表 */

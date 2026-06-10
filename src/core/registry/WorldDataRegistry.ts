@@ -16,8 +16,8 @@ import type {
   ImpactLevel,
   StatName,
   ExtensibleWorldType,
-} from '@/shared/lib/types';
-import type { WorldTemplate } from '@/shared/lib/world/types';
+} from '@/core/types';
+import type { WorldTemplate } from '@/core/world/types';
 
 // ============================================
 // 注册中心数据类型定义

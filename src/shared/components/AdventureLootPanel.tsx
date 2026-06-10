@@ -7,7 +7,7 @@ import { Package, EyeOff, Sparkles } from 'lucide-react';
 import { Badge } from '@/shared/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/card';
 import { getTerminology } from '@/modules/narrative/logic/terminology';
-import { InventoryItem, ItemRarity, WorldType } from '@/shared/lib/types';
+import { InventoryItem, ItemRarity, WorldType } from '@/core/types';
 
 interface AdventureLootPanelProps {
   loot: InventoryItem[];

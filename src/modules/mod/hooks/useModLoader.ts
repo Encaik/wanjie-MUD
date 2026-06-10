@@ -8,8 +8,8 @@
  */
 
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { ModLoader, ModLoadError } from '@/shared/lib/mod';
-import type { ModLoadProgressEvent } from '@/shared/lib/mod';
+import { ModLoader, ModLoadError } from '@/core/mod';
+import type { ModLoadProgressEvent } from '@/core/mod';
 import { registerBuiltinMechanics } from '@/modules/identity/logic/worlds/registerBuiltin';
 import { registerWorldProviders } from '@/modules/identity/logic/worlds/registerProviders';
 

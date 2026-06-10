@@ -4,7 +4,7 @@
  * 定义修炼策略选择、暴击事件和冷却管理等类型。
  */
 
-import type { GrowthStats } from '@/shared/lib/types';
+import type { GrowthStats } from '@/core/types';
 
 // ============================================
 // 修炼策略

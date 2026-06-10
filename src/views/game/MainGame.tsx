@@ -13,7 +13,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/shared/ui/tabs';
 import { isDebugMode } from '@/shared/config/env';
 import { createEmptyFragmentInventory, getSynthesizableCount } from '@/modules/crafting/logic/fragmentSystem';
 import { TowerEnemy, createDefaultTowerProgress } from '@/modules/tower/logic/types';
-import { Protagonist, ActionResult, ActionTab, BattleState, DungeonConfig, Technique, TechniqueType, InventoryItem, Equipment, EquipmentSlot, ItemDefinition, CraftingState, ForgingState, AchievementStatus, CollectionStatus, GameStatistics, CultivationPath, ItemRarity, MessageRecord, getFinalStats } from '@/shared/lib/types';
+import { Protagonist, ActionResult, ActionTab, BattleState, DungeonConfig, Technique, TechniqueType, InventoryItem, Equipment, EquipmentSlot, ItemDefinition, CraftingState, ForgingState, AchievementStatus, CollectionStatus, GameStatistics, CultivationPath, ItemRarity, MessageRecord, getFinalStats } from '@/core/types';
 import type { SeclusionType } from '@/modules/progression/logic/seclusion';
 import { TimeSystemState } from '@/modules/time/logic/timeSystem';
 
@@ -61,7 +61,7 @@ import { RightSidebar } from './RightSidebar';
 import { MobileLayout } from './MobileLayout';
 import { CenterPanel } from './CenterPanel';
 
-import { InheritanceChoice, NewWorldInfo, DEFAULT_ASCENSION_MARK, AscensionFlowState, DeathState } from '@/shared/lib/typesExtension';
+import { InheritanceChoice, NewWorldInfo, DEFAULT_ASCENSION_MARK, AscensionFlowState, DeathState } from '@/core/types';
 import { ScrollArea } from '@/shared/ui/scroll-area';
 import { getRealmName } from '@/modules/progression/data/realmData';
 import { 
@@ -77,8 +77,8 @@ import {
   ForgeMaterialRequirement,
 } from '@/modules/crafting/data/forgeRecipes';
 import { generateId } from '@/modules/identity/logic/generators';
-import { MentalState, DEFAULT_PROTAGONIST_EXTENSION } from '@/shared/lib/typesExtension';
-import { checkRankPromotion } from '@/shared/lib/expansionLogic';
+import { MentalState, DEFAULT_PROTAGONIST_EXTENSION } from '@/core/types';
+import { checkRankPromotion } from '@/core/engine';
 import { getFactionById } from '@/modules/faction/data/factionData';
 
 // 多人游戏相关
@@ -221,7 +221,7 @@ interface MainGameProps {
   deathState?: DeathState;
   onClearDeathState?: () => void;
   // 交互式战斗
-  activeBattle?: import('@/shared/lib/types').ActiveBattleState | null;
+  activeBattle?: import('@/core/types').ActiveBattleState | null;
   autoBattle?: boolean;
   onBattleEnd?: (result: { victory: boolean; fled?: boolean; playerHpAfter: number; playerMpAfter?: number }) => void;
   onToggleAutoBattle?: () => void;

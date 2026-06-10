@@ -3,8 +3,8 @@
  * 定义不同的心魔事件和选择
  */
 
-import { LegacyStats, StatKey } from '@/shared/lib/types';
-import { DemonEncounter, DemonChoice } from '@/shared/lib/typesExtension';
+import { LegacyStats, StatKey } from '@/core/types';
+import { DemonEncounter, DemonChoice } from '@/core/types';
 
 // 心魔事件列表
 export const DEMON_ENCOUNTERS: DemonEncounter[] = [

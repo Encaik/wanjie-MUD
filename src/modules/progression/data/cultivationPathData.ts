@@ -4,7 +4,7 @@
  * 流派提供差异化成长方向，让玩家有明确的选择感
  */
 
-import { LegacyStats, StatKey } from '@/shared/lib/types';
+import { LegacyStats, StatKey } from '@/core/types';
 
 // 修炼流派类型
 export type CultivationPath = 'body' | 'sword' | 'spell' | 'alchemy' | 'demon';

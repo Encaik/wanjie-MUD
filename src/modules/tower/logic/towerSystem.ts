@@ -23,7 +23,7 @@ import {
 import { Enemy } from '@/modules/combat/logic/enemy/types';
 import { EnemyGroup } from '@/modules/combat/logic/enemy/types';
 import { getTerminology } from '@/modules/narrative/logic/terminology';
-import { WorldType, ItemRarity, EnemyTier } from '@/shared/lib/types';
+import { WorldType, ItemRarity, EnemyTier } from '@/core/types';
 
 // ============================================
 // 工具函数

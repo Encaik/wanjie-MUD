@@ -8,7 +8,7 @@
  * openspec/changes/archive/2026-06-08-architecture-code-quality-refactor/
  */
 
-import { WorldType, World, EnemyTier } from '@/shared/lib/types';
+import { WorldType, World, EnemyTier } from '@/core/types';
 import { getWorldData, DIFFICULTY_MULTIPLIERS, DifficultyLevel, ENEMY_TIER_CONFIG, getEnemyTierConfig, getEffectiveEnemyTierConfig } from '@/modules/identity/data/worldData';
 import { clamp, clampNonNegative, safeDivide } from '@/shared/utils/numberUtils';
 

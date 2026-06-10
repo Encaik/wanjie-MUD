@@ -9,7 +9,7 @@ import {
   getNextMainRealmLevel 
 } from '@/modules/progression/data/realmData';
 import { getTerminology } from '@/modules/narrative/logic/terminology';
-import { Protagonist } from '@/shared/lib/types';
+import { Protagonist } from '@/core/types';
 
 interface CharacterInfoProps {
   protagonist: Protagonist;

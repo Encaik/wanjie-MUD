@@ -10,7 +10,7 @@
  * - 通过物品名称中的关键词匹配
  */
 
-import { BondDefinition, BondType, BondLevel, BondReward } from '@/shared/lib/types';
+import { BondDefinition, BondType, BondLevel, BondReward } from '@/core/types';
 
 /**
  * 羁绊等级配置

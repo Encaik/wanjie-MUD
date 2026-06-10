@@ -11,9 +11,9 @@ import { getRealmName } from '@/modules/progression/data/realmData';
 import { getMaxExperience } from '@/modules/progression/logic/cultivation';
 import { getResourceName } from '@/modules/equipment/logic/items';
 import { TimeSystemState, formatGameTimeShort } from '@/modules/time/logic/timeSystem';
-import { CultivationPath } from '@/shared/lib/types';
-import { Protagonist } from '@/shared/lib/types';
-import { MentalState } from '@/shared/lib/typesExtension';
+import { CultivationPath } from '@/core/types';
+import { Protagonist } from '@/core/types';
+import { MentalState } from '@/core/types';
 import { WORLD_TEXT_MAP } from '@/modules/narrative/logic/WorldTextManager';
 import { cn } from '@/shared/utils';
 

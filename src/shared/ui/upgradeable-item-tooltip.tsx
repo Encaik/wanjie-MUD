@@ -2,7 +2,7 @@
 
 import { ReactNode } from 'react';
 
-import type { ItemRarity } from '@/shared/lib/types';
+import type { ItemRarity } from '@/core/types';
 import { Badge } from '@/shared/ui/badge';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/shared/ui/tooltip';
 import { getRarityStyle, getStatColor } from '@/shared/utils/rarityStyles';

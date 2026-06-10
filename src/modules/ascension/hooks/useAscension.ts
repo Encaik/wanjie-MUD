@@ -27,9 +27,9 @@ import {
   Equipment,
   Technique,
   createInventoryItem,
-} from '@/shared/lib/types';
-import { DEFAULT_PROTAGONIST_EXTENSION, InheritanceChoice, NewWorldInfo, DiscoveredWorld, GuardianBattleState } from '@/shared/lib/typesExtension';
-import { DEFAULT_ASCENSION_FLOW_STATE, DEFAULT_GUARDIAN_BATTLE_STATE } from '@/shared/lib/typesExtension';
+} from '@/core/types';
+import { DEFAULT_PROTAGONIST_EXTENSION, InheritanceChoice, NewWorldInfo, DiscoveredWorld, GuardianBattleState } from '@/core/types';
+import { DEFAULT_ASCENSION_FLOW_STATE, DEFAULT_GUARDIAN_BATTLE_STATE } from '@/core/types';
 
 interface UseGameAscensionProps {
   gameState: GameState;
@@ -84,7 +84,7 @@ export function useGameAscension({
       const stats = prev.protagonist.stats;
       
       const { getNextTribulationLevel } = require('@/modules/ascension/data/tribulationData');
-      const { startTribulation, executeTribulationPhase, calculateTribulationReward, calculateTribulationPenalty } = require('@/shared/lib/expansionLogic');
+      const { startTribulation, executeTribulationPhase, calculateTribulationReward, calculateTribulationPenalty } = require('@/core/engine');
       
       const nextTribLevel = getNextTribulationLevel(level);
       if (!nextTribLevel || level < nextTribLevel) {

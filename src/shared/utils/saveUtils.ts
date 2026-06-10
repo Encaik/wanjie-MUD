@@ -3,7 +3,7 @@
  * 实现原子写入、备份和错误恢复
  */
 
-import { GameState } from '@/shared/lib/types';
+import { GameState } from '@/core/types';
 
 const STORAGE_KEY = 'gameState';
 const BACKUP_KEY = 'gameState_backup';

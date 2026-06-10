@@ -34,10 +34,10 @@ import {
   getPathLevelExp,
   PATH_LEVEL_CONFIG,
 } from '@/modules/progression/data/cultivationPathData';
-import { CharacterStats, WorldType, LegacyStats } from '@/shared/lib/types';
+import { CharacterStats, WorldType, LegacyStats } from '@/core/types';
 import {
   CultivationPath,
-} from '@/shared/lib/typesExtension';
+} from '@/core/types';
 import { getWorldText } from '@/modules/narrative/logic/WorldTextManager';
 
 interface CultivationPathSelectProps {

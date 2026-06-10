@@ -6,7 +6,7 @@
  */
 
 import { Element } from '@/modules/combat/logic/restraintSystem';
-import { CharacterStats, GrowthStats, ItemDefinition, WorldType, Technique, Equipment, Protagonist } from '@/shared/lib/types';
+import { CharacterStats, GrowthStats, ItemDefinition, WorldType, Technique, Equipment, Protagonist } from '@/core/types';
 
 // 重新导出 Element 类型供其他模块使用
 export type { Element } from '@/modules/combat/logic/restraintSystem';

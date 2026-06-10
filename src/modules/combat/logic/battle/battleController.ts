@@ -51,7 +51,7 @@ import {
   ItemRarity,
   EnemyTier,
   Protagonist,
-} from '@/shared/lib/types';
+} from '@/core/types';
 import {
   BattleEnemy,
   TurnOrderEntry,

@@ -12,7 +12,7 @@
  * 3. Boss 名称应该更有气势
  */
 
-import { WorldType } from '@/shared/lib/types';
+import { WorldType } from '@/core/types';
 
 export interface EnemyNames {
   low: string[];    // 低级敌人（适合新手区域）

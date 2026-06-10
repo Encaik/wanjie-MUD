@@ -17,7 +17,7 @@ import {
   UpgradeMaterial, 
   ItemRarity,
   UPGRADE_CONFIG 
-} from '@/shared/lib/types';
+} from '@/core/types';
 import {
   getExpToNextLevel,
   getMaterialExpValue,

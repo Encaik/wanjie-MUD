@@ -7,7 +7,7 @@
  * NPC 通过 npcId / npcIds 与 NPC 模块关联。
  */
 
-import type { WorldType } from '@/shared/lib/types';
+import type { WorldType } from '@/core/types';
 
 // ============================================
 // 节点类型

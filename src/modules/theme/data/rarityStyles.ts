@@ -7,7 +7,7 @@
  *
  * @module modules/theme/data
  */
-import type { ItemRarity } from '@/shared/lib/types';
+import type { ItemRarity } from '@/core/types';
 
 /** 扩展稀有度类型（未来 ItemRarity 可能扩展为 8 级） */
 export type ExtendedRarity = ItemRarity | '精良' | '优秀' | '劣质' | '基础';

@@ -18,8 +18,10 @@ import { z } from 'zod';
 import { clsx } from 'clsx';
 import { format } from 'date-fns';
 
-// 3. @/ 别名（项目内部）
-import { Button } from '@/components/ui/button';
+// 3. @/ 别名（项目内部）— core/ 在前，modules/、shared/ 在后
+import { gameEventManager } from '@/core/events';
+import type { CharacterStats } from '@/core/types';
+import { Button } from '@/shared/ui/button';
 import { useGameState } from '@/hooks/useGameState';
 import { calculateDamage } from '@/lib/game/combat';
 import type { Player } from '@/lib/game/types';

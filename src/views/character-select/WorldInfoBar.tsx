@@ -3,8 +3,8 @@
 import { ArrowLeft } from 'lucide-react';
 
 import { useStatLabels } from '@/modules/identity/hooks/useStatLabels';
-import { getWorldVisualConfig } from '@/shared/lib/registry';
-import type { WorldType } from '@/shared/lib/types';
+import { getWorldVisualConfig } from '@/core/registry';
+import type { WorldType } from '@/core/types';
 import { Badge } from '@/shared/ui/badge';
 import { Button } from '@/shared/ui/button';
 import { cn } from '@/shared/utils';

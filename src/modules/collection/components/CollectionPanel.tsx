@@ -20,8 +20,8 @@ import {
   ElementNames,
   WeaponNames
 } from '@/modules/collection/data/bondData';
-import { Technique, Equipment, ItemRarity } from '@/shared/lib/types';
-import { GameStatistics } from '@/shared/lib/types';
+import { Technique, Equipment, ItemRarity } from '@/core/types';
+import { GameStatistics } from '@/core/types';
 
 interface CollectionPanelProps {
   techniques: Technique[];

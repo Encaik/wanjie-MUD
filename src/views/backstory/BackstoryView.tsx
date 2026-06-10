@@ -3,7 +3,7 @@
 import { Sparkles, Scroll, User, Globe } from 'lucide-react';
 
 import { useStatLabels } from '@/modules/identity/hooks/useStatLabels';
-import type { WorldType } from '@/shared/lib/types';
+import type { WorldType } from '@/core/types';
 import { Badge } from '@/shared/ui/badge';
 import { Button } from '@/shared/ui/button';
 import { Card, CardContent } from '@/shared/ui/card';

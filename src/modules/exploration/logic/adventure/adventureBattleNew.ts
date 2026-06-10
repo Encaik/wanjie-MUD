@@ -74,14 +74,14 @@ import {
   WorldType,
   getFinalStats,
   LegacyStats,
-} from '@/shared/lib/types';
+} from '@/core/types';
 import {
   getEnemyTierFromCellType,
   getEnemyTierConfig,
 } from '@/modules/identity/data/worldData';
 import {
   createInventoryItem,
-} from '@/shared/lib/types';
+} from '@/core/types';
 import { clamp } from '@/shared/utils/numberUtils';
 
 // 随机工具

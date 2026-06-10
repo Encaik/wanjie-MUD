@@ -9,7 +9,7 @@ import {
   ItemRarity,
   UpgradeMaterial,
   UPGRADE_CONFIG,
-} from '@/shared/lib/types';
+} from '@/core/types';
 
 /**
  * 计算升到下一级所需的经验值

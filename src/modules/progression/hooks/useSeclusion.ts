@@ -10,9 +10,9 @@ import type { Dispatch, SetStateAction } from 'react';
 
 import { CULTIVATION_PATHS } from '@/modules/progression/data/cultivationPathData';
 import { getMaxExperience, getMaxLevel } from '@/modules/progression/logic/cultivation';
-import { applyMentalChange, updateTaskProgress } from '@/shared/lib/expansionLogic';
+import { applyMentalChange, updateTaskProgress } from '@/core/engine';
 import { processExperienceGain, calculateBreakthroughTransfer } from '@/modules/progression/logic/experienceSystem';
-import { gameSystems } from '@/shared/lib/gameSystems';
+import { gameSystems } from '@/core/engine';
 import { getRealmName } from '@/modules/identity/logic/generators';
 import { applyGrowthStatChanges } from '@/modules/progression/logic/realmSystem';
 import {
@@ -28,8 +28,8 @@ import {
   SECLUSION_OUTCOMES,
 } from '@/modules/progression/logic/seclusion';
 import { consumeGameTime, ACTION_TIME_COST } from '@/modules/time/logic/timeSystem';
-import { GameState, MessageRecord, ActiveEffect } from '@/shared/lib/types';
-import { DEFAULT_PROTAGONIST_EXTENSION, MentalState } from '@/shared/lib/typesExtension';
+import { GameState, MessageRecord, ActiveEffect } from '@/core/types';
+import { DEFAULT_PROTAGONIST_EXTENSION, MentalState } from '@/core/types';
 
 import { removeFromInventory, addToInventory } from '@/modules/equipment/hooks/inventoryUtils';
 

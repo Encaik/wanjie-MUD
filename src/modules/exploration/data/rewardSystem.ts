@@ -18,7 +18,7 @@ import {
   RaritySource,
   DropResult,
 } from '@/modules/equipment/data/raritySystem';
-import { ItemRarity, EnemyTier } from '@/shared/lib/types';
+import { ItemRarity, EnemyTier } from '@/core/types';
 
 // ============================================
 // 类型定义

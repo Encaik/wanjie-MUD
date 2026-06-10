@@ -14,7 +14,7 @@ import {
   breakthroughItems,
   restorePillItems 
 } from '@/modules/equipment/logic/items';
-import { Protagonist, GameStatistics, createInventoryItem, ItemDefinition } from '@/shared/lib/types';
+import { Protagonist, GameStatistics, createInventoryItem, ItemDefinition } from '@/core/types';
 import {
   TaskSystemType,
   TaskSystemState,

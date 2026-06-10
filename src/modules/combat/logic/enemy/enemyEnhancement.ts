@@ -10,7 +10,7 @@
  * - 高等级敌人/Boss拥有更强的虚拟装备和功法
  */
 
-import { EnemyTier } from '@/shared/lib/types';
+import { EnemyTier } from '@/core/types';
 
 /**
  * 敌人虚拟功法配置

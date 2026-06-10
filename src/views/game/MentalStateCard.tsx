@@ -20,8 +20,8 @@ import {
   DialogFooter,
 } from '@/shared/ui/dialog';
 import { Progress } from '@/shared/ui/progress';
-import { CharacterStats, getFinalStats, LegacyStats } from '@/shared/lib/types';
-import { MentalState, DemonEncounter, DemonChoice } from '@/shared/lib/typesExtension';
+import { CharacterStats, getFinalStats, LegacyStats } from '@/core/types';
+import { MentalState, DemonEncounter, DemonChoice } from '@/core/types';
 
 
 interface MentalStateCardProps {

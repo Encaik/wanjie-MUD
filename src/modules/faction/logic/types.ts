@@ -12,7 +12,7 @@
  * - 可扩展其他系统
  */
 
-import { Protagonist, GameStatistics, ItemDefinition } from '@/shared/lib/types';
+import { Protagonist, GameStatistics, ItemDefinition } from '@/core/types';
 
 // ============================================
 // 任务系统类型定义

@@ -6,8 +6,8 @@
  * 扩展自 executeCultivation()，保留原有功能作为"稳健"策略。
  */
 
-import type { Protagonist, CultivationResult, GrowthStats, LegacyStats, InventoryItem } from '@/shared/lib/types';
-import { createInventoryItem, getFinalStats } from '@/shared/lib/types';
+import type { Protagonist, CultivationResult, GrowthStats, LegacyStats, InventoryItem } from '@/core/types';
+import { createInventoryItem, getFinalStats } from '@/core/types';
 import { getItemById, spiritStoneItems } from '@/modules/equipment/logic/items';
 import { getExperienceForLevel } from '@/modules/progression/logic/realmSystem';
 import { getTerminology } from '@/modules/narrative/logic/terminology';

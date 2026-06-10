@@ -23,7 +23,7 @@ import {
   processOfflineCooldowns,
   shouldDailyRefresh,
 } from './timeSystem';
-import { Protagonist, InventoryItem, createInventoryItem } from '@/shared/lib/types';
+import { Protagonist, InventoryItem, createInventoryItem } from '@/core/types';
 
 // ============================================
 // 类型定义

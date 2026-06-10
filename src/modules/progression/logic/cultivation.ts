@@ -2,7 +2,7 @@ import { GAME_CONSTANTS } from '@/shared/utils/constants';
 import { getItemById, spiritStoneItems, breakthroughItems } from '@/modules/equipment/logic/items';
 import { getExperienceForLevel, getActualStatCap } from '@/modules/progression/logic/realmSystem';
 import { getTerminology } from '@/modules/narrative/logic/terminology';
-import { Protagonist, CultivationResult, CharacterStats, WorldType, ActiveEffect, InventoryItem, createInventoryItem, getFinalStats, LegacyStats, StatKey, GrowthStats } from '@/shared/lib/types';
+import { Protagonist, CultivationResult, CharacterStats, WorldType, ActiveEffect, InventoryItem, createInventoryItem, getFinalStats, LegacyStats, StatKey, GrowthStats } from '@/core/types';
 import { getMaxLevel } from '@/modules/progression/data/realmData';
 
 // 重新导出 getMaxLevel

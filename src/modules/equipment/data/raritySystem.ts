@@ -8,7 +8,7 @@
  */
 
 import { getOpportunityRarityRange, getOpportunityRarityWeights } from '@/modules/exploration/data/opportunityConfig';
-import { ItemRarity } from '@/shared/lib/types';
+import { ItemRarity } from '@/core/types';
 
 // ============================================
 // 类型定义

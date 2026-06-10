@@ -7,9 +7,9 @@
  * @module modules/identity/logic/worlds
  */
 
-import type { World } from '@/shared/lib/types';
-import type { WorldProvider, WorldProviderMetadata } from '@/shared/lib/world/types';
-import { createWorldId } from '@/shared/lib/world/identity';
+import type { World } from '@/core/types';
+import type { WorldProvider, WorldProviderMetadata } from '@/core/world/types';
+import { createWorldId } from '@/core/world/identity';
 import { generateWorld } from '@/modules/identity/logic/generators';
 
 export class ModRandomWorldProvider implements WorldProvider {

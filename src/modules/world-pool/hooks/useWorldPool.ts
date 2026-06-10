@@ -8,10 +8,10 @@
  */
 
 import { useMemo } from 'react';
-import { WorldProviderRegistry } from '@/shared/lib/world/WorldProviderRegistry';
-import { buildWorldPool } from '@/shared/lib/world/WorldPoolEngine';
-import type { WorldPoolEntry, WorldPoolConfig, WorldRatingsMap } from '@/shared/lib/world/types';
-import { DEFAULT_WORLD_POOL_CONFIG } from '@/shared/lib/world/types';
+import { WorldProviderRegistry } from '@/core/world/WorldProviderRegistry';
+import { buildWorldPool } from '@/core/world/WorldPoolEngine';
+import type { WorldPoolEntry, WorldPoolConfig, WorldRatingsMap } from '@/core/world/types';
+import { DEFAULT_WORLD_POOL_CONFIG } from '@/core/world/types';
 
 export interface UseWorldPoolOptions {
   /** 池配置（可选，默认 DEFAULT_WORLD_POOL_CONFIG） */

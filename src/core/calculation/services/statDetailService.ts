@@ -5,7 +5,7 @@
  * 使用游戏内术语，避免暴露底层计算逻辑
  */
 
-import { Protagonist, getFinalStats, BaseStats } from '@/shared/lib/types';
+import { Protagonist, getFinalStats, BaseStats } from '@/core/types';
 import { getCalculator } from '../calculator';
 import { buildContextFromProtagonist } from '../helpers/contextHelper';
 import { 

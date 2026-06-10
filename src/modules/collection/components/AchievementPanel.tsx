@@ -21,8 +21,8 @@ import {
 } from '@/modules/collection/logic/achievement/achievementUtils';
 import { 
   GameStatistics,
-} from '@/shared/lib/types';
-import { AchievementType, AchievementStatus, AchievementDefinition } from '@/shared/lib/types';
+} from '@/core/types';
+import { AchievementType, AchievementStatus, AchievementDefinition } from '@/core/types';
 
 interface AchievementPanelProps {
   statistics: GameStatistics;

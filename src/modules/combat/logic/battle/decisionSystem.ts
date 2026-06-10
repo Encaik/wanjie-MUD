@@ -37,7 +37,7 @@ import {
   EnemyAttributes,
   getDefenseAttributes,
 } from '@/modules/combat/logic/restraintSystem';
-import { InventoryItem, EnemyTier } from '@/shared/lib/types';
+import { InventoryItem, EnemyTier } from '@/core/types';
 import {
   BattleEnemy,
   TurnOrderEntry,

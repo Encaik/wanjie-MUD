@@ -25,8 +25,8 @@ import {
   getOpportunityLevelStyle,
   generateLevelStars,
 } from '@/modules/identity/data/worldEffectsUtils';
-import { getWorldVisualConfig } from '@/shared/lib/registry';
-import { World, Protagonist, WorldDifficulty } from '@/shared/lib/types';
+import { getWorldVisualConfig } from '@/core/registry';
+import { World, Protagonist, WorldDifficulty } from '@/core/types';
 import { cn } from '@/shared/utils';
 
 // 难度配置

@@ -4,8 +4,8 @@
  * 不同世界类型使用不同的姓名生成规则。
  * 数据与逻辑分离——generators.ts 从此文件导入姓名数据。
  */
-import type { WorldType } from '@/shared/lib/types';
-import { WorldDataRegistry } from '@/shared/lib/registry';
+import type { WorldType } from '@/core/types';
+import { WorldDataRegistry } from '@/core/registry';
 
 export interface NamePool {
   surnames: string[];

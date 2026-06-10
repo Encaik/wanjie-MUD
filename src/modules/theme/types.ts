@@ -6,7 +6,7 @@
  * @module modules/theme
  */
 
-import type { WorldType } from '@/shared/lib/types';
+import type { WorldType } from '@/core/types';
 
 /** 主题模式 */
 export type ThemeMode = 'light' | 'dark' | 'system';

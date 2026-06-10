@@ -5,7 +5,7 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { WorldProviderRegistry } from './WorldProviderRegistry';
 import type { WorldProvider, WorldProviderMetadata } from './types';
-import type { World } from '@/shared/lib/types';
+import type { World } from '@/core/types';
 import { GAME_VERSION } from '@/shared/config/version';
 
 /** 创建用于测试的 mock provider */

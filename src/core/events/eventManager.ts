@@ -104,8 +104,8 @@ export interface EventPayloadMap {
     equipmentName: string;
   };
   [GameEventType.WORLD_CHANGED]: {
-    worldType: import('@/shared/lib/types').WorldType;
-    previousWorldType?: import('@/shared/lib/types').WorldType;
+    worldType: import('@/core/types').WorldType;
+    previousWorldType?: import('@/core/types').WorldType;
   };
 }
 

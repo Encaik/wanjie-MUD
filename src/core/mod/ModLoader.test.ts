@@ -4,7 +4,7 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { ModLoader } from './ModLoader';
 import { parseManifest, validateManifest } from './ModManifest';
-import { WorldDataRegistry } from '@/shared/lib/registry/WorldDataRegistry';
+import { WorldDataRegistry } from '@/core/registry/WorldDataRegistry';
 
 // ============================================
 // ModManifest 校验测试

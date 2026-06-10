@@ -15,16 +15,16 @@ import { calculatePlayerMaxHp, calculatePlayerMaxMp } from '@/modules/progressio
 import { calculatePlayerCombatPower } from '@/modules/combat/logic/combatPower';
 import { executeCultivation, getMaxExperience } from '@/modules/progression/logic/cultivation';
 import { generateEquipment } from '@/modules/equipment/logic/equipment';
-import { updateTaskProgress, applyMentalChange } from '@/shared/lib/expansionLogic';
+import { updateTaskProgress, applyMentalChange } from '@/core/engine';
 import { processExperienceGain, calculateBreakthroughTransfer } from '@/modules/progression/logic/experienceSystem';
 import { generateCharacters, generateBackstory } from '@/modules/identity/logic/generators';
-import { WorldProviderRegistry } from '@/shared/lib/world/WorldProviderRegistry';
-import { buildWorldPool } from '@/shared/lib/world/WorldPoolEngine';
-import type { WorldRatingsMap } from '@/shared/lib/world/types';
+import { WorldProviderRegistry } from '@/core/world/WorldProviderRegistry';
+import { buildWorldPool } from '@/core/world/WorldPoolEngine';
+import type { WorldRatingsMap } from '@/core/world/types';
 import type { SeclusionType } from '@/modules/progression/logic/seclusion';
 import type { TowerEnemy } from '@/modules/tower/logic/types';
 import { createDefaultTowerProgress } from '@/modules/tower/logic/types';
-import { createInventoryItem } from '@/shared/lib/types';
+import { createInventoryItem } from '@/core/types';
 import { spiritStoneItems, cultivationPillItems, breakthroughItems } from '@/modules/equipment/logic/items';
 import { generateRandomTechnique, generateTechniqueByType } from '@/modules/techniques/logic/technique';
 import { getRealmName } from '@/modules/identity/logic/generators';
@@ -66,7 +66,7 @@ import type {
   GameStatistics,
   ActiveEffect,
   ActiveBattleState,
-} from '@/shared/lib/types';
+} from '@/core/types';
 import type {
   MentalState,
   FactionProgress,
@@ -76,13 +76,13 @@ import type {
   GuardianBattleState,
   AscensionFlowState,
   ProtagonistExtension,
-} from '@/shared/lib/typesExtension';
+} from '@/core/types';
 import {
   DEFAULT_PROTAGONIST_EXTENSION,
   DEFAULT_ASCENSION_FLOW_STATE,
   createDefaultDailyRoundState,
   createDefaultWeeklyRoundState,
-} from '@/shared/lib/typesExtension';
+} from '@/core/types';
 import { 
   upgradeTechnique, 
   upgradeEquipment,
@@ -564,7 +564,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     // 动态导入 gameSystems 以避免循环依赖
     let gameSystems: { initialize: () => void; destroy: () => void } | null = null;
     
-    import('@/shared/lib/gameSystems').then(module => {
+    import('@/core/engine').then(module => {
       gameSystems = module.gameSystems;
       gameSystems.initialize();
     }).catch(err => {

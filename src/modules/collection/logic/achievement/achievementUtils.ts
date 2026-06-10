@@ -3,7 +3,7 @@
  * 根据统计数据计算各成就的进度
  */
 
-import { GameStatistics, AchievementStatus, AchievementType, AchievementDefinition } from '@/shared/lib/types';
+import { GameStatistics, AchievementStatus, AchievementType, AchievementDefinition } from '@/core/types';
 import { ACHIEVEMENTS } from '@/modules/collection/data/achievementData';
 
 /**

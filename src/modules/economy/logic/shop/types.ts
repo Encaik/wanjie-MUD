@@ -4,7 +4,7 @@
  * 支持多货币、多商店类型、条件验证的完整商店系统
  */
 
-import { ItemRarity, ItemDefinition, Technique, Equipment } from '@/shared/lib/types';
+import { ItemRarity, ItemDefinition, Technique, Equipment } from '@/core/types';
 
 // ============================================
 // 货币系统类型

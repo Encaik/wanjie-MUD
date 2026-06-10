@@ -4,7 +4,7 @@
  * 定义迷雾系统、路径提示和探索配置相关的类型。
  */
 
-import type { CellType } from '@/shared/lib/types';
+import type { CellType } from '@/core/types';
 
 // ============================================
 // 迷雾系统

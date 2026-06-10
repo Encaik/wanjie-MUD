@@ -7,7 +7,7 @@
  * - 可成长上限 = 等级 × 2
  */
 
-import { WorldType, CharacterStats, GrowthStats, BaseStats } from '@/shared/lib/types';
+import { WorldType, CharacterStats, GrowthStats, BaseStats } from '@/core/types';
 
 /** 最大等级（满级） */
 export const MAX_LEVEL = 100;

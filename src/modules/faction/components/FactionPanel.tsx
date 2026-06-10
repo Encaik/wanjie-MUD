@@ -63,7 +63,7 @@ import {
   CommissionProgress,
   FactionProgress,
   ReputationLevel,
-} from '@/shared/lib/typesExtension';
+} from '@/shared/lib/types';
 import { 
   REPUTATION_LEVELS,
   DAILY_TASK_ROUND,
@@ -76,7 +76,7 @@ import {
   COMMISSION_QUALITY_CONFIG,
   CommissionQuality,
 } from '@/modules/faction/data/factionProgressData';
-import { checkRankPromotion } from '@/shared/lib/expansionLogic';
+import { checkRankPromotion } from '@/core/engine';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/shared/ui/tabs';
 import { Slider } from '@/shared/ui/slider';
 

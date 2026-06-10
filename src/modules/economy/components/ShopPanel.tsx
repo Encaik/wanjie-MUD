@@ -8,7 +8,7 @@
 'use client';
 
 import { useState, useEffect, useMemo, useCallback } from 'react';
-import type { InventoryItem } from '@/shared/lib/types';
+import type { InventoryItem } from '@/core/types';
 
 import {
   ShoppingBag,
@@ -50,7 +50,7 @@ import {
   ProductCategory,
   SortMode,
 } from '@/modules/economy/logic/shop/types';
-import { WorldType } from '@/shared/lib/types';
+import { WorldType } from '@/core/types';
 import { cn } from '@/shared/utils';
 
 // 子组件

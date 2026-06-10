@@ -10,9 +10,9 @@ import {
   calculateTotalImpact,
   QUALITY_CONFIG
 } from './traits';
-import { Character, World, CharacterStats, WorldType, ImpactfulTrait, ImpactLevel, StatImpact, WorldFaction } from '@/shared/lib/types';
+import { Character, World, CharacterStats, WorldType, ImpactfulTrait, ImpactLevel, StatImpact, WorldFaction } from '@/core/types';
 import { GAME_VERSION } from '@/shared/config/version';
-import { WorldDataRegistry } from '@/shared/lib/registry';
+import { WorldDataRegistry } from '@/core/registry';
 import {
   generateWorldFactions,
   generateFactionDescription,

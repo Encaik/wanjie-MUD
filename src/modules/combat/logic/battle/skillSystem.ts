@@ -9,7 +9,7 @@
  */
 
 import { TechniqueSkill, WeaponTechnique } from '@/modules/techniques/logic/skillTypes';
-import { Technique, Equipment, ItemRarity } from '@/shared/lib/types';
+import { Technique, Equipment, ItemRarity } from '@/core/types';
 import { 
   BattleSkill, 
   BattleSkillType,

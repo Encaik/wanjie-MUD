@@ -21,9 +21,15 @@ views/<View>.tsx      ← ② 视图层（组合编排）
   │     │
   │     └──► dispatch/setState   → 更新 A 模块状态
   │
-  └──► modules/<A>/components/  ← ⑤ 组件层（渲染）
-          │
-          └──► shared/ui/       ← shadcn 基元
+  ├──► modules/<A>/components/  ← ⑤ 组件层（渲染）
+  │     │
+  │     └──► shared/ui/         ← shadcn 基元
+  │
+  └──► core/                    ← ⑥ 核心基础设施
+        ├──► core/events/       ← 事件总线（跨模块通信）
+        ├──► core/calculation/  ← 数值计算引擎
+        ├──► core/types/        ← 核心类型定义
+        └──► core/world/        ← 世界系统
 ```
 
 数据**从上到下传递**（ownership 链），事件**从下到上冒泡**（通过 callback/event）。

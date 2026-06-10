@@ -10,8 +10,8 @@ import {
 } from '@/modules/identity/data/worldEffectsUtils';
 import { getWorldMechanics } from '@/modules/identity/logic/worlds/factory';
 import { RealmTable } from '@/shared/components';
-import { getWorldVisualConfig } from '@/shared/lib/registry';
-import type { World, WorldDifficulty } from '@/shared/lib/types';
+import { getWorldVisualConfig } from '@/core/registry';
+import type { World, WorldDifficulty } from '@/core/types';
 import { Badge } from '@/shared/ui/badge';
 import { Button } from '@/shared/ui/button';
 import { Card, CardContent } from '@/shared/ui/card';

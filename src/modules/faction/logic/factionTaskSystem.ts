@@ -9,7 +9,7 @@
  */
 
 import { breakthroughItems, cultivationPillItems } from '@/modules/equipment/logic/items';
-import { Protagonist, GameStatistics, ItemRarity } from '@/shared/lib/types';
+import { Protagonist, GameStatistics, ItemRarity } from '@/core/types';
 import {
   TaskSystemType,
   TaskSystemState,

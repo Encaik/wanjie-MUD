@@ -10,7 +10,7 @@
  * 6. 势力技能系统
  */
 
-import { ItemRarity } from '@/shared/lib/types';
+import { ItemRarity } from '@/core/types';
 
 // ============================================
 // 声望等级系统

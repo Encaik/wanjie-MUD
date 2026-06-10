@@ -10,7 +10,7 @@
 import type {
   ValidationError,
   ValidationResult,
-} from '@/shared/lib/registry/schemas';
+} from '@/core/registry/schemas';
 import {
   validateWorldTypes,
   validateDangers,
@@ -18,7 +18,7 @@ import {
   validateRealmSystem,
   validateNamePool,
   validateFactionTemplates,
-} from '@/shared/lib/registry/schemas';
+} from '@/core/registry/schemas';
 import type { ModManifest, ModContentType } from './ModManifest';
 import { validateManifest } from './ModManifest';
 

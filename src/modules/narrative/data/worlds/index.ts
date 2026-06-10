@@ -18,7 +18,7 @@ import { wuxiaTexts } from './wuxia';
 import { xianxiaTexts } from './xianxia';
 import { xiuxianTexts } from './xiuxian';
 import { yinengTexts } from './yineng';
-import { WorldType } from '@/shared/lib/types';
+import { WorldType } from '@/core/types';
 
 // ============================================
 // 世界观文案映射表

@@ -12,8 +12,8 @@
  * 3. 名称和描述应与品质匹配
  */
 
-import type { ImpactLevel, StatImpact, WorldType } from '@/shared/lib/types';
-import { WorldDataRegistry } from '@/shared/lib/registry';
+import type { ImpactLevel, StatImpact, WorldType } from '@/core/types';
+import { WorldDataRegistry } from '@/core/registry';
 
 /**
  * 词条定义

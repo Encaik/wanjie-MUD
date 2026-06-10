@@ -8,7 +8,7 @@
  * 4. 资源产出：作为碎片、材料、灵石的主要来源之一
  */
 
-import { WorldType, ItemRarity, EnemyTier } from '@/shared/lib/types';
+import { WorldType, ItemRarity, EnemyTier } from '@/core/types';
 
 // ============================================
 // 爬塔状态

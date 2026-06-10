@@ -14,7 +14,7 @@
  * - 战斗事件: 301-399
  */
 
-import { AdventureEvent } from '@/shared/lib/types';
+import { AdventureEvent } from '@/core/types';
 
 // ============================================
 // 安全事件池（纯收益）

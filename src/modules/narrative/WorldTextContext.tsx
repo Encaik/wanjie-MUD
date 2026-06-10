@@ -22,7 +22,7 @@
 import React, { createContext, useContext, useMemo, useEffect } from 'react';
 
 import { worldTextManager, WORLD_TEXT_MAP, getWorldText } from '@/modules/narrative/logic/WorldTextManager';
-import { WorldType } from '@/shared/lib/types';
+import { WorldType } from '@/core/types';
 import {
   WorldTextDefinition,
   WorldStatNames,

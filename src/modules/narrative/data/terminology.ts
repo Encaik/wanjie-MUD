@@ -12,7 +12,7 @@
  * 3. 新增世界类型时，需要添加完整的术语映射
  */
 
-import { WorldType } from '@/shared/lib/types';
+import { WorldType } from '@/core/types';
 
 /**
  * 世界术语类型定义

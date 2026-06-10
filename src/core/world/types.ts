@@ -6,7 +6,7 @@
  * @module shared/lib/world/types
  */
 
-import type { World } from '@/shared/lib/types';
+import type { World } from '@/core/types';
 
 // ============================================
 // WorldProvider — 世界来源抽象接口

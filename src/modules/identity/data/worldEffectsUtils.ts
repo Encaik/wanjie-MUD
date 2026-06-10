@@ -5,7 +5,7 @@
  */
 
 import { WorldDanger, WorldOpportunity, DangerEffect, OpportunityEffect } from './worldEffectsData';
-import { StatName } from '@/shared/lib/types';
+import { StatName } from '@/core/types';
 
 /** 属性名称映射 */
 const STAT_NAMES: Record<StatName, string> = {

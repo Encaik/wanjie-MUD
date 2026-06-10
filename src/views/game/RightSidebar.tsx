@@ -8,7 +8,7 @@ import { Badge } from '@/shared/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/shared/ui/tabs';
 import { RealmSystem } from '@/modules/progression/data/realmData';
 import { getRealmName } from '@/modules/progression/data/realmData';
-import { MessageRecord } from '@/shared/lib/types';
+import { MessageRecord } from '@/core/types';
 import type { Announcement } from '@/modules/social/announcementTypes';
 import type { AllLeaderboards } from '@/modules/social/multiplayerTypes';
 

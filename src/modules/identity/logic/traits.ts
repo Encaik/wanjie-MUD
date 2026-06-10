@@ -10,7 +10,7 @@
  * 数据文件：src/lib/game/data/traits.ts
  */
 
-import { ImpactLevel, StatImpact } from '@/shared/lib/types';
+import { ImpactLevel, StatImpact } from '@/core/types';
 import {
   QUALITY_CONFIG,
   ORIGIN_TRAITS,

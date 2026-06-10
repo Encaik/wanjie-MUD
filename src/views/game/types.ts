@@ -18,11 +18,11 @@ import type {
   DungeonConfig,
   ActionTab,
   Protagonist,
-} from '@/shared/lib/types';
+} from '@/core/types';
 import type {
   InheritanceChoice,
   NewWorldInfo,
-} from '@/shared/lib/typesExtension';
+} from '@/core/types';
 import type { SeclusionType } from '@/modules/progression/logic/seclusion';
 import type { TowerEnemy } from '@/modules/tower/logic/types';
 

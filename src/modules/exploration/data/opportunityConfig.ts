@@ -7,7 +7,7 @@
  * 3. 高级机缘需要飞升条件完全解锁
  */
 
-import { ItemRarity } from '@/shared/lib/types';
+import { ItemRarity } from '@/core/types';
 
 // ============================================
 // 类型定义

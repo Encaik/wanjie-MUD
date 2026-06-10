@@ -29,8 +29,8 @@ import { Switch } from '@/shared/ui/switch';
 import { ControlledTabs, TabsContent, TabsList, TabsTrigger } from '@/shared/ui/tabs';
 import { EQUIPMENT_NAMES } from '@/modules/equipment/data/equipment';
 import { TECHNIQUE_NAMES, RARITY_POWER_RANGE, RARITY_BONUS_RANGE } from '@/modules/techniques/data/techniques';
-import { Protagonist, CultivationPath, WorldType, ItemRarity, TechniqueType, EquipmentSlot } from '@/shared/lib/types';
-import { WorldDataRegistry } from '@/shared/lib/registry';
+import { Protagonist, CultivationPath, WorldType, ItemRarity, TechniqueType, EquipmentSlot } from '@/core/types';
+import { WorldDataRegistry } from '@/core/registry';
 
 interface DeveloperPanelProps {
   protagonist: Protagonist;

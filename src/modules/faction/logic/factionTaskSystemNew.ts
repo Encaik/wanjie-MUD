@@ -8,7 +8,7 @@
  */
 
 import { breakthroughItems, cultivationPillItems } from '@/modules/equipment/logic/items';
-import { Protagonist, GameStatistics, ItemDefinition } from '@/shared/lib/types';
+import { Protagonist, GameStatistics, ItemDefinition } from '@/core/types';
 import {
   TaskDefinition,
   TaskRequirementType,

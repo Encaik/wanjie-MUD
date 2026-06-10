@@ -10,7 +10,7 @@
 
 import { Element } from '@/modules/combat/logic/restraintSystem';
 import { EnemyTier } from '../types';
-import { WorldType } from '@/shared/lib/types';
+import { WorldType } from '@/core/types';
 import { EnemyTemplate, EnemyBehaviorType } from '../types';
 
 // ============================================

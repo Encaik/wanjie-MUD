@@ -6,7 +6,7 @@ import {
   CriticalHealthLevel, 
   getCriticalHealthLevel, 
   getCriticalHealthEffect 
-} from '@/shared/lib/typesExtension';
+} from '@/core/types';
 
 interface CriticalHealthOverlayProps {
   currentHp: number;

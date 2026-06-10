@@ -3,8 +3,8 @@
  * 订阅游戏事件，根据配置判断成就解锁
  */
 
-import { GameEventType, GameEvent, gameEventManager } from '@/shared/lib/events/eventManager';
-import { GameStatistics, AchievementStatus } from '@/shared/lib/types';
+import { GameEventType, GameEvent, gameEventManager } from '@/core/events/eventManager';
+import { GameStatistics, AchievementStatus } from '@/core/types';
 
 // ============================================
 // 配置类型定义

@@ -5,7 +5,7 @@
  * 迷雾状态与地图数据分离存储，不污染 AdventureCell 结构。
  */
 
-import type { AdventureCell, CellType } from '@/shared/lib/types';
+import type { AdventureCell, CellType } from '@/core/types';
 import type { FogCell, FogCellState, PathHint, PathHintType, PathRiskType, RevealedMap, BossWarningState } from './types';
 import { PATH_HINT_TEXTS, PATH_CONFIGS, BOSS_WARNING_TEXTS } from './types';
 import { getAdjacentCells } from '@/modules/exploration/logic/adventure/adventure';

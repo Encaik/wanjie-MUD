@@ -12,7 +12,7 @@
 import { getEventExpReward } from '@/modules/progression/logic/balanceConfig';
 import { getWorldTerms } from '@/modules/identity/logic/generators';
 import { getItemById, cultivationPillItems, materialItems } from '@/modules/equipment/logic/items';
-import { AdventureEvent, WorldType, InventoryItem, createInventoryItem } from '@/shared/lib/types';
+import { AdventureEvent, WorldType, InventoryItem, createInventoryItem } from '@/core/types';
 import {
   SAFE_EVENTS,
   RISKY_EVENTS,

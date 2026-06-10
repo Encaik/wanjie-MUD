@@ -7,7 +7,7 @@
  * @module shared/lib/world
  */
 
-import type { World, WorldType } from '@/shared/lib/types';
+import type { World, WorldType } from '@/core/types';
 import type { WorldTemplate } from './types';
 import type { WorldProvider, WorldProviderMetadata } from './types';
 import { createWorldId } from './identity';

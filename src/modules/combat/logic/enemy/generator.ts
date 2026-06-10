@@ -11,7 +11,7 @@
 import {
   WorldType,
   EnemyTier,
-} from '@/shared/lib/types';
+} from '@/core/types';
 import {
   generateEnemyTechniqueEquipment,
   EnemyTechniqueEquipmentResult,

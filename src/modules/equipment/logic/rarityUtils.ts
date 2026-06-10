@@ -4,7 +4,7 @@
 
 import { Element, WeaponCategory } from '@/modules/combat/logic/restraintSystem';
 import { TECHNIQUE_RARITY_CONFIG, EQUIPMENT_RARITY_CONFIG } from '@/modules/techniques/logic/skillTypes';
-import { ItemRarity, Technique, Equipment, TechniqueType, EquipmentSlot } from '@/shared/lib/types';
+import { ItemRarity, Technique, Equipment, TechniqueType, EquipmentSlot } from '@/core/types';
 
 /** 稀有度中文名称 */
 export const RARITY_NAMES: Record<ItemRarity, string> = {

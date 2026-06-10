@@ -5,21 +5,22 @@
 
 ---
 
-## 一、四层架构（MUST）
+## 一、五层架构（MUST）
 
-项目采用四层架构，`src/` 下只有 4 个顶级目录：
+项目采用五层架构，`src/` 下只有 5 个顶级目录：
 
 ```
 src/
 ├── app/       ← ① 入口：Next.js App Router 路由
 ├── views/     ← ② 页面：与路由挂钩的页面级组件
-├── modules/   ← ③ 功能模块：15个自包含业务域
-└── shared/    ← ④ 公共：纯公共逻辑，方便复用
+├── modules/   ← ③ 功能模块：20+ 自包含业务域
+├── core/      ← ④ 核心系统：游戏基础设施
+└── shared/    ← ⑤ 公共：跨模块工具性代码
 ```
 
 ### 1.1 内容唯一原则（MUST）
 
-**同一份内容只在四层模型中的一个位置存在。禁止复制粘贴代码。**
+**同一份内容只在五层模型中的一个位置存在。禁止复制粘贴代码。**
 
 旧代码迁移时，旧位置可临时保留 barrel re-export（`export * from '新路径'`），过渡期后删除。
 
@@ -30,7 +31,8 @@ src/
 ├── Next.js 路由页面（page.tsx, layout.tsx）？ → app/
 ├── 与路由挂钩的页面组件（组合模块 Panel）？    → views/<route>/
 ├── 某个业务功能的逻辑/状态/组件/数据？        → modules/<domain>/
-└── 纯通用公共代码？                           → shared/
+├── 游戏核心基础设施（事件、计算、世界、注册、Mod、引擎）？ → core/
+└── 纯通用工具性代码（cn、logger、AI、WebSocket）？      → shared/
 ```
 
 ---
@@ -57,13 +59,20 @@ src/
 |------|------|------|------|
 | `app/` | ① Next.js 路由入口 | layout.tsx, page.tsx, globals.css | 业务逻辑、状态管理 |
 | `views/` | ② 与路由挂钩的页面 | 组合各模块 Panel、管理页面切换和弹窗 | 业务逻辑（应放 modules/） |
-| `modules/<domain>/` | ③ 业务功能模块 | 类型、纯逻辑、状态、组件、数据、测试 | 跨模块通用代码（应放 shared/）、路由级页面（应放 views/） |
-| `shared/ui/` | ④ shadcn/ui 组件 | shadcn 官方组件 | **任何自定义代码** |
-| `shared/components/` | ④ 跨模块通用组件 | 多模块共用的 UI 组件 | 单一模块专用的组件（应放 modules/） |
-| `shared/lib/` | ④ 公共库 | 计算引擎、事件总线、核心类型、websocket、multiplayer | 业务逻辑（应放 modules/） |
-| `shared/utils/` | ④ 通用工具 | cn, logger, saveMigrator 等无领域逻辑的工具 | 游戏特定逻辑 |
-| `shared/config/` | ④ 环境配置 | 环境变量、模式判断 | 业务配置（应放 modules/） |
-| `shared/storage/` | ④ 数据持久化 | Supabase 客户端、数据库 schema | 业务规则 |
+| `modules/<domain>/` | ③ 业务功能模块 | 类型、纯逻辑、状态、组件、数据、测试 | 跨模块通用代码（应放 shared/）、路由级页面（应放 views/）、核心基础设施（应放 core/） |
+| `core/events/` | ④ 事件驱动通信系统 | GameEventManager 单例、事件类型定义、事件匹配器 | React 组件/Hooks、依赖 modules/ |
+| `core/types/` | ④ 核心游戏类型 | CharacterStats、Quality、World、Protagonist 等基础类型 | 定义模块特有类型（应放 modules/） |
+| `core/calculation/` | ④ 统一数值计算引擎 | 属性计算、效果优先级、边界保护 | React 组件/Hooks、依赖 modules/ |
+| `core/world/` | ④ 世界系统 | WorldProviderRegistry、WorldPoolEngine、模板验证 | React 组件/Hooks |
+| `core/registry/` | ④ 数据注册中心 | WorldDataRegistry、WorldMechanicsRegistry | React 组件/Hooks、依赖 modules/ |
+| `core/mod/` | ④ Mod 系统 | Mod 加载、验证、清单管理 | React 组件/Hooks |
+| `core/engine/` | ④ 引擎集成层 | 跨系统集成逻辑（gameSystems、expansionLogic、messageDB） | React 组件/Hooks |
+| `shared/ui/` | ⑤ shadcn/ui 组件 | shadcn 官方组件 | **任何自定义代码** |
+| `shared/components/` | ⑤ 跨模块通用组件 | 多模块共用的 UI 组件 | 单一模块专用的组件（应放 modules/） |
+| `shared/lib/` | ⑤ 公共库 | AI 调用、WebSocket、多人游戏基础设施 | 核心游戏系统（应放 core/）、业务逻辑（应放 modules/） |
+| `shared/utils/` | ⑤ 通用工具 | cn, logger, saveMigrator 等无领域逻辑的工具 | 游戏特定逻辑 |
+| `shared/config/` | ⑤ 环境配置 | 环境变量、模式判断 | 业务配置（应放 modules/） |
+| `shared/storage/` | ⑤ 数据持久化 | Supabase 客户端、数据库 schema | 业务规则 |
 | `components/ui/` | shadcn 源目录 | shadcn CLI 管理，**只读** | 自定义代码 |
 | `components/game/` | 待迁移的旧 UI | 仅存在于迁移过渡期 | 新代码 ❌ |
 | `hooks/` | 待迁移的旧 Hooks | 仅存在于迁移过渡期 | 新代码 ❌ |
@@ -98,6 +107,9 @@ modules/<domain>/
 
 ### 5.1 架构破坏
 - ❌ 在 `shared/` 中放入业务逻辑（业务逻辑属于 `modules/`）
+- ❌ 在 `shared/` 中放入核心游戏系统（核心系统属于 `core/`）
+- ❌ 在 `core/` 中依赖 `modules/` 的代码（`core/` 是底层基础设施）
+- ❌ 在 `core/` 中放入 React 组件或 Hooks
 - ❌ 在 `modules/` 中放入路由级页面（页面属于 `views/`）
 - ❌ 在 `shared/ui/` 中添加或修改文件（shadcn 源在 `components/ui/`）
 - ❌ 在模块 A 的 Hook 中直接修改模块 B 的 state slice
@@ -121,10 +133,11 @@ modules/<domain>/
 
 ## 六、导入路径
 
-- 跨模块导入：使用 `@/` 别名（如 `@/modules/narrative`、`@/shared/lib/types`）
+- 跨模块导入：使用 `@/` 别名（如 `@/modules/narrative`、`@/core/types`、`@/shared/utils/cn`）
 - 同模块导入：使用相对路径（如 `./types`、`../logic/calculator`）
 - 禁止深层相对路径：`../../../` 超过 2 层时必须改用 `@/`
 - 旧路径 barrel 仍然可用，但新代码必须使用新路径
+- 核心系统导入：使用 `@/core/events`、`@/core/types`、`@/core/calculation` 等
 
 ---
 
@@ -134,7 +147,7 @@ modules/<domain>/
 1. 搜索现有代码：`grep "关键字" src/` 确认无重复
 2. 阅读相关 `types.ts`：避免重复定义类型
 3. 阅读相关 `index.ts`：了解现有导出
-4. 确定文件应放在四层架构的哪一层
+4. 确定文件应放在五层架构的哪一层
 
 ### 7.2 变更后必须
 1. 更新对应 `index.ts` 桶文件

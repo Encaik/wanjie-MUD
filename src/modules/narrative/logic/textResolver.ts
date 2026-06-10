@@ -9,7 +9,7 @@ import {
   TextResolverConfig,
   ValueContext,
 } from '../types';
-import { WorldType } from '@/shared/lib/types';
+import { WorldType } from '@/core/types';
 import { getWorldTexts, WorldTextDefinition } from '../data/worlds';
 
 // ============================================

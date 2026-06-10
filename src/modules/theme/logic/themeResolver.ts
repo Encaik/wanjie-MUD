@@ -7,7 +7,7 @@
  * @module modules/theme/logic
  */
 
-import type { WorldType } from '@/shared/lib/types';
+import type { WorldType } from '@/core/types';
 import type { WorldTheme, ThemeVariableOverrides } from '../types';
 import { WORLD_DATA_ATTR_MAP, WORLD_DISPLAY_NAMES } from '../data/defaultTheme';
 import { worldThemeMap } from '../data/worldThemes';

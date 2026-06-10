@@ -12,7 +12,7 @@
  * 3. 高稀有度的名称应该更有气势
  */
 
-import { TechniqueType, ItemRarity } from '@/shared/lib/types';
+import { TechniqueType, ItemRarity } from '@/core/types';
 
 /**
  * 功法名称数据库

@@ -22,7 +22,7 @@ import {
   checkDemonTrigger,
   getDemonEvent,
   processDemonChoice
-} from '@/shared/lib/expansionLogic';
+} from '@/core/engine';
 import { MAX_LEVEL } from '@/modules/progression/logic/realmSystem';
 import { 
   TUTORIAL_TASKS, 
@@ -30,14 +30,14 @@ import {
   TutorialTask 
 } from '@/modules/faction/logic';
 import { getTerminology } from '@/modules/narrative/logic/terminology';
-import { WorldType, InventoryItem, ActiveEffect, CultivationPath, CharacterStats, GameStatistics, LegacyStats } from '@/shared/lib/types';
+import { WorldType, InventoryItem, ActiveEffect, CultivationPath, CharacterStats, GameStatistics, LegacyStats } from '@/core/types';
 import { 
   RealmBottleneck, 
   TribulationState, 
   MentalState, 
   DemonEncounter,
   DEFAULT_PROTAGONIST_EXTENSION 
-} from '@/shared/lib/typesExtension';
+} from '@/core/types';
 
 
 interface CultivationPanelProps {

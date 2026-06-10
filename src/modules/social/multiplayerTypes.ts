@@ -4,7 +4,7 @@
  * 包含玩家状态、排行榜、在线状态等多人游戏相关类型
  */
 
-import type { WorldType } from '@/shared/lib/types';
+import type { WorldType } from '@/core/types';
 
 // ========== 玩家状态 ==========
 

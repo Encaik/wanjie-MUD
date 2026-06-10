@@ -4,7 +4,7 @@
  * 核心类型定义，支持多世界观文案管理
  */
 
-import { WorldType } from '@/shared/lib/types';
+import { WorldType } from '@/core/types';
 
 // ============================================
 // 文案键类型

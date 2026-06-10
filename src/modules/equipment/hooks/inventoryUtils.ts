@@ -5,7 +5,7 @@
  * 注意：这是纯函数模块，不是 React Hook
  */
 
-import type { InventoryItem } from '@/shared/lib/types';
+import type { InventoryItem } from '@/core/types';
 
 /**
  * 添加物品到背包（支持堆叠）

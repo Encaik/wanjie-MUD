@@ -52,7 +52,7 @@ import {
   getSlotName,
   EQUIPMENT_QUALITY_NAMES,
 } from '@/modules/crafting/data/forgeRecipes';
-import { InventoryItem, CraftingState, ForgingState, ItemRarity } from '@/shared/lib/types';
+import { InventoryItem, CraftingState, ForgingState, ItemRarity } from '@/core/types';
 import { cn } from '@/shared/utils';
 
 interface CraftingDialogProps {

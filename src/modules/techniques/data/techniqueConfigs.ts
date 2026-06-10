@@ -10,7 +10,7 @@
 
 import { Element, WeaponCategory } from '@/modules/combat/logic/restraintSystem';
 import { TECHNIQUE_RARITY_CONFIG, RARITY_ORDER, RARITY_WEIGHTS } from '@/modules/techniques/logic/skillTypes';
-import { TechniqueType, ItemRarity } from '@/shared/lib/types';
+import { TechniqueType, ItemRarity } from '@/core/types';
 
 // ============================================
 // 功法名称库

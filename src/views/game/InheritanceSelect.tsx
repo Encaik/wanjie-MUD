@@ -23,8 +23,8 @@ import { Progress } from '@/shared/ui/progress';
 import { RadioGroup, RadioGroupItem } from '@/shared/ui/radio-group';
 import { Slider } from '@/shared/ui/slider';
 import { ASCENSION_CONFIG } from '@/modules/ascension/data/ascensionData';
-import { Protagonist, Technique, Equipment, InventoryItem } from '@/shared/lib/types';
-import { InheritanceChoice } from '@/shared/lib/typesExtension';
+import { Protagonist, Technique, Equipment, InventoryItem } from '@/core/types';
+import { InheritanceChoice } from '@/core/types';
 
 interface InheritanceSelectProps {
   open: boolean;

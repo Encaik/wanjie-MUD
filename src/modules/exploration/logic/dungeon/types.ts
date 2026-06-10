@@ -4,7 +4,7 @@
  * 根据 comprehensive-optimization-design.md 设计文档实现
  */
 
-import { LegacyStats, StatKey, InventoryItem, ItemDefinition, ActiveEffect, EffectType, Protagonist } from '@/shared/lib/types';
+import { LegacyStats, StatKey, InventoryItem, ItemDefinition, ActiveEffect, EffectType, Protagonist } from '@/core/types';
 
 // ============================================
 // 事件类型枚举

@@ -5,7 +5,7 @@
  * 新增世界请运行：npx tsx scripts/generate-world.ts --seed=<新种子>
  */
 
-import type { World } from '@/shared/lib/types';
+import type { World } from '@/core/types';
 import w0 from './world_a0b1c2d3.json';
 import w1 from './world_c8d9e0f1.json';
 import w2 from './world_e4f5g6h7.json';

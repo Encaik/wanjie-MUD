@@ -6,7 +6,7 @@ import { Skull, Heart, Sparkles } from 'lucide-react';
 
 import { Button } from '@/shared/ui/button';
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from '@/shared/ui/dialog';
-import { DeathState, DEFAULT_DEATH_STATE } from '@/shared/lib/typesExtension';
+import { DeathState, DEFAULT_DEATH_STATE } from '@/core/types';
 
 
 interface DeathDialogProps {
@@ -162,7 +162,7 @@ export function triggerDeathState(
   cause: DeathState['cause'],
   maxHp: number
 ): DeathState {
-  const { getDeathMessage } = require('@/shared/lib/typesExtension');
+  const { getDeathMessage } = require('@/core/types');
   const { title, subtitle } = getDeathMessage(cause!);
   
   // 恢复30%HP

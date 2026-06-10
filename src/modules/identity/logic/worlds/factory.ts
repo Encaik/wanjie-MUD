@@ -8,7 +8,7 @@
  */
 
 import type { WorldMechanics } from './types';
-import { WorldMechanicsRegistry } from '@/shared/lib/registry/WorldMechanicsRegistry';
+import { WorldMechanicsRegistry } from '@/core/registry/WorldMechanicsRegistry';
 
 /**
  * 获取世界机制

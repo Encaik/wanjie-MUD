@@ -8,7 +8,7 @@ import { useCallback, useMemo } from 'react';
 
 import { useGame } from '@/views/game/useGameState';
 import { calculatePlayerCombatPower } from '@/modules/combat/logic/combatPower';
-import { WorldType } from '@/shared/lib/types';
+import { WorldType } from '@/core/types';
 
 import { textResolver } from '@/modules/narrative/logic/textResolver';
 import { getWorldTerminology, getWorldStatNames } from '@/modules/narrative/data/worlds';

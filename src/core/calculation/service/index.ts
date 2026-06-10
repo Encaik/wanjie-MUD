@@ -7,7 +7,7 @@
 
 import { UnifiedCalculator } from '../calculator';
 import { ContextBuilder } from '../context/builder';
-import type { WorldType } from '@/shared/lib/types';
+import type { WorldType } from '@/core/types';
 import {
   getRealmByLevel,
   getNextRealm,

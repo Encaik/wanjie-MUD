@@ -5,8 +5,8 @@
  */
 
 import { TechniqueSkill, WeaponTechnique, EquipResult, getUnlockedSlotCount } from './skillTypes';
-import { Technique } from '@/shared/lib/types';
-import { Equipment } from '@/shared/lib/types';
+import { Technique } from '@/core/types';
+import { Equipment } from '@/core/types';
 
 // ============================================
 // 功法技能装备管理

@@ -5,7 +5,7 @@
  * 保存旧世界状态，初始化新世界状态。
  */
 
-import type { GameState, WorldType } from '@/shared/lib/types';
+import type { GameState, WorldType } from '@/core/types';
 
 // ============================================
 // 世界存档记录

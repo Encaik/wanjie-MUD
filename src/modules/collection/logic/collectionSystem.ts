@@ -3,8 +3,8 @@
  * 管理收集物和羁绊加成
  */
 
-import { GameEventType, GameEvent, gameEventManager } from '@/shared/lib/events/eventManager';
-import { Technique, Equipment, ItemRarity } from '@/shared/lib/types';
+import { GameEventType, GameEvent, gameEventManager } from '@/core/events/eventManager';
+import { Technique, Equipment, ItemRarity } from '@/core/types';
 
 // ============================================
 // 配置类型定义

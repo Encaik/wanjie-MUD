@@ -17,7 +17,7 @@
  * @module modules/theme/data
  */
 
-import type { WorldType } from '@/shared/lib/types';
+import type { WorldType } from '@/core/types';
 import type { WorldTheme } from '../types';
 import { WORLD_DATA_ATTR_MAP, WORLD_DISPLAY_NAMES } from './defaultTheme';
 

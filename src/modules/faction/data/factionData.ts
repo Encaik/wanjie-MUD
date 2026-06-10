@@ -7,7 +7,7 @@
  * 3. 世界生成时从每个分组随机选择一个势力
  */
 
-import { WorldType, WorldFaction } from '@/shared/lib/types';
+import { WorldType, WorldFaction } from '@/core/types';
 
 // ============================================
 // 势力类型

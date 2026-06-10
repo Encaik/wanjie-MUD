@@ -32,7 +32,7 @@ import {
 import { generateRandomEquipment } from '@/modules/equipment/logic/equipment';
 import { getRandomItem, spiritStoneItems } from '@/modules/equipment/logic/items';
 import { generateRandomTechnique } from '@/modules/techniques/logic/technique';
-import { Protagonist, InventoryItem, CharacterStats, createInventoryItem, ItemDefinition, ActiveEffect, LegacyStats } from '@/shared/lib/types';
+import { Protagonist, InventoryItem, CharacterStats, createInventoryItem, ItemDefinition, ActiveEffect, LegacyStats } from '@/core/types';
 
 // ============================================
 // 效果应用

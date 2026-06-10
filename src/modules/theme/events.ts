@@ -7,9 +7,9 @@
  * @module modules/theme
  */
 
-import { gameEventManager, GameEventType, type GameEvent } from '@/shared/lib/events/eventManager';
+import { gameEventManager, GameEventType, type GameEvent } from '@/core/events/eventManager';
 import { WORLD_DATA_ATTR_MAP } from './data/defaultTheme';
-import type { WorldType } from '@/shared/lib/types';
+import type { WorldType } from '@/core/types';
 
 /**
  * 处理世界切换事件 — 更新 <html> 上的 data-world 属性

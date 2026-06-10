@@ -3,7 +3,7 @@
  * 定义穿越守卫、世界生成、飞升奖励等配置
  */
 
-import { WorldType, LegacyStats } from '@/shared/lib/types';
+import { WorldType, LegacyStats } from '@/core/types';
 
 // ============================================
 // 穿越守卫配置

@@ -12,7 +12,7 @@
  * 3. 物品掉落 = 基于层数的固定掉落
  */
 
-import { WorldType, ItemRarity } from '@/shared/lib/types';
+import { WorldType, ItemRarity } from '@/core/types';
 import {
   IdleRewards,
   DropPool,

@@ -44,8 +44,8 @@ import {
   StatDetailBreakdown,
   StatBonusSource,
   AllStatBreakdowns,
-} from '@/shared/lib/calculation/services/statDetailService';
-import { Protagonist } from '@/shared/lib/types';
+} from '@/core/calculation/services/statDetailService';
+import { Protagonist } from '@/core/types';
 
 // ============================================
 // 类型定义

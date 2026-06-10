@@ -11,7 +11,7 @@
  * - 页面组件使用 useWorldText() hook 获取文案
  */
 
-import { WorldType } from '@/shared/lib/types';
+import { WorldType } from '@/core/types';
 
 // 导入所有世界观文案
 import { gaowuTexts } from '../data/worlds/gaowu';

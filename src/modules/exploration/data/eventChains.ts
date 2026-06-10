@@ -6,7 +6,7 @@
  * 支持分支选项和前置条件。
  */
 
-import type { EventChain, ChainEventDef } from '@/shared/lib/events/types';
+import type { EventChain, ChainEventDef } from '@/core/events/types';
 
 // ============================================
 // 事件链 1：仙人遗府

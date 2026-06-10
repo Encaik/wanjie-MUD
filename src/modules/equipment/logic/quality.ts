@@ -4,7 +4,7 @@
  * 品质从高到低：红(mythic) > 橙(legendary) > 黄(epic) > 紫(rare) > 蓝(uncommon) > 绿(common) > 灰(poor) > 白(basic)
  */
 
-import { Quality, ImpactLevel } from '@/shared/lib/types';
+import { Quality, ImpactLevel } from '@/core/types';
 
 /**
  * 获取品质对应的 Tailwind 类名

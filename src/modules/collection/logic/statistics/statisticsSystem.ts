@@ -8,7 +8,7 @@
  * 3. 提供统计数据的派生计算
  */
 
-import { GameStatistics } from '@/shared/lib/types';
+import { GameStatistics } from '@/core/types';
 
 // ============================================
 // 统计事件类型定义

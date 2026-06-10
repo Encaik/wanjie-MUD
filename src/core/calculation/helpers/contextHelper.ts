@@ -7,7 +7,7 @@
 import { ContextBuilder } from '../context/builder';
 
 import type { WorldDanger, WorldOpportunity } from '@/modules/identity/data/worldEffectsData';
-import type { Protagonist, Technique, Equipment, ActiveEffect, EnemyTier } from '@/shared/lib/types';
+import type { Protagonist, Technique, Equipment, ActiveEffect, EnemyTier } from '@/core/types';
 import type { CalculationContext, WorldEffectInput } from '../context/types';
 
 /**
@@ -330,7 +330,7 @@ export function quickCalculateEnemyPower(
  */
 export function buildContextFromEnemy(
   enemy: import('@/modules/combat/logic/enemy/types').Enemy,
-  world?: import('@/shared/lib/types').World
+  world?: import('@/core/types').World
 ): CalculationContext {
   const builder = new ContextBuilder();
   

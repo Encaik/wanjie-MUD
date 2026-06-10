@@ -15,7 +15,7 @@ import { processExperienceGain, calculateBreakthroughTransfer } from '@/modules/
 import { getRealmName } from '@/modules/identity/logic/generators';
 import { spiritStoneItems } from '@/modules/equipment/logic/items';
 import { getTerminology } from '@/modules/narrative/logic/terminology';
-import { Protagonist, CultivationResult, CharacterStats, GrowthStats, WorldType, InventoryItem, createInventoryItem, getGrowthStatCap } from '@/shared/lib/types';
+import { Protagonist, CultivationResult, CharacterStats, GrowthStats, WorldType, InventoryItem, createInventoryItem, getGrowthStatCap } from '@/core/types';
 import { getMaxLevel } from '@/modules/progression/data/realmData';
 
 const random = (min: number, max: number) => Math.floor(Math.random() * (max - min + 1)) + min;

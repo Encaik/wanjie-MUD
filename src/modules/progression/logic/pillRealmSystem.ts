@@ -7,7 +7,7 @@
  * 3. 境界过高（丹药低于玩家）：效果仅 10%，无负面效果
  */
 
-import { Protagonist, StatKey, GrowthStats } from '@/shared/lib/types';
+import { Protagonist, StatKey, GrowthStats } from '@/core/types';
 import { RealmSystem } from '@/modules/progression/data/realmData';
 
 // 境界等级定义（用于比较）

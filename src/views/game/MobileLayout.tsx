@@ -3,8 +3,8 @@
 import { RotateCcw } from 'lucide-react';
 
 import { Button } from '@/shared/ui/button';
-import { Protagonist, BattleState, Technique, Equipment } from '@/shared/lib/types';
-import { MentalState } from '@/shared/lib/typesExtension';
+import { Protagonist, BattleState, Technique, Equipment } from '@/core/types';
+import { MentalState } from '@/core/types';
 
 import { BattleResultDialog } from '@/modules/combat/components';
 import { SaveLoadPanel } from '@/views/game/SaveLoadPanel';

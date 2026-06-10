@@ -18,7 +18,7 @@ import {
   RoleArchetype,
   CharacterEvaluation,
   ImpactfulTrait 
-} from '@/shared/lib/types';
+} from '@/core/types';
 
 // ============================================
 // 属性价值矩阵

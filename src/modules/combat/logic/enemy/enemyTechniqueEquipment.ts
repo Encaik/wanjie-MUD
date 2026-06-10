@@ -27,7 +27,7 @@ import {
   ItemRarity,
   EnemyTier,
   WorldType,
-} from '@/shared/lib/types';
+} from '@/core/types';
 import { 
   generateDropRarity, 
   getRarityRange,

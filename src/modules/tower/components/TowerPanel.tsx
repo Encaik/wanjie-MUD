@@ -28,7 +28,7 @@ import {
   TowerProgress, 
   TowerEnemy, 
 } from '@/modules/tower/logic/types';
-import { WorldType, ItemRarity } from '@/shared/lib/types';
+import { WorldType, ItemRarity } from '@/core/types';
 
 
 interface TowerPanelProps {

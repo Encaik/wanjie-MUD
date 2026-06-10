@@ -27,7 +27,7 @@ import {
   createEmptyFragmentInventory,
   synthesizeFragmentByName,
 } from '@/modules/crafting/logic/fragmentSystem';
-import { ItemRarity, WorldType } from '@/shared/lib/types';
+import { ItemRarity, WorldType } from '@/core/types';
 import { cn } from '@/shared/utils';
 
 interface FragmentPanelProps {

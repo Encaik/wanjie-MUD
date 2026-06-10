@@ -4,11 +4,11 @@
  * 玩家和敌人的数值都基于世界的属性进行计算
  */
 
-import { WorldType, WorldImpact, StatImpact, CellType, EnemyTier, WorldDifficulty } from '@/shared/lib/types';
-import { WorldDataRegistry } from '@/shared/lib/registry';
+import { WorldType, WorldImpact, StatImpact, CellType, EnemyTier, WorldDifficulty } from '@/core/types';
+import { WorldDataRegistry } from '@/core/registry';
 
 // 重新导出 EnemyTier（从 types 导入）
-export type { EnemyTier } from '@/shared/lib/types';
+export type { EnemyTier } from '@/core/types';
 
 /**
  * 世界类型权威列表

@@ -23,7 +23,7 @@ import type {
 import { parseManifest, ModLoadError } from './ModManifest';
 import {
   WorldDataRegistry,
-} from '@/shared/lib/registry/WorldDataRegistry';
+} from '@/core/registry/WorldDataRegistry';
 import type {
   WorldTypeData,
   DangerData,
@@ -33,9 +33,9 @@ import type {
   NamePoolData,
   RealmSystemData,
   WorldTextData,
-} from '@/shared/lib/registry/WorldDataRegistry';
-import { validateWorldTemplate } from '@/shared/lib/world/validateWorldTemplate';
-import type { WorldTemplate } from '@/shared/lib/world/types';
+} from '@/core/registry/WorldDataRegistry';
+import { validateWorldTemplate } from '@/core/world/validateWorldTemplate';
+import type { WorldTemplate } from '@/core/world/types';
 
 // ============================================
 // Mod 索引类型

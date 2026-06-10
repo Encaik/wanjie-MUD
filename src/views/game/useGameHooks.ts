@@ -21,8 +21,8 @@ import {
   CharacterStats,
   ActiveEffect,
   DungeonConfig
-} from '@/shared/lib/types';
-import { getFinalStats } from '@/shared/lib/types';
+} from '@/core/types';
+import { getFinalStats } from '@/core/types';
 
 import { useGame } from './useGameState';
 

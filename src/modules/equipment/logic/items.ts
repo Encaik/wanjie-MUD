@@ -1,5 +1,5 @@
 import { getTerminology } from '@/modules/narrative/logic/terminology';
-import { ItemDefinition, WorldType } from '@/shared/lib/types';
+import { ItemDefinition, WorldType } from '@/core/types';
 
 // 根据世界类型获取灵石名称 - 使用统一术语系统
 export function getResourceName(worldType: WorldType): string {

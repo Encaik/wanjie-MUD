@@ -6,7 +6,7 @@
  */
 
 import type { RealmSystem } from '@/modules/progression/data/realmCore';
-import type { DungeonConfig } from '@/shared/lib/types';
+import type { DungeonConfig } from '@/core/types';
 import { getRealmName, getRealmMultiplier } from '@/modules/progression/data/realmCore';
 import {
   calculateEnemyHp,

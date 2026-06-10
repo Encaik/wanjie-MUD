@@ -14,7 +14,7 @@
  * - 冷却时间：30秒（防止频繁进出）
  */
 
-import { EnemyTier, CellType, DungeonConfig, Protagonist, AdventureSessionState } from '@/shared/lib/types';
+import { EnemyTier, CellType, DungeonConfig, Protagonist, AdventureSessionState } from '@/core/types';
 
 // ============================================
 // 常量配置

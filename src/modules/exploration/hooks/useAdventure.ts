@@ -29,21 +29,21 @@ import {
 import { calculatePlayerCombatPower } from '@/modules/combat/logic/combatPower';
 import { getMaxExperience } from '@/modules/progression/logic/cultivation';
 import { getRandomEvent } from '@/modules/exploration/logic/dungeon/events';
-import { GrowthStats } from '@/shared/lib/types';
+import { GrowthStats } from '@/core/types';
 import { processExperienceGain } from '@/modules/progression/logic/experienceSystem';
 import { 
   spiritStoneItems, 
   breakthroughItems, 
   getRandomItem 
 } from '@/modules/equipment/logic/items';
-import { updateTaskProgress } from '@/shared/lib/expansionLogic';
+import { updateTaskProgress } from '@/core/engine';
 import { 
   DEFAULT_PROTAGONIST_EXTENSION,
   getDeathMessage,
   DeathCause,
   DeathState,
-} from '@/shared/lib/typesExtension';
-import { applyMentalChange } from '@/shared/lib/expansionLogic';
+} from '@/core/types';
+import { applyMentalChange } from '@/core/engine';
 // 碎片系统
 import { 
   FragmentDropData,
@@ -53,7 +53,7 @@ import {
 } from '@/modules/crafting/logic/fragmentSystem';
 // 统计系统
 import { statisticsManager, StatisticsEventType } from '@/modules/collection/logic/statistics/statisticsSystem';
-import { gameSystems } from '@/shared/lib/gameSystems';
+import { gameSystems } from '@/core/engine';
 import { getAvailableDifficultiesForRealm } from '@/modules/exploration/logic/adventureDifficulties';
 import { applyGrowthStatChanges, getGrowthStatCap } from '@/modules/progression/logic/realmSystem';
 import { consumeGameTime, ACTION_TIME_COST, createCooldown } from '@/modules/time/logic/timeSystem';
@@ -75,7 +75,7 @@ import {
   Technique,
   Equipment,
   EnemyTier,
-} from '@/shared/lib/types';
+} from '@/core/types';
 
 import { addToInventory } from '@/modules/equipment/hooks/inventoryUtils';
 // 行动力系统

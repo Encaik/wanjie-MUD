@@ -5,7 +5,7 @@ import { CheckCircle2, XCircle, Package } from 'lucide-react';
 import { Badge } from '@/shared/ui/badge';
 import { Button } from '@/shared/ui/button';
 import { Card, CardContent } from '@/shared/ui/card';
-import { ActionResult } from '@/shared/lib/types';
+import { ActionResult } from '@/core/types';
 
 
 interface ResultDisplayProps {

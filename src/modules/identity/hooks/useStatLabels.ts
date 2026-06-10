@@ -5,7 +5,7 @@
  * 依赖模块：identity/data/statDisplayNames
  */
 import { useMemo } from 'react';
-import type { WorldType } from '@/shared/lib/types';
+import type { WorldType } from '@/core/types';
 import { getStatLabels, type StatKey } from '../data/statDisplayNames';
 
 export interface StatLabelsResult {

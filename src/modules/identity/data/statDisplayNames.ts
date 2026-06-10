@@ -7,7 +7,7 @@
  * 设计决策：BaseStats/GrowthStats 底层键名保持不变（避免 50+ 处引用的大重构），
  * 通过此显示层映射函数在 UI 层展示世界正确的属性名。
  */
-import type { WorldType } from '@/shared/lib/types';
+import type { WorldType } from '@/core/types';
 import { WORLD_DATA } from './worldData';
 
 /** 内部属性键 */

@@ -10,7 +10,7 @@
  * 最终属性 = 基础值 × (1 + 等级加成) × 世界系数 × 难度系数 × 模板倍率 + 功法装备加成
  */
 
-import { WorldType, Technique, Equipment } from '@/shared/lib/types';
+import { WorldType, Technique, Equipment } from '@/core/types';
 
 // ============================================
 // 常量配置

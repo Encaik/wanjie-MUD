@@ -7,7 +7,7 @@
 import type { WorldStats } from '@/modules/identity/data/worldData';
 import { WORLD_DATA } from '@/modules/identity/data/worldData';
 import { hasUniqueMechanics } from '@/modules/identity/logic/worlds/factory';
-import type { WorldType } from '@/shared/lib/types';
+import type { WorldType } from '@/core/types';
 
 /** 三层差异化得分 */
 export interface DifferentiationScore {

@@ -6,8 +6,8 @@
 
 Before any code generation, read and follow these rules:
 
-- [Core Constraints](.claude/rules/core.md) — 四层架构、文件大小限制、目录职责、禁止行为
-- [Module Standards](.claude/rules/modules.md) — modules/、views/、shared/ 开发规范
+- [Core Constraints](.claude/rules/core.md) — 五层架构、文件大小限制、目录职责、禁止行为
+- [Module Standards](.claude/rules/modules.md) — modules/、views/、core/、shared/ 开发规范
 - [Data Flow](.claude/rules/data-flow.md) — 调用链、状态更新模式、跨模块通信、ActionResult
 - [Style Guide](.claude/rules/style.md) — 导入顺序、命名、JSDoc、TypeScript 严格模式
 
@@ -27,14 +27,15 @@ pnpm test             # Run vitest tests
 pnpm check-sizes      # Check file size limits only
 ```
 
-## Key TL;DR — 四层架构
+## Key TL;DR — 五层架构
 
 ```
 src/
 ├── app/       ← ① Next.js 路由（只放 page.tsx, layout.tsx）
 ├── views/     ← ② 页面组件（组合模块 Panel，无业务逻辑）
 ├── modules/   ← ③ 功能模块（一个业务域一个目录，自包含）
-└── shared/    ← ④ 公共代码（ui, components, lib, utils, config, storage）
+├── core/      ← ④ 核心系统（游戏基础设施：事件、计算、世界、注册、Mod、引擎）
+└── shared/    ← ⑤ 公共工具（跨模块工具性代码：AI、WebSocket、cn、logger）
 ```
 
 - **同一份内容只在一处存在** — 禁止复制粘贴
@@ -53,11 +54,23 @@ src/
 ```
 app/page.tsx → views/View.tsx → modules/hooks/ → modules/logic/
                               → modules/components/ → shared/ui/
+                              → core/              → 事件、计算、世界、Mod
 ```
 - views/ 组合 Panel + 管理 UI 状态（弹窗/切换），不含业务逻辑
-- hooks/ 读/写**自己模块的 state slice**，跨模块写通过事件总线
+- hooks/ 读/写**自己模块的 state slice**，跨模块写通过事件总线（`core/events/`）
 - logic/ 纯函数，无 React/browser API，无 Math.random()
+- core/ 纯基础设施，不依赖 modules/，不包含 React 组件或 Hooks
 - components/ 只接收 props 渲染，不直接调用 setGameState
+
+### 新文件放置决策树
+```
+新文件是什么？
+├── Next.js 路由页面（page.tsx, layout.tsx）？ → app/
+├── 与路由挂钩的页面组件（组合模块 Panel）？    → views/<route>/
+├── 某个业务功能的逻辑/状态/组件/数据？        → modules/<domain>/
+├── 游戏核心基础设施（事件、计算、世界、注册、Mod、引擎）？ → core/
+└── 纯通用工具性代码？                         → shared/
+```
 
 ### 跨模块通信
 - 读跨模块状态：import 其他模块 slice（只读） ✅

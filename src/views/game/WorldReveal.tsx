@@ -19,9 +19,9 @@ import {
   DialogFooter,
 } from '@/shared/ui/dialog';
 import { WORLD_NAME_GENERATORS } from '@/modules/ascension/data/ascensionData';
-import { getWorldVisualConfig } from '@/shared/lib/registry';
-import { WorldType } from '@/shared/lib/types';
-import { NewWorldInfo } from '@/shared/lib/typesExtension';
+import { getWorldVisualConfig } from '@/core/registry';
+import { WorldType } from '@/core/types';
+import { NewWorldInfo } from '@/core/types';
 
 interface WorldRevealProps {
   open: boolean;

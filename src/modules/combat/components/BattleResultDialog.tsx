@@ -47,7 +47,7 @@ import {
   WEAPON_CATEGORY_NAMES,
   EnemyAttributes,
 } from '@/modules/combat/logic/restraintSystem';
-import { BattleState, BattleLog, Technique, Equipment } from '@/shared/lib/types';
+import { BattleState, BattleLog, Technique, Equipment } from '@/core/types';
 
 import { CombatantPanel } from './CombatantPanel';
 

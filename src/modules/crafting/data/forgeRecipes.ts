@@ -1,6 +1,6 @@
 // 炼器配方定义
 
-import { EquipmentSlot, ItemRarity } from '@/shared/lib/types';
+import { EquipmentSlot, ItemRarity } from '@/core/types';
 
 // 装备品质
 export type EquipmentQuality = '普通' | '精良' | '优秀' | '完美';

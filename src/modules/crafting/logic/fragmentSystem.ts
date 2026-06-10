@@ -25,7 +25,7 @@ import {
   Technique, 
   Equipment, 
   WorldType 
-} from '@/shared/lib/types';
+} from '@/core/types';
 import { clampNonNegative } from '@/shared/utils/numberUtils';
 
 // ============================================

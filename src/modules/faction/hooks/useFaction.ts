@@ -32,7 +32,7 @@ import {
   InventoryItem,
   createInventoryItem,
   CultivationPath,
-} from '@/shared/lib/types';
+} from '@/core/types';
 import { 
   FactionProgress, 
   TaskRoundState, 
@@ -43,7 +43,7 @@ import {
   createDefaultDailyRoundState,
   createDefaultWeeklyRoundState,
   createDefaultCommissionState,
-} from '@/shared/lib/typesExtension';
+} from '@/core/types';
 
 import { addToInventory } from '@/modules/equipment/hooks/inventoryUtils';
 

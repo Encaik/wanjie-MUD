@@ -10,7 +10,7 @@
 
 import { Element, WeaponCategory } from '@/modules/combat/logic/restraintSystem';
 import { EQUIPMENT_RARITY_CONFIG, RARITY_WEIGHTS } from '@/modules/techniques/logic/skillTypes';
-import { EquipmentSlot, ItemRarity } from '@/shared/lib/types';
+import { EquipmentSlot, ItemRarity } from '@/core/types';
 
 // ============================================
 // 装备名称库

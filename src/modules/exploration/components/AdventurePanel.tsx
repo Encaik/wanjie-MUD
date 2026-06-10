@@ -19,7 +19,7 @@ import { Progress } from '@/shared/ui/progress';
 import { getAdjacentCells } from '@/modules/exploration/logic/adventure/adventure';
 import { STAMINA_CONFIG, getCooldownRemaining } from '@/modules/exploration/logic/adventure/adventureStamina';
 import { getDungeonInfo, getTerminology } from '@/modules/narrative/logic/terminology';
-import { AdventureCell, WorldType, DungeonConfig, CellType, AdventureSessionState } from '@/shared/lib/types';
+import { AdventureCell, WorldType, DungeonConfig, CellType, AdventureSessionState } from '@/core/types';
 
 interface AdventurePanelProps {
   grid: AdventureCell[][] | null;

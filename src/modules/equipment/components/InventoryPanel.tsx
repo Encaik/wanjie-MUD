@@ -10,7 +10,7 @@ import { ItemTooltip, getRarityStyle } from '@/shared/ui/item-tooltip';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/shared/ui/tabs';
 import { useInventory, useProtagonist } from '@/views/game';
 import { getResourceName } from '@/modules/equipment/logic/items';
-import { InventoryItem, ActiveEffect, WorldType, ItemRarity } from '@/shared/lib/types';
+import { InventoryItem, ActiveEffect, WorldType, ItemRarity } from '@/core/types';
 import { cn } from '@/shared/utils';
 
 interface InventoryPanelProps {

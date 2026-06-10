@@ -12,7 +12,7 @@
  * 3. 高品质装备名称应更有特色
  */
 
-import { WorldType, EquipmentSlot, ItemRarity } from '@/shared/lib/types';
+import { WorldType, EquipmentSlot, ItemRarity } from '@/core/types';
 
 /**
  * 装备名称数据库

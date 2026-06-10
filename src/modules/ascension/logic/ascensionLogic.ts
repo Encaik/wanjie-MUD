@@ -19,7 +19,7 @@ import {
   calculateWorldWeights,
   weightedRandom,
 } from '@/modules/ascension/data/ascensionData';
-import { WorldType, CharacterStats, BattleState, BattleLog, Protagonist, Technique, Equipment, getFinalStats, LegacyStats, GrowthStats } from '@/shared/lib/types';
+import { WorldType, CharacterStats, BattleState, BattleLog, Protagonist, Technique, Equipment, getFinalStats, LegacyStats, GrowthStats } from '@/core/types';
 import {
   AscensionMark,
   GuardianBattleState,
@@ -28,7 +28,7 @@ import {
   InheritanceChoice,
   DEFAULT_ASCENSION_MARK,
   DEFAULT_GUARDIAN_BATTLE_STATE,
-} from '@/shared/lib/typesExtension';
+} from '@/core/types';
 
 // ============================================
 // 成功率计算

@@ -10,7 +10,7 @@
 
 import { EquipmentAffix as EquipmentAffixType } from '@/modules/equipment/data/equipmentAffixData';
 import { CurrencyType, PlayerCurrencies, CURRENCY_CONFIGS } from '../shop/types';
-import { ItemRarity, Protagonist, Equipment, Technique, CharacterStats } from '@/shared/lib/types';
+import { ItemRarity, Protagonist, Equipment, Technique, CharacterStats } from '@/core/types';
 // 导入已有的 EquipmentAffix 类型用于内部使用
 
 // 重新导出已有的 EquipmentAffix 类型

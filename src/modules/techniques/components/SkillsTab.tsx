@@ -45,7 +45,7 @@ import {
   quickEquipTechnique,
 } from '@/modules/techniques/logic/skillEquipSystem';
 import { TechniqueSkill, WeaponTechnique } from '@/modules/techniques/logic/skillTypes';
-import { Technique, Equipment } from '@/shared/lib/types';
+import { Technique, Equipment } from '@/core/types';
 
 interface SkillsTabProps {
   /** 主角功法列表 */

@@ -1,33 +1,5 @@
 /**
- * 世界数据注册中心 — 桶导出
- *
- * @module shared/lib/registry
+ * Barrel re-export — 数据注册中心
+ * @deprecated 使用 @/core/registry 代替。旧路径保留用于向后兼容。
  */
-
-export {
-  WorldDataRegistry,
-  asWorldType,
-  assertWorldType,
-  getAllWorldTypeValues,
-  getWorldVisualConfig,
-  DEFAULT_VISUAL_CONFIG,
-} from './WorldDataRegistry';
-
-export type {
-  WorldTypeData,
-  WorldVisualConfig,
-  WorldImpactData,
-  TriggerConditionData,
-  DangerEffectData,
-  OpportunityEffectData,
-  DangerData,
-  OpportunityData,
-  TraitDefinitionData,
-  TraitPoolData,
-  FactionTemplateData,
-  NamePoolData,
-  RealmTierData,
-  RealmSystemData,
-  WorldTextData,
-  RewardCoefficientData,
-} from './WorldDataRegistry';
+export * from '@/core/registry';

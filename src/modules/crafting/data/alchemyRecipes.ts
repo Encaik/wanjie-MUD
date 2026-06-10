@@ -1,5 +1,5 @@
 // 炼丹配方定义
-import { EffectType } from '@/shared/lib/types';
+import { EffectType } from '@/core/types';
 
 // 丹药品质
 export type PillQuality = '下品' | '中品' | '上品' | '极品';

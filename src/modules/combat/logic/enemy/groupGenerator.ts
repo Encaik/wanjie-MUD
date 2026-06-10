@@ -7,7 +7,7 @@
  * 3. 管理敌人组配置
  */
 
-import { WorldType } from '@/shared/lib/types';
+import { WorldType } from '@/core/types';
 import {
   generateEnemy,
 } from './generator';

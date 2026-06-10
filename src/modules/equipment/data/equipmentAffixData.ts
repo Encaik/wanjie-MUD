@@ -5,7 +5,7 @@
  * 套装：收集特定装备触发套装效果
  */
 
-import { ItemRarity, EquipmentSlot, LegacyStats, StatKey } from '@/shared/lib/types';
+import { ItemRarity, EquipmentSlot, LegacyStats, StatKey } from '@/core/types';
 
 // ============================================
 // 词缀系统

@@ -9,7 +9,7 @@
 
 import type { GameEvent, AnnouncementRequest } from '@/modules/social/announcementTypes';
 import { GameEventType } from '@/modules/social/announcementTypes';
-import type { WorldType } from '@/shared/lib/types';
+import type { WorldType } from '@/core/types';
 
 import { getAnnouncementConfig, shouldTriggerAnnouncement } from './config';
 

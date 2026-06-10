@@ -18,8 +18,8 @@ import {
   DialogFooter,
 } from '@/shared/ui/dialog';
 import { Progress } from '@/shared/ui/progress';
-import { CharacterStats, getFinalStats } from '@/shared/lib/types';
-import { TribulationConfig, TribulationState, RealmBottleneck } from '@/shared/lib/typesExtension';
+import { CharacterStats, getFinalStats } from '@/core/types';
+import { TribulationConfig, TribulationState, RealmBottleneck } from '@/core/types';
 
 interface TribulationDialogProps {
   open: boolean;

@@ -6,7 +6,7 @@
  * 发送到服务端后直接广播，服务端不负责内容生成。
  */
 
-import type { WorldType } from '@/shared/lib/types';
+import type { WorldType } from '@/core/types';
 
 // ========== 公告类型 ==========
 

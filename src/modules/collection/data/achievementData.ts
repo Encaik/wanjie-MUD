@@ -11,7 +11,7 @@
  */
 
 import { spiritStoneItems, breakthroughItems, cultivationPillItems } from '@/modules/equipment/logic/items';
-import { AchievementDefinition, AchievementType, ItemRarity, createInventoryItem } from '@/shared/lib/types';
+import { AchievementDefinition, AchievementType, ItemRarity, createInventoryItem } from '@/core/types';
 
 // 成就图标（使用 lucide-react 图标名称）
 export const AchievementIcons: Record<string, string> = {

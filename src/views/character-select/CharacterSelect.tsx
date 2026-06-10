@@ -5,7 +5,7 @@ import { RefreshCw, Swords, BookOpen, Shield, Compass } from 'lucide-react';
 import { impactLevelToQuality, getQualityClasses } from '@/modules/equipment/logic/quality';
 import { useStatLabels } from '@/modules/identity/hooks/useStatLabels';
 import { sumImpacts } from '@/modules/identity/logic/generators';
-import type { Character, CharacterStats, ImpactLevel, StatImpact, WorldType } from '@/shared/lib/types';
+import type { Character, CharacterStats, ImpactLevel, StatImpact, WorldType } from '@/core/types';
 import { Badge } from '@/shared/ui/badge';
 import { Button } from '@/shared/ui/button';
 import { Card, CardContent } from '@/shared/ui/card';

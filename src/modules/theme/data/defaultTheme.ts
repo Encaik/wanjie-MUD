@@ -7,7 +7,7 @@
  * @module modules/theme/data
  */
 
-import type { WorldType } from '@/shared/lib/types';
+import type { WorldType } from '@/core/types';
 import type { ThemeVariableOverrides } from '../types';
 
 /**

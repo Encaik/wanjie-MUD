@@ -4,8 +4,8 @@ import { RotateCcw } from 'lucide-react';
 
 import { Button } from '@/shared/ui/button';
 import { ScrollArea } from '@/shared/ui/scroll-area';
-import { Protagonist } from '@/shared/lib/types';
-import { MentalState } from '@/shared/lib/typesExtension';
+import { Protagonist } from '@/core/types';
+import { MentalState } from '@/core/types';
 
 import { SaveLoadPanel } from './SaveLoadPanel';
 import { StatusPanel } from './StatusPanel';

@@ -36,7 +36,7 @@ import {
   SECLUSION_OUTCOMES,
 } from '@/modules/progression/logic/seclusion';
 import { getTerminology } from '@/modules/narrative/logic/terminology';
-import { WorldType, InventoryItem } from '@/shared/lib/types';
+import { WorldType, InventoryItem } from '@/core/types';
 
 
 interface SeclusionPanelProps {

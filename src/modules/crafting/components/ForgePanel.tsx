@@ -17,7 +17,7 @@ import {
   ForgeRecipe,
   getSlotName,
 } from '@/modules/crafting/data/forgeRecipes';
-import { InventoryItem, ItemRarity, ForgingState, EquipmentSlot } from '@/shared/lib/types';
+import { InventoryItem, ItemRarity, ForgingState, EquipmentSlot } from '@/core/types';
 import { cn } from '@/shared/utils';
 
 // 部位图标映射

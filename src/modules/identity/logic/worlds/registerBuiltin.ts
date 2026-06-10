@@ -9,8 +9,8 @@
  * @module modules/identity/logic/worlds
  */
 
-import { WorldMechanicsRegistry } from '@/shared/lib/registry/WorldMechanicsRegistry';
-import { WorldDataRegistry } from '@/shared/lib/registry/WorldDataRegistry';
+import { WorldMechanicsRegistry } from '@/core/registry/WorldMechanicsRegistry';
+import { WorldDataRegistry } from '@/core/registry/WorldDataRegistry';
 import type { MechanicsConfig } from './types';
 import { buildWorldMechanics } from './builder';
 

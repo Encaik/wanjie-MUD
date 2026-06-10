@@ -5,7 +5,7 @@
  * 注：此模块独立于任务系统架构，简化实现
  */
 
-import { Protagonist, GameStatistics } from '@/shared/lib/types';
+import { Protagonist, GameStatistics } from '@/core/types';
 
 // ============================================
 // 商店任务类型定义

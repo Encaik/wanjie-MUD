@@ -3,8 +3,8 @@
  * 定义不同境界的渡劫难度、奖励和惩罚
  */
 
-import { LegacyStats, StatKey } from '@/shared/lib/types';
-import { TribulationConfig } from '@/shared/lib/typesExtension';
+import { LegacyStats, StatKey } from '@/core/types';
+import { TribulationConfig } from '@/core/types';
 
 // 渡劫配置 - 每10级触发一次
 export const TRIBULATION_CONFIGS: TribulationConfig[] = [
