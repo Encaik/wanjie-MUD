@@ -11,13 +11,16 @@
 
 import fs from 'fs';
 import path from 'path';
+
+import { createLogger } from '@/core/logger';
 import { WorldDataRegistry } from '@/core/registry/WorldDataRegistry';
 import { WorldMechanicsRegistry } from '@/core/registry/WorldMechanicsRegistry';
-import { WorldProviderRegistry } from '@/core/world/WorldProviderRegistry';
-import { ModRandomWorldProvider } from '@/modules/identity/logic/worlds/ModRandomWorldProvider';
 import { TemplateWorldProvider } from '@/core/world/TemplateWorldProvider';
 import { validateWorldTemplate } from '@/core/world/validateWorldTemplate';
-import type { WorldTemplate } from '@/core/world/types';
+import { WorldProviderRegistry } from '@/core/world/WorldProviderRegistry';
+import { buildWorldMechanics } from '@/modules/identity/logic/worlds/builder';
+import { ModRandomWorldProvider } from '@/modules/identity/logic/worlds/ModRandomWorldProvider';
+
 import type {
   WorldTypeData,
   DangerData,
@@ -28,13 +31,17 @@ import type {
   RealmSystemData,
   WorldTextData,
 } from '@/core/registry/WorldDataRegistry';
+import type { WorldTemplate } from '@/core/world/types';
 import type { MechanicsConfig } from '@/modules/identity/logic/worlds/types';
-import { buildWorldMechanics } from '@/modules/identity/logic/worlds/builder';
+
 import type { ModManifest, ModList } from './mod-types';
 
 // ============================================
-// 路径常量
+// 日志 & 路径常量
 // ============================================
+
+/** 核心日志实例 */
+const log = createLogger('API Init');
 
 /** Mod 文件根目录（相对于项目根） */
 const MODS_DIR = path.resolve(process.cwd(), 'public', 'mods');
@@ -68,12 +75,12 @@ interface ModListEntry {
 export function ensureWorldSystemInitialized(): void {
   if (initialized) return;
 
-  console.log('[API Init] 开始服务端世界系统初始化...');
+  log.info('开始服务端世界系统初始化...');
 
   // 1. 发现并加载 Mod 数据
   const entries = discoverMods();
   if (entries.length === 0) {
-    console.warn('[API Init] 未发现 Mod 数据，世界生成将不可用');
+    log.warn('未发现 Mod 数据，世界生成将不可用');
     initialized = true;
     return;
   }
@@ -90,7 +97,7 @@ export function ensureWorldSystemInitialized(): void {
   registerBuiltinMechanics();
 
   initialized = true;
-  console.log('[API Init] 世界系统初始化完成');
+  log.info('世界系统初始化完成');
 }
 
 // ============================================
@@ -102,14 +109,14 @@ function discoverMods(): ModListEntry[] {
   const listPath = path.join(MODS_DIR, 'mod-list.json');
   try {
     if (!fs.existsSync(listPath)) {
-      console.warn('[API Init] mod-list.json 不存在');
+      log.warn('mod-list.json 不存在');
       return [];
     }
     const raw = fs.readFileSync(listPath, 'utf-8');
     const data = JSON.parse(raw) as ModList;
     return data.mods ?? [];
   } catch (err) {
-    console.warn('[API Init] 读取 mod-list.json 失败:', err);
+    log.warn('读取 mod-list.json 失败:', err);
     return [];
   }
 }
@@ -121,8 +128,75 @@ function readManifest(modPath: string): ModManifest | null {
     const raw = fs.readFileSync(manifestPath, 'utf-8');
     return JSON.parse(raw) as ModManifest;
   } catch (err) {
-    console.warn(`[API Init] 读取 manifest 失败 (${modPath}):`, err);
+    log.warn(`读取 manifest 失败 (${modPath}):`, err);
     return null;
+  }
+}
+
+/**
+ * 已知内容类型的注册处理器
+ *
+ * 使用映射表替代 switch 语句以降低圈复杂度。
+ * 每个处理器接收解析后的 JSON 数据和注册中心实例。
+ */
+const CONTENT_HANDLERS: Record<string, (data: Record<string, unknown>, registry: WorldDataRegistry) => void> = {
+  world: (data, registry) => {
+    const worldList = extractArray<WorldTypeData>(data, 'worlds');
+    if (worldList.length > 0) { registry.registerWorldTypes(worldList); }
+  },
+  traits: (data, registry) => {
+    const traitMap = extractObject<TraitPoolData>(data, 'traits');
+    for (const [wtId, pool] of Object.entries(traitMap)) {
+      registry.registerTraitPool(wtId, pool);
+    }
+  },
+  dangers: (data, registry) => {
+    const dangerList = extractArray<DangerData>(data, 'dangers');
+    if (dangerList.length > 0) { registry.registerDangers(dangerList); }
+  },
+  opportunities: (data, registry) => {
+    const oppList = extractArray<OpportunityData>(data, 'opportunities');
+    if (oppList.length > 0) { registry.registerOpportunities(oppList); }
+  },
+  realms: (data, registry) => {
+    const realmMap = extractObject<RealmSystemData>(data, 'realms');
+    for (const [wtId, realm] of Object.entries(realmMap)) {
+      registry.registerRealmSystem(wtId, realm);
+    }
+  },
+  factions: (data, registry) => {
+    const factionList = extractArray<FactionTemplateData>(data, 'factions');
+    if (factionList.length > 0) { registry.registerFactionTemplates(factionList); }
+  },
+  names: (data, registry) => {
+    const nameMap = extractObject<NamePoolData>(data, 'names');
+    for (const [wtId, pool] of Object.entries(nameMap)) {
+      registry.registerNamePool(wtId, pool);
+    }
+  },
+  text: (data, registry) => {
+    const textMap = extractObject<WorldTextData>(data, 'text');
+    for (const [wtId, entry] of Object.entries(textMap)) {
+      registry.registerWorldText(wtId, entry);
+    }
+  },
+};
+
+/**
+ * 加载单个数据文件并分发注册到 WorldDataRegistry
+ *
+ * 根据 content type 查找对应的处理器，提取自 loadModFromDisk 以降低圈复杂度。
+ */
+function registerDataFile(
+  contentType: string,
+  data: Record<string, unknown>,
+  registry: WorldDataRegistry,
+): void {
+  const handler = CONTENT_HANDLERS[contentType];
+  if (handler) {
+    handler(data, registry);
+  } else {
+    log.warn(`未知内容类型: "${contentType}"`);
   }
 }
 
@@ -133,125 +207,67 @@ function loadModFromDisk(entry: ModListEntry): void {
   if (!manifest) return;
 
   const registry = WorldDataRegistry.getInstance();
-  // dataFiles 中的路径已包含 "data/" 前缀，baseDir 直接用 mod 目录
   const baseDir = path.join(MODS_DIR, modPath);
 
   for (const contentType of manifest.contentTypes) {
-    try {
-      switch (contentType) {
-        case 'world': {
-          const worldList = loadJsonArray<WorldTypeData>(
-            baseDir, manifest.dataFiles.world, 'worlds'
-          );
-          if (worldList) { registry.registerWorldTypes(worldList); }
-          break;
+    const dataPathValue = manifest.dataFiles[contentType];
+    if (!dataPathValue) {
+      log.warn(`Mod "${modId}" 的 contentTypes 包含 "${contentType}" 但 dataFiles 中未配置路径，跳过`);
+      continue;
+    }
+
+    // 归一化为数组，与浏览器端 ModLoader 保持一致
+    const dataPaths = Array.isArray(dataPathValue) ? dataPathValue : [dataPathValue];
+
+    for (const dataPath of dataPaths) {
+      try {
+        const filePath = path.join(baseDir, dataPath);
+        if (!fs.existsSync(filePath)) {
+          log.warn(`数据文件不存在: ${filePath}`);
+          continue;
         }
-        case 'traits': {
-          const traitMap = loadJsonObject<TraitPoolData>(
-            baseDir, manifest.dataFiles.traits, 'traits'
-          );
-          if (traitMap) {
-            for (const [wtId, pool] of Object.entries(traitMap)) {
-              registry.registerTraitPool(wtId, pool);
-            }
-          }
-          break;
-        }
-        case 'dangers': {
-          const dangerList = loadJsonArray<DangerData>(
-            baseDir, manifest.dataFiles.dangers, 'dangers'
-          );
-          if (dangerList) { registry.registerDangers(dangerList); }
-          break;
-        }
-        case 'opportunities': {
-          const oppList = loadJsonArray<OpportunityData>(
-            baseDir, manifest.dataFiles.opportunities, 'opportunities'
-          );
-          if (oppList) { registry.registerOpportunities(oppList); }
-          break;
-        }
-        case 'realms': {
-          const realmMap = loadJsonObject<RealmSystemData>(
-            baseDir, manifest.dataFiles.realms, 'realms'
-          );
-          if (realmMap) {
-            for (const [wtId, realm] of Object.entries(realmMap)) {
-              registry.registerRealmSystem(wtId, realm);
-            }
-          }
-          break;
-        }
-        case 'factions': {
-          const factionList = loadJsonArray<FactionTemplateData>(
-            baseDir, manifest.dataFiles.factions, 'factions'
-          );
-          if (factionList) { registry.registerFactionTemplates(factionList); }
-          break;
-        }
-        case 'names': {
-          const nameMap = loadJsonObject<NamePoolData>(
-            baseDir, manifest.dataFiles.names, 'names'
-          );
-          if (nameMap) {
-            for (const [wtId, pool] of Object.entries(nameMap)) {
-              registry.registerNamePool(wtId, pool);
-            }
-          }
-          break;
-        }
-        case 'text': {
-          const textMap = loadJsonObject<WorldTextData>(
-            baseDir, manifest.dataFiles.text, 'text'
-          );
-          if (textMap) {
-            for (const [wtId, entry] of Object.entries(textMap)) {
-              registry.registerWorldText(wtId, entry);
-            }
-          }
-          break;
-        }
-        default:
-          console.warn(`[API Init] 未知内容类型: "${contentType}"`);
+
+        const raw = fs.readFileSync(filePath, 'utf-8');
+        const data = JSON.parse(raw) as Record<string, unknown>;
+        registerDataFile(contentType, data, registry);
+      } catch (err) {
+        log.warn(`加载 ${contentType} 失败 (${modId}):`, err);
       }
-    } catch (err) {
-      console.warn(`[API Init] 加载 ${contentType} 失败:`, err);
     }
   }
 
   // 加载固化世界模板
   if (manifest.worldTemplates && manifest.worldTemplates.length > 0) {
-    loadTemplateWorlds(modId, baseDir, manifest);
+    loadTemplateWorlds(baseDir, manifest);
   }
 
-  console.log(`[API Init] Mod "${modId}" 数据加载完成 (${manifest.contentTypes.length} 个数据文件)`);
+  log.info(`Mod "${modId}" 数据加载完成 (${manifest.contentTypes.length} 个内容类型)`);
 }
 
 /** 加载固化世界模板 */
 function loadTemplateWorlds(
-  modId: string,
   dataDir: string,
   manifest: ModManifest,
 ): void {
   const registry = WorldDataRegistry.getInstance();
   for (const templateId of manifest.worldTemplates ?? []) {
-    const tplPath = path.join(MODS_DIR, modId, 'templates', 'worlds', `${templateId}.json`);
+    const tplPath = path.join(dataDir, 'templates', 'worlds', `${templateId}.json`);
     try {
       if (!fs.existsSync(tplPath)) {
-        console.warn(`[API Init] 模板文件不存在: ${tplPath}`);
+        log.warn(`模板文件不存在: ${tplPath}`);
         continue;
       }
       const raw = fs.readFileSync(tplPath, 'utf-8');
       const data = JSON.parse(raw);
       const result = validateWorldTemplate(data);
       if (!result.valid) {
-        console.warn(`[API Init] 模板校验失败: ${templateId} — ${result.errors.join('; ')}`);
+        log.warn(`模板校验失败: ${templateId} — ${result.errors.join('; ')}`);
         continue;
       }
       registry.registerWorldTemplate(data as WorldTemplate);
-      console.log(`[API Init] 注册固化模板: ${templateId}`);
+      log.info(`注册固化模板: ${templateId}`);
     } catch (err) {
-      console.warn(`[API Init] 加载模板 ${templateId} 失败:`, err);
+      log.warn(`加载模板 ${templateId} 失败:`, err);
     }
   }
 }
@@ -303,48 +319,46 @@ function registerBuiltinMechanics(): void {
 }
 
 // ============================================
-// JSON 文件读取工具
+// JSON 数据提取工具
 // ============================================
 
-/** 读取 JSON 文件并提取数组字段 */
-function loadJsonArray<T>(
-  dir: string,
-  filename: string | undefined,
-  key: string,
-): T[] | null {
-  if (!filename) return null;
-  const filePath = path.join(dir, filename);
-  try {
-    if (!fs.existsSync(filePath)) return null;
-    const raw = fs.readFileSync(filePath, 'utf-8');
-    const data = JSON.parse(raw) as Record<string, unknown>;
-    return (data[key] || data.data || []) as T[];
-  } catch (err) {
-    console.error(`[API Init] 读取 ${filePath} 失败:`, err);
-    return null;
-  }
+/**
+ * 从 JSON 对象中提取数组字段
+ *
+ * @param data - 已解析的 JSON 对象
+ * @param key - 目标字段名，优先取此字段；不存在时回退到 `data` 字段
+ * @returns 提取的数组（未找到时返回空数组）
+ */
+function extractArray<T>(data: Record<string, unknown>, key: string): T[] {
+  const value = data[key] ?? data.data;
+  if (Array.isArray(value)) return value as T[];
+  return [];
 }
 
-/** 读取 JSON 文件并提取对象映射 */
-function loadJsonObject<T>(
-  dir: string,
-  filename: string | undefined,
-  key: string,
-): Record<string, T> | null {
-  if (!filename) return null;
-  const filePath = path.join(dir, filename);
-  try {
-    if (!fs.existsSync(filePath)) {
-      console.warn(`[API Init] 文件不存在: ${filePath}`);
-      return null;
-    }
-    const raw = fs.readFileSync(filePath, 'utf-8');
-    const data = JSON.parse(raw) as Record<string, unknown>;
-    return (data[key] || data) as Record<string, T>;
-  } catch (err) {
-    console.error(`[API Init] 读取 ${filePath} 失败:`, err);
-    return null;
+/**
+ * 从 JSON 对象中提取对象映射
+ *
+ * @param data - 已解析的 JSON 对象
+ * @param key - 目标字段名，优先取此字段；不存在时回退到整个对象
+ * @returns 提取的对象映射
+ */
+function extractObject<T>(data: Record<string, unknown>, key: string): Record<string, T> {
+  const value = data[key];
+  if (value && typeof value === 'object' && !Array.isArray(value)) {
+    return value as Record<string, T>;
   }
+  // 回退：整个 data 本身就是映射
+  if (Object.keys(data).length > 0) {
+    // 过滤掉可能的元数据字段
+    const filtered: Record<string, T> = {};
+    for (const [k, v] of Object.entries(data)) {
+      if (v && typeof v === 'object' && !Array.isArray(v)) {
+        filtered[k] = v as T;
+      }
+    }
+    if (Object.keys(filtered).length > 0) return filtered;
+  }
+  return {};
 }
 
 /**

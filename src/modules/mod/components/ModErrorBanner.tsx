@@ -8,7 +8,7 @@
  */
 
 import { useState } from 'react';
-import type { ModLoadWarning } from '../hooks/useModLoader';
+import type { ModLoadWarning } from '../types';
 
 interface ModErrorBannerProps {
   /** 警告列表 */

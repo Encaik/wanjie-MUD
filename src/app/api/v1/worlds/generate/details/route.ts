@@ -9,9 +9,15 @@
  */
 
 import { NextRequest } from 'next/server';
+
 import { apiSuccess, apiError } from '@/app/api/result';
 import { ensureWorldSystemInitialized } from '@/app/api/init';
+import { createLogger } from '@/core/logger';
+
 import { generateDetailsForSeed } from '../generator';
+
+/** 日志实例 */
+const log = createLogger('Details Generate');
 
 interface DetailsRequest {
   seed: string;
@@ -21,7 +27,7 @@ export async function POST(request: NextRequest) {
   try {
     ensureWorldSystemInitialized();
   } catch (err) {
-    console.error('[Details Generate] 初始化失败:', err);
+    log.error('初始化失败:', err);
     return apiError(500, '世界系统初始化失败');
   }
 
@@ -45,7 +51,7 @@ export async function POST(request: NextRequest) {
 
     return apiSuccess({ world, generatedAt: new Date().toISOString() }, '世界详情已生成');
   } catch (err) {
-    console.error('[Details Generate] 失败:', err);
+    log.error('失败:', err);
     return apiError(500, `详情生成失败: ${err instanceof Error ? err.message : '未知错误'}`);
   }
 }

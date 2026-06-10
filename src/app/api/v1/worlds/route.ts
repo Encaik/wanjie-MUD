@@ -13,18 +13,24 @@
  */
 
 import { NextRequest } from 'next/server';
+
 import { apiSuccess, apiError } from '@/app/api/result';
+import { createLogger } from '@/core/logger';
 import type { World } from '@/core/types';
+
 import {
-  saveWorld,
+  deleteWorld,
+  getWorldById,
+  getWorldCount,
   queryWorlds,
   queryWorldsByType,
-  getWorldById,
-  deleteWorld,
-  saveRating,
   readRatings,
-  getWorldCount,
+  saveRating,
+  saveWorld,
 } from './store';
+
+/** 日志实例 */
+const log = createLogger('Worlds');
 
 // ============================================
 // GET — 查询世界列表
@@ -68,7 +74,7 @@ export async function GET(request: NextRequest) {
       : queryWorlds(page, limit);
     return apiSuccess(result);
   } catch (err) {
-    console.error('[Worlds GET] 查询失败:', err);
+    log.error('查询失败:', err);
     return apiError(500, '世界查询失败');
   }
 }
@@ -121,7 +127,7 @@ export async function POST(request: NextRequest) {
     const world = saveWorld(body as unknown as World);
     return apiSuccess(world, '世界已保存');
   } catch (err) {
-    console.error('[Worlds POST] 保存失败:', err);
+    log.error('保存失败:', err);
     return apiError(500, '世界保存失败');
   }
 }

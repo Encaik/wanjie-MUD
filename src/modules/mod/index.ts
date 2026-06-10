@@ -4,14 +4,12 @@
  * @module modules/mod
  */
 
-// Hooks
-export { useModLoader } from './hooks/useModLoader';
-export type { ModLoaderState, ModLoadPhase, ModLoadWarning } from './hooks/useModLoader';
+// Types
+export type { ModLoaderState, ModLoadPhase, ModLoadWarning } from './types';
 
 // Context
-export { useModContext } from './components/ModInitProvider';
+export { useModContext, ModInitProvider } from './components/ModInitProvider';
 
 // Components
-export { ModInitProvider } from './components/ModInitProvider';
 export { ModLoadingOverlay } from './components/ModLoadingOverlay';
 export { ModErrorBanner } from './components/ModErrorBanner';

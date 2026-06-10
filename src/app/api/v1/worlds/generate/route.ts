@@ -11,11 +11,17 @@
  */
 
 import { NextRequest } from 'next/server';
+
 import { apiSuccess, apiError } from '@/app/api/result';
 import { ensureWorldSystemInitialized } from '@/app/api/init';
-import { generateWorldSeed } from '@/modules/identity/logic/generators';
-import { generateAndSave } from './generator';
+import { createLogger } from '@/core/logger';
 import type { World } from '@/core/types';
+import { generateWorldSeed } from '@/modules/identity/logic/generators';
+
+import { generateAndSave } from './generator';
+
+/** 日志实例 */
+const log = createLogger('Generate');
 
 interface GenerateRequest {
   seed?: string;
@@ -27,7 +33,7 @@ export async function POST(request: NextRequest) {
   try {
     ensureWorldSystemInitialized();
   } catch (err) {
-    console.error('[Generate] 初始化失败:', err);
+    log.error('初始化失败:', err);
     return apiError(500, '世界系统初始化失败');
   }
 
@@ -56,7 +62,7 @@ export async function POST(request: NextRequest) {
     }
     return apiSuccess({ worlds, generatedAt: new Date().toISOString() }, `生成 ${worlds.length} 个世界`);
   } catch (err) {
-    console.error('[Generate] 失败:', err);
+    log.error('失败:', err);
     return apiError(500, `世界生成失败: ${err instanceof Error ? err.message : '未知错误'}`);
   }
 }

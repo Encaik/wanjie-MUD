@@ -4,14 +4,12 @@ import { useEffect, useRef } from 'react';
 
 import { useRouter } from 'next/navigation';
 
-import { useModContext } from '@/modules/mod';
 import { useGame, getRouteGuard } from '@/views/game/useGameState';
 import { StartScreen } from '@/views/home/StartScreen';
 
 export default function HomePage() {
   const router = useRouter();
   const { gameState, startNewGame, importSave } = useGame();
-  const modLoadState = useModContext();
   const redirectedRef = useRef(false);
 
   // 同步计算重定向目标，在 useEffect 中执行跳转（渲染 null 避免闪烁）
@@ -28,7 +26,6 @@ export default function HomePage() {
   if (redirectTo) return null;
 
   const handleStart = async () => {
-    if (modLoadState.phase !== 'ready') return;
     await startNewGame();
     router.push('/world-select');
   };
@@ -37,7 +34,6 @@ export default function HomePage() {
     <StartScreen
       onStart={handleStart}
       onImportSave={importSave}
-      modLoadState={modLoadState}
     />
   );
 }

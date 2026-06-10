@@ -13,7 +13,7 @@
  * @module modules/mod
  */
 
-import type { ModLoaderState } from '../hooks/useModLoader';
+import type { ModLoaderState } from '../types';
 
 interface ModLoadingOverlayProps {
   /** Mod 加载状态 */

@@ -6,11 +6,11 @@
  */
 
 import { eq, sql, desc } from 'drizzle-orm';
+
 import { getDb } from '@/app/api/db';
 import { worldsTable, ratingsTable } from '@/app/api/db/schema';
 import type { World } from '@/core/types';
 import type { WorldRatingsMap, RatingData } from '@/core/world/types';
-import type { InsertRatingRow } from '@/app/api/db/schema';
 
 // ============================================
 // 内部工具
