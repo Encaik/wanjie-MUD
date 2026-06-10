@@ -141,8 +141,24 @@ function readManifest(modPath: string): ModManifest | null {
  */
 const CONTENT_HANDLERS: Record<string, (data: Record<string, unknown>, registry: WorldDataRegistry) => void> = {
   world: (data, registry) => {
+    // 格式1: 独立世界文件——数据在 JSON 根级别（data/world/*.json）
+    if (typeof data.type === 'string' && typeof data.id === 'number') {
+      registry.registerWorldType(data as unknown as WorldTypeData);
+      return;
+    }
+    // 格式2: 数组合集——{worlds: [...]} 或 {data: [...]}
     const worldList = extractArray<WorldTypeData>(data, 'worlds');
-    if (worldList.length > 0) { registry.registerWorldTypes(worldList); }
+    if (worldList.length > 0) { registry.registerWorldTypes(worldList); return; }
+    // 格式3: 对象映射——{world: {type1: {...}, type2: {...}}}（旧 data.json 合集格式）
+    const worldMap = (data as Record<string, unknown>).world;
+    if (worldMap && typeof worldMap === 'object' && !Array.isArray(worldMap)) {
+      const objects = Object.values(worldMap as Record<string, unknown>);
+      const typed = objects.filter(
+        (o): o is WorldTypeData =>
+          typeof o === 'object' && o !== null && 'type' in o && 'id' in o
+      );
+      if (typed.length > 0) registry.registerWorldTypes(typed);
+    }
   },
   traits: (data, registry) => {
     const traitMap = extractObject<TraitPoolData>(data, 'traits');

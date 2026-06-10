@@ -47,14 +47,9 @@ RUN pnpm build
 # 精简为生产依赖（移除 devDependencies）
 RUN pnpm prune --prod
 
-# 消除 standalone 中 pnpm 符号链接（Docker BuildKit 无法处理嵌套 symlink 的 COPY）
-# tar -h 会跟随符号链接，归档实际文件内容而非链接本身
-RUN cd /app/.next/standalone && \
-    tar chf /tmp/standalone-nm.tar node_modules && \
-    rm -rf node_modules && \
-    mkdir node_modules && \
-    tar xf /tmp/standalone-nm.tar -C . && \
-    rm /tmp/standalone-nm.tar
+# 删除 standalone 自带的 node_modules，避免与根 node_modules 的 pnpm 符号链接冲突
+# server.js 将在运行时从 /app/node_modules（精简后的根目录）解析所有模块
+RUN rm -rf /app/.next/standalone/node_modules
 
 # --------------------------------------------
 # 阶段 3: 生产运行时
