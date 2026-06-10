@@ -3,7 +3,8 @@
  * 管理收集物和羁绊加成
  */
 
-import { GameEventType, GameEvent, gameEventManager } from '@/core/events/eventManager';
+import type { GameEvent } from '@/core/events';
+import { on } from '@/core/events';
 import { Technique, Equipment, ItemRarity } from '@/core/types';
 
 // ============================================
@@ -100,15 +101,15 @@ export class CollectionSystem {
    */
   private subscribeToEvents(): void {
     // 监听功法收集
-    const unsub1 = gameEventManager.addListener(
-      GameEventType.TECHNIQUE_COLLECTED,
+    const unsub1 = on(
+      'collection:technique_collected',
       (event) => this.handleTechniqueCollected(event)
     );
     this.unsubscribers.push(unsub1);
 
     // 监听装备收集
-    const unsub2 = gameEventManager.addListener(
-      GameEventType.EQUIPMENT_COLLECTED,
+    const unsub2 = on(
+      'collection:equipment_collected',
       (event) => this.handleEquipmentCollected(event)
     );
     this.unsubscribers.push(unsub2);
@@ -117,7 +118,7 @@ export class CollectionSystem {
   /**
    * 处理功法收集事件
    */
-  private handleTechniqueCollected(event: GameEvent<GameEventType.TECHNIQUE_COLLECTED>): void {
+  private handleTechniqueCollected(event: GameEvent): void {
     const { techniqueId, techniqueName } = event.payload;
     // 存储收集记录（实际应用中会更新到全局状态）
     console.log('[CollectionSystem] Technique collected:', techniqueName);
@@ -126,7 +127,7 @@ export class CollectionSystem {
   /**
    * 处理装备收集事件
    */
-  private handleEquipmentCollected(event: GameEvent<GameEventType.EQUIPMENT_COLLECTED>): void {
+  private handleEquipmentCollected(event: GameEvent): void {
     const { equipmentId, equipmentName } = event.payload;
     console.log('[CollectionSystem] Equipment collected:', equipmentName);
   }

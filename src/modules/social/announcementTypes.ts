@@ -25,8 +25,8 @@ export type AnnouncementType =
 /** 公告优先级 */
 export type AnnouncementPriority = 'common' | 'rare' | 'epic' | 'legendary' | 'mythic';
 
-/** 游戏事件类型（用于触发公告） */
-export enum GameEventType {
+/** 公告触发事件类型（用于触发公告检测，与 core/events 的事件总线类型无关） */
+export enum AnnouncementEventType {
   ASCENSION_SUCCESS = 'ascension_success',
   ASCENSION_FAILURE = 'ascension_failure',
   DEFEAT_BOSS = 'defeat_boss',
@@ -97,7 +97,7 @@ export interface AnnouncementRequest {
 // ========== 触发配置 ==========
 
 /** 公告触发条件函数 */
-export type AnnouncementCondition = (event: GameEvent) => boolean;
+export type AnnouncementCondition = (event: AnnouncementGameEvent) => boolean;
 
 /** 公告触发配置（客户端使用） */
 export interface AnnouncementTriggerConfig {
@@ -113,9 +113,9 @@ export interface AnnouncementTriggerConfig {
 
 // ========== 游戏事件 ==========
 
-/** 游戏事件（用于触发公告检测） */
-export interface GameEvent {
-  type: GameEventType;
+/** 公告触发事件（用于触发公告检测，与 core/events 的 GameEvent 类型无关） */
+export interface AnnouncementGameEvent {
+  type: AnnouncementEventType;
   playerId: string;
   playerName: string;
   worldType: WorldType;

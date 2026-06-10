@@ -7,8 +7,8 @@
  * 3. 生成符合游戏风格的静态文本
  */
 
-import type { GameEvent, AnnouncementRequest } from '@/modules/social/announcementTypes';
-import { GameEventType } from '@/modules/social/announcementTypes';
+import type { AnnouncementGameEvent, AnnouncementRequest } from '@/modules/social/announcementTypes';
+import { AnnouncementEventType } from '@/modules/social/announcementTypes';
 import type { WorldType } from '@/core/types';
 
 import { getAnnouncementConfig, shouldTriggerAnnouncement } from './config';
@@ -46,7 +46,7 @@ export class AnnouncementGenerator {
    * 
    * @returns 公告请求，如果事件不应该触发公告则返回 null
    */
-  generateRequest(event: GameEvent): AnnouncementRequest | null {
+  generateRequest(event: AnnouncementGameEvent): AnnouncementRequest | null {
     // 检查是否应该触发公告
     if (!shouldTriggerAnnouncement(event)) {
       return null;
@@ -79,39 +79,39 @@ export class AnnouncementGenerator {
   /**
    * 生成公告内容
    */
-  private generateContent(event: GameEvent): string {
+  private generateContent(event: AnnouncementGameEvent): string {
     const data = event.data || {};
     
     switch (event.type) {
-      case GameEventType.ASCENSION_SUCCESS:
+      case AnnouncementEventType.ASCENSION_SUCCESS:
         return this.generateAscensionSuccessContent(data);
       
-      case GameEventType.ASCENSION_FAILURE:
+      case AnnouncementEventType.ASCENSION_FAILURE:
         return this.generateAscensionFailureContent(data);
       
-      case GameEventType.DEFEAT_BOSS:
+      case AnnouncementEventType.DEFEAT_BOSS:
         return this.generateBossDefeatContent(data);
       
-      case GameEventType.PVP_VICTORY:
+      case AnnouncementEventType.PVP_VICTORY:
         return this.generatePvpVictoryContent(data);
       
-      case GameEventType.OBTAIN_LEGENDARY:
-      case GameEventType.OBTAIN_MYTHIC:
-        return this.generateItemObtainContent(data, event.type === GameEventType.OBTAIN_MYTHIC);
+      case AnnouncementEventType.OBTAIN_LEGENDARY:
+      case AnnouncementEventType.OBTAIN_MYTHIC:
+        return this.generateItemObtainContent(data, event.type === AnnouncementEventType.OBTAIN_MYTHIC);
       
-      case GameEventType.SYNTHESIS_SUCCESS:
+      case AnnouncementEventType.SYNTHESIS_SUCCESS:
         return this.generateSynthesisContent(data);
       
-      case GameEventType.ACHIEVEMENT_UNLOCK:
+      case AnnouncementEventType.ACHIEVEMENT_UNLOCK:
         return this.generateAchievementContent(data);
       
-      case GameEventType.FACTION_JOIN:
+      case AnnouncementEventType.FACTION_JOIN:
         return this.generateFactionJoinContent(data);
       
-      case GameEventType.FACTION_CONTRIBUTE:
+      case AnnouncementEventType.FACTION_CONTRIBUTE:
         return this.generateFactionContributeContent(data);
       
-      case GameEventType.DISCOVERY:
+      case AnnouncementEventType.DISCOVERY:
         return this.generateDiscoveryContent(data);
       
       default:

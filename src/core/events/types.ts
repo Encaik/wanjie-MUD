@@ -1,11 +1,74 @@
 /**
  * 事件系统类型定义
  *
- * 定义事件记录、事件链和持久后果相关的类型。
+ * 定义事件总线核心类型、事件记录、事件链和持久后果相关的类型。
  */
 
 // ============================================
-// 事件记录
+// 事件总线核心类型
+// ============================================
+
+/**
+ * 事件类型
+ *
+ * 使用字符串命名空间格式：`namespace:event_name`
+ * 不再是枚举——任何模块都可以自行定义新的事件类型字符串，无需修改 core 代码。
+ *
+ * @example 'combat:monster_killed'
+ * @example 'collection:item_collected'
+ * @example 'progression:level_up'
+ */
+export type EventType = string;
+
+/**
+ * 事件匹配器
+ *
+ * 支持三种形式的订阅选择器：
+ * - 精确字符串：`'combat:monster_killed'`
+ * - 通配符模式：`'combat:*'`（以 `*` 结尾时匹配所有同前缀事件）
+ * - 自定义过滤器函数：`(type) => type.startsWith('combat:')`
+ */
+export type EventMatcher = string | ((eventType: EventType) => boolean);
+
+/**
+ * 游戏事件对象
+ *
+ * @template TPayload - 事件负载数据类型，默认为 Record<string, unknown>
+ */
+export interface GameEvent<TPayload = Record<string, unknown>> {
+  /** 事件类型（命名空间格式） */
+  type: EventType;
+  /** 事件触发时间戳（毫秒） */
+  timestamp: number;
+  /** 事件负载数据 */
+  payload: TPayload;
+}
+
+/**
+ * 事件监听器函数类型
+ *
+ * @template TPayload - 事件负载数据类型
+ * @param event - 接收到的事件对象
+ */
+export type EventListener<TPayload = Record<string, unknown>> = (
+  event: GameEvent<TPayload>
+) => void;
+
+/**
+ * 事件订阅选项
+ */
+export interface EventBusOptions {
+  /**
+   * 监听器优先级
+   *
+   * 数值小的先执行，同优先级按订阅先后顺序执行。
+   * 默认值为 0。精确匹配的监听器会自动获取比通配符匹配更高的优先级。
+   */
+  priority?: number;
+}
+
+// ============================================
+// 事件记录（叙事事件链）
 // ============================================
 
 /** 单条事件历史记录 */
