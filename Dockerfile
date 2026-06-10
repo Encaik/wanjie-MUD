@@ -44,6 +44,18 @@ COPY . .
 # 构建应用（sync-version → build-mods → next build）
 RUN pnpm build
 
+# 精简为生产依赖（移除 devDependencies）
+RUN pnpm prune --prod
+
+# 消除 standalone 中 pnpm 符号链接（Docker BuildKit 无法处理嵌套 symlink 的 COPY）
+# tar -h 会跟随符号链接，归档实际文件内容而非链接本身
+RUN cd /app/.next/standalone && \
+    tar chf /tmp/standalone-nm.tar node_modules && \
+    rm -rf node_modules && \
+    mkdir node_modules && \
+    tar xf /tmp/standalone-nm.tar -C . && \
+    rm /tmp/standalone-nm.tar
+
 # --------------------------------------------
 # 阶段 3: 生产运行时
 # --------------------------------------------
@@ -59,11 +71,11 @@ WORKDIR /app
 # 创建数据目录
 RUN mkdir -p /app/data
 
-# 复制生产依赖（从 deps 阶段，避免 devDependencies）
-COPY --from=deps /app/node_modules ./node_modules
-COPY --from=deps /app/package.json ./package.json
+# 从 builder 复制精简后的生产依赖（pnpm prune --prod 后不含 devDependencies）
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/package.json ./package.json
 
-# 复制 standalone 构建产物
+# 复制 standalone 构建产物（node_modules 已消除符号链接）
 COPY --from=builder /app/.next/standalone ./
 
 # 复制静态文件（standalone 模式需要手动复制）
