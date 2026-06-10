@@ -17,6 +17,7 @@ function createMockProvider(id: string, type: 'random' | 'template'): WorldProvi
     generateWorld(): World {
       return {
         id: `${id}:test:seed`,
+        random: 12345,
         gameVersion: GAME_VERSION,
         name: '测试世界',
         type: '修仙',

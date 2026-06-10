@@ -18,9 +18,7 @@ import { generateEquipment } from '@/modules/equipment/logic/equipment';
 import { updateTaskProgress, applyMentalChange } from '@/core/engine';
 import { processExperienceGain, calculateBreakthroughTransfer } from '@/modules/progression/logic/experienceSystem';
 import { generateCharacters, generateBackstory } from '@/modules/identity/logic/generators';
-import { WorldProviderRegistry } from '@/core/world/WorldProviderRegistry';
-import { buildWorldPool } from '@/core/world/WorldPoolEngine';
-import type { WorldRatingsMap } from '@/core/world/types';
+import { post } from '@/shared/utils/api-client';
 import type { SeclusionType } from '@/modules/progression/logic/seclusion';
 import type { TowerEnemy } from '@/modules/tower/logic/types';
 import { createDefaultTowerProgress } from '@/modules/tower/logic/types';
@@ -585,24 +583,25 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
   // 这里不再重复实现，避免重复调用
   // ========================================
 
-  // 开始新游戏：通过 WorldPool 混合已评分世界 + 随机新世界
-  const startNewGame = useCallback(() => {
-    const providers = WorldProviderRegistry.getInstance().getAll();
-    let ratings: WorldRatingsMap = {};
-    try {
-      const raw = localStorage.getItem('world-ratings');
-      if (raw) ratings = JSON.parse(raw) as WorldRatingsMap;
-    } catch { /* 忽略解析错误 */ }
-
-    const entries = providers.length > 0
-      ? buildWorldPool(providers, ratings)
-      : [];
-
+  // 开始新游戏：调用后端 API 生成世界基础信息
+  const startNewGame = useCallback(async () => {
     setGameState(prev => ({
       ...createInitialGameState(),
       phase: 'world-select',
-      worlds: entries.map(e => e.world),
+      worlds: [],
     }));
+
+    const { code, data } = await post<{ worlds: World[] }>(
+      '/api/v1/worlds/generate/basic',
+      { count: 8 },
+    );
+
+    if (code === 200 && data) {
+      setGameState(prev => ({
+        ...prev,
+        worlds: data.worlds,
+      }));
+    }
   }, []);
 
   // 刷新角色列表（需要知道世界类型）
@@ -617,13 +616,25 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     });
   }, []);
 
-  // 选择世界观：生成角色并进入角色选择
-  const selectWorld = useCallback((world: World) => {
+  // 选择世界观：补全详情 + 生成角色 → 进入角色选择
+  const selectWorld = useCallback(async (world: World) => {
+    // 如果还没有详情，从后端补全
+    let fullWorld = world;
+    if (world.dangers.length === 0 && world.factions.length === 0) {
+      const { code, data } = await post<{ world: World }>(
+        '/api/v1/worlds/generate/details',
+        { seed: world.id },
+      );
+      if (code === 200 && data) {
+        fullWorld = data.world;
+      }
+    }
+
     setGameState(prev => ({
       ...prev,
-      selectedWorld: world,
+      selectedWorld: fullWorld,
       phase: 'character-select',
-      characters: generateCharacters(world.type),
+      characters: generateCharacters(fullWorld.type),
     }));
   }, []);
 

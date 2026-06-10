@@ -10,7 +10,7 @@
     "lint:strict": "eslint . --max-warnings 0 && bash scripts/check-file-sizes.sh",
     "check-sizes": "bash scripts/check-file-sizes.sh",
     "generate-world": "npx tsx scripts/generate-world.ts",
-    "start": "npx serve out",
+    "start": "next start",
     "ts-check": "tsc -p tsconfig.json",
     "test": "vitest run",
     "test:watch": "vitest",
@@ -49,6 +49,7 @@
     "@radix-ui/react-toggle-group": "^1.1.11",
     "@radix-ui/react-tooltip": "^1.2.8",
     "@supabase/supabase-js": "2.95.3",
+    "better-sqlite3": "^12.10.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "^1.1.1",
@@ -78,6 +79,7 @@
     "@tailwindcss/postcss": "^4",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",
+    "@types/better-sqlite3": "^7.6.13",
     "@types/node": "^20",
     "@types/pg": "^8.16.0",
     "@types/react": "^19",
@@ -96,10 +98,5 @@
   "packageManager": "pnpm@9.0.0",
   "engines": {
     "pnpm": ">=9.0.0"
-  },
-  "pnpm": {
-    "overrides": {
-      "esbuild": "^0.25.12"
-    }
   }
 }

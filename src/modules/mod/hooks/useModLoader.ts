@@ -11,7 +11,7 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import { ModLoader, ModLoadError } from '@/core/mod';
 import type { ModLoadProgressEvent } from '@/core/mod';
 import { registerBuiltinMechanics } from '@/modules/identity/logic/worlds/registerBuiltin';
-import { registerWorldProviders } from '@/modules/identity/logic/worlds/registerProviders';
+// registerWorldProviders 已迁至后端 init.ts，前端不再需要注册世界提供者
 
 /** Mod 加载阶段 */
 export type ModLoadPhase = 'idle' | 'loading' | 'ready' | 'error';
@@ -72,9 +72,8 @@ export function useModLoader(): ModLoaderState {
       await loader.loadAll();
 
       // Mod 数据加载完成后，注册内置世界的 WorldMechanics
+      // 世界生成已迁至后端 API，前端不再注册 WorldProvider
       registerBuiltinMechanics();
-      // 注册世界提供者（WorldProviderRegistry）
-      registerWorldProviders();
 
       const failed = loader.getFailedMods();
       if (failed.length > 0) {

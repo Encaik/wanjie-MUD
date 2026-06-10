@@ -27,9 +27,9 @@ export default function HomePage() {
   // 需要重定向时不渲染页面内容
   if (redirectTo) return null;
 
-  const handleStart = () => {
+  const handleStart = async () => {
     if (modLoadState.phase !== 'ready') return;
-    startNewGame();
+    await startNewGame();
     router.push('/world-select');
   };
 

@@ -250,7 +250,10 @@ export function generateWorldSeed(): string {
 }
 
 /**
- * 生成世界
+ * 生成世界（服务端专用）
+ *
+ * 前端请通过 POST /api/v1/worlds/generate 调用。
+ * 相同 seed 永远生成相同的世界（确定性）。
  *
  * @param seed - 世界种子字符串，为空时自动调用 generateWorldSeed() 生成
  * @param ascensionCount - 飞升次数（影响难度系数）
@@ -294,6 +297,7 @@ export function generateWorld(seed: string = '', ascensionCount: number = 0): Wo
 
   return {
     id: actualSeed,
+    random: hashString(actualSeed),
     gameVersion: GAME_VERSION,
     name,
     type,

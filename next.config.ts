@@ -14,9 +14,6 @@ const isDev = process.env.NODE_ENV === 'development';
 const basePath = isDev ? '' : (process.env.BASE_PATH || '');
 
 const nextConfig: NextConfig = {
-  // 静态导出模式
-  output: 'export',
-
   // 尾部斜杠
   trailingSlash: true,
 
@@ -28,10 +25,8 @@ const nextConfig: NextConfig = {
   // 部署路径前缀
   basePath,
 
-  // 静态导出不支持默认图片优化，使用自定义 loader
+  // 服务端模式，支持 API Routes
   images: {
-    loader: 'custom',
-    loaderFile: '',
     unoptimized: true,
   },
 };
