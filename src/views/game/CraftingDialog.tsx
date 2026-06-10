@@ -26,7 +26,7 @@ import {
   DialogTitle,
   DialogDescription,
 } from '@/shared/ui/dialog';
-import { getRarityStyle } from '@/shared/ui/item-tooltip';
+import { getRarityStyle } from '@/modules/theme/data/rarityStyles';
 import { Progress } from '@/shared/ui/progress';
 import { ScrollArea } from '@/shared/ui/scroll-area';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/shared/ui/tabs';

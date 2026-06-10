@@ -38,7 +38,7 @@ import {
 export interface TutorialTask extends BaseTask {
   id: string;
   name: string;
-  // title 兼容旧代码，等同于 name
+  // title 等同于 name
   title: string;
   description: string;
   hint: string;
@@ -234,7 +234,7 @@ export const tutorialTaskSystem: ITaskSystem<TutorialTask> = {
 };
 
 // ============================================
-// 便捷函数（兼容旧代码）
+// 便捷函数
 // ============================================
 
 /**

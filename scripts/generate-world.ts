@@ -17,7 +17,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { generateWorld, DEFAULT_WORLD_SEEDS } from '../src/modules/identity/logic/generators';
-import type { World } from '../src/shared/lib/types';
+import type { World } from '../src/core/types';
 
 // ============================================
 // 路径配置

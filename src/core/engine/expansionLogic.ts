@@ -4,8 +4,8 @@
  * 整合修炼流派、功法羁绊、装备词缀、势力进度等系统的计算逻辑
  */
 
-import { CharacterStats, ItemRarity, WorldType, EquipmentSlot, getFinalStats, LegacyStats, GrowthStats } from '@/core/types';
-import { 
+import { FlatStats, CharacterStats, ItemRarity, WorldType, EquipmentSlot, getFinalStats, GrowthStats } from '@/core/types';
+import {  
   CultivationPath,
   CultivationPathProgress,
   MentalState,
@@ -16,14 +16,14 @@ import {
   ProtagonistExtension,
   DEFAULT_PROTAGONIST_EXTENSION
 } from '@/core/types';
-import { TaskProgress } from '@/core/types';
-import {
+import {  TaskProgress } from '@/core/types';
+import { 
   RealmBottleneck,
   TribulationState,
   BottleneckType
 } from '@/core/types';
-import { DemonEncounter, DemonChoice } from '@/core/types';
-import {
+import {  DemonEncounter, DemonChoice } from '@/core/types';
+import { 
   CULTIVATION_PATHS,
   PATH_LEVEL_CONFIG,
   getPathLevelExp,
@@ -31,13 +31,13 @@ import {
   getActivePathSkills,
   calculatePathStatBonus
 } from '@/modules/progression/data/cultivationPathData';
-import {
+import { 
   DEMON_ENCOUNTERS,
   getRandomDemonEncounter,
   calculateDemonChoiceSuccessRate,
   calculateDemonTriggerChance
 } from '@/modules/combat/data/demonData';
-import {
+import { 
   ALL_AFFIXES,
   EQUIPMENT_SETS,
   ENHANCEMENT_CONFIG,
@@ -47,7 +47,7 @@ import {
   calculateSetBonus,
   EquipmentAffix
 } from '@/modules/equipment/data/equipmentAffixData';
-import {
+import { 
   REPUTATION_LEVELS,
   getReputationLevel,
   getRanksByFactionType,
@@ -55,7 +55,7 @@ import {
   FACTION_SHOP_ITEMS,
   FACTION_SKILLS
 } from '@/modules/faction/data/factionProgressData';
-import {
+import { 
   TECHNIQUE_BONDS,
   PROFICIENCY_LEVELS,
   getProficiencyLevel,
@@ -75,7 +75,7 @@ export function selectCultivationPath(
   currentProgress: CultivationPathProgress | null,
   path: CultivationPath,
   playerLevel: number,
-  playerStats: LegacyStats
+  playerStats: FlatStats
 ): { success: boolean; message: string; progress: CultivationPathProgress } {
   // 检查是否已选择流派
   if (currentProgress?.path) {
@@ -147,7 +147,7 @@ export function calculatePathBonuses(
 ): {
   cultivationBonus: number;
   breakthroughBonus: number;
-  statBonus: Partial<LegacyStats>;
+  statBonus: Partial<FlatStats>;
   activeSkills: { name: string; description: string }[];
 } {
   if (!progress?.path) {
@@ -318,14 +318,14 @@ export function calculateEquipmentFinalStats(
   finalPower: number;
   finalAttackBonus: number;
   finalDefenseBonus: number;
-  statBonus: Partial<LegacyStats>;
+  statBonus: Partial<FlatStats>;
   enhancementBonus: { power: number; bonus: number };
 } {
   // 强化加成
   const enhanceBonus = getEnhancementBonus(enhancement);
   
   // 词缀加成
-  const statBonus: Partial<LegacyStats> = {};
+  const statBonus: Partial<FlatStats> = {};
   let affixPower = 0;
   let affixBonus = 0;
   
@@ -729,7 +729,7 @@ export function calculateDailySalary(
 // 境界瓶颈与渡劫系统逻辑
 // ============================================
 
-import {
+import { 
   TRIBULATION_CONFIGS,
   getTribulationConfig,
   getNextTribulationLevel,
@@ -762,7 +762,7 @@ export function checkRealmBottleneck(
   
   // 设置瓶颈需求
   const config = getTribulationConfig(nextTribulationLevel);
-  const requirements: { stats?: Partial<LegacyStats>; insight?: number; tribulationLevel?: number } = {};
+  const requirements: { stats?: Partial<FlatStats>; insight?: number; tribulationLevel?: number } = {};
   
   if (type === 'stats') {
     // 属性瓶颈：需要达到一定属性（使用中文字段名）
@@ -807,7 +807,7 @@ export function checkRealmBottleneck(
  */
 export function attemptBreakthrough(
   bottleneck: RealmBottleneck,
-  stats: LegacyStats,
+  stats: FlatStats,
   insight: number
 ): { success: boolean; bottleneck: RealmBottleneck; message: string } {
   if (!bottleneck.isActive) {
@@ -824,7 +824,7 @@ export function attemptBreakthrough(
     case 'stats': {
       const req = bottleneck.requirements.stats || {};
       const meetsRequirements = Object.entries(req).every(([stat, value]) => {
-        return (stats[stat as keyof LegacyStats] || 0) >= (value || 0);
+        return (stats[stat as keyof FlatStats] || 0) >= (value || 0);
       });
       
       if (meetsRequirements) {
@@ -871,7 +871,7 @@ export function attemptBreakthrough(
  */
 export function startTribulation(
   level: number,
-  stats: LegacyStats
+  stats: FlatStats
 ): TribulationState {
   const config = getTribulationConfig(level);
   
@@ -899,7 +899,7 @@ export function startTribulation(
  */
 export function executeTribulationPhase(
   state: TribulationState,
-  stats: LegacyStats
+  stats: FlatStats
 ): { success: boolean; state: TribulationState; damage: number; message: string } {
   if (!state.inProgress || !state.config) {
     return { success: false, state, damage: 0, message: '渡劫未开始' };
@@ -1181,11 +1181,11 @@ export function getDemonEvent(): DemonEncounter {
 export function processDemonChoice(
   demon: DemonEncounter,
   choiceIndex: number,
-  stats: LegacyStats
+  stats: FlatStats
 ): {
   success: boolean;
   stabilityChange: number;
-  statChanges: Partial<LegacyStats>;
+  statChanges: Partial<FlatStats>;
   demonChanceChange: number;
   message: string;
 } {

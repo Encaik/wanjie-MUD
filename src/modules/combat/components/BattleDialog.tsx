@@ -426,7 +426,7 @@ export function BattleDialog({
                 ))}
               </div>
             ) : (
-              // 单敌人显示（兼容旧系统）
+              // 单敌人显示
               <CombatantPanel
                 name={battleState.enemyName}
                 level={battleState.enemyLevel}

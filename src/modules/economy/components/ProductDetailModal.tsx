@@ -19,7 +19,7 @@ import {
   DialogTitle,
   DialogDescription,
 } from '@/shared/ui/dialog';
-import { getRarityStyle } from '@/shared/ui/item-tooltip';
+import { getRarityStyle } from '@/modules/theme/data/rarityStyles';
 import { CurrencyService } from '@/modules/economy/logic/shop/currencyService';
 import { ShopLevelService } from '@/modules/economy/logic/shop/shopLevelService';
 import { ShopProduct, PlayerCurrencies, CurrencyType, ProductEffect } from '@/modules/economy/logic/shop/types';

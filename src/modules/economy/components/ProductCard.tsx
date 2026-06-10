@@ -8,7 +8,7 @@
 
 import { Sparkles, Lock, Check, Clock } from 'lucide-react';
 
-import { getRarityStyle } from '@/shared/ui/item-tooltip';
+import { getRarityStyle } from '@/modules/theme/data/rarityStyles';
 import { CurrencyService } from '@/modules/economy/logic/shop/currencyService';
 import { ShopProduct, PlayerCurrencies, CurrencyType } from '@/modules/economy/logic/shop/types';
 import { cn } from '@/shared/utils';

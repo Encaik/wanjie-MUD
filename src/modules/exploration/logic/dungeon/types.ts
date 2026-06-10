@@ -4,7 +4,7 @@
  * 根据 comprehensive-optimization-design.md 设计文档实现
  */
 
-import { LegacyStats, StatKey, InventoryItem, ItemDefinition, ActiveEffect, EffectType, Protagonist } from '@/core/types';
+import { FlatStats, StatKey, InventoryItem, ItemDefinition, ActiveEffect, EffectType, Protagonist } from '@/core/types';
 
 // ============================================
 // 事件类型枚举
@@ -109,7 +109,7 @@ export interface ChoiceRequirements {
   /** 需要的灵石数量 */
   spiritStones?: number;
   /** 需要的属性值 */
-  stats?: Partial<LegacyStats>;
+  stats?: Partial<FlatStats>;
   /** 需要特定功法 */
   techniqueId?: string;
 }
@@ -221,7 +221,7 @@ export interface EventConditions {
   /** 需要的物品 */
   requiredItems?: string[];
   /** 需要的属性 */
-  requiredStats?: Partial<LegacyStats>;
+  requiredStats?: Partial<FlatStats>;
   /** 地牢难度等级范围 */
   difficultyRange?: [number, number];
   /** 世界类型限制 */
@@ -324,7 +324,7 @@ export interface EventExecutionResult {
     expChange?: number;
     itemsGained?: InventoryItem[];
     itemsLost?: InventoryItem[];
-    statsGained?: Partial<LegacyStats>;
+    statsGained?: Partial<FlatStats>;
     buffsGained?: ActiveEffect[];
     teleportTarget?: { row: number; col: number };
     triggeredBattle?: {

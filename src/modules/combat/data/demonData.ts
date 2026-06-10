@@ -3,8 +3,8 @@
  * 定义不同的心魔事件和选择
  */
 
-import { LegacyStats, StatKey } from '@/core/types';
-import { DemonEncounter, DemonChoice } from '@/core/types';
+import { FlatStats, StatKey } from '@/core/types';
+import {  DemonEncounter, DemonChoice } from '@/core/types';
 
 // 心魔事件列表
 export const DEMON_ENCOUNTERS: DemonEncounter[] = [
@@ -159,7 +159,7 @@ export function getRandomDemonEncounter(): DemonEncounter {
 // 计算选择成功率
 export function calculateDemonChoiceSuccessRate(
   choice: DemonChoice,
-  stats: Partial<LegacyStats>
+  stats: Partial<FlatStats>
 ): number {
   let rate = choice.successRate;
   

@@ -5,7 +5,7 @@
  * 内部使用新的战斗策略系统实现。
  */
 
-import {
+import { 
   calculatePlayerMaxHp,
   calculatePlayerMaxMp,
   calculatePlayerAttack,
@@ -16,7 +16,7 @@ import {
   calculateBattleExp,
   calculateBattleSpiritStones,
 } from '@/modules/progression/logic/balanceConfig';
-import {
+import { 
   createBattleState,
   createBattleStatistics,
   startBattle,
@@ -26,40 +26,41 @@ import {
   Enemy,
   PlayerData,
 } from '@/modules/combat/logic/battle';
-import { executeAutoTurn } from '@/modules/combat/logic/battle/battleController';
-import {
+import {  executeAutoTurn } from '@/modules/combat/logic/battle/battleController';
+import { 
   calculatePlayerCombatPower,
   calculateEnemyCombatPower,
 } from '@/modules/combat/logic/combatPower';
-import { GAME_CONSTANTS } from '@/shared/utils/constants';
-import {
+import {  GAME_CONSTANTS } from '@/shared/utils/constants';
+import { 
   calculateEnemyEnhancement,
   applyEnemyEnhancement,
 } from '@/modules/combat/logic/enemy/enemyEnhancement';
-import {
+import { 
   generateEnemyTechniquesAndEquipments,
   calculateTechniqueBonus,
   calculateEquipmentBonus,
 } from '@/modules/combat/logic/enemy/enemyTechniqueEquipment';
-import {
+import { 
   generateRandomEquipment,
 } from '@/modules/equipment/logic/equipment';
-import {
+import { 
   generateFragmentDrop,
   FragmentDropResult,
 } from '@/modules/crafting/logic/fragmentSystem';
-import {
+import { 
   getRandomItem,
   spiritStoneItems,
   breakthroughItems,
 } from '@/modules/equipment/logic/items';
-import {
+import { 
   getEnemyAttributes,
 } from '@/modules/combat/logic/restraintSystem';
-import {
+import { 
   generateRandomTechnique,
 } from '@/modules/techniques/logic/technique';
 import {
+  FlatStats,
   Protagonist,
   CellType,
   DungeonConfig,
@@ -73,16 +74,15 @@ import {
   EnemyTier,
   WorldType,
   getFinalStats,
-  LegacyStats,
 } from '@/core/types';
-import {
+import { 
   getEnemyTierFromCellType,
   getEnemyTierConfig,
 } from '@/modules/identity/data/worldData';
-import {
+import { 
   createInventoryItem,
 } from '@/core/types';
-import { clamp } from '@/shared/utils/numberUtils';
+import {  clamp } from '@/shared/utils/numberUtils';
 
 // 随机工具
 const random = (min: number, max: number) => Math.floor(Math.random() * (max - min + 1)) + min;
@@ -345,7 +345,7 @@ function convertToBattleResult(
 
   if (victory) {
     // 胜利奖励
-    const statGains: Partial<LegacyStats> = {};
+    const statGains: Partial<FlatStats> = {};
     const itemGains: InventoryItem[] = [];
 
     // 【关键改动】碎片掉落 - 现在是唯一的功法/装备获取途径

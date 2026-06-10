@@ -1,17 +1,17 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import {  useState, useEffect, useRef } from 'react';
 
-import { Sparkles, AlertTriangle, Coins, Play, Square, Moon, Swords, TrendingUp, Droplets, Zap, Flame, Shield, Wand2, Heart, Swords as SwordIcon, Brain, CloudLightning, FlaskConical, Anvil, CheckCircle2, Circle, ChevronRight } from 'lucide-react';
+import {  Sparkles, AlertTriangle, Coins, Play, Square, Moon, Swords, TrendingUp, Droplets, Zap, Flame, Shield, Wand2, Heart, Swords as SwordIcon, Brain, CloudLightning, FlaskConical, Anvil, CheckCircle2, Circle, ChevronRight } from 'lucide-react';
 
-import { Badge } from '@/shared/ui/badge';
-import { Button } from '@/shared/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/card';
-import { Progress } from '@/shared/ui/progress';
-import { CULTIVATION_PATHS } from '@/modules/progression/data/cultivationPathData';
-import { TRIBULATION_CONFIGS, getNextTribulationLevel } from '@/modules/ascension/data/tribulationData';
-import { getMaxExperience, calculateBreakthroughRate, calculateBreakthroughBoost, calculateCultivationBoost } from '@/modules/progression/logic/cultivation';
-import { 
+import {  Badge } from '@/shared/ui/badge';
+import {  Button } from '@/shared/ui/button';
+import {  Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/card';
+import {  Progress } from '@/shared/ui/progress';
+import {  CULTIVATION_PATHS } from '@/modules/progression/data/cultivationPathData';
+import {  TRIBULATION_CONFIGS, getNextTribulationLevel } from '@/modules/ascension/data/tribulationData';
+import {  getMaxExperience, calculateBreakthroughRate, calculateBreakthroughBoost, calculateCultivationBoost } from '@/modules/progression/logic/cultivation';
+import {  
   checkRealmBottleneck,
   attemptBreakthrough,
   startTribulation,
@@ -23,15 +23,15 @@ import {
   getDemonEvent,
   processDemonChoice
 } from '@/core/engine';
-import { MAX_LEVEL } from '@/modules/progression/logic/realmSystem';
-import { 
+import {  MAX_LEVEL } from '@/modules/progression/logic/realmSystem';
+import {  
   TUTORIAL_TASKS, 
   checkTutorialProgress, 
   TutorialTask 
 } from '@/modules/faction/logic';
-import { getTerminology } from '@/modules/narrative/logic/terminology';
-import { WorldType, InventoryItem, ActiveEffect, CultivationPath, CharacterStats, GameStatistics, LegacyStats } from '@/core/types';
-import { 
+import {  getTerminology } from '@/modules/narrative/logic/terminology';
+import { FlatStats, WorldType, InventoryItem, ActiveEffect, CultivationPath, CharacterStats, GameStatistics } from '@/core/types';
+import {  
   RealmBottleneck, 
   TribulationState, 
   MentalState, 
@@ -66,7 +66,7 @@ interface CultivationPanelProps {
   cultivationPath?: CultivationPath | null;
   pathLevel?: number;
   // 属性相关
-  stats?: LegacyStats;
+  stats?: FlatStats;
   // 突破相关回调
   onBreakthrough?: (success: boolean) => void;
   // 渡劫回调

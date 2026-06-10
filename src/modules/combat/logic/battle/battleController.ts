@@ -278,7 +278,7 @@ export function createBattleStateFromGroup(
     createBattleEnemyFromEnemy(enemy)
   );
   
-  // 获取第一个敌人的属性（用于向后兼容）
+  // 获取第一个敌人的属性
   const firstEnemy = battleEnemies[0];
   
   // 构建状态
@@ -293,7 +293,7 @@ export function createBattleStateFromGroup(
     playerDefense: playerDefense,
     playerLuck: player.attributes.幸运,
     
-    // 敌人基础属性（向后兼容，使用第一个敌人）
+    // 敌人基础属性（使用第一个敌人）
     enemyName: firstEnemy?.name || '未知敌人',
     enemyLevel: firstEnemy?.level || 1,
     enemyCurrentHp: firstEnemy?.currentHp || 0,
@@ -520,7 +520,7 @@ interface BattleSettlement {
 /**
  * 结算战斗
  *
- * @param rng - 可选随机数生成器，默认使用 Math.random（向后兼容）
+ * @param rng - 可选随机数生成器，默认使用 Math.random
  */
 export function settleBattle(
   state: ExtendedBattleState,

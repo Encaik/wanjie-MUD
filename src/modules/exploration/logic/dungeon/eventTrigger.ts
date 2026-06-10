@@ -25,7 +25,7 @@ import {
   DungeonEventType,
 } from './types';
 import { getRandomItem } from '@/modules/equipment/logic/items';
-import { Protagonist, InventoryItem, CharacterStats, getFinalStats, LegacyStats, StatKey } from '@/core/types';
+import { Protagonist, InventoryItem, CharacterStats, getFinalStats, StatKey } from '@/core/types';
 
 // ============================================
 // 需求检查

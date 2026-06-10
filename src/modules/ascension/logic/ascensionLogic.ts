@@ -5,7 +5,7 @@
  * 改造为 seed-based RNG（使用 createRng 工具函数），以提高可测试性。
  */
 
-import {
+import { 
   ASCENSION_CONFIG,
   WORLD_GUARDIANS,
   WORLD_NAME_GENERATORS,
@@ -19,8 +19,8 @@ import {
   calculateWorldWeights,
   weightedRandom,
 } from '@/modules/ascension/data/ascensionData';
-import { WorldType, CharacterStats, BattleState, BattleLog, Protagonist, Technique, Equipment, getFinalStats, LegacyStats, GrowthStats } from '@/core/types';
-import {
+import { FlatStats, WorldType, CharacterStats, BattleState, BattleLog, Protagonist, Technique, Equipment, getFinalStats, GrowthStats } from '@/core/types';
+import { 
   AscensionMark,
   GuardianBattleState,
   AscensionChallengeResult,
@@ -418,9 +418,9 @@ export function calculateBattleReward(
   const milestone = getAscensionMilestone(ascensionCount + 1);
   const baseBonus = milestone?.statBonus ?? { 体质: 10, 灵根: 10, 悟性: 10, 幸运: 10, 意志: 10 };
   
-  const statBonus: Partial<LegacyStats> = {};
+  const statBonus: Partial<FlatStats> = {};
   for (const [stat, value] of Object.entries(baseBonus)) {
-    statBonus[stat as keyof LegacyStats] = Math.floor(value! * bonusMultiplier);
+    statBonus[stat as keyof FlatStats] = Math.floor(value! * bonusMultiplier);
   }
   
   return {
@@ -513,12 +513,12 @@ export function getOrCreateAscensionMark(protagonist: Protagonist): AscensionMar
  */
 export function updateAscensionMark(
   currentMark: AscensionMark,
-  newBonus: Partial<LegacyStats>
+  newBonus: Partial<FlatStats>
 ): AscensionMark {
   const newCount = currentMark.count + 1;
   
   // 累计属性加成
-  const totalStatBonus: LegacyStats = {
+  const totalStatBonus: FlatStats = {
     体质: (currentMark.totalStatBonus.体质 ?? 0) + (newBonus.体质 ?? 0),
     灵根: (currentMark.totalStatBonus.灵根 ?? 0) + (newBonus.灵根 ?? 0),
     悟性: (currentMark.totalStatBonus.悟性 ?? 0) + (newBonus.悟性 ?? 0),

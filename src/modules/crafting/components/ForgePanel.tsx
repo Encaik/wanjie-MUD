@@ -6,7 +6,7 @@ import { Anvil, Clock, Package, Shield, AlertCircle, Sword, Shirt, Footprints, G
 
 import { Badge } from '@/shared/ui/badge';
 import { Button } from '@/shared/ui/button';
-import { getRarityStyle } from '@/shared/ui/item-tooltip';
+import { getRarityStyle } from '@/modules/theme/data/rarityStyles';
 import { 
   FORGE_RECIPES, 
   FORGE_MATERIALS, 

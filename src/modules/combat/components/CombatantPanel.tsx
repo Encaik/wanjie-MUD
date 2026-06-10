@@ -21,8 +21,8 @@ import {
   WEAPON_CATEGORY_NAMES,
   EnemyAttributes,
 } from '@/modules/combat/logic/restraintSystem';
-import { Technique, Equipment, EnemyTier } from '@/shared/lib/types';
-import { Element, WeaponCategory } from '@/shared/lib/types';
+import type { Technique, Equipment, EnemyTier } from '@/core/types';
+import type { Element, WeaponCategory } from '@/modules/combat/logic/restraintSystem';
 
 /** 敌人类型显示配置 */
 const TIER_CONFIG: Record<EnemyTier, { name: string; icon: React.ReactNode; color: string }> = {

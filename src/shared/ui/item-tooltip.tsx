@@ -5,12 +5,7 @@ import { ReactNode } from 'react';
 import type { ItemRarity } from '@/core/types';
 import { Badge } from '@/shared/ui/badge';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/shared/ui/tooltip';
-import { getRarityStyle, getStatColor } from '@/shared/utils/rarityStyles';
-
-// 向后兼容：重导出从 item-tooltip 移出的组件和工具
-export { EmptySlotCard, BackpackHeader, EmptyBackpackHint } from './empty-slot';
-export { UpgradeableItemTooltip } from './upgradeable-item-tooltip';
-export { RARITY_STYLES, getRarityStyle, getStatColor, STAT_COLOR_MAP } from '@/shared/utils/rarityStyles';
+import { getRarityStyle, getStatColor } from '@/modules/theme/data/rarityStyles';
 
 /** 统一物品tooltip属性 */
 interface ItemTooltipProps {

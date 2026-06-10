@@ -5,7 +5,7 @@
  * 所有新增字段都有默认值，确保旧存档兼容
  */
 
-import { CharacterStats, GrowthStats, LegacyStats, ItemRarity, WorldType, EquipmentSlot, InventoryItem } from './types';
+import { FlatStats, CharacterStats, GrowthStats, ItemRarity, WorldType, EquipmentSlot, InventoryItem } from './types';
 
 // ============================================
 // 修炼流派系统类型
@@ -100,9 +100,9 @@ export interface DemonEncounter {
 export interface DemonChoice {
   text: string;
   successRate: number;  // 基础成功率
-  statModifiers: Partial<LegacyStats>; // 属性影响成功率
-  successEffect: { stability: number; stats?: Partial<LegacyStats> };
-  failEffect: { stability: number; stats: Partial<LegacyStats>; demonChance: number };
+  statModifiers: Partial<FlatStats>; // 属性影响成功率
+  successEffect: { stability: number; stats?: Partial<FlatStats> };
+  failEffect: { stability: number; stats: Partial<FlatStats>; demonChance: number };
 }
 
 // ============================================
@@ -583,7 +583,7 @@ export function migrateEquipment(old: any): any {
  */
 export interface AscensionMark {
   count: number;                        // 飞升次数
-  totalStatBonus: import('./types').LegacyStats;       // 累计属性加成
+  totalStatBonus: FlatStats;       // 累计属性加成
   unlockedTitles: string[];             // 已解锁称号
   specialAbilities: string[];           // 特殊能力
   currentTitle: string | null;          // 当前佩戴称号
@@ -653,7 +653,7 @@ export interface AscensionChallengeResult {
   battleState?: import('./types').BattleState;
   guardianBattle?: GuardianBattleState;
   reward?: {
-    statBonus: Partial<LegacyStats>;
+    statBonus: Partial<FlatStats>;
     bonusRewards: { type: string; name: string; bonus: number }[];
     bonusMultiplier: number;
   };

@@ -1,17 +1,17 @@
 'use client';
 
-import { useState } from 'react';
+import {  useState } from 'react';
 
-import { 
+import {  
   Heart, Brain, Sparkles, AlertTriangle, 
   CheckCircle, XCircle, TrendingUp, TrendingDown,
   Shield, Zap
 } from 'lucide-react';
 
-import { Badge } from '@/shared/ui/badge';
-import { Button } from '@/shared/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/card';
-import {
+import {  Badge } from '@/shared/ui/badge';
+import {  Button } from '@/shared/ui/button';
+import {  Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/card';
+import { 
   Dialog,
   DialogContent,
   DialogDescription,
@@ -19,9 +19,9 @@ import {
   DialogTitle,
   DialogFooter,
 } from '@/shared/ui/dialog';
-import { Progress } from '@/shared/ui/progress';
-import { CharacterStats, getFinalStats, LegacyStats } from '@/core/types';
-import { MentalState, DemonEncounter, DemonChoice } from '@/core/types';
+import {  Progress } from '@/shared/ui/progress';
+import { FlatStats, CharacterStats, getFinalStats } from '@/core/types';
+import {  MentalState, DemonEncounter, DemonChoice } from '@/core/types';
 
 
 interface MentalStateCardProps {
@@ -169,7 +169,7 @@ export function DemonEncounterDialog({
     let rate = choice.successRate;
     const finalStats = getFinalStats(stats);
     Object.entries(choice.statModifiers).forEach(([stat, modifier]) => {
-      const statValue = finalStats[stat as keyof LegacyStats] || 0;
+      const statValue = finalStats[stat as keyof FlatStats] || 0;
       rate += statValue * modifier;
     });
     return Math.min(0.9, Math.max(0.1, rate));

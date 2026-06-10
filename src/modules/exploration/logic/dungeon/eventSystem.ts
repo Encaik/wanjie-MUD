@@ -5,19 +5,19 @@
  * 根据 comprehensive-optimization-design.md 设计文档实现
  */
 
-import {
+import { 
   DUNGEON_EVENTS,
   getEventById,
   getAvailableEvents,
 } from './eventConfigs';
-import {
+import { 
   EventTriggerService,
   getEventTriggerService,
   checkRequirements,
   getAvailableChoices,
   getRecommendedChoice,
 } from './eventTrigger';
-import {
+import { 
   DungeonEvent,
   DungeonChoice,
   DungeonOutcome,
@@ -29,10 +29,10 @@ import {
   DEFAULT_TRIGGER_CONFIG,
   EventTriggerConfig,
 } from './types';
-import { generateRandomEquipment } from '@/modules/equipment/logic/equipment';
-import { getRandomItem, spiritStoneItems } from '@/modules/equipment/logic/items';
-import { generateRandomTechnique } from '@/modules/techniques/logic/technique';
-import { Protagonist, InventoryItem, CharacterStats, createInventoryItem, ItemDefinition, ActiveEffect, LegacyStats } from '@/core/types';
+import {  generateRandomEquipment } from '@/modules/equipment/logic/equipment';
+import {  getRandomItem, spiritStoneItems } from '@/modules/equipment/logic/items';
+import {  generateRandomTechnique } from '@/modules/techniques/logic/technique';
+import { FlatStats, Protagonist, InventoryItem, CharacterStats, createInventoryItem, ItemDefinition, ActiveEffect } from '@/core/types';
 
 // ============================================
 // 效果应用
@@ -52,7 +52,7 @@ export function applyEffect(
   expChange?: number;
   itemsGained?: InventoryItem[];
   itemsLost?: InventoryItem[];
-  statsGained?: Partial<LegacyStats>;
+  statsGained?: Partial<FlatStats>;
   buffsGained?: ActiveEffect[];
   triggeredBattle?: { enemyName: string; enemyLevel: number; enemyTier: 'elite' | 'miniboss' };
 } {

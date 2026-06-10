@@ -20,7 +20,7 @@ import {
   WEAPON_COUNTER_MAP,
 } from '@/modules/combat/logic/restraintSystem';
 import type { EnemyAttributes } from '@/modules/combat/logic/restraintSystem';
-import { Element, WeaponCategory } from '@/shared/lib/types';
+import type { Element, WeaponCategory } from '@/modules/combat/logic/restraintSystem';
 
 interface RestraintDisplayProps {
   playerElement: Element | null;

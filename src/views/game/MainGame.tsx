@@ -49,7 +49,7 @@ import { BattleDialog } from '@/modules/combat/components/BattleDialog';
 
 // Shared
 import { CharacterInfoInline } from '@/shared/components/CharacterInfo';
-import { GameHeader } from '@/shared/components/Header';
+import { GameHeader } from '@/views/game/GameHeader';
 import { AdventureLootPanel } from '@/shared/components/AdventureLootPanel';
 import { DeveloperPanel } from '@/shared/components/DeveloperPanel';
 import { CriticalHealthOverlay } from '@/shared/components/CriticalHealthOverlay';

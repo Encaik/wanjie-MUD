@@ -8,7 +8,9 @@ import { ElementRestraintChart } from '@/modules/combat/components/RestraintChar
 import { Badge } from '@/shared/ui/badge';
 import { Button } from '@/shared/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/card';
-import { getRarityStyle, BackpackHeader, EmptyBackpackHint, UpgradeableItemTooltip } from '@/shared/ui/item-tooltip';
+import { getRarityStyle } from '@/modules/theme/data/rarityStyles';
+import { BackpackHeader, EmptyBackpackHint } from '@/shared/ui/empty-slot';
+import { UpgradeableItemTooltip } from '@/shared/ui/upgradeable-item-tooltip';
 import {
   Select,
   SelectContent,
@@ -20,7 +22,9 @@ import { Tooltip, TooltipContent, TooltipTrigger } from '@/shared/ui/tooltip';
 import { useTechniques } from '@/views/game';
 import { TECHNIQUE_BONDS, PROFICIENCY_LEVELS, getProficiencyLevel } from '@/modules/techniques/data/techniqueBondData';
 import { getElementRestraintHint, getElementIcon, WEAPON_CATEGORY_DEFAULT_ELEMENT, WEAPON_CATEGORY_COMPATIBLE_TECHNIQUE } from '@/modules/combat/logic/restraintSystem';
-import { Technique, TechniqueType, ItemRarity, UPGRADE_CONFIG, Element, ELEMENT_NAMES, WEAPON_CATEGORY_NAMES, WeaponCategory } from '@/shared/lib/types';
+import { Technique, TechniqueType, ItemRarity, UPGRADE_CONFIG } from '@/core/types';
+import type { Element, WeaponCategory } from '@/modules/combat/logic/restraintSystem';
+import { ELEMENT_NAMES, WEAPON_CATEGORY_NAMES } from '@/modules/combat/logic/restraintSystem';
 
 // 熟练度等级配置
 const PROFICIENCY_COLORS: Record<string, string> = {

@@ -9,27 +9,27 @@ import React, { createContext, useCallback, useContext, useEffect, useRef, useSt
 import type { Dispatch, SetStateAction } from 'react';
 
 // 类型导入
-import { handleCellEvent } from '@/modules/exploration/logic/adventure/adventure';
-import { calculateBattleWithLogs } from '@/modules/exploration/logic/adventure/adventureBattleNew';
-import { calculatePlayerMaxHp, calculatePlayerMaxMp } from '@/modules/progression/logic/balanceConfig';
-import { calculatePlayerCombatPower } from '@/modules/combat/logic/combatPower';
-import { executeCultivation, getMaxExperience } from '@/modules/progression/logic/cultivation';
-import { generateEquipment } from '@/modules/equipment/logic/equipment';
-import { updateTaskProgress, applyMentalChange } from '@/core/engine';
-import { processExperienceGain, calculateBreakthroughTransfer } from '@/modules/progression/logic/experienceSystem';
-import { generateCharacters, generateBackstory } from '@/modules/identity/logic/generators';
-import { WorldProviderRegistry } from '@/core/world/WorldProviderRegistry';
-import { buildWorldPool } from '@/core/world/WorldPoolEngine';
+import {  handleCellEvent } from '@/modules/exploration/logic/adventure/adventure';
+import {  calculateBattleWithLogs } from '@/modules/exploration/logic/adventure/adventureBattleNew';
+import {  calculatePlayerMaxHp, calculatePlayerMaxMp } from '@/modules/progression/logic/balanceConfig';
+import {  calculatePlayerCombatPower } from '@/modules/combat/logic/combatPower';
+import {  executeCultivation, getMaxExperience } from '@/modules/progression/logic/cultivation';
+import {  generateEquipment } from '@/modules/equipment/logic/equipment';
+import {  updateTaskProgress, applyMentalChange } from '@/core/engine';
+import {  processExperienceGain, calculateBreakthroughTransfer } from '@/modules/progression/logic/experienceSystem';
+import {  generateCharacters, generateBackstory } from '@/modules/identity/logic/generators';
+import {  WorldProviderRegistry } from '@/core/world/WorldProviderRegistry';
+import {  buildWorldPool } from '@/core/world/WorldPoolEngine';
 import type { WorldRatingsMap } from '@/core/world/types';
 import type { SeclusionType } from '@/modules/progression/logic/seclusion';
 import type { TowerEnemy } from '@/modules/tower/logic/types';
-import { createDefaultTowerProgress } from '@/modules/tower/logic/types';
-import { createInventoryItem } from '@/core/types';
-import { spiritStoneItems, cultivationPillItems, breakthroughItems } from '@/modules/equipment/logic/items';
-import { generateRandomTechnique, generateTechniqueByType } from '@/modules/techniques/logic/technique';
-import { getRealmName } from '@/modules/identity/logic/generators';
-import { applyBaseStatChanges, getGrowthStatCap } from '@/modules/progression/logic/realmSystem';
-import { 
+import {  createDefaultTowerProgress } from '@/modules/tower/logic/types';
+import {  createInventoryItem } from '@/core/types';
+import {  spiritStoneItems, cultivationPillItems, breakthroughItems } from '@/modules/equipment/logic/items';
+import {  generateRandomTechnique, generateTechniqueByType } from '@/modules/techniques/logic/technique';
+import {  getRealmName } from '@/modules/identity/logic/generators';
+import {  applyBaseStatChanges, getGrowthStatCap } from '@/modules/progression/logic/realmSystem';
+import {  
   TUTORIAL_TASKS, 
   checkTutorialProgress, 
   checkNewlyCompletedTask,
@@ -56,8 +56,8 @@ import type {
   GamePhase,
   AdventurePhase,
   BattleState,
+  FlatStats,
   GrowthStats,
-  LegacyStats,
   AdventureEvent,
   ActionResult,
   Protagonist,
@@ -77,20 +77,20 @@ import type {
   AscensionFlowState,
   ProtagonistExtension,
 } from '@/core/types';
-import {
+import { 
   DEFAULT_PROTAGONIST_EXTENSION,
   DEFAULT_ASCENSION_FLOW_STATE,
   createDefaultDailyRoundState,
   createDefaultWeeklyRoundState,
 } from '@/core/types';
-import { 
+import {  
   upgradeTechnique, 
   upgradeEquipment,
   getMaterialExpValue 
 } from '@/modules/equipment/logic/upgradeSystem';
-import {
+import { 
   createEmptyFragmentInventory,
-  synthesizeFragmentGroup,
+  synthesizeRarityFragmentGroup,
   synthesizeFragmentByName,
   getFragmentGroupsByName,
 } from '@/modules/crafting/logic/fragmentSystem';
@@ -100,36 +100,36 @@ import {
 // 默认状态导入
 
 // 共享工具函数
-import { safeSaveGameState, loadGameStateWithRecovery } from '@/shared/utils/saveUtils';
+import {  safeSaveGameState, loadGameStateWithRecovery } from '@/shared/utils/saveUtils';
 
-import { useGameAdventure } from '@/modules/exploration/hooks/useAdventure';
-import { useGameCultivation } from '@/modules/progression/hooks/useCultivation';
-import { useSeclusion } from '@/modules/progression/hooks/useSeclusion';
-import { useGameFaction } from '@/modules/faction/hooks/useFaction';
-import { addToInventory, removeFromInventory } from '@/modules/equipment/hooks/inventoryUtils';
+import {  useGameAdventure } from '@/modules/exploration/hooks/useAdventure';
+import {  useGameCultivation } from '@/modules/progression/hooks/useCultivation';
+import {  useSeclusion } from '@/modules/progression/hooks/useSeclusion';
+import {  useGameFaction } from '@/modules/faction/hooks/useFaction';
+import {  addToInventory, removeFromInventory } from '@/modules/equipment/hooks/inventoryUtils';
 
 // 安全存档工具
 
 // 离线收益计算
-import { processOfflineTime, OfflineProcessResult } from '@/modules/tower/logic/idleSystem';
+import {  processOfflineTime, OfflineProcessResult } from '@/modules/tower/logic/idleSystem';
 // 统一离线时间处理
-import { 
+import {  
   processOfflineTime as processOfflineTimeUnified,
   applyOfflineTimeToProtagonist,
   shouldShowOfflineDialog,
   OfflineTimeResult,
   DEFAULT_OFFLINE_TIME_CONFIG,
 } from '@/modules/time/logic/offlineTimeProcessor';
-import { TOWER_CONFIG } from '@/modules/tower/logic/types';
-import { getDefaultRealTimeState, getDefaultGameTimeState } from '@/modules/time/logic/timeSystem';
+import {  TOWER_CONFIG } from '@/modules/tower/logic/types';
+import {  getDefaultRealTimeState, getDefaultGameTimeState } from '@/modules/time/logic/timeSystem';
 
 // 子 Hooks
 
 // 游戏逻辑模块
-import { getRandomItem } from '@/modules/equipment/logic/items';
-import { calculatePillEffect, getPillRealmLevel } from '@/modules/progression/logic/pillRealmSystem';
-import { createMinimalEquipment, createMinimalTechnique } from '@/modules/equipment/logic/rarityUtils';
-import { createInitialGameState } from './initialState';
+import {  getRandomItem } from '@/modules/equipment/logic/items';
+import {  calculatePillEffect, getPillRealmLevel } from '@/modules/progression/logic/pillRealmSystem';
+import {  createMinimalEquipment, createMinimalTechnique } from '@/modules/equipment/logic/rarityUtils';
+import {  createInitialGameState } from './initialState';
 
 import type { GameContextType } from './types';
 const GameContext = createContext<GameContextType | null>(null);
@@ -821,7 +821,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
       
       // 处理道具效果
       const newActiveEffects = [...prev.protagonist.activeEffects];
-      let statChanges: Partial<LegacyStats> = {};
+      let statChanges: Partial<FlatStats> = {};
       let effectMessage = '';
       let hpRestored = 0;
       let mpRestored = 0;
@@ -907,8 +907,8 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
       // 合并负面效果属性变化
       if (Object.keys(sideEffectStats).length > 0) {
         for (const [stat, value] of Object.entries(sideEffectStats)) {
-          statChanges[stat as keyof LegacyStats] = 
-            (statChanges[stat as keyof LegacyStats] || 0) + (value || 0);
+          statChanges[stat as keyof FlatStats] = 
+            (statChanges[stat as keyof FlatStats] || 0) + (value || 0);
         }
       }
       
@@ -1717,7 +1717,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
           result = synthesizeFragmentByName(fragmentInventory, synthesizableGroup.sourceName, type);
         } else {
           // 降级使用旧版按稀有度合成
-          result = synthesizeFragmentGroup(fragmentInventory, type, rarity, playerLevel, worldType);
+          result = synthesizeRarityFragmentGroup(fragmentInventory, type, rarity, playerLevel, worldType);
         }
       }
 

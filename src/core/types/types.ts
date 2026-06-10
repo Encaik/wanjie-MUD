@@ -79,30 +79,14 @@ export function getFinalStats(stats: CharacterStats): BaseStats {
  */
 export type StatKey = '体质' | '灵根' | '悟性' | '幸运' | '意志';
 
+/** 扁平属性值字典：将 StatKey 映射为数值 */
+export type FlatStats = Record<StatKey, number>;
+
 /**
  * 快捷函数：获取属性键列表
  */
 export function getStatKeys(): StatKey[] {
   return ['体质', '灵根', '悟性', '幸运', '意志'];
-}
-
-/**
- * 向后兼容的类型别名：允许直接使用属性名
- * 用于数据文件和需要直接访问属性的场景
- */
-export type LegacyStats = Record<StatKey, number>;
-
-/**
- * 创建向后兼容的 stats 对象（base + growth 合并）
- */
-export function createCombinedStats(base: BaseStats, growth: GrowthStats): LegacyStats {
-  return {
-    体质: base.体质 + growth.体质,
-    灵根: base.灵根 + growth.灵根,
-    悟性: base.悟性 + growth.悟性,
-    幸运: base.幸运 + growth.幸运,
-    意志: base.意志 + growth.意志,
-  };
 }
 
 /**
@@ -124,7 +108,7 @@ export function createDefaultStats(baseValues?: Partial<BaseStats>): CharacterSt
 }
 
 /**
- * 工厂函数：从旧格式创建 CharacterStats（用于向后兼容）
+ * 工厂函数：从 BaseStats 创建 CharacterStats（growth 置零）
  */
 export function fromOldStats(oldStats: BaseStats): CharacterStats {
   return {
@@ -854,7 +838,7 @@ export interface CultivationResult {
 /**
  * 属性变化类型 - 支持新旧两种格式
  */
-export type StatChanges = Partial<LegacyStats>;
+export type StatChanges = Partial<FlatStats>;
 
 // 历练事件选项
 export interface EventChoice {

@@ -8,7 +8,9 @@ import { WeaponRestraintChart } from '@/modules/combat/components/RestraintChart
 import { Badge } from '@/shared/ui/badge';
 import { Button } from '@/shared/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/card';
-import { getRarityStyle, BackpackHeader, EmptyBackpackHint, UpgradeableItemTooltip } from '@/shared/ui/item-tooltip';
+import { getRarityStyle } from '@/modules/theme/data/rarityStyles';
+import { BackpackHeader, EmptyBackpackHint } from '@/shared/ui/empty-slot';
+import { UpgradeableItemTooltip } from '@/shared/ui/upgradeable-item-tooltip';
 import {
   Select,
   SelectContent,
@@ -19,7 +21,8 @@ import {
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/shared/ui/tooltip';
 import { EQUIPMENT_SETS, EquipmentAffix } from '@/modules/equipment/data/equipmentAffixData';
 import { getElementIcon, getWeaponCategoryIcon, type Element, type WeaponCategory } from '@/modules/combat/logic/restraintSystem';
-import { Equipment, EquipmentSlot, ItemRarity, UPGRADE_CONFIG, ELEMENT_NAMES, WEAPON_CATEGORY_NAMES } from '@/shared/lib/types';
+import { Equipment, EquipmentSlot, ItemRarity, UPGRADE_CONFIG } from '@/core/types';
+import { ELEMENT_NAMES, WEAPON_CATEGORY_NAMES } from '@/modules/combat/logic/restraintSystem';
 
 interface EquipmentPanelProps {
   equipments: Equipment[];

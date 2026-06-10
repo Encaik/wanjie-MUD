@@ -5,7 +5,7 @@
  * 改造为 seed-based RNG（使用 createRng 工具函数），以提高可测试性。
  * 参见 openspec/changes/archive/2026-06-08-architecture-code-quality-refactor/
  */
-import {
+import { 
   calculatePlayerMaxHp,
   calculatePlayerMaxMp,
   calculatePlayerAttack,
@@ -24,9 +24,9 @@ import {
   RESOURCE_CONFIG,
   BREAKTHROUGH_CONFIG,
 } from '@/modules/progression/logic/balanceConfig';
-import { calculatePlayerCombatPower, calculateEnemyCombatPower } from '@/modules/combat/logic/combatPower';
-import { GAME_CONSTANTS } from '@/shared/utils/constants';
-import {
+import {  calculatePlayerCombatPower, calculateEnemyCombatPower } from '@/modules/combat/logic/combatPower';
+import {  GAME_CONSTANTS } from '@/shared/utils/constants';
+import { 
   handleEventCell,
   quickHandleEvent,
   executeEvent,
@@ -34,28 +34,30 @@ import {
   DungeonEvent,
   EventExecutionContext,
 } from '../dungeon';
-import {
+import { 
   calculateEnemyEnhancement,
   applyEnemyEnhancement,
   getEnemyEnhancementShortDesc,
 } from '@/modules/combat/logic/enemy/enemyEnhancement';
-import { generateRandomEquipment } from '@/modules/equipment/logic/equipment';
-import { 
+import {  generateRandomEquipment } from '@/modules/equipment/logic/equipment';
+import {  
   generateFragmentDrop, 
   addFragmentToInventory,
   FragmentInventory,
   FragmentDropResult 
 } from '@/modules/crafting/logic/fragmentSystem';
-import { getRandomItem, getItemById, spiritStoneItems, breakthroughItems } from '@/modules/equipment/logic/items';
-import { getAvailableDifficulties as getRealmDifficulties } from '@/modules/progression/logic/realmSystem';
-import { getTerminology, getDungeonInfo } from '@/modules/narrative/logic/terminology';
-import { CellType, AdventureCell, BattleResult, CharacterStats, Protagonist, BattleState, BattleLog, ActiveEffect, InventoryItem, DungeonConfig, WorldType, Technique, Equipment, DifficultyLevel, EnemyTier, createInventoryItem, Element, WeaponCategory, getFinalStats, LegacyStats } from '@/shared/lib/types';
-import { getEnemyTierFromCellType, getEnemyTierConfig, ENEMY_TIER_CONFIG } from '@/modules/identity/data/worldData';
-import { generateRandomTechnique } from '@/modules/techniques/logic/technique';
-import { getEnemyNames } from '@/modules/combat/data/enemies';
-import { getDungeonInfo as getDataDungeonInfo } from '@/modules/narrative/data/terminology';
+import {  getRandomItem, getItemById, spiritStoneItems, breakthroughItems } from '@/modules/equipment/logic/items';
+import {  getAvailableDifficulties as getRealmDifficulties } from '@/modules/progression/logic/realmSystem';
+import {  getTerminology, getDungeonInfo } from '@/modules/narrative/logic/terminology';
+import { FlatStats, CellType, AdventureCell, BattleResult, CharacterStats, Protagonist, BattleState, BattleLog, ActiveEffect, InventoryItem, DungeonConfig, WorldType, Technique, Equipment, EnemyTier, createInventoryItem, getFinalStats } from '@/core/types';
+import type { DifficultyLevel } from '@/modules/identity/data/worldData';
+import type { Element, WeaponCategory } from '@/modules/combat/logic/restraintSystem';
+import {  getEnemyTierFromCellType, getEnemyTierConfig, ENEMY_TIER_CONFIG } from '@/modules/identity/data/worldData';
+import {  generateRandomTechnique } from '@/modules/techniques/logic/technique';
+import {  getEnemyNames } from '@/modules/combat/data/enemies';
+import {  getDungeonInfo as getDataDungeonInfo } from '@/modules/narrative/data/terminology';
 // 克制关系系统
-import {
+import { 
   getEnemyAttributes,
   getNormalAttackAttributes,
   getTechniqueAttackAttributes,
@@ -72,7 +74,7 @@ import {
 // 地牢随机事件系统
 
 // 数值约束工具
-import { clamp, clampNonNegative, applyDamage, applyHeal } from '@/shared/utils/numberUtils';
+import {  clamp, clampNonNegative, applyDamage, applyHeal } from '@/shared/utils/numberUtils';
 // 碎片系统
 
 // 随机工具
@@ -899,7 +901,7 @@ function calculateBattleRewards(
   const playerLevel = protagonist.level;
   
   if (victory) {
-    const statGains: Partial<LegacyStats> = {};
+    const statGains: Partial<FlatStats> = {};
     const itemGains: InventoryItem[] = [];
     
     // 【关键改动】碎片掉落 - 现在是唯一的功法/装备获取途径

@@ -6,7 +6,8 @@ import { Package, Heart, Zap, Star, TrendingUp, Sword } from 'lucide-react';
 
 import { Badge } from '@/shared/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/card';
-import { ItemTooltip, getRarityStyle } from '@/shared/ui/item-tooltip';
+import { ItemTooltip } from '@/shared/ui/item-tooltip';
+import { getRarityStyle } from '@/modules/theme/data/rarityStyles';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/shared/ui/tabs';
 import { useInventory, useProtagonist } from '@/views/game';
 import { getResourceName } from '@/modules/equipment/logic/items';

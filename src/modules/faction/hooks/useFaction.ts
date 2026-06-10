@@ -85,7 +85,7 @@ export interface UseGameFactionReturn {
   // 势力加成
   getFactionBonuses: () => Record<string, number>;
   
-  // 兼容旧接口的函数
+  // 回调包装函数
   claimAchievementReward: (achievementId: string) => void;
   handleSelectCultivationPath: (path: CultivationPath) => void;
   handlePerformEnhanceEquipment: (equipmentId: string) => { success: boolean; message: string };
@@ -873,7 +873,7 @@ export function useGameFaction({
   }, []);
 
   // ============================================
-  // 兼容旧接口的函数
+  // 回调包装函数
   // ============================================
 
   /**
@@ -1000,7 +1000,7 @@ export function useGameFaction({
   }, [setGameState, addMessageInternal]);
 
   /**
-   * 装备强化（兼容旧接口）
+   * 装备强化（回调包装）
    */
   const handlePerformEnhanceEquipment = useCallback((equipmentId: string): { success: boolean; message: string } => {
     // TODO: 实现装备强化
@@ -1008,7 +1008,7 @@ export function useGameFaction({
   }, []);
 
   /**
-   * 装备精炼（兼容旧接口）
+   * 装备精炼（回调包装）
    */
   const handlePerformRefineEquipment = useCallback((equipmentId: string): { success: boolean; message: string } => {
     // TODO: 实现装备精炼
@@ -1016,28 +1016,28 @@ export function useGameFaction({
   }, []);
 
   /**
-   * 领取任务奖励（兼容旧接口）
+   * 领取任务奖励（回调包装）
    */
   const handleClaimTaskReward = useCallback((taskId: string): { success: boolean; message: string } => {
     return submitTask(taskId, 'daily');
   }, [submitTask]);
 
   /**
-   * 接取任务（兼容旧接口）
+   * 接取任务（回调包装）
    */
   const handleAcceptTask = useCallback((taskId: string, roundType: 'daily' | 'weekly' = 'daily'): { success: boolean; message: string } => {
     return acceptTask(taskId, roundType);
   }, [acceptTask]);
 
   /**
-   * 提交任务（兼容旧接口）
+   * 提交任务（回调包装）
    */
   const handleSubmitTask = useCallback((taskId: string, roundType: 'daily' | 'weekly' = 'daily'): { success: boolean; message: string } => {
     return submitTask(taskId, roundType);
   }, [submitTask]);
 
   /**
-   * 刷新任务（兼容旧接口 - 使用委托刷新）
+   * 刷新任务（回调包装 - 使用委托刷新）
    */
   const handleRefreshTasks = useCallback((): { success: boolean; message: string } => {
     return refreshCommissions(true);
@@ -1057,7 +1057,7 @@ export function useGameFaction({
     handlePromoteRank,
     handleClaimDailySalary,
     getFactionBonuses,
-    // 兼容旧接口
+    // 回调包装
     claimAchievementReward,
     handleSelectCultivationPath,
     handlePerformEnhanceEquipment,

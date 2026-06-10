@@ -7,7 +7,8 @@ import { Bell, CheckCircle, XCircle, Info, AlertTriangle, Loader2, ChevronUp } f
 import { Badge } from '@/shared/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/card';
 import { ScrollArea } from '@/shared/ui/scroll-area';
-import { MessageRecord, ItemRarity, FragmentDropData } from '@/shared/lib/types';
+import { MessageRecord, ItemRarity } from '@/core/types';
+import type { FragmentDropData } from '@/modules/crafting/logic/fragmentSystem';
 
 
 interface MessagePanelProps {
