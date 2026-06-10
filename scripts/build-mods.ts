@@ -10,9 +10,12 @@
  */
 import * as fs from 'fs';
 import * as path from 'path';
+import { fileURLToPath } from 'node:url';
 
-const MODS_SOURCE = path.resolve(__dirname, '../mods');
-const MODS_TARGET = path.resolve(__dirname, '../public/mods');
+const scriptFilePath = fileURLToPath(import.meta.url);
+const scriptDir = path.dirname(scriptFilePath);
+const MODS_SOURCE = path.resolve(scriptDir, '../mods');
+const MODS_TARGET = path.resolve(scriptDir, '../public/mods');
 
 interface ModListEntry {
   id: string;

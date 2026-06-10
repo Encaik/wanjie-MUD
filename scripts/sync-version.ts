@@ -9,8 +9,11 @@
 
 import * as fs from 'node:fs';
 import * as path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-const ROOT = path.resolve(import.meta.dirname, '..');
+const scriptFilePath = fileURLToPath(import.meta.url);
+const scriptDir = path.dirname(scriptFilePath);
+const ROOT = path.resolve(scriptDir, '..');
 
 // 1. 读取 package.json 版本号
 const pkgPath = path.join(ROOT, 'package.json');

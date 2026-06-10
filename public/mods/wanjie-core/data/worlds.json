@@ -38,6 +38,14 @@
         "enemyAttackBonus": 0, "enemyDefenseBonus": 0,
         "statDisplayNames": { "体质": "体质", "灵根": "灵根", "悟性": "悟性", "幸运": "幸运", "意志": "意志" }
       },
+      "visualConfig": {
+        "icon": "☯",
+        "accentColor": "text-amber-400",
+        "gradientClass": "from-amber-500/20 to-yellow-600/10",
+        "borderColor": "border-amber-500/30",
+        "bgGradient": "bg-gradient-to-br from-amber-50 to-yellow-50 dark:from-amber-950/30 dark:to-yellow-950/30",
+        "colorGradient": "from-purple-500 to-blue-500"
+      },
       "mechanics": {
         "worldType": "修仙",
         "cultivation": { "resourceName": "灵石", "actionName": "修炼", "baseCost": 20, "useStandardFormula": true, "successRateModifier": 0 },
@@ -83,6 +91,14 @@
         "baseDefense": 8, "defensePerLevel": 1.2, "defensePerWillpower": 0.8,
         "enemyAttackBonus": 0.1, "enemyDefenseBonus": 0.1,
         "statDisplayNames": { "体质": "体魄", "灵根": "根骨", "悟性": "悟性", "幸运": "机缘", "意志": "战意" }
+      },
+      "visualConfig": {
+        "icon": "⚔",
+        "accentColor": "text-red-400",
+        "gradientClass": "from-red-500/20 to-orange-600/10",
+        "borderColor": "border-red-500/30",
+        "bgGradient": "bg-gradient-to-br from-red-50 to-orange-50 dark:from-red-950/30 dark:to-orange-950/30",
+        "colorGradient": "from-red-500 to-orange-500"
       },
       "mechanics": {
         "worldType": "高武",
@@ -130,6 +146,14 @@
         "enemyAttackBonus": 0.15, "enemyDefenseBonus": 0,
         "statDisplayNames": { "体质": "体能", "灵根": "智力", "悟性": "反应", "幸运": "技术", "意志": "魅力" }
       },
+      "visualConfig": {
+        "icon": "⬡",
+        "accentColor": "text-cyan-400",
+        "gradientClass": "from-cyan-500/20 to-blue-600/10",
+        "borderColor": "border-cyan-500/30",
+        "bgGradient": "bg-gradient-to-br from-slate-50 to-zinc-50 dark:from-slate-950/30 dark:to-zinc-950/30",
+        "colorGradient": "from-cyan-500 to-blue-500"
+      },
       "mechanics": {
         "worldType": "科技",
         "cultivation": { "resourceName": "科技点", "actionName": "研究", "baseCost": 20, "useStandardFormula": true, "successRateModifier": 0 },
@@ -175,6 +199,14 @@
         "baseDefense": 7, "defensePerLevel": 1.0, "defensePerWillpower": 0.9,
         "enemyAttackBonus": 0.05, "enemyDefenseBonus": 0.05,
         "statDisplayNames": { "体质": "力量", "灵根": "魔力", "悟性": "感知", "幸运": "魅力", "意志": "精神" }
+      },
+      "visualConfig": {
+        "icon": "✦",
+        "accentColor": "text-purple-400",
+        "gradientClass": "from-purple-500/20 to-violet-600/10",
+        "borderColor": "border-purple-500/30",
+        "bgGradient": "bg-gradient-to-br from-purple-50 to-violet-50 dark:from-purple-950/30 dark:to-violet-950/30",
+        "colorGradient": "from-pink-500 to-purple-500"
       },
       "mechanics": {
         "worldType": "魔幻",
@@ -222,6 +254,14 @@
         "enemyAttackBonus": 0.1, "enemyDefenseBonus": 0.05,
         "statDisplayNames": { "体质": "体能", "灵根": "源能", "悟性": "感知", "幸运": "幸运", "意志": "意志" }
       },
+      "visualConfig": {
+        "icon": "◈",
+        "accentColor": "text-indigo-400",
+        "gradientClass": "from-indigo-500/20 to-blue-600/10",
+        "borderColor": "border-indigo-500/30",
+        "bgGradient": "bg-gradient-to-br from-cyan-50 to-teal-50 dark:from-cyan-950/30 dark:to-teal-950/30",
+        "colorGradient": "from-yellow-500 to-orange-500"
+      },
       "mechanics": {
         "worldType": "异能",
         "cultivation": { "resourceName": "源能", "actionName": "觉醒", "baseCost": 15, "useStandardFormula": true, "successRateModifier": 0.05 },
@@ -267,6 +307,14 @@
         "baseDefense": 6, "defensePerLevel": 1.0, "defensePerWillpower": 0.8,
         "enemyAttackBonus": 0.1, "enemyDefenseBonus": 0,
         "statDisplayNames": { "体质": "体质", "灵根": "仙根", "悟性": "剑心", "幸运": "仙缘", "意志": "道心" }
+      },
+      "visualConfig": {
+        "icon": "◆",
+        "accentColor": "text-teal-400",
+        "gradientClass": "from-teal-500/20 to-emerald-600/10",
+        "borderColor": "border-teal-500/30",
+        "bgGradient": "bg-gradient-to-br from-emerald-50 to-green-50 dark:from-emerald-950/30 dark:to-green-950/30",
+        "colorGradient": "from-emerald-500 to-teal-500"
       },
       "mechanics": {
         "worldType": "仙侠",
@@ -314,6 +362,14 @@
         "enemyAttackBonus": 0, "enemyDefenseBonus": 0.1,
         "statDisplayNames": { "体质": "根骨", "灵根": "悟性", "悟性": "慧根", "幸运": "机缘", "意志": "毅力" }
       },
+      "visualConfig": {
+        "icon": "◇",
+        "accentColor": "text-stone-400",
+        "gradientClass": "from-stone-500/20 to-neutral-600/10",
+        "borderColor": "border-stone-500/30",
+        "bgGradient": "bg-gradient-to-br from-stone-50 to-neutral-50 dark:from-stone-950/30 dark:to-neutral-950/30",
+        "colorGradient": "from-amber-500 to-yellow-500"
+      },
       "mechanics": {
         "worldType": "武侠",
         "cultivation": { "resourceName": "银两", "actionName": "打坐", "baseCost": 15, "useStandardFormula": true, "successRateModifier": 0 },
@@ -359,6 +415,14 @@
         "baseDefense": 10, "defensePerLevel": 1.5, "defensePerWillpower": 1.0,
         "enemyAttackBonus": 0.3, "enemyDefenseBonus": 0.25,
         "statDisplayNames": { "体质": "体质", "灵根": "适应性", "悟性": "洞察", "幸运": "运气", "意志": "意志" }
+      },
+      "visualConfig": {
+        "icon": "◉",
+        "accentColor": "text-zinc-400",
+        "gradientClass": "from-zinc-500/20 to-slate-700/10",
+        "borderColor": "border-zinc-500/40",
+        "bgGradient": "bg-gradient-to-br from-gray-50 to-slate-50 dark:from-gray-950/30 dark:to-slate-950/30",
+        "colorGradient": "from-gray-500 to-red-500"
       },
       "mechanics": {
         "worldType": "末世",
