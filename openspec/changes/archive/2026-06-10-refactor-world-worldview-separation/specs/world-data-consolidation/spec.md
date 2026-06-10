@@ -1,8 +1,8 @@
-# world-data-consolidation
+# world-data-consolidation (Delta)
 
-世界数据整合为单一数据源，以 `WorldDataRegistry.worldviews` 为所有世界观数据的唯一配置来源。
+对 `openspec/specs/world-data-consolidation/spec.md` 的增量修改 — 世界观数据从分散的 `WORLD_DATA` + narrative 文本 + registry 三套系统整合为以 `WorldDataRegistry.worldviews` 为单一数据源。
 
-## Requirements
+## MODIFIED Requirements
 
 ### Requirement: WorldviewDefinition 为世界配置唯一数据源
 
@@ -21,6 +21,7 @@
 - **THEN** SHALL 通过 `WorldDataRegistry.getWorldview(worldviewId).texts` 获取
 - **AND** `modules/narrative/data/worlds/` 中的静态 TS 文件 SHALL 标记为 deprecated
 - **AND** `modules/narrative/logic/WorldTextManager` SHALL 从 registry 读取 `texts` 字段
+- **AND** SHALL NOT 存在 `modules/narrative/data/terminology.ts` 的独立 `WORLD_TERMINOLOGY` 映射
 
 #### Scenario: 修仙与仙侠世界观数据独立
 
@@ -30,42 +31,31 @@
 - **AND** `dangers` 和 `opportunities` 的 `description` 文本 SHALL 各自独立
 - **AND** `texts.terminology` SHALL 各自独立（如修仙用"灵石"，仙侠用"剑晶"）
 
-#### Scenario: 缺失数据时抛出错误
+## REMOVED Requirements
 
-- **WHEN** 一个世界类型的注册数据缺少必要字段
-- **THEN** 系统 SHALL 抛出明确错误
-- **AND** SHALL NOT 静默使用默认值
+### Requirement: WORLD_DATA 为世界配置唯一数据源
 
-### Requirement: WorldStats 数值完全来自注册数据
+**Reason**: `WORLD_DATA: Record<WorldType, WorldStats>` 已被 `WorldDataRegistry.worldviews: Map<string, WorldviewDefinition>` 替代。旧的 `WORLD_DATA` 常量仅包含 `WorldStats` 子集，不包含世界观文本、机制配置等完整数据。
 
-`WorldStats` 接口 SHALL 从 `WorldviewDefinition.stats` 获取全部数值配置（`baseHp`、`hpPerLevel`、`baseAttack` 等），SHALL NOT 在消费代码中硬编码任何数值。
+**Migration**: 所有引用 `WORLD_DATA[worldType]` 的代码改为 `WorldDataRegistry.getInstance().getWorldview(worldviewId)`。`getWorldData()` 函数改为从 registry 读取，并在数据缺失时抛出错误。
 
-#### Scenario: WorldStats 数值完全来自注册数据
+### Requirement: WORLD_COEFFICIENTS 全局唯一
 
-- **WHEN** 读取 `getWorldData('cultivation')` 返回的 `WorldStats`
-- **THEN** `baseHp`、`hpPerLevel` 等数值字段 SHALL 等于注册数据中 `stats` 对象的对应字段
-- **AND** SHALL NOT 存在从消费代码内联的数值常量
+**Reason**: 系数数据已整合到 `WorldviewDefinition.baseCoefficient` 和 `WorldviewDefinition.rewardCoefficient` 中，不需要独立的 `WORLD_COEFFICIENTS` 常量。
 
-#### Scenario: 缺失任何数值字段时报错
+**Migration**: 通过 `registry.getWorldview(worldviewId).baseCoefficient` 获取基础系数，通过 `registry.getWorldview(worldviewId).rewardCoefficient` 获取奖励系数。
 
-- **WHEN** 一个世界类型的注册数据缺少 `stats` 或其子字段
-- **THEN** `getWorldData()` SHALL 抛出错误，明确指出缺失字段和世界类型 ID
-- **AND** SHALL NOT 静默使用任何默认值
+### Requirement: WorldStats 结构包含 statDisplayNames 及完整数值
 
-### Requirement: 仙侠世界独立姓名池
+**Reason**: `WorldStats` 接口不变，但 `statDisplayNames` 现在通过 `WorldviewDefinition.texts.stats` 获取，替代 `WorldStats.statDisplayNames` 字段。世界观文本统一走 `texts` 路径。
 
-仙侠世界 SHALL 使用独立的 `XIANXIA_NAMES` 姓名池，SHALL NOT 与修仙世界共用 `CULTIVATION_NAMES`。
+**Migration**: `getWorldData(type).statDisplayNames` → `registry.getWorldview(id).texts.stats`
 
-#### Scenario: 姓名池映射独立
-
-- **WHEN** 检查 `WORLD_NAME_POOLS`
-- **THEN** `WORLD_NAME_POOLS['修仙']` SHALL 引用 `CULTIVATION_NAMES`
-- **AND** `WORLD_NAME_POOLS['仙侠']` SHALL 引用 `XIANXIA_NAMES`
-- **AND** 两个对象 SHALL NOT 引用同一内存地址
+## ADDED Requirements
 
 ### Requirement: 世界观文本强类型化
 
-`WorldDataRegistry` 中的世界观文本存储 SHALL 使用完整的 `WorldTextDefinition` 类型，SHALL NOT 使用 `Record<string, unknown>`。所有世界观文本的读取 SHALL 具有编译时类型检查。
+`WorldDataRegistry.worldTexts`（或等价的世界观文本存储）SHALL 使用完整的 `WorldTextDefinition` 类型，SHALL NOT 使用 `Record<string, unknown>`。所有世界观文本的读取 SHALL 具有编译时类型检查。
 
 #### Scenario: worldTexts 类型为 WorldTextDefinition
 
@@ -83,6 +73,12 @@
 ### Requirement: 无硬编码兜底数据
 
 所有世界相关数据 SHALL 仅从 `WorldDataRegistry` 读取。当 registry 中无请求的数据时，系统 SHALL 抛出明确错误，SHALL NOT 回退到硬编码的兜底数据。
+
+#### Scenario: 特性池缺失时报错
+
+- **WHEN** `WorldDataRegistry` 中不存在某世界观的 trait 数据
+- **THEN** `registry.getWorldview(id).traits` SHALL 为 `undefined`（由调用方处理）
+- **AND** 调用方 SHALL 抛出明确错误，SHALL NOT 使用 `ORIGIN_TRAITS`、`TECH_*`、`MAGIC_*` 等硬编码兜底
 
 #### Scenario: 危险/机遇数据缺失时报错
 

@@ -1,42 +1,59 @@
 /**
  * 世界观文案管理器
- * 
+ *
  * 职责：
  * 1. 缓存已加载的世界观文案，避免频繁读取文件
  * 2. 提供统一的文案获取接口
  * 3. 支持世界切换时重新加载
- * 
+ * 4. 优先从 WorldDataRegistry 读取，回退到静态导入
+ *
  * 使用方式：
  * - 通过 WorldTextContext 获取当前世界文案
  * - 页面组件使用 useWorldText() hook 获取文案
  */
 
 import { WorldType } from '@/core/types';
+import { WorldDataRegistry } from '@/core/registry';
+import type { WorldTextDefinition } from '@/core/registry';
 
-// 导入所有世界观文案
+// 保留静态导入作为 fallback（过渡期）
 import { gaowuTexts } from '../data/worlds/gaowu';
 import { kejiTexts } from '../data/worlds/keji';
 import { mohuanTexts } from '../data/worlds/mohuan';
 import { moshiTexts } from '../data/worlds/moshi';
-import { WorldTextDefinition } from '../data/worlds/types';
 import { wuxiaTexts } from '../data/worlds/wuxia';
 import { xianxiaTexts } from '../data/worlds/xianxia';
 import { xiuxianTexts } from '../data/worlds/xiuxian';
 import { yinengTexts } from '../data/worlds/yineng';
 
 /**
- * 世界观文案映射表
- * 静态导入，构建时确定，无需运行时读取文件
+ * @deprecated 过渡期静态映射表，新代码应从 WorldDataRegistry 获取
+ * 中文 WorldType → 英文 worldviewId 映射
+ */
+const CHINESE_TO_ENGLISH: Record<string, string> = {
+  '修仙': 'cultivation',
+  '高武': 'martial',
+  '科技': 'tech',
+  '魔幻': 'magic',
+  '异能': 'psi',
+  '仙侠': 'xianxia',
+  '武侠': 'wuxia',
+  '末世': 'apocalypse',
+};
+
+/**
+ * 世界观文案静态映射表（fallback）
+ * @deprecated 过渡期使用，数据迁移完成后移除
  */
 const WORLD_TEXT_MAP: Record<WorldType, WorldTextDefinition> = {
-  '修仙': xiuxianTexts,
-  '高武': gaowuTexts,
-  '科技': kejiTexts,
-  '魔幻': mohuanTexts,
-  '异能': yinengTexts,
-  '仙侠': xianxiaTexts,
-  '武侠': wuxiaTexts,
-  '末世': moshiTexts,
+  '修仙': xiuxianTexts as unknown as WorldTextDefinition,
+  '高武': gaowuTexts as unknown as WorldTextDefinition,
+  '科技': kejiTexts as unknown as WorldTextDefinition,
+  '魔幻': mohuanTexts as unknown as WorldTextDefinition,
+  '异能': yinengTexts as unknown as WorldTextDefinition,
+  '仙侠': xianxiaTexts as unknown as WorldTextDefinition,
+  '武侠': wuxiaTexts as unknown as WorldTextDefinition,
+  '末世': moshiTexts as unknown as WorldTextDefinition,
 };
 
 /**
@@ -59,25 +76,55 @@ class WorldTextManager {
 
   /**
    * 切换世界观
-   * @param worldType 世界观类型
+   * 优先从 WorldDataRegistry 读取，回退到静态映射表
+   *
+   * @param worldType 世界观类型（中文显示名或英文 worldviewId）
    */
   setWorld(worldType: WorldType): void {
     if (this.currentWorldType === worldType && this.currentText) {
       return; // 已加载，无需重复
     }
     this.currentWorldType = worldType;
-    this.currentText = WORLD_TEXT_MAP[worldType];
+
+    // 优先从 registry 读取（通过英文 ID 或中文名映射）
+    const registry = WorldDataRegistry.getInstance();
+    const englishId = CHINESE_TO_ENGLISH[worldType] ?? worldType;
+
+    // 尝试从 worldview 获取文本
+    const worldview = registry.getWorldview(englishId);
+    if (worldview?.texts) {
+      this.currentText = worldview.texts;
+      return;
+    }
+
+    // 尝试从旧 worldTexts 存储获取
+    const storedText = registry.getWorldText(englishId);
+    if (storedText && typeof storedText === 'object' && 'terminology' in storedText) {
+      this.currentText = storedText as unknown as WorldTextDefinition;
+      return;
+    }
+
+    // 回退到静态映射表
+    this.currentText = WORLD_TEXT_MAP[worldType] ?? null;
   }
 
   /**
    * 获取当前世界观文案
+   * 如果没有设置世界观，尝试从 registry 获取第一个可用的，最后回退到修仙
    */
   getText(): WorldTextDefinition {
-    if (!this.currentText) {
-      // 默认返回修仙世界文案
-      return WORLD_TEXT_MAP['修仙'];
+    if (this.currentText) {
+      return this.currentText;
     }
-    return this.currentText;
+    // 尝试从 registry 获取
+    const registry = WorldDataRegistry.getInstance();
+    const allIds = registry.getAllWorldviewIds();
+    if (allIds.length > 0) {
+      const first = registry.getWorldview(allIds[0]);
+      if (first?.texts) return first.texts;
+    }
+    // 最终回退到静态修仙文本
+    return WORLD_TEXT_MAP['修仙']!;
   }
 
   /**

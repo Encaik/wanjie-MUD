@@ -1,6 +1,13 @@
 /**
  * 世界观文案统一导出
- * 
+ *
+ * @deprecated 世界观文本数据已迁移到 mods/wanjie-core/data/world/*.json 的 text 字段。
+ * 新代码应通过 WorldDataRegistry.getWorldviewTexts(id) 或 WorldTextManager 获取文本。
+ * 本文件及其引用的 *.ts 静态文件保留用于：
+ * 1. 向后兼容（WorldTextManager 的 fallback）
+ * 2. 作为 Mod JSON 的参考源
+ * 3. 客户端在 registry 未初始化时的兜底
+ *
  * 类似 i18n 的结构：
  * - 每个世界观一个独立文件
  * - 添加新世界观只需复制文件并修改内容

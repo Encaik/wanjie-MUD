@@ -40,7 +40,7 @@ export class TemplateWorldProvider implements WorldProvider {
     return this.templates;
   }
 
-  generateWorld(seed: string, _ascensionCount: number = 0): World {
+  generateWorld(seed: string, _ascensionCount: number = 0, _worldviewId?: string): World {
     const template = this.templates.find(t => t.id === seed);
     if (!template) {
       throw new Error(
@@ -54,8 +54,8 @@ export class TemplateWorldProvider implements WorldProvider {
     };
   }
 
-  generateWorlds(seeds: string[], ascensionCount: number = 0): World[] {
-    return seeds.map(s => this.generateWorld(s, ascensionCount));
+  generateWorlds(seeds: string[], ascensionCount: number = 0, worldviewId?: string): World[] {
+    return seeds.map(s => this.generateWorld(s, ascensionCount, worldviewId));
   }
 
   getMetadata(): WorldProviderMetadata {

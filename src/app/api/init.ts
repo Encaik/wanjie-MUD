@@ -63,6 +63,112 @@ interface ModListEntry {
 }
 
 // ============================================
+// 世界观组装（WorldTypeData → WorldviewDefinition）
+// ============================================
+
+/**
+ * 从已注册的各类数据组装 WorldviewDefinition
+ *
+ * Mod JSON 数据分散在多个文件中（world/*.json 定义基本信息，
+ * traits/*.json 定义特性池，names/*.json 定义名称池等）。
+ *
+ * 此函数在所有 Mod 加载完成后，从注册中心读取各部件数据，
+ * 组装成完整的 WorldviewDefinition 并注册。
+ */
+function assembleWorldviews(): void {
+  const registry = WorldDataRegistry.getInstance();
+  const worldTypes = registry.getAllWorldTypeData();
+
+  if (worldTypes.length === 0) {
+    log.info('没有旧 WorldTypeData，跳过 worldview 组装');
+    return;
+  }
+
+  let assembledCount = 0;
+  for (const wt of worldTypes) {
+    const id = wt.type; // English kebab-case ID
+
+    // 收集各部件的注册数据
+    const realmSystem = registry.getRealmSystem(id);
+    const traitPool = registry.getTraitPool(id);
+    const namePool = registry.getNamePool(id);
+    const textData = registry.getWorldText(id);
+    const rewardCoeff = registry.getRewardCoefficient(id);
+
+    // 构建 WorldviewDefinition
+    const worldview: import('@/core/registry/WorldDataRegistry').WorldviewDefinition = {
+      id,
+      name: wt.name,
+      description: wt.description,
+      version: '0.1.0', // Mod JSON 中暂未有 version 字段，使用默认值
+      baseCoefficient: wt.baseCoefficient,
+      rewardCoefficient: rewardCoeff ?? {
+        expCoefficient: 1.0,
+        spiritStoneCoefficient: 1.0,
+        dropCoefficient: 1.0,
+        rarityBonus: { rare: 0, epic: 0, legendary: 0, mythic: 0 },
+        specialRewards: { ascensionMarkBonus: 0, titleChance: 0, specialItemChance: 0 },
+      },
+      stats: wt.stats ?? {
+        baseHp: 100, hpPerLevel: 10, hpPerConstitution: 5,
+        baseAttack: 10, attackPerLevel: 2, attackPerConstitution: 1,
+        attackPerSpiritRoot: 2, baseDefense: 5, defensePerLevel: 1,
+        defensePerWillpower: 1, enemyAttackBonus: 0, enemyDefenseBonus: 0,
+        statDisplayNames: {},
+      },
+      realmSystem: realmSystem ?? {
+        mainRealmName: '境界', subRealmName: '阶', tiers: [],
+      },
+      namePrefixes: wt.namePrefixes,
+      nameSuffixes: wt.nameSuffixes,
+      descriptions: wt.descriptions,
+      powerSystems: wt.powerSystems ?? [wt.name],
+      majorForces: wt.majorForces ?? [],
+      dangers: registry.getDangersForWorld(id),
+      opportunities: registry.getOpportunitiesForWorld(id),
+      factions: registry.getFactionTemplates(id),
+      traits: traitPool ?? {
+        origin: {} as Record<string, unknown>,
+        trait: {} as Record<string, unknown>,
+        personality: {} as Record<string, unknown>,
+        talent: {} as Record<string, unknown>,
+      } as import('@/core/registry/WorldDataRegistry').TraitPoolData,
+      namePool: namePool ?? { surnames: [], maleNames: [], femaleNames: [] },
+      texts: (textData as unknown as import('@/core/registry/WorldDataRegistry').WorldTextDefinition) ?? {
+        name: wt.name,
+        description: wt.description,
+        terminology: {} as import('@/core/registry/WorldDataRegistry').WorldTerminology,
+        stats: {} as import('@/core/registry/WorldDataRegistry').WorldStatNames,
+        combat: {} as import('@/core/registry/WorldDataRegistry').WorldCombatTexts,
+        cultivation: {} as import('@/core/registry/WorldDataRegistry').WorldCultivationTexts,
+        resource: {} as import('@/core/registry/WorldDataRegistry').WorldResourceTexts,
+        item: {} as import('@/core/registry/WorldDataRegistry').WorldItemTexts,
+        dungeon: {} as import('@/core/registry/WorldDataRegistry').WorldDungeonTexts,
+        ui: {} as import('@/core/registry/WorldDataRegistry').WorldUITexts,
+        breakthrough: {} as import('@/core/registry/WorldDataRegistry').WorldBreakthroughTexts,
+        message: {} as import('@/core/registry/WorldDataRegistry').WorldMessageTexts,
+        paths: {} as import('@/core/registry/WorldDataRegistry').WorldPathTexts,
+      },
+      mechanics: wt.mechanics ?? {},
+      visualConfig: wt.visualConfig ?? {
+        icon: '🌐',
+        accentColor: 'text-slate-400',
+        gradientClass: 'from-slate-500/20 to-slate-600/10',
+        borderColor: 'border-slate-500/30',
+        bgGradient: 'bg-gradient-to-br from-slate-50 to-zinc-50 dark:from-slate-950/30 dark:to-zinc-950/30',
+        colorGradient: 'from-slate-500 to-gray-500',
+      },
+      builtin: wt.builtin ?? false,
+    };
+
+    registry.registerWorldview(worldview);
+    assembledCount++;
+  }
+
+  log.info(`已从 ${worldTypes.length} 个 WorldTypeData 组装 ${assembledCount} 个 WorldviewDefinition`);
+}
+
+// ============================================
 // 核心初始化函数
 // ============================================
 
@@ -89,6 +195,9 @@ export function ensureWorldSystemInitialized(): void {
   for (const entry of entries) {
     loadModFromDisk(entry);
   }
+
+  // 2.5 从已注册数据组装 WorldviewDefinition（世界观→世界 新架构）
+  assembleWorldviews();
 
   // 3. 注册 WorldProvider
   registerWorldProviders();

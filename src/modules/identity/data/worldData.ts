@@ -20,7 +20,18 @@ export function getWorldTypes(): WorldType[] {
   return WorldDataRegistry.getInstance().getAllWorldTypes() as WorldType[];
 }
 
-/** @deprecated 使用 getWorldTypes() 替代 */
+/**
+ * 获取所有已注册的世界观 ID 列表
+ * 新代码应使用此函数，替代 getWorldTypes()
+ */
+export function getWorldviewIds(): string[] {
+  const registry = WorldDataRegistry.getInstance();
+  return registry.getAllWorldviewIds().length > 0
+    ? registry.getAllWorldviewIds()
+    : registry.getAllWorldTypes();
+}
+
+/** @deprecated 使用 getWorldTypes() 或 getWorldviewIds() 替代 */
 export const WORLD_TYPES: WorldType[] = getWorldTypes();
 
 // ============================================

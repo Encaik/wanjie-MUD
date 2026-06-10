@@ -591,16 +591,37 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
   // ========================================
 
   // 开始新游戏：调用后端 API 生成世界基础信息
-  const startNewGame = useCallback(async () => {
+  /** 世界观摘要缓存（前端获取后缓存，避免重复请求） */
+  const worldviewCacheRef = useRef<Array<{ id: string; name: string; description: string }> | null>(null);
+
+  /** 获取可用世界观列表 */
+  const fetchWorldviews = useCallback(async () => {
+    if (worldviewCacheRef.current) return worldviewCacheRef.current;
+    try {
+      const res = await fetch('/api/v1/worldviews');
+      if (res.ok) {
+        const json = await res.json();
+        worldviewCacheRef.current = json.data?.worldviews ?? [];
+        return worldviewCacheRef.current!;
+      }
+    } catch { /* 网络错误时忽略，使用空列表 */ }
+    return [] as Array<{ id: string; name: string; description: string }>;
+  }, []);
+
+  /** 开始新游戏：调用后端 API 生成世界基础信息，支持指定世界观 */
+  const startNewGame = useCallback(async (worldviewId?: string) => {
     setGameState(prev => ({
       ...createInitialGameState(),
       phase: 'world-select',
       worlds: [],
     }));
 
+    const body: Record<string, unknown> = { count: 8 };
+    if (worldviewId) body.worldviewId = worldviewId;
+
     const { code, data } = await post<{ worlds: World[] }>(
       '/api/v1/worlds/generate/basic',
-      { count: 8 },
+      body,
     );
 
     if (code === 200 && data) {

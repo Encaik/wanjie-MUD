@@ -26,17 +26,23 @@ export function registerBuiltinMechanics(): void {
   const dataRegistry = WorldDataRegistry.getInstance();
   const mechanicsRegistry = WorldMechanicsRegistry.getInstance();
 
-  const worldTypes = dataRegistry.getAllWorldTypes();
+  // 优先使用新 worldview API，回退到旧 worldTypes
+  const worldviewIds = dataRegistry.getAllWorldviewIds();
+  const worldTypes = worldviewIds.length > 0 ? worldviewIds : dataRegistry.getAllWorldTypes();
 
   for (const worldTypeId of worldTypes) {
     // 跳过已注册的（避免重复注册）
     if (mechanicsRegistry.has(worldTypeId)) continue;
 
-    const worldData = dataRegistry.getWorldType(worldTypeId);
+    // 优先从 worldview 获取，回退到旧 API
+    const worldview = dataRegistry.getWorldview(worldTypeId);
+    const worldData = worldview ?? dataRegistry.getWorldType(worldTypeId);
     if (!worldData) continue;
 
-    // 从 worldData 中提取 mechanics 配置（Mod JSON 中的 mechanics 字段）
-    const rawMechanics = worldData.mechanics as MechanicsConfig | undefined;
+    // 从 worldData/worldview 中提取 mechanics 配置
+    const rawMechanics = (
+      'mechanics' in worldData ? (worldData as unknown as Record<string, unknown>).mechanics : undefined
+    ) as MechanicsConfig | undefined;
 
     if (rawMechanics && rawMechanics.cultivation && rawMechanics.combat) {
       const mechanics = buildWorldMechanics({

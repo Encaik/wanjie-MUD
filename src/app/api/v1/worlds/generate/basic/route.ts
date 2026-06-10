@@ -3,6 +3,8 @@
  *
  * 只生成世界基础信息（名称、描述、境界、难度）并存入 DB。
  * 前端初始化世界选择列表时调用此接口。
+ *
+ * 支持 worldviewId 参数指定世界观类型。
  */
 
 import { NextRequest } from 'next/server';
@@ -10,17 +12,19 @@ import { NextRequest } from 'next/server';
 import { apiSuccess, apiError } from '@/app/api/result';
 import { ensureWorldSystemInitialized } from '@/app/api/init';
 import { createLogger } from '@/core/logger';
+import { WorldDataRegistry } from '@/core/registry';
+import { generateWorld, generateSeed } from '@/core/world';
 import type { World } from '@/core/types';
-import { generateWorldSeed } from '@/modules/identity/logic/generators';
-
-import { generateBasic } from '../generator';
 
 /** 日志实例 */
 const log = createLogger('Basic');
 
 interface BasicRequest {
   seed?: string;
+  /** @deprecated 使用 worldviewId 替代 */
   worldType?: string;
+  /** 世界观 ID（English kebab-case） */
+  worldviewId?: string;
   count?: number;
 }
 
@@ -48,22 +52,63 @@ export async function POST(request: NextRequest) {
 
   // 3. 生成
   try {
+    const registry = WorldDataRegistry.getInstance();
+    const worldviewId = body.worldviewId ?? body.worldType;
     const count = Math.min(Math.max(body.count ?? 8, 1), 20);
     log.info('开始生成', count, '个基础世界...');
 
     const worlds: World[] = [];
-    if (body.seed) {
-      for (let i = 0; i < count; i++) {
-        const uniqueSeed = count > 1 ? `${body.seed}-${i + 1}` : body.seed;
-        const w = generateBasic(uniqueSeed, body.worldType);
-        log.info(`  [${i + 1}/${count}] seed=${uniqueSeed} name=${w.name} type=${w.type}`);
-        worlds.push(w);
+
+    if (worldviewId) {
+      // 指定世界观：校验并生成
+      let worldview = registry.getWorldview(worldviewId);
+      if (!worldview) {
+        // 回退到旧 API
+        const { generateBasic } = await import('../generator');
+        if (body.seed) {
+          for (let i = 0; i < count; i++) {
+            const uniqueSeed = count > 1 ? `${body.seed}-${i + 1}` : body.seed;
+            worlds.push(generateBasic(uniqueSeed, worldviewId));
+          }
+        } else {
+          for (let i = 0; i < count; i++) {
+            worlds.push(generateBasic(generateSeed(), worldviewId));
+          }
+        }
+      } else {
+        // 使用新的 generateWorld
+        if (body.seed) {
+          for (let i = 0; i < count; i++) {
+            const uniqueSeed = count > 1 ? `${body.seed}-${i + 1}` : body.seed;
+            worlds.push(generateWorld(worldview, uniqueSeed, 0));
+          }
+        } else {
+          for (let i = 0; i < count; i++) {
+            worlds.push(generateWorld(worldview, generateSeed(), 0));
+          }
+        }
       }
     } else {
-      for (let i = 0; i < count; i++) {
-        const w = generateBasic(generateWorldSeed(), body.worldType);
-        log.info(`  [${i + 1}/${count}] seed=${w.id} name=${w.name} type=${w.type}`);
-        worlds.push(w);
+      // 随机选择世界观
+      const allWorldviews = registry.getAllWorldviews();
+      if (allWorldviews.length > 0) {
+        for (let i = 0; i < count; i++) {
+          const wv = allWorldviews[Math.floor(Math.random() * allWorldviews.length)];
+          worlds.push(generateWorld(wv, body.seed || generateSeed(), 0));
+        }
+      } else {
+        // 回退到旧 API
+        const { generateBasic } = await import('../generator');
+        if (body.seed) {
+          for (let i = 0; i < count; i++) {
+            const uniqueSeed = count > 1 ? `${body.seed}-${i + 1}` : body.seed;
+            worlds.push(generateBasic(uniqueSeed, body.worldType));
+          }
+        } else {
+          for (let i = 0; i < count; i++) {
+            worlds.push(generateBasic(generateSeed(), body.worldType));
+          }
+        }
       }
     }
 

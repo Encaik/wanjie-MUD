@@ -1,5 +1,15 @@
 /**
  * 世界术语统一映射系统
+ *
+ * @deprecated 术语数据已迁移到 WorldDataRegistry.worldviews[].texts.terminology。
+ * 新代码应通过 WorldTextManager 或 registry.getWorldviewTexts() 获取术语。
+ * 本文件保留用于向后兼容，过渡期后删除。
+ *
+ * 迁移指南：
+ * - getTerminology(wt) → registry.getWorldviewTexts(wt)?.terminology
+ * - getResourceName(wt) → registry.getWorldviewTexts(wt)?.terminology.resource
+ * - getDungeonName(wt) → registry.getWorldviewTexts(wt)?.terminology.dungeon
+ *
  * 所有术语的key保持一致，value根据世界类型动态变化
  */
 

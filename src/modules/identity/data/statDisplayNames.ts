@@ -2,13 +2,13 @@
  * 属性显示名映射
  *
  * 根据世界类型将内部属性键（体质/灵根/悟性/幸运/意志）映射为世界对应的显示名。
- * 数据来自 WORLD_DATA[worldType].statDisplayNames。
+ * 数据从 WorldDataRegistry 获取，无硬编码兜底。
  *
  * 设计决策：BaseStats/GrowthStats 底层键名保持不变（避免 50+ 处引用的大重构），
  * 通过此显示层映射函数在 UI 层展示世界正确的属性名。
  */
 import type { WorldType } from '@/core/types';
-import { WORLD_DATA } from './worldData';
+import { getWorldData } from './worldData';
 
 /** 内部属性键 */
 export type StatKey = '体质' | '灵根' | '悟性' | '幸运' | '意志';
@@ -16,7 +16,7 @@ export type StatKey = '体质' | '灵根' | '悟性' | '幸运' | '意志';
 /** 所有内部属性键列表 */
 export const STAT_KEYS: StatKey[] = ['体质', '灵根', '悟性', '幸运', '意志'];
 
-/** 修仙默认属性显示名（兜底） */
+/** @deprecated 兜底数据，数据已迁移到 WorldDataRegistry */
 const DEFAULT_STAT_DISPLAY: Record<StatKey, string> = {
   '体质': '体质',
   '灵根': '灵根',
@@ -33,9 +33,13 @@ const DEFAULT_STAT_DISPLAY: Record<StatKey, string> = {
  * @returns 世界对应的属性显示名
  */
 export function getStatDisplayName(statKey: string, worldType: WorldType): string {
-  const worldData = WORLD_DATA[worldType];
-  if (worldData?.statDisplayNames?.[statKey]) {
-    return worldData.statDisplayNames[statKey];
+  try {
+    const worldData = getWorldData(worldType);
+    if (worldData?.statDisplayNames?.[statKey]) {
+      return worldData.statDisplayNames[statKey];
+    }
+  } catch {
+    // registry 未初始化时使用兜底
   }
   return DEFAULT_STAT_DISPLAY[statKey as StatKey] || statKey;
 }
@@ -51,11 +55,17 @@ export function getStatLabels(worldType: WorldType): {
   statKeys: StatKey[];
   displayNames: string[];
 } {
-  const worldData = WORLD_DATA[worldType];
   const labels: Record<string, string> = {};
 
-  for (const key of STAT_KEYS) {
-    labels[key] = worldData?.statDisplayNames?.[key] || DEFAULT_STAT_DISPLAY[key];
+  try {
+    const worldData = getWorldData(worldType);
+    for (const key of STAT_KEYS) {
+      labels[key] = worldData.statDisplayNames?.[key] || DEFAULT_STAT_DISPLAY[key];
+    }
+  } catch {
+    for (const key of STAT_KEYS) {
+      labels[key] = DEFAULT_STAT_DISPLAY[key];
+    }
   }
 
   return {

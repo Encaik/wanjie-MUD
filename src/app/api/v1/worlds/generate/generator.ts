@@ -83,6 +83,7 @@ export function generateWorldBasic(seed: string, worldType?: string): World {
     id: seed,
     random,
     gameVersion: GAME_VERSION,
+    worldviewId: type,
     name,
     type,
     description,

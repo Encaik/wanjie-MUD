@@ -23,10 +23,22 @@ export interface WorldProvider {
   readonly name: string;
   /** 提供者类型：随机生成器或固化模板 */
   readonly type: WorldProviderType;
-  /** 生成单个世界 */
-  generateWorld(seed: string, ascensionCount: number): World;
-  /** 批量生成世界 */
-  generateWorlds(seeds: string[], ascensionCount: number): World[];
+  /**
+   * 生成单个世界
+   *
+   * @param seed - 世界种子
+   * @param ascensionCount - 飞升次数
+   * @param worldviewId - 可选的世界观 ID（用于从特定世界观生成）
+   */
+  generateWorld(seed: string, ascensionCount: number, worldviewId?: string): World;
+  /**
+   * 批量生成世界
+   *
+   * @param seeds - 种子数组
+   * @param ascensionCount - 飞升次数
+   * @param worldviewId - 可选的世界观 ID
+   */
+  generateWorlds(seeds: string[], ascensionCount: number, worldviewId?: string): World[];
   /** 获取提供者元数据 */
   getMetadata(): WorldProviderMetadata;
 }

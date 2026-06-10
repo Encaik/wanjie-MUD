@@ -394,6 +394,8 @@ export interface World {
   random: number;
   /** 世界生成时的游戏版本号（semver 格式，如 "0.1.0"） */
   gameVersion: string;
+  /** 世界观标识（English kebab-case，对应 WorldviewDefinition.id，如 "cultivation"） */
+  worldviewId: string;
   name: string;
   type: WorldType;
   description: string;

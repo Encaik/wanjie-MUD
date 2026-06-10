@@ -22,7 +22,7 @@ export class ModRandomWorldProvider implements WorldProvider {
     this.name = name;
   }
 
-  generateWorld(seed: string, ascensionCount: number): World {
+  generateWorld(seed: string, ascensionCount: number, _worldviewId?: string): World {
     const world = generateWorld(seed, ascensionCount);
     // 使用 provider-aware ID 重新分配，保证跨 provider 的唯一性
     return {
@@ -31,8 +31,8 @@ export class ModRandomWorldProvider implements WorldProvider {
     };
   }
 
-  generateWorlds(seeds: string[], ascensionCount: number): World[] {
-    return seeds.map(seed => this.generateWorld(seed, ascensionCount));
+  generateWorlds(seeds: string[], ascensionCount: number, worldviewId?: string): World[] {
+    return seeds.map(seed => this.generateWorld(seed, ascensionCount, worldviewId));
   }
 
   getMetadata(): WorldProviderMetadata {

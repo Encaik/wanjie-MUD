@@ -15,7 +15,8 @@ import {
   getOpportunityLevelBgClass,
 } from '@/modules/exploration/data/opportunityConfig';
 import { getRarityColorClass, getRarityBgClass } from '@/modules/equipment/data/raritySystem';
-import { WORLD_DATA, WORLD_COEFFICIENTS } from './worldData';
+import { WorldDataRegistry } from '@/core/registry';
+import { WORLD_COEFFICIENTS } from './worldData';
 import {
   WorldDanger,
   WorldOpportunity,
@@ -158,9 +159,18 @@ export function generateWorldDangers(
 
   if (dangerCount === 0) return [];
 
+  // 优先从 registry 获取危险池，回退到硬编码常量
+  const registry = WorldDataRegistry.getInstance();
+  const registryDangers = registry.getDangersForWorld(worldType);
+  const dangerPool: WorldDanger[] = registryDangers.length > 0 ? registryDangers.map(d => ({
+    ...d,
+    dangerLevel: d.dangerLevel || 1,
+    worldTypes: d.worldTypes,
+  })) as WorldDanger[] : WORLD_DANGERS;
+
   // 筛选符合难度等级的危险
   const maxLevel = getMaxDangerLevel(difficultyCoefficient);
-  const availableDangers = WORLD_DANGERS.filter(d => {
+  const availableDangers = dangerPool.filter(d => {
     // 检查难度等级
     if (d.dangerLevel > maxLevel) return false;
     // 检查世界类型限制
@@ -217,11 +227,19 @@ export function generateWorldOpportunities(
   // 计算机缘数量
   const opportunityCount = calculateOpportunityCount(_difficultyCoefficient);
   
+  // 优先从 registry 获取机缘池，回退到硬编码常量
+  const oppRegistry = WorldDataRegistry.getInstance();
+  const registryOpps = oppRegistry.getOpportunitiesForWorld(worldType);
+  const opportunityPool: WorldOpportunity[] = registryOpps.length > 0 ? registryOpps.map(o => ({
+    ...o,
+    opportunityLevel: o.opportunityLevel || 1,
+  })) as WorldOpportunity[] : WORLD_OPPORTUNITIES;
+
   // 获取危险ID集合，用于检查冲突
   const dangerIds = new Set(dangers.map(d => d.id));
-  
+
   // 所有机缘都可以出现（不再限制机缘等级）
-  const availableOpportunities = WORLD_OPPORTUNITIES.filter(o => {
+  const availableOpportunities = opportunityPool.filter(o => {
     // 检查世界类型限制
     if (o.worldTypes && o.worldTypes.length > 0 && !o.worldTypes.includes(worldType)) {
       return false;
@@ -322,8 +340,21 @@ function weightedRandomIndex(weights: number[], rng: () => number = Math.random)
 
 /**
  * 获取世界基础系数
+ * 优先从 WorldDataRegistry 读取，回退到硬编码常量
  */
 export function getWorldBaseCoefficient(worldType: WorldType): number {
+  // 优先从 registry 获取
+  const registry = WorldDataRegistry.getInstance();
+  const worldview = registry.getWorldview(worldType);
+  if (worldview) return worldview.baseCoefficient;
+
+  const worldData = registry.getWorldType(worldType);
+  if (worldData) return worldData.baseCoefficient;
+
+  const coeff = registry.getCoefficient(worldType);
+  if (coeff !== 1.0) return coeff;
+
+  // 回退到硬编码常量
   return WORLD_COEFFICIENTS[worldType] || 1.0;
 }
 

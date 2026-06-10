@@ -299,6 +299,7 @@ export function generateWorld(seed: string = '', ascensionCount: number = 0): Wo
     id: actualSeed,
     random: hashString(actualSeed),
     gameVersion: GAME_VERSION,
+    worldviewId: type,
     name,
     type,
     description,

@@ -5,7 +5,7 @@
  * 在开发模式启动时自动输出审查报告。
  */
 import type { WorldStats } from '@/modules/identity/data/worldData';
-import { WORLD_DATA } from '@/modules/identity/data/worldData';
+import { getWorldData, getWorldTypes } from '@/modules/identity/data/worldData';
 import { hasUniqueMechanics } from '@/modules/identity/logic/worlds/factory';
 import type { WorldType } from '@/core/types';
 
@@ -123,8 +123,8 @@ function checkContentLayer(a: WorldStats, b: WorldStats): number {
  * 计算单个世界的三层差异化得分（相对于所有其他世界的平均分）
  */
 export function calculateDifferentiationScore(worldType: WorldType): DifferentiationScore {
-  const data = WORLD_DATA[worldType];
-  const otherTypes = (Object.keys(WORLD_DATA) as WorldType[]).filter(t => t !== worldType);
+  const data = getWorldData(worldType);
+  const otherTypes = (getWorldTypes() as WorldType[]).filter(t => t !== worldType);
 
   const details: string[] = [];
   let totalNumeric = 0;
@@ -132,7 +132,7 @@ export function calculateDifferentiationScore(worldType: WorldType): Differentia
   let totalContent = 0;
 
   for (const otherType of otherTypes) {
-    const otherData = WORLD_DATA[otherType];
+    const otherData = getWorldData(otherType);
     totalNumeric += checkNumericLayer(data, otherData);
     totalMechanic += checkMechanicLayer(worldType, otherType);
     totalContent += checkContentLayer(data, otherData);
@@ -164,15 +164,15 @@ export function calculateDifferentiationScore(worldType: WorldType): Differentia
  * 计算所有世界对之间的相似度，找出高重叠对
  */
 export function findHighOverlapPairs(): WorldPairSimilarity[] {
-  const types = Object.keys(WORLD_DATA) as WorldType[];
+  const types = getWorldTypes() as WorldType[];
   const pairs: WorldPairSimilarity[] = [];
 
   for (let i = 0; i < types.length; i++) {
     for (let j = i + 1; j < types.length; j++) {
       const a = types[i];
       const b = types[j];
-      const dataA = WORLD_DATA[a];
-      const dataB = WORLD_DATA[b];
+      const dataA = getWorldData(a);
+      const dataB = getWorldData(b);
 
       const contentSimilarity = 100 - checkContentLayer(dataA, dataB);
       const mechanicSimilarity = 100 - checkMechanicLayer(a, b);
@@ -204,7 +204,7 @@ export function generateAuditReport(): string {
   // 各世界得分
   lines.push('【各世界差异化得分】');
   lines.push('─'.repeat(50));
-  for (const type of Object.keys(WORLD_DATA) as WorldType[]) {
+  for (const type of getWorldTypes() as WorldType[]) {
     const score = calculateDifferentiationScore(type);
     const status = score.total >= 60 ? '✅' : '⚠️';
     lines.push(`  ${status} ${type.padEnd(6)} | 数值:${score.numeric}% 机制:${score.mechanic}% 内容:${score.content}% → 总分:${score.total}%`);

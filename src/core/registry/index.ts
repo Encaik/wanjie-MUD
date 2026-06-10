@@ -14,6 +14,25 @@ export {
 } from './WorldDataRegistry';
 
 export type {
+  // 世界观文本类型
+  WorldTerminology,
+  WorldStatNames,
+  WorldCombatTexts,
+  WorldCultivationTexts,
+  WorldResourceTexts,
+  WorldItemTexts,
+  WorldDungeonTexts,
+  WorldUITexts,
+  WorldBreakthroughTexts,
+  WorldMessageTexts,
+  PathTypeId,
+  StatKey,
+  PathTextDefinition,
+  WorldPathTexts,
+  WorldTextDefinition,
+  // 世界观定义
+  WorldviewDefinition,
+  // 旧类型（过渡期）
   WorldTypeData,
   WorldVisualConfig,
   WorldImpactData,
@@ -30,4 +49,5 @@ export type {
   RealmSystemData,
   WorldTextData,
   RewardCoefficientData,
+  WorldStatsData,
 } from './WorldDataRegistry';
