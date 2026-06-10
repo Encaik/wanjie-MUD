@@ -98,5 +98,8 @@ Desktop.ini
 
 .coze-logs
 
+# Claude
+.claude/settings.local.json
+
 # API data (worlds storage)
 .data/

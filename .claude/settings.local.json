@@ -18,7 +18,9 @@
       "Bash(command -v pnpm)",
       "Bash(command -v npx)",
       "Bash(pnpm add *)",
-      "Bash(openspec list *)"
+      "Bash(openspec list *)",
+      "Bash(git commit -m 'feat\\(api\\): 搭建后端API层与世界生成接口，切换为服务端模式 *)",
+      "Bash(git rm *)"
     ]
   }
 }
