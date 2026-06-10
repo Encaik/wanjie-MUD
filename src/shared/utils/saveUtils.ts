@@ -3,7 +3,11 @@
  * 实现原子写入、备份和错误恢复
  */
 
+import { createLogger } from '@/core/logger';
 import { GameState } from '@/core/types';
+
+/** SaveUtils 日志记录器 */
+const log = createLogger('SaveUtils');
 
 const STORAGE_KEY = 'gameState';
 const BACKUP_KEY = 'gameState_backup';
@@ -99,7 +103,7 @@ function saveToStorage(json: string, compressed: boolean): SaveResult {
       try {
         localStorage.setItem(STORAGE_KEY, backup);
       } catch (rollbackError) {
-        console.error('[SaveUtils] Rollback failed:', rollbackError);
+        log.error('Rollback failed:', rollbackError);
       }
     }
     
@@ -128,21 +132,21 @@ export function loadGameStateWithRecovery(): GameState | null {
     }
     
     // 主存档损坏或不存在，尝试备份
-    console.warn('[SaveUtils] Main save corrupted or missing, trying backup...');
+    log.warn('Main save corrupted or missing, trying backup...');
     const backup = localStorage.getItem(BACKUP_KEY);
     if (backup) {
       const parsed = JSON.parse(backup);
       if (parsed && typeof parsed.phase === 'string') {
         // 恢复主存档
         localStorage.setItem(STORAGE_KEY, backup);
-        console.log('[SaveUtils] Restored from backup');
+        log.info('Restored from backup');
         return parsed as GameState;
       }
     }
     
     return null;
   } catch (e) {
-    console.error('[SaveUtils] Load failed:', e);
+    log.error('Load failed:', e);
     
     // 尝试备份恢复
     try {
@@ -169,7 +173,7 @@ export function clearAllSaveData(): void {
     localStorage.removeItem(BACKUP_KEY);
     localStorage.removeItem(TEMP_KEY);
   } catch (e) {
-    console.error('[SaveUtils] Clear failed:', e);
+    log.error('Clear failed:', e);
   }
 }
 
@@ -180,7 +184,7 @@ export function exportSaveToString(state: GameState): string {
   try {
     return JSON.stringify(state);
   } catch (e) {
-    console.error('[SaveUtils] Export failed:', e);
+    log.error('Export failed:', e);
     return '';
   }
 }
@@ -196,7 +200,7 @@ export function importSaveFromString(jsonString: string): GameState | null {
     }
     return null;
   } catch (e) {
-    console.error('[SaveUtils] Import failed:', e);
+    log.error('Import failed:', e);
     return null;
   }
 }

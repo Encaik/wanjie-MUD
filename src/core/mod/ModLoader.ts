@@ -13,14 +13,7 @@
  * @module shared/lib/mod
  */
 
-import type {
-  ModManifest,
-  ModLoadStatus,
-  ModLoadProgressEvent,
-  ModLoadCompleteEvent,
-  LoadedMod,
-} from './ModManifest';
-import { parseManifest, ModLoadError } from './ModManifest';
+import { createLogger } from '@/core/logger';
 import {
   WorldDataRegistry,
 } from '@/core/registry/WorldDataRegistry';
@@ -34,8 +27,21 @@ import type {
   RealmSystemData,
   WorldTextData,
 } from '@/core/registry/WorldDataRegistry';
-import { validateWorldTemplate } from '@/core/world/validateWorldTemplate';
 import type { WorldTemplate } from '@/core/world/types';
+import { validateWorldTemplate } from '@/core/world/validateWorldTemplate';
+
+import { parseManifest, ModLoadError } from './ModManifest';
+
+import type {
+  ModManifest,
+  ModLoadStatus,
+  ModLoadProgressEvent,
+  ModLoadCompleteEvent,
+  LoadedMod,
+} from './ModManifest';
+
+/** ModLoader 日志记录器 */
+const log = createLogger('ModLoader');
 
 // ============================================
 // Mod 索引类型
@@ -73,7 +79,7 @@ export type ModCompleteCallback = (event: ModLoadCompleteEvent) => void;
  * ```typescript
  * const loader = new ModLoader();
  * const result = await loader.loadAll();
- * console.log(`Loaded ${result.loaded} mods, ${result.failed} failed`);
+ * log.info(`Loaded ${result.loaded} mods, ${result.failed} failed`);
  * ```
  */
 export class ModLoader {
@@ -143,7 +149,7 @@ export class ModLoader {
    */
   async loadAll(): Promise<ModLoadCompleteEvent> {
     if (this.loading) {
-      console.warn('[ModLoader] 已经在加载中，跳过重复调用');
+      log.warn('已经在加载中，跳过重复调用');
       return { loaded: this.loadedMods.filter(m => m.status === 'loaded').length, failed: this.loadedMods.filter(m => m.status === 'error').length, total: this.loadedMods.length };
     }
 
@@ -154,7 +160,7 @@ export class ModLoader {
       // 1. 发现 Mod
       const entries = await this.discoverMods();
       if (entries.length === 0) {
-        console.warn('[ModLoader] 未发现任何 Mod，游戏数据可能不完整');
+        log.warn('未发现任何 Mod，游戏数据可能不完整');
         const event: ModLoadCompleteEvent = { loaded: 0, failed: 0, total: 0 };
         this.onComplete?.(event);
         return event;
@@ -189,7 +195,7 @@ export class ModLoader {
           if (entry.id === 'wanjie-core') {
             failedRequired.push({ id: entry.id, name: entry.id, error: errorMsg });
           }
-          console.error(`[ModLoader] 加载 Mod "${entry.id}" 失败:`, errorMsg);
+          log.error(`加载 Mod "${entry.id}" 失败:`, errorMsg);
         }
       }
 
@@ -220,25 +226,33 @@ export class ModLoader {
         .map(id => ({ id, manifest: manifests.get(id)! }))
         .filter(({ id }) => manifests.has(id));
 
-      // 4. 加载数据文件并注册
-      for (const { id, manifest } of validMods) {
-        try {
-          await this.loadModDataAndRegister(id, manifest);
-        } catch (err) {
-          const errorMsg = err instanceof Error ? err.message : '未知错误';
-          console.error(`[ModLoader] 注册 Mod "${id}" 数据失败:`, errorMsg);
-          const mod = this.loadedMods.find(m => m.manifest.id === id);
-          if (mod) {
-            mod.status = 'error';
-            mod.error = errorMsg;
+      // 4. 并发加载各 Mod 数据文件并注册
+      const loadResults = await Promise.all(
+        validMods.map(async ({ id, manifest }) => {
+          try {
+            await this.loadModDataAndRegister(id, manifest);
+            return { id, success: true as const };
+          } catch (err) {
+            const errorMsg = err instanceof Error ? err.message : '未知错误';
+            log.error(`注册 Mod "${id}" 数据失败:`, errorMsg);
+            const mod = this.loadedMods.find(m => m.manifest.id === id);
+            if (mod) {
+              mod.status = 'error';
+              mod.error = errorMsg;
+            }
+            return { id, success: false as const, error: errorMsg, required: manifest.required, name: manifest.name };
           }
+        })
+      );
 
-          // 强制 Mod 数据注册失败也抛出
-          if (manifest.required) {
-            failedRequired.push({ id, name: manifest.name, error: errorMsg });
-          }
-          loaded--;
+      // 处理并发加载结果
+      for (const result of loadResults) {
+        if (!result.success) {
           failed++;
+          loaded--;
+          if (result.required) {
+            failedRequired.push({ id: result.id, name: result.name!, error: result.error! });
+          }
         }
       }
 
@@ -278,18 +292,18 @@ export class ModLoader {
       const url = `${this.basePath}/mod-list.json`;
       const response = await fetch(url);
       if (!response.ok) {
-        console.warn(`[ModLoader] 无法获取 Mod 列表: ${response.status} ${response.statusText}`);
+        log.warn(`无法获取 Mod 列表: ${response.status} ${response.statusText}`);
         return [];
       }
       const data: ModList = await response.json();
       if (!data.mods || !Array.isArray(data.mods)) {
-        console.warn('[ModLoader] mod-list.json 格式错误：缺少 mods 数组');
+        log.warn('mod-list.json 格式错误：缺少 mods 数组');
         return [];
       }
       return data.mods;
     } catch (err) {
       // 文件不存在或网络错误：优雅降级
-      console.log('[ModLoader] 未发现 mod-list.json，无外挂 Mod');
+      log.info('未发现 mod-list.json，无外挂 Mod');
       return [];
     }
   }
@@ -317,12 +331,12 @@ export class ModLoader {
   /**
    * 加载 Mod 数据文件并注册到 WorldDataRegistry
    *
+   * 优先尝试加载构建时生成的合并数据文件 data.json（单次请求）。
+   * 若 data.json 不存在（404），则回退到按 dataFiles 逐文件加载。
+   *
    * 支持两种 dataFiles 格式：
    * - 字符串：单一数据文件（向后兼容），如 `"data/worlds.json"`
    * - 字符串数组：多个独立数据文件，如 `["data/world/cultivation.json", ...]`
-   *
-   * 数组模式下每个文件包含一个独立条目，按数组顺序依次加载和注册。
-   * 单个文件失败不影响其他文件。
    *
    * @param modId - Mod ID
    * @param manifest - Mod 清单
@@ -330,13 +344,19 @@ export class ModLoader {
   async loadModDataAndRegister(modId: string, manifest: ModManifest): Promise<void> {
     const baseUrl = `${this.basePath}/${modId}`;
 
-    // 按 contentTypes 顺序加载
+    // 优先尝试加载构建时合并的数据文件
+    const mergedLoaded = await this.loadMergedData(modId, manifest);
+
+    // 按 contentTypes 顺序加载（合并数据已加载的跳过）
     for (const contentType of manifest.contentTypes) {
       const dataPathValue = manifest.dataFiles[contentType];
       if (!dataPathValue) {
-        console.warn(`[ModLoader] Mod "${modId}" 的 contentTypes 包含 "${contentType}" 但 dataFiles 中未配置路径，跳过`);
+        log.warn(`Mod "${modId}" 的 contentTypes 包含 "${contentType}" 但 dataFiles 中未配置路径，跳过`);
         continue;
       }
+
+      // world 类型如果已通过合并数据加载，跳过独立文件
+      if (contentType === 'world' && mergedLoaded) continue;
 
       // 归一化为数组处理
       const dataPaths = Array.isArray(dataPathValue) ? dataPathValue : [dataPathValue];
@@ -353,13 +373,13 @@ export class ModLoader {
 
           const response = await fetch(url);
           if (!response.ok) {
-            console.warn(`[ModLoader] 无法加载 "${modId}" 的数据文件: ${dataPath} (HTTP ${response.status})`);
+            log.warn(`无法加载 "${modId}" 的数据文件: ${dataPath} (HTTP ${response.status})`);
             continue;
           }
           const data = await response.json();
           this.registerData(modId, contentType, data, manifest, Array.isArray(dataPathValue));
         } catch (err) {
-          console.warn(`[ModLoader] 加载 "${modId}" 的数据文件 "${dataPath}" 失败:`, err);
+          log.warn(`加载 "${modId}" 的数据文件 "${dataPath}" 失败:`, err);
           // 单个文件失败不阻塞其他文件
         }
       }
@@ -368,6 +388,70 @@ export class ModLoader {
     // 加载固化世界模板（如果 mod 声明了 worldTemplates）
     if (manifest.worldTemplates && manifest.worldTemplates.length > 0) {
       await this.loadTemplateWorlds(modId, baseUrl, manifest);
+    }
+  }
+
+  /**
+   * 尝试加载构建时合并的数据文件 data.json
+   *
+   * 若文件存在且解析成功，按 content type 分发注册，返回 true。
+   * 若 404 或加载失败，返回 false，调用方应回退到逐文件加载。
+   *
+   * @param modId - Mod ID
+   * @param _manifest - Mod 清单（预留，当前未使用）
+   * @returns 是否成功加载合并数据
+   */
+  private async loadMergedData(modId: string, _manifest: ModManifest): Promise<boolean> {
+    const url = `${this.basePath}/${modId}/data.json`;
+    try {
+      const response = await fetch(url);
+      if (response.status === 404) {
+        log.info(`Mod "${modId}": 未找到合并数据文件，回退到逐文件加载`);
+        return false;
+      }
+      if (!response.ok) {
+        log.warn(`Mod "${modId}": 合并数据文件加载失败 (HTTP ${response.status})，回退到逐文件加载`);
+        return false;
+      }
+      const merged = await response.json();
+      if (!merged || typeof merged !== 'object' || Array.isArray(merged)) {
+        log.warn(`Mod "${modId}": 合并数据文件格式异常，回退到逐文件加载`);
+        return false;
+      }
+
+      // 按 content type 分发注册
+      for (const [contentType, data] of Object.entries(merged as Record<string, unknown>)) {
+        if (contentType === 'world' && data && typeof data === 'object' && !Array.isArray(data)) {
+          this.registerMergedWorldData(modId, data as Record<string, unknown>);
+        } else if (contentType === 'styles') {
+          // styles 不在合并数据中处理，跳过
+        } else {
+          log.warn(`Mod "${modId}": 未知的合并数据类型 "${contentType}"，跳过`);
+        }
+      }
+      log.info(`Mod "${modId}": 通过合并数据文件加载成功`);
+      return true;
+    } catch (err) {
+      log.warn(`Mod "${modId}": 合并数据文件加载异常，回退到逐文件加载:`, err);
+      return false;
+    }
+  }
+
+  /**
+   * 注册合并数据中的 world 条目
+   *
+   * 合并数据中 world 类型的值为 `{ cultivation: {...}, martial: {...} }` 格式，
+   * 遍历每个条目并调用 registerData 进行注册。
+   *
+   * @param modId - Mod ID
+   * @param worldEntries - 以世界类型为 key 的世界数据对象映射
+   */
+  private registerMergedWorldData(modId: string, worldEntries: Record<string, unknown>): void {
+    for (const [, worldData] of Object.entries(worldEntries)) {
+      if (worldData && typeof worldData === 'object' && !Array.isArray(worldData)) {
+        // 每个世界条目是自包含对象，isArrayMode=true 以通过 registerData 校验
+        this.registerData(modId, 'world', worldData, undefined as unknown as ModManifest, true);
+      }
     }
   }
 
@@ -383,7 +467,7 @@ export class ModLoader {
       try {
         const response = await fetch(url);
         if (!response.ok) {
-          console.warn(`[ModLoader] 无法加载固化世界模板: "${templateId}" (HTTP ${response.status})`);
+          log.warn(`无法加载固化世界模板: "${templateId}" (HTTP ${response.status})`);
           continue;
         }
         const data = await response.json();
@@ -391,8 +475,8 @@ export class ModLoader {
         // 校验模板结构
         const result = validateWorldTemplate(data);
         if (!result.valid) {
-          console.warn(
-            `[ModLoader] 固化世界模板 "${templateId}" 校验失败:`,
+          log.warn(
+            `固化世界模板 "${templateId}" 校验失败:`,
             result.errors.join('; ')
           );
           continue;
@@ -401,9 +485,9 @@ export class ModLoader {
         // 注册到 WorldDataRegistry
         const template = data as WorldTemplate;
         this.registry.registerWorldTemplate(template);
-        console.log(`[ModLoader] Mod "${modId}": 注册固化世界模板 "${templateId}" (${template.world.name})`);
+        log.info(`Mod "${modId}": 注册固化世界模板 "${templateId}" (${template.world.name})`);
       } catch (err) {
-        console.warn(`[ModLoader] 加载固化世界模板 "${templateId}" 失败:`, err);
+        log.warn(`加载固化世界模板 "${templateId}" 失败:`, err);
       }
     }
   }
@@ -418,7 +502,7 @@ export class ModLoader {
     try {
       const response = await fetch(cssUrl);
       if (!response.ok) {
-        console.warn(`[ModLoader] Mod "${modId}" 样式文件加载失败: HTTP ${response.status}`);
+        log.warn(`Mod "${modId}" 样式文件加载失败: HTTP ${response.status}`);
         // 触发 StyleLoader 错误回调
         const { StyleLoader } = await import('@/modules/theme/logic/styleLoader');
         StyleLoader.getInstance().triggerError(modId, new Error(`HTTP ${response.status}`));
@@ -432,10 +516,10 @@ export class ModLoader {
       // 计算优先级：基础 Mod 优先级 3，依赖项每增加一层 +1
       const priority = 3;
       styleLoader.injectModStyles(modId, cssContent, priority);
-      console.log(`[ModLoader] Mod "${modId}": 注入样式成功`);
+      log.info(`Mod "${modId}": 注入样式成功`);
     } catch (err) {
       const error = err instanceof Error ? err : new Error(String(err));
-      console.warn(`[ModLoader] Mod "${modId}" 样式注入失败:`, error.message);
+      log.warn(`Mod "${modId}" 样式注入失败:`, error.message);
       // 不阻塞其他 Mod
     }
   }
@@ -460,12 +544,12 @@ export class ModLoader {
     isArrayMode = false
   ): void {
     if (contentType !== 'world') {
-      console.warn(`[ModLoader] Mod "${modId}": 未知的内容类型 "${contentType}"，跳过`);
+      log.warn(`Mod "${modId}": 未知的内容类型 "${contentType}"，跳过`);
       return;
     }
 
     if (!isArrayMode || !data || typeof data !== 'object' || Array.isArray(data)) {
-      console.warn(`[ModLoader] Mod "${modId}": world 类型必须使用数组模式，跳过`);
+      log.warn(`Mod "${modId}": world 类型必须使用数组模式，跳过`);
       return;
     }
 
@@ -516,7 +600,7 @@ export class ModLoader {
       this.registry.registerOpportunities(world.opportunities as OpportunityData[]);
     }
 
-    console.log(`[ModLoader] Mod "${modId}": 注册了世界 "${worldType}"（含境界/势力/姓名/文案/词条/危险/机缘）`);
+    log.info(`Mod "${modId}": 注册了世界 "${worldType}"（含境界/势力/姓名/文案/词条/危险/机缘）`);
   }
 
   /**
@@ -537,14 +621,14 @@ export class ModLoader {
 
     function visit(id: string): boolean {
       if (inStack.has(id)) {
-        console.error(`[ModLoader] 检测到循环依赖: ${id} 在依赖链中已存在`);
+        log.error(`检测到循环依赖: ${id} 在依赖链中已存在`);
         return false;
       }
       if (visited.has(id)) return true;
 
       const manifest = modMap.get(id);
       if (!manifest) {
-        console.error(`[ModLoader] 缺失依赖: "${id}" 不在已发现的 Mod 列表中`);
+        log.error(`缺失依赖: "${id}" 不在已发现的 Mod 列表中`);
         return false;
       }
 
@@ -552,7 +636,7 @@ export class ModLoader {
 
       for (const depId of manifest.dependencies) {
         if (!modMap.has(depId)) {
-          console.error(`[ModLoader] Mod "${id}" 依赖 "${depId}"，但 "${depId}" 不存在`);
+          log.error(`Mod "${id}" 依赖 "${depId}"，但 "${depId}" 不存在`);
           inStack.delete(id);
           return false;
         }
@@ -577,8 +661,8 @@ export class ModLoader {
     // 未被访问到的 ID（因循环/缺失依赖被跳过）
     const unvisited = mods.filter(m => !visited.has(m.id));
     if (unvisited.length > 0) {
-      console.error(
-        `[ModLoader] 以下 Mod 因依赖问题被跳过: ${unvisited.map(m => m.id).join(', ')}`
+      log.error(
+        `以下 Mod 因依赖问题被跳过: ${unvisited.map(m => m.id).join(', ')}`
       );
     }
 

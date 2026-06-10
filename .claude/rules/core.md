@@ -131,6 +131,13 @@ modules/<domain>/
 - ❌ 函数返回值无类型标注（除非 void 且上下文明确）
 - ❌ 使用 `as` 类型断言绕过类型检查（除非有充分理由 + 注释）
 
+### 5.4 核心基础设施复用（MUST）
+
+- ❌ 在 `core/` 之外重新实现 `core/` 已有的功能（如自己写 logger、自己写事件总线、自己写计算引擎）
+- ❌ 绕过 `core/` 提供的 API 直接用底层方式实现（如用 `console.log` 代替 `createLogger()`、用自定义事件代替 `gameEventBus`）
+- ❌ 在 `modules/` 或 `shared/` 中创建与 `core/` 功能重复的系统
+- ✅ 开发前必须确认 `core/` 中是否已有对应能力：`core/logger/`（系统日志）、`core/message-log/`（玩家消息）、`core/events/`（事件总线）、`core/calculation/`（数值计算）、`core/types/`（核心类型）、`core/world/`（世界系统）、`core/registry/`（数据注册）、`core/engine/`（引擎集成）
+
 ---
 
 ## 六、导入路径

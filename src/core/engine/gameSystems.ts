@@ -3,10 +3,14 @@
  * 统一管理事件系统、成就系统、图鉴系统
  */
 
+import { emit, gameEventBus } from '@/core/events';
+import { createLogger } from '@/core/logger';
+import { GameStatistics, Technique, Equipment } from '@/core/types';
 import { achievementSystem, AchievementConfig } from '@/modules/collection/logic/achievement/achievementSystem';
 import { collectionSystem, BondConfig } from '@/modules/collection/logic/collectionSystem';
-import { emit, gameEventBus } from '@/core/events';
-import { GameStatistics, Technique, Equipment } from '@/core/types';
+
+/** GameSystems 日志记录器 */
+const log = createLogger('GameSystems');
 
 // ============================================
 // 内联配置（避免异步加载）
@@ -391,7 +395,7 @@ class GameSystemsManager {
     collectionSystem.initializeWithConfig(BOND_CONFIGS);
 
     this.initialized = true;
-    console.log('[GameSystems] All systems initialized');
+    log.info('All systems initialized');
   }
 
   /**

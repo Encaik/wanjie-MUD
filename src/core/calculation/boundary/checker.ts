@@ -4,14 +4,18 @@
  * 提供数值边界检查和保护功能
  */
 
-import { 
-  FLOAT_EPSILON, 
-  MIN_POSITIVE, 
-  SAFE_INTEGER_MAX, 
+import { createLogger } from '@/core/logger';
+
+import {
+  FLOAT_EPSILON,
+  MIN_POSITIVE,
+  SAFE_INTEGER_MAX,
   SAFE_INTEGER_MIN,
-  LOG_PREFIX,
 } from '../constants';
 import { StatBounds } from '../types';
+
+/** Calculation 日志记录器 */
+const log = createLogger('Calculation');
 
 // ============================================
 // 边界检查器
@@ -29,7 +33,7 @@ export class BoundaryChecker {
     // 特殊值处理
     if (!Number.isFinite(value)) {
       if (process.env.NODE_ENV === 'development') {
-        console.warn(`${LOG_PREFIX} 非有限值检测: ${value}, 使用默认值: ${bounds.defaultValue}`);
+        log.warn(`非有限值检测: ${value}, 使用默认值: ${bounds.defaultValue}`);
       }
       return bounds.defaultValue;
     }
@@ -41,7 +45,7 @@ export class BoundaryChecker {
           throw new Error(`值 ${value} 低于下界 ${bounds.min}`);
         case 'warn':
           if (process.env.NODE_ENV === 'development') {
-            console.warn(`${LOG_PREFIX} 值 ${value} 低于下界 ${bounds.min}, 已截断`);
+            log.warn(`值 ${value} 低于下界 ${bounds.min}, 已截断`);
           }
           break;
         case 'clamp':
@@ -58,7 +62,7 @@ export class BoundaryChecker {
           throw new Error(`值 ${value} 超过上界 ${bounds.max}`);
         case 'warn':
           if (process.env.NODE_ENV === 'development') {
-            console.warn(`${LOG_PREFIX} 值 ${value} 超过上界 ${bounds.max}, 已截断`);
+            log.warn(`值 ${value} 超过上界 ${bounds.max}, 已截断`);
           }
           break;
         case 'clamp':
@@ -167,7 +171,7 @@ export class SafeMath {
     // 除零保护
     if (Math.abs(b) < MIN_POSITIVE) {
       if (process.env.NODE_ENV === 'development') {
-        console.warn(`${LOG_PREFIX} 除零保护: ${a} / ${b}, 返回默认值 ${defaultValue}`);
+        log.warn(`除零保护: ${a} / ${b}, 返回默认值 ${defaultValue}`);
       }
       return defaultValue;
     }
@@ -206,7 +210,7 @@ export class SafeMath {
   static sqrt(value: number): number {
     if (value < 0) {
       if (process.env.NODE_ENV === 'development') {
-        console.warn(`${LOG_PREFIX} 负数开方: ${value}, 返回 0`);
+        log.warn(`负数开方: ${value}, 返回 0`);
       }
       return 0;
     }
@@ -219,7 +223,7 @@ export class SafeMath {
   static log(value: number): number {
     if (value <= 0) {
       if (process.env.NODE_ENV === 'development') {
-        console.warn(`${LOG_PREFIX} 非正数对数: ${value}, 返回 0`);
+        log.warn(`非正数对数: ${value}, 返回 0`);
       }
       return 0;
     }

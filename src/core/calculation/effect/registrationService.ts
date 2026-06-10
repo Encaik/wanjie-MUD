@@ -5,11 +5,15 @@
  * 支持按来源类型批量注册和注销
  */
 
+import { createLogger } from '@/core/logger';
+
 import { EffectRegistry } from './registry';
 import { getAdapter, AllAdapters } from '../adapters';
-import { LOG_PREFIX } from '../constants';
 import { CalculationContext } from '../context/types';
 import { UnifiedEffect, EffectSourceType, CalculableStat } from '../types';
+
+/** Calculation 日志记录器 */
+const log = createLogger('Calculation');
 
 // ============================================
 // 注册结果类型
@@ -348,7 +352,7 @@ export class EffectRegistrationService {
     }
     
     if (process.env.NODE_ENV === 'development') {
-      console.log(`${LOG_PREFIX} 从上下文注册效果: ${totalRegistered}个效果`);
+      log.info(`从上下文注册效果: ${totalRegistered}个效果`);
     }
     
     return {

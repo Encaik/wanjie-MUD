@@ -928,6 +928,8 @@ export interface MessageRecord {
   type: 'success' | 'failure' | 'info' | 'warning';
   title: string;
   content: string;
+  /** 消息通道（如 combat、cultivation、system），用于按业务域分类显示 */
+  channel?: string;
   details?: string;
   rewards?: {
     stats?: Partial<GrowthStats>;

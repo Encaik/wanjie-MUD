@@ -67,6 +67,10 @@ import type {
   ActiveEffect,
   ActiveBattleState,
 } from '@/core/types';
+import { createLogger } from '@/core/logger';
+
+/** GameState 日志记录器 */
+const log = createLogger('GameState');
 import type {
   MentalState,
   FactionProgress,
@@ -403,10 +407,10 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     // 使用安全存档函数
     const result = safeSaveGameState(stateToSave);
     if (!result.success) {
-      console.error('Failed to save game state:', result.error);
+      log.error('Failed to save game state:', result.error);
     }
     if (result.compressed) {
-      console.log('[GameState] Save compressed due to storage limit');
+      log.info('Save compressed due to storage limit');
     }
   }, [gameState]);
 
@@ -569,7 +573,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
       gameSystems.initialize();
     }).catch(err => {
       // 初始化失败不阻塞应用
-      console.warn('[GameProvider] GameSystems initialization skipped:', err);
+      log.warn('GameSystems initialization skipped:', err);
     });
     
     return () => {
@@ -1780,7 +1784,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
       const imported = JSON.parse(jsonString);
       setGameState(imported);
     } catch (e) {
-      console.error('Failed to import save:', e);
+      log.error('Failed to import save:', e);
     }
   }, []);
 

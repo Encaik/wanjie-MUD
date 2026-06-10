@@ -8,8 +8,14 @@
  * @module core/events
  */
 
-import type { EventType, GameEvent, EventListener, EventBusOptions, EventMatcher } from './types';
+import { createLogger } from '@/core/logger';
+
 import { matchPattern, isWildcardPattern } from './patternMatcher';
+
+import type { EventType, GameEvent, EventListener, EventBusOptions, EventMatcher } from './types';
+
+/** EventBus 日志记录器 */
+const log = createLogger('EventBus');
 
 // ============================================
 // 内部类型
@@ -240,8 +246,8 @@ export class EventBus {
       try {
         entry.listener(event as GameEvent);
       } catch (error) {
-        console.error(
-          `[EventBus] 监听器执行错误 (${eventType}):`,
+        log.error(
+          `监听器执行错误 (${eventType}):`,
           error
         );
       }

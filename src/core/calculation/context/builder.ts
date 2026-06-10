@@ -4,11 +4,15 @@
  * 负责从各种数据源构建计算上下文
  */
 
+import { createLogger } from '@/core/logger';
+
 import {
   CalculationContext,
   ContextBuilderOptions,
 } from './types';
-import { LOG_PREFIX } from '../constants';
+
+/** Calculation 日志记录器 */
+const log = createLogger('Calculation');
 
 // ============================================
 // 默认选项
@@ -67,7 +71,7 @@ export class ContextBuilder {
     
     // 日志
     if (this.options.enableLogging) {
-      console.log(`${LOG_PREFIX} 构建计算上下文: ${context.calculationId}`);
+      log.info(`构建计算上下文: ${context.calculationId}`);
     }
     
     return context;

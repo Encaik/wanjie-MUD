@@ -7,7 +7,12 @@
  * @module core/events
  */
 
+import { createLogger } from '@/core/logger';
+
 import type { EventType } from './types';
+
+/** EventRegistry 日志记录器 */
+const log = createLogger('EventRegistry');
 
 // ============================================
 // 类型定义
@@ -91,8 +96,8 @@ export class EventRegistry {
   ): ModuleEventEmitter<T> {
     // 重复注册保护：合并而非覆盖
     if (this.namespaces.has(namespace)) {
-      console.warn(
-        `[EventRegistry] 命名空间 "${namespace}" 已被注册，将合并新事件定义（不覆盖已有事件）`
+      log.warn(
+        `命名空间 "${namespace}" 已被注册，将合并新事件定义（不覆盖已有事件）`
       );
       const existing = this.namespaces.get(namespace)!;
       // 只添加不存在的事件
