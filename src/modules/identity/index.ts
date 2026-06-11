@@ -25,7 +25,6 @@ export { WORLD_NAME_POOLS } from './data/namePools';
 
 // —— 世界生成（generateWorld/generateWorlds 已迁至后端 API，前端勿用） ——
 export { generateBackstory } from './logic/generators';
-export { getWorldMechanics, hasUniqueMechanics } from './logic/worlds/factory';
 export type { WorldMechanics } from './logic/worlds/types';
 
 // —— 已生成的世界数据（永久持久化） ——

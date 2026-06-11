@@ -27,7 +27,13 @@
       "Bash(git checkout *)",
       "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\([k for k in d.keys\\(\\)]\\)\")",
       "Bash(node -e \"const d=require\\('./mods/wanjie-core/data/worldview/cultivation.json'\\); console.log\\(Object.keys\\(d\\).join\\(', '\\)\\)\")",
-      "Bash(node -e ' *)"
+      "Bash(node -e ' *)",
+      "Bash(mkdir -p \"D:/vs_workspace/wanjie/wanjie-MUD/src/app/api/v1/worldviews/[id]/mechanics\")",
+      "Bash(git add *)",
+      "Bash(git commit -m 'feat\\(api\\): 新增世界机制API端点，前端通过HTTP获取机制数据 *)"
+    ],
+    "additionalDirectories": [
+      "D:\\vs_workspace\\wanjie\\wanjie-MUD\\src\\app\\api\\v1\\worldviews\\[id]"
     ]
   }
 }

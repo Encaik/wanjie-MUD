@@ -8,7 +8,7 @@
 
 ### Requirement: WorldMechanics 通过注册表获取
 
-世界独特机制 SHALL 通过注册器模式获取，所有已注册世界的 `WorldMechanics` 由 `registerBuiltinMechanics()` 从 `WorldDataRegistry` 的 JSON 配置自动构造。系统 SHALL NOT 使用硬编码的 8 世界映射表，SHALL NOT 包含沉默 Fallback 到修仙机制。
+世界独特机制 SHALL 通过注册器模式获取，所有已注册世界的 `WorldMechanics` 由 `registerBuiltinMechanics()` 从 `WorldViewRegistry` 的 JSON 配置自动构造。系统 SHALL NOT 使用硬编码的 8 世界映射表，SHALL NOT 包含沉默 Fallback 到修仙机制。
 
 #### Scenario: Mod 通过 JSON 配置提供世界机制
 - **WHEN** 一个 Mod 在其世界数据 JSON 中提供 `mechanics` 配置（含 cultivation、combat、exploration、uniqueMechanic）
@@ -43,19 +43,21 @@
 - **WHEN** 调用 `WorldMechanicsRegistry.getInstance().getAll()`
 - **THEN** SHALL 返回 `Map<string, WorldMechanics>` 包含所有已注册的世界机制
 
-### Requirement: 世界机制工厂函数委托注册表
+### Requirement: 前端通过 API 获取机制
 
-`getWorldMechanics()` 工厂函数 SHALL 委托 `WorldMechanicsRegistry`，SHALL NOT 维护独立的硬编码映射表。`factory.ts` SHALL NOT import 任何世界特定的 TS 文件。
+前端组件 SHALL 通过 `GET /api/v1/worldviews/[id]/mechanics` API 获取世界机制数据，SHALL NOT 直接调用 `WorldMechanicsRegistry` 或 `getWorldMechanics()`。`hasUniqueMechanics()` 函数 SHALL 被删除。
 
-#### Scenario: 工厂函数查询注册表
-- **WHEN** 调用 `getWorldMechanics('修仙')`
-- **THEN** 内部 SHALL 调用 `WorldMechanicsRegistry.getInstance().get('修仙')`
-- **AND** 如果注册表无此世界类型，SHALL 抛出 `Error`
+`factory.ts` 中的 `getWorldMechanics()` SHALL 保留为服务端专用（供 init.ts 和 API 路由层使用）。
 
-#### Scenario: 移除 hasUniqueMechanics 硬编码
-- **WHEN** 检查 `factory.ts` 中的 `hasUniqueMechanics()` 函数
-- **THEN** SHALL NOT 存在 `worldType !== '修仙'` 等硬编码比较
-- **AND** 函数实现 SHALL 查询注册表判断是否有独特机制
+#### Scenario: 前端通过 API 查询机制
+- **WHEN** 前端组件需要显示世界机制信息
+- **THEN** SHALL 通过 `fetch('/api/v1/worldviews/:id/mechanics')` 获取
+- **AND** SHALL NOT import `getWorldMechanics` 或 `WorldMechanicsRegistry`
+
+#### Scenario: factory.ts 仅服务端使用
+- **WHEN** 检查 `factory.ts` 的导出
+- **THEN** SHALL NOT 导出 `hasUniqueMechanics()` 函数
+- **AND** `getWorldMechanics()` 仅供 API 路由层和服务端逻辑调用
 
 ### Requirement: WorldMechanics 由纯数据配置驱动
 
@@ -75,23 +77,3 @@
 - **AND** `getCombatParams()` 返回配置中的 `combat` 值
 - **AND** 以此类推所有方法
 
-### Requirement: 模板世界机制自动注册
-
-当 `TemplateWorldProvider` 注册世界模板时，模板中预定义的 `mechanics` 配置 SHALL 自动注册到 `WorldMechanicsRegistry`。
-
-#### Scenario: 模板世界自带机制注册
-- **WHEN** 加载一个包含 `mechanics` 配置的世界模板 JSON
-- **THEN** 系统 SHALL 调用 `buildWorldMechanics(template.mechanics)` 构造机制对象
-- **AND** SHALL 注册到 `WorldMechanicsRegistry`，key 为模板世界的 worldType
-- **AND** 如果该 worldType 已注册机制，SHALL 发出覆盖警告但使用模板提供的机制
-
-#### Scenario: 模板世界无 mechanics 时使用世界类型默认
-- **WHEN** 模板世界的 JSON 中未提供 `mechanics` 字段
-- **AND** 该模板的 worldType 已在 `WorldMechanicsRegistry` 中注册了机制
-- **THEN** SHALL 使用已注册的机制（来自世界类型的默认机制配置）
-- **AND** 不覆盖也不警告
-
-#### Scenario: 模板世界类型未注册机制时抛出
-- **WHEN** 模板世界既未提供 `mechanics` 字段
-- **AND** 该 worldType 在 `WorldMechanicsRegistry` 中也未注册
-- **THEN** 系统 SHALL 在模板注册时抛出 `Error` 明确说明缺失的机制

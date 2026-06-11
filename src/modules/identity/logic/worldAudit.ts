@@ -6,7 +6,7 @@
  */
 import type { WorldStats } from '@/modules/identity/data/worldData';
 import { getWorldData, getWorldTypes } from '@/modules/identity/data/worldData';
-import { hasUniqueMechanics } from '@/modules/identity/logic/worlds/factory';
+import { WorldMechanicsRegistry } from '@/core/registry/WorldMechanicsRegistry';
 import type { WorldType } from '@/core/types';
 
 /** 三层差异化得分 */
@@ -69,8 +69,8 @@ function checkNumericLayer(a: WorldStats, b: WorldStats): number {
 
 /** 检查两个世界类型之间的机制层差异度 */
 function checkMechanicLayer(typeA: WorldType, typeB: WorldType): number {
-  const hasA = hasUniqueMechanics(typeA);
-  const hasB = hasUniqueMechanics(typeB);
+  const hasA = WorldMechanicsRegistry.getInstance().has(typeA);
+  const hasB = WorldMechanicsRegistry.getInstance().has(typeB);
 
   // 两者都有独特机制 → 差异大
   if (hasA && hasB) return 80;
@@ -148,7 +148,7 @@ export function calculateDifferentiationScore(worldType: WorldType): Differentia
   if (avgMechanic < 50) details.push('机制层差异化不足，建议增加独特机制');
   if (avgContent < 50) details.push('内容层差异化不足，建议丰富名称/描述/属性名');
   if (avgNumeric < 40) details.push('数值层差异化过低，建议调整系数/属性');
-  if (!hasUniqueMechanics(worldType)) details.push('该世界缺少独特机制实现');
+  if (!WorldMechanicsRegistry.getInstance().has(worldType)) details.push('该世界缺少独特机制实现');
   if (total >= 60) details.push('整体差异化达标');
 
   return {

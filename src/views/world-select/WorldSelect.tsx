@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
 import { Compass, Skull, Sparkles, ChevronRight, Sword, Info } from 'lucide-react';
 
@@ -8,7 +8,6 @@ import { getStatLabels } from '@/modules/identity/data/statDisplayNames';
 import {
   generateLevelStars,
 } from '@/modules/identity/data/worldEffectsUtils';
-import { getWorldMechanics } from '@/modules/identity/logic/worlds/factory';
 import { RealmTable } from '@/shared/components';
 import { getWorldVisualConfig } from '@/core/registry';
 import type { World, WorldDifficulty } from '@/core/types';
@@ -37,8 +36,49 @@ const difficultyStyles: Record<WorldDifficulty, { badge: string }> = {
   '深渊': { badge: 'bg-purple-500/15 text-purple-600 dark:text-purple-400 border-purple-500/30' },
 };
 
+/** 从 API 获取的独特机制信息 */
+interface MechanicsInfo {
+  name: string;
+  description: string;
+  icon: string;
+}
+
 export function WorldSelect({ worlds, onSelect }: WorldSelectProps) {
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [mechanicsCache, setMechanicsCache] = useState<Record<string, MechanicsInfo | null>>({});
+  const [loadingMechanics, setLoadingMechanics] = useState(false);
+
+  const fetchMechanics = useCallback(async (worldviewId: string) => {
+    if (mechanicsCache[worldviewId] !== undefined) return;
+    setLoadingMechanics(true);
+    try {
+      const res = await fetch(`/api/v1/worldviews/${worldviewId}/mechanics`);
+      if (res.ok) {
+        const data = await res.json();
+        if (data.success) {
+          setMechanicsCache(prev => ({ ...prev, [worldviewId]: data.data.mechanics.uniqueMechanic }));
+        } else {
+          setMechanicsCache(prev => ({ ...prev, [worldviewId]: null }));
+        }
+      } else {
+        setMechanicsCache(prev => ({ ...prev, [worldviewId]: null }));
+      }
+    } catch {
+      setMechanicsCache(prev => ({ ...prev, [worldviewId]: null }));
+    } finally {
+      setLoadingMechanics(false);
+    }
+  }, [mechanicsCache]);
+
+  // 选中卡片时获取机制数据
+  useEffect(() => {
+    if (selectedId) {
+      const world = worlds.find(w => w.id === selectedId);
+      if (world?.worldviewId) {
+        fetchMechanics(world.worldviewId);
+      }
+    }
+  }, [selectedId, worlds, fetchMechanics]);
 
   return (
     <div className="min-h-dvh md:min-h-screen bg-background overflow-auto">
@@ -143,22 +183,24 @@ export function WorldSelect({ worlds, onSelect }: WorldSelectProps) {
                       </div>
 
                       {/* 独特机制 */}
-                      {(() => {
-                        const mech = getWorldMechanics(world.type).getUniqueMechanicDescription();
-                        return (
-                          <div className="bg-primary/5 rounded-md p-2 border border-primary/10">
-                            <div className="flex items-center gap-1 mb-1">
-                              <Info className="w-3 h-3 text-primary/60" />
-                              <span className="text-[10px] text-primary/80 font-medium">
-                                独特机制 · {mech.name}
-                              </span>
-                            </div>
-                            <p className="text-[10px] text-muted-foreground leading-relaxed">
-                              {mech.description}
-                            </p>
+                      {world.worldviewId && mechanicsCache[world.worldviewId] && (
+                        <div className="bg-primary/5 rounded-md p-2 border border-primary/10">
+                          <div className="flex items-center gap-1 mb-1">
+                            <Info className="w-3 h-3 text-primary/60" />
+                            <span className="text-[10px] text-primary/80 font-medium">
+                              独特机制 · {mechanicsCache[world.worldviewId]!.name}
+                            </span>
                           </div>
-                        );
-                      })()}
+                          <p className="text-[10px] text-muted-foreground leading-relaxed">
+                            {mechanicsCache[world.worldviewId]!.description}
+                          </p>
+                        </div>
+                      )}
+                      {world.worldviewId && loadingMechanics && !mechanicsCache[world.worldviewId] && (
+                        <div className="bg-primary/5 rounded-md p-2 border border-primary/10">
+                          <p className="text-[10px] text-muted-foreground">加载机制信息…</p>
+                        </div>
+                      )}
 
                       {/* 危险 */}
                       {world.dangers.length > 0 && (

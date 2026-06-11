@@ -62,25 +62,5 @@ export async function GET(_request: NextRequest) {
     return apiSuccess({ worldviews: summaries, count: summaries.length });
   }
 
-  // 回退：从旧 worldTypes 获取基本信息
-  const worldTypes = registry.getAll();
-  if (worldTypes.length > 0) {
-    const summaries: WorldviewSummary[] = worldTypes.map(wt => ({
-      id: wt.id,
-      name: wt.name,
-      description: wt.description,
-      visualConfig: wt.visualConfig
-        ? {
-            icon: wt.visualConfig.icon,
-            accentColor: wt.visualConfig.accentColor,
-            gradientClass: wt.visualConfig.gradientClass,
-            colorGradient: wt.visualConfig.colorGradient,
-          }
-        : null,
-      builtin: wt.builtin ?? false,
-    }));
-    return apiSuccess({ worldviews: summaries, count: summaries.length });
-  }
-
   return apiError(500, '没有已注册的世界观');
 }
