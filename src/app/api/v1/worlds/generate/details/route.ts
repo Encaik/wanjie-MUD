@@ -17,8 +17,9 @@ import { apiSuccess, apiError } from '@/app/api/result';
 import { ensureWorldSystemInitialized } from '@/app/api/init';
 import { createLogger } from '@/core/logger';
 import { WorldViewRegistry } from '@/core/registry';
-import { generateWorld } from '@/core/world';
+import { generateWorldDetails } from '@/core/world';
 
+import { getWorldById, saveWorld } from '../../store';
 import { generateDetailsForSeed } from '../generator';
 
 /** 日志实例 */
@@ -50,14 +51,36 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    // 如果指定了 worldviewId，使用新的 generateWorld（完整生成）
     if (body.worldviewId) {
+      // 新管线：在已有基础世界上生成详情
       const registry = WorldViewRegistry.getInstance();
       const worldview = registry.get(body.worldviewId);
       if (!worldview) {
         return apiError(400, `世界观 '${body.worldviewId}' 未注册`);
       }
-      const world = generateWorld(worldview, body.seed, 0);
+
+      // 查 DB 确认基础世界已存在
+      const existing = getWorldById(body.seed);
+      if (!existing) {
+        return apiError(404, `世界 "${body.seed}" 不存在，请先生成基础信息`);
+      }
+
+      // 如果已有详情（势力/危险已填充），直接返回
+      if (existing.factions.length > 0 || existing.dangers.length > 0) {
+        return apiSuccess({ world: existing, generatedAt: new Date().toISOString() }, '世界详情已存在，直接返回');
+      }
+
+      // 生成详情字段并合并到基础世界
+      const details = generateWorldDetails(worldview, body.seed);
+      const world: typeof existing = {
+        ...existing,
+        factions: details.factions,
+        majorForces: details.majorForces,
+        dangers: details.dangers,
+        opportunities: details.opportunities,
+      };
+
+      saveWorld(world);
       return apiSuccess({ world, generatedAt: new Date().toISOString() }, '世界详情已生成');
     }
 

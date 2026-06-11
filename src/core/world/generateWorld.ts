@@ -79,10 +79,129 @@ export function getDifficultyFromCoefficient(coefficient: number): WorldDifficul
 // ============================================
 
 /**
- * 从世界观定义生成世界实例
+ * 从世界观定义生成世界详细信息（仅限势力、危险、机缘）
+ *
+ * 纯函数：与 generateWorldBasicFields 配合，用于分步生成场景。
+ * 先在步骤①生成基础信息并存入 DB，再在步骤②调用此函数补全详情。
+ *
+ * 使用带后缀的独立 RNG 流（seed + ':faction' / ':danger' / ':opportunity'），
+ * 确保无论是否先执行过基础生成，详情结果都一致。
+ *
+ * @param worldview - 世界观完整定义
+ * @param seed - 世界种子字符串
+ * @returns 世界详细信息字段（factions, majorForces, dangers, opportunities）
+ */
+export function generateWorldDetails(
+  worldview: WorldviewDefinition,
+  seed: string,
+): Pick<World, 'factions' | 'majorForces' | 'dangers' | 'opportunities'> {
+  const factionRng = createRng(seed + ':faction');
+  const dangerRng = createRng(seed + ':danger');
+  const opportunityRng = createRng(seed + ':opportunity');
+
+  // 势力生成（从门派模板中选取 2-5 个）
+  const factionCount = Math.floor(factionRng() * 4) + 2;
+  const selectedFactions = pickItems(worldview.factions, factionCount, factionRng);
+  const factions: WorldFaction[] = selectedFactions.map(f => ({
+    id: f.id,
+    name: f.name,
+    type: f.type,
+    description: f.description,
+  }));
+  const majorForces = factions.map(f => f.name).join('、') || '未知势力';
+
+  // 危险（从世界观池中选取 2-4 个）
+  const dangerCount = Math.floor(dangerRng() * 3) + 2;
+  const selectedDangers = pickItems(worldview.dangers, dangerCount, dangerRng);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const dangers = selectedDangers.map(d => ({
+    id: d.id,
+    name: d.name,
+    description: d.description,
+    level: d.dangerLevel,
+    type: d.type as WorldDanger['type'],
+    triggerChance: d.triggerCondition.chance,
+  })) as any;
+
+  // 机遇（从世界观池中选取 2-4 个）
+  const opportunityCount = Math.floor(opportunityRng() * 3) + 2;
+  const selectedOpportunities = pickItems(worldview.opportunities, opportunityCount, opportunityRng);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const opportunities = selectedOpportunities.map(o => ({
+    id: o.id,
+    name: o.name,
+    description: o.description,
+    level: o.opportunityLevel,
+    type: o.type as WorldOpportunity['type'],
+    triggerChance: o.triggerCondition.chance,
+  })) as any;
+
+  return { factions, majorForces, dangers, opportunities };
+}
+
+/**
+ * 从世界观定义生成世界基础字段（不含势力/危险/机缘）
+ *
+ * 纯函数：与 generateWorldDetails 配合，用于分步生成场景。
+ *
+ * @param worldview - 世界观完整定义
+ * @param seed - 世界种子字符串
+ * @param ascensionCount - 飞升次数（影响难度系数）
+ * @returns 世界基础字段（不包含 factions, majorForces, dangers, opportunities）
+ */
+function generateWorldBasicFields(
+  worldview: WorldviewDefinition,
+  seed: string,
+  ascensionCount: number,
+): Omit<World, 'factions' | 'majorForces' | 'dangers' | 'opportunities'> {
+  const rng = createRng(seed);
+  const hash = hashString(seed);
+
+  const name = pickItem(worldview.namePrefixes, rng) + pickItem(worldview.nameSuffixes, rng);
+  const description = pickItem(worldview.descriptions, rng);
+  const powerSystem = pickItem(worldview.powerSystems, rng);
+
+  const realmSystem = {
+    mainRealmName: worldview.realmSystem.mainRealmName,
+    subRealmName: worldview.realmSystem.subRealmName,
+    tiers: worldview.realmSystem.tiers.map(t => ({
+      name: t.name,
+      subRealms: [...t.subRealms],
+      levelRange: [...t.levelRange] as [number, number],
+    })),
+    subRealmMultiplier: worldview.realmSystem.subRealmMultiplier,
+    tierJumpMultiplier: worldview.realmSystem.tierJumpMultiplier,
+  };
+
+  const baseCoefficient = worldview.baseCoefficient;
+  const actualCoefficient = calculateDifficultyCoefficient(baseCoefficient, ascensionCount);
+  const difficulty = getDifficultyFromCoefficient(actualCoefficient);
+
+  return {
+    id: seed,
+    random: hash,
+    gameVersion: GAME_VERSION,
+    worldviewId: worldview.id,
+    type: worldview.name,
+    name,
+    description,
+    powerSystem,
+    realmSystem,
+    baseCoefficient,
+    actualCoefficient,
+    difficulty,
+    ratingScore: 0,
+  };
+}
+
+/**
+ * 从世界观定义生成完整世界实例
  *
  * 纯函数：相同 worldview + seed + ascensionCount → 相同 World。
  * 不依赖 Math.random()，所有随机性由 seed 派生。
+ *
+ * 内部调用 generateWorldBasicFields + generateWorldDetails，
+ * 确保完整生成与分步生成（basic → details）的结果一致。
  *
  * @param worldview - 世界观完整定义（从 WorldViewRegistry 获取）
  * @param seed - 世界种子字符串（为空时自动生成）
@@ -104,88 +223,12 @@ export function generateWorld(
   ascensionCount: number = 0
 ): World {
   const actualSeed = seed || generateSeed();
-  const rng = createRng(actualSeed);
-  const hash = hashString(actualSeed);
-
-  // 从世界观池中确定性选取
-  const name = pickItem(worldview.namePrefixes, rng) + pickItem(worldview.nameSuffixes, rng);
-  const description = pickItem(worldview.descriptions, rng);
-  const powerSystem = pickItem(worldview.powerSystems, rng);
-
-  // 境界系统（从世界观定义直接获取）
-  const realmSystem = {
-    mainRealmName: worldview.realmSystem.mainRealmName,
-    subRealmName: worldview.realmSystem.subRealmName,
-    tiers: worldview.realmSystem.tiers.map(t => ({
-      name: t.name,
-      subRealms: [...t.subRealms],
-      levelRange: [...t.levelRange] as [number, number],
-    })),
-    subRealmMultiplier: worldview.realmSystem.subRealmMultiplier,
-    tierJumpMultiplier: worldview.realmSystem.tierJumpMultiplier,
-  };
-
-  // 势力生成（从门派模板中选取 2-5 个）
-  const factionCount = Math.floor(rng() * 4) + 2;
-  const selectedFactions = pickItems(worldview.factions, factionCount, rng);
-  const factions: WorldFaction[] = selectedFactions.map(f => ({
-    id: f.id,
-    name: f.name,
-    type: f.type,
-    description: f.description,
-  }));
-  const majorForces = factions.map(f => f.name).join('、') || '未知势力';
-
-  // 难度系数
-  const baseCoefficient = worldview.baseCoefficient;
-  const actualCoefficient = calculateDifficultyCoefficient(baseCoefficient, ascensionCount);
-  const difficulty = getDifficultyFromCoefficient(actualCoefficient);
-
-  // 危险和机遇（从世界观池中选取）
-  const dangerCount = Math.floor(rng() * 3) + 2;
-  const selectedDangers = pickItems(worldview.dangers, dangerCount, rng);
-  const dangers = selectedDangers.map(d => ({
-    id: d.id,
-    name: d.name,
-    description: d.description,
-    level: d.dangerLevel,
-    type: d.type as WorldDanger['type'],
-    triggerChance: d.triggerCondition.chance,
-  }));
-
-  const opportunityCount = Math.floor(rng() * 3) + 2;
-  const selectedOpportunities = pickItems(worldview.opportunities, opportunityCount, rng);
-  const opportunities = selectedOpportunities.map(o => ({
-    id: o.id,
-    name: o.name,
-    description: o.description,
-    level: o.opportunityLevel,
-    type: o.type as WorldOpportunity['type'],
-    triggerChance: o.triggerCondition.chance,
-  }));
+  const basic = generateWorldBasicFields(worldview, actualSeed, ascensionCount);
+  const details = generateWorldDetails(worldview, actualSeed);
 
   return {
-    id: actualSeed,
-    random: hash,
-    gameVersion: GAME_VERSION,
-    worldviewId: worldview.id,
-    // type 保留为中文显示名，向后兼容
-    type: worldview.name,
-    name,
-    description,
-    powerSystem,
-    realmSystem,
-    majorForces,
-    factions,
-    baseCoefficient,
-    actualCoefficient,
-    difficulty,
-    // 类型断言：简化类型与完整的 WorldDanger/WorldOpportunity 兼容
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    dangers: dangers as any,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    opportunities: opportunities as any,
-    ratingScore: 0,
+    ...basic,
+    ...details,
   };
 }
 

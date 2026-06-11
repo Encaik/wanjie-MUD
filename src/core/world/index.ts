@@ -4,6 +4,7 @@ export { createWorldId, parseWorldId, extractSeed } from './identity';
 export { buildWorldPool } from './WorldPoolEngine';
 export {
   generateWorld,
+  generateWorldDetails,
   generateWorlds,
   generateWorldsByCount,
   generateSeed,
