@@ -7,7 +7,8 @@
  * 3. 战利品存入掉落池，供挂机使用
  */
 
-import { calculateEnemyHp, calculateEnemyAttack, calculateEnemyDefense, calculatePlayerMaxMp } from '@/modules/progression/logic/balanceConfig';
+import { calcPlayerMaxMp } from '@/core/calculation';
+import { calculateEnemyHp, calculateEnemyAttack, calculateEnemyDefense } from '@/modules/progression/logic/balanceConfig';
 import {
   TowerEnemy,
   TowerRewards,
@@ -167,7 +168,7 @@ export function generateTowerEnemy(
   
   // MP 使用简化计算
   const baseSpiritualRoot = 50;
-  const maxMp = calculatePlayerMaxMp(baseSpiritualRoot, enemyLevel, worldType);
+  const maxMp = calcPlayerMaxMp(baseSpiritualRoot, enemyLevel);
   
   // 生成敌人名字
   const name = generateEnemyName(floor, enemyType, worldType);

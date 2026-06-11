@@ -9,7 +9,7 @@ import { useCallback, useEffect } from 'react';
 import type { Dispatch, SetStateAction } from 'react';
 
 import { CULTIVATION_PATHS } from '@/modules/progression/data/cultivationPathData';
-import { calculatePlayerMaxHp, calculatePlayerMaxMp } from '@/modules/progression/logic/balanceConfig';
+import { calcPlayerMaxHp, calcPlayerMaxMp } from '@/core/calculation';
 import { executeCultivation, getMaxExperience } from '@/modules/progression/logic/cultivation';
 import { executeCultivationWithStrategy } from '@/modules/progression/logic/cultivationStrategy';
 import type { CultivationStrategy } from '@/modules/progression/logic/types';
@@ -419,8 +419,8 @@ export function useGameCultivation({
       
       if (result.breakthroughSuccess) {
         // 根据新属性和新等级重新计算最大血量和法力
-        newMaxHp = calculatePlayerMaxHp(newStats.base.体质, newLevel, prev.protagonist.world.type);
-        newMaxMp = calculatePlayerMaxMp(newStats.base.灵根, newLevel, prev.protagonist.world.type);
+        newMaxHp = calcPlayerMaxHp(newStats.base.体质, newLevel, prev.protagonist.world.worldStats);
+        newMaxMp = calcPlayerMaxMp(newStats.base.灵根, newLevel);
         // 突破成功时恢复满血满蓝
         newCurrentHp = newMaxHp;
         newCurrentMp = newMaxMp;

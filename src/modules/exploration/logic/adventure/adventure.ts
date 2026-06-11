@@ -5,11 +5,8 @@
  * 改造为 seed-based RNG（使用 createRng 工具函数），以提高可测试性。
  * 参见 openspec/changes/archive/2026-06-08-architecture-code-quality-refactor/
  */
-import { 
-  calculatePlayerMaxHp,
-  calculatePlayerMaxMp,
-  calculatePlayerAttack,
-  calculatePlayerDefense,
+import { calcPlayerMaxHp, calcPlayerMaxMp, calcPlayerAttack, calcPlayerDefense } from '@/core/calculation';
+import {
   calculateEnemyHp,
   calculateEnemyAttack,
   calculateEnemyDefense,
@@ -668,12 +665,13 @@ export function calculateBattleWithLogs(
   const stats = getFinalStats(protagonist.stats);
   const enemyTier = getEnemyTierFromCellType(cellType);
   const tierConfig = getEnemyTierConfig(enemyTier);
+  const worldStats = protagonist.world.worldStats;
   const worldType = protagonist.world.type;
   const difficultyLevel = config.difficultyLevel || 'normal';
-  
+
   // 使用统一的数值计算
-  let playerAttack = calculatePlayerAttack(stats.体质, stats.灵根, protagonist.level, worldType);
-  let playerDefense = calculatePlayerDefense(stats.意志, protagonist.level, worldType);
+  let playerAttack = calcPlayerAttack(stats.体质, stats.灵根, protagonist.level, worldStats);
+  let playerDefense = calcPlayerDefense(stats.意志, protagonist.level, worldStats);
   
   // 应用功法加成（支持多槽位）
   const attackTechniques = protagonist.equippedAttackTechniques || [];
@@ -719,11 +717,11 @@ export function calculateBattleWithLogs(
     playerDefense = Math.floor(playerDefense * (1 + protagonist.equippedFeet.defenseBonus / 100));
   }
   
-  const playerMaxHp = protagonist.maxHp || calculatePlayerMaxHp(stats.体质, protagonist.level, worldType);
+  const playerMaxHp = protagonist.maxHp || calcPlayerMaxHp(stats.体质, protagonist.level, worldStats);
   // 使用玩家当前HP（如果有机缘中受伤），并确保在有效范围内
   const playerCurrentHp = clamp(protagonist.currentHp || playerMaxHp, 0, playerMaxHp);
   
-  const playerMaxMp = protagonist.maxMp || calculatePlayerMaxMp(stats.灵根, protagonist.level, worldType);
+  const playerMaxMp = protagonist.maxMp || calcPlayerMaxMp(stats.灵根, protagonist.level);
   const playerCurrentMp = clamp(protagonist.currentMp || playerMaxMp, 0, playerMaxMp);
   
   // 敌人数值 - 使用敌人分级系统

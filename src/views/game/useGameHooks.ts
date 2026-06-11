@@ -3,12 +3,7 @@
 import { useMemo, useCallback } from 'react';
 
 import { getRealmName, getNextRealm, getNextMainRealmLevel, getMainRealmName } from '@/modules/progression/data/realmData';
-import { 
-  calculatePlayerAttack, 
-  calculatePlayerDefense,
-  calculatePlayerMaxHp,
-  calculatePlayerMaxMp
-} from '@/modules/progression/logic/balanceConfig';
+import { calcPlayerAttack, calcPlayerDefense } from '@/core/calculation';
 import { getMaxExperience } from '@/modules/progression/logic/cultivation';
 import { getActualStatCap } from '@/modules/progression/logic/realmSystem';
 import { MAX_LEVEL } from '@/modules/progression/logic/realmSystem';
@@ -165,10 +160,10 @@ export function useCombatStats() {
     
     const stats = protagonist.stats;
     const finalStats = getFinalStats(stats);
-    const worldType = protagonist.world.type;
-    
+    const worldStats = protagonist.world.worldStats;
+
     // 基础攻击力
-    let baseAttack = calculatePlayerAttack(finalStats.体质, finalStats.灵根, protagonist.level, worldType);
+    let baseAttack = calcPlayerAttack(finalStats.体质, finalStats.灵根, protagonist.level, worldStats);
     // 功法攻击加成
     let techniqueAttackBonus = 0;
     if (protagonist.equippedAttackTechniques && protagonist.equippedAttackTechniques.length > 0) {
@@ -193,7 +188,7 @@ export function useCombatStats() {
     }
     
     // 基础防御力
-    let baseDefense = calculatePlayerDefense(finalStats.意志, protagonist.level, worldType);
+    let baseDefense = calcPlayerDefense(finalStats.意志, protagonist.level, worldStats);
     // 功法防御加成
     let techniqueDefenseBonus = 0;
     if (protagonist.equippedDefenseTechniques && protagonist.equippedDefenseTechniques.length > 0) {

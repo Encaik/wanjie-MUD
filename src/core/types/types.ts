@@ -383,6 +383,25 @@ export interface WorldFaction {
 }
 
 // 世界信息
+/**
+ * 世界战斗基础数值（客户端计算所需子集）
+ *
+ * 嵌入 World 对象中，由服务端生成时从 WorldviewDefinition.stats 填充，
+ * 避免客户端访问 WorldViewRegistry。
+ */
+export interface WorldBalanceStats {
+  baseHp: number;
+  hpPerLevel: number;
+  hpPerConstitution: number;
+  baseAttack: number;
+  attackPerLevel: number;
+  attackPerConstitution: number;
+  attackPerSpiritRoot: number;
+  baseDefense: number;
+  defensePerLevel: number;
+  defensePerWillpower: number;
+}
+
 export interface World {
   /**
    * 世界唯一标识（即种子字符串，如 "a0b1c2d3"）
@@ -435,6 +454,8 @@ export interface World {
   };
   /** 属性显示名映射（内部键 → 世界对应的显示名，如 { 体质: '根骨', 灵根: '悟性' }） */
   statDisplayNames: Record<string, string>;
+  /** 世界战斗基础数值（由服务端从 WorldviewDefinition.stats 填入，供前端计算 HP/MP/攻击/防御，避免访问 WorldViewRegistry） */
+  worldStats: WorldBalanceStats;
 
   // === 特殊剧情 ===
   /** 特殊剧情引用（指向 modules/narrative/story 中的 Story） */

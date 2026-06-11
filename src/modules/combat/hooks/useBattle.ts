@@ -24,12 +24,7 @@ import type {
 } from '@/modules/combat/logic/engine/types';
 import type { Protagonist, Technique } from '@/core/types';
 import { getFinalStats } from '@/core/types';
-import {
-  calculatePlayerMaxHp,
-  calculatePlayerMaxMp,
-  calculatePlayerAttack,
-  calculatePlayerDefense,
-} from '@/modules/progression/logic/balanceConfig';
+import { calcPlayerMaxHp, calcPlayerMaxMp, calcPlayerAttack, calcPlayerDefense } from '@/core/calculation';
 
 /** 战斗初始化参数 */
 export interface BattleInitParams {
@@ -132,11 +127,11 @@ export function useBattle(): UseBattleReturn {
     const { protagonist } = params;
     const finalStats = getFinalStats(protagonist.stats);
 
-    const worldType = protagonist.world.type;
-    const maxHp = calculatePlayerMaxHp(finalStats.体质, protagonist.level, worldType);
-    const maxMp = calculatePlayerMaxMp(finalStats.灵根, protagonist.level, worldType);
-    const attack = calculatePlayerAttack(finalStats.体质, finalStats.灵根, protagonist.level, worldType);
-    const defense = calculatePlayerDefense(finalStats.意志, protagonist.level, worldType);
+    const worldStats = protagonist.world.worldStats;
+    const maxHp = calcPlayerMaxHp(finalStats.体质, protagonist.level, worldStats);
+    const maxMp = calcPlayerMaxMp(finalStats.灵根, protagonist.level);
+    const attack = calcPlayerAttack(finalStats.体质, finalStats.灵根, protagonist.level, worldStats);
+    const defense = calcPlayerDefense(finalStats.意志, protagonist.level, worldStats);
     const speed = 10 + protagonist.level;
 
     const techs = buildCombatTechniques(

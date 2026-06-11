@@ -116,6 +116,18 @@ export function generateWorldBasic(seed: string, worldType?: string): World {
     // 前端展示数据
     visualConfig,
     statDisplayNames: worldData.statDisplayNames ?? {},
+    worldStats: {
+      baseHp: worldData.baseHp,
+      hpPerLevel: worldData.hpPerLevel,
+      hpPerConstitution: worldData.hpPerConstitution,
+      baseAttack: worldData.baseAttack,
+      attackPerLevel: worldData.attackPerLevel,
+      attackPerConstitution: worldData.attackPerConstitution,
+      attackPerSpiritRoot: worldData.attackPerSpiritRoot,
+      baseDefense: worldData.baseDefense,
+      defensePerLevel: worldData.defensePerLevel,
+      defensePerWillpower: worldData.defensePerWillpower,
+    },
   };
 }
 

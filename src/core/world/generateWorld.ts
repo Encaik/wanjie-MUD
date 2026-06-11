@@ -192,6 +192,18 @@ function generateWorldBasicFields(
     difficulty,
     visualConfig: worldview.visualConfig,
     statDisplayNames: worldview.texts?.stats as unknown as Record<string, string> ?? {},
+    worldStats: {
+      baseHp: worldview.stats.baseHp,
+      hpPerLevel: worldview.stats.hpPerLevel,
+      hpPerConstitution: worldview.stats.hpPerConstitution,
+      baseAttack: worldview.stats.baseAttack,
+      attackPerLevel: worldview.stats.attackPerLevel,
+      attackPerConstitution: worldview.stats.attackPerConstitution,
+      attackPerSpiritRoot: worldview.stats.attackPerSpiritRoot,
+      baseDefense: worldview.stats.baseDefense,
+      defensePerLevel: worldview.stats.defensePerLevel,
+      defensePerWillpower: worldview.stats.defensePerWillpower,
+    },
     ratingScore: 0,
   };
 }

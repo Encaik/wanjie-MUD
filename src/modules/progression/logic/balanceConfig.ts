@@ -178,9 +178,8 @@ export function calculatePlayerMaxHp(
 export function calculatePlayerMaxMp(
   spiritRoot: number,
   level: number,
-  worldType: WorldType
+  _worldType: WorldType,
 ): number {
-  const worldData = getWorldData(worldType);
   // MP计算相对统一，不同世界差异不大
   const baseMp = 50;
   const mpPerSpiritRoot = 6;

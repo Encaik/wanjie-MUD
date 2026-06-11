@@ -41,6 +41,18 @@ function createMockProvider(id: string, type: 'random'): WorldProvider {
           colorGradient: 'from-amber-500 to-yellow-500',
         },
         statDisplayNames: {},
+        worldStats: {
+          baseHp: 100,
+          hpPerLevel: 10,
+          hpPerConstitution: 5,
+          baseAttack: 10,
+          attackPerLevel: 2,
+          attackPerConstitution: 1,
+          attackPerSpiritRoot: 1,
+          baseDefense: 5,
+          defensePerLevel: 1,
+          defensePerWillpower: 1,
+        },
         ratingScore: 0,
       };
     },

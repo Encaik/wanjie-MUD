@@ -334,6 +334,18 @@ export function generateWorld(seed: string = '', ascensionCount: number = 0): Wo
     ratingScore,
     visualConfig,
     statDisplayNames,
+    worldStats: {
+      baseHp: worldData.baseHp,
+      hpPerLevel: worldData.hpPerLevel,
+      hpPerConstitution: worldData.hpPerConstitution,
+      baseAttack: worldData.baseAttack,
+      attackPerLevel: worldData.attackPerLevel,
+      attackPerConstitution: worldData.attackPerConstitution,
+      attackPerSpiritRoot: worldData.attackPerSpiritRoot,
+      baseDefense: worldData.baseDefense,
+      defensePerLevel: worldData.defensePerLevel,
+      defensePerWillpower: worldData.defensePerWillpower,
+    },
   };
 }
 
