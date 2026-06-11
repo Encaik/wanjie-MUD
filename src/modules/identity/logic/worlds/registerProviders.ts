@@ -26,9 +26,11 @@ export function registerWorldProviders(): void {
   const registry = WorldDataRegistry.getInstance();
   const providerRegistry = WorldProviderRegistry.getInstance();
 
-  const worldTypes = registry.getAllWorldTypes();
+  // 优先使用新 worldview API，回退到旧 worldTypes
+  const worldviewIds = registry.getAllWorldviewIds();
+  const worldTypes = worldviewIds.length > 0 ? worldviewIds : registry.getAllWorldTypes();
 
-  // 随机生成 provider（只要有已注册的世界类型就创建）
+  // 随机生成 provider（只要有已注册的世界观就创建）
   if (worldTypes.length > 0) {
     const randomProviderId = 'wanjie-core';
     if (!providerRegistry.has(randomProviderId)) {

@@ -385,15 +385,17 @@ export interface WorldFaction {
 // 世界信息
 export interface World {
   /**
-   * 世界唯一标识
+   * 世界唯一标识（即种子字符串，如 "a0b1c2d3"）
    *
-   * 格式：
-   *   随机生成世界: {providerId}:{worldType}:{seed}（如 "wanjie-core:修仙:a0b1c2d3"）
-   *   固化模板世界: {providerId}:tpl:{templateId}（如 "wanjie-template:tpl:huanjing"）
+   * id === seed，相同 seed 永远生成相同的世界。
    */
   id: string;
+  /** 由 seed 派生的确定性随机数（所有子生成器的唯一随机源） */
+  random: number;
   /** 世界生成时的游戏版本号（semver 格式，如 "0.1.0"） */
   gameVersion: string;
+  /** 世界观标识（English kebab-case，对应 WorldviewDefinition.id，如 "cultivation"） */
+  worldviewId: string;
   name: string;
   type: WorldType;
   description: string;

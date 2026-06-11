@@ -1,0 +1,45 @@
+# 依赖
+node_modules/
+.pnpm-store/
+
+# 版本控制
+.git/
+.gitignore
+.gitattributes
+
+# 构建产物
+.next/
+out/
+dist/
+
+# IDE 和编辑器
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# 系统文件
+.DS_Store
+Thumbs.db
+
+# 环境变量
+.env
+.env.*
+!.env.example
+
+# 文档和规划
+openspec/
+*.md
+!AIREADME.md
+
+# 脚本（构建时需要 sync-version 和 build-mods）
+# scripts/ 目录已移除排除，因为 pnpm build 依赖它们
+
+# 测试
+coverage/
+.nyc_output/
+
+# 日志
+*.log
+npm-debug.log*

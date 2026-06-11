@@ -1578,13 +1578,19 @@ export const WORLD_FACTION_GROUPS: Record<WorldType, FactionGroup[]> = {
 // 势力生成函数
 // ============================================
 
-export function generateWorldFactions(worldType: WorldType): WorldFaction[] {
+/**
+ * 根据世界类型生成势力列表
+ *
+ * @param worldType - 世界类型
+ * @param rng - 随机数生成器（可选，用于确定性生成）
+ */
+export function generateWorldFactions(worldType: WorldType, rng: () => number = Math.random): WorldFaction[] {
   const groups = WORLD_FACTION_GROUPS[worldType] || [];
   const selectedFactions: WorldFaction[] = [];
-  
+
   for (const group of groups) {
     if (group.factions.length > 0) {
-      const faction = group.factions[Math.floor(Math.random() * group.factions.length)];
+      const faction = group.factions[Math.floor(rng() * group.factions.length)];
       selectedFactions.push({
         id: faction.id,
         name: faction.name,
@@ -1593,7 +1599,7 @@ export function generateWorldFactions(worldType: WorldType): WorldFaction[] {
       });
     }
   }
-  
+
   return selectedFactions;
 }
 

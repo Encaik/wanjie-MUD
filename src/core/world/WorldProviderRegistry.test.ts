@@ -14,10 +14,12 @@ function createMockProvider(id: string, type: 'random' | 'template'): WorldProvi
     id,
     name: `Test ${id}`,
     type,
-    generateWorld(): World {
+    generateWorld(_seed?: string, _ascensionCount?: number, _worldviewId?: string): World {
       return {
         id: `${id}:test:seed`,
+        random: 12345,
         gameVersion: GAME_VERSION,
+        worldviewId: 'cultivation',
         name: '测试世界',
         type: '修仙',
         description: '测试世界描述',
@@ -33,7 +35,7 @@ function createMockProvider(id: string, type: 'random' | 'template'): WorldProvi
         ratingScore: 0,
       };
     },
-    generateWorlds(seeds) {
+    generateWorlds(seeds, _ascensionCount?, _worldviewId?) {
       return seeds.map(s => this.generateWorld(s, 0));
     },
     getMetadata(): WorldProviderMetadata {

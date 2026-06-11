@@ -9,17 +9,18 @@ import React, { createContext, useCallback, useContext, useEffect, useRef, useSt
 import type { Dispatch, SetStateAction } from 'react';
 
 // 类型导入
-import {  handleCellEvent } from '@/modules/exploration/logic/adventure/adventure';
-import {  calculateBattleWithLogs } from '@/modules/exploration/logic/adventure/adventureBattleNew';
-import {  calculatePlayerMaxHp, calculatePlayerMaxMp } from '@/modules/progression/logic/balanceConfig';
-import {  calculatePlayerCombatPower } from '@/modules/combat/logic/combatPower';
-import {  executeCultivation, getMaxExperience } from '@/modules/progression/logic/cultivation';
-import {  generateEquipment } from '@/modules/equipment/logic/equipment';
-import {  updateTaskProgress, applyMentalChange } from '@/core/engine';
-import {  processExperienceGain, calculateBreakthroughTransfer } from '@/modules/progression/logic/experienceSystem';
-import {  generateCharacters, generateBackstory } from '@/modules/identity/logic/generators';
-import {  WorldProviderRegistry } from '@/core/world/WorldProviderRegistry';
-import {  buildWorldPool } from '@/core/world/WorldPoolEngine';
+import { handleCellEvent } from '@/modules/exploration/logic/adventure/adventure';
+import { calculateBattleWithLogs } from '@/modules/exploration/logic/adventure/adventureBattleNew';
+import { calculatePlayerMaxHp, calculatePlayerMaxMp } from '@/modules/progression/logic/balanceConfig';
+import { calculatePlayerCombatPower } from '@/modules/combat/logic/combatPower';
+import { executeCultivation, getMaxExperience } from '@/modules/progression/logic/cultivation';
+import { generateEquipment } from '@/modules/equipment/logic/equipment';
+import { updateTaskProgress, applyMentalChange } from '@/core/engine';
+import { processExperienceGain, calculateBreakthroughTransfer } from '@/modules/progression/logic/experienceSystem';
+import { generateCharacters, generateBackstory } from '@/modules/identity/logic/generators';
+import { WorldProviderRegistry } from '@/core/world/WorldProviderRegistry';
+import { buildWorldPool } from '@/core/world/WorldPoolEngine';
+import { post } from '@/shared/utils/api-client';
 import type { WorldRatingsMap } from '@/core/world/types';
 import type { SeclusionType } from '@/modules/progression/logic/seclusion';
 import type { TowerEnemy } from '@/modules/tower/logic/types';
@@ -589,24 +590,46 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
   // 这里不再重复实现，避免重复调用
   // ========================================
 
-  // 开始新游戏：通过 WorldPool 混合已评分世界 + 随机新世界
-  const startNewGame = useCallback(() => {
-    const providers = WorldProviderRegistry.getInstance().getAll();
-    let ratings: WorldRatingsMap = {};
+  // 开始新游戏：调用后端 API 生成世界基础信息
+  /** 世界观摘要缓存（前端获取后缓存，避免重复请求） */
+  const worldviewCacheRef = useRef<Array<{ id: string; name: string; description: string }> | null>(null);
+
+  /** 获取可用世界观列表 */
+  const fetchWorldviews = useCallback(async () => {
+    if (worldviewCacheRef.current) return worldviewCacheRef.current;
     try {
-      const raw = localStorage.getItem('world-ratings');
-      if (raw) ratings = JSON.parse(raw) as WorldRatingsMap;
-    } catch { /* 忽略解析错误 */ }
+      const res = await fetch('/api/v1/worldviews');
+      if (res.ok) {
+        const json = await res.json();
+        worldviewCacheRef.current = json.data?.worldviews ?? [];
+        return worldviewCacheRef.current!;
+      }
+    } catch { /* 网络错误时忽略，使用空列表 */ }
+    return [] as Array<{ id: string; name: string; description: string }>;
+  }, []);
 
-    const entries = providers.length > 0
-      ? buildWorldPool(providers, ratings)
-      : [];
-
+  /** 开始新游戏：调用后端 API 生成世界基础信息，支持指定世界观 */
+  const startNewGame = useCallback(async (worldviewId?: string) => {
     setGameState(prev => ({
       ...createInitialGameState(),
       phase: 'world-select',
-      worlds: entries.map(e => e.world),
+      worlds: [],
     }));
+
+    const body: Record<string, unknown> = { count: 8 };
+    if (worldviewId) body.worldviewId = worldviewId;
+
+    const { code, data } = await post<{ worlds: World[] }>(
+      '/api/v1/worlds/generate/basic',
+      body,
+    );
+
+    if (code === 200 && data) {
+      setGameState(prev => ({
+        ...prev,
+        worlds: data.worlds,
+      }));
+    }
   }, []);
 
   // 刷新角色列表（需要知道世界类型）
@@ -621,13 +644,25 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     });
   }, []);
 
-  // 选择世界观：生成角色并进入角色选择
-  const selectWorld = useCallback((world: World) => {
+  // 选择世界观：补全详情 + 生成角色 → 进入角色选择
+  const selectWorld = useCallback(async (world: World) => {
+    // 如果还没有详情，从后端补全
+    let fullWorld = world;
+    if (world.dangers.length === 0 && world.factions.length === 0) {
+      const { code, data } = await post<{ world: World }>(
+        '/api/v1/worlds/generate/details',
+        { seed: world.id },
+      );
+      if (code === 200 && data) {
+        fullWorld = data.world;
+      }
+    }
+
     setGameState(prev => ({
       ...prev,
-      selectedWorld: world,
+      selectedWorld: fullWorld,
       phase: 'character-select',
-      characters: generateCharacters(world.type),
+      characters: generateCharacters(fullWorld.type),
     }));
   }, []);
 

@@ -83,7 +83,251 @@ export interface WorldStatsData {
   statDisplayNames: Record<string, string>;
 }
 
-/** 世界基本信息（对应 World 接口中的世界类型静态配置） */
+// ============================================
+// 世界观文本类型定义（原在 modules/narrative/data/worlds/types.ts，迁移到 core 层以便 registry 使用）
+// ============================================
+
+/** 术语文案 — 核心概念词，随世界观变化 */
+export interface WorldTerminology {
+  resource: string;
+  power: string;
+  energy: string;
+  practice: string;
+  core: string;
+  breakthrough: string;
+  enemy: string;
+  dungeon: string;
+  pill: string;
+  treasure: string;
+  dungeonDesc: string;
+  dungeonLocation: string;
+  breakthroughPill: string;
+  cultivationPill: string;
+}
+
+/** 属性名称 — 五大属性在不同世界的叫法 */
+export interface WorldStatNames {
+  body: string;
+  talent: string;
+  wisdom: string;
+  luck: string;
+  will: string;
+}
+
+/** 战斗文案模板 */
+export interface WorldCombatTexts {
+  victory: string;
+  defeat: string;
+  damageDeal: string;
+  damageReceive: string;
+  damageCrit: string;
+  dodge: string;
+  round: string;
+  start: string;
+  end: string;
+}
+
+/** 修炼文案模板 */
+export interface WorldCultivationTexts {
+  success: string;
+  failure: string;
+  breakthrough: string;
+  breakthroughFail: string;
+  overflowWarning: string;
+  cost: string;
+}
+
+/** 资源文案模板 */
+export interface WorldResourceTexts {
+  gain: string;
+  spend: string;
+  insufficient: string;
+}
+
+/** 物品文案模板 */
+export interface WorldItemTexts {
+  use: string;
+  obtain: string;
+  sell: string;
+}
+
+/** 秘境文案模板 */
+export interface WorldDungeonTexts {
+  enter: string;
+  exit: string;
+  clear: string;
+  sweep: string;
+  staminaCost: string;
+  powerRequire: string;
+}
+
+/** UI 文案模板 */
+export interface WorldUITexts {
+  level: string;
+  realm: string;
+  combatPower: string;
+  exp: string;
+  hp: string;
+  mp: string;
+  stamina: string;
+}
+
+/** 突破文案模板 */
+export interface WorldBreakthroughTexts {
+  success: string;
+  fail: string;
+  rate: string;
+  pillBonus: string;
+}
+
+/** 消息文案模板 */
+export interface WorldMessageTexts {
+  offlineTitle: string;
+  offlineContent: string;
+}
+
+/** 流派类型标识 */
+export type PathTypeId = 'body' | 'sword' | 'spell' | 'alchemy' | 'demon';
+
+/** 属性键名 */
+export type StatKey = 'body' | 'talent' | 'wisdom' | 'luck' | 'will';
+
+/** 单个流派文案定义 */
+export interface PathTextDefinition {
+  id: PathTypeId;
+  name: string;
+  description: string;
+  primaryStatKey: StatKey;
+  secondaryStatKey: StatKey;
+  ultimateAbility: {
+    name: string;
+    description: string;
+    effect: string;
+  };
+}
+
+/** 流派文案集合 */
+export interface WorldPathTexts {
+  body: PathTextDefinition;
+  sword: PathTextDefinition;
+  spell: PathTextDefinition;
+  alchemy: PathTextDefinition;
+  demon: PathTextDefinition;
+}
+
+/**
+ * 世界观文案定义
+ *
+ * 包含该世界观下所有文案的完整定义。
+ * 原位置：modules/narrative/data/worlds/types.ts，迁移到 core 层作为世界观的强类型文本字段。
+ */
+export interface WorldTextDefinition {
+  /** 世界观名称 */
+  name: string;
+  /** 世界观描述 */
+  description: string;
+  /** 术语 */
+  terminology: WorldTerminology;
+  /** 属性名 */
+  stats: WorldStatNames;
+  /** 战斗文案 */
+  combat: WorldCombatTexts;
+  /** 修炼文案 */
+  cultivation: WorldCultivationTexts;
+  /** 资源文案 */
+  resource: WorldResourceTexts;
+  /** 物品文案 */
+  item: WorldItemTexts;
+  /** 秘境文案 */
+  dungeon: WorldDungeonTexts;
+  /** UI文案 */
+  ui: WorldUITexts;
+  /** 突破文案 */
+  breakthrough: WorldBreakthroughTexts;
+  /** 消息文案 */
+  message: WorldMessageTexts;
+  /** 流派文案 */
+  paths: WorldPathTexts;
+}
+
+// ============================================
+// 世界观定义（WorldviewDefinition）
+// ============================================
+
+/**
+ * 世界观完整定义
+ *
+ * 世界观（Worldview）是生成世界实例的模板/配方，包含该世界类型的所有静态配置：
+ * 数值参数、生成池（名称、描述、势力、危险、机遇）、境界系统、世界观文本、
+ * 机制配置、视觉配置等。一个世界观通过 Mod JSON 文件加载到注册中心。
+ *
+ * 与 World（世界实例）的关系：
+ * - WorldviewDefinition = 模板/配方（包含池和参数）
+ * - World = 从模板生成的具象实例（包含从池中选取的确定值）
+ *
+ * @example
+ * ```typescript
+ * const worldview = registry.getWorldview('cultivation');
+ * const world = generateWorld(worldview, 'abc12345', 0);
+ * // world.worldviewId === 'cultivation'
+ * // world.name 从 worldview.namePrefixes + worldview.nameSuffixes 中选取
+ * ```
+ */
+export interface WorldviewDefinition {
+  /** 世界观唯一标识（English kebab-case，如 "cultivation"、"martial"） */
+  id: string;
+  /** 世界观显示名称（中文，如 "修仙世界"、"高武世界"） */
+  name: string;
+  /** 世界观描述 */
+  description: string;
+  /** 世界观版本号（semver 格式） */
+  version: string;
+  /** 基础难度系数（0.8-2.0） */
+  baseCoefficient: number;
+  /** 奖励系数配置 */
+  rewardCoefficient: RewardCoefficientData;
+  /** 完整数值配置（baseHp、hpPerLevel 等） */
+  stats: WorldStatsData;
+  /** 境界体系定义 */
+  realmSystem: RealmSystemData;
+  /** 世界名称前缀池 */
+  namePrefixes: string[];
+  /** 世界名称后缀池 */
+  nameSuffixes: string[];
+  /** 世界描述文本池 */
+  descriptions: string[];
+  /** 力量体系描述池 */
+  powerSystems: string[];
+  /** 主要势力描述池 */
+  majorForces: string[];
+  /** 危险事件池 */
+  dangers: DangerData[];
+  /** 机遇事件池 */
+  opportunities: OpportunityData[];
+  /** 门派模板列表 */
+  factions: FactionTemplateData[];
+  /** 特性池（起源、天赋、性格、才能） */
+  traits: TraitPoolData;
+  /** 角色名称池（姓氏、男名、女名） */
+  namePool: NamePoolData;
+  /** 世界观文本（术语、UI文案、战斗/修炼文本等） */
+  texts: WorldTextDefinition;
+  /** 机制配置（修炼参数、战斗参数、探索参数、独特机制） */
+  mechanics: Record<string, unknown>;
+  /** UI 视觉配置（图标、配色、渐变） */
+  visualConfig: WorldVisualConfig;
+  /** 是否为核心内置世界观（wanji-core 提供则为 true） */
+  builtin: boolean;
+  /** 作者名（Mod 提供） */
+  author?: string;
+  /** 标签列表 */
+  tags?: string[];
+}
+
+/**
+ * @deprecated 使用 WorldviewDefinition 替代。
+ * WorldTypeData 仅保留作为过渡期的类型别名，新代码请使用 WorldviewDefinition。
+ */
 export interface WorldTypeData {
   /** 世界数字编号（如 1、2，用于存储/序列化） */
   id: number;
@@ -273,7 +517,12 @@ export class WorldDataRegistry {
 
   // ===== 内部存储 =====
 
-  /** 世界类型数据（key: 英文 type） */
+  /** 世界观定义（key: worldviewId，English kebab-case） */
+  private worldviews: Map<string, WorldviewDefinition> = new Map();
+
+  /**
+   * @deprecated 使用 worldviews 替代。旧世界类型数据存储，过渡期保留。
+   */
   private worldTypes: Map<string, WorldTypeData> = new Map();
 
   /** 境界体系（key: worldTypeId） */
@@ -322,7 +571,57 @@ export class WorldDataRegistry {
   }
 
   // ============================================
-  // 世界类型
+  // 世界观（WorldviewDefinition）
+  // ============================================
+
+  /** 注册世界观定义 */
+  registerWorldview(data: WorldviewDefinition): void {
+    const key = data.id;
+    const existing = this.worldviews.get(key);
+    if (existing) {
+      log.warn(`覆盖已注册的世界观: ${key}`);
+    }
+    this.worldviews.set(key, { ...data });
+  }
+
+  /**
+   * 根据 worldviewId 获取世界观完整定义
+   *
+   * @param id - 世界观 ID（English kebab-case，如 "cultivation"）
+   */
+  getWorldview(id: string): WorldviewDefinition | undefined {
+    return this.worldviews.get(id);
+  }
+
+  /** 获取所有已注册的世界观定义 */
+  getAllWorldviews(): WorldviewDefinition[] {
+    return Array.from(this.worldviews.values());
+  }
+
+  /** 获取所有已注册的世界观 ID */
+  getAllWorldviewIds(): string[] {
+    return Array.from(this.worldviews.keys());
+  }
+
+  /** 校验世界观 ID 是否有效 */
+  hasWorldview(id: string): boolean {
+    return this.worldviews.has(id);
+  }
+
+  /** 获取世界观文本（强类型 WorldTextDefinition） */
+  getWorldviewTexts(id: string): WorldTextDefinition | undefined {
+    return this.worldviews.get(id)?.texts;
+  }
+
+  /** 批量注册世界观定义 */
+  registerWorldviews(worldviews: WorldviewDefinition[]): void {
+    for (const wv of worldviews) {
+      this.registerWorldview(wv);
+    }
+  }
+
+  // ============================================
+  // 世界类型（旧 API，过渡期保留）
   // ============================================
 
   /** 注册世界类型 */

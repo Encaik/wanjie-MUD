@@ -6,7 +6,22 @@
       "Bash(node -e ':*)",
       "Bash(npx tsc:*)",
       "Bash(npx next:*)",
-      "Bash(ls -d \"d:/Administrator/Documents/code/wanjie-MUD/openspec/specs/\"*/)"
+      "Bash(ls -d \"d:/Administrator/Documents/code/wanjie-MUD/openspec/specs/\"*/)",
+      "Bash(ls -la d:/vs_workspace/wanjie/wanjie-MUD/../)",
+      "Read(//d/vs_workspace/wanjie//**)",
+      "Bash(npm --version)",
+      "Bash(npm install *)",
+      "Bash(npx nest *)",
+      "Bash(ls node_modules/.bin/pnpm*)",
+      "Bash(ls node_modules/pnpm/bin/pnpm.cmd)",
+      "Bash(which pnpm.cmd)",
+      "Bash(command -v pnpm)",
+      "Bash(command -v npx)",
+      "Bash(pnpm add *)",
+      "Bash(openspec list *)",
+      "Bash(git commit -m 'feat\\(api\\): 搭建后端API层与世界生成接口，切换为服务端模式 *)",
+      "Bash(git rm *)",
+      "Bash(pnpm check-sizes *)"
     ]
   }
 }

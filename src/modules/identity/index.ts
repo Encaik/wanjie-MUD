@@ -23,8 +23,8 @@ export type { TraitDefinition } from './data/traits';
 // —— 姓名系统 ——
 export { WORLD_NAME_POOLS } from './data/namePools';
 
-// —— 世界生成 ——
-export { generateWorld, generateWorlds, generateBackstory, DEFAULT_WORLD_SEEDS } from './logic/generators';
+// —— 世界生成（generateWorld/generateWorlds 已迁至后端 API，前端勿用） ——
+export { generateBackstory } from './logic/generators';
 export { getWorldMechanics, hasUniqueMechanics } from './logic/worlds/factory';
 export type { WorldMechanics } from './logic/worlds/types';
 

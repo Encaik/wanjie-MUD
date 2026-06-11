@@ -1,69 +1,54 @@
 # world-data-consolidation
 
-## Purpose
+世界数据整合为单一数据源，以 `WorldDataRegistry.worldviews` 为所有世界观数据的唯一配置来源。
 
-TBD — see change world-first-selection-flow for full context.
+## Requirements
 
-# world-data-consolidation
+### Requirement: WorldviewDefinition 为世界配置唯一数据源
 
-世界数据整合为单一数据源，删除所有重复定义，确保 WORLD_DATA 是世界的唯一配置来源。
+`WorldDataRegistry.worldviews`（存储 `WorldviewDefinition` 实例的 Map）在 `src/core/registry/WorldDataRegistry.ts` 中 SHALL 作为所有世界观数据的唯一定义来源。任何其他文件 SHALL NOT 重复定义世界名称前缀、后缀、描述、系数、世界观文本或特性池。所有消费代码 SHALL 通过 `WorldDataRegistry.getWorldview(worldviewId)` 获取数据。
 
-## ADDED Requirements
+#### Scenario: 新增世界观只需 Mod JSON 一处
 
-### Requirement: WORLD_DATA 为世界配置唯一数据源
+- **WHEN** 需要新增或修改世界观配置
+- **THEN** 只需在 Mod JSON 文件中定义（`mods/<mod-name>/data/world/<worldviewId>.json`）
+- **AND** `WorldDataRegistry` 在初始化时自动加载所有 Mod JSON 中的世界观
+- **AND** 无需修改任何 TypeScript 源代码
 
-`WORLD_DATA: Record<WorldType, WorldStats>` 在 `src/modules/identity/data/worldData.ts` 中 SHALL 作为所有世界数据的唯一定义来源。任何其他文件 SHALL NOT 重复定义世界名称前缀、后缀、描述或系数。修仙和仙侠 SHALL 拥有独立且差异明显的 WORLD_DATA 条目。
+#### Scenario: 世界观文本统一到 registry
 
-#### Scenario: 新增世界类型只需修改一处
-- **WHEN** 需要新增或修改世界类型配置
-- **THEN** 只需修改 `WORLD_DATA` 中的对应条目
-- **AND** `generateWorld()` SHALL 从 `WORLD_DATA[worldType]` 读取名称前缀/后缀/描述
+- **WHEN** 需要世界观的术语或 UI 文本
+- **THEN** SHALL 通过 `WorldDataRegistry.getWorldview(worldviewId).texts` 获取
+- **AND** `modules/narrative/data/worlds/` 中的静态 TS 文件 SHALL 标记为 deprecated
+- **AND** `modules/narrative/logic/WorldTextManager` SHALL 从 registry 读取 `texts` 字段
 
-#### Scenario: generators.ts 不包含内联世界常量
-- **WHEN** 检查 `src/modules/identity/logic/generators.ts`
-- **THEN** SHALL NOT 存在 `worldPrefixes`、`worldSuffixes`、`worldDescriptions` 内联常量
-- **AND** 世界名称/描述生成 SHALL 通过导入 `WORLD_DATA` 完成
+#### Scenario: 修仙与仙侠世界观数据独立
 
-#### Scenario: 修仙与仙侠数据独立
-- **WHEN** 比较 `WORLD_DATA['修仙']` 和 `WORLD_DATA['仙侠']`
-- **THEN** `namePrefixes` SHALL NOT 共享任何相同值（修仙：青云/紫霄，仙侠：剑气/仙云）
+- **WHEN** 比较 `registry.getWorldview('cultivation')` 和 `registry.getWorldview('xianxia')`
+- **THEN** `namePrefixes` SHALL NOT 共享任何相同值
 - **AND** `descriptions` SHALL 反映不同的世界观（修仙：长生修仙，仙侠：剑道修行）
 - **AND** `dangers` 和 `opportunities` 的 `description` 文本 SHALL 各自独立
+- **AND** `texts.terminology` SHALL 各自独立（如修仙用"灵石"，仙侠用"剑晶"）
 
-### Requirement: WORLD_COEFFICIENTS 全局唯一
+#### Scenario: 缺失数据时抛出错误
 
-世界系数 `WORLD_COEFFICIENTS` SHALL 仅在 `src/modules/identity/data/worldData.ts` 中定义一份，所有其他模块 SHALL 从此处导入。
+- **WHEN** 一个世界类型的注册数据缺少必要字段
+- **THEN** 系统 SHALL 抛出明确错误
+- **AND** SHALL NOT 静默使用默认值
 
-#### Scenario: combat 模块使用统一系数
-- **WHEN** `combat/logic/statsCalc.ts` 需要获取世界系数
-- **THEN** SHALL 从 `@/modules/identity/data/worldData` 导入 `WORLD_COEFFICIENTS`
-- **AND** SHALL NOT 在本地重新定义 `WORLD_COEFFICIENTS`
+### Requirement: WorldStats 数值完全来自注册数据
 
-#### Scenario: 系数数值一致性
-- **WHEN** 获取任意世界类型的系数
-- **THEN** 世界生成和战斗计算中使用同一个数值
-- **AND** 系数语义全局一致（表示世界基础难度）
-
-### Requirement: WorldStats 结构包含 statDisplayNames 及完整数值
-
-`WorldStats` 接口 SHALL 包含 `statDisplayNames` 字段，定义该世界的属性显示名映射。同时 SHALL 从 `WorldTypeData.stats` 获取全部数值配置（`baseHp`、`hpPerLevel`、`baseAttack` 等），SHALL NOT 在消费代码中硬编码任何数值。
-
-#### Scenario: WorldStats 包含 statDisplayNames
-- **WHEN** 读取 `getWorldData('科技')` 返回的 `WorldStats`
-- **THEN** SHALL 包含 `statDisplayNames`，值为注册数据中定义的映射（如 `{ '体质': '体能', '灵根': '智力', '悟性': '反应', '幸运': '技术', '意志': '魅力' }`）
+`WorldStats` 接口 SHALL 从 `WorldviewDefinition.stats` 获取全部数值配置（`baseHp`、`hpPerLevel`、`baseAttack` 等），SHALL NOT 在消费代码中硬编码任何数值。
 
 #### Scenario: WorldStats 数值完全来自注册数据
-- **WHEN** 读取 `getWorldData('科技')` 返回的 `WorldStats`
+
+- **WHEN** 读取 `getWorldData('cultivation')` 返回的 `WorldStats`
 - **THEN** `baseHp`、`hpPerLevel` 等数值字段 SHALL 等于注册数据中 `stats` 对象的对应字段
 - **AND** SHALL NOT 存在从消费代码内联的数值常量
 
-#### Scenario: 缺失 statDisplayNames 时无兜底
-- **WHEN** 一个世界类型的注册数据缺少 `statDisplayNames`
-- **THEN** `getWorldData()` SHALL 抛出错误
-- **AND** SHALL NOT 使用空对象 `{}` 或修仙默认值作为兜底
-
 #### Scenario: 缺失任何数值字段时报错
-- **WHEN** 一个世界类型的注册数据缺少 `stats` 或其子字段（如 `stats.baseHp` 为 `undefined`）
+
+- **WHEN** 一个世界类型的注册数据缺少 `stats` 或其子字段
 - **THEN** `getWorldData()` SHALL 抛出错误，明确指出缺失字段和世界类型 ID
 - **AND** SHALL NOT 静默使用任何默认值
 
@@ -72,13 +57,35 @@ TBD — see change world-first-selection-flow for full context.
 仙侠世界 SHALL 使用独立的 `XIANXIA_NAMES` 姓名池，SHALL NOT 与修仙世界共用 `CULTIVATION_NAMES`。
 
 #### Scenario: 姓名池映射独立
+
 - **WHEN** 检查 `WORLD_NAME_POOLS`
 - **THEN** `WORLD_NAME_POOLS['修仙']` SHALL 引用 `CULTIVATION_NAMES`
 - **AND** `WORLD_NAME_POOLS['仙侠']` SHALL 引用 `XIANXIA_NAMES`
 - **AND** 两个对象 SHALL NOT 引用同一内存地址
 
-#### Scenario: 仙侠姓名池内容
-- **WHEN** 读取 `XIANXIA_NAMES`
-- **THEN** `surnames` SHALL 包含剑修相关姓氏（如"剑""凌""萧""叶"）
-- **AND** `maleNames` SHALL 包含剑道风格名（如"剑心""凌霄""破天"）
-- **AND** `femaleNames` SHALL 包含仙剑风格名（如"剑兰""凌霜""紫英"）
+### Requirement: 世界观文本强类型化
+
+`WorldDataRegistry` 中的世界观文本存储 SHALL 使用完整的 `WorldTextDefinition` 类型，SHALL NOT 使用 `Record<string, unknown>`。所有世界观文本的读取 SHALL 具有编译时类型检查。
+
+#### Scenario: worldTexts 类型为 WorldTextDefinition
+
+- **WHEN** 从 registry 获取世界观的文本数据
+- **THEN** 返回类型 SHALL 为 `WorldTextDefinition`
+- **AND** SHALL NOT 需要 `as` 类型断言
+- **AND** IDE 自动补全 SHALL 列出 `terminology`、`stats`、`combat`、`cultivation` 等子字段
+
+#### Scenario: 文本缺失时报错
+
+- **WHEN** 一个世界观的 `texts` 字段为 `undefined` 或缺少子字段
+- **THEN** `registry.getWorldview(id)` SHALL 在初始化验证阶段抛出错误
+- **AND** SHALL NOT 使用修仙世界观的文本作为默认兜底
+
+### Requirement: 无硬编码兜底数据
+
+所有世界相关数据 SHALL 仅从 `WorldDataRegistry` 读取。当 registry 中无请求的数据时，系统 SHALL 抛出明确错误，SHALL NOT 回退到硬编码的兜底数据。
+
+#### Scenario: 危险/机遇数据缺失时报错
+
+- **WHEN** 世界观注册数据中没有 `dangers` 或 `opportunities`
+- **THEN** 世界生成时 SHALL 抛出错误
+- **AND** SHALL NOT 使用 `WORLD_DANGERS` 或 `WORLD_OPPORTUNITIES` 硬编码兜底数组
