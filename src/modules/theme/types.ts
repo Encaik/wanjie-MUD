@@ -39,6 +39,12 @@ export interface ThemeSlice {
   themeMode: ThemeMode;
   /** 是否处于暗色模式（由 themeMode + system preference 计算得出） */
   isDark: boolean;
+  /** 是否使用世界专属主题（false = 默认主题） */
+  useWorldTheme: boolean;
+  /** 当前世界的主题数据（从后端获取），null = 未加载或无数据 */
+  worldThemeData: WorldThemeData | null;
+  /** 主题数据是否正在加载 */
+  themeLoading: boolean;
 }
 
 /** 主题 Context 暴露的值 */
@@ -49,6 +55,24 @@ export interface ThemeContextValue {
   setThemeMode: (mode: ThemeMode) => void;
   /** 切换亮色/暗色 */
   toggleDarkMode: () => void;
+  /** 切换世界主题 / 默认主题 */
+  setUseWorldTheme: (use: boolean) => void;
+}
+
+/**
+ * 世界主题数据（从后端 API 获取的结构）
+ *
+ * 对应 GET /api/v1/worldviews/[id]/theme 的响应
+ */
+export interface WorldThemeData {
+  /** 世界观 ID（English kebab-case） */
+  worldviewId: string;
+  /** 世界观显示名（如 "科技世界"） */
+  displayName: string;
+  /** 亮色主题 CSS 变量映射 */
+  lightTheme: Record<string, string>;
+  /** 暗色主题 CSS 变量映射 */
+  darkTheme: Record<string, string>;
 }
 
 /** 样式加载回调类型 */

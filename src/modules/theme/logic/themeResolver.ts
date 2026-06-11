@@ -10,16 +10,18 @@
 import type { WorldType } from '@/core/types';
 import type { WorldTheme, ThemeVariableOverrides } from '../types';
 import { WORLD_DATA_ATTR_MAP, WORLD_DISPLAY_NAMES } from '../data/defaultTheme';
-import { worldThemeMap } from '../data/worldThemes';
 
 /**
  * 根据世界类型获取对应的主题配置
  *
- * @param worldType - 世界类型
- * @returns 世界主题配置，如果该世界无独立主题则返回 undefined
+ * @deprecated 世界主题数据已迁移到后端 API（GET /api/v1/worldviews/[id]/theme），
+ *  前端不再维护硬编码主题。返回 undefined，请使用 hooks/useThemeSettings 替代。
+ *
+ * @param _worldType - 世界类型
+ * @returns undefined（兼容旧 API）
  */
-export function getWorldTheme(worldType: WorldType): WorldTheme | undefined {
-  return worldThemeMap.get(worldType);
+export function getWorldTheme(_worldType: WorldType): WorldTheme | undefined {
+  return undefined;
 }
 
 /**

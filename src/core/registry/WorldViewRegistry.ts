@@ -405,6 +405,11 @@ export interface WorldviewDefinition {
   mechanics: Record<string, unknown>;
   /** UI 视觉配置（图标、配色、渐变） */
   visualConfig: WorldVisualConfig;
+  /** 主题 CSS 变量配置（亮色 + 暗色），未配置时前端使用默认主题 */
+  themeConfig?: {
+    light: Record<string, string>;
+    dark: Record<string, string>;
+  };
   /** 是否为核心内置世界观（wanji-core 提供则为 true） */
   builtin: boolean;
   /** 作者名（Mod 提供） */

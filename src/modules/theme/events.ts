@@ -9,7 +9,6 @@
 
 import type { GameEvent } from '@/core/events';
 import { eventRegistry, on } from '@/core/events';
-import { WORLD_DATA_ATTR_MAP } from './data/defaultTheme';
 import type { WorldType } from '@/core/types';
 
 // ============================================
@@ -31,31 +30,46 @@ export const worldEvents = eventRegistry.registerModule('world', {
 export type WorldEventType = keyof typeof worldEvents.events;
 
 /**
- * 处理世界切换事件 — 更新 <html> 上的 data-world 属性
+ * 应用世界主题 — 设置 data-world 属性（用于 CSS 兜底，如 Mod 样式）
  *
- * @param worldType - 新的世界类型
+ * @param worldType - 世界类型
  */
 export function applyWorldTheme(worldType: WorldType): void {
   if (typeof document === 'undefined') return;
-
-  const dataValue = WORLD_DATA_ATTR_MAP[worldType] || 'cultivation';
-  document.documentElement.setAttribute('data-world', dataValue);
+  document.documentElement.setAttribute('data-world', worldType);
 }
 
 /**
- * 清除世界主题 — 回退到默认样式
+ * 清除世界主题属性
  */
 export function clearWorldTheme(): void {
   if (typeof document === 'undefined') return;
   document.documentElement.removeAttribute('data-world');
 }
 
+/** 世界切换回调类型（ThemeProvider 注入） */
+let onWorldChangedCallback: ((worldviewId: string) => void) | null = null;
+
 /**
- * 处理世界变更事件
+ * 注册世界切换回调（由 ThemeProvider 调用）
+ */
+export function setOnWorldChanged(cb: ((worldviewId: string) => void) | null): void {
+  onWorldChangedCallback = cb;
+}
+
+/**
+ * 处理世界变更事件 — 调用 ThemeProvider 注入的回调
  */
 function handleWorldChanged(event: GameEvent): void {
-  const { worldType } = event.payload;
-  applyWorldTheme(worldType as WorldType);
+  const { worldviewId, worldType } = event.payload;
+  // 保留 data-world 属性（CSS 兜底）
+  if (worldType) {
+    applyWorldTheme(worldType as WorldType);
+  }
+  // 通知 ThemeProvider 加载主题
+  if (onWorldChangedCallback) {
+    onWorldChangedCallback((worldviewId as string) || (worldType as string));
+  }
 }
 
 /** 取消订阅函数引用 */

@@ -20,6 +20,8 @@ import {
   createDefaultRealClock,
 } from '@/core/time';
 import type { TimeState } from '@/core/time';
+import { emit } from '@/core/events';
+import { worldEvents } from '@/modules/theme';
 
 // 类型导入
 import { handleCellEvent } from '@/modules/exploration/logic/adventure/adventure';
@@ -348,6 +350,14 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         };
 
         setGameState(finalState);
+
+        // 通知主题系统：世界已切换（从存档恢复）
+        if (finalState.protagonist) {
+          emit(worldEvents.events.world_changed, {
+            worldviewId: finalState.protagonist.world.worldviewId,
+            worldType: finalState.protagonist.world.type,
+          });
+        }
 
         // 启动运行时定时器
         timerService.start(serverNow, updatedTime);
@@ -750,23 +760,37 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
 
   // 确认背景故事 - 主角已在 selectWorld 中创建
   const confirmBackstory = useCallback(() => {
+    let worldId: string | undefined;
+    let worldType: string | undefined;
+
     setGameState(prev => {
       if (!prev.protagonist) return prev;
-      
+
+      worldId = prev.protagonist.world.worldviewId;
+      worldType = prev.protagonist.world.type;
+
       const welcomeMessage = getTutorialWelcomeMessage();
-      
+
       return {
         ...prev,
         phase: 'playing',
         messages: addMessageInternal(
-          prev.messages, 
-          'success', 
-          '游戏开始', 
+          prev.messages,
+          'success',
+          '游戏开始',
           '欢迎来到修仙世界！',
           welcomeMessage
         ),
       };
     });
+
+    // 状态更新后通知主题系统：世界已切换
+    if (worldId || worldType) {
+      emit(worldEvents.events.world_changed, {
+        worldviewId: worldId,
+        worldType: worldType,
+      });
+    }
   }, [addMessageInternal]);
 
   // ========================================

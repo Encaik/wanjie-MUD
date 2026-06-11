@@ -190,6 +190,8 @@ function generateWorldBasicFields(
     baseCoefficient,
     actualCoefficient,
     difficulty,
+    visualConfig: worldview.visualConfig,
+    statDisplayNames: worldview.texts?.stats as unknown as Record<string, string> ?? {},
     ratingScore: 0,
   };
 }

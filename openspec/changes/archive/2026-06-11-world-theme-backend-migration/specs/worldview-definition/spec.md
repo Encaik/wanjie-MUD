@@ -1,8 +1,8 @@
 # worldview-definition
 
-世界观定义 — Mod 加载的世界类型完整定义，包含术语、文本、属性计算、境界系统、门派、危险、机遇、特性池、名称池、主题配色等全部数据，作为生成世界的模板。
+世界观定义 — 新增 `themeConfig` 字段存储世界观的明暗主题 CSS 变量配置。
 
-## Requirements
+## MODIFIED Requirements
 
 ### Requirement: WorldviewDefinition 数据结构
 
@@ -43,12 +43,13 @@
 - **AND** `texts.stats` SHALL 包含属性别名（如 "体质"→"根骨"）
 - **AND** `texts.combat` SHALL 包含战斗相关文本模板
 - **AND** `texts.cultivation` SHALL 包含修炼相关文本模板
+- **AND** 所有字段 SHALL 有明确的类型定义，SHALL NOT 使用 `Record<string, unknown>`
 
 #### Scenario: WorldviewDefinition 包含主题配置
 
 - **WHEN** 从 `WorldViewRegistry` 读取内置世界观（如 "cultivation"）
 - **THEN** `themeConfig` 字段 SHALL 存在
-- **AND** `themeConfig.light` SHALL 包含至少 15 个 CSS 变量
+- **AND** `themeConfig.light` SHALL 包含至少 14 个 CSS 变量（`--primary`、`--background`、`--foreground`、`--card`、`--card-foreground`、`--popover`、`--popover-foreground`、`--primary-foreground`、`--secondary`、`--secondary-foreground`、`--muted`、`--muted-foreground`、`--accent`、`--accent-foreground`、`--border`、`--input`、`--ring`）
 - **AND** `themeConfig.dark` SHALL 包含相同变量集合的暗色版本值
 
 #### Scenario: Mod 世界观可不包含主题配置
@@ -61,51 +62,24 @@
 #### Scenario: WorldviewDefinition 与 World 明确分离
 
 - **WHEN** 对比 `WorldviewDefinition` 和 `World` 接口
-- **THEN** `WorldviewDefinition` SHALL 包含生成池和模板数据
-- **AND** `World` SHALL 包含从池中选取的具体值
-- **AND** `World` SHALL 包含 `worldviewId` 字段
-- **AND** `WorldviewDefinition` SHALL NOT 包含世界实例字段
+- **THEN** `WorldviewDefinition` SHALL 包含生成池（前缀/后缀/描述数组）和模板数据
+- **AND** `World` SHALL 包含从池中选取的具体值（确定的名称、描述）
+- **AND** `World` SHALL 包含 `worldviewId` 字段，引用其来源 `WorldviewDefinition.id`
+- **AND** `WorldviewDefinition` SHALL NOT 包含 `id` 以外的世界实例字段（如 `difficulty`、`actualCoefficient`）
 
-### Requirement: WorldviewDefinition 通过 Mod JSON 加载
-
-世界观定义 SHALL 通过 Mod 系统的 JSON 文件加载到 `WorldViewRegistry`。每个世界观的 JSON 文件 SHALL 包含 `WorldviewDefinition` 所需的所有字段。加载过程 SHALL 发生在服务端初始化阶段（`app/api/init.ts`）。Mod 的 content type 为 `'worldview'`。
-
-#### Scenario: Mod JSON 文件包含完整的 worldview 数据
-
-- **WHEN** 检查 `mods/wanjie-core/data/world/cultivation.json`
-- **THEN** SHALL 包含 `id`、`name`、`description`、`baseCoefficient`、`stats`、`realmSystem` 字段
-- **AND** SHALL 包含 `namePrefixes`、`nameSuffixes`、`descriptions` 生成池字段
-- **AND** SHALL 包含 `dangers`、`opportunities`、`factions` 数据池字段
-- **AND** SHALL 包含 `traits`、`namePool` 角色相关池字段
-- **AND** SHALL 包含 `texts`、`mechanics`、`visualConfig`、`themeConfig` 配置字段
-
-#### Scenario: 初始化时 worldview 注册到 registry
-
-- **WHEN** `ensureWorldSystemInitialized()` 被调用（服务端启动或首次 API 请求）
-- **THEN** 系统 SHALL 遍历所有已加载 Mod 的 worldview JSON 文件
-- **AND** 将每个 JSON 对象注册为 `WorldviewDefinition` 到 `WorldViewRegistry`
-- **AND** 注册完成后 `WorldViewRegistry.count` SHALL 等于已加载的世界观数量
-
-### Requirement: World 接口关联世界观
-
-`World` 接口 SHALL 包含 `worldviewId: string` 字段，记录生成该世界实例的世界观标识。该字段 SHALL 在 `src/core/types/types.ts` 的 `World` 接口中定义。
-
-#### Scenario: World 实例包含 worldviewId
-
-- **WHEN** 生成一个世界实例（seed="abc12345", worldviewId="cultivation"）
-- **THEN** 返回的 `World` 对象 SHALL 包含 `worldviewId: "cultivation"`
-
-#### Scenario: 通过 worldviewId 回溯世界观数据
-
-- **WHEN** 持有 `World` 实例且需要其世界观文本
-- **THEN** SHALL 通过 `WorldViewRegistry.get(world.worldviewId)` 获取 `WorldviewDefinition`
+## ADDED Requirements
 
 ### Requirement: themeConfig 数据 SHALL 从旧前端常量迁移
 
-所有 8 个内置世界观的 `themeConfig` 数据 SHALL 从旧 `modules/theme/data/worldThemes.ts` 中的 `WORLD_THEMES` 常量迁移而来。颜色值 SHALL 保持不变（oklch 格式），扩展覆盖从 7 个变量到完整 ~15 个语义变量集合。
+所有 8 个内置世界观的 `themeConfig` 数据 SHALL 从 `modules/theme/data/worldThemes.ts` 中的 `WORLD_THEMES` 常量迁移而来。颜色值 SHALL 保持不变（oklch 格式），SHALL 扩展覆盖从 7 个变量到完整的 ~15 个语义变量集合（从 `modules/theme/data/defaultTheme.ts` 的 `DEFAULT_LIGHT_THEME` 和 `DEFAULT_DARK_THEME` 获取完整变量列表）。
 
 #### Scenario: 修仙世界主题数据完整迁移
 
 - **WHEN** 对比后端 "cultivation" 的 `themeConfig.light["--primary"]` 与旧前端 `worldThemes.ts` 中修仙世界的 `lightOverrides["--primary"]`
 - **THEN** 值完全一致（`oklch(0.50 0.10 60)`）
 - **AND** 新 `themeConfig` 额外包含 `--card`、`--muted`、`--secondary` 等旧前端未覆盖的变量
+
+#### Scenario: 后端 themeConfig 与前端 themes.css 旧选择器值一致
+
+- **WHEN** 对比后端 "tech" 的 `themeConfig.dark["--primary"]` 与 `themes.css` 中 `[data-world="tech"].dark { --primary }` 的值
+- **THEN** 值完全一致（`oklch(0.68 0.12 245)`）

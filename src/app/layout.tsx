@@ -9,6 +9,37 @@ import type { Metadata } from 'next';
 
 import './globals.css';
 
+/** 防 FOUC 内联脚本 — 在 React 水合前同步恢复主题 */
+const THEME_FLICKER_GUARD = `
+(function() {
+  try {
+    // 1. 读取用户偏好
+    var prefs = JSON.parse(localStorage.getItem('theme_prefs') || '{}');
+    var themeMode = prefs.themeMode || 'system';
+    var useWorld = prefs.useWorldTheme !== false;
+
+    // 2. 判断暗色模式
+    var isDark = themeMode === 'dark' ||
+      (themeMode === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    if (isDark) {
+      document.documentElement.classList.add('dark');
+    }
+
+    // 3. 应用缓存的世界主题
+    if (useWorld) {
+      var cache = JSON.parse(localStorage.getItem('world_theme_cache') || 'null');
+      if (cache) {
+        var vars = isDark ? cache.darkTheme : cache.lightTheme;
+        for (var key in vars) {
+          if (vars.hasOwnProperty(key)) {
+            document.documentElement.style.setProperty(key, vars[key]);
+          }
+        }
+      }
+    }
+  } catch(e) {}
+})();
+`.replace(/\n\s*/g, '');
 
 export const metadata: Metadata = {
   title: {
@@ -32,7 +63,10 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="zh-CN">
+    <html lang="zh-CN" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: THEME_FLICKER_GUARD }} />
+      </head>
       <body className="antialiased">
         <ThemeProvider>
           <ModInitProvider>

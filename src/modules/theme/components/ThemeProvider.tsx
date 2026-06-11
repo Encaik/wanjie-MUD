@@ -3,22 +3,31 @@
  *
  * 职责：
  * - 包裹应用根组件，提供主题 Context
- * - 在挂载时设置初始 data-world / data-theme 属性
+ * - 在挂载时读取 localStorage 偏好 + 缓存 → 立即应用主题（防 FOUC）
+ * - 世界主题通过 API 获取、setProperty 注入、removeProperty 回退
  * - 监听系统暗色模式偏好变化
- * - 订阅世界切换事件，自动执行主题切换
+ * - 订阅世界切换事件
  *
  * @module modules/theme/components
  */
 
 'use client';
 
-import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import type { ReactNode } from 'react';
 import { ThemeContext } from '../hooks/useTheme';
 import type { ThemeSlice, ThemeMode } from '../types';
 import { createInitialThemeState, resolveIsDark, toggleDark } from '../state';
-import { subscribeThemeEvents, unsubscribeThemeEvents } from '../events';
-import { applyWorldTheme } from '../events';
+import { subscribeThemeEvents, unsubscribeThemeEvents, setOnWorldChanged } from '../events';
+import {
+  loadThemePrefs,
+  saveThemePrefs,
+  loadCachedWorldTheme,
+  saveCachedWorldTheme,
+  applyThemeVariables,
+  removeThemeVariables,
+  fetchWorldTheme,
+} from '../hooks/useThemeSettings';
 
 /**
  * 应用暗色模式到 DOM
@@ -36,53 +45,129 @@ function applyDarkMode(isDark: boolean): void {
  * ThemeProvider 组件
  *
  * 在 app/layout.tsx 中包裹 children。
- *
- * @example
- * <ThemeProvider>
- *   <App />
- * </ThemeProvider>
  */
 export function ThemeProvider({ children }: { children: ReactNode }) {
   const [theme, setTheme] = useState<ThemeSlice>(() => {
     const initial = createInitialThemeState();
-    // 根据系统偏好初始化暗色模式
+    const prefs = loadThemePrefs();
+    // 立即应用暗色模式（防止水合闪烁）
+    const isDark = resolveIsDark(prefs.themeMode);
+    applyDarkMode(isDark);
+    // 立即应用缓存的世界主题
+    const cached = loadCachedWorldTheme();
+    if (prefs.useWorldTheme && cached) {
+      applyThemeVariables(isDark ? cached.darkTheme : cached.lightTheme);
+    }
     return {
       ...initial,
-      isDark: resolveIsDark(initial.themeMode),
+      themeMode: prefs.themeMode,
+      isDark,
+      useWorldTheme: prefs.useWorldTheme,
+      worldThemeData: cached,
+      themeLoading: false,
     };
   });
 
+  // 用于追踪已加载的世界 ID，避免重复请求
+  const loadedWorldviewId = useRef<string | null>(null);
+
   // 设置主题模式
   const setThemeMode = useCallback((mode: ThemeMode) => {
-    setTheme(prev => ({
-      ...prev,
-      themeMode: mode,
-      isDark: resolveIsDark(mode),
-    }));
+    setTheme(prev => {
+      const newIsDark = resolveIsDark(mode);
+      saveThemePrefs({ themeMode: mode, useWorldTheme: prev.useWorldTheme });
+      return {
+        ...prev,
+        themeMode: mode,
+        isDark: newIsDark,
+      };
+    });
   }, []);
 
   // 切换暗色模式
   const toggleDarkMode = useCallback(() => {
-    setTheme(prev => ({
-      ...prev,
-      ...toggleDark(prev.isDark),
-    }));
+    setTheme(prev => {
+      const { isDark: newIsDark, themeMode: newMode } = toggleDark(prev.isDark);
+      saveThemePrefs({ themeMode: newMode, useWorldTheme: prev.useWorldTheme });
+      return {
+        ...prev,
+        isDark: newIsDark,
+        themeMode: newMode,
+      };
+    });
   }, []);
 
-  // 同步暗色模式到 DOM
+  // 切换世界主题 / 默认主题
+  const setUseWorldTheme = useCallback((use: boolean) => {
+    setTheme(prev => {
+      saveThemePrefs({ themeMode: prev.themeMode, useWorldTheme: use });
+      return { ...prev, useWorldTheme: use };
+    });
+  }, []);
+
+  // 加载并应用世界主题
+  const loadWorldTheme = useCallback(async (worldviewId: string) => {
+    // 避免重复加载同一世界观
+    if (loadedWorldviewId.current === worldviewId) return;
+
+    setTheme(prev => ({ ...prev, themeLoading: true }));
+    loadedWorldviewId.current = worldviewId;
+
+    try {
+      // 尝试缓存优先
+      const cached = loadCachedWorldTheme();
+      if (cached && cached.worldviewId === worldviewId) {
+        setTheme(prev => ({ ...prev, worldThemeData: cached, themeLoading: false }));
+        return;
+      }
+
+      // 从后端获取
+      const data = await fetchWorldTheme(worldviewId);
+      if (data) {
+        saveCachedWorldTheme(data);
+        setTheme(prev => ({ ...prev, worldThemeData: data, themeLoading: false }));
+      } else {
+        setTheme(prev => ({ ...prev, worldThemeData: null, themeLoading: false }));
+      }
+    } catch {
+      setTheme(prev => ({ ...prev, worldThemeData: null, themeLoading: false }));
+    }
+  }, []);
+
+  // === 副作用：同步暗色模式到 DOM ===
   useEffect(() => {
     applyDarkMode(theme.isDark);
   }, [theme.isDark]);
 
-  // 订阅主题事件
+  // === 副作用：世界主题变量注入/移除 ===
+  useEffect(() => {
+    if (typeof document === 'undefined') return;
+
+    if (theme.useWorldTheme && theme.worldThemeData) {
+      const vars = theme.isDark
+        ? theme.worldThemeData.darkTheme
+        : theme.worldThemeData.lightTheme;
+      applyThemeVariables(vars);
+    } else if (theme.worldThemeData) {
+      // 用户关闭了世界主题 → 移除注入的变量
+      removeThemeVariables(Object.keys(theme.worldThemeData.lightTheme));
+    }
+  }, [theme.useWorldTheme, theme.isDark, theme.worldThemeData]);
+
+  // === 副作用：订阅主题事件 + 注册世界切换回调 ===
   useEffect(() => {
     subscribeThemeEvents();
+    // 将 loadWorldTheme 注册为世界切换回调
+    setOnWorldChanged((worldviewId: string) => {
+      loadWorldTheme(worldviewId);
+    });
     return () => {
       unsubscribeThemeEvents();
+      setOnWorldChanged(null);
     };
-  }, []);
+  }, [loadWorldTheme]);
 
-  // 监听系统暗色模式偏好变化
+  // === 副作用：监听系统暗色模式偏好 ===
   useEffect(() => {
     if (theme.themeMode !== 'system') return;
 
@@ -103,8 +188,9 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
       theme,
       setThemeMode,
       toggleDarkMode,
+      setUseWorldTheme,
     }),
-    [theme, setThemeMode, toggleDarkMode],
+    [theme, setThemeMode, toggleDarkMode, setUseWorldTheme],
   );
 
   return (

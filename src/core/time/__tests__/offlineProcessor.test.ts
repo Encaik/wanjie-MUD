@@ -24,6 +24,7 @@ function makeProtagonist(overrides: Partial<Protagonist> = {}): Protagonist {
     statCapBonuses: {},
     inventory: [
       {
+        id: 'inv-spirit-stone',
         definition: { id: 'spirit_stone', name: '灵石', type: '灵石', rarity: '普通', description: '', effects: [], stackable: true, maxStack: 999 },
         quantity: 999999,
       },
