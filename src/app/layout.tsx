@@ -1,3 +1,6 @@
+import { Analytics } from "@vercel/analytics/next"
+import { SpeedInsights } from "@vercel/speed-insights/next"
+
 import { ModInitProvider } from '@/modules/mod/components/ModInitProvider';
 import { ThemeProvider } from '@/modules/theme';
 import { GameProvider } from '@/views/game/useGameState';
@@ -36,6 +39,8 @@ export default function RootLayout({
             <GameProvider>{children}</GameProvider>
           </ModInitProvider>
         </ThemeProvider>
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
