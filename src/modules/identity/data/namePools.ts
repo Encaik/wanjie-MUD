@@ -4,8 +4,8 @@
  * 不同世界类型使用不同的姓名生成规则。
  * 数据与逻辑分离——generators.ts 从此文件导入姓名数据。
  */
-import type { WorldType } from '@/core/types';
 import { WorldViewRegistry } from '@/core/registry';
+import type { WorldType } from '@/core/types';
 
 export interface NamePool {
   surnames: string[];
@@ -65,14 +65,21 @@ const WASTELAND_NAMES: NamePool = {
 /**
  * 从注册中心获取姓名池
  *
- * @param worldType - 世界类型标识
+ * @param worldviewId - 世界观英文 kebab-case ID（如 "cultivation"、"wuxia"），非中文显示名
  * @returns 姓名池数据，未加载时抛出错误
  */
-export function getNamePoolFromRegistry(worldType: string): NamePool {
+export function getNamePoolFromRegistry(worldviewId: string): NamePool {
   const registry = WorldViewRegistry.getInstance();
-  const pool = registry.get(worldType)?.namePool;
+  const pool = registry.get(worldviewId)?.namePool;
   if (!pool) {
-    throw new Error(`姓名池未加载: "${worldType}"。请确保 wanjie-core Mod 已正确加载。`);
+    // 开发模式下检测可能的中文名误传
+    if (process.env.NODE_ENV === 'development' && /[一-龥]/.test(worldviewId)) {
+      console.warn(
+        `[getNamePoolFromRegistry] 传入参数 "${worldviewId}" 包含中文字符。` +
+        `请使用英文 worldviewId（如 "wuxia"）而非中文显示名。`
+      );
+    }
+    throw new Error(`姓名池未加载: "${worldviewId}"。请确保 wanjie-core Mod 已正确加载。`);
   }
   return pool;
 }

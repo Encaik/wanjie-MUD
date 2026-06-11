@@ -12,8 +12,8 @@
  * 3. 名称和描述应与品质匹配
  */
 
-import type { ImpactLevel, StatImpact, WorldType } from '@/core/types';
 import { WorldViewRegistry } from '@/core/registry';
+import type { ImpactLevel, WorldType } from '@/core/types';
 
 /**
  * 词条定义
@@ -461,9 +461,15 @@ const WASTELAND_TRAIT_POOL = {
  * @param worldType - 世界类型标识
  * @returns 词条池数据
  */
-export function getTraitPoolFromRegistry(worldType: string) {
+/**
+ * 从注册中心获取词条池
+ *
+ * @param worldviewId - 世界观英文 kebab-case ID（如 "cultivation"、"wuxia"），非中文显示名
+ * @returns 词条池数据
+ */
+export function getTraitPoolFromRegistry(worldviewId: string) {
   const registry = WorldViewRegistry.getInstance();
-  const pool = registry.get(worldType)?.traits;
+  const pool = registry.get(worldviewId)?.traits;
 
   // 如果注册中心有非空数据，使用注册中心数据
   if (pool && !isTraitPoolEmpty(pool)) {
@@ -471,7 +477,7 @@ export function getTraitPoolFromRegistry(worldType: string) {
   }
 
   // 回退到静态数据
-  const fallback = WORLD_TRAIT_DEFINITIONS[worldType as WorldType]
+  const fallback = WORLD_TRAIT_DEFINITIONS[worldviewId as WorldType]
     ?? WORLD_TRAIT_DEFINITIONS['修仙'];
   return fallback;
 }

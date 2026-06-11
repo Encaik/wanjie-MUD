@@ -423,6 +423,19 @@ export interface World {
   /** 世界综合评价分数（1-100，由评分系统计算，生成时默认为 0） */
   ratingScore: number;
 
+  // === 前端展示数据（由服务端生成时填充，前端直接从 World 对象读取，无需查注册中心） ===
+  /** 世界视觉配置（图标、配色、渐变等） */
+  visualConfig: {
+    icon: string;
+    accentColor: string;
+    gradientClass: string;
+    borderColor: string;
+    bgGradient: string;
+    colorGradient: string;
+  };
+  /** 属性显示名映射（内部键 → 世界对应的显示名，如 { 体质: '根骨', 灵根: '悟性' }） */
+  statDisplayNames: Record<string, string>;
+
   // === 特殊剧情 ===
   /** 特殊剧情引用（指向 modules/narrative/story 中的 Story） */
   specialPlot?: {
@@ -614,19 +627,16 @@ export interface Protagonist {
   pathExp?: number; // 流派经验
   pathLevel?: number; // 流派等级
   // 修炼系统扩展
-  cultivationCooldown?: number; // 修炼冷却结束时间戳（顿悟失败后）
   insightMarks?: number; // 顿悟印记数量
   // 扩展系统 - 心境状态
   mentalState?: import('./typesExtension').MentalState; // 心境状态
   // 扩展系统 - 势力进度
   factionProgress?: import('./typesExtension').FactionProgress | null; // 势力声望与任务进度
   currencies?: PlayerCurrencies; // 玩家货币（贡献点等）
-  // 体力系统
-  stamina?: number; // 当前体力
-  maxStamina?: number; // 最大体力
-  lastStaminaRecover?: number; // 上次体力恢复时间戳
-  // 任务冷却系统（任务ID -> 冷却结束时间戳）
-  taskCooldowns?: Record<string, number>;
+  /** 当前体力 */
+  stamina?: number;
+  /** 最大体力 */
+  maxStamina?: number;
   // 飞升系统
   ascensionMark?: import('./typesExtension').AscensionMark; // 飞升印记
   guardianBattle?: import('./typesExtension').GuardianBattleState; // 守卫战斗状态
@@ -1037,7 +1047,6 @@ export interface GameState {
   totalMessageCount: number; // 消息总数量
   autoCultivating: boolean; // 自动修炼状态
   autoBattle: boolean; // 自动战斗状态（默认false，需要手动操作）
-  lastExploreTime: number; // 上次历练的时间戳（用于CD，兼容旧版）
   crafting: CraftingState | null; // 炼丹状态
   forging: ForgingState | null; // 炼器状态
   // 统计数据（用于成就和图鉴）
@@ -1059,12 +1068,8 @@ export interface GameState {
   // 扩展系统 - 势力相关
   currentFactionId?: string | null; // 当前加入的势力ID
   factionProgress?: import('./typesExtension').FactionProgress | null; // 势力进度
-  // 时间系统
-  timeSystem?: import('@/modules/time/logic/timeSystem').TimeSystemState | null; // 统一时间系统
-  // 离线处理结果（登录时显示，显示后清除）
-  offlineResult?: import('@/modules/time/logic/offlineProcessor').OfflineProcessResult | null;
-  // 离线处理结果V2（新系统）
-  offlineResultV2?: import('@/modules/tower/logic/idleSystem').OfflineProcessResult | null;
+  /** 统一时间系统状态 — 由 core/time/ 管理 */
+  time: import('@/core/time').TimeState;
   // 事件历史记录（用于事件因果链）
   eventHistory?: import('../events/types').EventRecord[];
   // 世界状态标记（用于持久后果）

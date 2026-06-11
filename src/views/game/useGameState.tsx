@@ -8,6 +8,19 @@
 import React, { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react';
 import type { Dispatch, SetStateAction } from 'react';
 
+// 时间系统
+import {
+  gameClock,
+  realClock,
+  cooldown,
+  offline,
+  timerService,
+  fetchServerTime,
+  createDefaultGameClock,
+  createDefaultRealClock,
+} from '@/core/time';
+import type { TimeState } from '@/core/time';
+
 // 类型导入
 import { handleCellEvent } from '@/modules/exploration/logic/adventure/adventure';
 import { calculateBattleWithLogs } from '@/modules/exploration/logic/adventure/adventureBattleNew';
@@ -17,7 +30,7 @@ import { executeCultivation, getMaxExperience } from '@/modules/progression/logi
 import { generateEquipment } from '@/modules/equipment/logic/equipment';
 import { updateTaskProgress, applyMentalChange } from '@/core/engine';
 import { processExperienceGain, calculateBreakthroughTransfer } from '@/modules/progression/logic/experienceSystem';
-import { generateCharacters, generateBackstory } from '@/modules/identity/logic/generators';
+import { generateBackstory } from '@/modules/identity/logic/generators';
 import { WorldProviderRegistry } from '@/core/world/WorldProviderRegistry';
 import { buildWorldPool } from '@/core/world/WorldPoolEngine';
 import { post } from '@/shared/utils/api-client';
@@ -114,19 +127,6 @@ import {  useGameFaction } from '@/modules/faction/hooks/useFaction';
 import {  addToInventory, removeFromInventory } from '@/modules/equipment/hooks/inventoryUtils';
 
 // 安全存档工具
-
-// 离线收益计算
-import {  processOfflineTime, OfflineProcessResult } from '@/modules/tower/logic/idleSystem';
-// 统一离线时间处理
-import {  
-  processOfflineTime as processOfflineTimeUnified,
-  applyOfflineTimeToProtagonist,
-  shouldShowOfflineDialog,
-  OfflineTimeResult,
-  DEFAULT_OFFLINE_TIME_CONFIG,
-} from '@/modules/time/logic/offlineTimeProcessor';
-import {  TOWER_CONFIG } from '@/modules/tower/logic/types';
-import {  getDefaultRealTimeState, getDefaultGameTimeState } from '@/modules/time/logic/timeSystem';
 
 // 子 Hooks
 
@@ -279,133 +279,112 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     if (isInitialized.current) return;
     isInitialized.current = true;
-    
-    // 使用带恢复的存档加载
-    const savedState = loadGameStateWithRecovery();
-    if (savedState) {
-      const now = Date.now();
-      const lastLogout = savedState.timeSystem?.realTime?.lastLogoutTime || 0;
-      const offlineDuration = lastLogout > 0 ? now - lastLogout : 0;
-      
-      // === 1. 统一处理离线时间相关补偿 ===
-      const offlineTimeResult = processOfflineTimeUnified(
-        savedState.timeSystem?.realTime,
-        savedState.protagonist ?? undefined,
-        savedState.protagonist?.taskCooldowns,
-        savedState.autoCultivating || false, // 传入自动修炼状态
-        now
-      );
-      
-      // 更新主角状态（体力恢复等）
-      let updatedProtagonist = savedState.protagonist;
-      if (savedState.protagonist) {
-        updatedProtagonist = applyOfflineTimeToProtagonist(
+
+    // 异步初始化：获取服务端时间，处理离线
+    (async () => {
+      const serverNow = await fetchServerTime();
+
+      // 使用带恢复的存档加载
+      const savedState = loadGameStateWithRecovery();
+      if (savedState && savedState.protagonist) {
+        // === 1. 离线时间处理 ===
+        const time = savedState.time;
+        const offlineResult = offline.process(
+          time,
           savedState.protagonist,
-          offlineTimeResult
+          serverNow,
+          savedState.autoCultivating || false,
         );
-      }
-      
-      // === 2. 处理挂机收益 ===
-      let offlineResult: OfflineProcessResult | undefined;
-      
-      // 只有离线超过最小时间才显示弹窗
-      if (shouldShowOfflineDialog(offlineDuration) && updatedProtagonist) {
-        const towerProgress = updatedProtagonist.towerProgress ?? createDefaultTowerProgress();
-        
-        // 计算离线挂机收益
-        offlineResult = processOfflineTime({
-          playerLevel: updatedProtagonist.level,
-          worldType: updatedProtagonist.world.type,
-          currentHp: updatedProtagonist.currentHp,
-          maxHp: updatedProtagonist.maxHp,
-          currentMp: updatedProtagonist.currentMp,
-          maxMp: updatedProtagonist.maxMp,
-          currentStamina: updatedProtagonist.stamina || 100,
-          maxStamina: updatedProtagonist.maxStamina || 100,
-          maxFloor: towerProgress.maxClearedFloor,
-          dropPool: towerProgress.dropPool,
-          offlineDuration,
-        });
-      }
-      
-      // === 3. 更新任务冷却 ===
-      const updatedTaskCooldowns = savedState.protagonist?.taskCooldowns || {};
-      for (const taskId of offlineTimeResult.expiredTaskCooldowns) {
-        delete updatedTaskCooldowns[taskId];
-      }
-      
-      // === 4. 检查并重置轮次冷却 ===
-      let updatedFactionProgress = savedState.protagonist?.factionProgress;
-      if (updatedFactionProgress) {
-        const { dailyRound, weeklyRound } = updatedFactionProgress;
-        
-        // 检查日常轮次冷却
-        let newDailyRound = dailyRound;
-        if (dailyRound.roundCooldownEnd && now >= dailyRound.roundCooldownEnd) {
-          newDailyRound = createDefaultDailyRoundState();
-        }
-        
-        // 检查周常轮次冷却
-        let newWeeklyRound = weeklyRound;
-        if (weeklyRound.roundCooldownEnd && now >= weeklyRound.roundCooldownEnd) {
-          newWeeklyRound = createDefaultWeeklyRoundState();
-        }
-        
-        if (newDailyRound !== dailyRound || newWeeklyRound !== weeklyRound) {
-          updatedFactionProgress = {
-            ...updatedFactionProgress,
-            dailyRound: newDailyRound,
-            weeklyRound: newWeeklyRound,
+
+        // 应用离线收益到主角
+        let updatedProtagonist = offline.applyResult(savedState.protagonist, offlineResult);
+
+        // === 2. 更新 TimeState ===
+        // 登录更新 lastLoginAt，清理过期冷却
+        let updatedTime = realClock.login(time, serverNow);
+        const { time: cleanedTime } = cooldown.clearExpired(updatedTime, serverNow);
+        updatedTime = cleanedTime;
+
+        // 请求时刷新
+        if (offlineResult.needsDailyRefresh) {
+          updatedTime = {
+            ...updatedTime,
+            real: { ...updatedTime.real, dailyRefreshAt: serverNow },
           };
         }
+        if (offlineResult.needsWeeklyRefresh) {
+          updatedTime = {
+            ...updatedTime,
+            real: { ...updatedTime.real, weeklyRefreshAt: serverNow },
+          };
+        }
+
+        // === 3. 检查势力轮次冷却 ===
+        let updatedFactionProgress = updatedProtagonist.factionProgress;
+        if (updatedFactionProgress) {
+          const { dailyRound, weeklyRound } = updatedFactionProgress;
+          let newDailyRound = dailyRound;
+          let newWeeklyRound = weeklyRound;
+
+          if (dailyRound.roundCooldownEnd && serverNow >= dailyRound.roundCooldownEnd) {
+            newDailyRound = createDefaultDailyRoundState();
+          }
+          if (weeklyRound.roundCooldownEnd && serverNow >= weeklyRound.roundCooldownEnd) {
+            newWeeklyRound = createDefaultWeeklyRoundState();
+          }
+
+          if (newDailyRound !== dailyRound || newWeeklyRound !== weeklyRound) {
+            updatedFactionProgress = { ...updatedFactionProgress, dailyRound: newDailyRound, weeklyRound: newWeeklyRound };
+          }
+        }
+
+        updatedProtagonist = { ...updatedProtagonist, factionProgress: updatedFactionProgress };
+
+        // === 4. 构建最终状态 ===
+        const finalState: GameState = {
+          ...savedState,
+          protagonist: updatedProtagonist,
+          time: updatedTime,
+        };
+
+        setGameState(finalState);
+
+        // 启动运行时定时器
+        timerService.start(serverNow, updatedTime);
+      } else if (savedState) {
+        // 无主角但有存档（选角/选世界阶段）— 仅初始化时间
+        const timeState = savedState.time;
+        setGameState({
+          ...savedState,
+          time: timeState,
+        });
       }
-      
-      // === 5. 构建最终状态 ===
-      const finalProtagonist = updatedProtagonist ? {
-        ...updatedProtagonist,
-        taskCooldowns: updatedTaskCooldowns,
-        factionProgress: updatedFactionProgress,
-      } : null;
-      
-      // 存储离线时间处理结果（供其他系统使用）
-      const finalState: GameState = {
-        ...savedState,
-        protagonist: finalProtagonist,
-        timeSystem: savedState.timeSystem ? {
-          ...savedState.timeSystem,
-          realTime: offlineTimeResult.updatedRealTime,
-        } : {
-          realTime: offlineTimeResult.updatedRealTime,
-          gameTime: getDefaultGameTimeState(),
-        },
-        offlineResultV2: offlineResult,
-      };
-      
-      setGameState(finalState);
-    }
+    })();
   }, []);
 
-  // 保存游戏状态
+  // 保存游戏状态（登出时记录时间）
+  const saveWithLogout = useCallback((state: GameState) => {
+    const now = Date.now(); // 仅用于持久化，非逻辑计算
+    const updatedTime = realClock.logout(state.time, now);
+    timerService.stop();
+
+    const stateToSave = {
+      ...state,
+      time: updatedTime,
+    };
+
+    safeSaveGameState(stateToSave);
+  }, []);
+
   useEffect(() => {
     if (!isInitialized.current) return;
     if (gameState.phase === 'character-select') return;
-    
-    // 更新 lastLogoutTime 用于下次计算离线收益
-    const currentRealTime = gameState.timeSystem?.realTime || getDefaultRealTimeState();
-    const currentGameTime = gameState.timeSystem?.gameTime || getDefaultGameTimeState();
-    
+
     const stateToSave = {
       ...gameState,
-      timeSystem: {
-        realTime: {
-          ...currentRealTime,
-          lastLogoutTime: Date.now(),
-        },
-        gameTime: currentGameTime,
-      },
+      time: realClock.logout(gameState.time, Date.now()),
     };
-    
-    // 使用安全存档函数
+
     const result = safeSaveGameState(stateToSave);
     if (!result.success) {
       log.error('Failed to save game state:', result.error);
@@ -418,55 +397,37 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
   // 监听页面可见性变化，记录离线时间
   useEffect(() => {
     if (!isInitialized.current) return;
-    
+
     const handleVisibilityChange = () => {
       if (document.visibilityState === 'hidden') {
-        // 页面隐藏时，立即保存当前时间作为 lastLogoutTime
-        const currentRealTime = gameState.timeSystem?.realTime || getDefaultRealTimeState();
-        const currentGameTime = gameState.timeSystem?.gameTime || getDefaultGameTimeState();
-        
+        const now = Date.now();
         const stateToSave = {
           ...gameState,
-          timeSystem: {
-            realTime: {
-              ...currentRealTime,
-              lastLogoutTime: Date.now(),
-            },
-            gameTime: currentGameTime,
-          },
+          time: realClock.logout(gameState.time, now),
         };
-        
+        timerService.stop();
         safeSaveGameState(stateToSave);
       }
     };
-    
+
     const handleBeforeUnload = () => {
-      // 页面关闭前，保存当前时间
-      const currentRealTime = gameState.timeSystem?.realTime || getDefaultRealTimeState();
-      const currentGameTime = gameState.timeSystem?.gameTime || getDefaultGameTimeState();
-      
+      const now = Date.now();
       const stateToSave = {
         ...gameState,
-        timeSystem: {
-          realTime: {
-            ...currentRealTime,
-            lastLogoutTime: Date.now(),
-          },
-          gameTime: currentGameTime,
-        },
+        time: realClock.logout(gameState.time, now),
       };
-      
+      timerService.stop();
       safeSaveGameState(stateToSave);
     };
-    
+
     document.addEventListener('visibilitychange', handleVisibilityChange);
     window.addEventListener('beforeunload', handleBeforeUnload);
-    
+
     return () => {
       document.removeEventListener('visibilitychange', handleVisibilityChange);
       window.removeEventListener('beforeunload', handleBeforeUnload);
     };
-  }, [gameState]);
+  }, [gameState, saveWithLogout]);
 
   // 新手任务奖励自动发放
   useEffect(() => {
@@ -632,19 +593,24 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     }
   }, []);
 
-  // 刷新角色列表（需要知道世界类型）
+  // 刷新角色列表（通过服务端 API 生成，使用 worldviewId）
   const refreshCharacters = useCallback(async () => {
     setGameState(prev => {
       if (!prev.selectedWorld) return prev;
-      const newCharacters = generateCharacters(prev.selectedWorld.type);
-      return {
-        ...prev,
-        characters: newCharacters,
-      };
+      // 发起 API 请求但不等待——先用空列表占位，然后在 then 中更新
+      post<{ characters: Character[] }>('/api/v1/characters/generate', {
+        worldviewId: prev.selectedWorld.worldviewId,
+        count: 8,
+      }).then(({ code, data }) => {
+        if (code === 200 && data) {
+          setGameState(p => ({ ...p, characters: data.characters }));
+        }
+      });
+      return prev;
     });
   }, []);
 
-  // 选择世界观：补全详情 + 生成角色 → 进入角色选择
+  // 选择世界观：补全详情 + 通过服务端 API 生成角色 → 进入角色选择
   const selectWorld = useCallback(async (world: World) => {
     // 如果还没有详情，从后端补全
     let fullWorld = world;
@@ -658,11 +624,21 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
       }
     }
 
+    // 通过服务端 API 生成角色（服务端 WorldViewRegistry 有完整数据）
+    const { code: charCode, data: charData } = await post<{ characters: Character[] }>(
+      '/api/v1/characters/generate',
+      { worldviewId: fullWorld.worldviewId, count: 8 },
+    );
+
+    const characters = charCode === 200 && charData
+      ? charData.characters
+      : [];
+
     setGameState(prev => ({
       ...prev,
       selectedWorld: fullWorld,
       phase: 'character-select',
-      characters: generateCharacters(fullWorld.type),
+      characters,
     }));
   }, []);
 
@@ -715,21 +691,21 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
       const initialRarity = getInitialRarity();
 
       // 生成初始攻击功法（根据身世品质）
-      const initialTechnique = generateTechniqueByType('attack', 1, world.type, initialRarity);
+      const initialTechnique = generateTechniqueByType('attack', 1, world.worldviewId, initialRarity);
 
       // 生成初始武器（根据身世品质，近战武器）
-      const initialEquipment = generateEquipment('melee', initialRarity, world.type);
+      const initialEquipment = generateEquipment('melee', initialRarity, world.worldviewId);
 
       // 根据属性计算初始血量和法力
       const initialMaxHp = calculatePlayerMaxHp(
         character.stats.base.体质,
         1,
-        world.type
+        world.worldviewId
       );
       const initialMaxMp = calculatePlayerMaxMp(
         character.stats.base.灵根,
         1,
-        world.type
+        world.worldviewId
       );
 
       // 生成主角
@@ -1740,7 +1716,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
 
       const fragmentInventory = prev.protagonist.fragmentInventory ?? createEmptyFragmentInventory();
       const playerLevel = prev.protagonist.level;
-      const worldType = prev.protagonist.world.type;
+      const worldType = prev.protagonist.world.worldviewId;
       
       let result: { success: boolean; item?: Technique | Equipment; itemType?: 'technique' | 'equipment'; message: string };
       
@@ -1823,112 +1799,15 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     }
   }, []);
 
-  // 清除离线结果
+  // 清除离线结果（新系统中离线结果内嵌于登录流程，无需额外清除）
   const clearOfflineResult = useCallback(() => {
-    setGameState(prev => ({
-      ...prev,
-      offlineResult: undefined,
-      offlineResultV2: undefined,
-    }));
+    // 保留方法签名以兼容现有 GameContextType，逻辑已移至初始化
   }, []);
 
-  // 应用离线收益奖励
+  // 应用离线收益奖励（新系统在登录时自动应用）
   const applyOfflineRewards = useCallback(() => {
-    const offlineResult = gameState.offlineResultV2;
-    if (!offlineResult || !gameState.protagonist) return;
-    
-    const rewards = offlineResult.rewards;
-    const protagonist = gameState.protagonist;
-    const towerProgress = protagonist.towerProgress ?? createDefaultTowerProgress();
-    
-    // 应用收益到主角
-    const newProtagonist = { ...protagonist };
-    const newInventory = [...protagonist.inventory];
-    
-    // 应用经验
-    if (rewards.experience > 0) {
-      newProtagonist.experience = (newProtagonist.experience || 0) + rewards.experience;
-    }
-    
-    // 应用HP/MP恢复
-    if (rewards.hp > 0) {
-      newProtagonist.currentHp = Math.min(newProtagonist.maxHp, newProtagonist.currentHp + rewards.hp);
-    }
-    if (rewards.mp > 0) {
-      newProtagonist.currentMp = Math.min(newProtagonist.maxMp, newProtagonist.currentMp + rewards.mp);
-    }
-    
-    // 应用灵石（添加到背包）
-    if (rewards.spiritStones > 0) {
-      const existing = newInventory.find(item => item.definition.id === 'spirit_stone');
-      if (existing) {
-        existing.quantity += rewards.spiritStones;
-      } else {
-        const def: ItemDefinition = { 
-          id: 'spirit_stone', 
-          name: '灵石', 
-          type: '灵石' as const, 
-          rarity: '普通' as const, 
-          description: '', 
-          effects: [], 
-          stackable: true, 
-          maxStack: 999999 
-        };
-        newInventory.push(createInventoryItem(def, rewards.spiritStones));
-      }
-    }
-    
-    // 更新掉落池（扣除已获得的灵石）
-    const now = Date.now();
-    const newDropPool = {
-      ...towerProgress.dropPool,
-      totalSpiritStones: Math.max(0, towerProgress.dropPool.totalSpiritStones - rewards.spiritStones),
-      lastUpdated: now,
-    };
-    
-    newProtagonist.towerProgress = {
-      ...towerProgress,
-      dropPool: newDropPool,
-      totalSpiritStonesEarned: (towerProgress.totalSpiritStonesEarned || 0) + rewards.spiritStones,
-    };
-    
-    // 添加碎片和材料到背包
-    const addItemToInventory = (id: string, type: 'fragment' | 'material', rarity: ItemRarity, quantity: number) => {
-      const existing = newInventory.find(item => item.definition.id === id);
-      if (existing) {
-        existing.quantity += quantity;
-      } else {
-        const def: ItemDefinition = {
-          id,
-          name: type === 'fragment' ? `${rarity}碎片` : `${rarity}材料`,
-          type: type === 'fragment' ? '碎片' : '材料',
-          rarity,
-          description: '',
-          effects: [],
-          stackable: true,
-          maxStack: 999,
-        };
-        newInventory.push(createInventoryItem(def, quantity));
-      }
-    };
-    
-    rewards.fragments.forEach(fragment => {
-      addItemToInventory(fragment.id, 'fragment', fragment.rarity, fragment.quantity);
-    });
-    
-    rewards.materials.forEach(material => {
-      addItemToInventory(material.id, 'material', material.rarity, material.quantity);
-    });
-    
-    newProtagonist.inventory = newInventory;
-    
-    // 更新状态
-    setGameState(prev => ({
-      ...prev,
-      protagonist: newProtagonist,
-      offlineResultV2: undefined,
-    }));
-  }, [gameState.offlineResultV2, gameState.protagonist]);
+    // 保留方法签名以兼容现有 GameContextType，逻辑已移至离线处理
+  }, []);
 
   // 清除新手引导完成弹窗
   const clearNoviceCompletionDialog = useCallback(() => {
@@ -2179,7 +2058,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         const newTechnique = generateTechniqueByType(
           type,
           1, // difficulty
-          prev.protagonist.world.type,
+          prev.protagonist.world.worldviewId,
           rarity
         );
         return {
@@ -2203,7 +2082,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         const newEquipment = generateEquipment(
           slot,
           rarity,
-          prev.protagonist.world.type
+          prev.protagonist.world.worldviewId
         );
         const slotNames: Record<EquipmentSlot, string> = {
           melee: '近战武器',
@@ -2250,12 +2129,12 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         const newMaxHp = calculatePlayerMaxHp(
           prev.protagonist.stats.base.体质,
           newLevel,
-          prev.protagonist.world.type
+          prev.protagonist.world.worldviewId
         );
         const newMaxMp = calculatePlayerMaxMp(
           prev.protagonist.stats.base.灵根,
           newLevel,
-          prev.protagonist.world.type
+          prev.protagonist.world.worldviewId
         );
         
         return {
@@ -2308,7 +2187,11 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     onResetCooldowns: useCallback(() => {
       setGameState(prev => ({
         ...prev,
-        messages: addMessageInternal(prev.messages, 'success', '开发者', '冷却已重置'),
+        time: {
+          ...prev.time,
+          real: { ...prev.time.real, cooldowns: {} },
+        },
+        messages: addMessageInternal(prev.messages, 'success', '开发者', '所有冷却已重置'),
       }));
     }, [addMessageInternal]),
 

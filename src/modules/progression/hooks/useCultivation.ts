@@ -19,7 +19,7 @@ import { processExperienceGain, calculateBreakthroughTransfer } from '@/modules/
 import { gameSystems } from '@/core/engine';
 import { getRealmName } from '@/modules/identity/logic/generators';
 import { applyGrowthStatChanges, getGrowthStatCap } from '@/modules/progression/logic/realmSystem';
-import { consumeGameTime, ACTION_TIME_COST } from '@/modules/time/logic/timeSystem';
+import { gameClock, cooldown } from '@/core/time';
 import { 
   GameState, 
   MessageRecord, 
@@ -67,7 +67,6 @@ function handleStrategyCultivationImpl(
     ? updateActiveEffects(prev.protagonist.activeEffects)
     : prev.protagonist.activeEffects;
 
-  const newCooldown = result.cooldownUntil > 0 ? result.cooldownUntil : prev.protagonist.cultivationCooldown;
   const newInsightMarks = (prev.protagonist.insightMarks ?? 0) + (result.insightMarkGained ? 1 : 0);
 
   // 经验处理
@@ -97,11 +96,11 @@ function handleStrategyCultivationImpl(
     }
   }
 
-  // 时间消耗
-  const newTimeSystem = prev.timeSystem ? {
-    ...prev.timeSystem,
-    gameTime: consumeGameTime(prev.timeSystem.gameTime, ACTION_TIME_COST.cultivate),
-  } : null;
+  // 时间消耗 + 冷却
+  let newTime = prev.time ? gameClock.advance(prev.time, 'cultivate') : prev.time;
+  if (result.cooldownUntil > 0) {
+    newTime = cooldown.set(newTime, 'cultivate', Math.max(0, result.cooldownUntil - Date.now()), Date.now());
+  }
 
   // 构建奖励消息
   const rewards: MessageRecord['rewards'] = {};
@@ -133,13 +132,12 @@ function handleStrategyCultivationImpl(
       activeEffects: newActiveEffects,
       experience: newExp,
       overflowExperience: newOverflowExp,
-      cultivationCooldown: newCooldown,
       insightMarks: newInsightMarks,
       pathExp: newPathExp,
       pathLevel: newPathLevel,
     },
     statistics: newStatistics,
-    timeSystem: newTimeSystem,
+    time: newTime,
     lastActionResult: { success: result.success, message: result.message + extraMsg } as GameState['lastActionResult'],
     messages: addMessageInternal(
       prev.messages,
@@ -189,8 +187,8 @@ export function useGameCultivation({
       if (!prev.protagonist) return prev;
 
       // 检查冷却
-      if (strategy && prev.protagonist.cultivationCooldown && prev.protagonist.cultivationCooldown > Date.now()) {
-        const remaining = Math.ceil((prev.protagonist.cultivationCooldown - Date.now()) / 1000);
+      if (strategy && cooldown.isActive(prev.time, 'cultivate', Date.now())) {
+        const remaining = Math.ceil(cooldown.remaining(prev.time, 'cultivate', Date.now()) / 1000);
         return {
           ...prev,
           lastActionResult: { success: false, message: `冥想冷却中，剩余 ${remaining} 秒` },
@@ -411,10 +409,7 @@ export function useGameCultivation({
         }
       }
       
-      const newTimeSystem = prev.timeSystem ? {
-        ...prev.timeSystem,
-        gameTime: consumeGameTime(prev.timeSystem.gameTime, ACTION_TIME_COST.cultivate),
-      } : null;
+      const newTime = prev.time ? gameClock.advance(prev.time, 'cultivate') : prev.time;
       
       // 突破成功时重新计算 maxHp 和 maxMp
       let newMaxHp = prev.protagonist.maxHp;
@@ -454,7 +449,7 @@ export function useGameCultivation({
         },
         statistics: newStatistics,
         factionProgress: newFactionProgress,
-        timeSystem: newTimeSystem,
+        time: newTime,
         lastActionResult: result,
         messages: addMessageInternal(prev.messages, messageType, messageTitle, result.message + (mentalChangeMessage ? ` ${mentalChangeMessage}` : ''), details, rewards),
       };

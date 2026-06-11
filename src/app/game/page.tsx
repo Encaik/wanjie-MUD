@@ -32,7 +32,7 @@ export default function GamePage() {
   return (
     <MainGame
       protagonist={gameState.protagonist}
-      timeSystem={gameState.timeSystem}
+      timeSystem={gameState.time}
       currentEvent={gameState.currentEvent}
       adventureGrid={gameState.adventureGrid}
       adventurePosition={gameState.adventurePosition}
@@ -47,7 +47,6 @@ export default function GamePage() {
       hasMoreMessages={game.hasMoreMessages}
       isLoadingMessages={game.isLoadingMessages}
       autoCultivating={gameState.autoCultivating}
-      lastExploreTime={gameState.lastExploreTime}
       adventureLoot={gameState.adventureLoot}
       adventureExperience={gameState.adventureExperience}
       crafting={gameState.crafting}

@@ -10,8 +10,9 @@ import { CULTIVATION_PATHS, getPathLevelExp } from '@/modules/progression/data/c
 import { getRealmName } from '@/modules/progression/data/realmData';
 import { getMaxExperience } from '@/modules/progression/logic/cultivation';
 import { getResourceName } from '@/modules/equipment/logic/items';
-import { TimeSystemState, formatGameTimeShort } from '@/modules/time/logic/timeSystem';
-import { CultivationPath } from '@/core/types';
+import { formatGameTimeShort } from '@/core/time';
+import type { TimeState } from '@/core/time';
+import type { CultivationPath } from '@/core/types';
 import { Protagonist } from '@/core/types';
 import { MentalState } from '@/core/types';
 import { WORLD_TEXT_MAP } from '@/modules/narrative/logic/WorldTextManager';
@@ -29,7 +30,7 @@ const PATH_CONFIG: Record<CultivationPath, { icon: React.ReactNode; color: strin
 interface GameHeaderProps {
   protagonist: Protagonist;
   actions?: React.ReactNode;
-  timeSystem?: TimeSystemState | null;
+  timeSystem?: TimeState;
   mentalState?: MentalState | null;
 }
 
@@ -68,7 +69,7 @@ export function GameHeader({ protagonist, actions, timeSystem, mentalState }: Ga
             {timeSystem && (
               <div className="flex items-center gap-0.5 text-[10px] text-muted-foreground shrink-0">
                 <Clock className="w-2.5 h-2.5 text-amber-500" />
-                <span>{formatGameTimeShort(timeSystem.gameTime)}</span>
+                <span>{formatGameTimeShort(timeSystem)}</span>
               </div>
             )}
           </div>
@@ -155,7 +156,7 @@ export function GameHeader({ protagonist, actions, timeSystem, mentalState }: Ga
             {timeSystem && (
               <div className="flex items-center gap-1 text-[10px]">
                 <Clock className="w-3 h-3 text-amber-500" />
-                <span>{formatGameTimeShort(timeSystem.gameTime)}</span>
+                <span>{formatGameTimeShort(timeSystem)}</span>
               </div>
             )}
           </div>

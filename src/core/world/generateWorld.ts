@@ -229,6 +229,9 @@ export function generateWorld(
   return {
     ...basic,
     ...details,
+    // 前端展示数据：从 worldview 直接携带，前端无需再查注册中心
+    visualConfig: worldview.visualConfig,
+    statDisplayNames: worldview.stats.statDisplayNames ?? {},
   };
 }
 

@@ -27,7 +27,7 @@ import {
   SECLUSION_CONFIGS,
   SECLUSION_OUTCOMES,
 } from '@/modules/progression/logic/seclusion';
-import { consumeGameTime, ACTION_TIME_COST } from '@/modules/time/logic/timeSystem';
+import { gameClock, ACTION_TIME_COST } from '@/core/time';
 import { GameState, MessageRecord, ActiveEffect } from '@/core/types';
 import { DEFAULT_PROTAGONIST_EXTENSION, MentalState } from '@/core/types';
 
@@ -251,10 +251,7 @@ export function useSeclusion({
                        type === 'major' ? ACTION_TIME_COST.cultivate * 3 : 
                        ACTION_TIME_COST.cultivate;
       
-      const newTimeSystem = prev.timeSystem ? {
-        ...prev.timeSystem,
-        gameTime: consumeGameTime(prev.timeSystem.gameTime, timeCost),
-      } : null;
+      const newTime = prev.time ? gameClock.advanceBySeconds(prev.time, timeCost) : prev.time;
       
       // 消息类型
       let messageType: MessageRecord['type'] = 'info';
@@ -290,7 +287,7 @@ export function useSeclusion({
         },
         statistics: newStatistics,
         factionProgress: newFactionProgress,
-        timeSystem: newTimeSystem,
+        time: newTime,
         lastActionResult: {
           success: true,
           message: result.message + (mentalChangeMessage ? ` ${mentalChangeMessage}` : ''),

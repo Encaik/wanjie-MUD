@@ -9,7 +9,7 @@ import { useGame, getRouteGuard } from '@/views/game/useGameState';
 
 export default function CharacterSelectPage() {
   const router = useRouter();
-  const { gameState, selectCharacter, refreshCharacters } = useGame();
+  const { gameState, selectCharacter } = useGame();
   const redirectedRef = useRef(false);
 
   // 同步计算重定向目标
@@ -34,9 +34,10 @@ export default function CharacterSelectPage() {
     <CharacterSelect
       characters={gameState.characters}
       onSelect={handleSelect}
-      onRefresh={refreshCharacters}
       worldType={gameState.selectedWorld?.type}
       worldName={gameState.selectedWorld?.name}
+      visualConfig={gameState.selectedWorld?.visualConfig}
+      statDisplayNames={gameState.selectedWorld?.statDisplayNames}
       onBack={() => router.push('/world-select')}
     />
   );
