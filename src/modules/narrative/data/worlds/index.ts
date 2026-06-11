@@ -2,7 +2,7 @@
  * 世界观文案统一导出
  *
  * @deprecated 世界观文本数据已迁移到 mods/wanjie-core/data/world/*.json 的 text 字段。
- * 新代码应通过 WorldDataRegistry.getWorldviewTexts(id) 或 WorldTextManager 获取文本。
+ * 新代码应通过 WorldViewRegistry.getWorldviewTexts(id) 或 WorldTextManager 获取文本。
  * 本文件及其引用的 *.ts 静态文件保留用于：
  * 1. 向后兼容（WorldTextManager 的 fallback）
  * 2. 作为 Mod JSON 的参考源

@@ -8,7 +8,7 @@
 
 ### Requirement: WorldProvider 接口定义
 
-系统 SHALL 定义 `WorldProvider` 抽象接口，所有世界来源（随机生成器、固化模板）SHALL 实现此接口。接口 SHALL 包含世界生成和元数据查询方法。两种 provider 类型产出相同形状的 `World` 实例，但内部构造逻辑不同——random 类型从配方（`WorldviewDefinition` 的池）随机组合，template 类型从成品（`WorldTemplate` 的确定值）直接组装。
+系统 SHALL 定义 `WorldProvider` 抽象接口，所有世界来源 SHALL 实现此接口。接口 SHALL 包含世界生成和元数据查询方法。WorldProvider 从 `WorldviewDefinition` 的配方池中随机组合生成 World 实例。
 
 `WorldProvider.generateWorld()` 方法 SHALL 接受 `worldviewId` 参数，指定从哪个世界观生成世界实例。
 
@@ -20,59 +20,11 @@
 - **AND** 返回 World 实例的 name、description、factions、dangers、opportunities 均为确定性选取结果
 - **AND** 返回 World 的 `worldviewId` SHALL 等于传入的 `worldviewId`
 
-#### Scenario: 固化模板从成品数据组装 World
-
-- **WHEN** 一个含 `WorldTemplate` 的 mod 被加载
-- **THEN** 系统 SHALL 为每个模板创建一个 type 为 `'template'` 的 WorldProvider 实例
-- **AND** 该 provider 的 `generateWorld()` SHALL 直接读取 `WorldTemplate.world` 中的确定值（固定名称、固定描述、固定势力列表、固定危险/机缘实例）
-- **AND** 忽略 seed 参数（模板世界是确定性的）
-- **AND** 仅由 identity 系统分配 world.id，ratingScore 初始为 0
-- **AND** WorldTemplate SHALL 包含 `worldviewId` 字段，标明其来源世界观
-
 #### Scenario: generateWorlds 批量生成
 
 - **WHEN** 调用 `provider.generateWorlds([seed1, seed2, ...], 0)`
 - **THEN** SHALL 返回对应数量的 World 对象数组
 - **AND** 每个 World SHALL 具有唯一 ID 和独立的名称/势力/危险/机缘组合
-
-### Requirement: WorldTemplate 数据结构定义
-
-系统 SHALL 定义 `WorldTemplate` 接口，表示一个"成品世界"--所有字段为确定值，与 `WorldviewDefinition`（配方/池）明确区分。
-
-#### Scenario: WorldTemplate 包含确定的世界数据
-
-- **WHEN** 检查 `WorldTemplate` 接口定义
-- **THEN** SHALL 包含 `id: string`（模板唯一 ID）
-- **AND** SHALL 包含 `world` 字段，其类型为 `Omit<World, 'id' | 'ratingScore'>`（完整世界数据，不含系统分配字段）
-- **AND** world.name SHALL 为确定的完整名称字符串（非前缀后缀池）
-- **AND** world.factions SHALL 为确定的 `WorldFaction[]` 具体势力列表（非描述池）
-- **AND** world.dangers SHALL 为确定的 `WorldDanger[]` 具体危险实例（非危险池）
-- **AND** world.opportunities SHALL 为确定的 `WorldOpportunity[]` 具体机缘实例（非机缘池）
-
-#### Scenario: WorldTemplate 包含世界观引用
-
-- **WHEN** 检查 `WorldTemplate` 接口定义
-- **THEN** SHALL 包含 `worldviewId: string`，标明该模板世界属于哪个世界观
-
-#### Scenario: WorldTemplate 与 WorldviewDefinition 数据不混淆
-
-- **WHEN** 一个 Mod 同时提供 `data/world/*.json`（WorldviewDefinition 配方）和 `templates/worlds/*.json`（WorldTemplate 成品）
-- **THEN** WorldviewDefinition 用于随机生成 provider（type='random'），WorldTemplate 用于模板 provider（type='template'）
-- **AND** 两者使用相同的 WorldDataRegistry 世界观注册，但数据结构不混淆
-
-### Requirement: 游戏版本常量与兼容性检查
-
-系统 SHALL 定义统一的 `GAME_VERSION` 常量（semver 格式），并提供 `checkWorldTemplateCompatibility()` 函数。
-
-#### Scenario: GAME_VERSION 常量存在
-
-- **WHEN** 代码需要引用当前游戏版本号
-- **THEN** SHALL import `GAME_VERSION` 从 `@/shared/config/version`
-
-#### Scenario: 主版本号不同判定为不兼容
-
-- **WHEN** 模板的 `gameVersion` 为 `"2.0.0"`，当前 `GAME_VERSION` 为 `"1.5.0"`
-- **THEN** `checkWorldTemplateCompatibility("2.0.0")` SHALL 返回 `"incompatible"`
 
 ### Requirement: WorldProviderRegistry 单例注册中心
 
@@ -90,23 +42,18 @@
 
 #### Scenario: 按类型过滤 provider
 
-- **WHEN** 调用 `getByType('template')`
-- **THEN** SHALL 返回所有 type 为 `'template'` 的 provider 数组
+- **WHEN** 调用 `getByType('random')`
+- **THEN** SHALL 返回所有 type 为 `'random'` 的 provider 数组
 
 ### Requirement: Mod 加载完成后自动注册 provider
 
-`ModLoader.loadAll()` 完成后，系统 SHALL 自动调用 `registerWorldProviders()` 从 `WorldDataRegistry.worldviews` 和 mod 模板数据创建并注册 WorldProvider。provider 的元数据 SHALL 包含可用的世界观 ID 列表。
+`ModLoader.loadAll()` 完成后，系统 SHALL 自动调用 `registerWorldProviders()` 从 `WorldViewRegistry` 获取所有世界观，创建并注册 WorldProvider。provider 的元数据 SHALL 包含可用的世界观 ID 列表。
 
 #### Scenario: 随机世界 provider 元数据包含世界观列表
 
-- **WHEN** `WorldDataRegistry` 中注册了 N 个世界观
+- **WHEN** `WorldViewRegistry` 中注册了 N 个世界观
 - **THEN** 系统 SHALL 创建一个 type 为 `'random'` 的 provider
 - **AND** 该 provider 的 `getMetadata()` SHALL 返回包含世界观 ID 列表
-
-#### Scenario: 模板世界 provider 自动注册
-
-- **WHEN** mod 的 `templates/worlds/` 目录包含 K 个世界模板 JSON 文件
-- **THEN** 系统 SHALL 为模板创建 type 为 `'template'` 的 provider
 
 ### Requirement: 游戏代码仅通过注册中心获取世界
 

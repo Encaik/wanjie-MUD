@@ -21,7 +21,13 @@
       "Bash(openspec list *)",
       "Bash(git commit -m 'feat\\(api\\): 搭建后端API层与世界生成接口，切换为服务端模式 *)",
       "Bash(git rm *)",
-      "Bash(pnpm check-sizes *)"
+      "Bash(pnpm check-sizes *)",
+      "Bash(cd \"D:/vs_workspace/wanjie/wanjie-MUD\" && git show HEAD:src/modules/identity/data/worldData.ts | head -700 > /tmp/worldData_original.ts && wc -l /tmp/worldData_original.ts)",
+      "Read(//tmp/**)",
+      "Bash(git checkout *)",
+      "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\([k for k in d.keys\\(\\)]\\)\")",
+      "Bash(node -e \"const d=require\\('./mods/wanjie-core/data/worldview/cultivation.json'\\); console.log\\(Object.keys\\(d\\).join\\(', '\\)\\)\")",
+      "Bash(node -e ' *)"
     ]
   }
 }

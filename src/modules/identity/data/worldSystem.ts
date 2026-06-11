@@ -15,7 +15,7 @@ import {
   getOpportunityLevelBgClass,
 } from '@/modules/exploration/data/opportunityConfig';
 import { getRarityColorClass, getRarityBgClass } from '@/modules/equipment/data/raritySystem';
-import { WorldDataRegistry } from '@/core/registry';
+import { WorldViewRegistry } from '@/core/registry';
 import { WORLD_COEFFICIENTS } from './worldData';
 import {
   WorldDanger,
@@ -160,8 +160,8 @@ export function generateWorldDangers(
   if (dangerCount === 0) return [];
 
   // 优先从 registry 获取危险池，回退到硬编码常量
-  const registry = WorldDataRegistry.getInstance();
-  const registryDangers = registry.getDangersForWorld(worldType);
+  const registry = WorldViewRegistry.getInstance();
+  const registryDangers = registry.get(worldType)?.dangers ?? [];
   const dangerPool: WorldDanger[] = registryDangers.length > 0 ? registryDangers.map(d => ({
     ...d,
     dangerLevel: d.dangerLevel || 1,
@@ -228,8 +228,8 @@ export function generateWorldOpportunities(
   const opportunityCount = calculateOpportunityCount(_difficultyCoefficient);
   
   // 优先从 registry 获取机缘池，回退到硬编码常量
-  const oppRegistry = WorldDataRegistry.getInstance();
-  const registryOpps = oppRegistry.getOpportunitiesForWorld(worldType);
+  const oppRegistry = WorldViewRegistry.getInstance();
+  const registryOpps = oppRegistry.get(worldType)?.opportunities ?? [];
   const opportunityPool: WorldOpportunity[] = registryOpps.length > 0 ? registryOpps.map(o => ({
     ...o,
     opportunityLevel: o.opportunityLevel || 1,
@@ -340,19 +340,13 @@ function weightedRandomIndex(weights: number[], rng: () => number = Math.random)
 
 /**
  * 获取世界基础系数
- * 优先从 WorldDataRegistry 读取，回退到硬编码常量
+ * 优先从 WorldViewRegistry 读取，回退到硬编码常量
  */
 export function getWorldBaseCoefficient(worldType: WorldType): number {
   // 优先从 registry 获取
-  const registry = WorldDataRegistry.getInstance();
-  const worldview = registry.getWorldview(worldType);
+  const registry = WorldViewRegistry.getInstance();
+  const worldview = registry.get(worldType);
   if (worldview) return worldview.baseCoefficient;
-
-  const worldData = registry.getWorldType(worldType);
-  if (worldData) return worldData.baseCoefficient;
-
-  const coeff = registry.getCoefficient(worldType);
-  if (coeff !== 1.0) return coeff;
 
   // 回退到硬编码常量
   return WORLD_COEFFICIENTS[worldType] || 1.0;

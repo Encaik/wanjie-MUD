@@ -1,6 +1,5 @@
 {
-  "id": 4,
-  "type": "magic",
+  "id": "magic",
   "name": "魔幻世界",
   "description": "魔法元素充盈，法师与龙共存",
   "baseCoefficient": 1.1,
@@ -32,52 +31,6 @@
     "魔法议会统领各元素学派",
     "三大帝国与精灵联盟对峙",
     "教会与法师协会分庭抗礼"
-  ],
-  "worldDangers": [
-    {
-      "description": "魔王苏醒",
-      "impact": {
-        "体质": -1
-      },
-      "impactDescription": "体质-1"
-    },
-    {
-      "description": "魔力潮汐",
-      "impact": {
-        "灵根": -1
-      },
-      "impactDescription": "灵根-1"
-    },
-    {
-      "description": "黑暗降临",
-      "impact": {
-        "意志": -1
-      },
-      "impactDescription": "意志-1"
-    }
-  ],
-  "worldOpportunities": [
-    {
-      "description": "获得魔法传承",
-      "impact": {
-        "体质": 2
-      },
-      "impactDescription": "体质+2"
-    },
-    {
-      "description": "契约元素之灵",
-      "impact": {
-        "灵根": 2
-      },
-      "impactDescription": "灵根+2"
-    },
-    {
-      "description": "获得神器认可",
-      "impact": {
-        "意志": 2
-      },
-      "impactDescription": "意志+2"
-    }
   ],
   "stats": {
     "baseHp": 95,
@@ -349,31 +302,29 @@
     "subRealmMultiplier": 1.05,
     "tierJumpMultiplier": 1.3
   },
-  "factions": {
-    "templates": [
-      {
-        "id": "魔幻_faction_0",
-        "name": "魔法议会统领各元素学派",
-        "type": "魔幻",
-        "description": "魔幻世界的主要势力",
-        "worldTypeId": "魔幻"
-      },
-      {
-        "id": "魔幻_faction_1",
-        "name": "三大帝国与精灵联盟对峙",
-        "type": "魔幻",
-        "description": "魔幻世界的主要势力",
-        "worldTypeId": "魔幻"
-      },
-      {
-        "id": "魔幻_faction_2",
-        "name": "教会与法师协会分庭抗礼",
-        "type": "魔幻",
-        "description": "魔幻世界的主要势力",
-        "worldTypeId": "魔幻"
-      }
-    ]
-  },
+  "factions": [
+    {
+      "id": "魔幻_faction_0",
+      "name": "魔法议会统领各元素学派",
+      "type": "魔幻",
+      "description": "魔幻世界的主要势力",
+      "worldTypeId": "魔幻"
+    },
+    {
+      "id": "魔幻_faction_1",
+      "name": "三大帝国与精灵联盟对峙",
+      "type": "魔幻",
+      "description": "魔幻世界的主要势力",
+      "worldTypeId": "魔幻"
+    },
+    {
+      "id": "魔幻_faction_2",
+      "name": "教会与法师协会分庭抗礼",
+      "type": "魔幻",
+      "description": "魔幻世界的主要势力",
+      "worldTypeId": "魔幻"
+    }
+  ],
   "traits": {
     "origin": {
       "legendary": [],
@@ -404,41 +355,25 @@
       "common": []
     }
   },
-  "names": {
-    "surnames": [
-      "艾泽",
-      "诺瓦",
-      "奥兰",
-      "神秘",
-      "永恒",
-      "圣光"
-    ],
-    "maleNames": [
-      "天",
-      "云",
-      "风",
-      "雷",
-      "阳",
-      "星",
-      "辰",
-      "明",
-      "玄",
-      "浩"
-    ],
-    "femaleNames": [
-      "月",
-      "雪",
-      "瑶",
-      "紫",
-      "清",
-      "灵",
-      "玉",
-      "霜",
-      "萱",
-      "薇"
-    ]
+  "version": "1.0.0",
+  "rewardCoefficient": {
+    "expCoefficient": 1,
+    "spiritStoneCoefficient": 1,
+    "dropCoefficient": 1,
+    "rarityBonus": {
+      "rare": 0.1,
+      "epic": 0.05,
+      "legendary": 0.02,
+      "mythic": 0.01
+    },
+    "specialRewards": {
+      "ascensionMarkBonus": 0.1,
+      "titleChance": 0.05,
+      "specialItemChance": 0.02
+    }
   },
-  "text": {
+  "builtin": true,
+  "texts": {
     "name": "魔幻",
     "description": "魔法与剑的奇幻世界",
     "terminology": {
@@ -582,5 +517,39 @@
         }
       }
     }
+  },
+  "namePool": {
+    "surnames": [
+      "艾泽",
+      "诺瓦",
+      "奥兰",
+      "神秘",
+      "永恒",
+      "圣光"
+    ],
+    "maleNames": [
+      "天",
+      "云",
+      "风",
+      "雷",
+      "阳",
+      "星",
+      "辰",
+      "明",
+      "玄",
+      "浩"
+    ],
+    "femaleNames": [
+      "月",
+      "雪",
+      "瑶",
+      "紫",
+      "清",
+      "灵",
+      "玉",
+      "霜",
+      "萱",
+      "薇"
+    ]
   }
 }

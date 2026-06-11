@@ -1,6 +1,5 @@
 {
-  "id": 1,
-  "type": "cultivation",
+  "id": "cultivation",
   "name": "修仙世界",
   "description": "灵气充沛，仙门林立，修士们追求长生大道，适合初入万界的修行者",
   "baseCoefficient": 1,
@@ -32,52 +31,6 @@
     "五大仙门各据一方，暗流涌动",
     "三宗两门一阁，势力错综复杂",
     "十大宗门并立，争夺灵脉资源"
-  ],
-  "worldDangers": [
-    {
-      "description": "魔修入侵",
-      "impact": {
-        "体质": -1
-      },
-      "impactDescription": "体质-1"
-    },
-    {
-      "description": "灵气枯竭",
-      "impact": {
-        "灵根": -1
-      },
-      "impactDescription": "灵根-1"
-    },
-    {
-      "description": "妖兽横行",
-      "impact": {
-        "意志": -1
-      },
-      "impactDescription": "意志-1"
-    }
-  ],
-  "worldOpportunities": [
-    {
-      "description": "发现上古洞府",
-      "impact": {
-        "体质": 2
-      },
-      "impactDescription": "体质+2"
-    },
-    {
-      "description": "获得仙缘传承",
-      "impact": {
-        "灵根": 2
-      },
-      "impactDescription": "灵根+2"
-    },
-    {
-      "description": "悟道突破",
-      "impact": {
-        "意志": 2
-      },
-      "impactDescription": "意志+2"
-    }
   ],
   "stats": {
     "baseHp": 100,
@@ -351,31 +304,29 @@
     "subRealmMultiplier": 1.05,
     "tierJumpMultiplier": 1.3
   },
-  "factions": {
-    "templates": [
-      {
-        "id": "修仙_faction_0",
-        "name": "五大仙门各据一方，暗流涌动",
-        "type": "修仙",
-        "description": "修仙世界的主要势力",
-        "worldTypeId": "修仙"
-      },
-      {
-        "id": "修仙_faction_1",
-        "name": "三宗两门一阁，势力错综复杂",
-        "type": "修仙",
-        "description": "修仙世界的主要势力",
-        "worldTypeId": "修仙"
-      },
-      {
-        "id": "修仙_faction_2",
-        "name": "十大宗门并立，争夺灵脉资源",
-        "type": "修仙",
-        "description": "修仙世界的主要势力",
-        "worldTypeId": "修仙"
-      }
-    ]
-  },
+  "factions": [
+    {
+      "id": "修仙_faction_0",
+      "name": "五大仙门各据一方，暗流涌动",
+      "type": "修仙",
+      "description": "修仙世界的主要势力",
+      "worldTypeId": "修仙"
+    },
+    {
+      "id": "修仙_faction_1",
+      "name": "三宗两门一阁，势力错综复杂",
+      "type": "修仙",
+      "description": "修仙世界的主要势力",
+      "worldTypeId": "修仙"
+    },
+    {
+      "id": "修仙_faction_2",
+      "name": "十大宗门并立，争夺灵脉资源",
+      "type": "修仙",
+      "description": "修仙世界的主要势力",
+      "worldTypeId": "修仙"
+    }
+  ],
   "traits": {
     "origin": {
       "legendary": [],
@@ -406,41 +357,25 @@
       "common": []
     }
   },
-  "names": {
-    "surnames": [
-      "青云",
-      "紫霄",
-      "太虚",
-      "玄天",
-      "昆仑",
-      "蓬莱"
-    ],
-    "maleNames": [
-      "天",
-      "云",
-      "风",
-      "雷",
-      "阳",
-      "星",
-      "辰",
-      "明",
-      "玄",
-      "浩"
-    ],
-    "femaleNames": [
-      "月",
-      "雪",
-      "瑶",
-      "紫",
-      "清",
-      "灵",
-      "玉",
-      "霜",
-      "萱",
-      "薇"
-    ]
+  "version": "1.0.0",
+  "rewardCoefficient": {
+    "expCoefficient": 1,
+    "spiritStoneCoefficient": 1,
+    "dropCoefficient": 1,
+    "rarityBonus": {
+      "rare": 0.1,
+      "epic": 0.05,
+      "legendary": 0.02,
+      "mythic": 0.01
+    },
+    "specialRewards": {
+      "ascensionMarkBonus": 0.1,
+      "titleChance": 0.05,
+      "specialItemChance": 0.02
+    }
   },
-  "text": {
+  "builtin": true,
+  "texts": {
     "name": "修仙",
     "description": "传统修仙世界，追求长生大道",
     "terminology": {
@@ -584,5 +519,39 @@
         }
       }
     }
+  },
+  "namePool": {
+    "surnames": [
+      "青云",
+      "紫霄",
+      "太虚",
+      "玄天",
+      "昆仑",
+      "蓬莱"
+    ],
+    "maleNames": [
+      "天",
+      "云",
+      "风",
+      "雷",
+      "阳",
+      "星",
+      "辰",
+      "明",
+      "玄",
+      "浩"
+    ],
+    "femaleNames": [
+      "月",
+      "雪",
+      "瑶",
+      "紫",
+      "清",
+      "灵",
+      "玉",
+      "霜",
+      "萱",
+      "薇"
+    ]
   }
 }

@@ -12,7 +12,7 @@ import {
   calculateDifficultyCoefficient,
   getDifficultyFromCoefficient,
 } from './generateWorld';
-import type { WorldviewDefinition } from '@/core/registry/WorldDataRegistry';
+import type { WorldviewDefinition } from '@/core/registry/WorldViewRegistry';
 
 /** 创建用于测试的完整 WorldviewDefinition */
 function createTestWorldview(overrides: Partial<WorldviewDefinition> = {}): WorldviewDefinition {

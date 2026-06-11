@@ -10,7 +10,7 @@
 
 /** Mod 可提供的内容类型 */
 export type ModContentType =
-  | 'world'
+  | 'worldview'
   | 'traits'
   | 'dangers'
   | 'opportunities'
@@ -23,7 +23,7 @@ export type ModContentType =
 
 /** 所有支持的 Mod 内容类型列表 */
 export const ALL_MOD_CONTENT_TYPES: ModContentType[] = [
-  'world',
+  'worldview',
   'traits',
   'dangers',
   'opportunities',
@@ -72,8 +72,6 @@ export interface ModManifest {
    * 数组模式下每个文件包含一个独立条目，按数组顺序依次加载注册。
    */
   dataFiles: Record<string, string | string[]>;
-  /** 固化世界模板 ID 列表（对应 templates/worlds/{id}.json） */
-  worldTemplates?: string[];
 }
 
 /** Mod 加载失败错误 */
@@ -268,7 +266,6 @@ export function parseManifest(json: string): { manifest?: ModManifest; errors: M
     template: m.template === true,
     contentTypes: m.contentTypes as ModContentType[],
     dataFiles: (m.dataFiles as Record<string, string | string[]>) ?? {},
-    worldTemplates: Array.isArray(m.worldTemplates) ? (m.worldTemplates as string[]) : undefined,
   };
 
   return { manifest, errors: [] };

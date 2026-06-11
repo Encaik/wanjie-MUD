@@ -1,7 +1,7 @@
 /**
  * 世界术语统一映射系统
  *
- * @deprecated 术语数据已迁移到 WorldDataRegistry.worldviews[].texts.terminology。
+ * @deprecated 术语数据已迁移到 WorldViewRegistry.worldviews[].texts.terminology。
  * 新代码应通过 WorldTextManager 或 registry.getWorldviewTexts() 获取术语。
  * 本文件保留用于向后兼容，过渡期后删除。
  *

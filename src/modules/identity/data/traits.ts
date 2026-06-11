@@ -13,7 +13,7 @@
  */
 
 import type { ImpactLevel, StatImpact, WorldType } from '@/core/types';
-import { WorldDataRegistry } from '@/core/registry';
+import { WorldViewRegistry } from '@/core/registry';
 
 /**
  * 词条定义
@@ -455,15 +455,15 @@ const WASTELAND_TRAIT_POOL = {
 /**
  * 从注册中心获取词条池
  *
- * 优先从 WorldDataRegistry 获取 Mod 注册的词条池，
+ * 优先从 WorldViewRegistry 获取 Mod 注册的词条池，
  * 如果注册中心数据为空（Mod 尚未迁移词条数据），则回退到静态数据。
  *
  * @param worldType - 世界类型标识
  * @returns 词条池数据
  */
 export function getTraitPoolFromRegistry(worldType: string) {
-  const registry = WorldDataRegistry.getInstance();
-  const pool = registry.getTraitPool(worldType);
+  const registry = WorldViewRegistry.getInstance();
+  const pool = registry.get(worldType)?.traits;
 
   // 如果注册中心有非空数据，使用注册中心数据
   if (pool && !isTraitPoolEmpty(pool)) {

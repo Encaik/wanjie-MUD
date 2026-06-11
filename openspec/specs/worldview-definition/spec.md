@@ -6,7 +6,7 @@
 
 ### Requirement: WorldviewDefinition 数据结构
 
-系统 SHALL 定义 `WorldviewDefinition` 接口，作为世界观的完整数据模型。一个 `WorldviewDefinition` 包含生成该世界观下世界实例所需的全部数据。该接口 SHALL 在 `src/core/registry/WorldDataRegistry.ts` 中定义。
+系统 SHALL 定义 `WorldviewDefinition` 接口，作为世界观的完整数据模型。一个 `WorldviewDefinition` 包含生成该世界观下世界实例所需的全部数据。该接口 SHALL 在 `src/core/registry/WorldViewRegistry.ts` 中定义。
 
 `WorldviewDefinition` SHALL 包含以下字段：
 - `id: string` — English kebab-case 唯一标识（如 "cultivation", "martial"）
@@ -36,7 +36,7 @@
 
 #### Scenario: WorldviewDefinition 包含完整世界观文本
 
-- **WHEN** 从 `WorldDataRegistry` 读取 `WorldviewDefinition`（如 "cultivation"）
+- **WHEN** 从 `WorldViewRegistry` 读取 `WorldviewDefinition`（如 "cultivation"）
 - **THEN** `texts` 字段 SHALL 包含完整的 `WorldTextDefinition` 对象
 - **AND** `texts.terminology` SHALL 包含该世界观的术语（如资源名、货币名、修炼动词）
 - **AND** `texts.stats` SHALL 包含属性别名（如 "体质"→"根骨"）
@@ -54,7 +54,7 @@
 
 ### Requirement: WorldviewDefinition 通过 Mod JSON 加载
 
-世界观定义 SHALL 通过 Mod 系统的 JSON 文件加载到 `WorldDataRegistry`。每个世界观的 JSON 文件 SHALL 包含 `WorldviewDefinition` 所需的所有字段。加载过程 SHALL 发生在服务端初始化阶段（`app/api/init.ts`）。
+世界观定义 SHALL 通过 Mod 系统的 JSON 文件加载到 `WorldViewRegistry`。每个世界观的 JSON 文件 SHALL 包含 `WorldviewDefinition` 所需的所有字段。加载过程 SHALL 发生在服务端初始化阶段（`app/api/init.ts`）。Mod 的 content type 为 `'worldview'`（替代旧的 `'world'`）。
 
 #### Scenario: Mod JSON 文件包含完整的 worldview 数据
 
@@ -70,8 +70,8 @@
 
 - **WHEN** `ensureWorldSystemInitialized()` 被调用（服务端启动或首次 API 请求）
 - **THEN** 系统 SHALL 遍历所有已加载 Mod 的 `data/world/*.json` 文件
-- **AND** 将每个 JSON 对象注册为 `WorldviewDefinition` 到 `WorldDataRegistry.worldviews`
-- **AND** 注册完成后 `WorldDataRegistry.count` SHALL 等于已加载的世界观数量
+- **AND** 将每个 JSON 对象注册为 `WorldviewDefinition` 到 `WorldViewRegistry.worldviews`
+- **AND** 注册完成后 `WorldViewRegistry.count` SHALL 等于已加载的世界观数量
 
 #### Scenario: 前端通过 API 获取世界观列表
 
@@ -95,7 +95,7 @@
 - **THEN** 使用 `getWorldview(id)` 而非 `getWorldTypeData(id)`
 - **AND** 使用 `getAllWorldviews()` 而非 `getAllWorldTypeValues()`
 - **AND** 使用 `registerWorldview(def)` 而非 `registerWorldType(def)`
-- **AND** `WorldDataRegistry.worldviews` 替代 `WorldDataRegistry.worldTypes`
+- **AND** `WorldViewRegistry.worldviews` 替代 `WorldViewRegistry.worldTypes`
 
 ### Requirement: World 接口关联世界观
 
@@ -110,5 +110,5 @@
 #### Scenario: 通过 worldviewId 回溯世界观数据
 
 - **WHEN** 持有 `World` 实例且需要其世界观文本
-- **THEN** SHALL 通过 `WorldDataRegistry.getWorldview(world.worldviewId)` 获取 `WorldviewDefinition`
+- **THEN** SHALL 通过 `WorldViewRegistry.getWorldview(world.worldviewId)` 获取 `WorldviewDefinition`
 - **AND** SHALL 从 `WorldviewDefinition.texts` 读取术语和文本模板

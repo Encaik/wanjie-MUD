@@ -14,7 +14,7 @@
 
 import { hashString, createRng } from '@/shared/utils/rng';
 import { GAME_VERSION } from '@/shared/config/version';
-import type { WorldviewDefinition } from '@/core/registry/WorldDataRegistry';
+import type { WorldviewDefinition } from '@/core/registry/WorldViewRegistry';
 import type { World, WorldDifficulty, WorldFaction } from '@/core/types';
 
 // ============================================
@@ -84,15 +84,15 @@ export function getDifficultyFromCoefficient(coefficient: number): WorldDifficul
  * 纯函数：相同 worldview + seed + ascensionCount → 相同 World。
  * 不依赖 Math.random()，所有随机性由 seed 派生。
  *
- * @param worldview - 世界观完整定义（从 WorldDataRegistry 获取）
+ * @param worldview - 世界观完整定义（从 WorldViewRegistry 获取）
  * @param seed - 世界种子字符串（为空时自动生成）
  * @param ascensionCount - 飞升次数（影响难度系数）
  * @returns 生成的 World 实例
  *
  * @example
  * ```typescript
- * const registry = WorldDataRegistry.getInstance();
- * const worldview = registry.getWorldview('cultivation');
+ * const registry = WorldViewRegistry.getInstance();
+ * const worldview = registry.get('cultivation');
  * const world = generateWorld(worldview!, 'abc12345', 0);
  * // world.worldviewId === 'cultivation'
  * // world.name 从 worldview.namePrefixes + worldview.nameSuffixes 组合

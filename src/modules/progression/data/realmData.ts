@@ -16,7 +16,7 @@ import {
 import { calculateEnemyCombatPower } from '@/modules/combat/logic/combatPower';
 import { calculateEnemyEnhancement } from '@/modules/combat/logic/enemy/enemyEnhancement';
 import type { WorldType, DungeonConfig } from '@/core/types';
-import { WorldDataRegistry } from '@/core/registry/WorldDataRegistry';
+import { WorldViewRegistry } from '@/core/registry/WorldViewRegistry';
 import type { RealmSystem, RealmTier } from './realmCore';
 import { getRealmName, getRealmMultiplier } from './realmCore';
 
@@ -158,14 +158,14 @@ const randomKey = <T extends Record<string, unknown>>(obj: T): string => {
  * 为世界生成一套境界体系
  *
  * 优先级：
- * 1. WorldDataRegistry 中 Mod 注册的自定义境界体系
+ * 1. WorldViewRegistry 中 Mod 注册的自定义境界体系
  * 2. 内置静态数据 MAIN_REALM_SYSTEMS + SUB_REALM_SYSTEMS（8 种内置世界类型）
  * 3. 兜底：使用"修仙"世界类型的默认体系
  */
 export function generateRealmSystem(worldType: WorldType): RealmSystem {
-  // 优先检查 WorldDataRegistry 中是否有 Mod 注册的自定义境界体系
-  const registry = WorldDataRegistry.getInstance();
-  const customRealm = registry.getRealmSystem(worldType);
+  // 优先检查 WorldViewRegistry 中是否有 Mod 注册的自定义境界体系
+  const registry = WorldViewRegistry.getInstance();
+  const customRealm = registry.get(worldType)?.realmSystem;
   if (customRealm) {
     return {
       mainRealmName: customRealm.mainRealmName,

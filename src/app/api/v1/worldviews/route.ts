@@ -11,7 +11,7 @@ import { NextRequest } from 'next/server';
 
 import { apiSuccess, apiError } from '@/app/api/result';
 import { ensureWorldSystemInitialized } from '@/app/api/init';
-import { WorldDataRegistry } from '@/core/registry';
+import { WorldViewRegistry } from '@/core/registry';
 import { createLogger } from '@/core/logger';
 
 const log = createLogger('Worldviews');
@@ -39,10 +39,10 @@ export async function GET(_request: NextRequest) {
     return apiError(500, '世界系统初始化失败');
   }
 
-  const registry = WorldDataRegistry.getInstance();
+  const registry = WorldViewRegistry.getInstance();
 
   // 优先从 worldview 获取
-  const worldviews = registry.getAllWorldviews();
+  const worldviews = registry.getAll();
   if (worldviews.length > 0) {
     const summaries: WorldviewSummary[] = worldviews.map(wv => ({
       id: wv.id,
@@ -63,10 +63,10 @@ export async function GET(_request: NextRequest) {
   }
 
   // 回退：从旧 worldTypes 获取基本信息
-  const worldTypes = registry.getAllWorldTypeData();
+  const worldTypes = registry.getAll();
   if (worldTypes.length > 0) {
     const summaries: WorldviewSummary[] = worldTypes.map(wt => ({
-      id: wt.type,
+      id: wt.id,
       name: wt.name,
       description: wt.description,
       visualConfig: wt.visualConfig

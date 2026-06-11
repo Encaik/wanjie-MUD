@@ -1,24 +1,24 @@
 # world-data-consolidation
 
-世界数据整合为单一数据源，以 `WorldDataRegistry.worldviews` 为所有世界观数据的唯一配置来源。
+世界数据整合为单一数据源，以 `WorldViewRegistry.worldviews` 为所有世界观数据的唯一配置来源。
 
 ## Requirements
 
 ### Requirement: WorldviewDefinition 为世界配置唯一数据源
 
-`WorldDataRegistry.worldviews`（存储 `WorldviewDefinition` 实例的 Map）在 `src/core/registry/WorldDataRegistry.ts` 中 SHALL 作为所有世界观数据的唯一定义来源。任何其他文件 SHALL NOT 重复定义世界名称前缀、后缀、描述、系数、世界观文本或特性池。所有消费代码 SHALL 通过 `WorldDataRegistry.getWorldview(worldviewId)` 获取数据。
+`WorldViewRegistry.worldviews`（存储 `WorldviewDefinition` 实例的 Map）在 `src/core/registry/WorldViewRegistry.ts` 中 SHALL 作为所有世界观数据的唯一定义来源。任何其他文件 SHALL NOT 重复定义世界名称前缀、后缀、描述、系数、世界观文本或特性池。所有消费代码 SHALL 通过 `WorldViewRegistry.getWorldview(worldviewId)` 获取数据。
 
 #### Scenario: 新增世界观只需 Mod JSON 一处
 
 - **WHEN** 需要新增或修改世界观配置
 - **THEN** 只需在 Mod JSON 文件中定义（`mods/<mod-name>/data/world/<worldviewId>.json`）
-- **AND** `WorldDataRegistry` 在初始化时自动加载所有 Mod JSON 中的世界观
+- **AND** `WorldViewRegistry` 在初始化时自动加载所有 Mod JSON 中的世界观
 - **AND** 无需修改任何 TypeScript 源代码
 
 #### Scenario: 世界观文本统一到 registry
 
 - **WHEN** 需要世界观的术语或 UI 文本
-- **THEN** SHALL 通过 `WorldDataRegistry.getWorldview(worldviewId).texts` 获取
+- **THEN** SHALL 通过 `WorldViewRegistry.getWorldview(worldviewId).texts` 获取
 - **AND** `modules/narrative/data/worlds/` 中的静态 TS 文件 SHALL 标记为 deprecated
 - **AND** `modules/narrative/logic/WorldTextManager` SHALL 从 registry 读取 `texts` 字段
 
@@ -65,7 +65,7 @@
 
 ### Requirement: 世界观文本强类型化
 
-`WorldDataRegistry` 中的世界观文本存储 SHALL 使用完整的 `WorldTextDefinition` 类型，SHALL NOT 使用 `Record<string, unknown>`。所有世界观文本的读取 SHALL 具有编译时类型检查。
+`WorldViewRegistry` 中的世界观文本存储 SHALL 使用完整的 `WorldTextDefinition` 类型，SHALL NOT 使用 `Record<string, unknown>`。所有世界观文本的读取 SHALL 具有编译时类型检查。
 
 #### Scenario: worldTexts 类型为 WorldTextDefinition
 
@@ -82,7 +82,7 @@
 
 ### Requirement: 无硬编码兜底数据
 
-所有世界相关数据 SHALL 仅从 `WorldDataRegistry` 读取。当 registry 中无请求的数据时，系统 SHALL 抛出明确错误，SHALL NOT 回退到硬编码的兜底数据。
+所有世界相关数据 SHALL 仅从 `WorldViewRegistry` 读取。当 registry 中无请求的数据时，系统 SHALL 抛出明确错误，SHALL NOT 回退到硬编码的兜底数据。
 
 #### Scenario: 危险/机遇数据缺失时报错
 

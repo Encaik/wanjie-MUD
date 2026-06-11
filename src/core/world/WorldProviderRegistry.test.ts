@@ -9,7 +9,7 @@ import type { World } from '@/core/types';
 import { GAME_VERSION } from '@/shared/config/version';
 
 /** 创建用于测试的 mock provider */
-function createMockProvider(id: string, type: 'random' | 'template'): WorldProvider {
+function createMockProvider(id: string, type: 'random'): WorldProvider {
   return {
     id,
     name: `Test ${id}`,
@@ -43,9 +43,8 @@ function createMockProvider(id: string, type: 'random' | 'template'): WorldProvi
         id,
         name: `Test ${id}`,
         type,
-        worldCount: type === 'template' ? 1 : -1,
-        worldTypes: ['修仙'],
-        templateIds: type === 'template' ? ['test-template'] : undefined,
+        worldCount: -1,
+        worldTypes: ['cultivation'],
       };
     },
   };
@@ -56,13 +55,13 @@ describe('WorldProviderRegistry', () => {
     WorldProviderRegistry.resetInstance();
   });
 
-  it('should be a singleton', () => {
+  it('应为单例', () => {
     const a = WorldProviderRegistry.getInstance();
     const b = WorldProviderRegistry.getInstance();
     expect(a).toBe(b);
   });
 
-  it('should register and retrieve a provider', () => {
+  it('应注册并查询 provider', () => {
     const registry = WorldProviderRegistry.getInstance();
     const provider = createMockProvider('test-mod', 'random');
     registry.register(provider);
@@ -70,39 +69,37 @@ describe('WorldProviderRegistry', () => {
     expect(registry.has('test-mod')).toBe(true);
   });
 
-  it('should throw on duplicate registration', () => {
+  it('重复注册应抛出错误', () => {
     const registry = WorldProviderRegistry.getInstance();
     registry.register(createMockProvider('test-mod', 'random'));
-    expect(() => registry.register(createMockProvider('test-mod', 'template')))
+    expect(() => registry.register(createMockProvider('test-mod', 'random')))
       .toThrow('Provider ID 冲突');
   });
 
-  it('should unregister a provider', () => {
+  it('应注销 provider', () => {
     const registry = WorldProviderRegistry.getInstance();
     registry.register(createMockProvider('test-mod', 'random'));
     registry.unregister('test-mod');
     expect(registry.get('test-mod')).toBeUndefined();
   });
 
-  it('should filter by type', () => {
+  it('应按类型过滤', () => {
     const registry = WorldProviderRegistry.getInstance();
     registry.register(createMockProvider('random-a', 'random'));
-    registry.register(createMockProvider('template-a', 'template'));
-    registry.register(createMockProvider('template-b', 'template'));
+    registry.register(createMockProvider('random-b', 'random'));
 
-    expect(registry.getByType('random')).toHaveLength(1);
-    expect(registry.getByType('template')).toHaveLength(2);
+    expect(registry.getByType('random')).toHaveLength(2);
   });
 
-  it('should return all providers', () => {
+  it('应返回所有 provider', () => {
     const registry = WorldProviderRegistry.getInstance();
     registry.register(createMockProvider('a', 'random'));
-    registry.register(createMockProvider('b', 'template'));
+    registry.register(createMockProvider('b', 'random'));
     expect(registry.getAll()).toHaveLength(2);
     expect(registry.count).toBe(2);
   });
 
-  it('should return undefined for unregistered provider', () => {
+  it('未注册的 provider 应返回 undefined', () => {
     const registry = WorldProviderRegistry.getInstance();
     expect(registry.get('nonexistent')).toBeUndefined();
     expect(registry.has('nonexistent')).toBe(false);

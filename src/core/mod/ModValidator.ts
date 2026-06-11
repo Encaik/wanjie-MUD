@@ -56,7 +56,7 @@ export function validateModData(
     let result: ValidationResult;
 
     switch (contentType as ModContentType) {
-      case 'world':
+      case 'worldview':
         result = validateWorldTypes(data);
         break;
       case 'dangers':

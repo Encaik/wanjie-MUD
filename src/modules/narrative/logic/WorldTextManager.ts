@@ -5,7 +5,7 @@
  * 1. 缓存已加载的世界观文案，避免频繁读取文件
  * 2. 提供统一的文案获取接口
  * 3. 支持世界切换时重新加载
- * 4. 优先从 WorldDataRegistry 读取，回退到静态导入
+ * 4. 优先从 WorldViewRegistry 读取，回退到静态导入
  *
  * 使用方式：
  * - 通过 WorldTextContext 获取当前世界文案
@@ -13,7 +13,7 @@
  */
 
 import { WorldType } from '@/core/types';
-import { WorldDataRegistry } from '@/core/registry';
+import { WorldViewRegistry } from '@/core/registry';
 import type { WorldTextDefinition } from '@/core/registry';
 
 // 保留静态导入作为 fallback（过渡期）
@@ -27,7 +27,7 @@ import { xiuxianTexts } from '../data/worlds/xiuxian';
 import { yinengTexts } from '../data/worlds/yineng';
 
 /**
- * @deprecated 过渡期静态映射表，新代码应从 WorldDataRegistry 获取
+ * @deprecated 过渡期静态映射表，新代码应从 WorldViewRegistry 获取
  * 中文 WorldType → 英文 worldviewId 映射
  */
 const CHINESE_TO_ENGLISH: Record<string, string> = {
@@ -76,7 +76,7 @@ class WorldTextManager {
 
   /**
    * 切换世界观
-   * 优先从 WorldDataRegistry 读取，回退到静态映射表
+   * 优先从 WorldViewRegistry 读取，回退到静态映射表
    *
    * @param worldType 世界观类型（中文显示名或英文 worldviewId）
    */
@@ -87,18 +87,18 @@ class WorldTextManager {
     this.currentWorldType = worldType;
 
     // 优先从 registry 读取（通过英文 ID 或中文名映射）
-    const registry = WorldDataRegistry.getInstance();
+    const registry = WorldViewRegistry.getInstance();
     const englishId = CHINESE_TO_ENGLISH[worldType] ?? worldType;
 
     // 尝试从 worldview 获取文本
-    const worldview = registry.getWorldview(englishId);
+    const worldview = registry.get(englishId);
     if (worldview?.texts) {
       this.currentText = worldview.texts;
       return;
     }
 
     // 尝试从旧 worldTexts 存储获取
-    const storedText = registry.getWorldText(englishId);
+    const storedText = registry.get(englishId)?.texts;
     if (storedText && typeof storedText === 'object' && 'terminology' in storedText) {
       this.currentText = storedText as unknown as WorldTextDefinition;
       return;
@@ -117,10 +117,10 @@ class WorldTextManager {
       return this.currentText;
     }
     // 尝试从 registry 获取
-    const registry = WorldDataRegistry.getInstance();
-    const allIds = registry.getAllWorldviewIds();
+    const registry = WorldViewRegistry.getInstance();
+    const allIds = registry.getAllIds();
     if (allIds.length > 0) {
-      const first = registry.getWorldview(allIds[0]);
+      const first = registry.get(allIds[0]);
       if (first?.texts) return first.texts;
     }
     // 最终回退到静态修仙文本

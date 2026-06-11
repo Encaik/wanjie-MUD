@@ -2,7 +2,7 @@
  * 属性显示名映射
  *
  * 根据世界类型将内部属性键（体质/灵根/悟性/幸运/意志）映射为世界对应的显示名。
- * 数据从 WorldDataRegistry 获取，无硬编码兜底。
+ * 数据从 WorldViewRegistry 获取，无硬编码兜底。
  *
  * 设计决策：BaseStats/GrowthStats 底层键名保持不变（避免 50+ 处引用的大重构），
  * 通过此显示层映射函数在 UI 层展示世界正确的属性名。
@@ -16,7 +16,7 @@ export type StatKey = '体质' | '灵根' | '悟性' | '幸运' | '意志';
 /** 所有内部属性键列表 */
 export const STAT_KEYS: StatKey[] = ['体质', '灵根', '悟性', '幸运', '意志'];
 
-/** @deprecated 兜底数据，数据已迁移到 WorldDataRegistry */
+/** @deprecated 兜底数据，数据已迁移到 WorldViewRegistry */
 const DEFAULT_STAT_DISPLAY: Record<StatKey, string> = {
   '体质': '体质',
   '灵根': '灵根',

@@ -4,7 +4,7 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { ModLoader } from './ModLoader';
 import { parseManifest, validateManifest } from './ModManifest';
-import { WorldDataRegistry } from '@/core/registry/WorldDataRegistry';
+import { WorldViewRegistry } from '@/core/registry/WorldViewRegistry';
 
 // ============================================
 // ModManifest 校验测试
@@ -20,7 +20,7 @@ describe('validateManifest', () => {
       author: 'tester',
       gameVersion: '>=1.0.0',
       dependencies: [],
-      contentTypes: ['world'],
+      contentTypes: ['worldview'],
       dataFiles: { world: 'data/world.json' },
     };
     const errors = validateManifest(data);
@@ -28,18 +28,18 @@ describe('validateManifest', () => {
   });
 
   it('should reject missing id', () => {
-    const errors = validateManifest({ name: 'test', version: '1.0.0', description: '', author: 'a', gameVersion: '>=1.0.0', contentTypes: ['world'] });
+    const errors = validateManifest({ name: 'test', version: '1.0.0', description: '', author: 'a', gameVersion: '>=1.0.0', contentTypes: ['worldview'] });
     expect(errors.some(e => e.path === 'id')).toBe(true);
   });
 
   it('should reject invalid id format', () => {
-    const data = { id: 'Invalid_ID', name: 'test', version: '1.0.0', description: '', author: 'a', gameVersion: '>=1.0.0', contentTypes: ['world'] };
+    const data = { id: 'Invalid_ID', name: 'test', version: '1.0.0', description: '', author: 'a', gameVersion: '>=1.0.0', contentTypes: ['worldview'] };
     const errors = validateManifest(data);
     expect(errors.some(e => e.path === 'id')).toBe(true);
   });
 
   it('should reject invalid version format', () => {
-    const data = { id: 'test', name: 'test', version: 'abc', description: '', author: 'a', gameVersion: '>=1.0.0', contentTypes: ['world'] };
+    const data = { id: 'test', name: 'test', version: 'abc', description: '', author: 'a', gameVersion: '>=1.0.0', contentTypes: ['worldview'] };
     const errors = validateManifest(data);
     expect(errors.some(e => e.path === 'version')).toBe(true);
   });
@@ -51,13 +51,13 @@ describe('validateManifest', () => {
   });
 
   it('should reject non-array dependencies', () => {
-    const data = { id: 'test', name: 'test', version: '1.0.0', description: '', author: 'a', gameVersion: '>=1.0.0', contentTypes: ['world'], dependencies: 'not-an-array' };
+    const data = { id: 'test', name: 'test', version: '1.0.0', description: '', author: 'a', gameVersion: '>=1.0.0', contentTypes: ['worldview'], dependencies: 'not-an-array' };
     const errors = validateManifest(data);
     expect(errors.some(e => e.path === 'dependencies')).toBe(true);
   });
 
   it('should reject non-object dataFiles', () => {
-    const data = { id: 'test', name: 'test', version: '1.0.0', description: '', author: 'a', gameVersion: '>=1.0.0', contentTypes: ['world'], dataFiles: 'not-an-object' };
+    const data = { id: 'test', name: 'test', version: '1.0.0', description: '', author: 'a', gameVersion: '>=1.0.0', contentTypes: ['worldview'], dataFiles: 'not-an-object' };
     const errors = validateManifest(data);
     expect(errors.some(e => e.path === 'dataFiles')).toBe(true);
   });
@@ -72,7 +72,7 @@ describe('parseManifest', () => {
       description: 'desc',
       author: 'author',
       gameVersion: '>=1.0.0',
-      contentTypes: ['world'],
+      contentTypes: ['worldview'],
       dataFiles: {},
     });
     const { manifest, errors } = parseManifest(json);
@@ -95,7 +95,7 @@ describe('parseManifest', () => {
       description: 'desc',
       author: 'author',
       gameVersion: '>=1.0.0',
-      contentTypes: ['world'],
+      contentTypes: ['worldview'],
     });
     const { manifest, errors } = parseManifest(json);
     expect(errors).toHaveLength(0);
@@ -207,7 +207,7 @@ function makeManifest(id: string, dependencies: string[]) {
     dependencies,
     required: false,
     template: false,
-    contentTypes: ['world'] as import('./ModManifest').ModContentType[],
+    contentTypes: ['worldview'] as import('./ModManifest').ModContentType[],
     dataFiles: {},
   };
 }

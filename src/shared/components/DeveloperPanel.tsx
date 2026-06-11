@@ -30,7 +30,7 @@ import { ControlledTabs, TabsContent, TabsList, TabsTrigger } from '@/shared/ui/
 import { EQUIPMENT_NAMES } from '@/modules/equipment/data/equipment';
 import { TECHNIQUE_NAMES, RARITY_POWER_RANGE, RARITY_BONUS_RANGE } from '@/modules/techniques/data/techniques';
 import { Protagonist, CultivationPath, WorldType, ItemRarity, TechniqueType, EquipmentSlot } from '@/core/types';
-import { WorldDataRegistry } from '@/core/registry';
+import { WorldViewRegistry } from '@/core/registry';
 
 interface DeveloperPanelProps {
   protagonist: Protagonist;
@@ -83,9 +83,9 @@ const PATH_OPTIONS = [
 
 /** 从注册中心动态获取世界类型选项 */
 function getWorldTypeOptions(): { value: WorldType; label: string }[] {
-  const registry = WorldDataRegistry.getInstance();
-  return registry.getAllWorldTypeData().map(w => ({
-    value: w.type as WorldType,
+  const registry = WorldViewRegistry.getInstance();
+  return registry.getAll().map(w => ({
+    value: w.id as WorldType,
     label: w.name,
   }));
 }

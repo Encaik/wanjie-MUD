@@ -1,34 +1,21 @@
 /**
  * Mod 加载器
  *
- * 负责在运行时发现、加载、校验 Mod 数据，并注册到 WorldDataRegistry。
+ * 负责在运行时发现、加载、校验 Mod 数据，并注册到 WorldViewRegistry。
  *
  * 加载流程：
  * 1. fetch /mods/mod-list.json → 获取 Mod 列表
  * 2. 并行 fetch 各 Mod 的 mod.json → 校验清单
  * 3. 拓扑排序解析依赖
- * 4. 按序加载数据文件 → 校验 → 注册到 WorldDataRegistry
+ * 4. 按序加载数据文件 → 校验 → 注册到 WorldViewRegistry
  * 5. 发布加载进度事件
  *
- * @module shared/lib/mod
+ * @module core/mod
  */
 
 import { createLogger } from '@/core/logger';
-import {
-  WorldDataRegistry,
-} from '@/core/registry/WorldDataRegistry';
-import type {
-  WorldTypeData,
-  DangerData,
-  OpportunityData,
-  TraitPoolData,
-  FactionTemplateData,
-  NamePoolData,
-  RealmSystemData,
-  WorldTextData,
-} from '@/core/registry/WorldDataRegistry';
-import type { WorldTemplate } from '@/core/world/types';
-import { validateWorldTemplate } from '@/core/world/validateWorldTemplate';
+import { WorldViewRegistry } from '@/core/registry/WorldViewRegistry';
+import type { WorldviewDefinition } from '@/core/registry/WorldViewRegistry';
 
 import { parseManifest, ModLoadError } from './ModManifest';
 
@@ -87,7 +74,7 @@ export class ModLoader {
   private readonly basePath: string;
 
   /** 注册中心实例 */
-  private registry: WorldDataRegistry;
+  private registry: WorldViewRegistry;
 
   /** 已加载的 Mod 列表 */
   private loadedMods: LoadedMod[] = [];
@@ -103,7 +90,7 @@ export class ModLoader {
 
   constructor(basePath = '/mods') {
     this.basePath = basePath;
-    this.registry = WorldDataRegistry.getInstance();
+    this.registry = WorldViewRegistry.getInstance();
   }
 
   /**
@@ -189,9 +176,6 @@ export class ModLoader {
           };
           this.loadedMods.push({ manifest: placeholderManifest, status: 'error', error: errorMsg });
 
-          // 检查是否为强制 Mod
-          // 加载失败时无法知道 required 字段，所以需要从 manifest 中预判断
-          // 实际上我们只能知道这是否是 wanjie-core（通过 id）
           if (entry.id === 'wanjie-core') {
             failedRequired.push({ id: entry.id, name: entry.id, error: errorMsg });
           }
@@ -199,7 +183,7 @@ export class ModLoader {
         }
       }
 
-      // 2.5 检查 manifest 中标记为 required 的 Mod 是否全部加载成功
+      // 2.5 检查 manifest 中标记为 required 的 Mod
       for (const [, manifest] of manifests) {
         if (manifest.required) {
           const mod = this.loadedMods.find(m => m.manifest.id === manifest.id);
@@ -209,7 +193,6 @@ export class ModLoader {
         }
       }
 
-      // 强制 Mod 失败 → 抛出致命错误
       if (failedRequired.length > 0) {
         const error = new ModLoadError(failedRequired);
         this.onComplete?.({ loaded, failed, total });
@@ -221,7 +204,6 @@ export class ModLoader {
         Array.from(manifests.entries()).map(([id, m]) => ({ id, manifest: m }))
       );
 
-      // Separate: successfully loaded manifests only
       const validMods = sortedIds
         .map(id => ({ id, manifest: manifests.get(id)! }))
         .filter(({ id }) => manifests.has(id));
@@ -245,7 +227,6 @@ export class ModLoader {
         })
       );
 
-      // 处理并发加载结果
       for (const result of loadResults) {
         if (!result.success) {
           failed++;
@@ -256,7 +237,6 @@ export class ModLoader {
         }
       }
 
-      // 再次检查强制 Mod
       if (failedRequired.length > 0) {
         const error = new ModLoadError(failedRequired);
         this.onComplete?.({ loaded, failed, total });
@@ -273,8 +253,6 @@ export class ModLoader {
 
   /**
    * 获取加载失败的 Mod 列表（含错误信息）
-   *
-   * @returns 失败的 Mod 列表
    */
   getFailedMods(): Array<{ id: string; name: string; error: string }> {
     return this.loadedMods
@@ -284,8 +262,6 @@ export class ModLoader {
 
   /**
    * 发现 Mod：从 mod-list.json 获取 Mod 列表
-   *
-   * @returns Mod 条目列表
    */
   async discoverMods(): Promise<ModListEntry[]> {
     try {
@@ -302,7 +278,6 @@ export class ModLoader {
       }
       return data.mods;
     } catch (err) {
-      // 文件不存在或网络错误：优雅降级
       log.info('未发现 mod-list.json，无外挂 Mod');
       return [];
     }
@@ -310,9 +285,6 @@ export class ModLoader {
 
   /**
    * 加载单个 Mod 的清单文件
-   *
-   * @param modPath - Mod 目录路径（相对于 basePath）
-   * @returns 解析后的 Mod 清单
    */
   async loadModManifest(modPath: string): Promise<ModManifest> {
     const url = `${this.basePath}/${modPath}/mod.json`;
@@ -329,23 +301,16 @@ export class ModLoader {
   }
 
   /**
-   * 加载 Mod 数据文件并注册到 WorldDataRegistry
+   * 加载 Mod 数据文件并注册到 WorldViewRegistry
    *
    * 优先尝试加载构建时生成的合并数据文件 data.json（单次请求）。
    * 若 data.json 不存在（404），则回退到按 dataFiles 逐文件加载。
-   *
-   * 支持两种 dataFiles 格式：
-   * - 字符串：单一数据文件（向后兼容），如 `"data/worlds.json"`
-   * - 字符串数组：多个独立数据文件，如 `["data/world/cultivation.json", ...]`
-   *
-   * @param modId - Mod ID
-   * @param manifest - Mod 清单
    */
   async loadModDataAndRegister(modId: string, manifest: ModManifest): Promise<void> {
     const baseUrl = `${this.basePath}/${modId}`;
 
     // 优先尝试加载构建时合并的数据文件
-    const mergedLoaded = await this.loadMergedData(modId, manifest);
+    const mergedLoaded = await this.loadMergedData(modId);
 
     // 按 contentTypes 顺序加载（合并数据已加载的跳过）
     for (const contentType of manifest.contentTypes) {
@@ -355,8 +320,8 @@ export class ModLoader {
         continue;
       }
 
-      // world 类型如果已通过合并数据加载，跳过独立文件
-      if (contentType === 'world' && mergedLoaded) continue;
+      // worldview 类型如果已通过合并数据加载，跳过独立文件
+      if (contentType === 'worldview' && mergedLoaded) continue;
 
       // 归一化为数组处理
       const dataPaths = Array.isArray(dataPathValue) ? dataPathValue : [dataPathValue];
@@ -377,31 +342,18 @@ export class ModLoader {
             continue;
           }
           const data = await response.json();
-          this.registerData(modId, contentType, data, manifest, Array.isArray(dataPathValue));
+          this.registerData(modId, contentType, data);
         } catch (err) {
           log.warn(`加载 "${modId}" 的数据文件 "${dataPath}" 失败:`, err);
-          // 单个文件失败不阻塞其他文件
         }
       }
-    }
-
-    // 加载固化世界模板（如果 mod 声明了 worldTemplates）
-    if (manifest.worldTemplates && manifest.worldTemplates.length > 0) {
-      await this.loadTemplateWorlds(modId, baseUrl, manifest);
     }
   }
 
   /**
    * 尝试加载构建时合并的数据文件 data.json
-   *
-   * 若文件存在且解析成功，按 content type 分发注册，返回 true。
-   * 若 404 或加载失败，返回 false，调用方应回退到逐文件加载。
-   *
-   * @param modId - Mod ID
-   * @param _manifest - Mod 清单（预留，当前未使用）
-   * @returns 是否成功加载合并数据
    */
-  private async loadMergedData(modId: string, _manifest: ModManifest): Promise<boolean> {
+  private async loadMergedData(modId: string): Promise<boolean> {
     const url = `${this.basePath}/${modId}/data.json`;
     try {
       const response = await fetch(url);
@@ -421,8 +373,8 @@ export class ModLoader {
 
       // 按 content type 分发注册
       for (const [contentType, data] of Object.entries(merged as Record<string, unknown>)) {
-        if (contentType === 'world' && data && typeof data === 'object' && !Array.isArray(data)) {
-          this.registerMergedWorldData(modId, data as Record<string, unknown>);
+        if (contentType === 'worldview' && data && typeof data === 'object' && !Array.isArray(data)) {
+          this.registerMergedWorldviewData(modId, data as Record<string, unknown>);
         } else if (contentType === 'styles') {
           // styles 不在合并数据中处理，跳过
         } else {
@@ -438,178 +390,78 @@ export class ModLoader {
   }
 
   /**
-   * 注册合并数据中的 world 条目
-   *
-   * 合并数据中 world 类型的值为 `{ cultivation: {...}, martial: {...} }` 格式，
-   * 遍历每个条目并调用 registerData 进行注册。
-   *
-   * @param modId - Mod ID
-   * @param worldEntries - 以世界类型为 key 的世界数据对象映射
+   * 注册合并数据中的 worldview 条目
    */
-  private registerMergedWorldData(modId: string, worldEntries: Record<string, unknown>): void {
-    for (const [, worldData] of Object.entries(worldEntries)) {
-      if (worldData && typeof worldData === 'object' && !Array.isArray(worldData)) {
-        // 每个世界条目是自包含对象，isArrayMode=true 以通过 registerData 校验
-        this.registerData(modId, 'world', worldData, undefined as unknown as ModManifest, true);
-      }
-    }
-  }
-
-  /**
-   * 加载固化世界模板文件
-   *
-   * 为 mod.json 中声明的每个 worldTemplates 条目加载
-   * templates/worlds/{id}.json 文件，校验后注册到 WorldDataRegistry。
-   */
-  private async loadTemplateWorlds(modId: string, baseUrl: string, manifest: ModManifest): Promise<void> {
-    for (const templateId of manifest.worldTemplates ?? []) {
-      const url = `${baseUrl}/templates/worlds/${templateId}.json`;
-      try {
-        const response = await fetch(url);
-        if (!response.ok) {
-          log.warn(`无法加载固化世界模板: "${templateId}" (HTTP ${response.status})`);
-          continue;
-        }
-        const data = await response.json();
-
-        // 校验模板结构
-        const result = validateWorldTemplate(data);
-        if (!result.valid) {
-          log.warn(
-            `固化世界模板 "${templateId}" 校验失败:`,
-            result.errors.join('; ')
-          );
-          continue;
-        }
-
-        // 注册到 WorldDataRegistry
-        const template = data as WorldTemplate;
-        this.registry.registerWorldTemplate(template);
-        log.info(`Mod "${modId}": 注册固化世界模板 "${templateId}" (${template.world.name})`);
-      } catch (err) {
-        log.warn(`加载固化世界模板 "${templateId}" 失败:`, err);
+  private registerMergedWorldviewData(modId: string, worldviewEntries: Record<string, unknown>): void {
+    for (const [, worldviewData] of Object.entries(worldviewEntries)) {
+      if (worldviewData && typeof worldviewData === 'object' && !Array.isArray(worldviewData)) {
+        this.registerData(modId, 'worldview', worldviewData);
       }
     }
   }
 
   /**
    * 加载 Mod 提供的 CSS 样式文件并通过 StyleLoader 注入
-   *
-   * @param modId - Mod ID
-   * @param cssUrl - CSS 文件 URL
    */
   private async loadModStyles(modId: string, cssUrl: string): Promise<void> {
     try {
       const response = await fetch(cssUrl);
       if (!response.ok) {
         log.warn(`Mod "${modId}" 样式文件加载失败: HTTP ${response.status}`);
-        // 触发 StyleLoader 错误回调
         const { StyleLoader } = await import('@/modules/theme/logic/styleLoader');
         StyleLoader.getInstance().triggerError(modId, new Error(`HTTP ${response.status}`));
         return;
       }
       const cssContent = await response.text();
-      // 动态导入 StyleLoader 以避免对主题模块的硬依赖
       const { StyleLoader } = await import('@/modules/theme/logic/styleLoader');
       const styleLoader = StyleLoader.getInstance();
-
-      // 计算优先级：基础 Mod 优先级 3，依赖项每增加一层 +1
       const priority = 3;
       styleLoader.injectModStyles(modId, cssContent, priority);
       log.info(`Mod "${modId}": 注入样式成功`);
     } catch (err) {
       const error = err instanceof Error ? err : new Error(String(err));
       log.warn(`Mod "${modId}" 样式注入失败:`, error.message);
-      // 不阻塞其他 Mod
     }
   }
 
   /**
-   * 将已加载的数据注册到 WorldDataRegistry
+   * 将已加载的数据注册到 WorldViewRegistry
    *
-   * world 文件为自包含格式，每个文件包含一个世界的全部数据：
-   * 世界信息 + 境界 + 势力 + 姓名 + 文案 + 词条 + 危险 + 机缘
+   * worldview 类型直接作为 WorldviewDefinition 注册。
    *
    * @param modId - Mod ID
    * @param contentType - 内容类型
    * @param data - 已解析的 JSON 数据
-   * @param _manifest - Mod 清单（未使用）
-   * @param isArrayMode - 是否为数组模式（world 必须是数组模式）
    */
   private registerData(
     modId: string,
     contentType: string,
     data: unknown,
-    _manifest: ModManifest,
-    isArrayMode = false
   ): void {
-    if (contentType !== 'world') {
+    if (contentType !== 'worldview') {
       log.warn(`Mod "${modId}": 未知的内容类型 "${contentType}"，跳过`);
       return;
     }
 
-    if (!isArrayMode || !data || typeof data !== 'object' || Array.isArray(data)) {
-      log.warn(`Mod "${modId}": world 类型必须使用数组模式，跳过`);
+    if (!data || typeof data !== 'object' || Array.isArray(data)) {
+      log.warn(`Mod "${modId}": worldview 类型数据格式无效，跳过`);
       return;
     }
 
-    const world = data as Record<string, unknown>;
-    const worldType = (world.type as string) || 'unknown';
+    const worldview = data as WorldviewDefinition;
+    const worldviewId = worldview.id || 'unknown';
 
-    // 注册世界类型
-    this.registry.registerWorldType(world as unknown as WorldTypeData);
-
-    // 注册境界体系
-    if (world.realmSystem && typeof world.realmSystem === 'object') {
-      this.registry.registerRealmSystem(worldType, world.realmSystem as RealmSystemData);
+    try {
+      this.registry.register(worldview);
+      log.info(`Mod "${modId}": 注册了世界观 "${worldviewId}"`);
+    } catch (err) {
+      const errorMsg = err instanceof Error ? err.message : '未知错误';
+      log.warn(`Mod "${modId}": 注册世界观 "${worldviewId}" 失败: ${errorMsg}`);
     }
-
-    // 注册势力模板
-    if (world.factions && typeof world.factions === 'object') {
-      const factionData = world.factions as Record<string, unknown>;
-      const templates = factionData.templates;
-      if (Array.isArray(templates)) {
-        for (const tpl of templates) {
-          this.registry.registerFactionTemplate(tpl as FactionTemplateData);
-        }
-      }
-    }
-
-    // 注册词条池
-    if (world.traits && typeof world.traits === 'object') {
-      this.registry.registerTraitPool(worldType, world.traits as TraitPoolData);
-    }
-
-    // 注册姓名池
-    if (world.names && typeof world.names === 'object') {
-      this.registry.registerNamePool(worldType, world.names as NamePoolData);
-    }
-
-    // 注册世界观文案
-    if (world.text && typeof world.text === 'object') {
-      this.registry.registerWorldText(worldType, world.text as WorldTextData);
-    }
-
-    // 注册危险效果
-    if (Array.isArray(world.dangers)) {
-      this.registry.registerDangers(world.dangers as DangerData[]);
-    }
-
-    // 注册机缘效果
-    if (Array.isArray(world.opportunities)) {
-      this.registry.registerOpportunities(world.opportunities as OpportunityData[]);
-    }
-
-    log.info(`Mod "${modId}": 注册了世界 "${worldType}"（含境界/势力/姓名/文案/词条/危险/机缘）`);
   }
 
   /**
    * 解析 Mod 依赖顺序（拓扑排序）
-   *
-   * 如果存在循环依赖或缺失依赖，会记录错误并跳过受影响的 Mod。
-   *
-   * @param mods - Mod ID 和清单的列表
-   * @returns 按加载顺序排列的 Mod ID 列表
    */
   resolveDependencyOrder(
     mods: Array<{ id: string; manifest: ModManifest }>
@@ -658,7 +510,6 @@ export class ModLoader {
       }
     }
 
-    // 未被访问到的 ID（因循环/缺失依赖被跳过）
     const unvisited = mods.filter(m => !visited.has(m.id));
     if (unvisited.length > 0) {
       log.error(

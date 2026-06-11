@@ -4,7 +4,7 @@
  * 每个世界观都遵循相同的结构，方便复制和修改
  * 添加新世界观只需复制一个文件然后修改内容
  *
- * **迁移说明**：核心类型定义已迁移到 @/core/registry/WorldDataRegistry。
+ * **迁移说明**：核心类型定义已迁移到 @/core/registry/WorldViewRegistry。
  * 本文件保留为 barrel re-export，过渡期后删除。
  */
 

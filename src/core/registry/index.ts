@@ -1,17 +1,18 @@
 /**
- * 世界数据注册中心 — 桶导出
+ * 世界观注册中心 — 桶导出
  *
  * @module core/registry
  */
 
 export {
-  WorldDataRegistry,
+  WorldViewRegistry,
   asWorldType,
   assertWorldType,
   getAllWorldTypeValues,
   getWorldVisualConfig,
+  isExtensibleWorldType,
   DEFAULT_VISUAL_CONFIG,
-} from './WorldDataRegistry';
+} from './WorldViewRegistry';
 
 export type {
   // 世界观文本类型
@@ -32,9 +33,9 @@ export type {
   WorldTextDefinition,
   // 世界观定义
   WorldviewDefinition,
-  // 旧类型（过渡期）
-  WorldTypeData,
+  // 视觉配置
   WorldVisualConfig,
+  // 数据子类型
   WorldImpactData,
   TriggerConditionData,
   DangerEffectData,
@@ -50,4 +51,4 @@ export type {
   WorldTextData,
   RewardCoefficientData,
   WorldStatsData,
-} from './WorldDataRegistry';
+} from './WorldViewRegistry';

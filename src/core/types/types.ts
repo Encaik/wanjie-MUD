@@ -350,14 +350,14 @@ export type ExtensibleWorldType = string & { [WorldTypeBrand]: true };
 /**
  * 世界类型（可扩展字符串）
  *
- * 新世界类型通过 Mod 系统在 WorldDataRegistry 中注册。
+ * 新世界类型通过 Mod 系统在 WorldViewRegistry 中注册。
  * 不再硬编码联合类型——任何已注册的字符串 ID 都是有效的世界类型。
  * 如需类型级校验，使用 ExtensibleWorldType + asWorldType()。
  */
 export type WorldType = string;
 
 /**
- * @deprecated 使用 WorldDataRegistry.getAllWorldTypes() 替代
+ * @deprecated 使用 WorldViewRegistry.getAllIds() 替代
  */
 export function getBuiltinWorldTypes(): string[] {
   // Dynamic import not possible at module level; callers should use registry directly

@@ -7,17 +7,17 @@
   "gameVersion": ">=1.0.0",
   "dependencies": [],
   "required": true,
-  "contentTypes": ["world"],
+  "contentTypes": ["worldview"],
   "dataFiles": {
-    "world": [
-      "data/world/cultivation.json",
-      "data/world/martial.json",
-      "data/world/tech.json",
-      "data/world/magic.json",
-      "data/world/psi.json",
-      "data/world/xianxia.json",
-      "data/world/wuxia.json",
-      "data/world/apocalypse.json"
+    "worldview": [
+      "data/worldview/cultivation.json",
+      "data/worldview/martial.json",
+      "data/worldview/tech.json",
+      "data/worldview/magic.json",
+      "data/worldview/psi.json",
+      "data/worldview/xianxia.json",
+      "data/worldview/wuxia.json",
+      "data/worldview/apocalypse.json"
     ]
   }
 }

@@ -1,6 +1,5 @@
 {
-  "id": 8,
-  "type": "apocalypse",
+  "id": "apocalypse",
   "name": "末世世界",
   "description": "文明崩塌，变异横行，幸存者挣扎求生",
   "baseCoefficient": 1.5,
@@ -32,52 +31,6 @@
     "幸存者联盟与掠夺者对峙",
     "变异生物与人类争夺领地",
     "避难所联盟掌控资源"
-  ],
-  "worldDangers": [
-    {
-      "description": "变异兽潮",
-      "impact": {
-        "体质": -1
-      },
-      "impactDescription": "体质-1"
-    },
-    {
-      "description": "辐射扩散",
-      "impact": {
-        "灵根": -1
-      },
-      "impactDescription": "灵根-1"
-    },
-    {
-      "description": "资源匮乏",
-      "impact": {
-        "意志": -1
-      },
-      "impactDescription": "意志-1"
-    }
-  ],
-  "worldOpportunities": [
-    {
-      "description": "发现避难所",
-      "impact": {
-        "体质": 2
-      },
-      "impactDescription": "体质+2"
-    },
-    {
-      "description": "获得进化能力",
-      "impact": {
-        "灵根": 2
-      },
-      "impactDescription": "灵根+2"
-    },
-    {
-      "description": "找到文明遗物",
-      "impact": {
-        "意志": 2
-      },
-      "impactDescription": "意志+2"
-    }
   ],
   "stats": {
     "baseHp": 90,
@@ -344,31 +297,29 @@
     "subRealmMultiplier": 1.05,
     "tierJumpMultiplier": 1.3
   },
-  "factions": {
-    "templates": [
-      {
-        "id": "末世_faction_0",
-        "name": "幸存者联盟与掠夺者对峙",
-        "type": "末世",
-        "description": "末世世界的主要势力",
-        "worldTypeId": "末世"
-      },
-      {
-        "id": "末世_faction_1",
-        "name": "变异生物与人类争夺领地",
-        "type": "末世",
-        "description": "末世世界的主要势力",
-        "worldTypeId": "末世"
-      },
-      {
-        "id": "末世_faction_2",
-        "name": "避难所联盟掌控资源",
-        "type": "末世",
-        "description": "末世世界的主要势力",
-        "worldTypeId": "末世"
-      }
-    ]
-  },
+  "factions": [
+    {
+      "id": "末世_faction_0",
+      "name": "幸存者联盟与掠夺者对峙",
+      "type": "末世",
+      "description": "末世世界的主要势力",
+      "worldTypeId": "末世"
+    },
+    {
+      "id": "末世_faction_1",
+      "name": "变异生物与人类争夺领地",
+      "type": "末世",
+      "description": "末世世界的主要势力",
+      "worldTypeId": "末世"
+    },
+    {
+      "id": "末世_faction_2",
+      "name": "避难所联盟掌控资源",
+      "type": "末世",
+      "description": "末世世界的主要势力",
+      "worldTypeId": "末世"
+    }
+  ],
   "traits": {
     "origin": {
       "legendary": [],
@@ -399,41 +350,25 @@
       "common": []
     }
   },
-  "names": {
-    "surnames": [
-      "废土",
-      "荒芜",
-      "末世",
-      "崩坏",
-      "毁灭",
-      "残存"
-    ],
-    "maleNames": [
-      "天",
-      "云",
-      "风",
-      "雷",
-      "阳",
-      "星",
-      "辰",
-      "明",
-      "玄",
-      "浩"
-    ],
-    "femaleNames": [
-      "月",
-      "雪",
-      "瑶",
-      "紫",
-      "清",
-      "灵",
-      "玉",
-      "霜",
-      "萱",
-      "薇"
-    ]
+  "version": "1.0.0",
+  "rewardCoefficient": {
+    "expCoefficient": 1,
+    "spiritStoneCoefficient": 1,
+    "dropCoefficient": 1,
+    "rarityBonus": {
+      "rare": 0.1,
+      "epic": 0.05,
+      "legendary": 0.02,
+      "mythic": 0.01
+    },
+    "specialRewards": {
+      "ascensionMarkBonus": 0.1,
+      "titleChance": 0.05,
+      "specialItemChance": 0.02
+    }
   },
-  "text": {
+  "builtin": true,
+  "texts": {
     "name": "末世",
     "description": "末日废土，生存与进化",
     "terminology": {
@@ -577,5 +512,39 @@
         }
       }
     }
+  },
+  "namePool": {
+    "surnames": [
+      "废土",
+      "荒芜",
+      "末世",
+      "崩坏",
+      "毁灭",
+      "残存"
+    ],
+    "maleNames": [
+      "天",
+      "云",
+      "风",
+      "雷",
+      "阳",
+      "星",
+      "辰",
+      "明",
+      "玄",
+      "浩"
+    ],
+    "femaleNames": [
+      "月",
+      "雪",
+      "瑶",
+      "紫",
+      "清",
+      "灵",
+      "玉",
+      "霜",
+      "萱",
+      "薇"
+    ]
   }
 }

@@ -1,6 +1,5 @@
 {
-  "id": 2,
-  "type": "martial",
+  "id": "martial",
   "name": "高武世界",
   "description": "武道昌盛，强者如云，武者以力证道",
   "baseCoefficient": 1.3,
@@ -32,52 +31,6 @@
     "三大武道圣地统领天下",
     "五族联盟与武道宗门对峙",
     "皇朝与宗门势力交织"
-  ],
-  "worldDangers": [
-    {
-      "description": "异族入侵",
-      "impact": {
-        "体质": -1
-      },
-      "impactDescription": "体质-1"
-    },
-    {
-      "description": "武道争锋",
-      "impact": {
-        "灵根": -1
-      },
-      "impactDescription": "灵根-1"
-    },
-    {
-      "description": "暗流涌动",
-      "impact": {
-        "意志": -1
-      },
-      "impactDescription": "意志-1"
-    }
-  ],
-  "worldOpportunities": [
-    {
-      "description": "获得武道传承",
-      "impact": {
-        "体质": 2
-      },
-      "impactDescription": "体质+2"
-    },
-    {
-      "description": "突破武道瓶颈",
-      "impact": {
-        "灵根": 2
-      },
-      "impactDescription": "灵根+2"
-    },
-    {
-      "description": "悟出武道真意",
-      "impact": {
-        "意志": 2
-      },
-      "impactDescription": "意志+2"
-    }
   ],
   "stats": {
     "baseHp": 110,
@@ -313,31 +266,29 @@
     "subRealmMultiplier": 1.05,
     "tierJumpMultiplier": 1.3
   },
-  "factions": {
-    "templates": [
-      {
-        "id": "高武_faction_0",
-        "name": "三大武道圣地统领天下",
-        "type": "高武",
-        "description": "高武世界的主要势力",
-        "worldTypeId": "高武"
-      },
-      {
-        "id": "高武_faction_1",
-        "name": "五族联盟与武道宗门对峙",
-        "type": "高武",
-        "description": "高武世界的主要势力",
-        "worldTypeId": "高武"
-      },
-      {
-        "id": "高武_faction_2",
-        "name": "皇朝与宗门势力交织",
-        "type": "高武",
-        "description": "高武世界的主要势力",
-        "worldTypeId": "高武"
-      }
-    ]
-  },
+  "factions": [
+    {
+      "id": "高武_faction_0",
+      "name": "三大武道圣地统领天下",
+      "type": "高武",
+      "description": "高武世界的主要势力",
+      "worldTypeId": "高武"
+    },
+    {
+      "id": "高武_faction_1",
+      "name": "五族联盟与武道宗门对峙",
+      "type": "高武",
+      "description": "高武世界的主要势力",
+      "worldTypeId": "高武"
+    },
+    {
+      "id": "高武_faction_2",
+      "name": "皇朝与宗门势力交织",
+      "type": "高武",
+      "description": "高武世界的主要势力",
+      "worldTypeId": "高武"
+    }
+  ],
   "traits": {
     "origin": {
       "legendary": [],
@@ -368,41 +319,25 @@
       "common": []
     }
   },
-  "names": {
-    "surnames": [
-      "苍龙",
-      "玄武",
-      "白虎",
-      "朱雀",
-      "麒麟",
-      "神凤"
-    ],
-    "maleNames": [
-      "天",
-      "云",
-      "风",
-      "雷",
-      "阳",
-      "星",
-      "辰",
-      "明",
-      "玄",
-      "浩"
-    ],
-    "femaleNames": [
-      "月",
-      "雪",
-      "瑶",
-      "紫",
-      "清",
-      "灵",
-      "玉",
-      "霜",
-      "萱",
-      "薇"
-    ]
+  "version": "1.0.0",
+  "rewardCoefficient": {
+    "expCoefficient": 1,
+    "spiritStoneCoefficient": 1,
+    "dropCoefficient": 1,
+    "rarityBonus": {
+      "rare": 0.1,
+      "epic": 0.05,
+      "legendary": 0.02,
+      "mythic": 0.01
+    },
+    "specialRewards": {
+      "ascensionMarkBonus": 0.1,
+      "titleChance": 0.05,
+      "specialItemChance": 0.02
+    }
   },
-  "text": {
+  "builtin": true,
+  "texts": {
     "name": "高武",
     "description": "武道通神，以武入道",
     "terminology": {
@@ -546,5 +481,39 @@
         }
       }
     }
+  },
+  "namePool": {
+    "surnames": [
+      "苍龙",
+      "玄武",
+      "白虎",
+      "朱雀",
+      "麒麟",
+      "神凤"
+    ],
+    "maleNames": [
+      "天",
+      "云",
+      "风",
+      "雷",
+      "阳",
+      "星",
+      "辰",
+      "明",
+      "玄",
+      "浩"
+    ],
+    "femaleNames": [
+      "月",
+      "雪",
+      "瑶",
+      "紫",
+      "清",
+      "灵",
+      "玉",
+      "霜",
+      "萱",
+      "薇"
+    ]
   }
 }

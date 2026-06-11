@@ -5,7 +5,7 @@
  */
 
 import { StatName, WorldType } from '@/core/types';
-import { WorldDataRegistry } from '@/core/registry';
+import { WorldViewRegistry } from '@/core/registry';
 
 // ============================================
 // 类型定义
@@ -155,17 +155,17 @@ export interface WorldRewardCoefficient {
 /**
  * 从注册中心获取所有危险效果
  *
- * 优先从 WorldDataRegistry 读取，如果为空则使用 fallback 数据。
+ * 优先从 WorldViewRegistry 读取，如果为空则使用 fallback 数据。
  */
 export function getAllDangersFromRegistry(): WorldDanger[] {
-  return WorldDataRegistry.getInstance().getAllDangers() as unknown as WorldDanger[];
+  return WorldViewRegistry.getInstance().getAll().flatMap(function(w){return w.dangers}) as unknown as WorldDanger[];
 }
 
 /**
  * 从注册中心获取适用于指定世界的危险效果
  */
 export function getWorldDangersFromRegistry(worldType: WorldType): WorldDanger[] {
-  return WorldDataRegistry.getInstance().getDangersForWorld(worldType) as unknown as WorldDanger[];
+  return WorldViewRegistry.getInstance().get(worldType)?.dangers ?? [] as unknown as WorldDanger[];
 }
 
 /** @deprecated 使用 getAllDangersFromRegistry() 替代 */
@@ -443,12 +443,12 @@ export const WORLD_DANGERS: WorldDanger[] = [
 
 /** 从注册中心获取所有机缘效果 */
 export function getAllOpportunitiesFromRegistry(): WorldOpportunity[] {
-  return WorldDataRegistry.getInstance().getAllOpportunities() as unknown as WorldOpportunity[];
+  return WorldViewRegistry.getInstance().getAll().flatMap(function(w){return w.opportunities}) as unknown as WorldOpportunity[];
 }
 
 /** 从注册中心获取适用于指定世界的机缘效果 */
 export function getWorldOpportunitiesFromRegistry(worldType: WorldType): WorldOpportunity[] {
-  return WorldDataRegistry.getInstance().getOpportunitiesForWorld(worldType) as unknown as WorldOpportunity[];
+  return WorldViewRegistry.getInstance().get(worldType)?.opportunities ?? [] as unknown as WorldOpportunity[];
 }
 
 /** @deprecated 使用 getAllOpportunitiesFromRegistry() 替代 */

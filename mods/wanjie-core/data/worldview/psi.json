@@ -1,135 +1,88 @@
 {
-  "id": 3,
-  "type": "tech",
-  "name": "科技世界",
-  "description": "科技高度发达，星际航行已是常态",
+  "id": "psi",
+  "name": "异能世界",
+  "description": "异能觉醒者遍布都市，隐藏在普通人之中",
   "baseCoefficient": 1.2,
   "namePrefixes": [
-    "星际",
-    "银河",
-    "机械",
-    "赛博",
-    "量子",
-    "虚空"
+    "觉醒",
+    "变异",
+    "超凡",
+    "进化",
+    "源能",
+    "异变"
   ],
   "nameSuffixes": [
-    "联邦",
-    "帝国",
-    "联盟",
+    "都市",
+    "世界",
     "领域",
-    "世界"
+    "区",
+    "城"
   ],
   "descriptions": [
-    "科技高度发达，星际航行已是常态",
-    "机械与人工智能共存，赛博文明繁荣",
-    "量子科技突破，人类征服星辰大海"
+    "异能觉醒者遍布都市，隐藏在普通人之中",
+    "源能爆发，异能者改变世界格局",
+    "变异与进化并行，人类站在进化十字路口"
   ],
   "powerSystems": [
-    "基因改造与机械飞升，科技改变命运",
-    "纳米技术与AI融合，追求永生之道"
+    "基因觉醒与异能开发，突破人类极限",
+    "源能觉醒，探索心灵深处的力量"
   ],
   "majorForces": [
-    "三大星际财团掌控资源",
-    "联邦政府与反叛军对峙",
-    "AI联盟与人类政权共存"
-  ],
-  "worldDangers": [
-    {
-      "description": "AI叛乱",
-      "impact": {
-        "体质": -1
-      },
-      "impactDescription": "体质-1"
-    },
-    {
-      "description": "基因崩溃",
-      "impact": {
-        "灵根": -1
-      },
-      "impactDescription": "灵根-1"
-    },
-    {
-      "description": "星际战争",
-      "impact": {
-        "意志": -1
-      },
-      "impactDescription": "意志-1"
-    }
-  ],
-  "worldOpportunities": [
-    {
-      "description": "获得基因改造",
-      "impact": {
-        "体质": 2
-      },
-      "impactDescription": "体质+2"
-    },
-    {
-      "description": "接入超级AI",
-      "impact": {
-        "灵根": 2
-      },
-      "impactDescription": "灵根+2"
-    },
-    {
-      "description": "获得纳米装甲",
-      "impact": {
-        "意志": 2
-      },
-      "impactDescription": "意志+2"
-    }
+    "异能管理局与反抗组织对立",
+    "三大财团暗中操控异能者",
+    "国际异能联盟维稳全球"
   ],
   "stats": {
-    "baseHp": 90,
-    "hpPerLevel": 12,
+    "baseHp": 85,
+    "hpPerLevel": 13,
     "hpPerConstitution": 8,
-    "baseAttack": 15,
-    "attackPerLevel": 2.5,
-    "attackPerConstitution": 0.6,
-    "attackPerSpiritRoot": 1,
-    "baseDefense": 5,
-    "defensePerLevel": 0.8,
-    "defensePerWillpower": 1,
-    "enemyAttackBonus": 0.15,
-    "enemyDefenseBonus": 0,
+    "baseAttack": 14,
+    "attackPerLevel": 2.3,
+    "attackPerConstitution": 0.9,
+    "attackPerSpiritRoot": 0.7,
+    "baseDefense": 6,
+    "defensePerLevel": 1.1,
+    "defensePerWillpower": 0.7,
+    "enemyAttackBonus": 0.1,
+    "enemyDefenseBonus": 0.05,
     "statDisplayNames": {
       "体质": "体能",
-      "灵根": "智力",
-      "悟性": "反应",
-      "幸运": "技术",
-      "意志": "魅力"
+      "灵根": "源能",
+      "悟性": "感知",
+      "幸运": "幸运",
+      "意志": "意志"
     }
   },
   "visualConfig": {
-    "icon": "⬡",
-    "accentColor": "text-cyan-400",
-    "gradientClass": "from-cyan-500/20 to-blue-600/10",
-    "borderColor": "border-cyan-500/30",
-    "bgGradient": "bg-gradient-to-br from-slate-50 to-zinc-50 dark:from-slate-950/30 dark:to-zinc-950/30",
-    "colorGradient": "from-cyan-500 to-blue-500"
+    "icon": "◈",
+    "accentColor": "text-indigo-400",
+    "gradientClass": "from-indigo-500/20 to-blue-600/10",
+    "borderColor": "border-indigo-500/30",
+    "bgGradient": "bg-gradient-to-br from-cyan-50 to-teal-50 dark:from-cyan-950/30 dark:to-teal-950/30",
+    "colorGradient": "from-yellow-500 to-orange-500"
   },
   "mechanics": {
-    "worldType": "科技",
+    "worldType": "异能",
     "cultivation": {
-      "resourceName": "科技点",
-      "actionName": "研究",
-      "baseCost": 20,
+      "resourceName": "源能",
+      "actionName": "觉醒",
+      "baseCost": 15,
       "useStandardFormula": true,
-      "successRateModifier": 0
+      "successRateModifier": 0.05
     },
     "combat": {
-      "mpName": "能量",
-      "abilityName": "义体模块",
-      "basicAttackName": "充能攻击"
+      "mpName": "念力",
+      "abilityName": "超能力",
+      "basicAttackName": "念力冲击"
     },
     "exploration": {
-      "exploreName": "任务",
+      "exploreName": "巡逻",
       "hasSpecialMechanics": true
     },
     "uniqueMechanic": {
-      "name": "芯片研究",
-      "description": "消耗科技点研究芯片提升等级，义体模块三槽位（脑部/手臂/躯干）提供强大战斗能力，注意过热冷却。研究成功率+5%。",
-      "icon": "Cpu"
+      "name": "源能共鸣",
+      "description": "每次探索后随机获得一个临时超能力，持续数次探索或战斗。源能觉醒，能力千变万化，每次都有不同体验。",
+      "icon": "Zap"
     }
   },
   "dangers": [
@@ -152,21 +105,21 @@
       "dangerLevel": 1
     },
     {
-      "id": "weak_enemies",
-      "type": "enemy_buff",
-      "name": "敌强我弱",
-      "description": "此地敌人实力略胜一筹",
+      "id": "reduced_insight",
+      "type": "stat_debuff",
+      "name": "悟性压制",
+      "description": "天机混乱，领悟效率下降",
       "triggerCondition": {
-        "type": "on_battle_start",
+        "type": "on_enter",
         "chance": 1
       },
       "effect": {
-        "enemyBuffs": {
-          "attackBonus": 0.1,
-          "defenseBonus": 0.1
+        "statModifications": {
+          "悟性": -2,
+          "灵根": -1
         }
       },
-      "duration": 0,
+      "duration": -1,
       "dispellable": false,
       "dangerLevel": 2
     },
@@ -211,8 +164,8 @@
     }
   ],
   "realmSystem": {
-    "mainRealmName": "进化等级",
-    "subRealmName": "级",
+    "mainRealmName": "觉醒等级",
+    "subRealmName": "阶",
     "tiers": [
       {
         "name": "炼气期",
@@ -313,31 +266,29 @@
     "subRealmMultiplier": 1.05,
     "tierJumpMultiplier": 1.3
   },
-  "factions": {
-    "templates": [
-      {
-        "id": "科技_faction_0",
-        "name": "三大星际财团掌控资源",
-        "type": "科技",
-        "description": "科技世界的主要势力",
-        "worldTypeId": "科技"
-      },
-      {
-        "id": "科技_faction_1",
-        "name": "联邦政府与反叛军对峙",
-        "type": "科技",
-        "description": "科技世界的主要势力",
-        "worldTypeId": "科技"
-      },
-      {
-        "id": "科技_faction_2",
-        "name": "AI联盟与人类政权共存",
-        "type": "科技",
-        "description": "科技世界的主要势力",
-        "worldTypeId": "科技"
-      }
-    ]
-  },
+  "factions": [
+    {
+      "id": "异能_faction_0",
+      "name": "异能管理局与反抗组织对立",
+      "type": "异能",
+      "description": "异能世界的主要势力",
+      "worldTypeId": "异能"
+    },
+    {
+      "id": "异能_faction_1",
+      "name": "三大财团暗中操控异能者",
+      "type": "异能",
+      "description": "异能世界的主要势力",
+      "worldTypeId": "异能"
+    },
+    {
+      "id": "异能_faction_2",
+      "name": "国际异能联盟维稳全球",
+      "type": "异能",
+      "description": "异能世界的主要势力",
+      "worldTypeId": "异能"
+    }
+  ],
   "traits": {
     "origin": {
       "legendary": [],
@@ -368,14 +319,177 @@
       "common": []
     }
   },
-  "names": {
+  "version": "1.0.0",
+  "rewardCoefficient": {
+    "expCoefficient": 1,
+    "spiritStoneCoefficient": 1,
+    "dropCoefficient": 1,
+    "rarityBonus": {
+      "rare": 0.1,
+      "epic": 0.05,
+      "legendary": 0.02,
+      "mythic": 0.01
+    },
+    "specialRewards": {
+      "ascensionMarkBonus": 0.1,
+      "titleChance": 0.05,
+      "specialItemChance": 0.02
+    }
+  },
+  "builtin": true,
+  "texts": {
+    "name": "异能",
+    "description": "觉醒异能，现代都市中的超能力者",
+    "terminology": {
+      "resource": "源能石",
+      "power": "异能",
+      "energy": "能量",
+      "practice": "觉醒",
+      "core": "异能核心",
+      "breakthrough": "觉醒",
+      "enemy": "变异者",
+      "dungeon": "禁区",
+      "pill": "强化剂",
+      "treasure": "强化物",
+      "dungeonDesc": "区",
+      "dungeonLocation": "城市边缘",
+      "breakthroughPill": "觉醒药剂",
+      "cultivationPill": "能量补充剂"
+    },
+    "stats": {
+      "body": "体魄",
+      "talent": "潜能",
+      "wisdom": "悟性",
+      "luck": "运气",
+      "will": "意志"
+    },
+    "combat": {
+      "victory": "击败{enemyName}，获得{exp}点经验",
+      "defeat": "败给{enemyName}，异能压制",
+      "damageDeal": "对{enemyName}造成{damage}点伤害",
+      "damageReceive": "受到{damage}点伤害",
+      "damageCrit": "异能爆发！对{enemyName}造成{damage}点伤害",
+      "dodge": "{targetName}规避了攻击",
+      "round": "第{round}回合",
+      "start": "遭遇变异者{enemyName}！",
+      "end": "战斗结束"
+    },
+    "cultivation": {
+      "success": "觉醒强化，异能更加精纯",
+      "failure": "觉醒受阻，潜能不足",
+      "breakthrough": "觉醒成功！异能等级提升至{newRealm}",
+      "breakthroughFail": "觉醒失败，核心不稳",
+      "overflowWarning": "能量已溢出{overflowExp}点，可以进行觉醒",
+      "cost": "消耗{resource}×{amount}"
+    },
+    "resource": {
+      "gain": "获得{resource}×{amount}",
+      "spend": "消耗{resource}×{amount}",
+      "insufficient": "{resource}不足"
+    },
+    "item": {
+      "use": "使用{itemName}，{effect}",
+      "obtain": "获得{itemName}×{amount}",
+      "sell": "出售{itemName}，获得{resource}×{amount}"
+    },
+    "dungeon": {
+      "enter": "进入{dungeonName}",
+      "exit": "撤出{dungeonName}",
+      "clear": "清除{dungeonName}！获得：{rewards}",
+      "sweep": "搜查{dungeonName}，获得{resource}×{amount}",
+      "staminaCost": "消耗{stamina}点行动点",
+      "powerRequire": "推荐战力：{power}"
+    },
+    "ui": {
+      "level": "等级 {level}",
+      "realm": "{realm}",
+      "combatPower": "战力 {power}",
+      "exp": "经验 {current}/{max}",
+      "hp": "生命 {current}/{max}",
+      "mp": "异能 {current}/{max}",
+      "stamina": "行动点 {current}/{max}"
+    },
+    "breakthrough": {
+      "success": "觉醒成功！",
+      "fail": "觉醒失败，需要更多潜能",
+      "rate": "觉醒成功率：{rate}%",
+      "pillBonus": "使用{pill}，成功率+{bonus}%"
+    },
+    "message": {
+      "offlineTitle": "待机收益",
+      "offlineContent": "待机{duration}，获得{resource}×{amount}"
+    },
+    "paths": {
+      "body": {
+        "id": "body",
+        "name": "强化系",
+        "description": "肉体强化，力量惊人，防御无敌",
+        "primaryStatKey": "body",
+        "secondaryStatKey": "will",
+        "ultimateAbility": {
+          "name": "钢铁之躯",
+          "description": "强化系异能至极，成为不灭战士",
+          "effect": "免疫致命伤害一次（每场战斗）"
+        }
+      },
+      "sword": {
+        "id": "sword",
+        "name": "战斗系",
+        "description": "战斗本能，精准打击，致命一击",
+        "primaryStatKey": "talent",
+        "secondaryStatKey": "wisdom",
+        "ultimateAbility": {
+          "name": "必杀一击",
+          "description": "战斗系异能至极，一击必杀",
+          "effect": "攻击必定暴击"
+        }
+      },
+      "spell": {
+        "id": "spell",
+        "name": "元素系",
+        "description": "元素操控，远程打击，范围毁灭",
+        "primaryStatKey": "talent",
+        "secondaryStatKey": "wisdom",
+        "ultimateAbility": {
+          "name": "元素风暴",
+          "description": "元素系异能至极，可操控所有元素",
+          "effect": "每回合自动释放一次基础技能"
+        }
+      },
+      "alchemy": {
+        "id": "alchemy",
+        "name": "辅助系",
+        "description": "辅助能力，治疗恢复，支援队友",
+        "primaryStatKey": "wisdom",
+        "secondaryStatKey": "luck",
+        "ultimateAbility": {
+          "name": "绝对领域",
+          "description": "辅助系异能至极，可创造绝对领域",
+          "effect": "可制造传说级辅助物品"
+        }
+      },
+      "demon": {
+        "id": "demon",
+        "name": "狂暴系",
+        "description": "狂暴之力，力量暴增，代价惨重",
+        "primaryStatKey": "body",
+        "secondaryStatKey": "will",
+        "ultimateAbility": {
+          "name": "终极狂暴",
+          "description": "狂暴系异能至极，化身毁灭者",
+          "effect": "濒死时触发终极狂暴，全属性翻倍持续3回合（每场战斗一次）"
+        }
+      }
+    }
+  },
+  "namePool": {
     "surnames": [
-      "星际",
-      "银河",
-      "机械",
-      "赛博",
-      "量子",
-      "虚空"
+      "觉醒",
+      "变异",
+      "超凡",
+      "进化",
+      "源能",
+      "异变"
     ],
     "maleNames": [
       "天",
@@ -401,150 +515,5 @@
       "萱",
       "薇"
     ]
-  },
-  "text": {
-    "name": "科技",
-    "description": "未来科技世界，基因进化与科技融合",
-    "terminology": {
-      "resource": "能量块",
-      "power": "能量",
-      "energy": "能源",
-      "practice": "强化",
-      "core": "核心",
-      "breakthrough": "进化",
-      "enemy": "变异体",
-      "dungeon": "遗迹",
-      "pill": "强化剂",
-      "treasure": "装备",
-      "dungeonDesc": "区",
-      "dungeonLocation": "废弃都市",
-      "breakthroughPill": "进化药剂",
-      "cultivationPill": "能量补充剂"
-    },
-    "stats": {
-      "body": "体魄",
-      "talent": "基因",
-      "wisdom": "智力",
-      "luck": "运气",
-      "will": "意志"
-    },
-    "combat": {
-      "victory": "消灭{enemyName}，获得{exp}点经验数据",
-      "defeat": "被{enemyName}击败，系统受损",
-      "damageDeal": "对{enemyName}造成{damage}点伤害",
-      "damageReceive": "受到{damage}点伤害",
-      "damageCrit": "致命打击！对{enemyName}造成{damage}点伤害",
-      "dodge": "{targetName}规避了攻击",
-      "round": "第{round}回合",
-      "start": "侦测到{enemyName}！",
-      "end": "战斗结束"
-    },
-    "cultivation": {
-      "success": "强化成功，机体性能提升",
-      "failure": "强化失败，资源不足",
-      "breakthrough": "进化成功！机体等级提升至{newRealm}",
-      "breakthroughFail": "进化失败，基因不稳定",
-      "overflowWarning": "能量溢出{overflowExp}点，可以进行进化",
-      "cost": "消耗{resource}×{amount}"
-    },
-    "resource": {
-      "gain": "获得{resource}×{amount}",
-      "spend": "消耗{resource}×{amount}",
-      "insufficient": "{resource}储备不足"
-    },
-    "item": {
-      "use": "使用{itemName}，{effect}",
-      "obtain": "获得{itemName}×{amount}",
-      "sell": "出售{itemName}，获得{resource}×{amount}"
-    },
-    "dungeon": {
-      "enter": "进入{dungeonName}",
-      "exit": "撤出{dungeonName}",
-      "clear": "探索完成{dungeonName}！获得：{rewards}",
-      "sweep": "扫描{dungeonName}，获得{resource}×{amount}",
-      "staminaCost": "消耗{stamina}点行动点",
-      "powerRequire": "推荐战力：{power}"
-    },
-    "ui": {
-      "level": "等级 {level}",
-      "realm": "{realm}",
-      "combatPower": "战力 {power}",
-      "exp": "经验 {current}/{max}",
-      "hp": "生命 {current}/{max}",
-      "mp": "能量 {current}/{max}",
-      "stamina": "行动点 {current}/{max}"
-    },
-    "breakthrough": {
-      "success": "进化成功！",
-      "fail": "进化失败，需要更多能量",
-      "rate": "进化成功率：{rate}%",
-      "pillBonus": "使用{pill}，成功率+{bonus}%"
-    },
-    "message": {
-      "offlineTitle": "待机收益",
-      "offlineContent": "待机{duration}，获得{resource}×{amount}"
-    },
-    "paths": {
-      "body": {
-        "id": "body",
-        "name": "改造系",
-        "description": "机械改造，钢铁之躯，防御无敌",
-        "primaryStatKey": "body",
-        "secondaryStatKey": "will",
-        "ultimateAbility": {
-          "name": "钢铁堡垒",
-          "description": "改造至极，成为不灭的钢铁战士",
-          "effect": "免疫致命伤害一次（每场战斗）"
-        }
-      },
-      "sword": {
-        "id": "sword",
-        "name": "格斗系",
-        "description": "格斗技巧，精准打击，致命一击",
-        "primaryStatKey": "talent",
-        "secondaryStatKey": "wisdom",
-        "ultimateAbility": {
-          "name": "致命打击",
-          "description": "格斗技巧至极，一击必杀",
-          "effect": "攻击必定暴击"
-        }
-      },
-      "spell": {
-        "id": "spell",
-        "name": "能量系",
-        "description": "能量操控，远程打击，范围毁灭",
-        "primaryStatKey": "talent",
-        "secondaryStatKey": "wisdom",
-        "ultimateAbility": {
-          "name": "能量风暴",
-          "description": "能量操控至极，可释放毁灭性能量",
-          "effect": "每回合自动释放一次基础技能"
-        }
-      },
-      "alchemy": {
-        "id": "alchemy",
-        "name": "医疗系",
-        "description": "医疗科技，纳米修复，快速恢复",
-        "primaryStatKey": "wisdom",
-        "secondaryStatKey": "luck",
-        "ultimateAbility": {
-          "name": "纳米再生",
-          "description": "医疗科技至极，可瞬间修复重伤",
-          "effect": "可制造传说级医疗物品"
-        }
-      },
-      "demon": {
-        "id": "demon",
-        "name": "变异系",
-        "description": "基因变异，力量暴增，代价惨重",
-        "primaryStatKey": "body",
-        "secondaryStatKey": "will",
-        "ultimateAbility": {
-          "name": "终极变异",
-          "description": "变异至极，成为超级生命体",
-          "effect": "濒死时触发终极变异，全属性翻倍持续3回合（每场战斗一次）"
-        }
-      }
-    }
   }
 }

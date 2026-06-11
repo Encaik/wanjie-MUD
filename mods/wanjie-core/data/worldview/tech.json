@@ -1,147 +1,88 @@
 {
-  "id": 8,
-  "type": "apocalypse",
-  "name": "末世世界",
-  "description": "文明崩塌，变异横行，幸存者挣扎求生",
-  "baseCoefficient": 1.5,
+  "id": "tech",
+  "name": "科技世界",
+  "description": "科技高度发达，星际航行已是常态",
+  "baseCoefficient": 1.2,
   "namePrefixes": [
-    "废土",
-    "荒芜",
-    "末世",
-    "崩坏",
-    "毁灭",
-    "残存"
+    "星际",
+    "银河",
+    "机械",
+    "赛博",
+    "量子",
+    "虚空"
   ],
   "nameSuffixes": [
-    "世界",
-    "之地",
-    "废墟",
-    "区域",
-    "疆域"
+    "联邦",
+    "帝国",
+    "联盟",
+    "领域",
+    "世界"
   ],
   "descriptions": [
-    "文明崩塌，变异横行，幸存者挣扎求生",
-    "废土之上，适者生存，人性与兽性交织",
-    "核战后的人类文明，在废墟中寻找希望"
+    "科技高度发达，星际航行已是常态",
+    "机械与人工智能共存，赛博文明繁荣",
+    "量子科技突破，人类征服星辰大海"
   ],
   "powerSystems": [
-    "变异进化，适应废土，成为新时代的霸主",
-    "科技残存，基因改造，在末世中崛起"
+    "基因改造与机械飞升，科技改变命运",
+    "纳米技术与AI融合，追求永生之道"
   ],
   "majorForces": [
-    "幸存者联盟与掠夺者对峙",
-    "变异生物与人类争夺领地",
-    "避难所联盟掌控资源"
-  ],
-  "worldDangers": [
-    {
-      "description": "变异兽潮",
-      "impact": {
-        "体质": -1
-      },
-      "impactDescription": "体质-1"
-    },
-    {
-      "description": "辐射扩散",
-      "impact": {
-        "灵根": -1
-      },
-      "impactDescription": "灵根-1"
-    },
-    {
-      "description": "资源匮乏",
-      "impact": {
-        "意志": -1
-      },
-      "impactDescription": "意志-1"
-    }
-  ],
-  "worldOpportunities": [
-    {
-      "description": "发现避难所",
-      "impact": {
-        "体质": 2
-      },
-      "impactDescription": "体质+2"
-    },
-    {
-      "description": "获得进化能力",
-      "impact": {
-        "灵根": 2
-      },
-      "impactDescription": "灵根+2"
-    },
-    {
-      "description": "找到文明遗物",
-      "impact": {
-        "意志": 2
-      },
-      "impactDescription": "意志+2"
-    }
+    "三大星际财团掌控资源",
+    "联邦政府与反叛军对峙",
+    "AI联盟与人类政权共存"
   ],
   "stats": {
     "baseHp": 90,
-    "hpPerLevel": 20,
-    "hpPerConstitution": 15,
-    "baseAttack": 12,
+    "hpPerLevel": 12,
+    "hpPerConstitution": 8,
+    "baseAttack": 15,
     "attackPerLevel": 2.5,
-    "attackPerConstitution": 1.3,
-    "attackPerSpiritRoot": 0.3,
-    "baseDefense": 10,
-    "defensePerLevel": 1.5,
+    "attackPerConstitution": 0.6,
+    "attackPerSpiritRoot": 1,
+    "baseDefense": 5,
+    "defensePerLevel": 0.8,
     "defensePerWillpower": 1,
-    "enemyAttackBonus": 0.3,
-    "enemyDefenseBonus": 0.25,
+    "enemyAttackBonus": 0.15,
+    "enemyDefenseBonus": 0,
     "statDisplayNames": {
-      "体质": "体质",
-      "灵根": "适应性",
-      "悟性": "洞察",
-      "幸运": "运气",
-      "意志": "意志"
+      "体质": "体能",
+      "灵根": "智力",
+      "悟性": "反应",
+      "幸运": "技术",
+      "意志": "魅力"
     }
   },
   "visualConfig": {
-    "icon": "◉",
-    "accentColor": "text-zinc-400",
-    "gradientClass": "from-zinc-500/20 to-slate-700/10",
-    "borderColor": "border-zinc-500/40",
-    "bgGradient": "bg-gradient-to-br from-gray-50 to-slate-50 dark:from-gray-950/30 dark:to-slate-950/30",
-    "colorGradient": "from-gray-500 to-red-500"
+    "icon": "⬡",
+    "accentColor": "text-cyan-400",
+    "gradientClass": "from-cyan-500/20 to-blue-600/10",
+    "borderColor": "border-cyan-500/30",
+    "bgGradient": "bg-gradient-to-br from-slate-50 to-zinc-50 dark:from-slate-950/30 dark:to-zinc-950/30",
+    "colorGradient": "from-cyan-500 to-blue-500"
   },
   "mechanics": {
-    "worldType": "末世",
+    "worldType": "科技",
     "cultivation": {
-      "resourceName": "变异点数",
-      "actionName": "进化",
-      "baseCost": 10,
+      "resourceName": "科技点",
+      "actionName": "研究",
+      "baseCost": 20,
       "useStandardFormula": true,
-      "successRateModifier": -0.05
+      "successRateModifier": 0
     },
     "combat": {
-      "mpName": "体力",
-      "abilityName": "变异能力",
-      "basicAttackName": "徒手攻击"
+      "mpName": "能量",
+      "abilityName": "义体模块",
+      "basicAttackName": "充能攻击"
     },
     "exploration": {
-      "exploreName": "废土探索",
-      "hasSpecialMechanics": true,
-      "survivalResources": [
-        {
-          "name": "饱腹度",
-          "maxValue": 100,
-          "dailyConsumption": 10
-        },
-        {
-          "name": "水源",
-          "maxValue": 100,
-          "dailyConsumption": 8
-        }
-      ]
+      "exploreName": "任务",
+      "hasSpecialMechanics": true
     },
     "uniqueMechanic": {
-      "name": "生存资源",
-      "description": "管理饱腹度和水源两项生存资源，每日自动消耗。探索废土获取补给，资源耗尽将损失生命。还可解锁变异能力树获得特殊能力。",
-      "icon": "Skull"
+      "name": "芯片研究",
+      "description": "消耗科技点研究芯片提升等级，义体模块三槽位（脑部/手臂/躯干）提供强大战斗能力，注意过热冷却。研究成功率+5%。",
+      "icon": "Cpu"
     }
   },
   "dangers": [
@@ -162,24 +103,6 @@
       "duration": -1,
       "dispellable": false,
       "dangerLevel": 1
-    },
-    {
-      "id": "demon_erosion",
-      "type": "resource_drain",
-      "name": "魔气侵蚀",
-      "description": "魔气弥漫，每回合损失少量生命",
-      "triggerCondition": {
-        "type": "on_turn",
-        "chance": 0.3
-      },
-      "effect": {
-        "resourceModifications": {
-          "hp": -5
-        }
-      },
-      "duration": 0,
-      "dispellable": true,
-      "dangerLevel": 2
     },
     {
       "id": "weak_enemies",
@@ -219,31 +142,30 @@
       "duration": 0,
       "dispellable": false,
       "dangerLevel": 3
-    },
-    {
-      "id": "cursed_ground",
-      "type": "resource_drain",
-      "name": "诅咒之地",
-      "description": "受到诅咒，每回合损失生命和法力",
-      "triggerCondition": {
-        "type": "on_turn",
-        "chance": 0.4
-      },
-      "effect": {
-        "resourceModifications": {
-          "hp": -8,
-          "mp": -5
-        }
-      },
-      "duration": 0,
-      "dispellable": true,
-      "dangerLevel": 3
     }
   ],
-  "opportunities": [],
+  "opportunities": [
+    {
+      "id": "clear_mind",
+      "type": "stat_buff",
+      "name": "心神清明",
+      "description": "此地磁场温和，心神安定",
+      "triggerCondition": {
+        "type": "on_enter",
+        "chance": 1
+      },
+      "effect": {
+        "statModifications": {
+          "悟性": 2
+        }
+      },
+      "duration": -1,
+      "opportunityLevel": 1
+    }
+  ],
   "realmSystem": {
     "mainRealmName": "进化等级",
-    "subRealmName": "阶",
+    "subRealmName": "级",
     "tiers": [
       {
         "name": "炼气期",
@@ -344,31 +266,29 @@
     "subRealmMultiplier": 1.05,
     "tierJumpMultiplier": 1.3
   },
-  "factions": {
-    "templates": [
-      {
-        "id": "末世_faction_0",
-        "name": "幸存者联盟与掠夺者对峙",
-        "type": "末世",
-        "description": "末世世界的主要势力",
-        "worldTypeId": "末世"
-      },
-      {
-        "id": "末世_faction_1",
-        "name": "变异生物与人类争夺领地",
-        "type": "末世",
-        "description": "末世世界的主要势力",
-        "worldTypeId": "末世"
-      },
-      {
-        "id": "末世_faction_2",
-        "name": "避难所联盟掌控资源",
-        "type": "末世",
-        "description": "末世世界的主要势力",
-        "worldTypeId": "末世"
-      }
-    ]
-  },
+  "factions": [
+    {
+      "id": "科技_faction_0",
+      "name": "三大星际财团掌控资源",
+      "type": "科技",
+      "description": "科技世界的主要势力",
+      "worldTypeId": "科技"
+    },
+    {
+      "id": "科技_faction_1",
+      "name": "联邦政府与反叛军对峙",
+      "type": "科技",
+      "description": "科技世界的主要势力",
+      "worldTypeId": "科技"
+    },
+    {
+      "id": "科技_faction_2",
+      "name": "AI联盟与人类政权共存",
+      "type": "科技",
+      "description": "科技世界的主要势力",
+      "worldTypeId": "科技"
+    }
+  ],
   "traits": {
     "origin": {
       "legendary": [],
@@ -399,14 +319,177 @@
       "common": []
     }
   },
-  "names": {
+  "version": "1.0.0",
+  "rewardCoefficient": {
+    "expCoefficient": 1,
+    "spiritStoneCoefficient": 1,
+    "dropCoefficient": 1,
+    "rarityBonus": {
+      "rare": 0.1,
+      "epic": 0.05,
+      "legendary": 0.02,
+      "mythic": 0.01
+    },
+    "specialRewards": {
+      "ascensionMarkBonus": 0.1,
+      "titleChance": 0.05,
+      "specialItemChance": 0.02
+    }
+  },
+  "builtin": true,
+  "texts": {
+    "name": "科技",
+    "description": "未来科技世界，基因进化与科技融合",
+    "terminology": {
+      "resource": "能量块",
+      "power": "能量",
+      "energy": "能源",
+      "practice": "强化",
+      "core": "核心",
+      "breakthrough": "进化",
+      "enemy": "变异体",
+      "dungeon": "遗迹",
+      "pill": "强化剂",
+      "treasure": "装备",
+      "dungeonDesc": "区",
+      "dungeonLocation": "废弃都市",
+      "breakthroughPill": "进化药剂",
+      "cultivationPill": "能量补充剂"
+    },
+    "stats": {
+      "body": "体魄",
+      "talent": "基因",
+      "wisdom": "智力",
+      "luck": "运气",
+      "will": "意志"
+    },
+    "combat": {
+      "victory": "消灭{enemyName}，获得{exp}点经验数据",
+      "defeat": "被{enemyName}击败，系统受损",
+      "damageDeal": "对{enemyName}造成{damage}点伤害",
+      "damageReceive": "受到{damage}点伤害",
+      "damageCrit": "致命打击！对{enemyName}造成{damage}点伤害",
+      "dodge": "{targetName}规避了攻击",
+      "round": "第{round}回合",
+      "start": "侦测到{enemyName}！",
+      "end": "战斗结束"
+    },
+    "cultivation": {
+      "success": "强化成功，机体性能提升",
+      "failure": "强化失败，资源不足",
+      "breakthrough": "进化成功！机体等级提升至{newRealm}",
+      "breakthroughFail": "进化失败，基因不稳定",
+      "overflowWarning": "能量溢出{overflowExp}点，可以进行进化",
+      "cost": "消耗{resource}×{amount}"
+    },
+    "resource": {
+      "gain": "获得{resource}×{amount}",
+      "spend": "消耗{resource}×{amount}",
+      "insufficient": "{resource}储备不足"
+    },
+    "item": {
+      "use": "使用{itemName}，{effect}",
+      "obtain": "获得{itemName}×{amount}",
+      "sell": "出售{itemName}，获得{resource}×{amount}"
+    },
+    "dungeon": {
+      "enter": "进入{dungeonName}",
+      "exit": "撤出{dungeonName}",
+      "clear": "探索完成{dungeonName}！获得：{rewards}",
+      "sweep": "扫描{dungeonName}，获得{resource}×{amount}",
+      "staminaCost": "消耗{stamina}点行动点",
+      "powerRequire": "推荐战力：{power}"
+    },
+    "ui": {
+      "level": "等级 {level}",
+      "realm": "{realm}",
+      "combatPower": "战力 {power}",
+      "exp": "经验 {current}/{max}",
+      "hp": "生命 {current}/{max}",
+      "mp": "能量 {current}/{max}",
+      "stamina": "行动点 {current}/{max}"
+    },
+    "breakthrough": {
+      "success": "进化成功！",
+      "fail": "进化失败，需要更多能量",
+      "rate": "进化成功率：{rate}%",
+      "pillBonus": "使用{pill}，成功率+{bonus}%"
+    },
+    "message": {
+      "offlineTitle": "待机收益",
+      "offlineContent": "待机{duration}，获得{resource}×{amount}"
+    },
+    "paths": {
+      "body": {
+        "id": "body",
+        "name": "改造系",
+        "description": "机械改造，钢铁之躯，防御无敌",
+        "primaryStatKey": "body",
+        "secondaryStatKey": "will",
+        "ultimateAbility": {
+          "name": "钢铁堡垒",
+          "description": "改造至极，成为不灭的钢铁战士",
+          "effect": "免疫致命伤害一次（每场战斗）"
+        }
+      },
+      "sword": {
+        "id": "sword",
+        "name": "格斗系",
+        "description": "格斗技巧，精准打击，致命一击",
+        "primaryStatKey": "talent",
+        "secondaryStatKey": "wisdom",
+        "ultimateAbility": {
+          "name": "致命打击",
+          "description": "格斗技巧至极，一击必杀",
+          "effect": "攻击必定暴击"
+        }
+      },
+      "spell": {
+        "id": "spell",
+        "name": "能量系",
+        "description": "能量操控，远程打击，范围毁灭",
+        "primaryStatKey": "talent",
+        "secondaryStatKey": "wisdom",
+        "ultimateAbility": {
+          "name": "能量风暴",
+          "description": "能量操控至极，可释放毁灭性能量",
+          "effect": "每回合自动释放一次基础技能"
+        }
+      },
+      "alchemy": {
+        "id": "alchemy",
+        "name": "医疗系",
+        "description": "医疗科技，纳米修复，快速恢复",
+        "primaryStatKey": "wisdom",
+        "secondaryStatKey": "luck",
+        "ultimateAbility": {
+          "name": "纳米再生",
+          "description": "医疗科技至极，可瞬间修复重伤",
+          "effect": "可制造传说级医疗物品"
+        }
+      },
+      "demon": {
+        "id": "demon",
+        "name": "变异系",
+        "description": "基因变异，力量暴增，代价惨重",
+        "primaryStatKey": "body",
+        "secondaryStatKey": "will",
+        "ultimateAbility": {
+          "name": "终极变异",
+          "description": "变异至极，成为超级生命体",
+          "effect": "濒死时触发终极变异，全属性翻倍持续3回合（每场战斗一次）"
+        }
+      }
+    }
+  },
+  "namePool": {
     "surnames": [
-      "废土",
-      "荒芜",
-      "末世",
-      "崩坏",
-      "毁灭",
-      "残存"
+      "星际",
+      "银河",
+      "机械",
+      "赛博",
+      "量子",
+      "虚空"
     ],
     "maleNames": [
       "天",
@@ -432,150 +515,5 @@
       "萱",
       "薇"
     ]
-  },
-  "text": {
-    "name": "末世",
-    "description": "末日废土，生存与进化",
-    "terminology": {
-      "resource": "补给点",
-      "power": "异能",
-      "energy": "进化能",
-      "practice": "进化",
-      "core": "进化核",
-      "breakthrough": "进化",
-      "enemy": "感染者",
-      "dungeon": "废墟",
-      "pill": "强化剂",
-      "treasure": "物资",
-      "dungeonDesc": "区",
-      "dungeonLocation": "废土深处",
-      "breakthroughPill": "进化药剂",
-      "cultivationPill": "恢复剂"
-    },
-    "stats": {
-      "body": "体魄",
-      "talent": "进化",
-      "wisdom": "智力",
-      "luck": "运气",
-      "will": "意志"
-    },
-    "combat": {
-      "victory": "消灭{enemyName}，获得{exp}点生存经验",
-      "defeat": "败给{enemyName}，实力悬殊",
-      "damageDeal": "对{enemyName}造成{damage}点伤害",
-      "damageReceive": "受到{damage}点伤害",
-      "damageCrit": "致命一击！对{enemyName}造成{damage}点伤害",
-      "dodge": "{targetName}躲避了攻击",
-      "round": "第{round}回合",
-      "start": "遭遇感染者{enemyName}！",
-      "end": "战斗结束"
-    },
-    "cultivation": {
-      "success": "进化成功，机体更加完善",
-      "failure": "进化受阻，基因不稳定",
-      "breakthrough": "进化成功！生存等级提升至{newRealm}",
-      "breakthroughFail": "进化失败，基因崩溃",
-      "overflowWarning": "能量已溢出{overflowExp}点，可以进行进化",
-      "cost": "消耗{resource}×{amount}"
-    },
-    "resource": {
-      "gain": "获得{resource}×{amount}",
-      "spend": "消耗{resource}×{amount}",
-      "insufficient": "{resource}储备不足"
-    },
-    "item": {
-      "use": "使用{itemName}，{effect}",
-      "obtain": "获得{itemName}×{amount}",
-      "sell": "出售{itemName}，获得{resource}×{amount}"
-    },
-    "dungeon": {
-      "enter": "进入{dungeonName}",
-      "exit": "撤出{dungeonName}",
-      "clear": "清理{dungeonName}！获得：{rewards}",
-      "sweep": "搜索{dungeonName}，获得{resource}×{amount}",
-      "staminaCost": "消耗{stamina}点行动点",
-      "powerRequire": "推荐战力：{power}"
-    },
-    "ui": {
-      "level": "等级 {level}",
-      "realm": "{realm}",
-      "combatPower": "战力 {power}",
-      "exp": "经验 {current}/{max}",
-      "hp": "生命 {current}/{max}",
-      "mp": "异能 {current}/{max}",
-      "stamina": "行动点 {current}/{max}"
-    },
-    "breakthrough": {
-      "success": "进化成功！",
-      "fail": "进化失败，需要更多能量",
-      "rate": "进化成功率：{rate}%",
-      "pillBonus": "使用{pill}，成功率+{bonus}%"
-    },
-    "message": {
-      "offlineTitle": "生存收益",
-      "offlineContent": "生存{duration}，获得{resource}×{amount}"
-    },
-    "paths": {
-      "body": {
-        "id": "body",
-        "name": "强化系",
-        "description": "肉体进化，防御惊人，生存力强",
-        "primaryStatKey": "body",
-        "secondaryStatKey": "will",
-        "ultimateAbility": {
-          "name": "钢铁堡垒",
-          "description": "肉体进化至极，成为不灭堡垒",
-          "effect": "免疫致命伤害一次（每场战斗）"
-        }
-      },
-      "sword": {
-        "id": "sword",
-        "name": "猎杀者",
-        "description": "战斗技巧，精准打击，致命一击",
-        "primaryStatKey": "talent",
-        "secondaryStatKey": "wisdom",
-        "ultimateAbility": {
-          "name": "致命猎杀",
-          "description": "战斗技巧至极，一击必杀",
-          "effect": "攻击必定暴击"
-        }
-      },
-      "spell": {
-        "id": "spell",
-        "name": "异能系",
-        "description": "异能觉醒，远程打击，范围毁灭",
-        "primaryStatKey": "talent",
-        "secondaryStatKey": "wisdom",
-        "ultimateAbility": {
-          "name": "异能风暴",
-          "description": "异能进化至极，可释放毁灭性能量",
-          "effect": "每回合自动释放一次基础技能"
-        }
-      },
-      "alchemy": {
-        "id": "alchemy",
-        "name": "医疗系",
-        "description": "医疗科技，快速恢复，支援队友",
-        "primaryStatKey": "wisdom",
-        "secondaryStatKey": "luck",
-        "ultimateAbility": {
-          "name": "纳米再生",
-          "description": "医疗技术至极，可瞬间修复重伤",
-          "effect": "可制造传说级医疗物品"
-        }
-      },
-      "demon": {
-        "id": "demon",
-        "name": "变异系",
-        "description": "基因变异，力量暴增，代价惨重",
-        "primaryStatKey": "body",
-        "secondaryStatKey": "will",
-        "ultimateAbility": {
-          "name": "终极变异",
-          "description": "变异进化至极，成为超级生命体",
-          "effect": "濒死时触发终极变异，全属性翻倍持续3回合（每场战斗一次）"
-        }
-      }
-    }
   }
 }

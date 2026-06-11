@@ -10,16 +10,14 @@
  */
 
 import type {
-  WorldTypeData,
   DangerData,
   OpportunityData,
-  TraitDefinitionData,
   TraitPoolData,
   FactionTemplateData,
   NamePoolData,
   RealmSystemData,
   RewardCoefficientData,
-} from './WorldDataRegistry';
+} from './WorldViewRegistry';
 
 // ============================================
 // 校验结果类型

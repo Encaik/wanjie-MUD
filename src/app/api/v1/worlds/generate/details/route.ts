@@ -16,7 +16,7 @@ import { NextRequest } from 'next/server';
 import { apiSuccess, apiError } from '@/app/api/result';
 import { ensureWorldSystemInitialized } from '@/app/api/init';
 import { createLogger } from '@/core/logger';
-import { WorldDataRegistry } from '@/core/registry';
+import { WorldViewRegistry } from '@/core/registry';
 import { generateWorld } from '@/core/world';
 
 import { generateDetailsForSeed } from '../generator';
@@ -52,8 +52,8 @@ export async function POST(request: NextRequest) {
   try {
     // 如果指定了 worldviewId，使用新的 generateWorld（完整生成）
     if (body.worldviewId) {
-      const registry = WorldDataRegistry.getInstance();
-      const worldview = registry.getWorldview(body.worldviewId);
+      const registry = WorldViewRegistry.getInstance();
+      const worldview = registry.get(body.worldviewId);
       if (!worldview) {
         return apiError(400, `世界观 '${body.worldviewId}' 未注册`);
       }

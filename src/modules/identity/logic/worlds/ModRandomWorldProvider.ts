@@ -2,7 +2,7 @@
  * ModRandomWorldProvider — mod 随机世界生成提供者
  *
  * 封装现有 generateWorld 函数，实现 WorldProvider 接口（type='random'）。
- * 从 WorldDataRegistry 读取配方数据（WorldTypeData 池），随机组合产出 World 实例。
+ * 从 WorldViewRegistry 读取配方数据（WorldTypeData 池），随机组合产出 World 实例。
  *
  * @module modules/identity/logic/worlds
  */

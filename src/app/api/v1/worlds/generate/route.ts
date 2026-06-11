@@ -17,7 +17,7 @@ import { NextRequest } from 'next/server';
 import { apiSuccess, apiError } from '@/app/api/result';
 import { ensureWorldSystemInitialized } from '@/app/api/init';
 import { createLogger } from '@/core/logger';
-import { WorldDataRegistry } from '@/core/registry';
+import { WorldViewRegistry } from '@/core/registry';
 import { generateWorld, generateSeed } from '@/core/world';
 import type { World } from '@/core/types';
 
@@ -28,8 +28,6 @@ const log = createLogger('Generate');
 
 interface GenerateRequest {
   seed?: string;
-  /** @deprecated 使用 worldviewId 替代 */
-  worldType?: string;
   /** 世界观 ID（English kebab-case，如 "cultivation"、"martial"） */
   worldviewId?: string;
   count?: number;
@@ -51,23 +49,14 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const registry = WorldDataRegistry.getInstance();
-    const worldviewId = body.worldviewId ?? body.worldType;
+    const registry = WorldViewRegistry.getInstance();
+    const worldviewId = body.worldviewId;
 
     // 如果指定了 worldviewId，校验其存在
     if (worldviewId) {
-      // 首先尝试按 worldview ID 查找
-      let worldview = registry.getWorldview(worldviewId);
-      // 回退到旧 worldTypes 查找
+      const worldview = registry.get(worldviewId);
       if (!worldview) {
-        const worldTypeData = registry.getWorldType(worldviewId);
-        if (!worldTypeData) {
-          return apiError(400, `世界观 '${worldviewId}' 未注册`);
-        }
-        // 从旧 worldType 生成
-        const seed = body.seed || generateSeed();
-        const world = generateAndSaveLegacy(seed, worldTypeData);
-        return apiSuccess({ worlds: [world], generatedAt: new Date().toISOString() });
+        return apiError(400, `世界观 '${worldviewId}' 未注册`);
       }
 
       const count = Math.min(Math.max(body.count ?? 1, 1), 10);
@@ -91,7 +80,7 @@ export async function POST(request: NextRequest) {
     }
 
     // 未指定 worldviewId：从所有可用世界观中随机
-    const allWorldviews = registry.getAllWorldviews();
+    const allWorldviews = registry.getAll();
     if (allWorldviews.length === 0) {
       return apiError(500, '没有已注册的世界观');
     }
@@ -109,14 +98,4 @@ export async function POST(request: NextRequest) {
     log.error('失败:', err);
     return apiError(500, `世界生成失败: ${err instanceof Error ? err.message : '未知错误'}`);
   }
-}
-
-/**
- * 旧版生成兼容：从 WorldTypeData 生成世界
- * @deprecated 过渡期使用，待所有数据迁移到 WorldviewDefinition 后移除
- */
-function generateAndSaveLegacy(seed: string, _worldTypeData: ReturnType<typeof WorldDataRegistry.prototype.getWorldType>): World {
-  // 委托给旧版 generator 进行生成
-  const { generateAndSave } = require('./generator');
-  return generateAndSave(seed, _worldTypeData?.type);
 }

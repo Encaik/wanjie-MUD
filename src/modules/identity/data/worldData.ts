@@ -5,7 +5,7 @@
  */
 
 import { WorldType, WorldImpact, StatImpact, CellType, EnemyTier, WorldDifficulty } from '@/core/types';
-import { WorldDataRegistry } from '@/core/registry';
+import { WorldViewRegistry } from '@/core/registry';
 
 // 重新导出 EnemyTier（从 types 导入）
 export type { EnemyTier } from '@/core/types';
@@ -17,7 +17,7 @@ export type { EnemyTier } from '@/core/types';
  * 不再硬编码——所有世界类型通过 Mod 加载。
  */
 export function getWorldTypes(): WorldType[] {
-  return WorldDataRegistry.getInstance().getAllWorldTypes() as WorldType[];
+  return WorldViewRegistry.getInstance().getAllIds() as WorldType[];
 }
 
 /**
@@ -25,10 +25,7 @@ export function getWorldTypes(): WorldType[] {
  * 新代码应使用此函数，替代 getWorldTypes()
  */
 export function getWorldviewIds(): string[] {
-  const registry = WorldDataRegistry.getInstance();
-  return registry.getAllWorldviewIds().length > 0
-    ? registry.getAllWorldviewIds()
-    : registry.getAllWorldTypes();
+  return WorldViewRegistry.getInstance().getAllIds();
 }
 
 /** @deprecated 使用 getWorldTypes() 或 getWorldviewIds() 替代 */
@@ -618,13 +615,13 @@ export type DifficultyLevel = keyof typeof DIFFICULTY_MULTIPLIERS;
  * 如果注册中心无数据或 stats 字段缺失，抛出明确错误。
  */
 export function getWorldData(worldType: WorldType): WorldStats {
-  const registry = WorldDataRegistry.getInstance();
-  const data = registry.getWorldType(worldType);
-  if (!data) {
-    throw new Error(`世界数据未加载: "${worldType}"。请确保 wanjie-core Mod 已正确加载。`);
+  const registry = WorldViewRegistry.getInstance();
+  const worldview = registry.get(worldType);
+  if (!worldview) {
+    throw new Error(`世界观未加载: "${worldType}"。请确保 wanjie-core Mod 已正确加载。`);
   }
 
-  const stats = data.stats;
+  const stats = worldview.stats;
   if (!stats) {
     throw new Error(
       `世界 "${worldType}" 缺少数值配置 (stats)。请检查数据文件是否包含 stats 字段。`
@@ -655,22 +652,22 @@ export function getWorldData(worldType: WorldType): WorldStats {
   }
 
   return {
-    namePrefixes: data.namePrefixes,
-    nameSuffixes: data.nameSuffixes,
-    descriptions: data.descriptions,
-    powerSystems: data.powerSystems ?? [],
-    majorForces: data.majorForces ?? [],
-    dangers: (data.dangers ?? []).map(d => ({
+    namePrefixes: worldview.namePrefixes,
+    nameSuffixes: worldview.nameSuffixes,
+    descriptions: worldview.descriptions,
+    powerSystems: worldview.powerSystems ?? [],
+    majorForces: worldview.majorForces ?? [],
+    dangers: (worldview.dangers ?? []).map(d => ({
       description: d.description,
-      impact: d.impact as StatImpact,
-      impactDescription: d.impactDescription,
+      impact: d.effect?.statModifications ?? {} as StatImpact,
+      impactDescription: d.description,
     })),
-    opportunities: (data.opportunities ?? []).map(o => ({
+    opportunities: (worldview.opportunities ?? []).map(o => ({
       description: o.description,
-      impact: o.impact as StatImpact,
-      impactDescription: o.impactDescription,
+      impact: o.effect?.statModifications ?? {} as StatImpact,
+      impactDescription: o.description,
     })),
-    coefficient: data.baseCoefficient,
+    coefficient: worldview.baseCoefficient,
     baseHp: stats.baseHp,
     hpPerLevel: stats.hpPerLevel,
     hpPerConstitution: stats.hpPerConstitution,

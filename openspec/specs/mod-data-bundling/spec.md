@@ -10,13 +10,13 @@
 
 构建脚本 `scripts/build-mods.ts` SHALL 在复制 Mod 目录到 `public/mods/` 后，为每个 Mod 生成一个合并数据文件 `data.json`。
 
-合并文件的内容 SHALL 以 `ModContentType` 为 key，对应值为合并后的数据。对于 `world` 类型（每个文件是自包含的世界数据对象），合并值 SHALL 为以世界类型（`type` 字段）为 key 的对象映射。
+合并文件的内容 SHALL 以 `ModContentType` 为 key，对应值为合并后的数据。对于 `worldview` 类型（每个文件是自包含的世界数据对象），合并值 SHALL 为以世界类型（`type` 字段）为 key 的对象映射。
 
 #### Scenario: 合并多个世界数据文件
 
 - **WHEN** 构建脚本处理 `wanjie-core` Mod，其 `dataFiles.world` 声明了 8 个世界 JSON 文件
 - **THEN** 构建脚本 SHALL 读取所有 8 个文件
-- **AND** 生成 `public/mods/wanjie-core/data.json`，包含 `{ "world": { "cultivation": {...}, "martial": {...}, ... } }`
+- **AND** 生成 `public/mods/wanjie-core/data.json`，包含 `{ "worldview": { "cultivation": {...}, "martial": {...}, ... } }`
 
 #### Scenario: 跳过不存在的文件
 

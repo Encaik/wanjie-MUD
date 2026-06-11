@@ -5,7 +5,7 @@
  * 数据与逻辑分离——generators.ts 从此文件导入姓名数据。
  */
 import type { WorldType } from '@/core/types';
-import { WorldDataRegistry } from '@/core/registry';
+import { WorldViewRegistry } from '@/core/registry';
 
 export interface NamePool {
   surnames: string[];
@@ -69,8 +69,8 @@ const WASTELAND_NAMES: NamePool = {
  * @returns 姓名池数据，未加载时抛出错误
  */
 export function getNamePoolFromRegistry(worldType: string): NamePool {
-  const registry = WorldDataRegistry.getInstance();
-  const pool = registry.getNamePool(worldType);
+  const registry = WorldViewRegistry.getInstance();
+  const pool = registry.get(worldType)?.namePool;
   if (!pool) {
     throw new Error(`姓名池未加载: "${worldType}"。请确保 wanjie-core Mod 已正确加载。`);
   }

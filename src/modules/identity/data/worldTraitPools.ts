@@ -5,7 +5,7 @@
  * 当前实现：为科技/魔幻/末世提供专属词条覆盖，其他世界沿用修仙词条（后续迭代补充）。
  */
 import type { WorldType } from '@/core/types';
-import { WorldDataRegistry } from '@/core/registry';
+import { WorldViewRegistry } from '@/core/registry';
 
 /**
  * 世界词条池配置
@@ -20,11 +20,11 @@ export interface WorldTraitPool {
 
 /** 从注册中心获取词条风味配置 */
 export function getWorldTraitFlavors(): Record<string, WorldTraitPool> {
-  const registry = WorldDataRegistry.getInstance();
-  const types = registry.getAllWorldTypes();
+  const registry = WorldViewRegistry.getInstance();
+  const types = registry.getAllIds();
   const result: Record<string, WorldTraitPool> = {};
   for (const id of types) {
-    const data = registry.getWorldType(id);
+    const data = registry.get(id);
     if (data) {
       result[id] = {
         worldType: id as WorldType,

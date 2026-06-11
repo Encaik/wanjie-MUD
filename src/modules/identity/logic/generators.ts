@@ -12,7 +12,7 @@ import {
 } from './traits';
 import { Character, World, CharacterStats, WorldType, ImpactfulTrait, ImpactLevel, StatImpact, WorldFaction } from '@/core/types';
 import { GAME_VERSION } from '@/shared/config/version';
-import { WorldDataRegistry } from '@/core/registry';
+import { WorldViewRegistry } from '@/core/registry';
 import {
   generateWorldFactions,
   generateFactionDescription,
@@ -94,7 +94,7 @@ function generateTraitFromDefinition(
 }
 
 // 世界名称/描述等数据通过 getWorldData() 从注册中心获取
-// generateWorld() 和 generateWorlds() 现在从 WorldDataRegistry 读取所有世界配置
+// generateWorld() 和 generateWorlds() 现在从 WorldViewRegistry 读取所有世界配置
 
 // 生成基础属性（所有角色相同的基础值）
 // 新结构：固定属性包含基础值50，成长属性初始为0
