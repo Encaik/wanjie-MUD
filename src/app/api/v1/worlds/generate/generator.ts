@@ -17,6 +17,7 @@
 
 import { hashString, createRng } from '@/shared/utils/rng';
 import { GAME_VERSION } from '@/shared/config/version';
+import { WorldViewRegistry } from '@/core/registry';
 import { getWorldTypes, getWorldData } from '@/modules/identity/data/worldData';
 import { generateRealmSystem } from '@/modules/progression/data/realmData';
 import { getPowerSystemDescription } from '@/modules/progression/data/realmCore';
@@ -79,6 +80,17 @@ export function generateWorldBasic(seed: string, worldType?: string): World {
   const actualCoefficient = calculateWorldDifficultyCoefficient(baseCoefficient, 0);
   const difficulty = getWorldDifficultyFromCoefficient(actualCoefficient);
 
+  // 视觉配置从注册中心获取（服务端已填充）
+  const worldviewDef = WorldViewRegistry.getInstance().get(type);
+  const visualConfig = worldviewDef?.visualConfig ?? {
+    icon: '🌍',
+    accentColor: 'text-foreground',
+    gradientClass: 'from-muted/20 to-muted/10',
+    borderColor: 'border-border',
+    bgGradient: 'bg-muted/10',
+    colorGradient: 'from-muted to-foreground',
+  };
+
   return {
     id: seed,
     random,
@@ -100,6 +112,10 @@ export function generateWorldBasic(seed: string, worldType?: string): World {
     opportunities: [],
     ratingScore: 0,
     specialPlot: null,
+
+    // 前端展示数据
+    visualConfig,
+    statDisplayNames: worldData.statDisplayNames ?? {},
   };
 }
 

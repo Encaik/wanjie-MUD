@@ -423,6 +423,19 @@ export interface World {
   /** 世界综合评价分数（1-100，由评分系统计算，生成时默认为 0） */
   ratingScore: number;
 
+  // === 前端展示数据（由服务端生成时填充，前端直接从 World 对象读取，无需查注册中心） ===
+  /** 世界视觉配置（图标、配色、渐变等） */
+  visualConfig: {
+    icon: string;
+    accentColor: string;
+    gradientClass: string;
+    borderColor: string;
+    bgGradient: string;
+    colorGradient: string;
+  };
+  /** 属性显示名映射（内部键 → 世界对应的显示名，如 { 体质: '根骨', 灵根: '悟性' }） */
+  statDisplayNames: Record<string, string>;
+
   // === 特殊剧情 ===
   /** 特殊剧情引用（指向 modules/narrative/story 中的 Story） */
   specialPlot?: {

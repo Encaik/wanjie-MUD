@@ -1,25 +1,28 @@
 'use client';
 
-import { RefreshCw, Swords, BookOpen, Shield, Compass } from 'lucide-react';
+import { Swords, BookOpen, Shield, Compass } from 'lucide-react';
 
-import { impactLevelToQuality, getQualityClasses } from '@/modules/equipment/logic/quality';
-import { useStatLabels } from '@/modules/identity/hooks/useStatLabels';
-import { sumImpacts } from '@/modules/identity/logic/generators';
 import type { Character, CharacterStats, ImpactLevel, StatImpact, WorldType } from '@/core/types';
+import { impactLevelToQuality, getQualityClasses } from '@/modules/equipment/logic/quality';
+import { STAT_KEYS } from '@/modules/identity/data/statDisplayNames';
+import { sumImpacts } from '@/modules/identity/logic/generators';
 import { Badge } from '@/shared/ui/badge';
-import { Button } from '@/shared/ui/button';
 import { Card, CardContent } from '@/shared/ui/card';
 import { cn } from '@/shared/utils';
+
 import { WorldInfoBar } from './WorldInfoBar';
 
 interface CharacterSelectProps {
   characters: Character[];
   onSelect: (character: Character) => void;
-  onRefresh?: () => void;
-  /** 已选世界类型（用于显示世界正确的属性名） */
+  /** 已选世界类型中文名（用于卡牌边框等显示样式） */
   worldType?: WorldType;
   /** 已选世界名称 */
   worldName?: string;
+  /** 世界视觉配置（来自 World.visualConfig） */
+  visualConfig?: { icon: string; accentColor: string; gradientClass: string; borderColor: string; bgGradient: string; colorGradient: string };
+  /** 属性显示名映射（内部键 → 显示名），来自 World.statDisplayNames */
+  statDisplayNames?: Record<string, string>;
   /** 返回世界选择 */
   onBack?: () => void;
 }
@@ -151,8 +154,8 @@ function TraitDetail({
   );
 }
 
-export function CharacterSelect({ characters, onSelect, onRefresh, worldType = '修仙', worldName, onBack }: CharacterSelectProps) {
-  const { labels: attrNames, statKeys } = useStatLabels(worldType);
+export function CharacterSelect({ characters, onSelect, worldType = '修仙', worldName, visualConfig, statDisplayNames, onBack }: CharacterSelectProps) {
+  const attrNames = statDisplayNames || {};
   
   const maleCount = characters.filter(c => c.gender === '男').length;
   const femaleCount = characters.filter(c => c.gender === '女').length;
@@ -164,28 +167,17 @@ export function CharacterSelect({ characters, onSelect, onRefresh, worldType = '
   };
 
   return (
-    <div className="min-h-dvh bg-background p-4 md:p-8">
-      <div className="max-w-6xl mx-auto">
+    <div className="min-h-dvh bg-background flex items-center justify-center p-4 md:p-8">
+      <div className="w-full max-w-6xl mx-auto">
         {/* 世界信息条 */}
-        {worldName && worldType && onBack && (
-          <WorldInfoBar worldName={worldName} worldType={worldType} onBack={onBack} />
+        {worldName && visualConfig && onBack && (
+          <WorldInfoBar worldName={worldName} visualConfig={visualConfig} statDisplayNames={attrNames} onBack={onBack} />
         )}
 
         {/* 标题 */}
         <div className="text-center mb-6">
           <div className="flex items-center justify-center gap-3 mb-2">
             <h1 className="text-2xl md:text-3xl font-bold text-foreground font-serif">命运之契 · 谁将踏入此界</h1>
-            {onRefresh && (
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={onRefresh}
-                className="gap-1"
-              >
-                <RefreshCw className="w-4 h-4" />
-                逆天改命
-              </Button>
-            )}
           </div>
           <p className="text-muted-foreground text-sm mb-4">
             天道推演，八位命运之子静待抉择
@@ -315,8 +307,8 @@ export function CharacterSelect({ characters, onSelect, onRefresh, worldType = '
                     <div className="space-y-1">
                       <div className="text-[10px] text-muted-foreground">属性</div>
                       <div className="grid grid-cols-5 gap-1 text-center">
-                        {statKeys.map((key) => {
-                          const bonus = totalImpact[key] || 0;
+                        {STAT_KEYS.map((key) => {
+                          const _bonus = totalImpact[key] || 0;
                           const value = finalStats[key];
                           const isMax = key === maxStat[0];
                           const isMin = key === minStat[0];

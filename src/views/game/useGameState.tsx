@@ -30,7 +30,7 @@ import { executeCultivation, getMaxExperience } from '@/modules/progression/logi
 import { generateEquipment } from '@/modules/equipment/logic/equipment';
 import { updateTaskProgress, applyMentalChange } from '@/core/engine';
 import { processExperienceGain, calculateBreakthroughTransfer } from '@/modules/progression/logic/experienceSystem';
-import { generateCharacters, generateBackstory } from '@/modules/identity/logic/generators';
+import { generateBackstory } from '@/modules/identity/logic/generators';
 import { WorldProviderRegistry } from '@/core/world/WorldProviderRegistry';
 import { buildWorldPool } from '@/core/world/WorldPoolEngine';
 import { post } from '@/shared/utils/api-client';
@@ -593,19 +593,24 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     }
   }, []);
 
-  // 刷新角色列表（需要知道世界类型）
+  // 刷新角色列表（通过服务端 API 生成，使用 worldviewId）
   const refreshCharacters = useCallback(async () => {
     setGameState(prev => {
       if (!prev.selectedWorld) return prev;
-      const newCharacters = generateCharacters(prev.selectedWorld.type);
-      return {
-        ...prev,
-        characters: newCharacters,
-      };
+      // 发起 API 请求但不等待——先用空列表占位，然后在 then 中更新
+      post<{ characters: Character[] }>('/api/v1/characters/generate', {
+        worldviewId: prev.selectedWorld.worldviewId,
+        count: 8,
+      }).then(({ code, data }) => {
+        if (code === 200 && data) {
+          setGameState(p => ({ ...p, characters: data.characters }));
+        }
+      });
+      return prev;
     });
   }, []);
 
-  // 选择世界观：补全详情 + 生成角色 → 进入角色选择
+  // 选择世界观：补全详情 + 通过服务端 API 生成角色 → 进入角色选择
   const selectWorld = useCallback(async (world: World) => {
     // 如果还没有详情，从后端补全
     let fullWorld = world;
@@ -619,11 +624,21 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
       }
     }
 
+    // 通过服务端 API 生成角色（服务端 WorldViewRegistry 有完整数据）
+    const { code: charCode, data: charData } = await post<{ characters: Character[] }>(
+      '/api/v1/characters/generate',
+      { worldviewId: fullWorld.worldviewId, count: 8 },
+    );
+
+    const characters = charCode === 200 && charData
+      ? charData.characters
+      : [];
+
     setGameState(prev => ({
       ...prev,
       selectedWorld: fullWorld,
       phase: 'character-select',
-      characters: generateCharacters(fullWorld.type),
+      characters,
     }));
   }, []);
 
@@ -676,21 +691,21 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
       const initialRarity = getInitialRarity();
 
       // 生成初始攻击功法（根据身世品质）
-      const initialTechnique = generateTechniqueByType('attack', 1, world.type, initialRarity);
+      const initialTechnique = generateTechniqueByType('attack', 1, world.worldviewId, initialRarity);
 
       // 生成初始武器（根据身世品质，近战武器）
-      const initialEquipment = generateEquipment('melee', initialRarity, world.type);
+      const initialEquipment = generateEquipment('melee', initialRarity, world.worldviewId);
 
       // 根据属性计算初始血量和法力
       const initialMaxHp = calculatePlayerMaxHp(
         character.stats.base.体质,
         1,
-        world.type
+        world.worldviewId
       );
       const initialMaxMp = calculatePlayerMaxMp(
         character.stats.base.灵根,
         1,
-        world.type
+        world.worldviewId
       );
 
       // 生成主角
@@ -1701,7 +1716,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
 
       const fragmentInventory = prev.protagonist.fragmentInventory ?? createEmptyFragmentInventory();
       const playerLevel = prev.protagonist.level;
-      const worldType = prev.protagonist.world.type;
+      const worldType = prev.protagonist.world.worldviewId;
       
       let result: { success: boolean; item?: Technique | Equipment; itemType?: 'technique' | 'equipment'; message: string };
       
@@ -2043,7 +2058,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         const newTechnique = generateTechniqueByType(
           type,
           1, // difficulty
-          prev.protagonist.world.type,
+          prev.protagonist.world.worldviewId,
           rarity
         );
         return {
@@ -2067,7 +2082,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         const newEquipment = generateEquipment(
           slot,
           rarity,
-          prev.protagonist.world.type
+          prev.protagonist.world.worldviewId
         );
         const slotNames: Record<EquipmentSlot, string> = {
           melee: '近战武器',
@@ -2114,12 +2129,12 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         const newMaxHp = calculatePlayerMaxHp(
           prev.protagonist.stats.base.体质,
           newLevel,
-          prev.protagonist.world.type
+          prev.protagonist.world.worldviewId
         );
         const newMaxMp = calculatePlayerMaxMp(
           prev.protagonist.stats.base.灵根,
           newLevel,
-          prev.protagonist.world.type
+          prev.protagonist.world.worldviewId
         );
         
         return {

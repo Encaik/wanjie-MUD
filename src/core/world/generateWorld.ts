@@ -169,7 +169,6 @@ export function generateWorld(
     random: hash,
     gameVersion: GAME_VERSION,
     worldviewId: worldview.id,
-    // type 保留为中文显示名，向后兼容
     type: worldview.name,
     name,
     description,
@@ -186,6 +185,9 @@ export function generateWorld(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     opportunities: opportunities as any,
     ratingScore: 0,
+    // 前端展示数据：从 worldview 直接携带，前端无需再查注册中心
+    visualConfig: worldview.visualConfig,
+    statDisplayNames: worldview.stats.statDisplayNames ?? {},
   };
 }
 

@@ -146,17 +146,21 @@ export function sumImpacts(impacts: StatImpact[]): StatImpact {
 }
 
 /**
- * 生成随机角色（根据世界类型使用差异化词条和姓名）
+ * 生成随机角色（根据世界观 ID 使用差异化词条和姓名）
+ *
+ * @param id - 角色编号
+ * @param worldviewId - 世界观英文 kebab-case ID（如 "cultivation"、"wuxia"），非中文显示名
+ * @returns 生成的角色对象
  */
-export function generateCharacter(id: number, worldType: WorldType = '修仙'): Character {
+export function generateCharacter(id: number, worldviewId: string = 'cultivation'): Character {
   const gender = randomItem(['男', '女'] as const);
 
-  // 使用世界对应的姓名池
-  const namePool = getNamePoolFromRegistry(worldType);
+  // 使用世界观 ID 对应的姓名池
+  const namePool = getNamePoolFromRegistry(worldviewId);
   const name = randomItem(namePool.surnames) + (gender === '男' ? randomItem(namePool.maleNames) : randomItem(namePool.femaleNames));
 
-  // 使用世界对应的词条池
-  const traitPool = getTraitPoolFromRegistry(worldType);
+  // 使用世界观 ID 对应的词条池
+  const traitPool = getTraitPoolFromRegistry(worldviewId);
   const originResult = selectRandomTrait(traitPool.origin);
   const traitResult = selectRandomTrait(traitPool.trait);
   const personalityResult = selectRandomTrait(traitPool.personality);
@@ -199,9 +203,12 @@ export function generateCharacter(id: number, worldType: WorldType = '修仙'): 
 }
 
 /**
- * 生成 8 个随机角色（根据世界类型使用差异化词条和属性）
+ * 生成 8 个随机角色（根据世界观 ID 使用差异化词条和属性）
+ *
+ * @param worldviewId - 世界观英文 kebab-case ID（如 "cultivation"、"wuxia"），非中文显示名
+ * @returns 角色数组
  */
-export function generateCharacters(worldType: WorldType = '修仙'): Character[] {
+export function generateCharacters(worldviewId: string = 'cultivation'): Character[] {
   // 随机男女比例 (1-7男，其余女)
   const maleCount = random(1, 7);
   const femaleCount = 8 - maleCount;
@@ -211,7 +218,7 @@ export function generateCharacters(worldType: WorldType = '修仙'): Character[]
   const femaleCandidates: Character[] = [];
 
   for (let i = 0; i < 32; i++) {
-    const char = generateCharacter(i + 1, worldType);
+    const char = generateCharacter(i + 1, worldviewId);
     if (char.gender === '男') {
       maleCandidates.push(char);
     } else {
@@ -295,6 +302,18 @@ export function generateWorld(seed: string = '', ascensionCount: number = 0): Wo
   // ratingScore 由用户通过评价反馈设置，生成时默认为 0
   const ratingScore = 0;
 
+  // 视觉配置和属性显示名从注册中心获取
+  const worldviewDef = WorldViewRegistry.getInstance().get(type);
+  const visualConfig = worldviewDef?.visualConfig ?? {
+    icon: '🌍',
+    accentColor: 'text-foreground',
+    gradientClass: 'from-muted/20 to-muted/10',
+    borderColor: 'border-border',
+    bgGradient: 'bg-muted/10',
+    colorGradient: 'from-muted to-foreground',
+  };
+  const statDisplayNames = worldviewDef?.stats?.statDisplayNames ?? worldData.statDisplayNames ?? {};
+
   return {
     id: actualSeed,
     random: hashString(actualSeed),
@@ -313,6 +332,8 @@ export function generateWorld(seed: string = '', ascensionCount: number = 0): Wo
     dangers,
     opportunities,
     ratingScore,
+    visualConfig,
+    statDisplayNames,
   };
 }
 
