@@ -6,6 +6,7 @@
 
 import type { GameState } from '@/core/types';
 import { DEFAULT_ASCENSION_FLOW_STATE } from '@/core/types';
+import { createDefaultGameClock, createDefaultRealClock } from '@/core/time';
 
 /** 创建初始游戏状态 */
 export function createInitialGameState(): GameState {
@@ -31,9 +32,12 @@ export function createInitialGameState(): GameState {
     totalMessageCount: 0,
     autoCultivating: false,
     autoBattle: false,
-    lastExploreTime: 0,
     crafting: null,
     forging: null,
+    time: {
+      game: createDefaultGameClock(),
+      real: createDefaultRealClock(Date.now()),
+    },
     statistics: {
       maxLevel: 1,
       totalEnemiesKilled: 0,

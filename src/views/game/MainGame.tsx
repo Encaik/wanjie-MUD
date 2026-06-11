@@ -15,7 +15,7 @@ import { createEmptyFragmentInventory, getSynthesizableCount } from '@/modules/c
 import { TowerEnemy, createDefaultTowerProgress } from '@/modules/tower/logic/types';
 import { Protagonist, ActionResult, ActionTab, BattleState, DungeonConfig, Technique, TechniqueType, InventoryItem, Equipment, EquipmentSlot, ItemDefinition, CraftingState, ForgingState, AchievementStatus, CollectionStatus, GameStatistics, CultivationPath, ItemRarity, MessageRecord, getFinalStats } from '@/core/types';
 import type { SeclusionType } from '@/modules/progression/logic/seclusion';
-import { TimeSystemState } from '@/modules/time/logic/timeSystem';
+import type { TimeState } from '@/core/time';
 import { createLogger } from '@/core/logger';
 
 /** MainGame 日志记录器 */
@@ -94,7 +94,7 @@ import type { Announcement } from '@/modules/social/announcementTypes';
 
 interface MainGameProps {
   protagonist: Protagonist;
-  timeSystem?: TimeSystemState | null;
+  timeSystem?: TimeState;
   currentEvent: any;
   adventureGrid: any;
   adventurePosition: any;
@@ -109,7 +109,6 @@ interface MainGameProps {
   hasMoreMessages?: boolean;
   isLoadingMessages?: boolean;
   autoCultivating: boolean;
-  lastExploreTime: number;
   adventureLoot?: InventoryItem[];
   adventureExperience?: number; // 待结算经验值
   onCultivate: () => void;
@@ -250,7 +249,6 @@ export function MainGame({
   hasMoreMessages = false,
   isLoadingMessages = false,
   autoCultivating,
-  lastExploreTime,
   adventureLoot = [],
   adventureExperience = 0, // 待结算经验值
   crafting,
@@ -631,7 +629,6 @@ export function MainGame({
           currentEvent={currentEvent}
           onExplore={onExplore}
           onChoose={onChooseEvent}
-          lastExploreTime={lastExploreTime}
           playerLevel={protagonist.level}
         />
       </TabsContent>

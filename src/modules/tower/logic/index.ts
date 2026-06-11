@@ -8,5 +8,4 @@ export * from '@/modules/tower/logic/types';
 // 爬塔核心逻辑
 export * from './towerSystem';
 
-// 挂机系统
-export * from './idleSystem';
+// 挂机系统已迁移至 core/time/offlineProcessor

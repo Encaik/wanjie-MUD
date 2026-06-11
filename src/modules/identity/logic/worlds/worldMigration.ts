@@ -56,7 +56,6 @@ export function saveCurrentWorld(state: GameState): WorldSaveData {
     worldSpecificData: {
       worldFlags: state.worldFlags ?? {},
       eventHistory: state.eventHistory ?? [],
-      cultivationCooldown: state.protagonist.cultivationCooldown,
       insightMarks: state.protagonist.insightMarks,
     },
   };

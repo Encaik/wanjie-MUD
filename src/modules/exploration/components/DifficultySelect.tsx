@@ -69,7 +69,8 @@ export function DifficultySelect({
   // 获取体力信息
   const currentStamina = protagonist?.stamina ?? 100;
   const maxStamina = protagonist?.maxStamina ?? 100;
-  const lastStaminaRecover = protagonist?.lastStaminaRecover ?? Date.now();
+  // 体力恢复基于登录时间，此处使用 Date.now() 作为 UI 倒计时基准
+  const lastStaminaRecover = Date.now();
   
   // 更新体力恢复倒计时
   useEffect(() => {

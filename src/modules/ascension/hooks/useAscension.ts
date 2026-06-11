@@ -167,36 +167,33 @@ export function useGameAscension({
   const recoverStamina = useCallback(() => {
     setGameState((prev: GameState) => {
       if (!prev.protagonist) return prev;
-      
+
       const now = Date.now();
-      const lastRecover = prev.protagonist.lastStaminaRecover ?? now;
+      const lastRecover = prev.time.real.lastLoginAt;
       const maxStamina = prev.protagonist.maxStamina ?? 100;
       const currentStamina = prev.protagonist.stamina ?? 100;
-      
+
       if (currentStamina >= maxStamina) {
-        return { ...prev, protagonist: { ...prev.protagonist, lastStaminaRecover: now } };
+        return prev;
       }
-      
+
       const RECOVERY_INTERVAL = 5 * 60 * 1000;
       const timePassed = now - lastRecover;
       const staminaToRecover = Math.floor(timePassed / RECOVERY_INTERVAL);
-      
+
       if (staminaToRecover > 0) {
         const newStamina = Math.min(maxStamina, currentStamina + staminaToRecover);
-        return { ...prev, protagonist: { ...prev.protagonist, stamina: newStamina, lastStaminaRecover: now } };
+        return { ...prev, protagonist: { ...prev.protagonist, stamina: newStamina } };
       }
-      
+
       return prev;
     });
   }, [setGameState]);
 
-  // 清除离线收益结果
+  // 清除离线收益结果（离线处理已由 core/time/offline 统一管理）
   const clearOfflineResult = useCallback(() => {
-    setGameState((prev: GameState) => {
-      if (!prev.offlineResult) return prev;
-      return { ...prev, offlineOfflineResult: null };
-    });
-  }, [setGameState]);
+    // no-op
+  }, []);
 
   // 挑战天道
   const challengeGuardian = useCallback(() => {

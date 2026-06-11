@@ -381,7 +381,6 @@ export function useGamePhase() {
       selectedWorld: gameState.selectedWorld,
       currentTab: gameState.currentTab,
       autoCultivating: gameState.autoCultivating,
-      lastExploreTime: gameState.lastExploreTime,
       startNewGame,
       refreshCharacters,
       resetGame,
@@ -394,7 +393,6 @@ export function useGamePhase() {
     gameState.selectedWorld,
     gameState.currentTab,
     gameState.autoCultivating,
-    gameState.lastExploreTime,
     startNewGame,
     refreshCharacters,
     resetGame
@@ -431,11 +429,10 @@ export function useExperience() {
     return {
       currentEvent: gameState.currentEvent,
       lastActionResult: gameState.lastActionResult,
-      lastExploreTime: gameState.lastExploreTime,
       startExperience,
       handleEventChoice,
     };
-  }, [gameState.currentEvent, gameState.lastActionResult, gameState.lastExploreTime, startExperience, handleEventChoice]);
+  }, [gameState.currentEvent, gameState.lastActionResult, startExperience, handleEventChoice]);
 }
 
 /**

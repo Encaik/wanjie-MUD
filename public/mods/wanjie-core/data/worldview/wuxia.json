@@ -1,0 +1,555 @@
+{
+  "id": "wuxia",
+  "name": "武侠世界",
+  "description": "江湖恩怨，侠骨柔情，武林中人快意恩仇",
+  "baseCoefficient": 1,
+  "namePrefixes": [
+    "江湖",
+    "武当",
+    "少林",
+    "华山",
+    "峨眉",
+    "昆仑"
+  ],
+  "nameSuffixes": [
+    "派",
+    "门",
+    "帮",
+    "会",
+    "盟"
+  ],
+  "descriptions": [
+    "江湖恩怨，侠骨柔情，武林中人快意恩仇",
+    "门派林立，武功秘籍传承千年",
+    "义薄云天，侠之大者为国为民"
+  ],
+  "powerSystems": [
+    "内外兼修，武道通神，成就一代宗师",
+    "以武会友，侠义为先，行走江湖"
+  ],
+  "majorForces": [
+    "六大门派统领武林",
+    "朝廷与江湖势力交织",
+    "帮派联盟与隐世宗门并存"
+  ],
+  "stats": {
+    "baseHp": 80,
+    "hpPerLevel": 12,
+    "hpPerConstitution": 8,
+    "baseAttack": 11,
+    "attackPerLevel": 1.8,
+    "attackPerConstitution": 0.9,
+    "attackPerSpiritRoot": 0.3,
+    "baseDefense": 7,
+    "defensePerLevel": 1,
+    "defensePerWillpower": 0.9,
+    "enemyAttackBonus": 0,
+    "enemyDefenseBonus": 0.1,
+    "statDisplayNames": {
+      "体质": "根骨",
+      "灵根": "悟性",
+      "悟性": "慧根",
+      "幸运": "机缘",
+      "意志": "毅力"
+    }
+  },
+  "visualConfig": {
+    "icon": "◇",
+    "accentColor": "text-stone-400",
+    "gradientClass": "from-stone-500/20 to-neutral-600/10",
+    "borderColor": "border-stone-500/30",
+    "bgGradient": "bg-gradient-to-br from-stone-50 to-neutral-50 dark:from-stone-950/30 dark:to-neutral-950/30",
+    "colorGradient": "from-amber-500 to-yellow-500"
+  },
+  "mechanics": {
+    "worldType": "武侠",
+    "cultivation": {
+      "resourceName": "银两",
+      "actionName": "打坐",
+      "baseCost": 15,
+      "useStandardFormula": true,
+      "successRateModifier": 0
+    },
+    "combat": {
+      "mpName": "内力",
+      "abilityName": "武功",
+      "basicAttackName": "普通拳脚"
+    },
+    "exploration": {
+      "exploreName": "闯荡江湖",
+      "hasSpecialMechanics": true
+    },
+    "uniqueMechanic": {
+      "name": "连招递增",
+      "description": "连续使用同一门派的武功每回合伤害+15%，最多叠加3层（+45%）。保持连招是武侠战斗的核心策略。",
+      "icon": "Waves"
+    }
+  },
+  "dangers": [
+    {
+      "id": "chaotic_elements",
+      "type": "stat_debuff",
+      "name": "元素紊乱",
+      "description": "元素之力紊乱，战斗能力略微下降",
+      "triggerCondition": {
+        "type": "on_enter",
+        "chance": 1
+      },
+      "effect": {
+        "statModifications": {
+          "体质": -1
+        }
+      },
+      "duration": -1,
+      "dispellable": false,
+      "dangerLevel": 1
+    },
+    {
+      "id": "weak_enemies",
+      "type": "enemy_buff",
+      "name": "敌强我弱",
+      "description": "此地敌人实力略胜一筹",
+      "triggerCondition": {
+        "type": "on_battle_start",
+        "chance": 1
+      },
+      "effect": {
+        "enemyBuffs": {
+          "attackBonus": 0.1,
+          "defenseBonus": 0.1
+        }
+      },
+      "duration": 0,
+      "dispellable": false,
+      "dangerLevel": 2
+    },
+    {
+      "id": "reduced_insight",
+      "type": "stat_debuff",
+      "name": "悟性压制",
+      "description": "天机混乱，领悟效率下降",
+      "triggerCondition": {
+        "type": "on_enter",
+        "chance": 1
+      },
+      "effect": {
+        "statModifications": {
+          "悟性": -2,
+          "灵根": -1
+        }
+      },
+      "duration": -1,
+      "dispellable": false,
+      "dangerLevel": 2
+    },
+    {
+      "id": "enemy_territory",
+      "type": "enemy_buff",
+      "name": "敌人领地",
+      "description": "此处为敌人领地，敌人战斗力提升20%",
+      "triggerCondition": {
+        "type": "on_battle_start",
+        "chance": 1
+      },
+      "effect": {
+        "enemyBuffs": {
+          "attackBonus": 0.2,
+          "defenseBonus": 0.15,
+          "hpBonus": 0.15
+        }
+      },
+      "duration": 0,
+      "dispellable": false,
+      "dangerLevel": 3
+    }
+  ],
+  "opportunities": [
+    {
+      "id": "harmonious_elements",
+      "type": "stat_buff",
+      "name": "元素和谐",
+      "description": "元素之力和谐，战斗能力略微提升",
+      "triggerCondition": {
+        "type": "on_enter",
+        "chance": 1
+      },
+      "effect": {
+        "statModifications": {
+          "体质": 2
+        }
+      },
+      "duration": -1,
+      "opportunityLevel": 1
+    },
+    {
+      "id": "clear_mind",
+      "type": "stat_buff",
+      "name": "心神清明",
+      "description": "此地磁场温和，心神安定",
+      "triggerCondition": {
+        "type": "on_enter",
+        "chance": 1
+      },
+      "effect": {
+        "statModifications": {
+          "悟性": 2
+        }
+      },
+      "duration": -1,
+      "opportunityLevel": 1
+    }
+  ],
+  "realmSystem": {
+    "mainRealmName": "武道境界",
+    "subRealmName": "重",
+    "tiers": [
+      {
+        "name": "炼气期",
+        "subRealms": [
+          "一阶",
+          "二阶",
+          "三阶",
+          "四阶",
+          "五阶",
+          "六阶",
+          "七阶",
+          "八阶",
+          "九阶",
+          "十阶"
+        ],
+        "levelRange": [
+          1,
+          10
+        ]
+      },
+      {
+        "name": "筑基期",
+        "subRealms": [
+          "一重",
+          "二重",
+          "三重",
+          "四重",
+          "五重",
+          "六重",
+          "七重",
+          "八重",
+          "九重",
+          "十重"
+        ],
+        "levelRange": [
+          11,
+          20
+        ]
+      },
+      {
+        "name": "金丹期",
+        "subRealms": [
+          "一转",
+          "二转",
+          "三转",
+          "四转",
+          "五转",
+          "六转",
+          "七转",
+          "八转",
+          "九转",
+          "十转"
+        ],
+        "levelRange": [
+          21,
+          30
+        ]
+      },
+      {
+        "name": "元婴期",
+        "subRealms": [
+          "一层",
+          "二层",
+          "三层",
+          "四层",
+          "五层",
+          "六层",
+          "七层",
+          "八层",
+          "九层",
+          "十层"
+        ],
+        "levelRange": [
+          31,
+          40
+        ]
+      },
+      {
+        "name": "化神期",
+        "subRealms": [
+          "初期",
+          "中期",
+          "后期",
+          "巅峰",
+          "圆满",
+          "大成",
+          "入圣",
+          "超凡",
+          "脱俗",
+          "归真"
+        ],
+        "levelRange": [
+          41,
+          50
+        ]
+      }
+    ],
+    "subRealmMultiplier": 1.05,
+    "tierJumpMultiplier": 1.3
+  },
+  "factions": [
+    {
+      "id": "武侠_faction_0",
+      "name": "六大门派统领武林",
+      "type": "武侠",
+      "description": "武侠世界的主要势力",
+      "worldTypeId": "武侠"
+    },
+    {
+      "id": "武侠_faction_1",
+      "name": "朝廷与江湖势力交织",
+      "type": "武侠",
+      "description": "武侠世界的主要势力",
+      "worldTypeId": "武侠"
+    },
+    {
+      "id": "武侠_faction_2",
+      "name": "帮派联盟与隐世宗门并存",
+      "type": "武侠",
+      "description": "武侠世界的主要势力",
+      "worldTypeId": "武侠"
+    }
+  ],
+  "traits": {
+    "origin": {
+      "legendary": [],
+      "epic": [],
+      "rare": [],
+      "uncommon": [],
+      "common": []
+    },
+    "trait": {
+      "legendary": [],
+      "epic": [],
+      "rare": [],
+      "uncommon": [],
+      "common": []
+    },
+    "personality": {
+      "legendary": [],
+      "epic": [],
+      "rare": [],
+      "uncommon": [],
+      "common": []
+    },
+    "talent": {
+      "legendary": [],
+      "epic": [],
+      "rare": [],
+      "uncommon": [],
+      "common": []
+    }
+  },
+  "version": "1.0.0",
+  "rewardCoefficient": {
+    "expCoefficient": 1,
+    "spiritStoneCoefficient": 1,
+    "dropCoefficient": 1,
+    "rarityBonus": {
+      "rare": 0.1,
+      "epic": 0.05,
+      "legendary": 0.02,
+      "mythic": 0.01
+    },
+    "specialRewards": {
+      "ascensionMarkBonus": 0.1,
+      "titleChance": 0.05,
+      "specialItemChance": 0.02
+    }
+  },
+  "builtin": true,
+  "texts": {
+    "name": "武侠",
+    "description": "江湖武林，侠义恩仇",
+    "terminology": {
+      "resource": "银两",
+      "power": "内力",
+      "energy": "真气",
+      "practice": "修炼",
+      "core": "气海",
+      "breakthrough": "突破",
+      "enemy": "武者",
+      "dungeon": "秘洞",
+      "pill": "丹药",
+      "treasure": "兵器",
+      "dungeonDesc": "洞",
+      "dungeonLocation": "江湖深处",
+      "breakthroughPill": "易筋丹",
+      "cultivationPill": "养气丹"
+    },
+    "stats": {
+      "body": "内力",
+      "talent": "资质",
+      "wisdom": "悟性",
+      "luck": "机缘",
+      "will": "意志"
+    },
+    "combat": {
+      "victory": "击败{enemyName}，获得{exp}点江湖经验",
+      "defeat": "败于{enemyName}，内功不济",
+      "damageDeal": "对{enemyName}造成{damage}点伤害",
+      "damageReceive": "受到{damage}点伤害",
+      "damageCrit": "内力爆发！对{enemyName}造成{damage}点伤害",
+      "dodge": "{targetName}轻功闪避了攻击",
+      "round": "第{round}回合",
+      "start": "遭遇{enemyName}！",
+      "end": "战斗结束"
+    },
+    "cultivation": {
+      "success": "修炼有成，内力更加深厚",
+      "failure": "修炼受阻，心神不宁",
+      "breakthrough": "突破成功！武功境界达到{newRealm}",
+      "breakthroughFail": "突破失败，走火入魔",
+      "overflowWarning": "内力已溢出{overflowExp}点，可以尝试突破",
+      "cost": "消耗{resource}×{amount}"
+    },
+    "resource": {
+      "gain": "获得{resource}×{amount}",
+      "spend": "消耗{resource}×{amount}",
+      "insufficient": "{resource}不足"
+    },
+    "item": {
+      "use": "服用{itemName}，{effect}",
+      "obtain": "获得{itemName}×{amount}",
+      "sell": "出售{itemName}，获得{resource}×{amount}"
+    },
+    "dungeon": {
+      "enter": "进入{dungeonName}",
+      "exit": "离开{dungeonName}",
+      "clear": "探索{dungeonName}！获得：{rewards}",
+      "sweep": "搜查{dungeonName}，获得{resource}×{amount}",
+      "staminaCost": "消耗{stamina}点体力",
+      "powerRequire": "推荐功力：{power}"
+    },
+    "ui": {
+      "level": "境界 {level}",
+      "realm": "{realm}",
+      "combatPower": "功力 {power}",
+      "exp": "修为 {current}/{max}",
+      "hp": "生命 {current}/{max}",
+      "mp": "内力 {current}/{max}",
+      "stamina": "体力 {current}/{max}"
+    },
+    "breakthrough": {
+      "success": "突破成功！",
+      "fail": "突破失败，根基不稳",
+      "rate": "突破成功率：{rate}%",
+      "pillBonus": "服用{pill}，成功率+{bonus}%"
+    },
+    "message": {
+      "offlineTitle": "历练所得",
+      "offlineContent": "历练{duration}，获得{resource}×{amount}"
+    },
+    "paths": {
+      "body": {
+        "id": "body",
+        "name": "外家",
+        "description": "外家功夫，铜皮铁骨，力能扛鼎",
+        "primaryStatKey": "body",
+        "secondaryStatKey": "will",
+        "ultimateAbility": {
+          "name": "金刚不坏",
+          "description": "外家功夫至极，可刀枪不入",
+          "effect": "免疫致命伤害一次（每场战斗）"
+        }
+      },
+      "sword": {
+        "id": "sword",
+        "name": "剑客",
+        "description": "剑术精湛，剑走轻灵，一击必杀",
+        "primaryStatKey": "talent",
+        "secondaryStatKey": "wisdom",
+        "ultimateAbility": {
+          "name": "独孤九剑",
+          "description": "剑术至极，无招胜有招",
+          "effect": "攻击必定暴击"
+        }
+      },
+      "spell": {
+        "id": "spell",
+        "name": "内家",
+        "description": "内功深厚，真气浩荡，气吞山河",
+        "primaryStatKey": "talent",
+        "secondaryStatKey": "wisdom",
+        "ultimateAbility": {
+          "name": "九阳神功",
+          "description": "内功修炼至极，真气生生不息",
+          "effect": "每回合自动释放一次基础武功"
+        }
+      },
+      "alchemy": {
+        "id": "alchemy",
+        "name": "医仙",
+        "description": "医术通神，药石济世，妙手回春",
+        "primaryStatKey": "wisdom",
+        "secondaryStatKey": "luck",
+        "ultimateAbility": {
+          "name": "华佗再世",
+          "description": "医术修炼至极，可起死回生",
+          "effect": "可制造传说级丹药"
+        }
+      },
+      "demon": {
+        "id": "demon",
+        "name": "邪派",
+        "description": "邪派武功，力量暴增，代价惨重",
+        "primaryStatKey": "body",
+        "secondaryStatKey": "will",
+        "ultimateAbility": {
+          "name": "吸星大法",
+          "description": "邪派武功至极，可吸取他人内力",
+          "effect": "濒死时吸取敌方内力，全属性翻倍持续3回合（每场战斗一次）"
+        }
+      }
+    }
+  },
+  "namePool": {
+    "surnames": [
+      "江湖",
+      "武当",
+      "少林",
+      "华山",
+      "峨眉",
+      "昆仑"
+    ],
+    "maleNames": [
+      "天",
+      "云",
+      "风",
+      "雷",
+      "阳",
+      "星",
+      "辰",
+      "明",
+      "玄",
+      "浩"
+    ],
+    "femaleNames": [
+      "月",
+      "雪",
+      "瑶",
+      "紫",
+      "清",
+      "灵",
+      "玉",
+      "霜",
+      "萱",
+      "薇"
+    ]
+  }
+}

@@ -56,7 +56,7 @@ import { statisticsManager, StatisticsEventType } from '@/modules/collection/log
 import { gameSystems } from '@/core/engine';
 import { getAvailableDifficultiesForRealm } from '@/modules/exploration/logic/adventureDifficulties';
 import { applyGrowthStatChanges, getGrowthStatCap } from '@/modules/progression/logic/realmSystem';
-import { consumeGameTime, ACTION_TIME_COST, createCooldown } from '@/modules/time/logic/timeSystem';
+import { gameClock, cooldown } from '@/core/time';
 import { isNewbie } from '@/modules/faction/logic';
 import { getTerminology } from '@/modules/narrative/logic/terminology';
 import { 
@@ -132,16 +132,12 @@ export function useGameAdventure({
     setGameState((prev: GameState) => {
       if (!prev.protagonist) return prev;
       
-      const now = Date.now();
-      // 注意：CD在handleEventChoice完成后设置，而不是点击时立即设置
-      
       return {
         ...prev,
         currentEvent: getRandomEvent(prev.protagonist.world.type),
         lastActionResult: null,
         adventureGrid: null,
         adventurePosition: null,
-        lastExploreTime: now,
       };
     });
   }, [setGameState]);
@@ -152,15 +148,9 @@ export function useGameAdventure({
       if (!prev.protagonist || !prev.currentEvent) return prev;
       
       const now = Date.now();
-      // 历练完成后设置CD
-      const newTimeSystem = prev.timeSystem ? {
-        ...prev.timeSystem,
-        realTime: {
-          ...prev.timeSystem.realTime,
-          exploreCooldown: createCooldown(30000, now),
-        },
-        gameTime: consumeGameTime(prev.timeSystem.gameTime, ACTION_TIME_COST.explore),
-      } : null;
+      // 历练完成后：消耗游戏时间 + 设置冷却
+      const advancedTime = gameClock.advance(prev.time, 'explore');
+      const newTime = cooldown.set(advancedTime, 'explore', 30000, now);
       
       const choice = prev.currentEvent.choices[choiceIndex];
       
@@ -277,7 +267,7 @@ export function useGameAdventure({
             },
             battleState,
             currentEvent: null,
-            timeSystem: newTimeSystem,
+            time: newTime,
             messages: addMessageInternal(prev.messages, 'success', '历练战斗', `击败了${enemyInfo.name}(Lv.${enemyLevel})！${choice.result}`, undefined, rewards),
           };
         } else {
@@ -302,7 +292,7 @@ export function useGameAdventure({
             },
             battleState,
             currentEvent: null,
-            timeSystem: newTimeSystem,
+            time: newTime,
             messages: addMessageInternal(prev.messages, 'failure', '历练战斗', `被${enemyInfo.name}(Lv.${enemyLevel})击败，狼狈逃走...${mentalMsg ? ' ' + mentalMsg : ''}`),
           };
         }
@@ -380,7 +370,7 @@ export function useGameAdventure({
           rewards: choice.effects.items ? { items: choice.effects.items } : undefined,
         },
         currentEvent: null,
-        timeSystem: newTimeSystem,
+        time: newTime,
         messages: addMessageInternal(prev.messages, messageType, prev.currentEvent?.title || '历练', choice.result, undefined, rewards),
       };
     });

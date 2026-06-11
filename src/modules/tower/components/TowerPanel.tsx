@@ -22,7 +22,6 @@ import { Badge } from '@/shared/ui/badge';
 import { Button } from '@/shared/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/shared/ui/card';
 import { getRarityBgClass, getRarityColorClass, getRarityBorderClass } from '@/modules/equipment/data/raritySystem';
-import { estimateIdleRewards } from '@/modules/tower/logic/idleSystem';
 import { generateTowerEnemy } from '@/modules/tower/logic/towerSystem';
 import { 
   TowerProgress, 
@@ -94,9 +93,8 @@ export function TowerPanel({
     }
   }
   
-  // 计算预期挂机收益（8小时）
-  const idleEstimate = estimateIdleRewards(playerLevel, worldType, maxFloor);
-  
+  // TODO: 预期挂机收益待接入 core/time offline.process()
+
   // 获取敌人类型颜色
   const getEnemyTypeColor = (type: string) => {
     switch (type) {
@@ -226,27 +224,11 @@ export function TowerPanel({
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-3">
-          {/* 挂机收益预览 */}
+          {/* 挂机收益预览 — 待接入 core/time/offline.process() */}
           <div className="text-xs text-muted-foreground">
             <div className="flex items-center gap-1 mb-1">
               <Clock className="w-3 h-3" />
-              <span>挂机8小时预期收益</span>
-            </div>
-            <div className="grid grid-cols-3 gap-2 text-center">
-              <div className="p-1.5 rounded bg-muted/50">
-                <div className="font-medium">灵石</div>
-                <div className="text-yellow-600">💰{idleEstimate.spiritStones.toLocaleString()}</div>
-              </div>
-              <div className="p-1.5 rounded bg-muted/50">
-                <div className="font-medium">经验</div>
-                <div className="text-blue-600">⭐{idleEstimate.experience.toLocaleString()}</div>
-              </div>
-              <div className="p-1.5 rounded bg-muted/50">
-                <div className="font-medium">物品</div>
-                <div className="text-purple-600">
-                  📦{idleEstimate.fragments.length + idleEstimate.materials.length}
-                </div>
-              </div>
+              <span>挂机收益将在离线时自动计算（离线时长最多8小时）</span>
             </div>
           </div>
         </CardContent>
