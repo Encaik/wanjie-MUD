@@ -65,11 +65,6 @@ export async function POST(request: NextRequest) {
         return apiError(404, `世界 "${body.seed}" 不存在，请先生成基础信息`);
       }
 
-      // 如果已有详情（势力/危险已填充），直接返回
-      if (existing.factions.length > 0 || existing.dangers.length > 0) {
-        return apiSuccess({ world: existing, generatedAt: new Date().toISOString() }, '世界详情已存在，直接返回');
-      }
-
       // 生成详情字段并合并到基础世界
       const details = generateWorldDetails(worldview, body.seed);
       const world: typeof existing = {

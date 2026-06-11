@@ -30,7 +30,9 @@
       "Bash(node -e ' *)",
       "Bash(mkdir -p \"D:/vs_workspace/wanjie/wanjie-MUD/src/app/api/v1/worldviews/[id]/mechanics\")",
       "Bash(git add *)",
-      "Bash(git commit -m 'feat\\(api\\): 新增世界机制API端点，前端通过HTTP获取机制数据 *)"
+      "Bash(git commit -m 'feat\\(api\\): 新增世界机制API端点，前端通过HTTP获取机制数据 *)",
+      "Bash(git commit -m 'refactor\\(world\\): 世界详情生成从查DB→补全→保存，不再从零完整生成 *)",
+      "Bash(git push *)"
     ],
     "additionalDirectories": [
       "D:\\vs_workspace\\wanjie\\wanjie-MUD\\src\\app\\api\\v1\\worldviews\\[id]"
