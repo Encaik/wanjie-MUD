@@ -114,3 +114,59 @@
   0%, 100% { box-shadow: 0 0 10px var(--announcement-color); }
   50% { box-shadow: 0 0 25px var(--announcement-color); }
 }
+
+/* ========================================
+ * 选择页交互动效
+ * ======================================== */
+
+/* 星光闪烁 — 不规则明灭，用于背景星点粒子 */
+@keyframes star-twinkle {
+  0%, 100% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+  25% {
+    opacity: 0.8;
+    transform: scale(1.3);
+  }
+  50% {
+    opacity: 0.2;
+    transform: scale(0.8);
+  }
+  75% {
+    opacity: 0.6;
+    transform: scale(1.1);
+  }
+}
+
+/* 金边辉光 — 卡片 hover 时边框发光 */
+@keyframes gold-glow {
+  0%, 100% {
+    box-shadow: 0 0 15px 0 oklch(0.7 0.12 65 / 0.2);
+  }
+  50% {
+    box-shadow: 0 0 30px 0 oklch(0.7 0.12 65 / 0.4);
+  }
+}
+
+/* 星座连线渐显 — 星图背景线条淡入 */
+@keyframes constellation-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* 灵气粒子升腾 — 粒子向上飘散 */
+@keyframes spirit-rise {
+  from {
+    transform: translateY(0) scale(1);
+    opacity: 0.8;
+  }
+  to {
+    transform: translateY(-40px) scale(0);
+    opacity: 0;
+  }
+}

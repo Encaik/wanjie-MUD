@@ -4,9 +4,10 @@ import { useEffect, useRef } from 'react';
 
 import { useRouter } from 'next/navigation';
 
+import { useCharacterTemplates, useCharacterSave } from '@/modules/identity/hooks';
+import { safeSaveGameState } from '@/shared/utils/saveUtils';
 import { CharacterSelect } from '@/views/character-select/CharacterSelect';
 import { useGame, getRouteGuard } from '@/views/game/useGameState';
-import { useCharacterTemplates, useCharacterSave } from '@/modules/identity/hooks';
 
 export default function CharacterSelectPage() {
   const router = useRouter();
@@ -54,7 +55,9 @@ export default function CharacterSelectPage() {
     });
 
     if (result) {
-      router.push(`/backstory?seed=${result.characterSeed}`);
+      // 强制保存状态（selectedWorld + worlds 等），防止跨页导航时丢失
+      safeSaveGameState(gameState);
+      router.push(`/backstory?seed=${result.characterSeed}&worldId=${world.id}`);
     }
   };
 

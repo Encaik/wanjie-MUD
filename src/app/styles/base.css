@@ -42,4 +42,37 @@
   .animate-glow-rotate {
     animation: glow-rotate 12s linear infinite;
   }
+
+  .animate-star-twinkle {
+    animation: star-twinkle 3s ease-in-out infinite;
+  }
+
+  .animate-gold-glow {
+    animation: gold-glow 2.5s ease-in-out infinite;
+  }
+
+  .animate-constellation-fade {
+    animation: constellation-fade 1.5s ease-out forwards;
+  }
+
+  .animate-spirit-rise {
+    animation: spirit-rise 2s ease-out infinite;
+  }
+}
+
+/* ========================================
+ * 动画降级：prefers-reduced-motion
+ * ======================================== */
+@media (prefers-reduced-motion: reduce) {
+  .animate-float,
+  .animate-pulse-glow,
+  .animate-fade-in-up,
+  .animate-button-glow,
+  .animate-glow-rotate,
+  .animate-star-twinkle,
+  .animate-gold-glow,
+  .animate-constellation-fade,
+  .animate-spirit-rise {
+    animation: none !important;
+  }
 }

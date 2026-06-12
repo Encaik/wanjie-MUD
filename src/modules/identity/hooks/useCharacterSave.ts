@@ -53,12 +53,12 @@ export function useCharacterSave(): UseCharacterSaveReturn {
         body: JSON.stringify(data),
       });
       const json = await res.json();
-      if (json.success) {
+      if (json.code === 200) {
         const result = json.data as SaveResult;
         setSavedCharacter(result);
         return result;
       } else {
-        setError(json.error || '保存角色失败');
+        setError(json.message || '保存角色失败');
         return null;
       }
     } catch (err) {

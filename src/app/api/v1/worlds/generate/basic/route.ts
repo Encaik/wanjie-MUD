@@ -9,12 +9,14 @@
 
 import { NextRequest } from 'next/server';
 
-import { apiSuccess, apiError } from '@/app/api/result';
 import { ensureWorldSystemInitialized } from '@/app/api/init';
+import { apiSuccess, apiError } from '@/app/api/result';
 import { createLogger } from '@/core/logger';
 import { WorldViewRegistry } from '@/core/registry';
 import { generateWorldBasicFields, generateSeed } from '@/core/world';
 import type { World } from '@/core/types';
+
+import { saveWorld } from '../../store';
 
 /** 日志实例 */
 const log = createLogger('Basic');
@@ -59,7 +61,7 @@ export async function POST(request: NextRequest) {
 
     if (worldviewId) {
       // 指定世界观：校验并生成
-      let worldview = registry.get(worldviewId);
+      const worldview = registry.get(worldviewId);
       if (!worldview) {
         // 回退到旧 API
         const { generateBasic } = await import('../generator');
@@ -79,12 +81,16 @@ export async function POST(request: NextRequest) {
           for (let i = 0; i < count; i++) {
             const uniqueSeed = count > 1 ? `${body.seed}-${i + 1}` : body.seed;
             const basic = generateWorldBasicFields(worldview, uniqueSeed, 0);
-            worlds.push({ ...basic, factions: [], majorForces: '', dangers: [], opportunities: [] } as World);
+            const world = { ...basic, factions: [], majorForces: '', dangers: [], opportunities: [] } as World;
+            saveWorld(world);
+            worlds.push(world);
           }
         } else {
           for (let i = 0; i < count; i++) {
             const basic = generateWorldBasicFields(worldview, generateSeed(), 0);
-            worlds.push({ ...basic, factions: [], majorForces: '', dangers: [], opportunities: [] } as World);
+            const world = { ...basic, factions: [], majorForces: '', dangers: [], opportunities: [] } as World;
+            saveWorld(world);
+            worlds.push(world);
           }
         }
       }
@@ -95,7 +101,9 @@ export async function POST(request: NextRequest) {
         for (let i = 0; i < count; i++) {
           const wv = allWorldviews[Math.floor(Math.random() * allWorldviews.length)];
           const basic = generateWorldBasicFields(wv, body.seed || generateSeed(), 0);
-          worlds.push({ ...basic, factions: [], majorForces: '', dangers: [], opportunities: [] } as World);
+          const world = { ...basic, factions: [], majorForces: '', dangers: [], opportunities: [] } as World;
+          saveWorld(world);
+          worlds.push(world);
         }
       } else {
         // 回退到旧 API

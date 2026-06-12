@@ -203,10 +203,10 @@ describe('generateWorld', () => {
     expect(world.worldviewId).toBe('cultivation');
   });
 
-  it('生成的世界 type 为中文显示名', () => {
+  it('生成的世界 type 为中文显示名（去除"世界"后缀）', () => {
     const worldview = createTestWorldview({ name: '修仙世界' });
     const world = generateWorld(worldview, 'seed123', 0);
-    expect(world.type).toBe('修仙世界');
+    expect(world.type).toBe('修仙');
   });
 
   it('生成的世界 id 等于 seed', () => {

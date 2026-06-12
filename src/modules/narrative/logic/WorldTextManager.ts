@@ -203,7 +203,11 @@ export const worldTextManager = WorldTextManager.getInstance();
  * 用于服务端渲染或非组件场景
  */
 export function getWorldText(worldType: WorldType): WorldTextDefinition {
-  return WORLD_TEXT_MAP[worldType];
+  // 直接匹配
+  if (WORLD_TEXT_MAP[worldType]) return WORLD_TEXT_MAP[worldType];
+  // 兼容带"世界"后缀的长名（如 "修仙世界" → "修仙"）
+  const shortName = worldType.replace(/世界$/, '');
+  return WORLD_TEXT_MAP[shortName];
 }
 
 // 导出类型和工具函数

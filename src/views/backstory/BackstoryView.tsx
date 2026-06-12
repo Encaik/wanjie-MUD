@@ -1,9 +1,10 @@
 'use client';
 
-import { Sparkles, Scroll, User, Globe } from 'lucide-react';
+import { Globe, Scroll, Sparkles, User } from 'lucide-react';
 
-import { useStatLabels } from '@/modules/identity/hooks/useStatLabels';
 import type { WorldType } from '@/core/types';
+import { useStatLabels } from '@/modules/identity/hooks/useStatLabels';
+import { MysticalBackground } from '@/shared/components';
 import { Badge } from '@/shared/ui/badge';
 import { Button } from '@/shared/ui/button';
 import { Card, CardContent } from '@/shared/ui/card';
@@ -19,17 +20,15 @@ interface BackstoryProps {
   worldName?: string;
   /** 世界类型 */
   worldType?: WorldType;
-}
-
-// 世界图标
-const worldIcon: Record<WorldType, string> = {
-  '修仙': '☯', '高武': '⚔', '科技': '⬡', '魔幻': '✦',
-  '异能': '◈', '仙侠': '◆', '武侠': '◇', '末世': '◉',
-};
-
-/** 安全获取世界图标（未知类型使用默认值） */
-function safeWorldIcon(worldType?: string): string {
-  return worldIcon[(worldType ?? '修仙') as WorldType] ?? '🌐';
+  /** 世界视觉配置 */
+  visualConfig?: {
+    icon: string;
+    accentColor: string;
+    gradientClass: string;
+    borderColor: string;
+    bgGradient: string;
+    colorGradient: string;
+  };
 }
 
 // 世界风味确认按钮文案
@@ -40,13 +39,16 @@ const confirmText: Record<WorldType, string> = {
   '异能': '觉醒启程', '末世': '踏入废土',
 };
 
-/** 安全获取确认按钮文案（未知类型使用默认值） */
+/** 安全获取确认按钮文案 */
 function safeConfirmText(worldType?: string): string {
   return confirmText[(worldType ?? '修仙') as WorldType] ?? '开启旅程';
 }
 
-// 格式化文本（保留原有逻辑）
-function formatText(text: string) {
+// ============================================
+// 文本格式化（保留原有逻辑）
+// ============================================
+
+function formatText(text: string): React.ReactNode {
   const processBookTitles = (str: string): React.ReactNode => {
     const parts: React.ReactNode[] = [];
     let key = 0;
@@ -96,61 +98,104 @@ function formatText(text: string) {
   return processBookTitles(text);
 }
 
-export function BackstoryView({ backstory, onConfirm, characterName, worldName, worldType = '修仙' }: BackstoryProps) {
+/**
+ * 背景故事页 — "宿命之章"
+ *
+ * 展示角色背景故事，使用 MysticalBackground（destiny）与前序页面统一。
+ * 带四角隅饰的故事卷轴卡片，叙事化标题和确认按钮。
+ */
+export function BackstoryView({
+  backstory, onConfirm, characterName, worldName, worldType = '修仙', visualConfig,
+}: BackstoryProps) {
   const paragraphs = backstory.split('\n\n').filter(p => p.trim());
   const { displayNames } = useStatLabels(worldType);
 
   return (
-    <div className="min-h-dvh md:min-h-screen bg-background flex items-center justify-center">
-      <div className="w-full max-w-5xl h-dvh md:h-auto flex flex-col px-4 sm:px-6 py-4">
-        {/* 叙事化标题 */}
-        <div className="text-center mb-3 shrink-0">
-          <div className="flex items-center justify-center gap-2 mb-1">
-            <Scroll className="w-5 h-5 text-primary/60" />
-            <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-foreground font-serif">
-              宿命之章
-            </h1>
-            <Scroll className="w-5 h-5 text-primary/60" />
+    <div className="min-h-dvh md:min-h-screen bg-background relative flex items-center justify-center">
+      {/* ===== 背景 ===== */}
+      <MysticalBackground variant="destiny" intensity="subtle" />
+
+      <div className="w-full max-w-5xl relative z-10 flex flex-col px-4 sm:px-6 py-6">
+        {/* ===== 叙事化标题 ===== */}
+        <div className="text-center mb-4 shrink-0" style={{ animation: 'fade-in-up 0.6s ease-out forwards' }}>
+          <div className="flex items-center justify-center gap-3 mb-2">
+            <span className="h-px w-12 md:w-20 bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
+            <Scroll
+              className="w-5 h-5 text-primary/40"
+              style={{ animation: 'pulse-glow 3s ease-in-out infinite' }}
+            />
+            <span className="h-px w-12 md:w-20 bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
           </div>
+
+          <h1 className="text-2xl md:text-4xl font-bold text-foreground font-serif tracking-[0.12em] mb-1.5">
+            宿命之章
+          </h1>
+
           {characterName && worldName && (
-            <p className="text-muted-foreground text-sm">
-              <span className="text-foreground/80 font-medium">{characterName}</span>
-              <span className="mx-1.5">踏入</span>
-              <span className="text-foreground/80 font-medium">{worldName}</span>
+            <p className="text-muted-foreground text-sm tracking-wide">
+              <span className="text-foreground/80 font-semibold font-serif">{characterName}</span>
+              <span className="mx-2 text-muted-foreground/40">·</span>
+              <span className="text-muted-foreground/60">踏入</span>
+              {visualConfig && (
+                <span className={cn('mx-1 text-base', visualConfig.accentColor)}>{visualConfig.icon}</span>
+              )}
+              <span className="text-foreground/80 font-semibold font-serif">{worldName}</span>
             </p>
           )}
+
+          {/* 装饰线 */}
+          <div className="flex items-center justify-center gap-1.5 mt-2">
+            <span className="text-[8px] text-muted-foreground/20">◆</span>
+            <span className="h-px w-8 bg-gradient-to-r from-transparent via-border/40 to-transparent" />
+            <span className="text-[8px] text-muted-foreground/20">◇</span>
+            <span className="h-px w-8 bg-gradient-to-r from-transparent via-border/40 to-transparent" />
+            <span className="text-[8px] text-muted-foreground/20">◆</span>
+          </div>
         </div>
 
-        {/* 角色+世界双卡片 */}
+        {/* ===== 角色+世界双卡片 ===== */}
         {(characterName || worldName) && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3 shrink-0">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4 shrink-0"
+            style={{ animation: 'fade-in-up 0.5s ease-out 0.15s both' }}>
             {/* 角色卡片 */}
             {characterName && (
-              <Card className="border-primary/10 bg-primary/5">
+              <Card className="relative border-primary/10 bg-primary/[0.03] overflow-hidden">
+                <span className="absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-primary/20 rounded-tl-sm" aria-hidden="true" />
+                <span className="absolute top-0 right-0 w-3 h-3 border-t-2 border-r-2 border-primary/20 rounded-tr-sm" aria-hidden="true" />
+                <span className="absolute bottom-0 left-0 w-3 h-3 border-b-2 border-l-2 border-primary/20 rounded-bl-sm" aria-hidden="true" />
+                <span className="absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2 border-primary/20 rounded-br-sm" aria-hidden="true" />
                 <CardContent className="p-3 flex items-center gap-3">
-                  <User className="w-5 h-5 text-primary/60 shrink-0" />
+                  <User className="w-5 h-5 text-primary/50 shrink-0" />
                   <div className="min-w-0">
-                    <div className="text-xs text-muted-foreground">命运之子</div>
-                    <div className="text-sm font-semibold text-foreground font-serif truncate">{characterName}</div>
+                    <div className="text-xs text-muted-foreground font-serif">命运之子</div>
+                    <div className="text-sm font-semibold text-foreground font-serif tracking-wide truncate">
+                      {characterName}
+                    </div>
                   </div>
                 </CardContent>
               </Card>
             )}
             {/* 世界卡片 */}
             {worldName && (
-              <Card className="border-primary/10 bg-primary/5">
+              <Card className="relative border-primary/10 bg-primary/[0.03] overflow-hidden">
+                <span className="absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-primary/20 rounded-tl-sm" aria-hidden="true" />
+                <span className="absolute top-0 right-0 w-3 h-3 border-t-2 border-r-2 border-primary/20 rounded-tr-sm" aria-hidden="true" />
+                <span className="absolute bottom-0 left-0 w-3 h-3 border-b-2 border-l-2 border-primary/20 rounded-bl-sm" aria-hidden="true" />
+                <span className="absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2 border-primary/20 rounded-br-sm" aria-hidden="true" />
                 <CardContent className="p-3 flex items-center gap-3">
-                  <Globe className="w-5 h-5 text-primary/60 shrink-0" />
+                  <Globe className="w-5 h-5 text-primary/50 shrink-0" />
                   <div className="min-w-0 flex-1">
-                    <div className="text-xs text-muted-foreground">降临之地</div>
-                    <div className="text-sm font-semibold text-foreground font-serif truncate">
-                      <span className="mr-1.5">{safeWorldIcon(worldType)}</span>
+                    <div className="text-xs text-muted-foreground font-serif">降临之地</div>
+                    <div className="text-sm font-semibold text-foreground font-serif tracking-wide truncate">
+                      {visualConfig && (
+                        <span className={cn('mr-1.5', visualConfig.accentColor)}>{visualConfig.icon}</span>
+                      )}
                       {worldName}
                     </div>
                   </div>
                   <div className="flex gap-1 flex-wrap justify-end">
                     {displayNames.slice(0, 3).map((name, i) => (
-                      <Badge key={i} variant="secondary" className="text-[9px] px-1">{name}</Badge>
+                      <Badge key={i} variant="secondary" className="text-[9px] px-1 font-serif">{name}</Badge>
                     ))}
                   </div>
                 </CardContent>
@@ -159,11 +204,23 @@ export function BackstoryView({ backstory, onConfirm, characterName, worldName, 
           </div>
         )}
 
-        {/* 故事卡片 */}
-        <Card className="flex-1 min-h-0 border-border/50 shadow-lg overflow-hidden">
+        {/* ===== 故事卷轴卡片 ===== */}
+        <Card
+          className="relative flex-1 min-h-0 border-border/40 shadow-lg overflow-hidden"
+          style={{ animation: 'fade-in-up 0.5s ease-out 0.3s both' }}
+        >
+          {/* 四角隅饰 */}
+          <span className="absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-primary/25 rounded-tl-sm" aria-hidden="true" />
+          <span className="absolute top-0 right-0 w-4 h-4 border-t-2 border-r-2 border-primary/25 rounded-tr-sm" aria-hidden="true" />
+          <span className="absolute bottom-0 left-0 w-4 h-4 border-b-2 border-l-2 border-primary/25 rounded-bl-sm" aria-hidden="true" />
+          <span className="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-primary/25 rounded-br-sm" aria-hidden="true" />
+
+          {/* 顶部渐变光线 */}
+          <div className="absolute top-0 left-8 right-8 h-px bg-gradient-to-r from-transparent via-primary/15 to-transparent" />
+
           <CardContent className="p-4 sm:p-6 md:p-8 h-full">
             <ScrollArea className="h-full md:h-auto">
-              <div className="space-y-4 md:flex md:flex-col md:justify-center md:min-h-full md:py-4">
+              <div className="space-y-5 md:flex md:flex-col md:justify-center md:min-h-full md:py-4">
                 {paragraphs.map((paragraph, index) => (
                   <div key={index}>
                     <p className={cn(
@@ -181,16 +238,26 @@ export function BackstoryView({ backstory, onConfirm, characterName, worldName, 
           </CardContent>
         </Card>
 
-        {/* 确认按钮 */}
-        <div className="text-center mt-4 shrink-0">
-          <Button
-            size="lg"
-            onClick={onConfirm}
-            className="transition-all duration-300 shadow-md hover:shadow-lg font-serif tracking-wide"
-          >
-            <Sparkles className="w-4 h-4 mr-2" />
-            {safeConfirmText(worldType)}
-          </Button>
+        {/* ===== 确认按钮 ===== */}
+        <div
+          className="text-center mt-5 shrink-0"
+          style={{ animation: 'fade-in-up 0.5s ease-out 0.45s both' }}
+        >
+          <div className="relative inline-block">
+            <div
+              className="absolute inset-0 rounded-lg bg-primary/10 blur-xl"
+              style={{ animation: 'button-glow 3s ease-in-out infinite' }}
+            />
+            <Button
+              size="lg"
+              onClick={onConfirm}
+              className="relative font-serif tracking-[0.15em] transition-all duration-500
+                hover:scale-[1.03] hover:shadow-lg hover:shadow-primary/20 active:scale-[0.98]"
+            >
+              <Sparkles className="w-4 h-4 mr-2" />
+              {safeConfirmText(worldType)}
+            </Button>
+          </div>
         </div>
       </div>
     </div>

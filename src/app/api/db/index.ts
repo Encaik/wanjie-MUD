@@ -252,6 +252,24 @@ export function getDb() {
     CREATE INDEX IF NOT EXISTS idx_worlds_difficulty ON worlds(difficulty);
     CREATE INDEX IF NOT EXISTS idx_worlds_created_at ON worlds(created_at);
     CREATE INDEX IF NOT EXISTS idx_ratings_world_id ON ratings(world_id);
+
+    CREATE TABLE IF NOT EXISTS characters (
+      seed TEXT PRIMARY KEY,
+      worldSeed TEXT NOT NULL REFERENCES worlds(id),
+      worldviewId TEXT NOT NULL,
+      name TEXT NOT NULL,
+      gender TEXT NOT NULL,
+      raceId TEXT NOT NULL DEFAULT 'human',
+      talentIds TEXT NOT NULL DEFAULT '[]',
+      attributes TEXT NOT NULL,
+      coreStats TEXT NOT NULL,
+      npcTemplateVersion INTEGER NOT NULL DEFAULT 0,
+      createdAt INTEGER NOT NULL,
+      updatedAt INTEGER NOT NULL
+    );
+
+    CREATE INDEX IF NOT EXISTS idx_characters_worldSeed ON characters(worldSeed);
+    CREATE INDEX IF NOT EXISTS idx_characters_worldviewId ON characters(worldviewId);
   `);
 
   log.info(`数据库已连接: ${DB_PATH}`);

@@ -4,6 +4,8 @@ import { Suspense, useCallback, useEffect, useRef, useState } from 'react';
 
 import { useRouter, useSearchParams } from 'next/navigation';
 
+import type { World } from '@/core/types';
+import { post } from '@/shared/utils/api-client';
 import { BackstoryView } from '@/views/backstory/BackstoryView';
 import { useGame } from '@/views/game/useGameState';
 
@@ -14,20 +16,22 @@ interface CharacterInfo {
   talentIds: string[];
   attributes: Record<string, number | string>;
   coreStats: Record<string, number>;
+  worldSeed: string;
+  worldviewId: string;
 }
 
-function BackstoryContent() {
+/**
+ * 加载角色数据、背景故事、以及关联的世界数据。
+ * 不依赖 gameState — 完全通过 API 自给自足。
+ */
+function useCharacterData(characterSeed: string | null) {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const { gameState, startGameWithCharacter } = useGame();
-
   const [character, setCharacter] = useState<CharacterInfo | null>(null);
   const [backstory, setBackstory] = useState<string>('');
+  const [world, setWorld] = useState<World | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const loadedRef = useRef(false);
-
-  const characterSeed = searchParams.get('seed');
 
   useEffect(() => {
     if (!characterSeed) {
@@ -40,37 +44,77 @@ function BackstoryContent() {
     fetch(`/api/v1/characters/${characterSeed}`)
       .then(res => res.json())
       .then(json => {
-        if (json.success) {
-          const char = json.data.character;
-          setCharacter(char);
-          // 生成背景故事
-          fetch('/api/v1/backstory/generate', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              name: char.name,
-              gender: char.gender,
-              raceId: char.raceId,
-              attributes: char.attributes,
-              worldName: '万界',
-            }),
-          }).then(r => r.json()).then(r => {
-            if (r.success) setBackstory(r.data.backstory);
-          }).catch(() => {});
-        } else {
-          setError(json.error || '加载角色失败');
+        if (json.code !== 200) {
+          setError(json.message || '加载角色失败');
+          return;
         }
+        const char: CharacterInfo = json.data.character;
+        setCharacter(char);
+
+        // 并行：生成背景故事 + 获取世界数据
+        const backstoryPromise = fetch('/api/v1/backstory/generate', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name: char.name,
+            gender: char.gender,
+            raceId: char.raceId,
+            attributes: char.attributes,
+            worldName: '万界',
+          }),
+        }).then(r => r.json()).then(r => {
+          if (r.code === 200) setBackstory(r.data.backstory);
+        });
+
+        const worldPromise = post<{ world: World }>(
+          '/api/v1/worlds/generate/details',
+          { seed: char.worldSeed, worldviewId: char.worldviewId },
+        ).then(({ code, data }) => {
+          if (code === 200 && data) setWorld(data.world);
+        });
+
+        return Promise.all([backstoryPromise, worldPromise]);
       })
-      .catch(err => setError(err.message))
-      .finally(() => setLoading(false));
+      .then(() => setLoading(false))
+      .catch(err => {
+        setError(err.message);
+        setLoading(false);
+      });
   }, [characterSeed, router]);
 
-  const handleConfirm = useCallback(async () => {
-    if (!character || !gameState.selectedWorld) return;
+  return { character, backstory, world, loading, error, setError };
+}
 
-    await startGameWithCharacter(character, gameState.selectedWorld);
-    router.push('/game');
-  }, [character, gameState.selectedWorld, startGameWithCharacter, router]);
+// eslint-disable-next-line complexity -- 数据加载已提取到 useCharacterData，剩余分支为必要 UI 状态处理
+function BackstoryContent() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const { gameState, startGameWithCharacter } = useGame();
+
+  const characterSeed = searchParams.get('seed');
+
+  const { character, backstory, world: apiWorld, loading, error, setError } = useCharacterData(characterSeed);
+
+  const handleConfirm = useCallback(async () => {
+    const world = apiWorld ?? null;
+    if (!character || !world) {
+      console.error('[Backstory] 缺少角色或世界数据', {
+        character: !!character,
+        world: !!world,
+      });
+      return;
+    }
+
+    try {
+      console.log('[Backstory] 开始启动游戏...', { name: character.name, world: world.name });
+      await startGameWithCharacter(character, world);
+      console.log('[Backstory] startGameWithCharacter 完成，准备跳转 /game');
+      router.push('/game');
+    } catch (err) {
+      console.error('[Backstory] 启动游戏失败:', err);
+      setError(`启动游戏失败: ${err instanceof Error ? err.message : '未知错误'}`);
+    }
+  }, [character, apiWorld, startGameWithCharacter, router, setError]);
 
   if (!characterSeed) return null;
 
@@ -94,13 +138,19 @@ function BackstoryContent() {
     );
   }
 
+  // 展示用：优先 API 返回的世界，回退到 gameState
+  const displayWorldName = apiWorld?.name || gameState.selectedWorld?.name || '万界';
+  const displayWorldType = apiWorld?.type || gameState.selectedWorld?.type || '';
+  const displayVisualConfig = apiWorld?.visualConfig || gameState.selectedWorld?.visualConfig;
+
   return (
     <BackstoryView
       backstory={backstory || `万界之中，${character.name}踏上了修行之路...`}
       onConfirm={handleConfirm}
       characterName={character.name}
-      worldName={gameState.selectedWorld?.name || '万界'}
-      worldType={gameState.selectedWorld?.type || ''}
+      worldName={displayWorldName}
+      worldType={displayWorldType}
+      visualConfig={displayVisualConfig}
     />
   );
 }

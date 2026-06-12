@@ -617,71 +617,73 @@ export type DifficultyLevel = keyof typeof DIFFICULTY_MULTIPLIERS;
 export function getWorldData(worldType: WorldType): WorldStats {
   const registry = WorldViewRegistry.getInstance();
   const worldview = registry.get(worldType);
-  if (!worldview) {
-    throw new Error(`世界观未加载: "${worldType}"。请确保 wanjie-core Mod 已正确加载。`);
-  }
 
-  const stats = worldview.stats;
-  if (!stats) {
-    throw new Error(
-      `世界 "${worldType}" 缺少数值配置 (stats)。请检查数据文件是否包含 stats 字段。`
-    );
-  }
+  // 1. 注册中心已加载 → 从 worldview 构建完整 WorldStats
+  if (worldview?.stats) {
+    const stats = worldview.stats;
+    const requiredStatFields = [
+      'baseHp', 'hpPerLevel', 'hpPerConstitution',
+      'baseAttack', 'attackPerLevel', 'attackPerConstitution', 'attackPerSpiritRoot',
+      'baseDefense', 'defensePerLevel', 'defensePerWillpower',
+      'enemyAttackBonus', 'enemyDefenseBonus',
+    ] as const;
 
-  // 校验必要字段完整性
-  const requiredStatFields = [
-    'baseHp', 'hpPerLevel', 'hpPerConstitution',
-    'baseAttack', 'attackPerLevel', 'attackPerConstitution', 'attackPerSpiritRoot',
-    'baseDefense', 'defensePerLevel', 'defensePerWillpower',
-    'enemyAttackBonus', 'enemyDefenseBonus',
-  ] as const;
+    for (const field of requiredStatFields) {
+      if (typeof stats[field] !== 'number') {
+        throw new Error(
+          `世界 "${worldType}" 的 stats.${field} 缺失或不是数字。` +
+          `请检查数据文件完整性。`
+        );
+      }
+    }
 
-  for (const field of requiredStatFields) {
-    if (typeof stats[field] !== 'number') {
+    if (!stats.statDisplayNames || typeof stats.statDisplayNames !== 'object') {
       throw new Error(
-        `世界 "${worldType}" 的 stats.${field} 缺失或不是数字。` +
-        `请检查数据文件完整性。`
+        `世界 "${worldType}" 缺少 statDisplayNames 配置。`
       );
     }
+
+    return {
+      namePrefixes: worldview.namePrefixes,
+      nameSuffixes: worldview.nameSuffixes,
+      descriptions: worldview.descriptions,
+      powerSystems: worldview.powerSystems ?? [],
+      majorForces: worldview.majorForces ?? [],
+      dangers: (worldview.dangers ?? []).map(d => ({
+        description: d.description,
+        impact: d.effect?.statModifications ?? {} as StatImpact,
+        impactDescription: d.description,
+      })),
+      opportunities: (worldview.opportunities ?? []).map(o => ({
+        description: o.description,
+        impact: o.effect?.statModifications ?? {} as StatImpact,
+        impactDescription: o.description,
+      })),
+      coefficient: worldview.baseCoefficient,
+      baseHp: stats.baseHp,
+      hpPerLevel: stats.hpPerLevel,
+      hpPerConstitution: stats.hpPerConstitution,
+      baseAttack: stats.baseAttack,
+      attackPerLevel: stats.attackPerLevel,
+      attackPerConstitution: stats.attackPerConstitution,
+      attackPerSpiritRoot: stats.attackPerSpiritRoot,
+      baseDefense: stats.baseDefense,
+      defensePerLevel: stats.defensePerLevel,
+      defensePerWillpower: stats.defensePerWillpower,
+      enemyAttackBonus: stats.enemyAttackBonus,
+      enemyDefenseBonus: stats.enemyDefenseBonus,
+      statDisplayNames: stats.statDisplayNames,
+    };
   }
 
-  if (!stats.statDisplayNames || typeof stats.statDisplayNames !== 'object') {
-    throw new Error(
-      `世界 "${worldType}" 缺少 statDisplayNames 配置。请检查数据文件。`
-    );
+  // 2. 客户端环境注册中心为空 → 回退到硬编码 WORLD_DATA
+  const fallbackData = WORLD_DATA[worldType];
+  if (fallbackData) {
+    return fallbackData;
   }
 
-  return {
-    namePrefixes: worldview.namePrefixes,
-    nameSuffixes: worldview.nameSuffixes,
-    descriptions: worldview.descriptions,
-    powerSystems: worldview.powerSystems ?? [],
-    majorForces: worldview.majorForces ?? [],
-    dangers: (worldview.dangers ?? []).map(d => ({
-      description: d.description,
-      impact: d.effect?.statModifications ?? {} as StatImpact,
-      impactDescription: d.description,
-    })),
-    opportunities: (worldview.opportunities ?? []).map(o => ({
-      description: o.description,
-      impact: o.effect?.statModifications ?? {} as StatImpact,
-      impactDescription: o.description,
-    })),
-    coefficient: worldview.baseCoefficient,
-    baseHp: stats.baseHp,
-    hpPerLevel: stats.hpPerLevel,
-    hpPerConstitution: stats.hpPerConstitution,
-    baseAttack: stats.baseAttack,
-    attackPerLevel: stats.attackPerLevel,
-    attackPerConstitution: stats.attackPerConstitution,
-    attackPerSpiritRoot: stats.attackPerSpiritRoot,
-    baseDefense: stats.baseDefense,
-    defensePerLevel: stats.defensePerLevel,
-    defensePerWillpower: stats.defensePerWillpower,
-    enemyAttackBonus: stats.enemyAttackBonus,
-    enemyDefenseBonus: stats.enemyDefenseBonus,
-    statDisplayNames: stats.statDisplayNames,
-  };
+  // 3. 注册中心无数据且硬编码也无匹配 → 抛出明确错误
+  throw new Error(`世界观未加载: "${worldType}"。请确保 wanjie-core Mod 已正确加载。`);
 }
 
 /**

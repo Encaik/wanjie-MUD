@@ -7,6 +7,21 @@
 
 import { useState, useCallback } from 'react';
 
+/** 天赋简要信息（来自 API） */
+export interface TalentInfo {
+  id: string;
+  name: string;
+  description: string;
+  rarity: 'common' | 'uncommon' | 'rare' | 'epic' | 'legendary';
+}
+
+/** 种族简要信息（来自 API） */
+export interface RaceInfo {
+  id: string;
+  name: string;
+  description: string;
+}
+
 /** 角色模板（与 API 返回格式一致） */
 export interface CharacterTemplate {
   index: number;
@@ -17,6 +32,10 @@ export interface CharacterTemplate {
   attributes: Record<string, number | string>;
   coreStats: Record<string, number>;
   baseAttributes: Record<string, number | string>;
+  /** API 补充的种族信息 */
+  race?: RaceInfo;
+  /** API 补充的天赋列表 */
+  talents?: TalentInfo[];
 }
 
 interface UseCharacterTemplatesReturn {
@@ -42,10 +61,10 @@ export function useCharacterTemplates(): UseCharacterTemplatesReturn {
         body: JSON.stringify({ worldSeed, worldviewId }),
       });
       const json = await res.json();
-      if (json.success) {
+      if (json.code === 200) {
         setTemplates(json.data.templates as CharacterTemplate[]);
       } else {
-        setError(json.error || '生成模板失败');
+        setError(json.message || '生成模板失败');
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : '网络错误');

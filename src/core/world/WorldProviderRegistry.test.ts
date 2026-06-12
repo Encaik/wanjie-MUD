@@ -54,8 +54,6 @@ function createMockProvider(id: string, type: 'random'): WorldProvider {
           defensePerWillpower: 1,
         },
         ratingScore: 0,
-        visualConfig: { icon: '🌍', accentColor: '', gradientClass: '', borderColor: '', bgGradient: '', colorGradient: '' },
-        statDisplayNames: {},
         attributeDefinitions: [],
         racePool: ['human'],
       };

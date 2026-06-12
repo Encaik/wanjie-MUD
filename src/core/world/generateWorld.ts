@@ -122,6 +122,11 @@ export function generateWorldDetails(
     level: d.dangerLevel,
     type: d.type as WorldDanger['type'],
     triggerChance: d.triggerCondition.chance,
+    effect: d.effect,
+    dangerLevel: d.dangerLevel,
+    triggerCondition: d.triggerCondition,
+    duration: d.duration ?? -1,
+    dispellable: d.dispellable ?? false,
   })) as any;
 
   // 机遇（从世界观池中选取 2-4 个）
@@ -135,6 +140,10 @@ export function generateWorldDetails(
     level: o.opportunityLevel,
     type: o.type as WorldOpportunity['type'],
     triggerChance: o.triggerCondition.chance,
+    effect: o.effect,
+    opportunityLevel: o.opportunityLevel,
+    triggerCondition: o.triggerCondition,
+    duration: o.duration ?? -1,
   })) as any;
 
   return { factions, majorForces, dangers, opportunities };
@@ -193,7 +202,7 @@ export function generateWorldBasicFields(
     random: hash,
     gameVersion: GAME_VERSION,
     worldviewId: worldview.id,
-    type: worldview.name,
+    type: worldview.name.replace(/世界$/, ''),
     name,
     description,
     powerSystem,
@@ -201,8 +210,6 @@ export function generateWorldBasicFields(
     baseCoefficient,
     actualCoefficient,
     difficulty,
-    visualConfig: worldview.visualConfig,
-    statDisplayNames: worldview.texts?.stats as unknown as Record<string, string> ?? {},
     worldStats: {
       baseHp: worldview.stats.baseHp,
       hpPerLevel: worldview.stats.hpPerLevel,
