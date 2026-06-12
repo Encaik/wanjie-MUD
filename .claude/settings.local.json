@@ -37,7 +37,8 @@
       "Bash(mkdir -p \"D:/vs_workspace/wanjie/wanjie-MUD/src/app/api/v1/characters/[seed]\")",
       "Bash(pnpm eslint *)",
       "Bash(git reset *)",
-      "Bash(git commit -m 'feat: 属性\\(Attribute\\)/核心值\\(CoreStat\\)解耦 + 角色Seed系统 + 全链路打通 *)"
+      "Bash(git commit -m 'feat: 属性\\(Attribute\\)/核心值\\(CoreStat\\)解耦 + 角色Seed系统 + 全链路打通 *)",
+      "Bash(pnpm dev *)"
     ],
     "additionalDirectories": [
       "D:\\vs_workspace\\wanjie\\wanjie-MUD\\src\\app\\api\\v1\\worldviews\\[id]",

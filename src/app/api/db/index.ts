@@ -41,6 +41,12 @@ let dbInstance: ReturnType<typeof drizzle> | null = null;
 /** sql.js wrapper 实例 */
 let sqliteInstance: SqlJsDatabase | null = null;
 
+/** 上次加载时的数据库文件修改时间（用于检测跨模块写入） */
+let lastLoadMtime = 0;
+
+/** 是否为内存数据库模式 */
+let isMemoryMode = false;
+
 // ============================================
 // sql.js WASM 初始化（顶层 await）
 // ============================================
@@ -198,16 +204,44 @@ function ensureDatabase(): void {
 }
 
 /**
- * 获取数据库实例（单例）
+ * 获取数据库实例（单例，带文件变更自动重载）
  *
  * 首次调用时创建 sql.js 连接、启用配置、自动建表。
- * 后续调用返回同一实例。
+ * 后续调用检查数据库文件是否被其他模块实例修改，
+ * 若文件 mtime 变更则自动重新加载，确保跨 API 路由数据一致。
  * sql.js 在模块顶层已完成初始化（顶层 await），此方法是同步的。
  */
 export function getDb() {
+  // 内存模式：直接使用缓存实例（数据无法跨请求共享）
+  if (isMemoryMode && dbInstance) return dbInstance;
+
+  // 检查数据库文件是否被外部修改（其他 API 路由模块写入）
+  if (dbInstance && !isMemoryMode && DB_PATH) {
+    try {
+      const currentMtime = fs.statSync(DB_PATH).mtimeMs;
+      if (currentMtime > lastLoadMtime) {
+        log.debug('数据库文件已被其他模块修改，重新加载');
+        closeDb();
+      }
+    } catch {
+      // 文件可能暂时不可访问，保持当前实例
+    }
+  }
+
   if (dbInstance) return dbInstance;
 
   ensureDatabase();
+
+  // 记录文件修改时间（用于后续变更检测）
+  if (DB_PATH !== ':memory:') {
+    try {
+      lastLoadMtime = fs.statSync(DB_PATH).mtimeMs;
+    } catch {
+      lastLoadMtime = Date.now();
+    }
+  } else {
+    isMemoryMode = true;
+  }
 
   // 从文件加载（或创建空数据库）
   sqliteInstance = SqlJsDatabase.loadFromFile(SQL, DB_PATH);
@@ -277,6 +311,41 @@ export function getDb() {
 }
 
 /**
+ * 更新文件修改时间戳（在写入操作后调用，避免自写入触发不必要重载）
+ */
+export function touchDbMtime(): void {
+  if (isMemoryMode) return;
+  try {
+    lastLoadMtime = fs.statSync(DB_PATH).mtimeMs;
+  } catch {
+    // 忽略
+  }
+}
+
+/**
+ * 强制从磁盘文件重新加载数据库（绕过模块级单例缓存）
+ *
+ * 在 Next.js dev 模式下，不同 API 路由可能拥有独立的模块实例和 dbInstance。
+ * 此函数确保在关键读操作（如 getWorldById）前，数据库内容与磁盘文件一致。
+ * 内存模式（:memory:）下为 no-op。
+ */
+export function refreshDbFromDisk(): void {
+  if (isMemoryMode || !DB_PATH || DB_PATH === ':memory:') return;
+
+  try {
+    const currentMtime = fs.statSync(DB_PATH).mtimeMs;
+    // 文件未变更，无需刷新
+    if (currentMtime <= lastLoadMtime && dbInstance) return;
+  } catch {
+    // 文件不存在，保持当前实例
+    return;
+  }
+
+  // 关闭旧实例，下次 getDb() 将重新从文件加载
+  closeDb();
+}
+
+/**
  * 关闭数据库连接（主要用于测试或进程退出）
  */
 export function closeDb(): void {
@@ -293,6 +362,8 @@ export function closeDb(): void {
  */
 export function resetDb(): void {
   closeDb();
+  lastLoadMtime = 0;
+  isMemoryMode = false;
   if (fs.existsSync(DB_PATH)) {
     fs.unlinkSync(DB_PATH);
   }

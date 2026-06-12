@@ -7,10 +7,14 @@
 
 import { eq, sql, desc } from 'drizzle-orm';
 
-import { getDb } from '@/app/api/db';
+import { getDb, touchDbMtime } from '@/app/api/db';
 import { worldsTable, ratingsTable } from '@/app/api/db/schema';
+import { createLogger } from '@/core/logger';
 import type { World } from '@/core/types';
 import type { WorldRatingsMap, RatingData } from '@/core/world/types';
+
+/** 日志实例 */
+const log = createLogger('DB:Worlds');
 
 // ============================================
 // 内部工具
@@ -56,6 +60,7 @@ export function saveWorld(world: World): World {
     .get();
 
   if (existing) {
+    log.debug(`saveWorld: UPDATE ${world.id}`);
     db.update(worldsTable)
       .set({
         data: worldToJson(world),
@@ -65,6 +70,7 @@ export function saveWorld(world: World): World {
       .where(eq(worldsTable.id, world.id))
       .run();
   } else {
+    log.debug(`saveWorld: INSERT ${world.id}`);
     db.insert(worldsTable).values({
       id: world.id,
       data: worldToJson(world),
@@ -73,6 +79,9 @@ export function saveWorld(world: World): World {
       ...extractFields(world),
     }).run();
   }
+
+  // 同步文件修改时间戳，避免其他模块将本次写入误判为外部变更
+  touchDbMtime();
 
   return world;
 }
@@ -128,6 +137,10 @@ export function queryWorldsByType(
 
 /**
  * 根据 ID（即 seed）获取世界
+ *
+ * 在 Next.js dev 模式下，不同 API 路由编译为独立模块，
+ * 各自持有 sql.js 内存实例。getDb() 内部通过文件 mtime
+ * 检测外部模块写入并自动重新加载，确保跨模块数据一致。
  */
 export function getWorldById(id: string): World | null {
   const db = getDb();
@@ -135,6 +148,8 @@ export function getWorldById(id: string): World | null {
     .from(worldsTable)
     .where(eq(worldsTable.id, id))
     .get();
+  const found = row ? true : false;
+  log.debug(`getWorldById: ${id} → ${found ? '找到' : '未找到'}`);
   return row ? rowToWorld(row) : null;
 }
 

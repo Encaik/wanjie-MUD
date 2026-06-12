@@ -13,6 +13,8 @@ import fs from 'fs';
 import type initSqlJs from 'sql.js';
 import type { BindParams } from 'sql.js';
 
+import { createLogger } from '@/core/logger';
+
 /** sql.js 初始化后的静态类型 */
 type SqlJsStatic = Awaited<ReturnType<typeof initSqlJs>>;
 
@@ -297,8 +299,9 @@ export class SqlJsDatabase {
       const binaryData = this.sqlJsDb.export();
       const buffer = Buffer.from(binaryData);
       fs.writeFileSync(this.filePath, buffer);
-    } catch {
-      // 持久化失败不中断业务（日志由外层处理）
+    } catch (err) {
+      const log = createLogger('DB');
+      log.error(`数据库持久化失败，数据可能丢失: ${this.filePath} — ${err instanceof Error ? err.message : '未知错误'}`);
     }
   }
 

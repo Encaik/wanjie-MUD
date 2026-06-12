@@ -16,7 +16,7 @@ import { WorldViewRegistry } from '@/core/registry';
 import { generateWorldBasicFields, generateSeed } from '@/core/world';
 import type { World } from '@/core/types';
 
-import { saveWorld } from '../../store';
+import { saveWorld, getWorldById } from '../../store';
 
 /** 日志实例 */
 const log = createLogger('Basic');
@@ -68,11 +68,21 @@ export async function POST(request: NextRequest) {
         if (body.seed) {
           for (let i = 0; i < count; i++) {
             const uniqueSeed = count > 1 ? `${body.seed}-${i + 1}` : body.seed;
-            worlds.push(generateBasic(uniqueSeed, worldviewId));
+            const world = generateBasic(uniqueSeed, worldviewId);
+            if (!getWorldById(world.id)) {
+              log.error(`世界保存验证失败（旧管线）：${world.id} 未写入数据库`);
+              return apiError(500, `世界保存验证失败：数据未写入数据库`);
+            }
+            worlds.push(world);
           }
         } else {
           for (let i = 0; i < count; i++) {
-            worlds.push(generateBasic(generateSeed(), worldviewId));
+            const world = generateBasic(generateSeed(), worldviewId);
+            if (!getWorldById(world.id)) {
+              log.error(`世界保存验证失败（旧管线）：${world.id} 未写入数据库`);
+              return apiError(500, `世界保存验证失败：数据未写入数据库`);
+            }
+            worlds.push(world);
           }
         }
       } else {
@@ -83,6 +93,10 @@ export async function POST(request: NextRequest) {
             const basic = generateWorldBasicFields(worldview, uniqueSeed, 0);
             const world = { ...basic, factions: [], majorForces: '', dangers: [], opportunities: [] } as World;
             saveWorld(world);
+            if (!getWorldById(world.id)) {
+              log.error(`世界保存验证失败：${world.id} 未写入数据库`);
+              return apiError(500, `世界保存验证失败：数据未写入数据库`);
+            }
             worlds.push(world);
           }
         } else {
@@ -90,6 +104,10 @@ export async function POST(request: NextRequest) {
             const basic = generateWorldBasicFields(worldview, generateSeed(), 0);
             const world = { ...basic, factions: [], majorForces: '', dangers: [], opportunities: [] } as World;
             saveWorld(world);
+            if (!getWorldById(world.id)) {
+              log.error(`世界保存验证失败：${world.id} 未写入数据库`);
+              return apiError(500, `世界保存验证失败：数据未写入数据库`);
+            }
             worlds.push(world);
           }
         }
@@ -103,6 +121,10 @@ export async function POST(request: NextRequest) {
           const basic = generateWorldBasicFields(wv, body.seed || generateSeed(), 0);
           const world = { ...basic, factions: [], majorForces: '', dangers: [], opportunities: [] } as World;
           saveWorld(world);
+          if (!getWorldById(world.id)) {
+            log.error(`世界保存验证失败：${world.id} 未写入数据库`);
+            return apiError(500, `世界保存验证失败：数据未写入数据库`);
+          }
           worlds.push(world);
         }
       } else {
@@ -111,11 +133,21 @@ export async function POST(request: NextRequest) {
         if (body.seed) {
           for (let i = 0; i < count; i++) {
             const uniqueSeed = count > 1 ? `${body.seed}-${i + 1}` : body.seed;
-            worlds.push(generateBasic(uniqueSeed, undefined));
+            const world = generateBasic(uniqueSeed, undefined);
+            if (!getWorldById(world.id)) {
+              log.error(`世界保存验证失败（旧管线）：${world.id} 未写入数据库`);
+              return apiError(500, `世界保存验证失败：数据未写入数据库`);
+            }
+            worlds.push(world);
           }
         } else {
           for (let i = 0; i < count; i++) {
-            worlds.push(generateBasic(generateSeed(), undefined));
+            const world = generateBasic(generateSeed(), undefined);
+            if (!getWorldById(world.id)) {
+              log.error(`世界保存验证失败（旧管线）：${world.id} 未写入数据库`);
+              return apiError(500, `世界保存验证失败：数据未写入数据库`);
+            }
+            worlds.push(world);
           }
         }
       }
