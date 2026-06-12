@@ -130,6 +130,18 @@ export function generateWorldBasic(seed: string, worldType?: string): World {
     // V3 新字段
     attributeDefinitions,
     racePool,
+    worldStats: {
+      baseHp: worldData.baseHp,
+      hpPerLevel: worldData.hpPerLevel,
+      hpPerConstitution: worldData.hpPerConstitution,
+      baseAttack: worldData.baseAttack,
+      attackPerLevel: worldData.attackPerLevel,
+      attackPerConstitution: worldData.attackPerConstitution,
+      attackPerSpiritRoot: worldData.attackPerSpiritRoot,
+      baseDefense: worldData.baseDefense,
+      defensePerLevel: worldData.defensePerLevel,
+      defensePerWillpower: worldData.defensePerWillpower,
+    },
   };
 }
 

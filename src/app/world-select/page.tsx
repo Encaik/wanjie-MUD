@@ -26,8 +26,8 @@ export default function WorldSelectPage() {
   // 需要重定向时不渲染页面内容
   if (redirectTo) return null;
 
-  const handleSelect = (world: World) => {
-    selectWorld(world);
+  const handleSelect = async (world: World) => {
+    await selectWorld(world);
     router.push('/character-select');
   };
 

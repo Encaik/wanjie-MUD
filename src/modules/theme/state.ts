@@ -14,6 +14,9 @@ export function createInitialThemeState(): ThemeSlice {
     activeWorldType: null,
     themeMode: 'system',
     isDark: false,
+    useWorldTheme: true,
+    worldThemeData: null,
+    themeLoading: false,
   };
 }
 

@@ -21,6 +21,16 @@
  */
 
 // ============================================
+// 玩家战斗数值计算（客户端安全，不访问 WorldViewRegistry）
+// ============================================
+export {
+  calcPlayerMaxHp,
+  calcPlayerMaxMp,
+  calcPlayerAttack,
+  calcPlayerDefense,
+} from './playerStats';
+
+// ============================================
 // 核心类型
 // ============================================
 export type {

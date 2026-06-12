@@ -16,7 +16,7 @@ import {
   getOrCreateAscensionMark,
   updateAscensionMark
 } from '@/modules/ascension/logic/ascensionLogic';
-import { calculatePlayerMaxHp, calculatePlayerMaxMp } from '@/modules/progression/logic/balanceConfig';
+import { calcPlayerMaxHp, calcPlayerMaxMp } from '@/core/calculation';
 import { 
   GameState, 
   MessageRecord, 
@@ -399,8 +399,9 @@ export function useGameAscension({
         growth: baseGrowthStats,
       };
       
-      const newMaxHp = calculatePlayerMaxHp(newStats.base.体质, 1, newWorld.type);
-      const newMaxMp = calculatePlayerMaxMp(newStats.base.灵根, 1, newWorld.type);
+      // 新世界暂无完整 worldStats，飞升后由世界详情 API 填充；此处使用当前世界数值作为近似
+      const newMaxHp = calcPlayerMaxHp(newStats.base.体质, 1, prev.protagonist.world.worldStats);
+      const newMaxMp = calcPlayerMaxMp(newStats.base.灵根, 1);
       
       const currentSpiritStones = prev.protagonist.inventory.find(
         item => item.definition.id === 'spirit_stone'

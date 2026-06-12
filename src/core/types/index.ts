@@ -59,6 +59,7 @@ export type {
   WorldImpact,
   WorldFaction,
   World,
+  WorldBalanceStats,
   // 品质
   Quality,
   ImpactLevel,

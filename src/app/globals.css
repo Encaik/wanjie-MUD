@@ -4,7 +4,7 @@
  * 按层加载（顺序即优先级）：
  * 1. Tailwind 基础（必须在最前面）
  * 2. tokens.css     — 设计令牌声明（@theme inline）
- * 3. themes.css     — 主题变量值（:root, .dark, [data-world]）
+ * 3. themes.css     — 主题变量值（:root 默认亮色, .dark 默认暗色）
  * 4. animations.css — @keyframes 关键帧定义
  * 5. base.css       — 全局基础样式 + 动画工具类
  */

@@ -20,11 +20,13 @@ import {
   createDefaultRealClock,
 } from '@/core/time';
 import type { TimeState } from '@/core/time';
+import { emit } from '@/core/events';
+import { worldEvents } from '@/modules/theme';
 
 // 类型导入
 import { handleCellEvent } from '@/modules/exploration/logic/adventure/adventure';
 import { calculateBattleWithLogs } from '@/modules/exploration/logic/adventure/adventureBattleNew';
-import { calculatePlayerMaxHp, calculatePlayerMaxMp } from '@/modules/progression/logic/balanceConfig';
+import { calcPlayerMaxHp, calcPlayerMaxMp } from '@/core/calculation';
 import { calculatePlayerCombatPower } from '@/modules/combat/logic/combatPower';
 import { executeCultivation, getMaxExperience } from '@/modules/progression/logic/cultivation';
 import { generateEquipment } from '@/modules/equipment/logic/equipment';
@@ -343,6 +345,14 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         };
 
         setGameState(finalState);
+
+        // 通知主题系统：世界已切换（从存档恢复）
+        if (finalState.protagonist) {
+          emit(worldEvents.events.world_changed, {
+            worldviewId: finalState.protagonist.world.worldviewId,
+            worldType: finalState.protagonist.world.type,
+          });
+        }
 
         // 启动运行时定时器
         timerService.start(serverNow, updatedTime);
@@ -682,16 +692,15 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
       // 生成初始武器（根据身世品质，近战武器）
       const initialEquipment = generateEquipment('melee', initialRarity, world.worldviewId);
 
-      // 根据属性计算初始血量和法力
-      const initialMaxHp = calculatePlayerMaxHp(
+      // 根据属性计算初始血量和法力（使用 World 嵌入的 worldStats，不访问 WorldViewRegistry）
+      const initialMaxHp = calcPlayerMaxHp(
         character.stats.base.体质,
         1,
-        world.worldviewId
+        world.worldStats
       );
-      const initialMaxMp = calculatePlayerMaxMp(
+      const initialMaxMp = calcPlayerMaxMp(
         character.stats.base.灵根,
-        1,
-        world.worldviewId
+        1
       );
 
       // 生成主角
@@ -771,23 +780,37 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
 
   // 确认背景故事 - 主角已在 selectWorld 中创建
   const confirmBackstory = useCallback(() => {
+    let worldId: string | undefined;
+    let worldType: string | undefined;
+
     setGameState(prev => {
       if (!prev.protagonist) return prev;
-      
+
+      worldId = prev.protagonist.world.worldviewId;
+      worldType = prev.protagonist.world.type;
+
       const welcomeMessage = getTutorialWelcomeMessage();
-      
+
       return {
         ...prev,
         phase: 'playing',
         messages: addMessageInternal(
-          prev.messages, 
-          'success', 
-          '游戏开始', 
+          prev.messages,
+          'success',
+          '游戏开始',
           '欢迎来到修仙世界！',
           welcomeMessage
         ),
       };
     });
+
+    // 状态更新后通知主题系统：世界已切换
+    if (worldId || worldType) {
+      emit(worldEvents.events.world_changed, {
+        worldviewId: worldId,
+        worldType: worldType,
+      });
+    }
   }, [addMessageInternal]);
 
   // ========================================
@@ -2146,16 +2169,15 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         if (!prev.protagonist) return prev;
         const newLevel = prev.protagonist.level + 1;
         
-        // 根据属性重新计算 maxHp 和 maxMp
-        const newMaxHp = calculatePlayerMaxHp(
+        // 根据属性重新计算 maxHp 和 maxMp（使用 World 嵌入的 worldStats）
+        const newMaxHp = calcPlayerMaxHp(
           prev.protagonist.stats.base.体质,
           newLevel,
-          prev.protagonist.world.worldviewId
+          prev.protagonist.world.worldStats
         );
-        const newMaxMp = calculatePlayerMaxMp(
+        const newMaxMp = calcPlayerMaxMp(
           prev.protagonist.stats.base.灵根,
-          newLevel,
-          prev.protagonist.world.worldviewId
+          newLevel
         );
         
         return {

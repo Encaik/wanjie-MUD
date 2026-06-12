@@ -18,6 +18,7 @@ export const ThemeContext = createContext<ThemeContextValue>({
   theme: createInitialThemeState(),
   setThemeMode: () => {},
   toggleDarkMode: () => {},
+  setUseWorldTheme: () => {},
 });
 
 /**

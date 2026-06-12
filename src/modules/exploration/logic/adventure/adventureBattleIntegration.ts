@@ -8,11 +8,8 @@
  */
 
 import { parseEnemyInfo } from '@/modules/exploration/logic/adventure/adventure';
-import { 
-  calculatePlayerMaxHp,
-  calculatePlayerMaxMp,
-  calculatePlayerAttack,
-  calculatePlayerDefense,
+import { calcPlayerMaxHp, calcPlayerMaxMp, calcPlayerAttack, calcPlayerDefense } from '@/core/calculation';
+import {
   calculateEnemyHp,
   calculateEnemyAttack,
   calculateEnemyDefense,
@@ -117,11 +114,11 @@ function convertToPlayerData(protagonist: Protagonist): any {
  */
 function calculatePlayerAttackWithBonuses(protagonist: Protagonist): number {
   const stats = getFinalStats(protagonist.stats);
-  let attack = calculatePlayerAttack(
+  let attack = calcPlayerAttack(
     stats.体质,
     stats.灵根,
     protagonist.level,
-    protagonist.world.type
+    protagonist.world.worldStats
   );
   
   // 应用功法加成
@@ -152,10 +149,10 @@ function calculatePlayerAttackWithBonuses(protagonist: Protagonist): number {
  */
 function calculatePlayerDefenseWithBonuses(protagonist: Protagonist): number {
   const stats = getFinalStats(protagonist.stats);
-  let defense = calculatePlayerDefense(
+  let defense = calcPlayerDefense(
     stats.意志,
     protagonist.level,
-    protagonist.world.type
+    protagonist.world.worldStats
   );
   
   // 应用功法加成

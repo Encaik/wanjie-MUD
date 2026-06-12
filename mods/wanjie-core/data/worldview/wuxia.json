@@ -609,5 +609,45 @@
       "萱",
       "薇"
     ]
+  },
+  "themeConfig": {
+    "light": {
+      "--primary": "oklch(0.42 0.08 145)",
+      "--primary-foreground": "oklch(0.98 0.01 145)",
+      "--accent": "oklch(0.82 0.03 140)",
+      "--background": "oklch(0.95 0.01 135)",
+      "--foreground": "oklch(0.18 0.02 140)",
+      "--border": "oklch(0.78 0.02 140)",
+      "--ring": "oklch(0.45 0.08 145)",
+      "--card": "oklch(0.99 0.006 135)",
+      "--card-foreground": "oklch(0.22 0.035 145)",
+      "--popover": "oklch(0.99 0.006 135)",
+      "--popover-foreground": "oklch(0.22 0.035 145)",
+      "--secondary": "oklch(0.92 0.02 145)",
+      "--secondary-foreground": "oklch(0.30 0.04 145)",
+      "--muted": "oklch(0.94 0.015 135)",
+      "--muted-foreground": "oklch(0.45 0.03 145)",
+      "--accent-foreground": "oklch(0.25 0.04 145)",
+      "--input": "oklch(0.92 0.015 135)"
+    },
+    "dark": {
+      "--primary": "oklch(0.60 0.08 145)",
+      "--primary-foreground": "oklch(0.12 0.01 140)",
+      "--accent": "oklch(0.24 0.03 140)",
+      "--background": "oklch(0.15 0.015 140)",
+      "--foreground": "oklch(0.90 0.01 135)",
+      "--border": "oklch(0.24 0.02 140)",
+      "--ring": "oklch(0.65 0.08 145)",
+      "--card": "oklch(0.22 0.025 135)",
+      "--card-foreground": "oklch(0.92 0.015 155)",
+      "--popover": "oklch(0.22 0.025 135)",
+      "--popover-foreground": "oklch(0.92 0.015 155)",
+      "--secondary": "oklch(0.28 0.03 145)",
+      "--secondary-foreground": "oklch(0.88 0.015 135)",
+      "--muted": "oklch(0.25 0.025 135)",
+      "--muted-foreground": "oklch(0.65 0.03 145)",
+      "--accent-foreground": "oklch(0.90 0.015 135)",
+      "--input": "oklch(0.25 0.025 135)"
+    }
   }
 }
