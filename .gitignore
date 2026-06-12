@@ -103,3 +103,6 @@ Desktop.ini
 
 # API data (worlds storage)
 .data/
+
+# Mod build output
+public/mods/

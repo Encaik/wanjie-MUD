@@ -1,0 +1,163 @@
+{
+  "swordMastery": {
+    "id": "swordMastery",
+    "name": "剑道天赋",
+    "description": "天生对剑法有超常领悟，物理攻击力提升",
+    "raceRestrictions": ["human"],
+    "worldviewRestrictions": [],
+    "effects": [
+      { "target": "physicalATK", "type": "multiplier", "value": 1.1 }
+    ],
+    "rarity": "rare",
+    "conflictsWith": [],
+    "dialogueTag": "sword"
+  },
+  "meditation": {
+    "id": "meditation",
+    "name": "冥想",
+    "description": "天生定力超群，修炼效率提升",
+    "raceRestrictions": [],
+    "worldviewRestrictions": [],
+    "effects": [
+      { "target": "willpower", "type": "attribute_flat", "value": 2 },
+      { "target": "intelligence", "type": "flat", "value": 1 }
+    ],
+    "rarity": "uncommon",
+    "conflictsWith": [],
+    "dialogueTag": "calm"
+  },
+  "merchantMind": {
+    "id": "merchantMind",
+    "name": "商贾之才",
+    "description": "精于算计，对数字敏感",
+    "raceRestrictions": ["human"],
+    "worldviewRestrictions": [],
+    "effects": [
+      { "target": "intelligence", "type": "flat", "value": 2 }
+    ],
+    "rarity": "common",
+    "conflictsWith": [],
+    "dialogueTag": "merchant"
+  },
+  "survivalist": {
+    "id": "survivalist",
+    "name": "生存专家",
+    "description": "在任何环境中都能找到出路",
+    "raceRestrictions": [],
+    "worldviewRestrictions": [],
+    "effects": [
+      { "target": "perception", "type": "flat", "value": 3 }
+    ],
+    "rarity": "common",
+    "conflictsWith": [],
+    "dialogueTag": "survival"
+  },
+  "charismatic": {
+    "id": "charismatic",
+    "name": "魅力非凡",
+    "description": "天生有领袖气质，与人交往如鱼得水",
+    "raceRestrictions": [],
+    "worldviewRestrictions": [],
+    "effects": [
+      { "target": "intelligence", "type": "flat", "value": 1 },
+      { "target": "perception", "type": "flat", "value": 1 }
+    ],
+    "rarity": "uncommon",
+    "conflictsWith": [],
+    "dialogueTag": "charm"
+  },
+  "demonicResilience": {
+    "id": "demonicResilience",
+    "name": "妖躯坚韧",
+    "description": "妖族体质进一步增强",
+    "raceRestrictions": ["demon"],
+    "worldviewRestrictions": [],
+    "effects": [
+      { "target": "maxHp", "type": "flat", "value": 5 },
+      { "target": "physicalDEF", "type": "flat", "value": 2 }
+    ],
+    "rarity": "uncommon",
+    "conflictsWith": [],
+    "dialogueTag": "tough"
+  },
+  "bloodFury": {
+    "id": "bloodFury",
+    "name": "血怒",
+    "description": "受伤时爆发出更强战力",
+    "raceRestrictions": ["demon"],
+    "worldviewRestrictions": [],
+    "effects": [
+      { "target": "physicalATK", "type": "multiplier", "value": 1.15 }
+    ],
+    "rarity": "rare",
+    "conflictsWith": ["meditation"],
+    "dialogueTag": "rage"
+  },
+  "predatorInstinct": {
+    "id": "predatorInstinct",
+    "name": "猎手本能",
+    "description": "天生猎手，感知敏锐",
+    "raceRestrictions": ["demon"],
+    "worldviewRestrictions": [],
+    "effects": [
+      { "target": "perception", "type": "flat", "value": 3 },
+      { "target": "speed", "type": "flat", "value": 2 }
+    ],
+    "rarity": "uncommon",
+    "conflictsWith": [],
+    "dialogueTag": "hunt"
+  },
+  "nightVision": {
+    "id": "nightVision",
+    "name": "夜视",
+    "description": "黑暗中视物如白昼",
+    "raceRestrictions": ["demon"],
+    "worldviewRestrictions": [],
+    "effects": [
+      { "target": "perception", "type": "flat", "value": 2 }
+    ],
+    "rarity": "common",
+    "conflictsWith": [],
+    "dialogueTag": "night"
+  },
+  "elementalAffinity": {
+    "id": "elementalAffinity",
+    "name": "元素亲和",
+    "description": "与天地元素有天然的共鸣",
+    "raceRestrictions": ["spirit"],
+    "worldviewRestrictions": [],
+    "effects": [
+      { "target": "specialATK", "type": "multiplier", "value": 1.1 },
+      { "target": "specialResourceCap", "type": "flat", "value": 10 }
+    ],
+    "rarity": "rare",
+    "conflictsWith": [],
+    "dialogueTag": "element"
+  },
+  "spiritSight": {
+    "id": "spiritSight",
+    "name": "灵视",
+    "description": "能看见常人看不见的灵体与能量流动",
+    "raceRestrictions": ["spirit"],
+    "worldviewRestrictions": [],
+    "effects": [
+      { "target": "perception", "type": "flat", "value": 4 }
+    ],
+    "rarity": "uncommon",
+    "conflictsWith": [],
+    "dialogueTag": "spirit"
+  },
+  "oneWithNature": {
+    "id": "oneWithNature",
+    "name": "天人合一",
+    "description": "与自然融为一体，修炼事半功倍",
+    "raceRestrictions": ["spirit"],
+    "worldviewRestrictions": ["cultivation", "xianxia"],
+    "effects": [
+      { "target": "willpower", "type": "attribute_flat", "value": 3 }
+    ],
+    "rarity": "epic",
+    "conflictsWith": ["bloodFury"],
+    "dialogueTag": "nature"
+  }
+}

@@ -3,6 +3,64 @@
   "name": "武侠世界",
   "description": "江湖恩怨，侠骨柔情，武林中人快意恩仇",
   "baseCoefficient": 1,
+  "attributes": [
+    {
+      "key": "boneRoot",
+      "growthRule": [
+        {
+          "type": "linear",
+          "multiplier": 0.5
+        }
+      ]
+    },
+    {
+      "key": "insight",
+      "growthRule": [
+        {
+          "type": "linear",
+          "multiplier": 0.5
+        }
+      ]
+    },
+    {
+      "key": "wisdomRoot",
+      "growthRule": [
+        {
+          "type": "linear",
+          "multiplier": 0.5
+        }
+      ]
+    },
+    {
+      "key": "fortune",
+      "growthRule": [
+        {
+          "type": "linear",
+          "multiplier": 0.5
+        }
+      ]
+    },
+    {
+      "key": "perseverance",
+      "growthRule": [
+        {
+          "type": "linear",
+          "multiplier": 0.5
+        }
+      ]
+    }
+  ],
+  "racePool": [
+    "human"
+  ],
+  "specialResource": {
+    "displayName": "内力",
+    "defaultCap": 100,
+    "capGrowthPerLevel": 10,
+    "affectedBy": [
+      "spiritPower"
+    ]
+  },
   "namePrefixes": [
     "江湖",
     "武当",

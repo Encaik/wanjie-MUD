@@ -15,6 +15,9 @@
 
 import { createLogger } from '@/core/logger';
 import { WorldViewRegistry } from '@/core/registry/WorldViewRegistry';
+import { AttributeRegistry } from '@/core/registry/AttributeRegistry';
+import { RaceRegistry } from '@/core/registry/RaceRegistry';
+import { TalentRegistry } from '@/core/registry/TalentRegistry';
 import type { WorldviewDefinition } from '@/core/registry/WorldViewRegistry';
 
 import { parseManifest, ModLoadError } from './ModManifest';
@@ -438,26 +441,58 @@ export class ModLoader {
     contentType: string,
     data: unknown,
   ): void {
-    if (contentType !== 'worldview') {
-      log.warn(`Mod "${modId}": 未知的内容类型 "${contentType}"，跳过`);
+    if (contentType === 'worldview') {
+      if (!data || typeof data !== 'object' || Array.isArray(data)) {
+        log.warn(`Mod "${modId}": worldview 类型数据格式无效，跳过`);
+        return;
+      }
+      const worldview = data as WorldviewDefinition;
+      const worldviewId = worldview.id || 'unknown';
+      try {
+        this.registry.register(worldview);
+        log.info(`Mod "${modId}": 注册了世界观 "${worldviewId}"`);
+      } catch (err) {
+        const errorMsg = err instanceof Error ? err.message : '未知错误';
+        log.warn(`Mod "${modId}": 注册世界观 "${worldviewId}" 失败: ${errorMsg}`);
+      }
       return;
     }
 
-    if (!data || typeof data !== 'object' || Array.isArray(data)) {
-      log.warn(`Mod "${modId}": worldview 类型数据格式无效，跳过`);
+    if (contentType === 'attributes') {
+      if (!data || typeof data !== 'object' || Array.isArray(data)) {
+        log.warn(`Mod "${modId}": attributes 类型数据格式无效，跳过`);
+        return;
+      }
+      const attrRegistry = AttributeRegistry.getInstance();
+      const count = attrRegistry.count;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      attrRegistry.registerAll(data as Record<string, any>);
+      log.info(`Mod "${modId}": 注册了 ${attrRegistry.count - count} 个属性模板`);
       return;
     }
 
-    const worldview = data as WorldviewDefinition;
-    const worldviewId = worldview.id || 'unknown';
-
-    try {
-      this.registry.register(worldview);
-      log.info(`Mod "${modId}": 注册了世界观 "${worldviewId}"`);
-    } catch (err) {
-      const errorMsg = err instanceof Error ? err.message : '未知错误';
-      log.warn(`Mod "${modId}": 注册世界观 "${worldviewId}" 失败: ${errorMsg}`);
+    if (contentType === 'races') {
+      if (data && typeof data === 'object' && !Array.isArray(data)) {
+        const race = data as Record<string, unknown>;
+        if (race.id) {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          RaceRegistry.getInstance().register(race as any);
+          log.info(`Mod "${modId}": 注册了种族 "${race.id}"`);
+        }
+      }
+      return;
     }
+
+    if (contentType === 'talents') {
+      if (data && typeof data === 'object' && !Array.isArray(data)) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        TalentRegistry.getInstance().registerAll(data as any);
+        log.info(`Mod "${modId}": 注册了天赋数据`);
+      }
+      return;
+    }
+
+    log.warn(`Mod "${modId}": 未知的内容类型 "${contentType}"，跳过`);
   }
 
   /**

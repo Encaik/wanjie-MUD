@@ -90,6 +90,25 @@ export function validateModData(
         result = { valid: nameErrors.length === 0, errors: nameErrors };
         break;
       }
+      // new content types — basic structural validation for now
+      case 'attributes': {
+        const attrs = data as Record<string, unknown>;
+        const attrErrors: ValidationError[] = [];
+        if (!attrs || typeof attrs !== 'object' || Array.isArray(attrs)) {
+          attrErrors.push({ path: '', message: 'attributes 数据必须是非数组对象' });
+        } else {
+          for (const [key, def] of Object.entries(attrs)) {
+            const d = def as Record<string, unknown>;
+            if (!d.type || !d.displayName) {
+              attrErrors.push({ path: key, message: `属性 "${key}" 缺少 type 或 displayName` });
+            }
+          }
+        }
+        result = { valid: attrErrors.length === 0, errors: attrErrors };
+        break;
+      }
+      case 'races':
+      case 'talents':
       // traits, text, items are not validated with schema checks (complex nested structure)
       case 'traits':
       case 'text':

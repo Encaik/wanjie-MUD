@@ -106,6 +106,9 @@ function createTestWorldview(overrides: Partial<WorldviewDefinition> = {}): Worl
       borderColor: 'border-blue-500/30', bgGradient: 'bg-blue-50', colorGradient: 'from-blue-500',
     },
     builtin: true,
+    // V3 新字段
+    attributes: [],
+    racePool: ['human'],
     ...overrides,
   };
 }

@@ -1,0 +1,73 @@
+{
+  "strength": {
+    "type": "numeric",
+    "displayName": "力量",
+    "category": "primary_physical",
+    "baseValue": 8,
+    "growthPerLevel": 0.5,
+    "calculations": [
+      { "targetCoreStat": "maxHp", "multiplier": 2 },
+      { "targetCoreStat": "physicalATK", "multiplier": 1 },
+      { "targetCoreStat": "physicalDEF", "multiplier": 0.5 }
+    ]
+  },
+  "magic": {
+    "type": "numeric",
+    "displayName": "魔力",
+    "category": "primary_spiritual",
+    "baseValue": 8,
+    "growthPerLevel": 0.5,
+    "calculations": [
+      { "targetCoreStat": "specialATK", "multiplier": 2 },
+      { "targetCoreStat": "specialResourceCap", "multiplier": 3 },
+      { "targetCoreStat": "intelligence", "multiplier": 0.3 }
+    ]
+  },
+  "perception": {
+    "type": "numeric",
+    "displayName": "感知",
+    "category": "secondary",
+    "baseValue": 8,
+    "growthPerLevel": 0.5,
+    "calculations": [
+      { "targetCoreStat": "intelligence", "multiplier": 0.5 },
+      { "targetCoreStat": "perception", "multiplier": 0.5 },
+      { "targetCoreStat": "speed", "multiplier": 0.2 }
+    ]
+  },
+  "charm": {
+    "type": "numeric",
+    "displayName": "魅力",
+    "category": "secondary",
+    "baseValue": 8,
+    "growthPerLevel": 0.3,
+    "calculations": [
+      { "targetCoreStat": "specialDEF", "multiplier": 0.5 },
+      { "targetCoreStat": "intelligence", "multiplier": 0.3 }
+    ]
+  },
+  "spirit": {
+    "type": "numeric",
+    "displayName": "精神",
+    "category": "primary_martial",
+    "baseValue": 8,
+    "growthPerLevel": 0.5,
+    "calculations": [
+      { "targetCoreStat": "specialDEF", "multiplier": 0.8 },
+      { "targetCoreStat": "willpower", "multiplier": 1 }
+    ]
+  },
+  "elementAffinity": {
+    "type": "enum",
+    "displayName": "元素亲和",
+    "category": "primary_spiritual",
+    "enumValues": [
+      { "value": "火焰亲和", "bonuses": { "specialATK": 8 } },
+      { "value": "冰霜亲和", "bonuses": { "specialDEF": 6, "speed": 1 } },
+      { "value": "风暴亲和", "bonuses": { "speed": 3, "specialATK": 3 } },
+      { "value": "大地亲和", "bonuses": { "maxHp": 10, "physicalDEF": 3 } },
+      { "value": "光明亲和", "bonuses": { "maxHp": 5, "specialATK": 5 } },
+      { "value": "暗影亲和", "bonuses": { "specialATK": 6, "perception": 3 } }
+    ]
+  }
+}

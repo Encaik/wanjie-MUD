@@ -7,6 +7,16 @@
 // —— 角色生成 ——
 export { generateCharacter, generateCharacters, generateId } from './logic/generators';
 
+// —— 角色模板生成（Seed 驱动，V3） ——
+export {
+  generateCharacterTemplates,
+  createCharacterSeed,
+} from './logic/characterTemplates';
+export type { CharacterTemplate } from './logic/characterTemplates';
+
+// —— 主角适配器（V3 → Protagonist 桥接） ——
+export { createProtagonistFromSaved } from './logic/protagonistAdapter';
+
 // —— 角色评估 ——
 export { evaluateCharacter, evaluateCharacters } from './logic/characterEvaluation';
 

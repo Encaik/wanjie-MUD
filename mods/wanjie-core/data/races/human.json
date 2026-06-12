@@ -1,0 +1,27 @@
+{
+  "id": "human",
+  "name": "人族",
+  "description": "万界最普遍的种族，适应力强，无特别短板，修炼天赋均衡",
+  "worldviewRestrictions": [],
+  "baseAttributeBonuses": {},
+  "talentPool": [
+    "swordMastery",
+    "meditation",
+    "merchantMind",
+    "survivalist",
+    "charismatic"
+  ],
+  "innateAbilities": [
+    {
+      "id": "adaptable",
+      "name": "万物适应",
+      "description": "人族对环境有极强的适应力，全属性 +1",
+      "effects": {
+        "maxHp": { "flat": 2 },
+        "physicalATK": { "flat": 1 },
+        "specialATK": { "flat": 1 }
+      }
+    }
+  ],
+  "lifespanModifier": 1
+}

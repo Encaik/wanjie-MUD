@@ -15,7 +15,8 @@
 import { hashString, createRng } from '@/shared/utils/rng';
 import { GAME_VERSION } from '@/shared/config/version';
 import type { WorldviewDefinition } from '@/core/registry/WorldViewRegistry';
-import type { World, WorldDifficulty, WorldFaction } from '@/core/types';
+import { AttributeRegistry } from '@/core/registry/AttributeRegistry';
+import type { World, WorldDifficulty, WorldFaction, AttributeTemplate } from '@/core/types';
 
 // ============================================
 // 工具函数
@@ -149,7 +150,7 @@ export function generateWorldDetails(
  * @param ascensionCount - 飞升次数（影响难度系数）
  * @returns 世界基础字段（不包含 factions, majorForces, dangers, opportunities）
  */
-function generateWorldBasicFields(
+export function generateWorldBasicFields(
   worldview: WorldviewDefinition,
   seed: string,
   ascensionCount: number,
@@ -177,6 +178,16 @@ function generateWorldBasicFields(
   const actualCoefficient = calculateDifficultyCoefficient(baseCoefficient, ascensionCount);
   const difficulty = getDifficultyFromCoefficient(actualCoefficient);
 
+  // 从 AttributeRegistry 解析属性模板，合并世界观成长规则
+  const attrRegistry = AttributeRegistry.getInstance();
+  const attributeDefinitions = worldview.attributes
+    .map(config => {
+      const template = attrRegistry.get(config.key);
+      if (!template) return null;
+      return { ...template, growthRule: config.growthRule };
+    })
+    .filter((d): d is NonNullable<typeof d> => d !== null);
+
   return {
     id: seed,
     random: hash,
@@ -191,6 +202,13 @@ function generateWorldBasicFields(
     actualCoefficient,
     difficulty,
     ratingScore: 0,
+    // 前端展示数据
+    visualConfig: worldview.visualConfig,
+    statDisplayNames: worldview.stats.statDisplayNames ?? {},
+    // V3 新字段（从 AttributeRegistry 解析）
+    attributeDefinitions,
+    racePool: worldview.racePool,
+    specialResource: worldview.specialResource,
   };
 }
 

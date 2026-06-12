@@ -66,3 +66,40 @@ export const ratingsTable = sqliteTable('ratings', {
 export type RatingRow = typeof ratingsTable.$inferSelect;
 /** ratings 表插入类型 */
 export type InsertRatingRow = typeof ratingsTable.$inferInsert;
+
+// ============================================
+// characters 表（V3 — 玩家角色持久化）
+// ============================================
+
+/** 角色存储表 */
+export const charactersTable = sqliteTable('characters', {
+  /** 角色 seed（主键） */
+  seed: text('seed').primaryKey(),
+  /** 关联的世界 seed */
+  worldSeed: text('worldSeed').notNull().references(() => worldsTable.id),
+  /** 世界观 ID */
+  worldviewId: text('worldviewId').notNull(),
+  /** 角色名 */
+  name: text('name').notNull(),
+  /** 性别 */
+  gender: text('gender').notNull(),
+  /** 种族 ID */
+  raceId: text('raceId').notNull().default('human'),
+  /** 天赋 ID 列表（JSON 数组） */
+  talentIds: text('talentIds').notNull().default('[]'),
+  /** 属性值（JSON） */
+  attributes: text('attributes').notNull(),
+  /** 核心值（JSON） */
+  coreStats: text('coreStats').notNull(),
+  /** NPC 模板版本号（预留 NPC 化，当前为 0） */
+  npcTemplateVersion: integer('npcTemplateVersion').notNull().default(0),
+  /** 创建时间 */
+  createdAt: integer('createdAt', { mode: 'timestamp' }).notNull(),
+  /** 更新时间 */
+  updatedAt: integer('updatedAt', { mode: 'timestamp' }).notNull(),
+});
+
+/** characters 表查询类型 */
+export type CharacterRow = typeof charactersTable.$inferSelect;
+/** characters 表插入类型 */
+export type InsertCharacterRow = typeof charactersTable.$inferInsert;

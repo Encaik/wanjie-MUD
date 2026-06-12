@@ -134,4 +134,50 @@ export function migrateStatistics(parsed: Record<string, unknown>): Record<strin
   return statistics;
 }
 
+/**
+ * V3 迁移：将旧 CharacterStats (base/growth 含中文 key) 转为新格式
+ *
+ * 旧格式: { base: { 体质: 50, 灵根: 50, ... }, growth: { 体质: 0, ... } }
+ * 新格式: { attributes: Record<string, number>, coreStats: Record<CoreStatKey, number> }
+ *
+ * 旧属性 key → 新 attribute key 映射（需要世界观上下文来决定具体映射，这里使用默认修仙映射）
+ */
+const OLD_TO_NEW_ATTR_MAP: Record<string, string> = {
+  '体质': 'constitution',
+  '灵根': 'spiritRoot',
+  '悟性': 'insight',
+  '幸运': 'luck',
+  '意志': 'willpower',
+};
+
+/**
+ * 迁移旧 CharacterStats 到 V3 属性格式
+ */
+export function migrateCharacterStatsToV3(oldStats: {
+  base?: Record<string, number>;
+  growth?: Record<string, number>;
+}): { attributes: Record<string, number>; coreStats: Record<string, number> } {
+  const attributes: Record<string, number> = {};
+
+  if (oldStats.base) {
+    for (const [oldKey, value] of Object.entries(oldStats.base)) {
+      const newKey = OLD_TO_NEW_ATTR_MAP[oldKey] || oldKey;
+      attributes[newKey] = (attributes[newKey] || 0) + value;
+    }
+  }
+  if (oldStats.growth) {
+    for (const [oldKey, value] of Object.entries(oldStats.growth)) {
+      const newKey = OLD_TO_NEW_ATTR_MAP[oldKey] || oldKey;
+      attributes[newKey] = (attributes[newKey] || 0) + value;
+    }
+  }
+
+  // 旧存档没有存储 coreStats，设为空（运行时通过 calculateCoreStats 重新计算）
+  return { attributes, coreStats: {} };
+}
+
+/** 更新存档版本号 */
+export const SAVE_VERSION_V3 = 2;
+
+
 export { DEFAULT_STATISTICS };

@@ -116,6 +116,9 @@ function makeTestWorldview(overrides: Partial<WorldviewDefinition> = {}): Worldv
       colorGradient: 'from-green-500 to-teal-500',
     },
     builtin: false,
+    // V3 新字段
+    attributes: [],
+    racePool: ['human'],
     ...overrides,
   };
 }

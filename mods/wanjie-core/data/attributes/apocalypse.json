@@ -1,0 +1,96 @@
+{
+  "constitution": {
+    "type": "numeric",
+    "key": "constitution",
+    "displayName": "体质",
+    "category": "primary_physical",
+    "baseValue": 8,
+    "growthPerLevel": 0.5,
+    "calculations": [
+      {
+        "targetCoreStat": "maxHp",
+        "multiplier": 2
+      },
+      {
+        "targetCoreStat": "physicalATK",
+        "multiplier": 1
+      },
+      {
+        "targetCoreStat": "physicalDEF",
+        "multiplier": 0.5
+      }
+    ]
+  },
+  "adaptability": {
+    "type": "numeric",
+    "key": "adaptability",
+    "displayName": "适应性",
+    "category": "secondary",
+    "baseValue": 8,
+    "growthPerLevel": 0.5,
+    "calculations": [
+      {
+        "targetCoreStat": "specialDEF",
+        "multiplier": 0.5
+      },
+      {
+        "targetCoreStat": "speed",
+        "multiplier": 0.3
+      }
+    ]
+  },
+  "luck": {
+    "type": "numeric",
+    "key": "luck",
+    "displayName": "运气",
+    "category": "secondary",
+    "baseValue": 8,
+    "growthPerLevel": 0.3,
+    "calculations": [
+      {
+        "targetCoreStat": "lifespan",
+        "multiplier": 0.3
+      },
+      {
+        "targetCoreStat": "perception",
+        "multiplier": 0.3
+      }
+    ]
+  },
+  "willpower": {
+    "type": "numeric",
+    "key": "willpower",
+    "displayName": "意志",
+    "category": "primary_martial",
+    "baseValue": 8,
+    "growthPerLevel": 0.5,
+    "calculations": [
+      {
+        "targetCoreStat": "specialDEF",
+        "multiplier": 0.8
+      },
+      {
+        "targetCoreStat": "willpower",
+        "multiplier": 1
+      }
+    ]
+  },
+  "apocInsight": {
+    "type": "numeric",
+    "key": "apocInsight",
+    "displayName": "洞察",
+    "category": "secondary",
+    "baseValue": 8,
+    "growthPerLevel": 0.5,
+    "calculations": [
+      {
+        "targetCoreStat": "perception",
+        "multiplier": 0.8
+      },
+      {
+        "targetCoreStat": "intelligence",
+        "multiplier": 0.3
+      }
+    ]
+  }
+}

@@ -3,6 +3,59 @@
   "name": "仙侠世界",
   "description": "剑气纵横，侠客仗剑行走天涯",
   "baseCoefficient": 1.3,
+  "attributes": [
+    {
+      "key": "constitution",
+      "growthRule": [
+        {
+          "type": "linear",
+          "multiplier": 0.5
+        }
+      ]
+    },
+    {
+      "key": "immortalRoot",
+      "growthRule": []
+    },
+    {
+      "key": "swordHeart",
+      "growthRule": [
+        {
+          "type": "linear",
+          "multiplier": 0.5
+        }
+      ]
+    },
+    {
+      "key": "immortalLuck",
+      "growthRule": [
+        {
+          "type": "linear",
+          "multiplier": 0.5
+        }
+      ]
+    },
+    {
+      "key": "daoHeart",
+      "growthRule": [
+        {
+          "type": "linear",
+          "multiplier": 0.5
+        }
+      ]
+    }
+  ],
+  "racePool": [
+    "human"
+  ],
+  "specialResource": {
+    "displayName": "仙力",
+    "defaultCap": 100,
+    "capGrowthPerLevel": 10,
+    "affectedBy": [
+      "spiritPower"
+    ]
+  },
   "namePrefixes": [
     "剑气",
     "仙云",

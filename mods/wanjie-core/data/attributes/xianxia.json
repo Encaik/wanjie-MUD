@@ -1,0 +1,96 @@
+{
+  "constitution": {
+    "type": "numeric",
+    "key": "constitution",
+    "displayName": "体质",
+    "category": "primary_physical",
+    "baseValue": 8,
+    "growthPerLevel": 0.5,
+    "calculations": [
+      {
+        "targetCoreStat": "maxHp",
+        "multiplier": 2
+      },
+      {
+        "targetCoreStat": "physicalATK",
+        "multiplier": 1
+      },
+      {
+        "targetCoreStat": "physicalDEF",
+        "multiplier": 0.5
+      }
+    ]
+  },
+  "immortalRoot": {
+    "type": "numeric",
+    "key": "immortalRoot",
+    "displayName": "仙根",
+    "category": "primary_spiritual",
+    "baseValue": 8,
+    "growthPerLevel": 0.5,
+    "calculations": [
+      {
+        "targetCoreStat": "specialATK",
+        "multiplier": 1.5
+      },
+      {
+        "targetCoreStat": "specialResourceCap",
+        "multiplier": 3
+      }
+    ]
+  },
+  "swordHeart": {
+    "type": "numeric",
+    "key": "swordHeart",
+    "displayName": "剑心",
+    "category": "secondary",
+    "baseValue": 8,
+    "growthPerLevel": 0.5,
+    "calculations": [
+      {
+        "targetCoreStat": "intelligence",
+        "multiplier": 0.3
+      },
+      {
+        "targetCoreStat": "specialATK",
+        "multiplier": 0.8
+      }
+    ]
+  },
+  "immortalLuck": {
+    "type": "numeric",
+    "key": "immortalLuck",
+    "displayName": "仙缘",
+    "category": "secondary",
+    "baseValue": 8,
+    "growthPerLevel": 0.3,
+    "calculations": [
+      {
+        "targetCoreStat": "lifespan",
+        "multiplier": 0.5
+      },
+      {
+        "targetCoreStat": "perception",
+        "multiplier": 0.3
+      }
+    ]
+  },
+  "daoHeart": {
+    "type": "numeric",
+    "key": "daoHeart",
+    "displayName": "道心",
+    "category": "primary_martial",
+    "baseValue": 8,
+    "growthPerLevel": 0.5,
+    "calculations": [
+      {
+        "targetCoreStat": "specialDEF",
+        "multiplier": 0.8
+      },
+      {
+        "targetCoreStat": "willpower",
+        "multiplier": 1
+      }
+    ]
+  }
+}

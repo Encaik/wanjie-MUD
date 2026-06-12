@@ -13,7 +13,7 @@ import { apiSuccess, apiError } from '@/app/api/result';
 import { ensureWorldSystemInitialized } from '@/app/api/init';
 import { createLogger } from '@/core/logger';
 import { WorldViewRegistry } from '@/core/registry';
-import { generateWorld, generateSeed } from '@/core/world';
+import { generateWorldBasicFields, generateSeed } from '@/core/world';
 import type { World } from '@/core/types';
 
 /** 日志实例 */
@@ -74,15 +74,17 @@ export async function POST(request: NextRequest) {
           }
         }
       } else {
-        // 使用新的 generateWorld
+        // V3: 只生成基础字段（名称、描述、境界、难度、属性定义），详情由 details API 补全
         if (body.seed) {
           for (let i = 0; i < count; i++) {
             const uniqueSeed = count > 1 ? `${body.seed}-${i + 1}` : body.seed;
-            worlds.push(generateWorld(worldview, uniqueSeed, 0));
+            const basic = generateWorldBasicFields(worldview, uniqueSeed, 0);
+            worlds.push({ ...basic, factions: [], majorForces: '', dangers: [], opportunities: [] } as World);
           }
         } else {
           for (let i = 0; i < count; i++) {
-            worlds.push(generateWorld(worldview, generateSeed(), 0));
+            const basic = generateWorldBasicFields(worldview, generateSeed(), 0);
+            worlds.push({ ...basic, factions: [], majorForces: '', dangers: [], opportunities: [] } as World);
           }
         }
       }
@@ -92,7 +94,8 @@ export async function POST(request: NextRequest) {
       if (allWorldviews.length > 0) {
         for (let i = 0; i < count; i++) {
           const wv = allWorldviews[Math.floor(Math.random() * allWorldviews.length)];
-          worlds.push(generateWorld(wv, body.seed || generateSeed(), 0));
+          const basic = generateWorldBasicFields(wv, body.seed || generateSeed(), 0);
+          worlds.push({ ...basic, factions: [], majorForces: '', dangers: [], opportunities: [] } as World);
         }
       } else {
         // 回退到旧 API

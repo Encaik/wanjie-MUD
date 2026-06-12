@@ -33,6 +33,13 @@ export interface GameContextType {
   refreshCharacters: () => Promise<void>;
   selectCharacter: (character: Character) => void;
   selectWorld: (world: World) => void;
+  /** V3: 从保存角色+世界创建主角并开始游戏 */
+  startGameWithCharacter: (characterData: {
+    name: string; gender: string; raceId: string;
+    attributes: Record<string, number | string>;
+    coreStats: Record<string, number>;
+    talentIds: string[];
+  }, world: World) => Promise<void>;
   confirmBackstory: () => void;
   performCultivation: () => void;
   performRest: () => void;

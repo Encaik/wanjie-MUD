@@ -18,6 +18,7 @@
 import { hashString, createRng } from '@/shared/utils/rng';
 import { GAME_VERSION } from '@/shared/config/version';
 import { WorldViewRegistry } from '@/core/registry';
+import { AttributeRegistry } from '@/core/registry/AttributeRegistry';
 import { getWorldTypes, getWorldData } from '@/modules/identity/data/worldData';
 import { generateRealmSystem } from '@/modules/progression/data/realmData';
 import { getPowerSystemDescription } from '@/modules/progression/data/realmCore';
@@ -90,6 +91,16 @@ export function generateWorldBasic(seed: string, worldType?: string): World {
     bgGradient: 'bg-muted/10',
     colorGradient: 'from-muted to-foreground',
   };
+  // 从 AttributeRegistry 解析属性模板，合并世界观成长规则
+  const attrRegistry = AttributeRegistry.getInstance();
+  const attributeDefinitions = (worldviewDef?.attributes ?? [])
+    .map(config => {
+      const template = attrRegistry.get(config.key);
+      if (!template) return null;
+      return { ...template, growthRule: config.growthRule };
+    })
+    .filter((d): d is NonNullable<typeof d> => d !== null);
+  const racePool = worldviewDef?.racePool ?? ['human'];
 
   return {
     id: seed,
@@ -116,6 +127,9 @@ export function generateWorldBasic(seed: string, worldType?: string): World {
     // 前端展示数据
     visualConfig,
     statDisplayNames: worldData.statDisplayNames ?? {},
+    // V3 新字段
+    attributeDefinitions,
+    racePool,
   };
 }
 

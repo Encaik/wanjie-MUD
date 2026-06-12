@@ -174,20 +174,15 @@ export function getRouteGuard(currentPath: string, state: GameState): string | n
 
     case '/character-select':
       if (!hasSelectedWorld) return '/world-select';
-      if (!hasCharacters) return '/world-select';
+      // V3: 角色通过 API 模板生成，不再依赖预加载的 characters
       return null;
 
     case '/backstory':
-      if (!hasProtagonist) {
-        if (hasSelectedCharacter && hasSelectedWorld) return '/character-select';
-        if (hasSelectedWorld) return '/character-select';
-        return '/world-select';
-      }
+      // V3: 从 character-select 保存角色后跳转，通过 query seed 加载
       return null;
 
     case '/game':
       if (!hasProtagonist) {
-        if (hasSelectedCharacter && hasSelectedWorld) return '/backstory';
         if (hasSelectedWorld) return '/character-select';
         if (hasWorlds) return '/world-select';
         return '/';
@@ -617,32 +612,23 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     if (world.dangers.length === 0 && world.factions.length === 0) {
       const { code, data } = await post<{ world: World }>(
         '/api/v1/worlds/generate/details',
-        { seed: world.id },
+        { seed: world.id, worldviewId: world.worldviewId },
       );
       if (code === 200 && data) {
         fullWorld = data.world;
       }
     }
 
-    // 通过服务端 API 生成角色（服务端 WorldViewRegistry 有完整数据）
-    const { code: charCode, data: charData } = await post<{ characters: Character[] }>(
-      '/api/v1/characters/generate',
-      { worldviewId: fullWorld.worldviewId, count: 8 },
-    );
-
-    const characters = charCode === 200 && charData
-      ? charData.characters
-      : [];
-
+    // V3: 角色生成移至 character-select 页面（使用新的 templates API）
     setGameState(prev => ({
       ...prev,
       selectedWorld: fullWorld,
       phase: 'character-select',
-      characters,
     }));
   }, []);
 
   // 选择角色：生成主角和背景故事，进入游戏
+  /** @deprecated V3: 使用 startGameWithCharacter + POST /characters/save 替代 */
   const selectCharacter = useCallback((character: Character) => {
     setGameState(prev => {
       if (!prev.selectedWorld) return prev;
@@ -746,6 +732,41 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         phase: 'backstory',
       };
     });
+  }, []);
+
+  // V3: 从保存的角色数据 + 已选世界创建主角并开始游戏
+  const startGameWithCharacter = useCallback(async (
+    characterData: {
+      name: string; gender: string; raceId: string;
+      attributes: Record<string, number | string>;
+      coreStats: Record<string, number>;
+      talentIds: string[];
+    },
+    world: World,
+  ) => {
+    const { createProtagonistFromSaved } = await import('@/modules/identity/logic/protagonistAdapter');
+
+    const protagonist = createProtagonistFromSaved(
+      {
+        seed: '', worldSeed: world.id, worldviewId: world.worldviewId,
+        name: characterData.name,
+        gender: characterData.gender,
+        raceId: characterData.raceId,
+        talentIds: characterData.talentIds,
+        attributes: characterData.attributes,
+        coreStats: characterData.coreStats,
+        npcTemplateVersion: 0,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      },
+      world,
+    );
+
+    setGameState(prev => ({
+      ...prev,
+      protagonist,
+      phase: 'playing',
+    }));
   }, []);
 
   // 确认背景故事 - 主角已在 selectWorld 中创建
@@ -2273,6 +2294,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
       refreshCharacters,
       selectCharacter,
       selectWorld,
+      startGameWithCharacter,
       confirmBackstory,
       performCultivation: cultivationHook.performCultivation,
       performRest: cultivationHook.performRest,

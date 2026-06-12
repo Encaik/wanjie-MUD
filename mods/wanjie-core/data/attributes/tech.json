@@ -1,0 +1,49 @@
+{
+  "fitness": {
+    "type": "numeric",
+    "displayName": "体能",
+    "category": "primary_physical",
+    "baseValue": 8,
+    "growthPerLevel": 0.5,
+    "calculations": [
+      { "targetCoreStat": "maxHp", "multiplier": 2 },
+      { "targetCoreStat": "physicalATK", "multiplier": 1 },
+      { "targetCoreStat": "physicalDEF", "multiplier": 0.5 }
+    ]
+  },
+  "intelligence": {
+    "type": "numeric",
+    "displayName": "智力",
+    "category": "primary_spiritual",
+    "baseValue": 8,
+    "growthPerLevel": 0.5,
+    "calculations": [
+      { "targetCoreStat": "specialATK", "multiplier": 1.5 },
+      { "targetCoreStat": "intelligence", "multiplier": 0.8 },
+      { "targetCoreStat": "specialResourceCap", "multiplier": 2 }
+    ]
+  },
+  "reaction": {
+    "type": "numeric",
+    "displayName": "反应",
+    "category": "secondary",
+    "baseValue": 8,
+    "growthPerLevel": 0.5,
+    "calculations": [
+      { "targetCoreStat": "speed", "multiplier": 0.5 },
+      { "targetCoreStat": "specialDEF", "multiplier": 0.5 }
+    ]
+  },
+  "tech": {
+    "type": "numeric",
+    "displayName": "技术",
+    "category": "secondary",
+    "baseValue": 8,
+    "growthPerLevel": 0.5,
+    "calculations": [
+      { "targetCoreStat": "specialATK", "multiplier": 0.5 },
+      { "targetCoreStat": "intelligence", "multiplier": 0.5 },
+      { "targetCoreStat": "perception", "multiplier": 0.5 }
+    ]
+  }
+}

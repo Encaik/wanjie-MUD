@@ -3,6 +3,56 @@
   "name": "科技世界",
   "description": "科技高度发达，星际航行已是常态",
   "baseCoefficient": 1.2,
+  "attributes": [
+    {
+      "key": "fitness",
+      "growthRule": [
+        {
+          "type": "linear",
+          "multiplier": 0.5
+        }
+      ]
+    },
+    {
+      "key": "intelligence",
+      "growthRule": [
+        {
+          "type": "linear",
+          "multiplier": 0.5
+        }
+      ]
+    },
+    {
+      "key": "reaction",
+      "growthRule": [
+        {
+          "type": "linear",
+          "multiplier": 0.5
+        }
+      ]
+    },
+    {
+      "key": "tech",
+      "growthRule": [
+        {
+          "type": "linear",
+          "multiplier": 0.5
+        }
+      ]
+    }
+  ],
+  "racePool": [
+    "human"
+  ],
+  "specialResource": {
+    "displayName": "能量",
+    "defaultCap": 100,
+    "capGrowthPerLevel": 10,
+    "affectedBy": [
+      "intelligence",
+      "tech"
+    ]
+  },
   "namePrefixes": [
     "星际",
     "银河",

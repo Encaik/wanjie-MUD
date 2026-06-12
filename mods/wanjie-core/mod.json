@@ -7,7 +7,7 @@
   "gameVersion": ">=1.0.0",
   "dependencies": [],
   "required": true,
-  "contentTypes": ["worldview"],
+  "contentTypes": ["worldview", "attributes", "races", "talents"],
   "dataFiles": {
     "worldview": [
       "data/worldview/cultivation.json",
@@ -18,6 +18,24 @@
       "data/worldview/xianxia.json",
       "data/worldview/wuxia.json",
       "data/worldview/apocalypse.json"
+    ],
+    "attributes": [
+      "data/attributes/cultivation.json",
+      "data/attributes/tech.json",
+      "data/attributes/magic.json",
+      "data/attributes/martial.json",
+      "data/attributes/psi.json",
+      "data/attributes/xianxia.json",
+      "data/attributes/wuxia.json",
+      "data/attributes/apocalypse.json"
+    ],
+    "races": [
+      "data/races/human.json",
+      "data/races/demon.json",
+      "data/races/spirit.json"
+    ],
+    "talents": [
+      "data/talents/universal.json"
     ]
   }
 }

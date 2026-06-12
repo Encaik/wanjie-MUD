@@ -13,6 +13,7 @@ import {
 import { Character, World, CharacterStats, WorldType, ImpactfulTrait, ImpactLevel, StatImpact, WorldFaction } from '@/core/types';
 import { GAME_VERSION } from '@/shared/config/version';
 import { WorldViewRegistry } from '@/core/registry';
+import { AttributeRegistry } from '@/core/registry/AttributeRegistry';
 import {
   generateWorldFactions,
   generateFactionDescription,
@@ -208,6 +209,7 @@ export function generateCharacter(id: number, worldviewId: string = 'cultivation
  * @param worldviewId - 世界观英文 kebab-case ID（如 "cultivation"、"wuxia"），非中文显示名
  * @returns 角色数组
  */
+/** @deprecated V3: 使用 POST /api/v1/characters/templates + generateCharacterTemplates() 替代 */
 export function generateCharacters(worldviewId: string = 'cultivation'): Character[] {
   // 随机男女比例 (1-7男，其余女)
   const maleCount = random(1, 7);
@@ -244,8 +246,7 @@ export function getWorldTerms(worldType: WorldType) {
 export const WORLD_SEED_LENGTH = 8;
 
 /**
- * 生成固定长度的随机字符串种子
- * 由字母和数字组成，无意义，仅用于 createRng 的确定性生成。
+ * @deprecated V3: 使用 core/world/generateWorld.ts 的 generateSeed() 替代
  */
 export function generateWorldSeed(): string {
   const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
@@ -334,6 +335,15 @@ export function generateWorld(seed: string = '', ascensionCount: number = 0): Wo
     ratingScore,
     visualConfig,
     statDisplayNames,
+    // V3 新字段（从 AttributeRegistry 解析属性模板 + 世界观成长规则）
+    attributeDefinitions: (worldviewDef?.attributes ?? [])
+      .map(config => {
+        const template = AttributeRegistry.getInstance().get(config.key);
+        if (!template) return null;
+        return { ...template, growthRule: config.growthRule };
+      })
+      .filter((d): d is NonNullable<typeof d> => d !== null),
+    racePool: worldviewDef?.racePool ?? ['human'],
   };
 }
 

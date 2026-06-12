@@ -3,6 +3,56 @@
   "name": "末世世界",
   "description": "文明崩塌，变异横行，幸存者挣扎求生",
   "baseCoefficient": 1.5,
+  "attributes": [
+    {
+      "key": "constitution",
+      "growthRule": [
+        {
+          "type": "linear",
+          "multiplier": 0.5
+        }
+      ]
+    },
+    {
+      "key": "adaptability",
+      "growthRule": [
+        {
+          "type": "linear",
+          "multiplier": 0.5
+        }
+      ]
+    },
+    {
+      "key": "apocInsight",
+      "growthRule": [
+        {
+          "type": "linear",
+          "multiplier": 0.5
+        }
+      ]
+    },
+    {
+      "key": "luck",
+      "growthRule": [
+        {
+          "type": "linear",
+          "multiplier": 0.5
+        }
+      ]
+    },
+    {
+      "key": "willpower",
+      "growthRule": [
+        {
+          "type": "linear",
+          "multiplier": 0.5
+        }
+      ]
+    }
+  ],
+  "racePool": [
+    "human"
+  ],
   "namePrefixes": [
     "废土",
     "荒芜",

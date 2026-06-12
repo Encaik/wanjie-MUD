@@ -29,6 +29,12 @@ interface WorldviewSummary {
   } | null;
   builtin: boolean;
   tags?: string[];
+  /** V3: 属性数量 */
+  attributeCount: number;
+  /** V3: 可用种族数量 */
+  raceCount: number;
+  /** V3: 前 3 个属性显示名预览 */
+  attributePreview: string[];
 }
 
 export async function GET(_request: NextRequest) {
@@ -58,6 +64,9 @@ export async function GET(_request: NextRequest) {
         : null,
       builtin: wv.builtin,
       tags: wv.tags,
+      attributeCount: wv.attributes.length,
+      raceCount: wv.racePool.length,
+      attributePreview: wv.attributes.slice(0, 3).map(a => a.key),
     }));
     return apiSuccess({ worldviews: summaries, count: summaries.length });
   }

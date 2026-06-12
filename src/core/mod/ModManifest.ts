@@ -11,6 +11,9 @@
 /** Mod 可提供的内容类型 */
 export type ModContentType =
   | 'worldview'
+  | 'attributes'
+  | 'races'
+  | 'talents'
   | 'traits'
   | 'dangers'
   | 'opportunities'
@@ -24,6 +27,9 @@ export type ModContentType =
 /** 所有支持的 Mod 内容类型列表 */
 export const ALL_MOD_CONTENT_TYPES: ModContentType[] = [
   'worldview',
+  'attributes',
+  'races',
+  'talents',
   'traits',
   'dangers',
   'opportunities',

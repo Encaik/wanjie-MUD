@@ -3,6 +3,68 @@
   "name": "魔幻世界",
   "description": "魔法元素充盈，法师与龙共存",
   "baseCoefficient": 1.1,
+  "attributes": [
+    {
+      "key": "strength",
+      "growthRule": [
+        {
+          "type": "linear",
+          "multiplier": 0.5
+        }
+      ]
+    },
+    {
+      "key": "magic",
+      "growthRule": [
+        {
+          "type": "linear",
+          "multiplier": 0.5
+        }
+      ]
+    },
+    {
+      "key": "perception",
+      "growthRule": [
+        {
+          "type": "linear",
+          "multiplier": 0.5
+        }
+      ]
+    },
+    {
+      "key": "charm",
+      "growthRule": [
+        {
+          "type": "linear",
+          "multiplier": 0.3
+        }
+      ]
+    },
+    {
+      "key": "spirit",
+      "growthRule": [
+        {
+          "type": "linear",
+          "multiplier": 0.5
+        }
+      ]
+    },
+    {
+      "key": "elementAffinity",
+      "growthRule": []
+    }
+  ],
+  "racePool": [
+    "human"
+  ],
+  "specialResource": {
+    "displayName": "魔力",
+    "defaultCap": 100,
+    "capGrowthPerLevel": 10,
+    "affectedBy": [
+      "magic"
+    ]
+  },
   "namePrefixes": [
     "艾泽",
     "诺瓦",

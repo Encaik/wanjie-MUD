@@ -248,8 +248,28 @@ export {
 } from './services';
 
 // ============================================
+// 核心值公式（V3 — 消费 CoreStat，不引用属性名）
+// ============================================
+export {
+  calcMaxHp,
+  calcMaxSpecialResource,
+  calcPhysicalATK,
+  calcSpecialATK,
+  calcPhysicalDEF,
+  calcSpecialDEF,
+  calcSpeed,
+  calcPhysicalDamage,
+  calcSpecialDamage,
+  calcCritRate,
+  calcDodgeRate,
+  calcBreakthroughBaseRate,
+  calcCultivationEfficiency,
+  calcCombatPower,
+} from './coreStatFormulas';
+
+// ============================================
 // 版本信息
 // ============================================
-export const CALCULATION_SYSTEM_VERSION = '1.0.0';
+export const CALCULATION_SYSTEM_VERSION = '2.0.0';
 
-export const CALCULATION_SYSTEM_NAME = 'Unified Calculation System';
+export const CALCULATION_SYSTEM_NAME = 'Unified Calculation System (CoreStat)';

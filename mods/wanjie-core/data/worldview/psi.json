@@ -3,6 +3,64 @@
   "name": "异能世界",
   "description": "异能觉醒者遍布都市，隐藏在普通人之中",
   "baseCoefficient": 1.2,
+  "attributes": [
+    {
+      "key": "fitness",
+      "growthRule": [
+        {
+          "type": "linear",
+          "multiplier": 0.5
+        }
+      ]
+    },
+    {
+      "key": "sourceEnergy",
+      "growthRule": [
+        {
+          "type": "linear",
+          "multiplier": 0.5
+        }
+      ]
+    },
+    {
+      "key": "perception",
+      "growthRule": [
+        {
+          "type": "linear",
+          "multiplier": 0.5
+        }
+      ]
+    },
+    {
+      "key": "luck",
+      "growthRule": [
+        {
+          "type": "linear",
+          "multiplier": 0.5
+        }
+      ]
+    },
+    {
+      "key": "willpower",
+      "growthRule": [
+        {
+          "type": "linear",
+          "multiplier": 0.5
+        }
+      ]
+    }
+  ],
+  "racePool": [
+    "human"
+  ],
+  "specialResource": {
+    "displayName": "源能",
+    "defaultCap": 100,
+    "capGrowthPerLevel": 10,
+    "affectedBy": [
+      "spiritPower"
+    ]
+  },
   "namePrefixes": [
     "觉醒",
     "变异",

@@ -1,0 +1,96 @@
+{
+  "boneRoot": {
+    "type": "numeric",
+    "key": "boneRoot",
+    "displayName": "根骨",
+    "category": "primary_physical",
+    "baseValue": 8,
+    "growthPerLevel": 0.5,
+    "calculations": [
+      {
+        "targetCoreStat": "maxHp",
+        "multiplier": 2
+      },
+      {
+        "targetCoreStat": "physicalATK",
+        "multiplier": 1
+      },
+      {
+        "targetCoreStat": "physicalDEF",
+        "multiplier": 0.5
+      }
+    ]
+  },
+  "insight": {
+    "type": "numeric",
+    "key": "insight",
+    "displayName": "悟性",
+    "category": "secondary",
+    "baseValue": 8,
+    "growthPerLevel": 0.5,
+    "calculations": [
+      {
+        "targetCoreStat": "intelligence",
+        "multiplier": 0.8
+      },
+      {
+        "targetCoreStat": "speed",
+        "multiplier": 0.2
+      }
+    ]
+  },
+  "wisdomRoot": {
+    "type": "numeric",
+    "key": "wisdomRoot",
+    "displayName": "慧根",
+    "category": "secondary",
+    "baseValue": 8,
+    "growthPerLevel": 0.5,
+    "calculations": [
+      {
+        "targetCoreStat": "intelligence",
+        "multiplier": 0.5
+      },
+      {
+        "targetCoreStat": "specialATK",
+        "multiplier": 0.5
+      }
+    ]
+  },
+  "fortune": {
+    "type": "numeric",
+    "key": "fortune",
+    "displayName": "机缘",
+    "category": "secondary",
+    "baseValue": 8,
+    "growthPerLevel": 0.3,
+    "calculations": [
+      {
+        "targetCoreStat": "lifespan",
+        "multiplier": 0.5
+      },
+      {
+        "targetCoreStat": "perception",
+        "multiplier": 0.3
+      }
+    ]
+  },
+  "perseverance": {
+    "type": "numeric",
+    "key": "perseverance",
+    "displayName": "毅力",
+    "category": "primary_martial",
+    "baseValue": 8,
+    "growthPerLevel": 0.5,
+    "calculations": [
+      {
+        "targetCoreStat": "specialDEF",
+        "multiplier": 0.8
+      },
+      {
+        "targetCoreStat": "willpower",
+        "multiplier": 1
+      }
+    ]
+  }
+}

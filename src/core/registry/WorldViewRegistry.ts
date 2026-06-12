@@ -13,7 +13,7 @@
  */
 
 import { createLogger } from '@/core/logger';
-import type { ImpactLevel, StatName, ExtensibleWorldType } from '@/core/types';
+import type { ImpactLevel, StatName, ExtensibleWorldType, WorldviewAttributeConfig, SpecialResourceDef } from '@/core/types';
 
 /** WorldViewRegistry 日志记录器 */
 const log = createLogger('WorldViewRegistry');
@@ -411,6 +411,16 @@ export interface WorldviewDefinition {
   author?: string;
   /** 标签列表 */
   tags?: string[];
+
+  // === V3 新字段：属性系统 ===
+  /** 属性配置（引用模板 key + 世界观成长规则） */
+  attributes: WorldviewAttributeConfig[];
+  /** 可用种族 ID 列表（必填，至少 ["human"]） */
+  racePool: string[];
+  /** 可用天赋 ID 列表（可选） */
+  talentPool?: string[];
+  /** 专项数值定义（可选，如修仙的"法力"、魔法的"魔力"） */
+  specialResource?: SpecialResourceDef;
 }
 
 // ============================================

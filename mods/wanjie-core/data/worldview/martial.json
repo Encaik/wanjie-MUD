@@ -3,6 +3,59 @@
   "name": "高武世界",
   "description": "武道昌盛，强者如云，武者以力证道",
   "baseCoefficient": 1.3,
+  "attributes": [
+    {
+      "key": "physique",
+      "growthRule": [
+        {
+          "type": "linear",
+          "multiplier": 0.5
+        }
+      ]
+    },
+    {
+      "key": "boneRoot",
+      "growthRule": []
+    },
+    {
+      "key": "insight",
+      "growthRule": [
+        {
+          "type": "linear",
+          "multiplier": 0.5
+        }
+      ]
+    },
+    {
+      "key": "fortune",
+      "growthRule": [
+        {
+          "type": "linear",
+          "multiplier": 0.5
+        }
+      ]
+    },
+    {
+      "key": "battleWill",
+      "growthRule": [
+        {
+          "type": "linear",
+          "multiplier": 0.5
+        }
+      ]
+    }
+  ],
+  "racePool": [
+    "human"
+  ],
+  "specialResource": {
+    "displayName": "内力",
+    "defaultCap": 100,
+    "capGrowthPerLevel": 10,
+    "affectedBy": [
+      "spiritPower"
+    ]
+  },
   "namePrefixes": [
     "苍龙",
     "玄武",

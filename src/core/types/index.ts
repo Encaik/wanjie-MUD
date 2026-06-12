@@ -2,14 +2,14 @@
  * core/types — 核心游戏类型定义
  *
  * 包含构成游戏基础的所有领域类型：
- * 属性系统（CharacterStats、BaseStats、GrowthStats）、
+ * 属性系统（CharacterStats、BaseStats、GrowthStats、AttributeDefinition、CoreStatKey）、
  * 品质系统（Quality）、世界类型（WorldType）、
  * 主角（Protagonist）、物品、装备、功法等核心接口。
  */
 
 // 基础类型（types.ts）
 export type {
-  // 属性系统
+  // 属性系统（旧 — deprecated）
   BaseStats,
   GrowthStats,
   CharacterStats,
@@ -18,6 +18,33 @@ export type {
   StatName,
   StatImpact,
   ImpactfulTrait,
+  // 属性系统（新 — Attribute/CoreStat 解耦）
+  AttributeCategory,
+  AttributeCalculation,
+  AttributeEnumValue,
+  AttributeTemplate,
+  NumericAttributeTemplate,
+  EnumAttributeTemplate,
+  AttributeGrowthTerm,
+  AttributeGrowthRule,
+  WorldviewAttributeConfig,
+  // 兼容别名
+  AttributeDefinition,
+  NumericAttributeDefinition,
+  EnumAttributeDefinition,
+  CoreStatKey,
+  CoreStatBaseValues,
+  SpecialResourceDef,
+  CharacterAttributesV3,
+  // 种族与天赋
+  RaceDefinition,
+  InnateAbility,
+  TalentEffect,
+  TalentRarity,
+  TalentDefinition,
+  // 对话检定
+  DialogueCheck,
+  CheckResult,
   // 角色
   Character,
   DimensionScores,

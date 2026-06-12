@@ -33,6 +33,10 @@ function createMockProvider(id: string, type: 'random'): WorldProvider {
         dangers: [],
         opportunities: [],
         ratingScore: 0,
+        visualConfig: { icon: '🌍', accentColor: '', gradientClass: '', borderColor: '', bgGradient: '', colorGradient: '' },
+        statDisplayNames: {},
+        attributeDefinitions: [],
+        racePool: ['human'],
       };
     },
     generateWorlds(seeds, _ascensionCount?, _worldviewId?) {

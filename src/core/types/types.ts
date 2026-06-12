@@ -25,9 +25,237 @@ export {
 // 敌人等级类型（在此定义，避免循环依赖）
 export type EnemyTier = 'normal' | 'elite' | 'miniboss' | 'boss';
 
+// ============================================
+// 新数值系统：属性 (Attribute) + 核心值 (CoreStat)
+// ============================================
+
+/** 属性分类标签（用于计算引擎按分类查找属性，不依赖属性名） */
+export type AttributeCategory = 'primary_physical' | 'primary_spiritual' | 'primary_martial' | 'secondary';
+
+/** 核心值维度 key（固定 11 维，全世界观通用） */
+export type CoreStatKey =
+  | 'maxHp'
+  | 'physicalATK'
+  | 'specialATK'
+  | 'physicalDEF'
+  | 'specialDEF'
+  | 'speed'
+  | 'intelligence'
+  | 'willpower'
+  | 'lifespan'
+  | 'perception'
+  | 'specialResourceCap';
+
+/** 核心值基础值定义 */
+export type CoreStatBaseValues = Record<CoreStatKey, number>;
+
+/** 属性到核心值的映射计算定义（数值型属性用） */
+export interface AttributeCalculation {
+  targetCoreStat: CoreStatKey;
+  multiplier: number;
+}
+
+/** 枚举型属性的一个选项 */
+export interface AttributeEnumValue {
+  value: string;
+  bonuses: Partial<Record<CoreStatKey, number>>;
+}
+
+// ── 属性模板（Mod 内容类型 attributes 定义）──
+
+/** 属性模板（Mod 属性池中定义，不含成长规则） */
+export type AttributeTemplate =
+  | NumericAttributeTemplate
+  | EnumAttributeTemplate;
+
+export interface NumericAttributeTemplate {
+  type: 'numeric';
+  key: string;
+  displayName: string;
+  category: AttributeCategory;
+  baseValue: number;
+  calculations: AttributeCalculation[];
+}
+
+export interface EnumAttributeTemplate {
+  type: 'enum';
+  key: string;
+  displayName: string;
+  category: AttributeCategory;
+  enumValues: AttributeEnumValue[];
+}
+
+// ── 属性成长规则 ——
+
+/** 单个成长计算项 */
+export type AttributeGrowthTerm =
+  | { type: 'linear'; multiplier: number }
+  | { type: 'exponential'; baseMultiplier: number }
+  | { type: 'constant'; value: number }
+  | { type: 'perRealm'; realmBonuses: Record<string, number> };
+
+/**
+ * 属性成长规则——由多项计算组合而成
+ *
+ * attrValue = baseValue + Σ(各项计算结果)
+ *
+ * 示例（线性 + 常数）：
+ *   [{ type: 'linear', multiplier: 0.5 }, { type: 'constant', value: 2 }]
+ *   → attrValue = baseValue + 0.5*level + 2
+ *
+ * 示例（指数 + 境界加成）：
+ *   [{ type: 'exponential', baseMultiplier: 1.02 }, { type: 'perRealm', realmBonuses: { '筑基': 2, '金丹': 5 } }]
+ *   → attrValue = baseValue * (1.02^level) + realmBonus
+ */
+export type AttributeGrowthRule = AttributeGrowthTerm[];
+
+// ── 世界观中的属性配置 ——
+
+/** 世界观属性配置：选属性 key + 定本世界观的成长规则 */
+export interface WorldviewAttributeConfig {
+  /** 属性 key（引用 AttributeRegistry 中的模板） */
+  key: string;
+  /** 本世界观的成长规则（多项组合，与境界体系挂钩） */
+  growthRule: AttributeGrowthRule;
+}
+
+// ── 兼容别名（过渡期）──
+
+/** 属性定义（兼容旧名） */
+export type AttributeDefinition = AttributeTemplate;
+/** 数值型属性（兼容旧名） */
+export type NumericAttributeDefinition = NumericAttributeTemplate;
+/** 枚举型属性（兼容旧名） */
+export type EnumAttributeDefinition = EnumAttributeTemplate;
+
+/** 专项数值定义（世界观决定槽位名和内容：修仙→法力、魔法→魔力、科技→能量） */
+export interface SpecialResourceDef {
+  /** 显示名（如 "法力"、"魔力"） */
+  displayName: string;
+  /** 默认上限 */
+  defaultCap: number;
+  /** 每级上限成长 */
+  capGrowthPerLevel: number;
+  /** 受哪些属性影响（属性 displayName 列表） */
+  affectedBy: string[];
+}
+
+// ============================================
+// 种族 (Race) 与天赋 (Talent)
+// ============================================
+
+/** 天生能力定义 */
+export interface InnateAbility {
+  id: string;
+  name: string;
+  description: string;
+  /** 对核心值的固定修正 */
+  effects: Partial<Record<CoreStatKey, { flat?: number; multiplier?: number }>>;
+}
+
+/** 种族定义（Mod 内容类型：races） */
+export interface RaceDefinition {
+  /** 全局唯一标识（kebab-case，如 "human"、"demon"） */
+  id: string;
+  /** 中文显示名 */
+  name: string;
+  /** 种族描述 */
+  description: string;
+  /** 限制出现的世界观 ID 列表（空 = 全世界观可用） */
+  worldviewRestrictions?: string[];
+  /** 对属性层的基础加成（属性 displayName → 加成值） */
+  baseAttributeBonuses: Record<string, number>;
+  /** 可选天赋 ID 列表 */
+  talentPool: string[];
+  /** 天生能力列表 */
+  innateAbilities: InnateAbility[];
+  /** 寿命修正倍数（1.0 = 标准人族寿命） */
+  lifespanModifier: number;
+}
+
+/** 天赋修正效果 */
+export interface TalentEffect {
+  /** 修正目标（核心值 key 或属性 displayName） */
+  target: string;
+  /** 效果类型 */
+  type: 'attribute_flat' | 'multiplier' | 'flat';
+  /** 修正值 */
+  value: number;
+}
+
+/** 天赋稀有度 */
+export type TalentRarity = 'common' | 'uncommon' | 'rare' | 'epic' | 'legendary';
+
+/** 天赋定义（Mod 内容类型：talents） */
+export interface TalentDefinition {
+  /** 全局唯一标识 */
+  id: string;
+  /** 中文显示名 */
+  name: string;
+  /** 天赋描述 */
+  description: string;
+  /** 限制种族 ID 列表（空 = 全种族可用） */
+  raceRestrictions?: string[];
+  /** 限制世界观 ID 列表（空 = 全世界观可用） */
+  worldviewRestrictions?: string[];
+  /** 修正效果列表 */
+  effects: TalentEffect[];
+  /** 稀有度 */
+  rarity: TalentRarity;
+  /** 互斥天赋 ID 列表 */
+  conflictsWith?: string[];
+  /** 对话检定标签 */
+  dialogueTag?: string;
+}
+
+// ============================================
+// CRPG 对话检定
+// ============================================
+
+/** 对话检定定义（挂载在对话选项上） */
+export interface DialogueCheck {
+  /** 检定类型 */
+  type: 'attribute' | 'coreStat' | 'talent';
+  /** 检定目标（属性 displayName / 核心值 key / 天赋 ID） */
+  target: string;
+  /** 难度等级（1-30） */
+  difficulty: number;
+  /** 成功文本 */
+  successText: string;
+  /** 失败文本 */
+  failureText: string;
+  /** 成功分支 ID */
+  successBranch: string;
+  /** 失败分支 ID */
+  failureBranch: string;
+}
+
+/** 检定结果 */
+export interface CheckResult {
+  /** 是否通过 */
+  success: boolean;
+  /** d20 投骰结果 */
+  roll: number;
+  /** 属性/核心值修正值 */
+  modifier: number;
+  /** 最终值（roll + modifier） */
+  total: number;
+  /** 难度等级 */
+  difficulty: number;
+  /** 检定类型 */
+  type: 'attribute' | 'coreStat' | 'talent';
+  /** 检定目标 */
+  target: string;
+}
+
+// ============================================
+// 旧属性系统（DEPRECATED — 迁移到新 Attribute/CoreStat 系统）
+// ============================================
+
 /**
  * 固定属性（由词条决定，不可通过修炼提升）
- * 包含基础值50 + 词条加成
+ * @deprecated 使用 AttributeDefinition[] + Record<string, number> 替代。
+ *             新代码应使用动态属性结构，不硬编码属性名。
  */
 export interface BaseStats {
   体质: number;
@@ -39,7 +267,7 @@ export interface BaseStats {
 
 /**
  * 可成长属性（通过修炼、突破等事件获得）
- * 初始为0，上限=等级×2
+ * @deprecated 使用 AttributeDefinition[] + Record<string, number> 替代。
  */
 export interface GrowthStats {
   体质: number;
@@ -50,19 +278,34 @@ export interface GrowthStats {
 }
 
 /**
- * 角色属性完整结构
- * 
- * 设计说明：
- * - base（固定属性）：由词条决定，永久保留，不可通过修炼提升
- * - growth（可成长属性）：通过修炼/突破事件获得，有等级上限
+ * 角色属性完整结构（V2 — 将被新系统替代）
+ *
+ * @deprecated 新代码使用 CharacterAttributesV3:
+ *   type CharacterAttributesV3 = {
+ *     attributes: Record<string, number>;
+ *     coreStats: Record<CoreStatKey, number>;
+ *   };
  */
 export interface CharacterStats {
   base: BaseStats;
   growth: GrowthStats;
 }
 
+/** 角色属性 V3（新系统） */
+export interface CharacterAttributesV3 {
+  /** 动态属性值（key = AttributeDefinition.key，value = 数值） */
+  attributes: Record<string, number>;
+  /** 派生的核心值 */
+  coreStats: Record<CoreStatKey, number>;
+  /** 种族 ID */
+  raceId: string;
+  /** 天赋 ID 列表 */
+  talentIds: string[];
+}
+
 /**
  * 快捷函数：获取最终属性（base + growth）
+ * @deprecated 使用 calculateCoreStats() 替代
  */
 export function getFinalStats(stats: CharacterStats): BaseStats {
   return {
@@ -76,6 +319,7 @@ export function getFinalStats(stats: CharacterStats): BaseStats {
 
 /**
  * 属性键类型
+ * @deprecated 使用 CoreStatKey 或动态 AttributeDefinition.key 替代
  */
 export type StatKey = '体质' | '灵根' | '悟性' | '幸运' | '意志';
 
@@ -84,6 +328,7 @@ export type FlatStats = Record<StatKey, number>;
 
 /**
  * 快捷函数：获取属性键列表
+ * @deprecated 使用 AttributeDefinition[] 动态获取
  */
 export function getStatKeys(): StatKey[] {
   return ['体质', '灵根', '悟性', '幸运', '意志'];
@@ -91,6 +336,7 @@ export function getStatKeys(): StatKey[] {
 
 /**
  * 工厂函数：创建默认 CharacterStats
+ * @deprecated 使用世界观 attributeDefinitions 创建默认属性
  */
 export function createDefaultStats(baseValues?: Partial<BaseStats>): CharacterStats {
   const defaultBase: BaseStats = {
@@ -109,6 +355,7 @@ export function createDefaultStats(baseValues?: Partial<BaseStats>): CharacterSt
 
 /**
  * 工厂函数：从 BaseStats 创建 CharacterStats（growth 置零）
+ * @deprecated 使用新属性系统替代
  */
 export function fromOldStats(oldStats: BaseStats): CharacterStats {
   return {
@@ -435,6 +682,12 @@ export interface World {
   };
   /** 属性显示名映射（内部键 → 世界对应的显示名，如 { 体质: '根骨', 灵根: '悟性' }） */
   statDisplayNames: Record<string, string>;
+  /** 属性完整定义（模板 + 世界观成长规则合并，前端动态渲染） */
+  attributeDefinitions: (AttributeTemplate & { growthRule: AttributeGrowthRule })[];
+  /** 该世界观可用的种族 ID 列表（V3 新增） */
+  racePool: string[];
+  /** 专项数值定义（V3 新增，如修仙的"法力"——仅定义显示名，基础值在代码常量） */
+  specialResource?: SpecialResourceDef;
 
   // === 特殊剧情 ===
   /** 特殊剧情引用（指向 modules/narrative/story 中的 Story） */
@@ -646,6 +899,11 @@ export interface Protagonist {
   fragmentInventory?: import('@/modules/crafting/logic/fragmentSystem').FragmentInventory; // 残本/残片库存
   // 爬塔系统
   towerProgress?: import('@/modules/tower/logic/types').TowerProgress; // 爬塔进度
+  // V3 新格式属性数据
+  v3Attributes?: Record<string, number | string>;
+  v3CoreStats?: Record<string, number>;
+  v3RaceId?: string;
+  v3TalentIds?: string[];
 }
 
 // 修炼流派类型（与 cultivationPathData.ts 保持一致）

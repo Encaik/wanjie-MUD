@@ -14,6 +14,10 @@ export {
   DEFAULT_VISUAL_CONFIG,
 } from './WorldViewRegistry';
 
+export { AttributeRegistry } from './AttributeRegistry';
+export { RaceRegistry } from './RaceRegistry';
+export { TalentRegistry } from './TalentRegistry';
+
 export type {
   // 世界观文本类型
   WorldTerminology,
