@@ -32,10 +32,16 @@
       "Bash(git add *)",
       "Bash(git commit -m 'feat\\(api\\): 新增世界机制API端点，前端通过HTTP获取机制数据 *)",
       "Bash(git commit -m 'refactor\\(world\\): 世界详情生成从查DB→补全→保存，不再从零完整生成 *)",
-      "Bash(git push *)"
+      "Bash(git push *)",
+      "Bash(pnpm vitest *)",
+      "Bash(mkdir -p \"D:/vs_workspace/wanjie/wanjie-MUD/src/app/api/v1/characters/[seed]\")",
+      "Bash(pnpm eslint *)",
+      "Bash(git reset *)",
+      "Bash(git commit -m 'feat: 属性\\(Attribute\\)/核心值\\(CoreStat\\)解耦 + 角色Seed系统 + 全链路打通 *)"
     ],
     "additionalDirectories": [
-      "D:\\vs_workspace\\wanjie\\wanjie-MUD\\src\\app\\api\\v1\\worldviews\\[id]"
+      "D:\\vs_workspace\\wanjie\\wanjie-MUD\\src\\app\\api\\v1\\worldviews\\[id]",
+      "D:\\vs_workspace\\wanjie\\wanjie-MUD\\src\\app\\api\\v1\\characters"
     ]
   }
 }
