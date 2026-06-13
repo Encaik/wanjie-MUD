@@ -4,15 +4,15 @@ import { useState } from 'react';
 
 import { Star, ChevronRight } from 'lucide-react';
 
-import { Badge } from '@/shared/ui/badge';
+import { Badge } from '@/shared/ui/data-display/badge';
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/shared/ui/dialog';
-import { Progress } from '@/shared/ui/progress';
+} from '@/shared/ui/overlay/dialog';
+import { Progress } from '@/shared/ui/feedback/progress';
 import {
   REPUTATION_LEVELS,
   ReputationLevel,

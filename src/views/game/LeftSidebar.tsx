@@ -2,8 +2,8 @@
 
 import { RotateCcw } from 'lucide-react';
 
-import { Button } from '@/shared/ui/button';
-import { ScrollArea } from '@/shared/ui/scroll-area';
+import { Button } from '@/shared/ui/actions/button';
+import { ScrollArea } from '@/shared/ui/layout/scroll-area';
 import { Protagonist } from '@/core/types';
 import { MentalState } from '@/core/types';
 

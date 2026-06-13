@@ -5,8 +5,8 @@ import { useState } from 'react';
 import { Sparkles, Upload, X } from 'lucide-react';
 
 import { MysticalBackground } from '@/shared/components';
-import { Button } from '@/shared/ui/button';
-import { Card, CardContent } from '@/shared/ui/card';
+import { Button } from '@/shared/ui/actions/button';
+import { Card, CardContent } from '@/shared/ui/data-display/card';
 
 interface StartScreenProps {
   onStart: () => void;
@@ -52,54 +52,51 @@ export function StartScreen({ onStart, onImportSave }: StartScreenProps) {
 
       {/* ===== 内容卡片 ===== */}
       <Card
-        className="relative z-10 max-w-md w-full mx-4 shadow-2xl border-primary/10"
+        className="relative z-10 max-w-lg w-full mx-4 shadow-2xl border-primary/10 overflow-hidden"
         style={{ animation: 'fade-in-up 0.8s ease-out forwards' }}
       >
-        {/* 顶部渐变光线 */}
-        <div className="absolute -top-px left-6 right-6 h-px bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
-        {/* 底部渐变光线 */}
-        <div className="absolute -bottom-px left-6 right-6 h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent" />
+        {/* 顶部流光 */}
+        <div className="absolute top-0 left-[15%] right-[15%] h-px bg-linear-to-r from-transparent via-primary/40 to-transparent" />
 
-        <CardContent className="pt-10 pb-8 px-8 text-center space-y-7">
-          {/* ===== 标题区域 ===== */}
-          <div className="space-y-3">
-            <div className="flex items-center justify-center gap-2.5">
-              <Sparkles
-                className="w-5 h-5 text-primary/50"
-                style={{ animation: 'pulse-glow 2.5s ease-in-out infinite' }}
-              />
-              <h1 className="text-4xl font-bold tracking-[0.15em] text-foreground font-serif">
-                万界修行录
-              </h1>
-              <Sparkles
-                className="w-5 h-5 text-primary/50"
-                style={{ animation: 'pulse-glow 2.5s ease-in-out infinite' }}
+        {/* 左下角装饰光晕 */}
+        <div className="absolute -bottom-20 -left-20 w-40 h-40 bg-primary/3 rounded-full blur-3xl pointer-events-none" />
+        {/* 右上角装饰光晕 */}
+        <div className="absolute -top-20 -right-20 w-40 h-40 bg-primary/3 rounded-full blur-3xl pointer-events-none" />
+
+        <CardContent className="pt-6 pb-5 px-8 text-center space-y-5">
+          {/* ===== Logo 区域 ===== */}
+          <div className="flex flex-col items-center gap-3">
+            {/* 微微光晕衬托 logo */}
+            <div className="relative">
+              <div className="absolute inset-4 bg-primary/10 rounded-full blur-3xl" />
+              <img
+                src="/img/logo-透明.png"
+                alt="万界修行录"
+                className="h-48 w-auto relative select-none pointer-events-none"
               />
             </div>
-            <p className="text-lg text-muted-foreground tracking-[0.3em] font-serif">
+            <p className="text-sm text-muted-foreground/50 tracking-[0.35em] font-serif">
               命运指引，万界归一
             </p>
           </div>
 
           {/* ===== 装饰分隔 ===== */}
-          <div className="flex items-center gap-4">
-            <div className="flex-1 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
-            <span className="text-primary/30 text-xs tracking-widest select-none">
-              ◆ ◇ ◆
-            </span>
-            <div className="flex-1 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
+          <div className="flex items-center gap-3">
+            <div className="flex-1 h-px bg-linear-to-r from-transparent via-border/70 to-transparent" />
+            <span className="text-primary/20 text-xs select-none">◇</span>
+            <div className="flex-1 h-px bg-linear-to-r from-transparent via-border/70 to-transparent" />
           </div>
 
           {/* ===== 内容区域 ===== */}
-          <div className="space-y-5">
-            <p className="text-sm text-muted-foreground/80 leading-relaxed tracking-wide">
+          <div className="space-y-4">
+            <p className="text-sm text-muted-foreground/60 leading-relaxed tracking-wide">
               万界之门已开启，星辰指引着命运的方向。
               <br />
               择一方天地，书写属于你的不朽传奇。
             </p>
 
             {/* ===== 开始按钮（带光晕） ===== */}
-            <div className="relative pt-1">
+            <div className="relative">
               <div
                 className="absolute inset-0 rounded-lg bg-primary/15 blur-xl"
                 style={{ animation: 'button-glow 3s ease-in-out infinite' }}
@@ -120,12 +117,12 @@ export function StartScreen({ onStart, onImportSave }: StartScreenProps) {
             {/* ===== 导入存档按钮 ===== */}
             {onImportSave && (
               <Button
-                variant="outline"
-                size="lg"
+                variant="ghost"
+                size="sm"
                 onClick={handleImport}
-                className="w-full transition-all duration-300 hover:border-primary/30 hover:bg-primary/5"
+                className="w-full text-xs text-muted-foreground/50 hover:text-foreground hover:bg-transparent transition-colors"
               >
-                <Upload className="w-4 h-4 mr-2" />
+                <Upload className="w-3.5 h-3.5 mr-1.5" />
                 导入存档
               </Button>
             )}
@@ -133,7 +130,7 @@ export function StartScreen({ onStart, onImportSave }: StartScreenProps) {
             {/* ===== 导入错误提示 ===== */}
             {importError && (
               <div
-                className="flex items-center gap-1.5 p-2.5 rounded-md bg-destructive/10 border border-destructive/30 text-destructive text-xs"
+                className="flex items-center gap-1.5 p-2 rounded-md bg-destructive/10 border border-destructive/20 text-destructive text-xs"
                 style={{ animation: 'fade-in-up 0.4s ease-out forwards' }}
               >
                 <X className="w-3.5 h-3.5 shrink-0" />
@@ -149,9 +146,11 @@ export function StartScreen({ onStart, onImportSave }: StartScreenProps) {
             )}
 
             {/* ===== 底部提示 ===== */}
-            <p className="text-xs text-muted-foreground/50 tracking-wide">
-              导入存档将覆盖当前游戏进度（消息记录不包含在存档中）
-            </p>
+            {onImportSave && (
+              <p className="text-[10px] text-muted-foreground/25 tracking-wide">
+                导入存档将覆盖当前游戏进度（消息记录不包含在存档中）
+              </p>
+            )}
           </div>
         </CardContent>
       </Card>

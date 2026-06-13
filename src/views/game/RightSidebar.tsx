@@ -4,8 +4,8 @@ import { useState } from 'react';
 
 import { MessageCircle, Bell, Trophy, Newspaper } from 'lucide-react';
 
-import { Badge } from '@/shared/ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/shared/ui/tabs';
+import { Badge } from '@/shared/ui/data-display/badge';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/shared/ui/data-display/tabs';
 import { RealmSystem } from '@/modules/progression/data/realmData';
 import { getRealmName } from '@/modules/progression/data/realmData';
 import { MessageRecord } from '@/core/types';

@@ -12,7 +12,7 @@ import { useEffect, useState } from 'react';
 
 import { X } from 'lucide-react';
 
-import { Card } from '@/shared/ui/card';
+import { Card } from '@/shared/ui/data-display/card';
 import { ANNOUNCEMENT_TYPE_CONFIG, ANNOUNCEMENT_PRIORITY_CONFIG } from '@/modules/social/logic/announcement/config';
 import { cn } from '@/shared/utils';
 import type { Announcement } from '@/modules/social/announcementTypes';

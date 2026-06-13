@@ -37,9 +37,9 @@ import {
 } from 'lucide-react';
 
 import { RankDetailDialog, ReputationDetailDialog } from '@/views/game';
-import { Badge } from '@/shared/ui/badge';
-import { Button } from '@/shared/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/card';
+import { Badge } from '@/shared/ui/data-display/badge';
+import { Button } from '@/shared/ui/actions/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/data-display/card';
 import { 
   Dialog,
   DialogContent,
@@ -47,10 +47,10 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@/shared/ui/dialog';
-import { Progress } from '@/shared/ui/progress';
-import { ScrollArea } from '@/shared/ui/scroll-area';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/shared/ui/tooltip';
+} from '@/shared/ui/overlay/dialog';
+import { Progress } from '@/shared/ui/feedback/progress';
+import { ScrollArea } from '@/shared/ui/layout/scroll-area';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/shared/ui/overlay/tooltip';
 import { 
   getFactionsByWorld, 
   getFactionById, 
@@ -79,8 +79,8 @@ import {
   CommissionQuality,
 } from '@/modules/faction/data/factionProgressData';
 import { checkRankPromotion } from '@/core/engine';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/shared/ui/tabs';
-import { Slider } from '@/shared/ui/slider';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/shared/ui/data-display/tabs';
+import { Slider } from '@/shared/ui/forms/slider';
 
 
 interface FactionPanelProps {

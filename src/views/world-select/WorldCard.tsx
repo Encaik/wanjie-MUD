@@ -6,9 +6,9 @@ import type { World, WorldDifficulty } from '@/core/types';
 import { STAT_KEYS } from '@/modules/identity/data/statDisplayNames';
 import { generateLevelStars } from '@/modules/identity/data/worldEffectsUtils';
 import { RealmTable } from '@/shared/components';
-import { Button } from '@/shared/ui/button';
-import { Card, CardContent } from '@/shared/ui/card';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/shared/ui/tooltip';
+import { Button } from '@/shared/ui/actions/button';
+import { Card, CardContent } from '@/shared/ui/data-display/card';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/shared/ui/overlay/tooltip';
 import { cn } from '@/shared/utils';
 
 interface WorldCardProps {

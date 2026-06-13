@@ -7,8 +7,8 @@ import {
   Sparkles, Heart, TrendingUp, Clock
 } from 'lucide-react';
 
-import { Badge } from '@/shared/ui/badge';
-import { Button } from '@/shared/ui/button';
+import { Badge } from '@/shared/ui/data-display/badge';
+import { Button } from '@/shared/ui/actions/button';
 import {
   Dialog,
   DialogContent,
@@ -16,8 +16,8 @@ import {
   DialogHeader,
   DialogTitle,
   DialogFooter,
-} from '@/shared/ui/dialog';
-import { Progress } from '@/shared/ui/progress';
+} from '@/shared/ui/overlay/dialog';
+import { Progress } from '@/shared/ui/feedback/progress';
 import { CharacterStats, getFinalStats } from '@/core/types';
 import { TribulationConfig, TribulationState, RealmBottleneck } from '@/core/types';
 

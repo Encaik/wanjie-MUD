@@ -1,0 +1,88 @@
+'use client';
+
+import { useState, useEffect, useCallback } from 'react';
+
+import { Button } from '@/shared/ui/actions/button';
+import { cn } from '@/shared/utils';
+
+interface CooldownButtonProps extends React.ComponentProps<'button'> {
+  cooldown: number; // 冷却时间（毫秒）
+  lastTriggerTime: number; // 上次触发的时间戳（0表示无CD）
+  onCooldownComplete?: () => void;
+}
+
+export function CooldownButton({
+  cooldown,
+  lastTriggerTime,
+  onCooldownComplete,
+  children,
+  disabled,
+  className,
+  onClick,
+  ...props
+}: CooldownButtonProps) {
+  const [now, setNow] = useState(Date.now());
+
+  // 每100ms更新一次
+  useEffect(() => {
+    if (lastTriggerTime === 0) return;
+
+    const interval = setInterval(() => {
+      setNow(Date.now());
+    }, 100);
+
+    return () => clearInterval(interval);
+  }, [lastTriggerTime]);
+
+  const elapsed = now - lastTriggerTime;
+  const remaining = Math.max(0, cooldown - elapsed);
+  const progress = Math.min(1, elapsed / cooldown);
+  const isOnCooldown = lastTriggerTime > 0 && remaining > 0;
+
+  // CD结束时触发回调
+  useEffect(() => {
+    if (lastTriggerTime > 0 && !isOnCooldown) {
+      onCooldownComplete?.();
+    }
+  }, [isOnCooldown, lastTriggerTime, onCooldownComplete]);
+
+  const handleClick = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
+    if (isOnCooldown || disabled) return;
+    onClick?.(e);
+  }, [isOnCooldown, disabled, onClick]);
+
+  return (
+    <Button
+      {...props}
+      className={cn('relative overflow-hidden', className)}
+      disabled={disabled || isOnCooldown}
+      onClick={handleClick}
+    >
+      {/* CD蒙层 - 墨韵渐变（从左到右如运功聚气） */}
+      {isOnCooldown && (
+        <div
+          data-slot="cooldown-overlay"
+          className="absolute inset-0 bg-gradient-to-t from-primary/40 via-primary/15 to-transparent pointer-events-none z-10"
+          style={{
+            clipPath: `inset(0 ${(1 - progress) * 100}% 0 0)`
+          }}
+        />
+      )}
+
+      {/* 按钮内容 */}
+      <span className={cn(
+        "flex items-center justify-center gap-1.5 transition-opacity",
+        isOnCooldown && "opacity-40"
+      )}>
+        {children}
+      </span>
+
+      {/* CD时间显示 */}
+      {isOnCooldown && (
+        <span className="absolute inset-0 flex items-center justify-center text-primary-foreground font-serif font-medium text-sm z-20 drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)]">
+          {(remaining / 1000).toFixed(1)}s
+        </span>
+      )}
+    </Button>
+  );
+}

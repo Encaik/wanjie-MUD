@@ -8,7 +8,7 @@
 
 import { Flame, Swords, ArrowRight, ArrowLeftRight } from 'lucide-react';
 
-import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/data-display/card';
 import {
   ELEMENT_COUNTER_MAP,
   WEAPON_COUNTER_MAP,

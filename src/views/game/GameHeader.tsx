@@ -5,7 +5,7 @@ import {
   Swords, Shield, Flame, Sparkles
 } from 'lucide-react';
 
-import { Badge } from '@/shared/ui/badge';
+import { Badge } from '@/shared/ui/data-display/badge';
 import { CULTIVATION_PATHS, getPathLevelExp } from '@/modules/progression/data/cultivationPathData';
 import { getRealmName } from '@/modules/progression/data/realmData';
 import { getMaxExperience } from '@/modules/progression/logic/cultivation';

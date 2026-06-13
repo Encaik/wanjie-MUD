@@ -4,9 +4,10 @@ import { useState, useEffect } from 'react';
 
 import { Swords, Map, AlertTriangle, Star, Zap, Lock, Battery, BatteryLow, BatteryMedium, BatteryFull, Timer, CheckCircle } from 'lucide-react';
 
-import { Badge } from '@/shared/ui/badge';
-import { Button } from '@/shared/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/card';
+import { Badge } from '@/shared/ui/data-display/badge';
+import { Button } from '@/shared/ui/actions/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/data-display/card';
+import { Empty, EmptyContent } from '@/shared/ui/feedback/empty';
 import { getDungeonInfo } from '@/modules/narrative/logic/terminology';
 import { DungeonConfig, WorldType, Protagonist } from '@/core/types';
 
@@ -31,15 +32,15 @@ const getStaminaIcon = (current: number, max: number, cost: number) => {
   const enough = current >= cost;
   
   if (!enough) {
-    return <BatteryLow className="w-4 h-4 text-red-500" />;
+    return <BatteryLow className="w-4 h-4 text-game-combat" />;
   }
   if (ratio >= 0.7) {
-    return <BatteryFull className="w-4 h-4 text-green-500" />;
+    return <BatteryFull className="w-4 h-4 text-game-recovery" />;
   }
   if (ratio >= 0.3) {
-    return <BatteryMedium className="w-4 h-4 text-yellow-500" />;
+    return <BatteryMedium className="w-4 h-4 text-game-economy" />;
   }
-  return <BatteryLow className="w-4 h-4 text-orange-500" />;
+  return <BatteryLow className="w-4 h-4 text-game-tribulation" />;
 };
 
 // 计算体力恢复倒计时（秒）
@@ -105,7 +106,7 @@ export function DifficultySelect({
           <span>当前境界：{playerRealm || `Lv.${playerLevel}`}</span>
           <span className="flex items-center gap-2">
             {getStaminaIcon(currentStamina, maxStamina, 10)}
-            <span className={currentStamina < 20 ? 'text-red-500' : ''}>
+            <span className={currentStamina < 20 ? 'text-game-combat' : ''}>
               体力：{currentStamina}/{maxStamina}
             </span>
           </span>
@@ -154,7 +155,7 @@ export function DifficultySelect({
                       </Badge>
                     )}
                     {hasCleared && (
-                      <Badge variant="outline" className="ml-2 text-[10px] bg-green-500/10 border-green-500/30 text-green-600">
+                      <Badge variant="outline" className="ml-2 text-[10px] bg-game-recovery/10 border-game-recovery/30 text-game-recovery">
                         <CheckCircle className="w-3 h-3 mr-1" />
                         已通关
                       </Badge>
@@ -168,7 +169,7 @@ export function DifficultySelect({
                       </Badge>
                     )}
                     {isRecommended && (
-                      <Badge className="text-[10px] bg-green-500">
+                      <Badge className="text-[10px] bg-game-cultivation">
                         推荐
                       </Badge>
                     )}
@@ -186,7 +187,7 @@ export function DifficultySelect({
                     x{config.rewardMultiplier.toFixed(1)}
                   </span>
                   <span className="flex items-center gap-1">
-                    <Battery className="w-3 h-3 text-amber-500" />
+                    <Battery className="w-3 h-3 text-game-economy" />
                     消耗: {staminaCost}
                   </span>
                 </div>
@@ -242,9 +243,11 @@ export function DifficultySelect({
         </div>
         
         {difficulties.length === 0 && (
-          <div className="text-center py-4 text-muted-foreground text-sm">
-            暂无可选难度
-          </div>
+          <Empty>
+            <EmptyContent>
+              <p className="text-sm text-muted-foreground font-serif">暂无可选难度</p>
+            </EmptyContent>
+          </Empty>
         )}
       </CardContent>
     </Card>

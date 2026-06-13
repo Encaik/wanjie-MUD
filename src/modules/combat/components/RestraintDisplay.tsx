@@ -8,8 +8,8 @@
 
 import { ArrowRight, AlertTriangle, Check, X } from 'lucide-react';
 
-import { Badge } from '@/shared/ui/badge';
-import { Card, CardContent } from '@/shared/ui/card';
+import { Badge } from '@/shared/ui/data-display/badge';
+import { Card, CardContent } from '@/shared/ui/data-display/card';
 import {
   calculateRestraintResult,
   getElementIcon,

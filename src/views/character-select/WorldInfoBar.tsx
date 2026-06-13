@@ -2,7 +2,7 @@
 
 import { ArrowLeft } from 'lucide-react';
 
-import { Button } from '@/shared/ui/button';
+import { Button } from '@/shared/ui/actions/button';
 import { cn } from '@/shared/utils';
 
 interface WorldInfoBarProps {

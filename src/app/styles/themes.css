@@ -88,6 +88,22 @@
   --quality-common: oklch(0.60 0.12 145);
   --quality-poor: oklch(0.50 0.02 70);
   --quality-basic: oklch(0.85 0.01 75);
+
+  /* 游戏领域色（浅色模式） */
+  --game-combat: oklch(0.55 0.18 25);
+  --game-cultivation: oklch(0.50 0.14 260);
+  --game-recovery: oklch(0.55 0.14 145);
+  --game-economy: oklch(0.60 0.16 75);
+  --game-mental: oklch(0.50 0.14 310);
+  --game-tribulation: oklch(0.60 0.16 50);
+
+  /* 游戏领域色背景（10% 不透明度基准） */
+  --game-combat-bg: oklch(0.55 0.18 25 / 0.1);
+  --game-cultivation-bg: oklch(0.50 0.14 260 / 0.1);
+  --game-recovery-bg: oklch(0.55 0.14 145 / 0.1);
+  --game-economy-bg: oklch(0.60 0.16 75 / 0.1);
+  --game-mental-bg: oklch(0.50 0.14 310 / 0.1);
+  --game-tribulation-bg: oklch(0.60 0.16 50 / 0.1);
 }
 
 /* ========================================
@@ -157,6 +173,22 @@
   --quality-common: oklch(0.70 0.12 145);
   --quality-poor: oklch(0.55 0.02 70);
   --quality-basic: oklch(0.80 0.01 75);
+
+  /* 游戏领域色（暗色模式提高明度） */
+  --game-combat: oklch(0.70 0.16 25);
+  --game-cultivation: oklch(0.65 0.12 260);
+  --game-recovery: oklch(0.68 0.12 145);
+  --game-economy: oklch(0.75 0.14 75);
+  --game-mental: oklch(0.65 0.12 310);
+  --game-tribulation: oklch(0.72 0.14 50);
+
+  /* 游戏领域色背景（暗色模式提高亮度后等比例背景） */
+  --game-combat-bg: oklch(0.70 0.16 25 / 0.15);
+  --game-cultivation-bg: oklch(0.65 0.12 260 / 0.15);
+  --game-recovery-bg: oklch(0.68 0.12 145 / 0.15);
+  --game-economy-bg: oklch(0.75 0.14 75 / 0.15);
+  --game-mental-bg: oklch(0.65 0.12 310 / 0.15);
+  --game-tribulation-bg: oklch(0.72 0.14 50 / 0.15);
 }
 
 /* ========================================

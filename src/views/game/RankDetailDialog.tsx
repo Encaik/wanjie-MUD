@@ -13,17 +13,17 @@ import {
   Zap,
 } from 'lucide-react';
 
-import { Badge } from '@/shared/ui/badge';
-import { Button } from '@/shared/ui/button';
+import { Badge } from '@/shared/ui/data-display/badge';
+import { Button } from '@/shared/ui/actions/button';
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/shared/ui/dialog';
-import { ScrollArea } from '@/shared/ui/scroll-area';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/shared/ui/tooltip';
+} from '@/shared/ui/overlay/dialog';
+import { ScrollArea } from '@/shared/ui/layout/scroll-area';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/shared/ui/overlay/tooltip';
 import {
   getRanksByFactionType,
   FactionRankConfig,

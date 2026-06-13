@@ -4,8 +4,8 @@ import { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 
 import { Anvil, Clock, Package, Shield, AlertCircle, Sword, Shirt, Footprints, Glasses } from 'lucide-react';
 
-import { Badge } from '@/shared/ui/badge';
-import { Button } from '@/shared/ui/button';
+import { Badge } from '@/shared/ui/data-display/badge';
+import { Button } from '@/shared/ui/actions/button';
 import { getRarityStyle } from '@/modules/theme/data/rarityStyles';
 import { 
   FORGE_RECIPES, 

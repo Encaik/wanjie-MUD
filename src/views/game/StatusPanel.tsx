@@ -5,9 +5,9 @@ import { useState, useEffect, useMemo } from 'react';
 import { Heart, Zap, Shield, Activity, User, TrendingUp, TrendingDown, Swords, ShieldCheck, Flame, Info } from 'lucide-react';
 
 import { StatDetailDialog } from '@/shared/components/StatDetailDialog';
-import { Badge } from '@/shared/ui/badge';
-import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/card';
-import { Separator } from '@/shared/ui/separator';
+import { Badge } from '@/shared/ui/data-display/badge';
+import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/data-display/card';
+import { Separator } from '@/shared/ui/layout/separator';
 import { 
   useProtagonistInfo, 
   useStats, 

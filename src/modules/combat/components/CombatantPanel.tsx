@@ -11,8 +11,8 @@ import {
   Crown, Star
 } from 'lucide-react';
 
-import { Badge } from '@/shared/ui/badge';
-import { Progress } from '@/shared/ui/progress';
+import { Badge } from '@/shared/ui/data-display/badge';
+import { Progress } from '@/shared/ui/feedback/progress';
 import { StatBuff } from '@/modules/combat/logic/battle';
 import { 
   getElementIcon, 

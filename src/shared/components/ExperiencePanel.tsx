@@ -2,9 +2,9 @@
 
 import { Compass, Swords } from 'lucide-react';
 
-import { Button } from '@/shared/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/card';
-import { CooldownButton } from '@/shared/ui/cooldown-button';
+import { Button } from '@/shared/ui/actions/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/data-display/card';
+import { CooldownButton } from '@/shared/components/CooldownButton';
 import { AdventureEvent, WorldType } from '@/core/types';
 
 
@@ -57,7 +57,7 @@ export function ExperiencePanel({
       <CardHeader className="pb-1 pt-2">
         <CardTitle className="flex items-center gap-2 text-sm">
           {currentEvent.choices[0]?.battle ? (
-            <Swords className="w-4 h-4 text-red-500" />
+            <Swords className="w-4 h-4 text-game-combat" />
           ) : (
             <Compass className="w-4 h-4 text-primary" />
           )}
@@ -81,7 +81,7 @@ export function ExperiencePanel({
               </span>
               <span>{choice.text}</span>
               {choice.battle && (
-                <Swords className="w-3 h-3 ml-auto text-red-500" />
+                <Swords className="w-3 h-3 ml-auto text-game-combat" />
               )}
             </Button>
           ))}

@@ -2,8 +2,8 @@
 
 import { AlertTriangle, LogOut, PartyPopper, Trophy } from 'lucide-react';
 
-import { Button } from '@/shared/ui/button';
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/shared/ui/dialog';
+import { Button } from '@/shared/ui/actions/button';
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/shared/ui/overlay/dialog';
 import { isDebugMode } from '@/shared/config/env';
 import { Protagonist, Technique, Equipment, InventoryItem } from '@/core/types';
 import { NewWorldInfo, InheritanceChoice } from '@/core/types';

@@ -9,15 +9,15 @@ import {
   Skull
 } from 'lucide-react';
 
-import { Badge } from '@/shared/ui/badge';
-import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/card';
-import { Progress } from '@/shared/ui/progress';
-import { Separator } from '@/shared/ui/separator';
+import { Badge } from '@/shared/ui/data-display/badge';
+import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/data-display/card';
+import { Progress } from '@/shared/ui/feedback/progress';
+import { Separator } from '@/shared/ui/layout/separator';
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
-} from '@/shared/ui/tooltip';
+} from '@/shared/ui/overlay/tooltip';
 import {
   formatDanger,
   formatOpportunity,

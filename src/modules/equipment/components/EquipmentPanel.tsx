@@ -5,20 +5,20 @@ import React, { useMemo, useState } from 'react';
 import { Shield, Sword, Swords, Crosshair, Headphones, Shirt, Footprints, Package, Sparkles, Layers, Info, ArrowUpDown, Filter, Star, Flame, Snowflake, Zap as Thunder, Wind, Mountain, Sun, Moon } from 'lucide-react';
 
 import { WeaponRestraintChart } from '@/modules/combat/components/RestraintChart';
-import { Badge } from '@/shared/ui/badge';
-import { Button } from '@/shared/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/card';
+import { Badge } from '@/shared/ui/data-display/badge';
+import { Button } from '@/shared/ui/actions/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/data-display/card';
 import { getRarityStyle } from '@/modules/theme/data/rarityStyles';
-import { BackpackHeader, EmptyBackpackHint } from '@/shared/ui/empty-slot';
-import { UpgradeableItemTooltip } from '@/shared/ui/upgradeable-item-tooltip';
+import { BackpackHeader, EmptyBackpackHint } from '@/shared/ui/feedback/empty-slot';
+import { UpgradeableItemTooltip } from '@/shared/ui/data-display/upgradeable-item-tooltip';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/shared/ui/select';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/shared/ui/tooltip';
+} from '@/shared/ui/forms/select';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/shared/ui/overlay/tooltip';
 import { EQUIPMENT_SETS, EquipmentAffix } from '@/modules/equipment/data/equipmentAffixData';
 import { getElementIcon, getWeaponCategoryIcon, type Element, type WeaponCategory } from '@/modules/combat/logic/restraintSystem';
 import { Equipment, EquipmentSlot, ItemRarity, UPGRADE_CONFIG } from '@/core/types';

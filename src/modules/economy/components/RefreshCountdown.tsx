@@ -10,8 +10,8 @@ import { useState, useEffect, useCallback } from 'react';
 
 import { Clock, RefreshCw, Zap } from 'lucide-react';
 
-import { Badge } from '@/shared/ui/badge';
-import { Button } from '@/shared/ui/button';
+import { Badge } from '@/shared/ui/data-display/badge';
+import { Button } from '@/shared/ui/actions/button';
 import { CurrencyService } from '@/modules/economy/logic/shop/currencyService';
 import { RefreshService } from '@/modules/economy/logic/shop/refreshService';
 import { ShopType, PlayerCurrencies, CurrencyCost } from '@/modules/economy/logic/shop/types';

@@ -4,12 +4,12 @@ import { useState, useEffect, useRef, useMemo } from 'react';
 
 import { Swords, Sparkles, Building2, Zap, Package, LogOut, Shield, ShoppingBag, Trophy, BookOpen, Clock, BarChart3, FlaskConical, Anvil, Landmark } from 'lucide-react';
 
-import { Badge } from '@/shared/ui/badge';
-import { Button } from '@/shared/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/card';
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/shared/ui/dialog';
-import { Separator } from '@/shared/ui/separator';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/shared/ui/tabs';
+import { Badge } from '@/shared/ui/data-display/badge';
+import { Button } from '@/shared/ui/actions/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/data-display/card';
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/shared/ui/overlay/dialog';
+import { Separator } from '@/shared/ui/layout/separator';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/shared/ui/data-display/tabs';
 import { isDebugMode } from '@/shared/config/env';
 import { createEmptyFragmentInventory, getSynthesizableCount } from '@/modules/crafting/logic/fragmentSystem';
 import { TowerEnemy, createDefaultTowerProgress } from '@/modules/tower/logic/types';
@@ -66,7 +66,7 @@ import { MobileLayout } from './MobileLayout';
 import { CenterPanel } from './CenterPanel';
 
 import { InheritanceChoice, NewWorldInfo, DEFAULT_ASCENSION_MARK, AscensionFlowState, DeathState } from '@/core/types';
-import { ScrollArea } from '@/shared/ui/scroll-area';
+import { ScrollArea } from '@/shared/ui/layout/scroll-area';
 import { getRealmName } from '@/modules/progression/data/realmData';
 import { 
   AlchemyRecipe, 

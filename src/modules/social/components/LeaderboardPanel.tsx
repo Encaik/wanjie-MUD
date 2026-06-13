@@ -8,10 +8,10 @@ import { useState } from 'react';
 
 import { Crown, Swords, Target, TrendingUp, Trophy, Users } from 'lucide-react';
 
-import { Badge } from '@/shared/ui/badge';
-import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/card';
-import { ScrollArea } from '@/shared/ui/scroll-area';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/shared/ui/tabs';
+import { Badge } from '@/shared/ui/data-display/badge';
+import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/data-display/card';
+import { ScrollArea } from '@/shared/ui/layout/scroll-area';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/shared/ui/data-display/tabs';
 import { cn } from '@/shared/utils';
 import type { AllLeaderboards, LeaderboardEntry, LeaderboardType } from '@/modules/social/multiplayerTypes';
 

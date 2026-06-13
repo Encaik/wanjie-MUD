@@ -18,9 +18,9 @@ import {
   Package,
 } from 'lucide-react';
 
-import { Badge } from '@/shared/ui/badge';
-import { Button } from '@/shared/ui/button';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/shared/ui/card';
+import { Badge } from '@/shared/ui/data-display/badge';
+import { Button } from '@/shared/ui/actions/button';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/shared/ui/data-display/card';
 import { getRarityBgClass, getRarityColorClass, getRarityBorderClass } from '@/modules/equipment/data/raritySystem';
 import { generateTowerEnemy } from '@/modules/tower/logic/towerSystem';
 import { 

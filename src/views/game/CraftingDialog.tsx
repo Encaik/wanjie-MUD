@@ -16,21 +16,21 @@ import {
   Star
 } from 'lucide-react';
 
-import { Badge } from '@/shared/ui/badge';
-import { Button } from '@/shared/ui/button';
-import { Card, CardContent } from '@/shared/ui/card';
+import { Badge } from '@/shared/ui/data-display/badge';
+import { Button } from '@/shared/ui/actions/button';
+import { Card, CardContent } from '@/shared/ui/data-display/card';
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogDescription,
-} from '@/shared/ui/dialog';
+} from '@/shared/ui/overlay/dialog';
 import { getRarityStyle } from '@/modules/theme/data/rarityStyles';
-import { Progress } from '@/shared/ui/progress';
-import { ScrollArea } from '@/shared/ui/scroll-area';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/shared/ui/tabs';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/shared/ui/tooltip';
+import { Progress } from '@/shared/ui/feedback/progress';
+import { ScrollArea } from '@/shared/ui/layout/scroll-area';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/shared/ui/data-display/tabs';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/shared/ui/overlay/tooltip';
 import { 
   ALCHEMY_RECIPES, 
   ALCHEMY_MATERIALS, 

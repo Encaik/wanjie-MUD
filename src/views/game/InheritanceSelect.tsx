@@ -7,9 +7,9 @@ import {
   Check, X, ChevronRight
 } from 'lucide-react';
 
-import { Badge } from '@/shared/ui/badge';
-import { Button } from '@/shared/ui/button';
-import { Card, CardContent } from '@/shared/ui/card';
+import { Badge } from '@/shared/ui/data-display/badge';
+import { Button } from '@/shared/ui/actions/button';
+import { Card, CardContent } from '@/shared/ui/data-display/card';
 import {
   Dialog,
   DialogContent,
@@ -17,11 +17,11 @@ import {
   DialogHeader,
   DialogTitle,
   DialogFooter,
-} from '@/shared/ui/dialog';
-import { Label } from '@/shared/ui/label';
-import { Progress } from '@/shared/ui/progress';
-import { RadioGroup, RadioGroupItem } from '@/shared/ui/radio-group';
-import { Slider } from '@/shared/ui/slider';
+} from '@/shared/ui/overlay/dialog';
+import { Label } from '@/shared/ui/forms/label';
+import { Progress } from '@/shared/ui/feedback/progress';
+import { RadioGroup, RadioGroupItem } from '@/shared/ui/forms/radio-group';
+import { Slider } from '@/shared/ui/forms/slider';
 import { ASCENSION_CONFIG } from '@/modules/ascension/data/ascensionData';
 import { Protagonist, Technique, Equipment, InventoryItem } from '@/core/types';
 import { InheritanceChoice } from '@/core/types';

@@ -5,10 +5,10 @@ import { Globe, Scroll, Sparkles, User } from 'lucide-react';
 import type { WorldType } from '@/core/types'; // 仅用于 confirmText 类型签名
 import { useStatLabels } from '@/modules/identity/hooks/useStatLabels';
 import { MysticalBackground } from '@/shared/components';
-import { Badge } from '@/shared/ui/badge';
-import { Button } from '@/shared/ui/button';
-import { Card, CardContent } from '@/shared/ui/card';
-import { ScrollArea } from '@/shared/ui/scroll-area';
+import { Badge } from '@/shared/ui/data-display/badge';
+import { Button } from '@/shared/ui/actions/button';
+import { Card, CardContent } from '@/shared/ui/data-display/card';
+import { ScrollArea } from '@/shared/ui/layout/scroll-area';
 import { cn } from '@/shared/utils';
 
 interface BackstoryProps {

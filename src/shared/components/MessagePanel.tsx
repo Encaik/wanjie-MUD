@@ -4,9 +4,11 @@ import { useState, useRef, useCallback, useMemo, memo, useEffect } from 'react';
 
 import { Bell, CheckCircle, XCircle, Info, AlertTriangle, Loader2, ChevronUp } from 'lucide-react';
 
-import { Badge } from '@/shared/ui/badge';
-import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/card';
-import { ScrollArea } from '@/shared/ui/scroll-area';
+import { Badge } from '@/shared/ui/data-display/badge';
+import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/data-display/card';
+import { ScrollArea } from '@/shared/ui/layout/scroll-area';
+import { Empty, EmptyContent } from '@/shared/ui/feedback/empty';
+import { getRarityStyle } from '@/modules/theme/data/rarityStyles';
 import { MessageRecord, ItemRarity } from '@/core/types';
 import type { FragmentDropData } from '@/modules/crafting/logic/fragmentSystem';
 
@@ -21,20 +23,14 @@ interface MessagePanelProps {
 }
 
 const typeConfig = {
-  success: { icon: CheckCircle, color: 'text-green-500', bg: 'bg-green-50 dark:bg-green-950' },
-  failure: { icon: XCircle, color: 'text-red-500', bg: 'bg-red-50 dark:bg-red-950' },
-  info: { icon: Info, color: 'text-blue-500', bg: 'bg-blue-50 dark:bg-blue-950' },
-  warning: { icon: AlertTriangle, color: 'text-yellow-500', bg: 'bg-yellow-50 dark:bg-yellow-950' },
+  success: { icon: CheckCircle, color: 'text-game-recovery', bg: 'bg-game-recovery/10' },
+  failure: { icon: XCircle, color: 'text-game-combat', bg: 'bg-game-combat/10' },
+  info: { icon: Info, color: 'text-game-cultivation', bg: 'bg-game-cultivation/10' },
+  warning: { icon: AlertTriangle, color: 'text-game-economy', bg: 'bg-game-economy/10' },
 };
 
-// 物品品质颜色
-const rarityColors: Record<ItemRarity, string> = {
-  '普通': 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400',
-  '稀有': 'bg-blue-100 text-blue-600 dark:bg-blue-900/50 dark:text-blue-400',
-  '史诗': 'bg-purple-100 text-purple-600 dark:bg-purple-900/50 dark:text-purple-400',
-  '传说': 'bg-yellow-100 text-yellow-600 dark:bg-yellow-900/50 dark:text-yellow-400',
-  '神话': 'bg-red-100 text-red-600 dark:bg-red-900/50 dark:text-red-400',
-};
+// 物品品质颜色 — 使用全局 quality 色系统一
+// 参见 modules/theme/data/rarityStyles.ts
 
 function formatTime(timestamp: number): string {
   const date = new Date(timestamp);
@@ -114,7 +110,7 @@ const MessageItem = memo(({ msg, compact }: { msg: MessageRecord; compact: boole
                     return (
                       <Badge 
                         key={idx} 
-                        className={`text-[9px] h-4 ${item.definition?.rarity ? rarityColors[item.definition.rarity] || '' : ''}`}
+                        className={`text-[9px] h-4 ${item.definition?.rarity ? getRarityStyle(item.definition.rarity, 'badge') : ''}`}
                       >
                         {displayText}
                       </Badge>
@@ -126,7 +122,7 @@ const MessageItem = memo(({ msg, compact }: { msg: MessageRecord; compact: boole
               {msg.rewards.technique && (
                 <div className="flex flex-wrap gap-1">
                   <span className="text-[9px] text-muted-foreground">功法:</span>
-                  <Badge className={`text-[9px] h-4 ${rarityColors[msg.rewards.technique.rarity] || 'bg-gray-100 text-gray-600'}`}>
+                  <Badge className={`text-[9px] h-4 ${getRarityStyle(msg.rewards.technique.rarity, 'badge')}`}>
                     「{msg.rewards.technique.name}」
                   </Badge>
                 </div>
@@ -135,7 +131,7 @@ const MessageItem = memo(({ msg, compact }: { msg: MessageRecord; compact: boole
               {msg.rewards.equipment && (
                 <div className="flex flex-wrap gap-1">
                   <span className="text-[9px] text-muted-foreground">装备:</span>
-                  <Badge className={`text-[9px] h-4 ${rarityColors[msg.rewards.equipment.rarity] || 'bg-gray-100 text-gray-600'}`}>
+                  <Badge className={`text-[9px] h-4 ${getRarityStyle(msg.rewards.equipment.rarity, 'badge')}`}>
                     「{msg.rewards.equipment.name}」
                   </Badge>
                 </div>
@@ -171,7 +167,7 @@ const MessageItem = memo(({ msg, compact }: { msg: MessageRecord; compact: boole
                     return Array.from(fragmentMap.values()).map((frag, idx) => (
                       <Badge 
                         key={idx} 
-                        className={`text-[9px] h-4 ${rarityColors[frag.rarity] || ''}`}
+                        className={`text-[9px] h-4 ${getRarityStyle(frag.rarity, 'badge')}`}
                       >
                         「{frag.name}」{frag.count > 1 ? `x${frag.count}` : ''}
                       </Badge>
@@ -300,9 +296,11 @@ export function MessagePanel({
       </CardHeader>
       <CardContent className="pt-0 pb-1 flex-1 min-h-0 overflow-hidden flex flex-col">
         {messages.length === 0 ? (
-          <div className="text-xs text-muted-foreground text-center py-4">
-            暂无消息记录
-          </div>
+          <Empty>
+            <EmptyContent>
+              <p className="text-xs text-muted-foreground font-serif">暂无消息记录</p>
+            </EmptyContent>
+          </Empty>
         ) : (
           <div ref={scrollContainerRef} className="flex-1 min-h-0">
             <ScrollArea className="h-full">

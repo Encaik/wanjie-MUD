@@ -4,11 +4,11 @@ import { useState, useMemo } from 'react';
 
 import { Flame, Snowflake, Zap, Wind, Mountain, Sun, Moon, Sword, Swords, Hand, Target, Crosshair, BookOpen, Shield, Sparkles, Lock, CheckCircle, Flame as FireIcon } from 'lucide-react';
 
-import { Badge } from '@/shared/ui/badge';
-import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/card';
-import { Progress } from '@/shared/ui/progress';
-import { ScrollArea } from '@/shared/ui/scroll-area';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/shared/ui/tabs';
+import { Badge } from '@/shared/ui/data-display/badge';
+import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/data-display/card';
+import { Progress } from '@/shared/ui/feedback/progress';
+import { ScrollArea } from '@/shared/ui/layout/scroll-area';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/shared/ui/data-display/tabs';
 import { 
   BONDS, 
   BOND_LEVELS, 

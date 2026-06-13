@@ -4,9 +4,9 @@ import { Heart, Shield, Sparkles, Swords, Zap } from 'lucide-react';
 
 import type { AttributeTemplate } from '@/core/types';
 import type { CharacterTemplate } from '@/modules/identity/hooks';
-import { Badge } from '@/shared/ui/badge';
-import { Button } from '@/shared/ui/button';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/shared/ui/tooltip';
+import { Badge } from '@/shared/ui/data-display/badge';
+import { Button } from '@/shared/ui/actions/button';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/shared/ui/overlay/tooltip';
 import { cn } from '@/shared/utils';
 
 // ============================================

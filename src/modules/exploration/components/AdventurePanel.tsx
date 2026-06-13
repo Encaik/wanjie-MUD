@@ -4,9 +4,9 @@ import { useState, useEffect, useMemo, useRef } from 'react';
 
 import { Swords, Gem, Skull, HelpCircle, Coffee, Crown, Map, Flag, Sparkles, Compass, Zap, Timer } from 'lucide-react';
 
-import { Badge } from '@/shared/ui/badge';
-import { Button } from '@/shared/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/card';
+import { Badge } from '@/shared/ui/data-display/badge';
+import { Button } from '@/shared/ui/actions/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/data-display/card';
 import {
   Dialog,
   DialogContent,
@@ -14,8 +14,8 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@/shared/ui/dialog';
-import { Progress } from '@/shared/ui/progress';
+} from '@/shared/ui/overlay/dialog';
+import { Progress } from '@/shared/ui/feedback/progress';
 import { getAdjacentCells } from '@/modules/exploration/logic/adventure/adventure';
 import { STAMINA_CONFIG, getCooldownRemaining } from '@/modules/exploration/logic/adventure/adventureStamina';
 import { getDungeonInfo, getTerminology } from '@/modules/narrative/logic/terminology';

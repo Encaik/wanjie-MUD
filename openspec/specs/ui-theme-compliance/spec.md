@@ -3,21 +3,21 @@
 ## Purpose
 
 确保 `src/shared/ui/` 中所有自定义 UI 组件严格使用语义化 CSS 变量表达颜色、
-统一样式属性，与全局主题系统保持一致。
+统一样式属性，使用 `class-variance-authority` 定义变体，与全局主题系统保持一致。
 
 ## Requirements
 
 ### Requirement: Custom UI components SHALL use semantic theme tokens for all colors
 
-All custom UI components in `src/shared/ui/` MUST use only semantic CSS variable-based Tailwind classes for colors. Hardcoded Tailwind native color palette classes (e.g., `bg-amber-500`, `text-blue-600`, `border-red-300`, `bg-cyan-100`, `text-sky-700`, `bg-gray-200`) are forbidden. Acceptable classes include `bg-primary`, `text-muted-foreground`, `bg-quality-rare/10`, `border-border`, `bg-popover`, `text-popover-foreground`等。
+All custom UI components SHALL use only semantic CSS variable-based Tailwind classes for colors. Hardcoded Tailwind native color palette classes (e.g., `bg-amber-500`, `text-blue-600`, `border-red-300`, `bg-cyan-100`, `text-sky-700`, `bg-gray-200`) are forbidden. Acceptable classes include `bg-primary`, `text-muted-foreground`, `bg-quality-rare/10`, `border-border`, `bg-popover`, `text-popover-foreground`, `bg-game-combat/10`, `text-game-cultivation`等。
 
 #### Scenario: item-tooltip uses zero hardcoded palette colors
-- **WHEN** inspecting `src/shared/ui/item-tooltip.tsx` and any files it is split into
-- **THEN** zero occurrences of `bg-amber-*`, `text-amber-*`, `border-amber-*`, `bg-blue-*`, `bg-purple-*`, `bg-red-*`, `bg-orange-*`, `bg-green-*`, `bg-cyan-*`, `bg-sky-*`, `bg-gray-*` classes are present
-- **AND** all color classes reference semantic tokens (`primary`, `secondary`, `muted`, `accent`, `quality-*`, `background`, `foreground`, `border`, `card`, `popover`, `destructive`)
+- **WHEN** inspecting `src/shared/ui/data-display/item-tooltip.tsx` and `src/shared/ui/data-display/upgradeable-item-tooltip.tsx`
+- **THEN** zero occurrences of Tailwind palette color classes are present
+- **AND** all color classes reference semantic tokens (`primary`, `secondary`, `muted`, `accent`, `quality-*`, `game-*`, `background`, `foreground`, `border`, `card`, `popover`, `destructive`)
 
-#### Scenario: All 9 custom components pass color audit
-- **WHEN** running `grep` for hardcoded Tailwind native color palette classes across `src/shared/ui/` custom components (button-group, cooldown-button, empty, field, input-group, item, item-tooltip, kbd, spinner)
+#### Scenario: All custom components pass color audit at new locations
+- **WHEN** running `grep` for hardcoded Tailwind native color palette classes across `src/shared/ui/actions/`, `src/shared/ui/feedback/`, `src/shared/ui/data-display/`, `src/shared/ui/overlay/`, `src/shared/ui/forms/`
 - **THEN** zero matches are found
 
 #### Scenario: Dark mode variants use semantic tokens
@@ -66,22 +66,35 @@ All 9 custom UI components displaying text content MUST explicitly include the `
 
 ### Requirement: Custom components SHALL consistently use data-slot attributes
 
-Each custom component's root rendered element MUST include a `data-slot` attribute identifying the component for debugging and CSS selection hooks.
+Each custom component's root rendered element MUST include a `data-slot` attribute identifying the component for debugging and CSS selection hooks. Custom components moved to subdirectories SHALL retain their existing `data-slot` attributes unchanged.
 
-#### Scenario: All custom component roots have data-slot
-- **WHEN** inspecting the 3 currently-missing components (cooldown-button, spinner, item-tooltip)
-- **THEN** each root rendered element has a `data-slot` attribute matching the component name (e.g., `data-slot="cooldown-button"`)
+#### Scenario: All custom component roots have data-slot after reorganization
+- **WHEN** inspecting all custom components in `src/shared/ui/actions/`, `src/shared/ui/feedback/`, `src/shared/ui/data-display/`, `src/shared/ui/overlay/`, `src/shared/ui/forms/`
+- **THEN** each root rendered element has a `data-slot` attribute matching the component name
+- **AND** the `data-slot` values are unchanged from their pre-move values
 
-### Requirement: item-tooltip.tsx SHALL be split to comply with 300-line component limit
+### Requirement: Custom components SHALL use CVA for variant definitions
 
-The `item-tooltip.tsx` file (currently 475 lines) MUST be split into multiple files so that no single component file exceeds 300 lines.
+All custom components that support variants (e.g., `size`, `variant` props) SHALL define their variant classes using `class-variance-authority` (`cva`). This ensures consistent variant handling and type safety across the component library.
 
-#### Scenario: item-tooltip.tsx is under 300 lines after split
-- **WHEN** running `pnpm check-sizes`
-- **THEN** `item-tooltip.tsx` and any new files it was split into each report ≤300 lines
-- **AND** all existing exports (`ItemTooltip`, `UpgradeableItemTooltip`, `EmptySlotCard`, `BackpackHeader`, `EmptyBackpackHint`, `RARITY_STYLES`, `getRarityStyle`) remain importable from their original or documented new paths
+#### Scenario: Spinner uses CVA for variants
+- **WHEN** inspecting `src/shared/ui/feedback/spinner.tsx`
+- **THEN** the variant selection uses CVA (`cva({ ... variants: { variant: { ... } } })`)
+- **AND** the component accepts `VariantProps<typeof spinnerVariants>` in its props
 
-#### Scenario: Rarity config is extracted to shared/utils
-- **WHEN** checking the rarity styles location
-- **THEN** `RARITY_STYLES` and `getRarityStyle` are in `src/shared/utils/` (e.g., `rarityStyles.ts`)
-- **AND** `item-tooltip.tsx` imports them from the new location
+#### Scenario: CooldownButton uses CVA (optional, non-blocking)
+- **WHEN** inspecting `src/shared/components/CooldownButton.tsx`
+- **THEN** it EITHER uses CVA for its styling OR has inline styles with a documented reason for not using CVA
+
+### Requirement: Game domain semantic colors SHALL be used for domain-specific styling
+
+Custom components SHALL use `game-*` semantic color tokens (`game-combat`, `game-cultivation`, `game-recovery`, `game-economy`, `game-mental`, `game-tribulation`) for game-domain-specific visual communication, in addition to the existing primary/secondary/muted semantic tokens.
+
+#### Scenario: Domain-specific backgrounds use game tokens
+- **WHEN** a component displays combat-related information (e.g., damage numbers, battle panels)
+- **THEN** the background element uses `bg-game-combat/10` instead of hardcoded `bg-red-50` or `bg-red-500/10`
+- **AND** combat text uses `text-game-combat` instead of `text-red-600`
+
+#### Scenario: Domain-specific borders use game tokens
+- **WHEN** a component renders a border for domain-specific sections
+- **THEN** the border uses `border-game-combat`, `border-game-cultivation`, etc. rather than hardcoded Tailwind palette borders
