@@ -14,6 +14,8 @@ import type {
   StatGate,
   CoreStatKey,
   DialogueCheck,
+  QuestDefinition,
+  QuestState,
 } from '@/core/types';
 
 // ============================================
@@ -181,4 +183,75 @@ export function getAvailableDialogueLine(
  */
 export function getOptionCheck(option: NPCDialogueOption): DialogueCheck | undefined {
   return option.check;
+}
+
+// ============================================
+// 任务选项注入
+// ============================================
+
+/** 注入的任务选项结果 */
+export interface InjectedQuestOptions {
+  /** 新增的对话选项 */
+  options: NPCDialogueOption[];
+  /** 可接任务列表 */
+  availableQuests: QuestDefinition[];
+  /** 可提交任务列表 */
+  turnInQuests: QuestDefinition[];
+}
+
+/**
+ * 为 NPC 对话注入任务相关选项
+ *
+ * @param npcId - NPC ID
+ * @param npc - NPC 定义
+ * @param questState - 玩家任务状态
+ * @param availableQuests - 该 NPC 可接的任务
+ * @param turnInQuests - 该 NPC 可提交的任务
+ * @param checkPrereqs - 前置条件检查函数
+ * @param playerCheckData - 玩家数据（用于生成 statGates）
+ * @returns 注入的任务选项
+ */
+export function injectQuestOptions(
+  npcId: string,
+  questState: QuestState,
+  availableQuests: QuestDefinition[],
+  turnInQuests: QuestDefinition[],
+): InjectedQuestOptions {
+  const options: NPCDialogueOption[] = [];
+
+  // 注入可接任务选项
+  for (const quest of availableQuests) {
+    const statGates = quest.prerequisites
+      .filter(p => p.type === 'coreStat' || p.type === 'attribute')
+      .map(p => ({
+        coreStat: p.target as CoreStatKey,
+        minValue: p.minValue ?? 1,
+        failureHint: `需要 ${p.target} 达到 ${p.minValue ?? 1}`,
+      } satisfies StatGate));
+
+    options.push({
+      id: `__quest_accept_${quest.id}`,
+      text: `[任务] ${quest.name}`,
+      statGates: statGates.length > 0 ? statGates : undefined,
+      resultBranch: `__quest_accept_${quest.id}`,
+    });
+  }
+
+  // 注入可提交任务选项
+  for (const quest of turnInQuests) {
+    const activeQuest = questState.activeQuests[quest.id];
+    const stage = quest.stages.find(s => s.id === activeQuest?.currentStageId);
+
+    options.push({
+      id: `__quest_turnin_${quest.id}`,
+      text: `[提交] ${quest.name}${stage ? ` - ${stage.name}` : ''}`,
+      resultBranch: `__quest_turnin_${quest.id}`,
+    });
+  }
+
+  return {
+    options,
+    availableQuests,
+    turnInQuests,
+  };
 }

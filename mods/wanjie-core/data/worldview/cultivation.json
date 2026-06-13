@@ -66,6 +66,12 @@
   "racePool": [
     "human"
   ],
+  "questPool": [
+    "main_intro_temple",
+    "side_collect_herbs",
+    "hidden_secret_cave",
+    "daily_clear_wolves"
+  ],
   "specialResource": {
     "displayName": "法力",
     "defaultCap": 100,

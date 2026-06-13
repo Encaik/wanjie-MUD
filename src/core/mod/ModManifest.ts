@@ -15,6 +15,7 @@ export type ModContentType =
   | 'races'
   | 'talents'
   | 'npcs'
+  | 'quests'
   | 'traits'
   | 'dangers'
   | 'opportunities'
@@ -32,6 +33,7 @@ export const ALL_MOD_CONTENT_TYPES: ModContentType[] = [
   'races',
   'talents',
   'npcs',
+  'quests',
   'traits',
   'dangers',
   'opportunities',

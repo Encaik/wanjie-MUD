@@ -422,6 +422,8 @@ export interface WorldviewDefinition {
   attributes: WorldviewAttributeConfig[];
   /** 可用种族 ID 列表（必填，至少 ["human"]） */
   racePool: string[];
+  /** 可遭遇的任务 ID 列表（可选，空 = 所有 worldview 兼容任务可用） */
+  questPool?: string[];
   /** 可用天赋 ID 列表（可选） */
   talentPool?: string[];
   /** 专项数值定义（可选，如修仙的"法力"、魔法的"魔力"） */

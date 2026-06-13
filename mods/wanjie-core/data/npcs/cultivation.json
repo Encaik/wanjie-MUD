@@ -6,11 +6,11 @@
     "worldviewRestrictions": ["cultivation", "xianxia"],
     "factionId": "merchant_guild",
     "attributes": {
-      "体质": 8,
-      "灵根": 6,
-      "悟性": 10,
-      "幸运": 12,
-      "意志": 8
+      "constitution": 8,
+      "insight": 10,
+      "luck": 12,
+      "willpower": 8,
+      "spiritPower": 6
     },
     "coreStats": {
       "maxHp": 36,
@@ -50,7 +50,7 @@
             ],
             "check": {
               "type": "attribute",
-              "target": "悟性",
+              "target": "insight",
               "difficulty": 10,
               "successText": "王掌柜眯眼一笑：'行吧行吧，老顾客了，给你打个八折！'",
               "failureText": "王掌柜摆摆手：'小本生意，概不赊账，也不打折。'",
@@ -94,11 +94,7 @@
         "id": "gossip",
         "text": "嘿，最近青云山脉那边不太平，听说有妖兽出没。不过据说那妖兽守护着一株千年灵芝……要不要去碰碰运气？",
         "options": [
-          {
-            "id": "interested",
-            "text": "详细说说位置",
-            "resultBranch": "gossip_detail"
-          },
+          { "id": "interested", "text": "详细说说位置", "resultBranch": "gossip_detail" },
           { "id": "not_interested", "text": "多谢提醒，我会小心的", "resultBranch": "greeting" }
         ],
         "repeatable": true
@@ -136,11 +132,11 @@
     "worldviewRestrictions": ["cultivation", "xianxia"],
     "factionId": "righteous_sect",
     "attributes": {
-      "体质": 15,
-      "灵根": 18,
-      "悟性": 16,
-      "幸运": 10,
-      "意志": 14
+      "constitution": 15,
+      "insight": 16,
+      "luck": 10,
+      "willpower": 14,
+      "spiritPower": 18
     },
     "coreStats": {
       "maxHp": 80,
@@ -188,11 +184,7 @@
         "id": "teach_cultivation",
         "text": "修炼之道，贵在坚持。你且记下：心静则气顺，气顺则丹成。每日打坐一个时辰，胜过囫囵吞枣十枚丹药。",
         "options": [
-          {
-            "id": "thank",
-            "text": "多谢师兄指点",
-            "resultBranch": "greeting"
-          }
+          { "id": "thank", "text": "多谢师兄指点", "resultBranch": "greeting" }
         ],
         "repeatable": true,
         "cooldownSeconds": 600,
@@ -202,11 +194,7 @@
         "id": "spar_confirm",
         "text": "好！点到为止，让我看看你最近的进步。",
         "options": [
-          {
-            "id": "fight",
-            "text": "请师兄赐教！",
-            "resultBranch": "__exit__"
-          }
+          { "id": "fight", "text": "请师兄赐教！", "resultBranch": "__exit__" }
         ],
         "repeatable": true,
         "cooldownSeconds": 3600,
@@ -229,11 +217,11 @@
     "worldviewRestrictions": ["cultivation"],
     "factionId": "rogue_cultivators",
     "attributes": {
-      "体质": 12,
-      "灵根": 9,
-      "悟性": 13,
-      "幸运": 8,
-      "意志": 16
+      "constitution": 12,
+      "insight": 13,
+      "luck": 8,
+      "willpower": 16,
+      "spiritPower": 9
     },
     "coreStats": {
       "maxHp": 64,
@@ -274,11 +262,7 @@
             "minAttitude": -30,
             "resultBranch": "open_black_market"
           },
-          {
-            "id": "greet_neutral",
-            "text": "路过而已，并无恶意",
-            "resultBranch": "neutral_response"
-          },
+          { "id": "greet_neutral", "text": "路过而已，并无恶意", "resultBranch": "neutral_response" },
           { "id": "leave", "text": "打扰了", "resultBranch": "__exit__" }
         ],
         "repeatable": true
@@ -328,11 +312,11 @@
     "worldviewRestrictions": ["cultivation", "xianxia"],
     "factionId": "demon_beasts",
     "attributes": {
-      "体质": 20,
-      "灵根": 4,
-      "悟性": 6,
-      "幸运": 5,
-      "意志": 18
+      "constitution": 20,
+      "insight": 6,
+      "luck": 5,
+      "willpower": 18,
+      "spiritPower": 4
     },
     "coreStats": {
       "maxHp": 120,
@@ -358,11 +342,7 @@
         "id": "greeting",
         "text": "嘶嘶嘶……人类，竟敢踏入吾之领地！",
         "options": [
-          {
-            "id": "fight",
-            "text": "妖兽受死！",
-            "resultBranch": "__exit__"
-          },
+          { "id": "fight", "text": "妖兽受死！", "resultBranch": "__exit__" },
           {
             "id": "offer",
             "text": "我是来献祭的，这枚灵果献给您",
@@ -371,7 +351,7 @@
             ],
             "check": {
               "type": "attribute",
-              "target": "悟性",
+              "target": "insight",
               "difficulty": 14,
               "successText": "赤鳞蟒嗅了嗅灵果，眼中的凶光渐渐褪去。'算你识相，拿了东西快走！'",
               "failureText": "赤鳞蟒一口吞掉灵果，却更加暴躁：'区区一枚果子就想打发我？！'",

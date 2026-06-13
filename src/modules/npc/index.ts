@@ -34,12 +34,14 @@ export {
   evaluateOption,
   getAvailableDialogueLine,
   getOptionCheck,
+  injectQuestOptions,
 } from './logic/dialogueEngine';
 
 export type {
   OptionEvaluation,
   GateResult,
   DialogueLineResult,
+  InjectedQuestOptions,
 } from './logic/dialogueEngine';
 
 // ── 新版：交易计算 ──

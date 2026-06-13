@@ -6,10 +6,11 @@
     "worldviewRestrictions": ["martial", "wuxia"],
     "factionId": "martial_alliance",
     "attributes": {
-      "体质": 18,
-      "力量": 16,
-      "敏捷": 14,
-      "悟性": 10
+      "physique": 18,
+      "boneRoot": 16,
+      "insight": 10,
+      "fortune": 8,
+      "battleWill": 14
     },
     "coreStats": {
       "maxHp": 100,
@@ -58,11 +59,7 @@
         "id": "training",
         "text": "好！记住了——外练筋骨皮，内练一口气。先扎马步一个时辰！",
         "options": [
-          {
-            "id": "accept",
-            "text": "练！",
-            "resultBranch": "greeting"
-          }
+          { "id": "accept", "text": "练！", "resultBranch": "greeting" }
         ],
         "repeatable": true,
         "cooldownSeconds": 600,
@@ -72,11 +69,7 @@
         "id": "spar_offer",
         "text": "好胆色！老夫只用三成功力，点到为止！",
         "options": [
-          {
-            "id": "fight",
-            "text": "请！",
-            "resultBranch": "__exit__"
-          }
+          { "id": "fight", "text": "请！", "resultBranch": "__exit__" }
         ],
         "repeatable": true,
         "cooldownSeconds": 7200,
@@ -111,10 +104,11 @@
     "worldviewRestrictions": ["martial", "wuxia"],
     "factionId": "shadow_guild",
     "attributes": {
-      "体质": 10,
-      "力量": 12,
-      "敏捷": 18,
-      "悟性": 14
+      "physique": 10,
+      "boneRoot": 12,
+      "insight": 14,
+      "fortune": 6,
+      "battleWill": 18
     },
     "coreStats": {
       "maxHp": 60,
@@ -197,10 +191,11 @@
     "worldviewRestrictions": ["martial", "wuxia"],
     "factionId": "neutral",
     "attributes": {
-      "体质": 9,
-      "力量": 7,
-      "敏捷": 10,
-      "悟性": 16
+      "physique": 9,
+      "boneRoot": 7,
+      "insight": 16,
+      "fortune": 12,
+      "battleWill": 10
     },
     "coreStats": {
       "maxHp": 38,

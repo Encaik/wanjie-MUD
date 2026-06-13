@@ -229,6 +229,7 @@ export function generateWorldBasicFields(
     // V3 新字段（从 AttributeRegistry 解析）
     attributeDefinitions,
     racePool: worldview.racePool,
+    questPool: worldview.questPool ?? [],
     specialResource: worldview.specialResource,
   };
 }

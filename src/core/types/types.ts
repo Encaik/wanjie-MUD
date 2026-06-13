@@ -421,6 +421,164 @@ export interface NPCDefinition {
 }
 
 // ============================================
+// 任务系统 (Quest)
+// ============================================
+
+/** 任务类型 */
+export type QuestType = 'main' | 'side' | 'hidden' | 'daily' | 'event';
+
+/** 任务目标类型 */
+export type QuestObjectiveType =
+  | 'talk_to_npc'
+  | 'kill_enemy'
+  | 'collect_item'
+  | 'reach_realm'
+  | 'reach_level'
+  | 'explore_location'
+  | 'use_item'
+  | 'dialogue_check'
+  | 'custom';
+
+/** 前置条件类型 */
+export type QuestPrerequisiteType =
+  | 'level'
+  | 'realm'
+  | 'quest_completed'
+  | 'faction'
+  | 'attitude'
+  | 'coreStat'
+  | 'attribute'
+  | 'item_owned';
+
+/** 任务目标定义 */
+export interface QuestObjective {
+  /** 目标类型 */
+  type: QuestObjectiveType;
+  /** 目标 ID（NPC ID / 物品 ID / 境界名 / 位置 ID） */
+  target: string;
+  /** 数量要求（默认 1） */
+  count?: number;
+  /** 显示给玩家的描述 */
+  description: string;
+  /** 是否隐藏目标（不显示给玩家） */
+  hidden?: boolean;
+}
+
+/** Stage 完成后的分支选项 */
+export interface QuestStageCompletion {
+  /** 本分支的描述 */
+  description: string;
+  /** 下一 Stage ID（undefined = 任务结束） */
+  nextStageId?: string;
+  /** 本阶段奖励 */
+  stageRewards?: QuestReward[];
+}
+
+/** 任务阶段 */
+export interface QuestStage {
+  /** Stage ID */
+  id: string;
+  /** Stage 名称 */
+  name: string;
+  /** Stage 描述 */
+  description: string;
+  /** 完成目标列表 */
+  objectives: QuestObjective[];
+  /** 完成后的分支选项（key = 完成方式标识，如 "fight"、"persuade"） */
+  completions: Record<string, QuestStageCompletion>;
+  /** 进入此 Stage 时触发的 NPC 对话（可选） */
+  npcDialogueOnEnter?: { npcId: string; lineId: string };
+}
+
+/** 任务前置条件 */
+export interface QuestPrerequisite {
+  /** 条件类型 */
+  type: QuestPrerequisiteType;
+  /** 目标值（level=5, realm=筑基, quest=quest_001, faction=righteous_sect 等） */
+  target: string;
+  /** 最小值 */
+  minValue?: number;
+  /** 最大值（可选） */
+  maxValue?: number;
+}
+
+/** 任务奖励 */
+export interface QuestReward {
+  /** 经验值 */
+  experience?: number;
+  /** 灵石 */
+  spiritStones?: number;
+  /** 物品奖励 */
+  items?: { itemId: string; quantity: number }[];
+  /** 声望变化 */
+  reputation?: { factionId: string; change: number };
+  /** 态度值变化 */
+  attitudeChanges?: { npcId: string; change: number }[];
+  /** 解锁新任务 ID 列表 */
+  unlockQuests?: string[];
+}
+
+/** 任务完整定义（Mod 内容类型：quests） */
+export interface QuestDefinition {
+  /** 全局唯一标识（kebab-case） */
+  id: string;
+  /** 任务名称 */
+  name: string;
+  /** 任务描述 */
+  description: string;
+  /** 任务类型 */
+  type: QuestType;
+  /** 限制出现的世界观 ID 列表 */
+  worldviewRestrictions?: string[];
+  /** 前置条件（所有条件必须同时满足） */
+  prerequisites: QuestPrerequisite[];
+  /** 阶段列表 */
+  stages: QuestStage[];
+  /** 最终完成奖励 */
+  rewards: QuestReward[];
+  /** 是否可重复（daily 类型默认为 true） */
+  repeatable: boolean;
+  /** 冷却时间（秒，仅 repeatable 任务有效） */
+  cooldownSeconds?: number;
+}
+
+// ── 运行时状态 ──
+
+/** 活跃任务（玩家进行中的任务） */
+export interface ActiveQuest {
+  /** 任务 ID */
+  questId: string;
+  /** 当前阶段 ID */
+  currentStageId: string;
+  /** 目标进度（key = "type:target"，value = 当前进度） */
+  objectives: Record<string, number>;
+  /** 开始时间戳 */
+  startedAt: number;
+}
+
+/** 任务系统全局状态 */
+export interface QuestState {
+  /** 活跃任务（key = questId） */
+  activeQuests: Record<string, ActiveQuest>;
+  /** 已完成任务 ID 列表 */
+  completedQuests: string[];
+  /** 已领取奖励的任务 ID 列表（用于 repeatable 任务） */
+  claimedRewards: string[];
+  /** 阶段历史（questId → 已完成的 stageId 列表，用于分支追踪） */
+  stageHistory: Record<string, string[]>;
+}
+
+/** 创建默认任务状态 */
+export function createDefaultQuestState(): QuestState {
+  return {
+    activeQuests: {},
+    completedQuests: [],
+    claimedRewards: [],
+    stageHistory: {},
+  };
+}
+
+// ============================================
 // 旧属性系统（DEPRECATED — 迁移到新 Attribute/CoreStat 系统）
 // ============================================
 
@@ -877,6 +1035,8 @@ export interface World {
   attributeDefinitions: (AttributeTemplate & { growthRule: AttributeGrowthRule })[];
   /** 该世界观可用的种族 ID 列表（V3 新增） */
   racePool: string[];
+  /** 该世界观可遭遇的任务 ID 列表（V3 新增，空数组 = 所有 worldview 兼容任务可用） */
+  questPool: string[];
   /** 专项数值定义（V3 新增，如修仙的"法力"——仅定义显示名，基础值在代码常量） */
   specialResource?: SpecialResourceDef;
   /** 世界战斗基础数值（由服务端从 WorldviewDefinition.stats 填入，供前端计算 HP/MP/攻击/防御，避免访问 WorldViewRegistry） */
@@ -1533,6 +1693,8 @@ export interface GameState {
   ascensionFlow?: import('./typesExtension').AscensionFlowState;
   // 死亡状态（显示死亡弹窗）
   deathState?: import('./typesExtension').DeathState;
+  // 任务系统状态
+  questState: QuestState;
 }
 
 // 消息存储配置
