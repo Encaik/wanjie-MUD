@@ -1,7 +1,7 @@
 /**
  * MysticalBackground 测试
  *
- * 测试三种场景变体的渲染、强度控制、水印文字覆盖。
+ * 测试四种场景变体的渲染、强度控制、水印文字覆盖。
  */
 
 import { render, screen } from '@testing-library/react';
@@ -25,6 +25,11 @@ describe('MysticalBackground', () => {
     expect(container.firstChild).toBeTruthy();
   });
 
+  it('渲染 fated 变体不崩溃', () => {
+    const { container } = render(<MysticalBackground variant="fated" />);
+    expect(container.firstChild).toBeTruthy();
+  });
+
   it('默认变体为 runes', () => {
     render(<MysticalBackground />);
     // 默认水印文字应为"万界"
@@ -39,6 +44,11 @@ describe('MysticalBackground', () => {
   it('destiny 变体显示"命运"水印', () => {
     render(<MysticalBackground variant="destiny" />);
     expect(screen.getByText('命运')).toBeTruthy();
+  });
+
+  it('fated 变体显示"宿命"水印', () => {
+    render(<MysticalBackground variant="fated" />);
+    expect(screen.getByText('宿命')).toBeTruthy();
   });
 
   it('自定义水印文字覆盖默认值', () => {

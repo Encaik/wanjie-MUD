@@ -103,7 +103,7 @@ function formatText(text: string): React.ReactNode {
 /**
  * 背景故事页 — "宿命之章"
  *
- * 展示角色背景故事，使用 MysticalBackground（destiny）与前序页面统一。
+ * 展示角色背景故事，使用 MysticalBackground（fated）与水印"宿命"呼应。
  * 带四角隅饰的故事卷轴卡片，叙事化标题和确认按钮。
  */
 export function BackstoryView({
@@ -115,7 +115,7 @@ export function BackstoryView({
   return (
     <div className="min-h-dvh md:min-h-screen bg-background relative flex items-center justify-center">
       {/* ===== 背景 ===== */}
-      <MysticalBackground variant="destiny" intensity="subtle" />
+      <MysticalBackground variant="fated" intensity="subtle" />
 
       <div className="w-full max-w-5xl relative z-10 flex flex-col px-4 sm:px-6 py-6">
         {/* ===== 叙事化标题 ===== */}
