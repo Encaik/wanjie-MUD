@@ -16,7 +16,6 @@ import {
 } from '@/modules/exploration/data/opportunityConfig';
 import { getRarityColorClass, getRarityBgClass } from '@/modules/equipment/data/raritySystem';
 import { WorldViewRegistry } from '@/core/registry';
-import { WORLD_COEFFICIENTS } from './worldData';
 import {
   WorldDanger,
   WorldOpportunity,
@@ -141,73 +140,8 @@ export function calculateWorldRewardCoefficient(
 }
 
 // ============================================
-// 危险生成
+// 危险等级辅助
 // ============================================
-
-/**
- * 生成世界危险列表
- *
- * @param rng - 随机数生成器（用于确定性生成，默认 Math.random）
- */
-export function generateWorldDangers(
-  worldType: WorldType,
-  difficultyCoefficient: number,
-  rng: () => number = Math.random
-): WorldDanger[] {
-  // 计算危险数量
-  const dangerCount = calculateDangerCount(difficultyCoefficient);
-
-  if (dangerCount === 0) return [];
-
-  // 优先从 registry 获取危险池，回退到硬编码常量
-  const registry = WorldViewRegistry.getInstance();
-  const registryDangers = registry.get(worldType)?.dangers ?? [];
-  const dangerPool: WorldDanger[] = registryDangers.length > 0 ? registryDangers.map(d => ({
-    ...d,
-    dangerLevel: d.dangerLevel || 1,
-    worldTypes: d.worldTypes,
-  })) as WorldDanger[] : WORLD_DANGERS;
-
-  // 筛选符合难度等级的危险
-  const maxLevel = getMaxDangerLevel(difficultyCoefficient);
-  const availableDangers = dangerPool.filter(d => {
-    // 检查难度等级
-    if (d.dangerLevel > maxLevel) return false;
-    // 检查世界类型限制
-    if (d.worldTypes && d.worldTypes.length > 0 && !d.worldTypes.includes(worldType)) {
-      return false;
-    }
-    return true;
-  });
-
-  if (availableDangers.length === 0) return [];
-
-  // 随机选择（高等级危险有更高权重）
-  const selectedDangers: WorldDanger[] = [];
-  const usedIds = new Set<string>();
-
-  for (let i = 0; i < dangerCount && availableDangers.length > 0; i++) {
-    // 权重：等级越高权重越大
-    const weights = availableDangers
-      .filter(d => !usedIds.has(d.id))
-      .map(d => d.dangerLevel * d.dangerLevel);
-
-    if (weights.length === 0) break;
-
-    const selectedIndex = weightedRandomIndex(weights, rng);
-    const danger = availableDangers.filter(d => !usedIds.has(d.id))[selectedIndex];
-
-    if (danger) {
-      selectedDangers.push(danger);
-      usedIds.add(danger.id);
-    }
-  }
-
-  return selectedDangers;
-}
-
-// ============================================
-// 机缘生成
 // ============================================
 
 /**
@@ -218,7 +152,8 @@ export function generateWorldDangers(
  * 2. 机缘收益由 checkOpportunityUnlock 函数计算
  * 3. 高级机缘在低等级玩家时收益递减，但始终可以进入
  */
-export function generateWorldOpportunities(
+// 机缘生成函数已移至后端 API POST /api/v1/worlds/generate
+function _generateWorldOpportunities_not_used(
   worldType: WorldType,
   _difficultyCoefficient: number,
   dangers: WorldDanger[],
@@ -340,16 +275,15 @@ function weightedRandomIndex(weights: number[], rng: () => number = Math.random)
 
 /**
  * 获取世界基础系数
- * 优先从 WorldViewRegistry 读取，回退到硬编码常量
+ * 从 WorldViewRegistry 读取 worldview 的 baseCoefficient。
  */
-export function getWorldBaseCoefficient(worldType: WorldType): number {
-  // 优先从 registry 获取
+export function getWorldBaseCoefficient(worldviewId: string): number {
   const registry = WorldViewRegistry.getInstance();
-  const worldview = registry.get(worldType);
-  if (worldview) return worldview.baseCoefficient;
-
-  // 回退到硬编码常量
-  return WORLD_COEFFICIENTS[worldType] || 1.0;
+  const worldview = registry.get(worldviewId);
+  if (!worldview) {
+    throw new Error(`世界观 "${worldviewId}" 未注册`);
+  }
+  return worldview.baseCoefficient;
 }
 
 /**

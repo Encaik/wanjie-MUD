@@ -45,7 +45,7 @@ interface WorldInfoPanelProps {
 }
 
 export function WorldInfoPanel({ world, protagonist }: WorldInfoPanelProps) {
-  const visualConfig = getWorldVisualConfig(world.type);
+  const visualConfig = getWorldVisualConfig(world.worldviewId);
   const difficultyConfig = DIFFICULTY_CONFIG[world.difficulty];
 
   // 计算世界进度

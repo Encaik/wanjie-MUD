@@ -10,40 +10,19 @@ TBD — see change world-first-selection-flow for full context.
 
 ## ADDED Requirements
 
-### Requirement: 角色生成接收世界类型参数
+### Requirement: 角色模板生成使用 worldviewId
 
-`generateCharacters` 函数 SHALL 接收 `worldType: WorldType` 参数，根据世界类型选择对应的词条池。
+`generateCharacterTemplates` 函数 SHALL 接收 `worldviewId: string` 参数（英文 ID），从 `WorldViewRegistry` 读取对应的姓名池、词条池和属性模板。
 
-#### Scenario: 修仙世界角色生成
-- **WHEN** 传入 `worldType === '修仙'`
-- **THEN** 生成的角色的出身/特质/性格/天赋词条 SHALL 来自修仙词条池（如"天灵根"、"先天道体"）
-- **AND** 属性显示名 SHALL 使用修仙体系（体质、灵根、悟性、幸运、意志）
+#### Scenario: 修仙世界角色模板
+- **WHEN** 传入 `worldviewId === 'cultivation'`
+- **THEN** 生成的角色的姓名 SHALL 从 `WorldViewRegistry.get('cultivation').namePool` 获取
+- **AND** 属性模板 SHALL 从 `WorldViewRegistry.get('cultivation').attributes` 获取
 
-#### Scenario: 科技世界角色生成
-- **WHEN** 传入 `worldType === '科技'`
-- **THEN** 生成的角色的出身/特质/性格/天赋词条 SHALL 来自科技词条池（如"黑客"、"机械亲和"）
-- **AND** 属性显示名 SHALL 使用科技体系（体能、智力、反应、技术、魅力）
-
-#### Scenario: 魔幻世界角色生成
-- **WHEN** 传入 `worldType === '魔幻'`
-- **THEN** 生成的角色的词条 SHALL 来自魔幻词条池（如"元素亲和"、"龙裔血脉"）
-- **AND** 属性显示名 SHALL 使用魔幻体系（力量、魔力、敏捷、感知、魅力）
-
-### Requirement: 属性显示名按世界类型映射
-
-系统 SHALL 提供 `getStatDisplayName(statKey: string, worldType: WorldType): string` 函数，将内部属性键映射为世界对应的显示名。
-
-#### Scenario: 修仙世界显示"灵根"
-- **WHEN** 调用 `getStatDisplayName('灵根', '修仙')`
-- **THEN** 返回 `'灵根'`
-
-#### Scenario: 科技世界映射"灵根"为"智力"
-- **WHEN** 调用 `getStatDisplayName('灵根', '科技')`
-- **THEN** 返回 `'智力'`
-
-#### Scenario: 魔幻世界映射"灵根"为"魔力"
-- **WHEN** 调用 `getStatDisplayName('灵根', '魔幻')`
-- **THEN** 返回 `'魔力'`
+#### Scenario: 科技世界角色模板
+- **WHEN** 传入 `worldviewId === 'tech'`
+- **THEN** 生成的角色的姓名 SHALL 从 `WorldViewRegistry.get('tech').namePool` 获取
+- **AND** 属性模板 SHALL 从 `WorldViewRegistry.get('tech').attributes` 获取
 
 ### Requirement: useStatLabels Hook 统一提供属性标签
 

@@ -29,12 +29,12 @@ const DEFAULT_STAT_DISPLAY: Record<StatKey, string> = {
  * 获取单个属性的世界显示名
  *
  * @param statKey - 内部属性键
- * @param worldType - 世界类型
+ * @param worldviewId - 世界观 ID（如 "cultivation"）
  * @returns 世界对应的属性显示名
  */
-export function getStatDisplayName(statKey: string, worldType: WorldType): string {
+export function getStatDisplayName(statKey: string, worldviewId: string): string {
   try {
-    const worldData = getWorldData(worldType);
+    const worldData = getWorldData(worldviewId);
     if (worldData?.statDisplayNames?.[statKey]) {
       return worldData.statDisplayNames[statKey];
     }

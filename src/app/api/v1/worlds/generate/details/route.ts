@@ -20,7 +20,6 @@ import { WorldViewRegistry } from '@/core/registry';
 import { generateWorldDetails } from '@/core/world';
 
 import { getWorldById, saveWorld } from '../../store';
-import { generateDetailsForSeed } from '../generator';
 
 /** 日志实例 */
 const log = createLogger('Details Generate');
@@ -79,14 +78,12 @@ export async function POST(request: NextRequest) {
       return apiSuccess({ world, generatedAt: new Date().toISOString() }, '世界详情已生成');
     }
 
-    // 回退到旧管线
-    const world = generateDetailsForSeed(body.seed);
-
-    if (!world) {
+    // 未指定 worldviewId：使用已存储的世界数据直接返回（若已包含详情）
+    const existing = getWorldById(body.seed);
+    if (!existing) {
       return apiError(404, `世界 "${body.seed}" 不存在，请先生成基础信息`);
     }
-
-    return apiSuccess({ world, generatedAt: new Date().toISOString() }, '世界详情已生成');
+    return apiSuccess({ world: existing, generatedAt: new Date().toISOString() }, '世界详情已存在');
   } catch (err) {
     log.error('失败:', err);
     return apiError(500, `详情生成失败: ${err instanceof Error ? err.message : '未知错误'}`);

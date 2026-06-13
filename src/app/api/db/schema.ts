@@ -19,8 +19,10 @@ export const worldsTable = sqliteTable('worlds', {
   id: text('id').primaryKey(),
   /** 世界名称 */
   name: text('name').notNull(),
-  /** 世界类型（修仙/高武/科技 等） */
+  /** 世界类型（修仙/高武/科技 等，仅用于显示） */
   type: text('type').notNull(),
+  /** 世界观 ID（English kebab-case，如 "cultivation"，用于逻辑索引） */
+  worldviewId: text('worldview_id').notNull(),
   /** 世界完整数据（JSON 序列化的 World 对象） */
   data: text('data').notNull(),
   /** 游戏版本号 */

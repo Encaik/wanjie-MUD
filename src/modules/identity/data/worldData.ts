@@ -28,37 +28,8 @@ export function getWorldviewIds(): string[] {
   return WorldViewRegistry.getInstance().getAllIds();
 }
 
-/** @deprecated 使用 getWorldTypes() 或 getWorldviewIds() 替代 */
+/** @deprecated 使用 getWorldviewIds() 替代 */
 export const WORLD_TYPES: WorldType[] = getWorldTypes();
-
-// ============================================
-// 世界系数系统
-// ============================================
-
-/**
- * 世界系数配置
- * 
- * 世界系数决定了世界的整体难度和数值规模：
- * - 1.0：简单（武侠）
- * - 1.1：普通（修仙、魔幻）
- * - 1.3：困难（高武、仙侠、异能、科技）
- * - 1.5：噩梦（末世）
- * 
- * 世界系数影响：
- * 1. 敌人基础属性（HP、攻击、防御）
- * 2. 敌人等级成长因子
- * 3. 奖励加成
- */
-export const WORLD_COEFFICIENTS: Record<WorldType, number> = {
-  '修仙': 1.1,   // 普通
-  '高武': 1.3,   // 困难
-  '科技': 1.2,   // 普通~困难
-  '魔幻': 1.1,   // 普通
-  '异能': 1.2,   // 普通~困难
-  '仙侠': 1.3,   // 困难
-  '武侠': 1.0,   // 简单
-  '末世': 1.5,   // 噩梦
-};
 
 /**
  * 根据世界系数获取世界难度
@@ -152,406 +123,7 @@ export interface WorldStats {
 // 世界数据定义
 // ============================================
 
-/**
- * @deprecated 数据已迁移到 mods/wanjie-core/data/worlds.json。
- * 请使用 getWorldData() 函数（内部从 WorldDataRegistry 读取）。
- * 此常量保留用于简化世界类型枚举。
- */
-export const WORLD_DATA: Record<string, WorldStats> = {
-  '修仙': {
-    namePrefixes: ['青云', '紫霄', '太虚', '玄天', '昆仑', '蓬莱'],
-    nameSuffixes: ['界', '域', '天', '境', '州'],
-    descriptions: [
-      '灵气充沛，仙门林立，修士们追求长生大道，适合初入万界的修行者',
-      '宗门遍布，灵脉纵横，是修仙者的圣地，万界之旅的起点',
-      '仙气缥缈，洞天福地众多，传说中有仙人飞升之地，万物皆可修炼',
-    ],
-    powerSystems: [
-      '炼气化神，以灵力为根基，追求天人合一',
-      '道法自然，感悟天地法则，证得大道',
-    ],
-    majorForces: [
-      '五大仙门各据一方，暗流涌动',
-      '三宗两门一阁，势力错综复杂',
-      '十大宗门并立，争夺灵脉资源',
-    ],
-    dangers: [
-      { description: '魔修入侵', impact: { 体质: -1 }, impactDescription: '体质-1' },
-      { description: '灵气枯竭', impact: { 灵根: -1 }, impactDescription: '灵根-1' },
-      { description: '妖兽横行', impact: { 意志: -1 }, impactDescription: '意志-1' },
-    ],
-    opportunities: [
-      { description: '发现上古洞府', impact: { 体质: 2 }, impactDescription: '体质+2' },
-      { description: '获得仙缘传承', impact: { 灵根: 2 }, impactDescription: '灵根+2' },
-      { description: '悟道突破', impact: { 意志: 2 }, impactDescription: '意志+2' },
-    ],
-    coefficient: 1.0,   // 简单（入门世界）
-    baseHp: 100,
-    hpPerLevel: 15,
-    hpPerConstitution: 10,
-    baseAttack: 12,
-    attackPerLevel: 2.0,
-    attackPerConstitution: 1.0,
-    attackPerSpiritRoot: 0.5,
-    baseDefense: 6,
-    defensePerLevel: 1.0,
-    defensePerWillpower: 0.8,
-    enemyAttackBonus: 0,
-    enemyDefenseBonus: 0,
-    statDisplayNames: {
-      '体质': '体质',
-      '灵根': '灵根',
-      '悟性': '悟性',
-      '幸运': '幸运',
-      '意志': '意志',
-    },
-  },
-
-  '高武': {
-    namePrefixes: ['苍龙', '玄武', '白虎', '朱雀', '麒麟', '神凤'],
-    nameSuffixes: ['大陆', '域', '疆', '界', '州'],
-    descriptions: [
-      '武道昌盛，强者如云，武者以力证道',
-      '气血沸腾，武道通神，是武者的天堂',
-      '宗门林立，武道传承源远流长',
-    ],
-    powerSystems: [
-      '以武入道，炼体化神，追求武道巅峰',
-      '气血如龙，突破极限，成就武神之躯',
-    ],
-    majorForces: [
-      '三大武道圣地统领天下',
-      '五族联盟与武道宗门对峙',
-      '皇朝与宗门势力交织',
-    ],
-    dangers: [
-      { description: '异族入侵', impact: { 体质: -1 }, impactDescription: '体质-1' },
-      { description: '武道争锋', impact: { 灵根: -1 }, impactDescription: '灵根-1' },
-      { description: '暗流涌动', impact: { 意志: -1 }, impactDescription: '意志-1' },
-    ],
-    opportunities: [
-      { description: '获得武道传承', impact: { 体质: 2 }, impactDescription: '体质+2' },
-      { description: '突破武道瓶颈', impact: { 灵根: 2 }, impactDescription: '灵根+2' },
-      { description: '悟出武道真意', impact: { 意志: 2 }, impactDescription: '意志+2' },
-    ],
-    coefficient: 1.3,   // 困难
-    baseHp: 110,
-    hpPerLevel: 18,
-    hpPerConstitution: 12,
-    baseAttack: 14,
-    attackPerLevel: 2.2,
-    attackPerConstitution: 1.2,
-    attackPerSpiritRoot: 0.4,
-    baseDefense: 8,
-    defensePerLevel: 1.2,
-    defensePerWillpower: 0.8,
-    enemyAttackBonus: 0.1,
-    enemyDefenseBonus: 0.1,
-    statDisplayNames: {
-      '体质': '体魄',
-      '灵根': '根骨',
-      '悟性': '悟性',
-      '幸运': '机缘',
-      '意志': '战意',
-    },
-  },
-  
-  '科技': {
-    namePrefixes: ['星际', '银河', '机械', '赛博', '量子', '虚空'],
-    nameSuffixes: ['联邦', '帝国', '联盟', '领域', '世界'],
-    descriptions: [
-      '科技高度发达，星际航行已是常态',
-      '机械与人工智能共存，赛博文明繁荣',
-      '量子科技突破，人类征服星辰大海',
-    ],
-    powerSystems: [
-      '基因改造与机械飞升，科技改变命运',
-      '纳米技术与AI融合，追求永生之道',
-    ],
-    majorForces: [
-      '三大星际财团掌控资源',
-      '联邦政府与反叛军对峙',
-      'AI联盟与人类政权共存',
-    ],
-    dangers: [
-      { description: 'AI叛乱', impact: { 体质: -1 }, impactDescription: '体质-1' },
-      { description: '基因崩溃', impact: { 灵根: -1 }, impactDescription: '灵根-1' },
-      { description: '星际战争', impact: { 意志: -1 }, impactDescription: '意志-1' },
-    ],
-    opportunities: [
-      { description: '获得基因改造', impact: { 体质: 2 }, impactDescription: '体质+2' },
-      { description: '接入超级AI', impact: { 灵根: 2 }, impactDescription: '灵根+2' },
-      { description: '获得纳米装甲', impact: { 意志: 2 }, impactDescription: '意志+2' },
-    ],
-    coefficient: 1.2,   // 普通~困难
-    baseHp: 90,
-    hpPerLevel: 12,
-    hpPerConstitution: 8,
-    baseAttack: 15,
-    attackPerLevel: 2.5,
-    attackPerConstitution: 0.6,
-    attackPerSpiritRoot: 1.0,
-    baseDefense: 5,
-    defensePerLevel: 0.8,
-    defensePerWillpower: 1.0,
-    enemyAttackBonus: 0.15,
-    enemyDefenseBonus: 0,
-
-    statDisplayNames: {
-      '体质': '体能',
-      '灵根': '智力',
-      '悟性': '反应',
-      '幸运': '技术',
-      '意志': '魅力',
-    },  },
-  
-  '魔幻': {
-    namePrefixes: ['艾泽', '诺瓦', '奥兰', '神秘', '永恒', '圣光'],
-    nameSuffixes: ['大陆', '王国', '领域', '森林', '帝国'],
-    descriptions: [
-      '魔法元素充盈，法师与龙共存',
-      '精灵与矮人世代居住，魔法文明辉煌',
-      '诸神的恩赐洒满大地，魔法至上的世界',
-    ],
-    powerSystems: [
-      '元素魔法与奥术之力，法师追求真理',
-      '神术与魔法并存，信仰与知识同行',
-    ],
-    majorForces: [
-      '魔法议会统领各元素学派',
-      '三大帝国与精灵联盟对峙',
-      '教会与法师协会分庭抗礼',
-    ],
-    dangers: [
-      { description: '魔王苏醒', impact: { 体质: -1 }, impactDescription: '体质-1' },
-      { description: '魔力潮汐', impact: { 灵根: -1 }, impactDescription: '灵根-1' },
-      { description: '黑暗降临', impact: { 意志: -1 }, impactDescription: '意志-1' },
-    ],
-    opportunities: [
-      { description: '获得魔法传承', impact: { 体质: 2 }, impactDescription: '体质+2' },
-      { description: '契约元素之灵', impact: { 灵根: 2 }, impactDescription: '灵根+2' },
-      { description: '获得神器认可', impact: { 意志: 2 }, impactDescription: '意志+2' },
-    ],
-    coefficient: 1.1,   // 普通
-    baseHp: 95,
-    hpPerLevel: 14,
-    hpPerConstitution: 9,
-    baseAttack: 13,
-    attackPerLevel: 2.1,
-    attackPerConstitution: 0.8,
-    attackPerSpiritRoot: 0.8,
-    baseDefense: 7,
-    defensePerLevel: 1.0,
-    defensePerWillpower: 0.9,
-    enemyAttackBonus: 0.05,
-    enemyDefenseBonus: 0.05,
-
-    statDisplayNames: {
-      '体质': '力量',
-      '灵根': '魔力',
-      '悟性': '感知',
-      '幸运': '魅力',
-      '意志': '精神',
-    },  },
-  
-  '异能': {
-    namePrefixes: ['觉醒', '变异', '超凡', '进化', '源能', '异变'],
-    nameSuffixes: ['都市', '世界', '领域', '区', '城'],
-    descriptions: [
-      '异能觉醒者遍布都市，隐藏在普通人之中',
-      '源能爆发，异能者改变世界格局',
-      '变异与进化并行，人类站在进化十字路口',
-    ],
-    powerSystems: [
-      '基因觉醒与异能开发，突破人类极限',
-      '源能觉醒，探索心灵深处的力量',
-    ],
-    majorForces: [
-      '异能管理局与反抗组织对立',
-      '三大财团暗中操控异能者',
-      '国际异能联盟维稳全球',
-    ],
-    dangers: [
-      { description: '异能暴走', impact: { 体质: -1 }, impactDescription: '体质-1' },
-      { description: '组织追杀', impact: { 灵根: -1 }, impactDescription: '灵根-1' },
-      { description: '异兽入侵', impact: { 意志: -1 }, impactDescription: '意志-1' },
-    ],
-    opportunities: [
-      { description: '二次觉醒', impact: { 体质: 2 }, impactDescription: '体质+2' },
-      { description: '获得异能结晶', impact: { 灵根: 2 }, impactDescription: '灵根+2' },
-      { description: '异能融合', impact: { 意志: 2 }, impactDescription: '意志+2' },
-    ],
-    coefficient: 1.2,   // 普通~困难
-    baseHp: 85,
-    hpPerLevel: 13,
-    hpPerConstitution: 8,
-    baseAttack: 14,
-    attackPerLevel: 2.3,
-    attackPerConstitution: 0.9,
-    attackPerSpiritRoot: 0.7,
-    baseDefense: 6,
-    defensePerLevel: 1.1,
-    defensePerWillpower: 0.7,
-    enemyAttackBonus: 0.1,
-    enemyDefenseBonus: 0.05,
-
-    statDisplayNames: {
-      '体质': '体能',
-      '灵根': '源能',
-      '悟性': '感知',
-      '幸运': '幸运',
-      '意志': '意志',
-    },  },
-  
-  '仙侠': {
-    namePrefixes: ['剑气', '仙云', '凌霄', '飞剑', '天剑', '灵剑'],
-    nameSuffixes: ['山', '峰', '门', '境', '界'],
-    descriptions: [
-      '剑气纵横，侠客仗剑行走天涯',
-      '仙剑传说流传千古，剑修追求剑道巅峰',
-      '剑意凌霄，万剑归宗的剑道圣地',
-    ],
-    powerSystems: [
-      '以剑入道，剑心通明，追求剑道极致',
-      '御剑乘风，剑意化形，成就剑仙之路',
-    ],
-    majorForces: [
-      '五大剑派统领剑道',
-      '剑阁与剑宗分庭抗礼',
-      '散修联盟与宗门共存',
-    ],
-    dangers: [
-      { description: '剑道争锋', impact: { 体质: -1 }, impactDescription: '体质-1' },
-      { description: '魔剑现世', impact: { 灵根: -1 }, impactDescription: '灵根-1' },
-      { description: '剑气反噬', impact: { 意志: -1 }, impactDescription: '意志-1' },
-    ],
-    opportunities: [
-      { description: '获得名剑认可', impact: { 体质: 2 }, impactDescription: '体质+2' },
-      { description: '悟出剑意', impact: { 灵根: 2 }, impactDescription: '灵根+2' },
-      { description: '剑心通明', impact: { 意志: 2 }, impactDescription: '意志+2' },
-    ],
-    coefficient: 1.3,   // 困难
-    baseHp: 100,
-    hpPerLevel: 14,
-    hpPerConstitution: 10,
-    baseAttack: 15,
-    attackPerLevel: 2.2,
-    attackPerConstitution: 1.0,
-    attackPerSpiritRoot: 0.6,
-    baseDefense: 6,
-    defensePerLevel: 1.0,
-    defensePerWillpower: 0.8,
-    enemyAttackBonus: 0.1,
-    enemyDefenseBonus: 0,
-
-    statDisplayNames: {
-      '体质': '体质',
-      '灵根': '仙根',
-      '悟性': '剑心',
-      '幸运': '仙缘',
-      '意志': '道心',
-    },  },
-  
-  '武侠': {
-    namePrefixes: ['江湖', '武当', '少林', '华山', '峨眉', '昆仑'],
-    nameSuffixes: ['派', '门', '帮', '会', '盟'],
-    descriptions: [
-      '江湖恩怨，侠骨柔情，武林中人快意恩仇',
-      '门派林立，武功秘籍传承千年',
-      '义薄云天，侠之大者为国为民',
-    ],
-    powerSystems: [
-      '内外兼修，武道通神，成就一代宗师',
-      '以武会友，侠义为先，行走江湖',
-    ],
-    majorForces: [
-      '六大门派统领武林',
-      '朝廷与江湖势力交织',
-      '帮派联盟与隐世宗门并存',
-    ],
-    dangers: [
-      { description: '江湖仇杀', impact: { 体质: -1 }, impactDescription: '体质-1' },
-      { description: '门派之争', impact: { 灵根: -1 }, impactDescription: '灵根-1' },
-      { description: '朝廷镇压', impact: { 意志: -1 }, impactDescription: '意志-1' },
-    ],
-    opportunities: [
-      { description: '获得秘籍传承', impact: { 体质: 2 }, impactDescription: '体质+2' },
-      { description: '打通任督二脉', impact: { 灵根: 2 }, impactDescription: '灵根+2' },
-      { description: '悟出武道真谛', impact: { 意志: 2 }, impactDescription: '意志+2' },
-    ],
-    coefficient: 1.0,   // 简单
-    baseHp: 80,
-    hpPerLevel: 12,
-    hpPerConstitution: 8,
-    baseAttack: 11,
-    attackPerLevel: 1.8,
-    attackPerConstitution: 0.9,
-    attackPerSpiritRoot: 0.3,
-    baseDefense: 7,
-    defensePerLevel: 1.0,
-    defensePerWillpower: 0.9,
-    enemyAttackBonus: 0,
-    enemyDefenseBonus: 0.1,
-
-    statDisplayNames: {
-      '体质': '根骨',
-      '灵根': '悟性',
-      '悟性': '慧根',
-      '幸运': '机缘',
-      '意志': '毅力',
-    },
-  },
-
-  '末世': {
-    namePrefixes: ['废土', '荒芜', '末世', '崩坏', '毁灭', '残存'],
-    nameSuffixes: ['世界', '之地', '废墟', '区域', '疆域'],
-    descriptions: [
-      '文明崩塌，变异横行，幸存者挣扎求生',
-      '废土之上，适者生存，人性与兽性交织',
-      '核战后的人类文明，在废墟中寻找希望',
-    ],
-    powerSystems: [
-      '变异进化，适应废土，成为新时代的霸主',
-      '科技残存，基因改造，在末世中崛起',
-    ],
-    majorForces: [
-      '幸存者联盟与掠夺者对峙',
-      '变异生物与人类争夺领地',
-      '避难所联盟掌控资源',
-    ],
-    dangers: [
-      { description: '变异兽潮', impact: { 体质: -1 }, impactDescription: '体质-1' },
-      { description: '辐射扩散', impact: { 灵根: -1 }, impactDescription: '灵根-1' },
-      { description: '资源匮乏', impact: { 意志: -1 }, impactDescription: '意志-1' },
-    ],
-    opportunities: [
-      { description: '发现避难所', impact: { 体质: 2 }, impactDescription: '体质+2' },
-      { description: '获得进化能力', impact: { 灵根: 2 }, impactDescription: '灵根+2' },
-      { description: '找到文明遗物', impact: { 意志: 2 }, impactDescription: '意志+2' },
-    ],
-    coefficient: 1.5,   // 困难（基础）+ 飞升加成后可达噩梦/地狱/深渊
-    baseHp: 90,
-    hpPerLevel: 20,
-    hpPerConstitution: 15,
-    baseAttack: 12,
-    attackPerLevel: 2.5,
-    attackPerConstitution: 1.3,
-    attackPerSpiritRoot: 0.3,
-    baseDefense: 10,
-    defensePerLevel: 1.5,
-    defensePerWillpower: 1.0,
-    enemyAttackBonus: 0.3,
-    enemyDefenseBonus: 0.25,
-
-    statDisplayNames: {
-      '体质': '体质',
-      '灵根': '适应性',
-      '悟性': '洞察',
-      '幸运': '运气',
-      '意志': '意志',
-    },  },
-};
-
+/* * @deprecated 数据已迁移到 mods/wanjie-core 的 WorldViewRegistry。 */
 // ============================================
 // 难度系数配置
 // ============================================
@@ -611,86 +183,80 @@ export type DifficultyLevel = keyof typeof DIFFICULTY_MULTIPLIERS;
 /**
  * 获取世界数据
  *
- * 所有数据完全通过 Mod 加载进入注册中心，无任何硬编码兜底。
+ * 所有数据通过 Mod 加载进入注册中心，无任何硬编码兜底。
  * 如果注册中心无数据或 stats 字段缺失，抛出明确错误。
  */
-export function getWorldData(worldType: WorldType): WorldStats {
+export function getWorldData(worldviewId: string): WorldStats {
   const registry = WorldViewRegistry.getInstance();
-  const worldview = registry.get(worldType);
+  const worldview = registry.get(worldviewId);
 
-  // 1. 注册中心已加载 → 从 worldview 构建完整 WorldStats
-  if (worldview?.stats) {
-    const stats = worldview.stats;
-    const requiredStatFields = [
-      'baseHp', 'hpPerLevel', 'hpPerConstitution',
-      'baseAttack', 'attackPerLevel', 'attackPerConstitution', 'attackPerSpiritRoot',
-      'baseDefense', 'defensePerLevel', 'defensePerWillpower',
-      'enemyAttackBonus', 'enemyDefenseBonus',
-    ] as const;
+  if (!worldview?.stats) {
+    throw new Error(
+      `世界观未加载: "${worldviewId}"。请确保 wanjie-core Mod 已正确加载。`
+    );
+  }
 
-    for (const field of requiredStatFields) {
-      if (typeof stats[field] !== 'number') {
-        throw new Error(
-          `世界 "${worldType}" 的 stats.${field} 缺失或不是数字。` +
-          `请检查数据文件完整性。`
-        );
-      }
-    }
+  const stats = worldview.stats;
+  const requiredStatFields = [
+    'baseHp', 'hpPerLevel', 'hpPerConstitution',
+    'baseAttack', 'attackPerLevel', 'attackPerConstitution', 'attackPerSpiritRoot',
+    'baseDefense', 'defensePerLevel', 'defensePerWillpower',
+    'enemyAttackBonus', 'enemyDefenseBonus',
+  ] as const;
 
-    if (!stats.statDisplayNames || typeof stats.statDisplayNames !== 'object') {
+  for (const field of requiredStatFields) {
+    if (typeof stats[field] !== 'number') {
       throw new Error(
-        `世界 "${worldType}" 缺少 statDisplayNames 配置。`
+        `世界观 "${worldviewId}" 的 stats.${field} 缺失或不是数字。` +
+        `请检查数据文件完整性。`
       );
     }
-
-    return {
-      namePrefixes: worldview.namePrefixes,
-      nameSuffixes: worldview.nameSuffixes,
-      descriptions: worldview.descriptions,
-      powerSystems: worldview.powerSystems ?? [],
-      majorForces: worldview.majorForces ?? [],
-      dangers: (worldview.dangers ?? []).map(d => ({
-        description: d.description,
-        impact: d.effect?.statModifications ?? {} as StatImpact,
-        impactDescription: d.description,
-      })),
-      opportunities: (worldview.opportunities ?? []).map(o => ({
-        description: o.description,
-        impact: o.effect?.statModifications ?? {} as StatImpact,
-        impactDescription: o.description,
-      })),
-      coefficient: worldview.baseCoefficient,
-      baseHp: stats.baseHp,
-      hpPerLevel: stats.hpPerLevel,
-      hpPerConstitution: stats.hpPerConstitution,
-      baseAttack: stats.baseAttack,
-      attackPerLevel: stats.attackPerLevel,
-      attackPerConstitution: stats.attackPerConstitution,
-      attackPerSpiritRoot: stats.attackPerSpiritRoot,
-      baseDefense: stats.baseDefense,
-      defensePerLevel: stats.defensePerLevel,
-      defensePerWillpower: stats.defensePerWillpower,
-      enemyAttackBonus: stats.enemyAttackBonus,
-      enemyDefenseBonus: stats.enemyDefenseBonus,
-      statDisplayNames: stats.statDisplayNames,
-    };
   }
 
-  // 2. 客户端环境注册中心为空 → 回退到硬编码 WORLD_DATA
-  const fallbackData = WORLD_DATA[worldType];
-  if (fallbackData) {
-    return fallbackData;
+  if (!stats.statDisplayNames || typeof stats.statDisplayNames !== 'object') {
+    throw new Error(
+      `世界观 "${worldviewId}" 缺少 statDisplayNames 配置。`
+    );
   }
 
-  // 3. 注册中心无数据且硬编码也无匹配 → 抛出明确错误
-  throw new Error(`世界观未加载: "${worldType}"。请确保 wanjie-core Mod 已正确加载。`);
+  return {
+    namePrefixes: worldview.namePrefixes,
+    nameSuffixes: worldview.nameSuffixes,
+    descriptions: worldview.descriptions,
+    powerSystems: worldview.powerSystems ?? [],
+    majorForces: worldview.majorForces ?? [],
+    dangers: (worldview.dangers ?? []).map(d => ({
+      description: d.description,
+      impact: d.effect?.statModifications ?? {} as StatImpact,
+      impactDescription: d.description,
+    })),
+    opportunities: (worldview.opportunities ?? []).map(o => ({
+      description: o.description,
+      impact: o.effect?.statModifications ?? {} as StatImpact,
+      impactDescription: o.description,
+    })),
+    coefficient: worldview.baseCoefficient,
+    baseHp: stats.baseHp,
+    hpPerLevel: stats.hpPerLevel,
+    hpPerConstitution: stats.hpPerConstitution,
+    baseAttack: stats.baseAttack,
+    attackPerLevel: stats.attackPerLevel,
+    attackPerConstitution: stats.attackPerConstitution,
+    attackPerSpiritRoot: stats.attackPerSpiritRoot,
+    baseDefense: stats.baseDefense,
+    defensePerLevel: stats.defensePerLevel,
+    defensePerWillpower: stats.defensePerWillpower,
+    enemyAttackBonus: stats.enemyAttackBonus,
+    enemyDefenseBonus: stats.enemyDefenseBonus,
+    statDisplayNames: stats.statDisplayNames,
+  };
 }
 
 /**
  * 获取世界名称
  */
-export function getWorldName(worldType: WorldType): string {
-  const data = getWorldData(worldType);
+export function getWorldName(worldviewId: string): string {
+  const data = getWorldData(worldviewId);
   const prefix = data.namePrefixes[Math.floor(Math.random() * data.namePrefixes.length)];
   const suffix = data.nameSuffixes[Math.floor(Math.random() * data.nameSuffixes.length)];
   return prefix + suffix;
@@ -699,26 +265,26 @@ export function getWorldName(worldType: WorldType): string {
 /**
  * 获取世界描述
  */
-export function getWorldDescription(worldType: WorldType): string {
-  const data = getWorldData(worldType);
+export function getWorldDescription(worldviewId: string): string {
+  const data = getWorldData(worldviewId);
   return data.descriptions[Math.floor(Math.random() * data.descriptions.length)];
 }
 
 /**
  * 获取世界力量体系
  */
-export function getWorldPowerSystem(worldType: WorldType): string {
-  const data = getWorldData(worldType);
+export function getWorldPowerSystem(worldviewId: string): string {
+  const data = getWorldData(worldviewId);
   return data.powerSystems[Math.floor(Math.random() * data.powerSystems.length)];
 }
 
-export function getWorldMajorForces(worldType: WorldType): string {
-  const data = getWorldData(worldType);
+export function getWorldMajorForces(worldviewId: string): string {
+  const data = getWorldData(worldviewId);
   return data.majorForces[Math.floor(Math.random() * data.majorForces.length)];
 }
 
-export function getWorldDangers(worldType: WorldType): WorldImpact {
-  const data = getWorldData(worldType);
+export function getWorldDangers(worldviewId: string): WorldImpact {
+  const data = getWorldData(worldviewId);
   const danger = data.dangers[Math.floor(Math.random() * data.dangers.length)];
   return {
     description: danger.description,
@@ -727,8 +293,8 @@ export function getWorldDangers(worldType: WorldType): WorldImpact {
   };
 }
 
-export function getWorldOpportunities(worldType: WorldType): WorldImpact {
-  const data = getWorldData(worldType);
+export function getWorldOpportunities(worldviewId: string): WorldImpact {
+  const data = getWorldData(worldviewId);
   const opp = data.opportunities[Math.floor(Math.random() * data.opportunities.length)];
   return {
     description: opp.description,

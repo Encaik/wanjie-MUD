@@ -32,7 +32,6 @@ import { executeCultivation, getMaxExperience } from '@/modules/progression/logi
 import { generateEquipment } from '@/modules/equipment/logic/equipment';
 import { updateTaskProgress, applyMentalChange } from '@/core/engine';
 import { processExperienceGain, calculateBreakthroughTransfer } from '@/modules/progression/logic/experienceSystem';
-import { generateBackstory } from '@/modules/identity/logic/generators';
 import { WorldProviderRegistry } from '@/core/world/WorldProviderRegistry';
 import { buildWorldPool } from '@/core/world/WorldPoolEngine';
 import { post } from '@/shared/utils/api-client';
@@ -43,7 +42,6 @@ import {  createDefaultTowerProgress } from '@/modules/tower/logic/types';
 import {  createInventoryItem } from '@/core/types';
 import {  spiritStoneItems, cultivationPillItems, breakthroughItems } from '@/modules/equipment/logic/items';
 import {  generateRandomTechnique, generateTechniqueByType } from '@/modules/techniques/logic/technique';
-import {  getRealmName } from '@/modules/identity/logic/generators';
 import {  applyBaseStatChanges, getGrowthStatCap } from '@/modules/progression/logic/realmSystem';
 import {  
   TUTORIAL_TASKS, 
@@ -598,23 +596,6 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     }
   }, []);
 
-  // 刷新角色列表（通过服务端 API 生成，使用 worldviewId）
-  const refreshCharacters = useCallback(async () => {
-    setGameState(prev => {
-      if (!prev.selectedWorld) return prev;
-      // 发起 API 请求但不等待——先用空列表占位，然后在 then 中更新
-      post<{ characters: Character[] }>('/api/v1/characters/generate', {
-        worldviewId: prev.selectedWorld.worldviewId,
-        count: 8,
-      }).then(({ code, data }) => {
-        if (code === 200 && data) {
-          setGameState(p => ({ ...p, characters: data.characters }));
-        }
-      });
-      return prev;
-    });
-  }, []);
-
   // 选择世界观：补全详情 + 通过服务端 API 生成角色 → 进入角色选择
   const selectWorld = useCallback(async (world: World) => {
     // 如果还没有详情，从后端补全
@@ -635,112 +616,6 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
       selectedWorld: fullWorld,
       phase: 'character-select',
     }));
-  }, []);
-
-  // 选择角色：生成主角和背景故事，进入游戏
-  /** @deprecated V3: 使用 startGameWithCharacter + POST /characters/save 替代 */
-  const selectCharacter = useCallback((character: Character) => {
-    setGameState(prev => {
-      if (!prev.selectedWorld) return prev;
-
-      const world = prev.selectedWorld;
-
-      // 生成背景故事
-      const backstory = generateBackstory(character, world);
-
-      // 初始背包物品 - 新手优化：增加初始资源
-      const initialInventory: InventoryItem[] = [
-        createInventoryItem(spiritStoneItems[0], 500),
-        createInventoryItem(cultivationPillItems[0], 5),
-        createInventoryItem(breakthroughItems[0], 2),
-      ];
-
-      // 计算身世总权重（出身和天赋权重更高）
-      const backgroundWeight =
-        (character.origin.level === 'legendary' ? 4 :
-         character.origin.level === 'epic' ? 3 :
-         character.origin.level === 'rare' ? 2 :
-         character.origin.level === 'uncommon' ? 1 : 0) +
-        (character.talent.level === 'legendary' ? 4 :
-         character.talent.level === 'epic' ? 3 :
-         character.talent.level === 'rare' ? 2 :
-         character.talent.level === 'uncommon' ? 1 : 0) +
-        (character.trait.level === 'legendary' ? 2 :
-         character.trait.level === 'epic' ? 1.5 :
-         character.trait.level === 'rare' ? 1 :
-         character.trait.level === 'uncommon' ? 0.5 : 0) +
-        (character.personality.level === 'legendary' ? 2 :
-         character.personality.level === 'epic' ? 1.5 :
-         character.personality.level === 'rare' ? 1 :
-         character.personality.level === 'uncommon' ? 0.5 : 0);
-
-      // 根据身世权重决定初始品质
-      const getInitialRarity = (): ItemRarity => {
-        const roll = Math.random() * 12;
-        if (backgroundWeight >= 10 && roll > 8) return '史诗';
-        if (backgroundWeight >= 7 && roll > 6) return '稀有';
-        if (backgroundWeight >= 4 && roll > 4) return '稀有';
-        if (backgroundWeight >= 2 && roll > 8) return '稀有';
-        return '普通';
-      };
-
-      const initialRarity = getInitialRarity();
-
-      // 生成初始攻击功法（根据身世品质）
-      const initialTechnique = generateTechniqueByType('attack', 1, world.worldviewId, initialRarity);
-
-      // 生成初始武器（根据身世品质，近战武器）
-      const initialEquipment = generateEquipment('melee', initialRarity, world.worldviewId);
-
-      // 根据属性计算初始血量和法力（使用 World 嵌入的 worldStats，不访问 WorldViewRegistry）
-      const initialMaxHp = calcPlayerMaxHp(
-        character.stats.base.体质,
-        1,
-        world.worldStats
-      );
-      const initialMaxMp = calcPlayerMaxMp(
-        character.stats.base.灵根,
-        1
-      );
-
-      // 生成主角
-      const protagonist: Protagonist = {
-        character,
-        world: world,
-        backstory: backstory,
-        level: 1,
-        realm: '凡人',
-        stats: { ...character.stats },
-        statCapBonuses: { 体质: 0, 灵根: 0, 悟性: 0, 幸运: 0, 意志: 0 },
-        inventory: initialInventory,
-        activeEffects: [],
-        experience: 0,
-        overflowExperience: 0,
-        currentHp: initialMaxHp,
-        maxHp: initialMaxHp,
-        currentMp: initialMaxMp,
-        maxMp: initialMaxMp,
-        techniques: [initialTechnique],
-        equippedAttackTechniques: [initialTechnique, null, null],
-        equippedDefenseTechniques: [null, null, null],
-        equipments: [initialEquipment],
-        equippedMelee: initialEquipment,
-        equippedRanged: null,
-        equippedHead: null,
-        equippedBody: null,
-        equippedLegs: null,
-        equippedFeet: null,
-        factionId: null,
-        ...DEFAULT_PROTAGONIST_EXTENSION,
-      };
-
-      return {
-        ...prev,
-        selectedCharacter: character,
-        protagonist,
-        phase: 'backstory',
-      };
-    });
   }, []);
 
   // V3: 从保存的角色数据 + 已选世界创建主角并开始游戏
@@ -2313,8 +2188,6 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     <GameContext.Provider value={{
       gameState,
       startNewGame,
-      refreshCharacters,
-      selectCharacter,
       selectWorld,
       startGameWithCharacter,
       confirmBackstory,

@@ -16,7 +16,8 @@
 
 import fs from 'node:fs';
 import path from 'node:path';
-import { generateWorld, DEFAULT_WORLD_SEEDS } from '../src/modules/identity/logic/generators';
+import { WorldViewRegistry } from '../src/core/registry/WorldViewRegistry';
+import { generateWorld, generateSeed } from '../src/core/world/generateWorld';
 import type { World } from '../src/core/types';
 
 // ============================================
@@ -146,6 +147,19 @@ async function generateAIContent(world: World): Promise<World> {
 // 生成逻辑
 // ============================================
 
+/** 从 WorldViewRegistry 获取 worldview */
+function getWorldview(worldviewId?: string) {
+  const registry = WorldViewRegistry.getInstance();
+  if (worldviewId) {
+    const wv = registry.get(worldviewId);
+    if (!wv) throw new Error(`世界观 '${worldviewId}' 未注册`);
+    return wv;
+  }
+  const all = registry.getAll();
+  if (all.length === 0) throw new Error('没有已注册的世界观');
+  return all[0];
+}
+
 /** 生成单个世界并写入文件 */
 async function generateSingleWorld(seed: string, force: boolean, useAI: boolean): Promise<void> {
   const isNew = !worldExists(seed) || force;
@@ -157,7 +171,8 @@ async function generateSingleWorld(seed: string, force: boolean, useAI: boolean)
   }
 
   if (isNew) {
-    world = generateWorld(seed);
+    const worldview = getWorldview();
+    world = generateWorld(worldview, seed);
   } else {
     world = loadWorld(seed);
   }
@@ -179,16 +194,24 @@ async function generateSingleWorld(seed: string, force: boolean, useAI: boolean)
   regenerateBarrel(allSeeds);
 }
 
-/** 生成默认的 8 个世界 */
+/** 生成多个世界（每个已注册世界观一个） */
 async function generateAllDefault(force: boolean, useAI: boolean): Promise<void> {
-  for (const seed of DEFAULT_WORLD_SEEDS) {
+  const registry = WorldViewRegistry.getInstance();
+  const worldviews = registry.getAll();
+  if (worldviews.length === 0) {
+    console.log('  ⚠ 没有已注册的世界观，跳过');
+    return;
+  }
+
+  for (const worldview of worldviews) {
+    const seed = generateSeed();
     if (!force && worldExists(seed) && !useAI) {
-      console.log(`  ⚠ seed=${seed} 已存在，跳过`);
+      console.log(`  ⚠ seed=${seed} (${worldview.id}) 已存在，跳过`);
       continue;
     }
 
     const shouldRegenerate = force || !worldExists(seed);
-    let world = shouldRegenerate ? generateWorld(seed) : loadWorld(seed);
+    let world = shouldRegenerate ? generateWorld(worldview, seed) : loadWorld(seed);
 
     if (useAI) {
       world = await generateAIContent(world);
@@ -196,7 +219,7 @@ async function generateAllDefault(force: boolean, useAI: boolean): Promise<void>
 
     fs.mkdirSync(WORLDS_DIR, { recursive: true });
     fs.writeFileSync(worldFilePath(world.id), JSON.stringify(world, null, 2));
-    console.log(`  ✓ world_${world.id}.json 已写入`);
+    console.log(`  ✓ world_${world.id}.json (${worldview.id}) 已写入`);
   }
 
   const allSeeds = scanExistingSeeds();

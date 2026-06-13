@@ -80,7 +80,6 @@ import {
   calculateFinalStats,
   ForgeMaterialRequirement,
 } from '@/modules/crafting/data/forgeRecipes';
-import { generateId } from '@/modules/identity/logic/generators';
 import { MentalState, DEFAULT_PROTAGONIST_EXTENSION } from '@/core/types';
 import { checkRankPromotion } from '@/core/engine';
 import { getFactionById } from '@/modules/faction/data/factionData';
