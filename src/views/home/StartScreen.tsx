@@ -95,16 +95,17 @@ export function StartScreen({ onStart, onImportSave }: StartScreenProps) {
               择一方天地，书写属于你的不朽传奇。
             </p>
 
-            {/* ===== 开始按钮（带光晕） ===== */}
+            {/* ===== 开始按钮（九宫格边框 + 光晕） ===== */}
             <div className="relative">
               <div
-                className="absolute inset-0 rounded-lg bg-primary/15 blur-xl"
+                className="absolute inset-0 rounded-[4px] bg-primary/15 blur-xl"
                 style={{ animation: 'button-glow 3s ease-in-out infinite' }}
               />
               <Button
                 size="lg"
                 onClick={onStart}
                 className="relative w-full text-base font-semibold tracking-[0.15em] font-serif
+                  nine-slice-border rounded-[4px] h-auto py-2.5
                   transition-all duration-500
                   hover:scale-[1.03] hover:shadow-lg hover:shadow-primary/20
                   active:scale-[0.98]"
