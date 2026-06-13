@@ -62,7 +62,7 @@ import {
   EnemyTier,
   Technique,
   Equipment,
-  WorldType,
+  WorldBalanceStats,
   getFinalStats,
 } from '@/core/types';
 import { 
@@ -192,17 +192,18 @@ function createEnemyFromCell(
   enemyName: string,
   enemyLevel: number,
   config: DungeonConfig,
-  worldType: WorldType,
+  worldStats: WorldBalanceStats,
+  worldType: string,
   playerLevel: number = 1
 ): Enemy {
   const tier = getEnemyTierFromCellType(cellType);
   const tierConfig = getEnemyTierConfig(tier);
   const difficultyLevel = config.difficultyLevel || 'normal';
-  
+
   // 计算敌人基础属性
-  let hp = calculateEnemyHp(enemyLevel, tier, difficultyLevel, worldType, true, config.difficulty);
-  let attack = calculateEnemyAttack(enemyLevel, tier, difficultyLevel, worldType, true, config.difficulty);
-  let defense = calculateEnemyDefense(enemyLevel, tier, difficultyLevel, worldType, true, config.difficulty);
+  let hp = calculateEnemyHp(enemyLevel, tier, difficultyLevel, worldStats, true, config.difficulty);
+  let attack = calculateEnemyAttack(enemyLevel, tier, difficultyLevel, worldStats, true, config.difficulty);
+  let defense = calculateEnemyDefense(enemyLevel, tier, difficultyLevel, worldStats, true, config.difficulty);
   
   // 生成敌人的真实功法和装备
   const techniqueEquipment = generateEnemyTechniquesAndEquipments(
@@ -372,10 +373,11 @@ export function executeAutoBattle(
 } {
   // 解析敌人信息
   const { name: enemyName, level: enemyLevel } = parseEnemyInfo(enemyContent);
+  const worldStats = protagonist.world.worldStats;
   const worldType = protagonist.world.type;
-  
+
   // 创建敌人（传入玩家等级限制稀有度）
-  const enemy = createEnemyFromCell(cellType, enemyName, enemyLevel, config, worldType, protagonist.level);
+  const enemy = createEnemyFromCell(cellType, enemyName, enemyLevel, config, worldStats, worldType, protagonist.level);
   
   // 创建玩家数据
   const playerData = convertToPlayerData(protagonist);
@@ -466,10 +468,11 @@ export function initInteractiveBattle(
 } {
   // 解析敌人信息
   const { name: enemyName, level: enemyLevel } = parseEnemyInfo(enemyContent);
+  const worldStats = protagonist.world.worldStats;
   const worldType = protagonist.world.type;
-  
+
   // 创建敌人（传入玩家等级限制稀有度）
-  const enemy = createEnemyFromCell(cellType, enemyName, enemyLevel, config, worldType, protagonist.level);
+  const enemy = createEnemyFromCell(cellType, enemyName, enemyLevel, config, worldStats, worldType, protagonist.level);
   
   // 创建玩家数据
   const playerData = convertToPlayerData(protagonist);
@@ -517,7 +520,7 @@ export function initTowerBattle(
   const worldType = protagonist.world.type;
   
   // 生成敌人组（包含多敌人逻辑）
-  const enemyGroup = generateTowerEnemyGroup(floor, protagonist.level, worldType);
+  const enemyGroup = generateTowerEnemyGroup(floor, protagonist.level, protagonist.world.worldStats);
   
   // 创建玩家数据
   const playerData = convertToPlayerData(protagonist);
@@ -601,9 +604,10 @@ export function estimateBattleDifficulty(
     protagonist.activeEffects
   );
   
-  const enemyHp = calculateEnemyHp(enemyLevel, tier, config.difficultyLevel || 'normal', protagonist.world.type);
-  const enemyAttack = calculateEnemyAttack(enemyLevel, tier, config.difficultyLevel || 'normal', protagonist.world.type);
-  const enemyDefense = calculateEnemyDefense(enemyLevel, tier, config.difficultyLevel || 'normal', protagonist.world.type);
+  const worldStats = protagonist.world.worldStats;
+  const enemyHp = calculateEnemyHp(enemyLevel, tier, config.difficultyLevel || 'normal', worldStats);
+  const enemyAttack = calculateEnemyAttack(enemyLevel, tier, config.difficultyLevel || 'normal', worldStats);
+  const enemyDefense = calculateEnemyDefense(enemyLevel, tier, config.difficultyLevel || 'normal', worldStats);
   const enemyPower = calculateEnemyCombatPower(enemyHp, enemyAttack, enemyDefense, enemyLevel, tier);
   
   const ratio = playerPower / enemyPower;

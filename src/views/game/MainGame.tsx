@@ -767,7 +767,7 @@ export function MainGame({
         <TowerPanel
           towerProgress={protagonist.towerProgress ?? createDefaultTowerProgress()}
           playerLevel={protagonist.level}
-          worldType={protagonist.world.type}
+          worldBalanceStats={protagonist.world.worldStats}
           currentHp={protagonist.currentHp}
           maxHp={protagonist.maxHp}
           currentMp={protagonist.currentMp}

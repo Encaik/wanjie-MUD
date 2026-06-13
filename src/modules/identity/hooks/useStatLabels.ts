@@ -5,7 +5,6 @@
  * 依赖模块：identity/data/statDisplayNames
  */
 import { useMemo } from 'react';
-import type { WorldType } from '@/core/types';
 import { getStatLabels, type StatKey } from '../data/statDisplayNames';
 
 export interface StatLabelsResult {
@@ -22,12 +21,12 @@ export interface StatLabelsResult {
 /**
  * 获取当前世界的属性标签
  *
- * @param worldType - 世界类型，undefined 时返回修仙默认值
+ * @param statDisplayNames - 从 World 对象获取的显示名映射（如 world.statDisplayNames）
  * @returns 属性标签映射和辅助方法
  */
-export function useStatLabels(worldType?: WorldType): StatLabelsResult {
+export function useStatLabels(statDisplayNames?: Record<string, string>): StatLabelsResult {
   return useMemo(() => {
-    const { labels, statKeys, displayNames } = getStatLabels(worldType || '修仙');
+    const { labels, statKeys, displayNames } = getStatLabels(statDisplayNames);
 
     return {
       labels,
@@ -35,5 +34,5 @@ export function useStatLabels(worldType?: WorldType): StatLabelsResult {
       displayNames,
       getLabel: (statKey: string) => labels[statKey] || statKey,
     };
-  }, [worldType]);
+  }, [statDisplayNames]);
 }

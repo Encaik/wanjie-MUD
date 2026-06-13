@@ -726,9 +726,9 @@ export function calculateBattleWithLogs(
   
   // 敌人数值 - 使用敌人分级系统
   // 传入 difficultyValue 用于新手Boss判断
-  let enemyMaxHp = calculateEnemyHp(enemyLevel, enemyTier, difficultyLevel, worldType, true, config.difficulty);
-  let enemyAttack = calculateEnemyAttack(enemyLevel, enemyTier, difficultyLevel, worldType, true, config.difficulty);
-  let enemyDefense = calculateEnemyDefense(enemyLevel, enemyTier, difficultyLevel, worldType, true, config.difficulty);
+  let enemyMaxHp = calculateEnemyHp(enemyLevel, enemyTier, difficultyLevel, worldStats, true, config.difficulty);
+  let enemyAttack = calculateEnemyAttack(enemyLevel, enemyTier, difficultyLevel, worldStats, true, config.difficulty);
+  let enemyDefense = calculateEnemyDefense(enemyLevel, enemyTier, difficultyLevel, worldStats, true, config.difficulty);
   
   // 应用敌人增强系统（虚拟功法+装备）
   // 传入 difficultyValue 用于新手区域判断
@@ -919,11 +919,12 @@ function calculateBattleRewards(
     }
     
     // 灵石奖励 - 使用敌人分级计算
-    const spiritStones = calculateBattleSpiritStones(enemyLevel, enemyTier, difficultyLevel, worldType);
+    const worldCoeff = protagonist.world.actualCoefficient ?? 1;
+    const spiritStones = calculateBattleSpiritStones(enemyLevel, enemyTier, difficultyLevel, worldCoeff);
     itemGains.push(createInventoryItem(spiritStoneItems[0], spiritStones));
-    
+
     // 经验奖励 - 使用敌人分级计算
-    const expReward = calculateBattleExp(enemyLevel, enemyTier, difficultyLevel, worldType);
+    const expReward = calculateBattleExp(enemyLevel, enemyTier, difficultyLevel, worldCoeff);
     
     // 根据敌人等级给予不同奖励
     switch (enemyTier) {

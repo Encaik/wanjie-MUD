@@ -68,7 +68,7 @@ import {
   Technique,
   Equipment,
   EnemyTier,
-  WorldType,
+  WorldBalanceStats,
   getFinalStats,
 } from '@/core/types';
 import { 
@@ -132,7 +132,7 @@ function createEnemyData(
   enemyName: string,
   enemyLevel: number,
   config: DungeonConfig,
-  worldType: WorldType,
+  worldStats: WorldBalanceStats,
   playerLevel: number = 1
 ): Enemy {
   const tier = getEnemyTierFromCellType(cellType);
@@ -140,18 +140,18 @@ function createEnemyData(
   const difficultyLevel = config.difficultyLevel || 'normal';
 
   // 计算敌人基础属性
-  let hp = calculateEnemyHp(enemyLevel, tier, difficultyLevel, worldType, true, config.difficulty);
-  let attack = calculateEnemyAttack(enemyLevel, tier, difficultyLevel, worldType, true, config.difficulty);
-  let defense = calculateEnemyDefense(enemyLevel, tier, difficultyLevel, worldType, true, config.difficulty);
+  let hp = calculateEnemyHp(enemyLevel, tier, difficultyLevel, worldStats, true, config.difficulty);
+  let attack = calculateEnemyAttack(enemyLevel, tier, difficultyLevel, worldStats, true, config.difficulty);
+  let defense = calculateEnemyDefense(enemyLevel, tier, difficultyLevel, worldStats, true, config.difficulty);
 
   // 生成敌人的真实功法和装备
   const techniqueEquipment = generateEnemyTechniquesAndEquipments(
     enemyLevel,
     tier,
     playerLevel,
-    worldType
+    '修仙'
   );
-  
+
   // 应用功法和装备的属性加成
   hp += techniqueEquipment.totalHpBonus;
   attack += techniqueEquipment.totalAttackBonus;
@@ -210,8 +210,8 @@ function createEnemyData(
     expMultiplier: 1.0,
     
     // 奖励
-    expReward: calculateBattleExp(enemyLevel, tier, difficultyLevel, worldType),
-    goldReward: calculateBattleSpiritStones(enemyLevel, tier, difficultyLevel, worldType),
+    expReward: calculateBattleExp(enemyLevel, tier, difficultyLevel, 1),
+    goldReward: calculateBattleSpiritStones(enemyLevel, tier, difficultyLevel, 1),
   };
 }
 
@@ -250,13 +250,13 @@ function convertToPlayerData(protagonist: Protagonist): PlayerData {
  */
 export function executeBattleNew(input: BattleInput): BattleOutput {
   const { protagonist, cellType, enemyContent, config } = input;
-  const worldType = protagonist.world.type;
+  const worldStats = protagonist.world.worldStats;
 
   // 解析敌人信息
   const { name: enemyName, level: enemyLevel } = parseEnemyInfo(enemyContent);
 
   // 创建敌人数据（传入玩家等级限制稀有度）
-  const enemy = createEnemyData(cellType, enemyName, enemyLevel, config, worldType, protagonist.level);
+  const enemy = createEnemyData(cellType, enemyName, enemyLevel, config, worldStats, protagonist.level);
 
   // 创建玩家数据
   const playerData = convertToPlayerData(protagonist);

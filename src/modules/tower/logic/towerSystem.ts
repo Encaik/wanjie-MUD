@@ -24,7 +24,7 @@ import {
 import { Enemy } from '@/modules/combat/logic/enemy/types';
 import { EnemyGroup } from '@/modules/combat/logic/enemy/types';
 import { getTerminology } from '@/modules/narrative/logic/terminology';
-import { WorldType, ItemRarity, EnemyTier } from '@/core/types';
+import { WorldType, WorldBalanceStats, ItemRarity, EnemyTier } from '@/core/types';
 
 // ============================================
 // 工具函数
@@ -125,7 +125,8 @@ export function calculateEnemyLevel(playerLevel: number, floor: number): number 
 export function generateTowerEnemy(
   floor: number,
   playerLevel: number,
-  worldType: WorldType
+  worldStats: WorldBalanceStats,
+  worldTypeForDisplay: WorldType = '修仙'
 ): TowerEnemy {
   // 敌人等级：低层与玩家持平，高层逐渐高出
   const enemyLevel = calculateEnemyLevel(playerLevel, floor);
@@ -142,26 +143,26 @@ export function generateTowerEnemy(
   const maxHp = calculateEnemyHp(
     enemyLevel,
     enemyType,
-    'normal',  // difficultyLevel
-    worldType,
-    false,     // 不使用随机浮动，保持稳定性
-    towerDifficulty  // 塔层专属难度
+    'normal',
+    worldStats,
+    false,
+    towerDifficulty
   );
-  
+
   const attack = calculateEnemyAttack(
     enemyLevel,
     enemyType,
     'normal',
-    worldType,
+    worldStats,
     false,
     towerDifficulty
   );
-  
+
   const defense = calculateEnemyDefense(
     enemyLevel,
     enemyType,
     'normal',
-    worldType,
+    worldStats,
     false,
     towerDifficulty
   );
@@ -171,10 +172,10 @@ export function generateTowerEnemy(
   const maxMp = calcPlayerMaxMp(baseSpiritualRoot, enemyLevel);
   
   // 生成敌人名字
-  const name = generateEnemyName(floor, enemyType, worldType);
-  
+  const name = generateEnemyName(floor, enemyType, worldTypeForDisplay);
+
   // 生成功法（根据类型）
-  const techniques = generateEnemyTechniques(enemyLevel, enemyType, worldType);
+  const techniques = generateEnemyTechniques(enemyLevel, enemyType, worldTypeForDisplay);
   
   // 计算奖励
   const rewards = calculateFloorRewards(floor, enemyType);
@@ -428,7 +429,7 @@ export function convertTowerEnemyToEnemy(
 export function generateTowerEnemyGroup(
   floor: number,
   playerLevel: number,
-  worldType: WorldType
+  worldStats: WorldBalanceStats
 ): EnemyGroup {
   const isBossFloor = floor % TOWER_CONFIG.bossFloorInterval === 0;
   const isEliteFloor = floor % 5 === 0 && !isBossFloor;
@@ -440,14 +441,14 @@ export function generateTowerEnemyGroup(
   if (isBossFloor) {
     groupType = 'boss';
     // Boss层：1个Boss + 2个精英
-    const boss = generateTowerEnemy(floor, playerLevel, worldType);
-    const bossEnemy = convertTowerEnemyToEnemy(boss, worldType);
+    const boss = generateTowerEnemy(floor, playerLevel, worldStats);
+    const bossEnemy = convertTowerEnemyToEnemy(boss, "");
     enemies.push(bossEnemy);
     totalExp += bossEnemy.expReward;
     
     // 添加2个精英
     for (let i = 0; i < 2; i++) {
-      const elite = generateTowerEnemy(floor, playerLevel, worldType);
+      const elite = generateTowerEnemy(floor, playerLevel, worldStats);
       elite.id = `${elite.id}_elite_${i}`;
       elite.name = `${elite.name}护卫${i + 1}`;
       elite.type = 'elite';
@@ -457,23 +458,23 @@ export function generateTowerEnemyGroup(
       elite.currentHp = elite.maxHp;
       elite.attack = Math.floor(elite.attack * 0.8);
       elite.defense = Math.floor(elite.defense * 0.8);
-      const eliteEnemy = convertTowerEnemyToEnemy(elite, worldType);
+      const eliteEnemy = convertTowerEnemyToEnemy(elite, "");
       enemies.push(eliteEnemy);
       totalExp += eliteEnemy.expReward;
     }
   } else if (isEliteFloor) {
     groupType = 'elite';
     // 精英层：1个精英敌人
-    const elite = generateTowerEnemy(floor, playerLevel, worldType);
+    const elite = generateTowerEnemy(floor, playerLevel, worldStats);
     elite.type = 'elite';
-    const eliteEnemy = convertTowerEnemyToEnemy(elite, worldType);
+    const eliteEnemy = convertTowerEnemyToEnemy(elite, "");
     enemies.push(eliteEnemy);
     totalExp += eliteEnemy.expReward;
   } else {
     groupType = 'patrol';
     // 普通层：1个普通敌人
-    const normal = generateTowerEnemy(floor, playerLevel, worldType);
-    const normalEnemy = convertTowerEnemyToEnemy(normal, worldType);
+    const normal = generateTowerEnemy(floor, playerLevel, worldStats);
+    const normalEnemy = convertTowerEnemyToEnemy(normal, "");
     enemies.push(normalEnemy);
     totalExp += normalEnemy.expReward;
   }

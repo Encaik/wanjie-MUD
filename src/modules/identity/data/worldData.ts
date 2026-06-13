@@ -4,7 +4,7 @@
  * 玩家和敌人的数值都基于世界的属性进行计算
  */
 
-import { WorldType, WorldImpact, StatImpact, CellType, EnemyTier, WorldDifficulty } from '@/core/types';
+import { WorldType, CellType, EnemyTier, WorldDifficulty } from '@/core/types';
 import { WorldViewRegistry } from '@/core/registry';
 
 // 重新导出 EnemyTier（从 types 导入）
@@ -63,60 +63,19 @@ export function getEnemyCoefficientBonus(coefficient: number): {
 // 世界基础数值配置
 // ============================================
 
-/**
- * 世界数值配置
- * 这些数值决定了该世界中玩家和敌人的基础属性
- */
+/** @deprecated 前端不再查询世界数据，世界数据通过后端 API 返回的 World 对象获取 */
 export interface WorldStats {
-  /** 世界名称前缀 */
-  namePrefixes: string[];
-  /** 世界名称后缀 */
-  nameSuffixes: string[];
-  /** 世界描述 */
-  descriptions: string[];
-  /** 力量体系描述 */
-  powerSystems: string[];
-  /** 主要势力（旧版兼容） */
-  majorForces: string[];
-  /** 危险设定 */
-  dangers: { description: string; impact: StatImpact; impactDescription: string }[];
-  /** 机缘设定 */
-  opportunities: { description: string; impact: StatImpact; impactDescription: string }[];
-  
-  // === 数值配置 ===
-  /** 世界系数（决定世界难度，1.0-1.5） */
   coefficient: number;
-  
-  /** 基础生命值 */
   baseHp: number;
-  /** 每级生命成长 */
   hpPerLevel: number;
-  /** 每点体质增加的HP */
   hpPerConstitution: number;
-  
-  /** 基础攻击力 */
   baseAttack: number;
-  /** 每级攻击成长 */
   attackPerLevel: number;
-  /** 每点体质增加的攻击 */
   attackPerConstitution: number;
-  /** 每点灵根增加的攻击 */
   attackPerSpiritRoot: number;
-  
-  /** 基础防御力 */
   baseDefense: number;
-  /** 每级防御成长 */
   defensePerLevel: number;
-  /** 每点意志增加的防御 */
   defensePerWillpower: number;
-  
-  /** 敌人额外攻击力系数（旧版兼容） */
-  enemyAttackBonus: number;
-  /** 敌人额外防御力系数（旧版兼容） */
-  enemyDefenseBonus: number;
-
-  /** 属性显示名映射（按世界类型差异化） */
-  statDisplayNames: Record<string, string>;
 }
 
 // ============================================
@@ -176,132 +135,9 @@ export type DifficultyLevel = keyof typeof DIFFICULTY_MULTIPLIERS;
 /**
  * 获取世界数据
  */
-// ============================================
-// 辅助函数（从注册中心读取）
-// ============================================
-
-/**
- * 获取世界数据
- *
- * 所有数据通过 Mod 加载进入注册中心，无任何硬编码兜底。
- * 如果注册中心无数据或 stats 字段缺失，抛出明确错误。
- */
-export function getWorldData(worldviewId: string): WorldStats {
-  const registry = WorldViewRegistry.getInstance();
-  const worldview = registry.get(worldviewId);
-
-  if (!worldview?.stats) {
-    throw new Error(
-      `世界观未加载: "${worldviewId}"。请确保 wanjie-core Mod 已正确加载。`
-    );
-  }
-
-  const stats = worldview.stats;
-  const requiredStatFields = [
-    'baseHp', 'hpPerLevel', 'hpPerConstitution',
-    'baseAttack', 'attackPerLevel', 'attackPerConstitution', 'attackPerSpiritRoot',
-    'baseDefense', 'defensePerLevel', 'defensePerWillpower',
-    'enemyAttackBonus', 'enemyDefenseBonus',
-  ] as const;
-
-  for (const field of requiredStatFields) {
-    if (typeof stats[field] !== 'number') {
-      throw new Error(
-        `世界观 "${worldviewId}" 的 stats.${field} 缺失或不是数字。` +
-        `请检查数据文件完整性。`
-      );
-    }
-  }
-
-  if (!stats.statDisplayNames || typeof stats.statDisplayNames !== 'object') {
-    throw new Error(
-      `世界观 "${worldviewId}" 缺少 statDisplayNames 配置。`
-    );
-  }
-
-  return {
-    namePrefixes: worldview.namePrefixes,
-    nameSuffixes: worldview.nameSuffixes,
-    descriptions: worldview.descriptions,
-    powerSystems: worldview.powerSystems ?? [],
-    majorForces: worldview.majorForces ?? [],
-    dangers: (worldview.dangers ?? []).map(d => ({
-      description: d.description,
-      impact: d.effect?.statModifications ?? {} as StatImpact,
-      impactDescription: d.description,
-    })),
-    opportunities: (worldview.opportunities ?? []).map(o => ({
-      description: o.description,
-      impact: o.effect?.statModifications ?? {} as StatImpact,
-      impactDescription: o.description,
-    })),
-    coefficient: worldview.baseCoefficient,
-    baseHp: stats.baseHp,
-    hpPerLevel: stats.hpPerLevel,
-    hpPerConstitution: stats.hpPerConstitution,
-    baseAttack: stats.baseAttack,
-    attackPerLevel: stats.attackPerLevel,
-    attackPerConstitution: stats.attackPerConstitution,
-    attackPerSpiritRoot: stats.attackPerSpiritRoot,
-    baseDefense: stats.baseDefense,
-    defensePerLevel: stats.defensePerLevel,
-    defensePerWillpower: stats.defensePerWillpower,
-    enemyAttackBonus: stats.enemyAttackBonus,
-    enemyDefenseBonus: stats.enemyDefenseBonus,
-    statDisplayNames: stats.statDisplayNames,
-  };
-}
-
-/**
- * 获取世界名称
- */
-export function getWorldName(worldviewId: string): string {
-  const data = getWorldData(worldviewId);
-  const prefix = data.namePrefixes[Math.floor(Math.random() * data.namePrefixes.length)];
-  const suffix = data.nameSuffixes[Math.floor(Math.random() * data.nameSuffixes.length)];
-  return prefix + suffix;
-}
-
-/**
- * 获取世界描述
- */
-export function getWorldDescription(worldviewId: string): string {
-  const data = getWorldData(worldviewId);
-  return data.descriptions[Math.floor(Math.random() * data.descriptions.length)];
-}
-
-/**
- * 获取世界力量体系
- */
-export function getWorldPowerSystem(worldviewId: string): string {
-  const data = getWorldData(worldviewId);
-  return data.powerSystems[Math.floor(Math.random() * data.powerSystems.length)];
-}
-
-export function getWorldMajorForces(worldviewId: string): string {
-  const data = getWorldData(worldviewId);
-  return data.majorForces[Math.floor(Math.random() * data.majorForces.length)];
-}
-
-export function getWorldDangers(worldviewId: string): WorldImpact {
-  const data = getWorldData(worldviewId);
-  const danger = data.dangers[Math.floor(Math.random() * data.dangers.length)];
-  return {
-    description: danger.description,
-    impact: danger.impact,
-    impactDescription: danger.impactDescription,
-  };
-}
-
-export function getWorldOpportunities(worldviewId: string): WorldImpact {
-  const data = getWorldData(worldviewId);
-  const opp = data.opportunities[Math.floor(Math.random() * data.opportunities.length)];
-  return {
-    description: opp.description,
-    impact: opp.impact,
-    impactDescription: opp.impactDescription,
-  };
-}
+// getWorldData 等查询函数已删除。
+// 前端所需世界数据通过后端 API 返回的 World / Protagonist 对象获取
+// （protagonist.world.worldStats 包含 WorldBalanceStats 数值）。
 
 // ============================================
 // 敌人分级系统

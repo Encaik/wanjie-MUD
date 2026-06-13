@@ -8,8 +8,8 @@
  * openspec/changes/archive/2026-06-08-architecture-code-quality-refactor/
  */
 
-import { WorldType, World, EnemyTier } from '@/core/types';
-import { getWorldData, DIFFICULTY_MULTIPLIERS, DifficultyLevel, ENEMY_TIER_CONFIG, getEnemyTierConfig, getEffectiveEnemyTierConfig } from '@/modules/identity/data/worldData';
+import { EnemyTier, WorldBalanceStats } from '@/core/types';
+import { DIFFICULTY_MULTIPLIERS, DifficultyLevel, ENEMY_TIER_CONFIG, getEnemyTierConfig, getEffectiveEnemyTierConfig } from '@/modules/identity/data/worldData';
 import { clamp, clampNonNegative, safeDivide } from '@/shared/utils/numberUtils';
 
 // ============================================
@@ -158,70 +158,9 @@ export const BREAKTHROUGH_CONFIG = {
  * 计算玩家最大HP
  * 公式：世界基础HP + 体质 * 世界HP/体质 + 等级 * 世界HP/等级
  */
-export function calculatePlayerMaxHp(
-  constitution: number,
-  level: number,
-  worldType: WorldType
-): number {
-  const worldData = getWorldData(worldType);
-  return Math.floor(
-    worldData.baseHp + 
-    constitution * worldData.hpPerConstitution + 
-    level * worldData.hpPerLevel
-  );
-}
-
-/**
- * 计算玩家最大MP
- * 公式：基础MP + 灵根 * MP/灵根 + 等级 * MP/等级
- */
-export function calculatePlayerMaxMp(
-  spiritRoot: number,
-  level: number,
-  _worldType: WorldType,
-): number {
-  // MP计算相对统一，不同世界差异不大
-  const baseMp = 50;
-  const mpPerSpiritRoot = 6;
-  const mpPerLevel = 8;
-  return Math.floor(baseMp + spiritRoot * mpPerSpiritRoot + level * mpPerLevel);
-}
-
-/**
- * 计算玩家攻击力
- * 公式：世界基础攻击 + 体质 * 世界攻击/体质 + 灵根 * 世界攻击/灵根 + 等级 * 世界攻击/等级
- */
-export function calculatePlayerAttack(
-  constitution: number,
-  spiritRoot: number,
-  level: number,
-  worldType: WorldType
-): number {
-  const worldData = getWorldData(worldType);
-  return Math.floor(
-    worldData.baseAttack + 
-    constitution * worldData.attackPerConstitution + 
-    spiritRoot * worldData.attackPerSpiritRoot +
-    level * worldData.attackPerLevel
-  );
-}
-
-/**
- * 计算玩家防御力
- * 公式：世界基础防御 + 意志 * 世界防御/意志 + 等级 * 世界防御/等级
- */
-export function calculatePlayerDefense(
-  willpower: number,
-  level: number,
-  worldType: WorldType
-): number {
-  const worldData = getWorldData(worldType);
-  return Math.floor(
-    worldData.baseDefense + 
-    willpower * worldData.defensePerWillpower + 
-    level * worldData.defensePerLevel
-  );
-}
+// 玩家属性计算函数已迁移至 @/core/calculation/playerStats
+// 前端使用 calcPlayerMaxHp / calcPlayerMaxMp / calcPlayerAttack / calcPlayerDefense
+// 这些函数接受 WorldBalanceStats 参数，不依赖 WorldViewRegistry
 
 // ============================================
 // 敌人数值计算（与玩家相同成长体系）
@@ -290,29 +229,28 @@ export function calculateEnemyHp(
   enemyLevel: number,
   enemyTier: EnemyTier,
   difficultyLevel: DifficultyLevel = 'normal',
-  worldType: WorldType,
+  worldStats: WorldBalanceStats,
   useRandomVariance: boolean = true,
   difficultyValue: number = 1
 ): number {
-  const worldData = getWorldData(worldType);
   const difficulty = DIFFICULTY_MULTIPLIERS[difficultyLevel];
   const tierConfig = getEffectiveEnemyTierConfig(enemyTier, difficultyValue);
   const enemyStats = getEnemyBaseStats(enemyLevel);
-  
+
   // 使用与玩家完全相同的HP公式
-  const baseHp = worldData.baseHp + 
-    enemyStats.constitution * worldData.hpPerConstitution + 
-    enemyLevel * worldData.hpPerLevel;
-  
+  const baseHp = worldStats.baseHp +
+    enemyStats.constitution * worldStats.hpPerConstitution +
+    enemyLevel * worldStats.hpPerLevel;
+
   // 只应用敌人分级系数和难度系数（移除 levelFactor）
   const hp = baseHp * tierConfig.hpMultiplier * difficulty.hpMultiplier;
-  
+
   // 应用随机浮动
   const variance = tierConfig.variance;
-  const randomMultiplier = (useRandomVariance && variance > 0) 
-    ? (1 - variance + Math.random() * variance * 2) 
+  const randomMultiplier = (useRandomVariance && variance > 0)
+    ? (1 - variance + Math.random() * variance * 2)
     : 1;
-  
+
   return Math.floor(hp * randomMultiplier);
 }
 
@@ -325,30 +263,29 @@ export function calculateEnemyAttack(
   enemyLevel: number,
   enemyTier: EnemyTier,
   difficultyLevel: DifficultyLevel = 'normal',
-  worldType: WorldType,
+  worldStats: WorldBalanceStats,
   useRandomVariance: boolean = true,
   difficultyValue: number = 1
 ): number {
-  const worldData = getWorldData(worldType);
   const difficulty = DIFFICULTY_MULTIPLIERS[difficultyLevel];
   const tierConfig = getEffectiveEnemyTierConfig(enemyTier, difficultyValue);
   const enemyStats = getEnemyBaseStats(enemyLevel);
-  
+
   // 使用与玩家完全相同的攻击力公式
-  const baseAttack = worldData.baseAttack + 
-    enemyStats.constitution * worldData.attackPerConstitution + 
-    enemyStats.spiritRoot * worldData.attackPerSpiritRoot + 
-    enemyLevel * worldData.attackPerLevel;
-  
+  const baseAttack = worldStats.baseAttack +
+    enemyStats.constitution * worldStats.attackPerConstitution +
+    enemyStats.spiritRoot * worldStats.attackPerSpiritRoot +
+    enemyLevel * worldStats.attackPerLevel;
+
   // 只应用敌人分级系数和难度系数
   const attack = baseAttack * tierConfig.attackMultiplier * difficulty.attackMultiplier;
-  
+
   // 应用随机浮动
   const variance = tierConfig.variance;
-  const randomMultiplier = (useRandomVariance && variance > 0) 
-    ? (1 - variance + Math.random() * variance * 2) 
+  const randomMultiplier = (useRandomVariance && variance > 0)
+    ? (1 - variance + Math.random() * variance * 2)
     : 1;
-  
+
   return Math.floor(attack * randomMultiplier);
 }
 
@@ -361,30 +298,28 @@ export function calculateEnemyDefense(
   enemyLevel: number,
   enemyTier: EnemyTier,
   difficultyLevel: DifficultyLevel = 'normal',
-  worldType: WorldType,
+  worldStats: WorldBalanceStats,
   useRandomVariance: boolean = true,
   difficultyValue: number = 1
 ): number {
-  const worldData = getWorldData(worldType);
   const difficulty = DIFFICULTY_MULTIPLIERS[difficultyLevel];
   const tierConfig = getEffectiveEnemyTierConfig(enemyTier, difficultyValue);
   const enemyStats = getEnemyBaseStats(enemyLevel);
-  
+
   // 使用与玩家完全相同的防御力公式
-  const baseDefense = worldData.baseDefense + 
-    enemyStats.willpower * worldData.defensePerWillpower + 
-    enemyLevel * worldData.defensePerLevel;
-  
+  const baseDefense = worldStats.baseDefense +
+    enemyStats.willpower * worldStats.defensePerWillpower +
+    enemyLevel * worldStats.defensePerLevel;
+
   // 只应用敌人分级系数和难度系数（移除 levelFactor）
   const defense = baseDefense * tierConfig.defenseMultiplier * difficulty.defenseMultiplier;
-  
+
   // 应用随机浮动（仅在启用时）
-  // 用于机缘战力计算时禁用随机浮动，确保战力要求稳定
   const variance = tierConfig.variance;
-  const randomMultiplier = (useRandomVariance && variance > 0) 
-    ? (1 - variance + Math.random() * variance * 2) 
+  const randomMultiplier = (useRandomVariance && variance > 0)
+    ? (1 - variance + Math.random() * variance * 2)
     : 1;
-  
+
   return Math.floor(defense * randomMultiplier);
 }
 
@@ -399,15 +334,14 @@ export function calculateBattleExp(
   enemyLevel: number,
   enemyTier: EnemyTier,
   difficultyLevel: DifficultyLevel = 'normal',
-  worldType?: WorldType
+  worldCoefficient: number = 1
 ): number {
   const difficulty = DIFFICULTY_MULTIPLIERS[difficultyLevel];
-  const worldData = worldType ? getWorldData(worldType) : null;
   const tierConfig = getEnemyTierConfig(enemyTier);
-  
+
   // 基于世界系数调整经验
-  const worldMultiplier = worldData ? worldData.coefficient : 1;
-  
+  const worldMultiplier = worldCoefficient;
+
   const baseExp = EXPERIENCE_CONFIG.battleExpBase + enemyLevel * EXPERIENCE_CONFIG.battleExpPerLevel;
   return Math.floor(
     baseExp * difficulty.expMultiplier * tierConfig.expMultiplier * worldMultiplier
@@ -416,7 +350,7 @@ export function calculateBattleExp(
 
 /**
  * 计算战斗灵石奖励
- * 
+ *
  * 注意：此函数仅计算基础值，实际奖励应通过 BattleRewardRegulator 进行调节
  * @see src/lib/game/economy/currencyRegulator.ts - BattleRewardRegulator
  */
@@ -424,14 +358,13 @@ export function calculateBattleSpiritStones(
   enemyLevel: number,
   enemyTier: EnemyTier,
   difficultyLevel: DifficultyLevel = 'normal',
-  worldType?: WorldType
+  worldCoefficient: number = 1
 ): number {
   const difficulty = DIFFICULTY_MULTIPLIERS[difficultyLevel];
-  const worldData = worldType ? getWorldData(worldType) : null;
   const tierConfig = getEnemyTierConfig(enemyTier);
-  
-  const worldMultiplier = worldData ? worldData.coefficient : 1;
-  
+
+  const worldMultiplier = worldCoefficient;
+
   const baseStones = RESOURCE_CONFIG.spiritStoneBase + enemyLevel * RESOURCE_CONFIG.spiritStonePerLevel;
   return Math.floor(
     baseStones * difficulty.rewardMultiplier * tierConfig.rewardMultiplier * worldMultiplier
@@ -440,7 +373,7 @@ export function calculateBattleSpiritStones(
 
 /**
  * 计算战斗灵石奖励（使用货币调节系统）
- * 
+ *
  * 推荐使用此函数，它会根据玩家等级自动调节奖励
  * 解决后期灵石通胀问题
  */
@@ -449,13 +382,13 @@ export function calculateBattleSpiritStonesWithRegulation(
   enemyTier: EnemyTier,
   playerLevel: number,
   difficultyLevel: DifficultyLevel = 'normal',
-  worldType?: WorldType
+  worldCoefficient: number = 1
 ): number {
   // 动态导入避免循环依赖
   const { BattleRewardRegulator } = require('@/modules/economy/logic/economy/currencyRegulator');
-  
-  const baseReward = calculateBattleSpiritStones(enemyLevel, enemyTier, difficultyLevel, worldType);
-  
+
+  const baseReward = calculateBattleSpiritStones(enemyLevel, enemyTier, difficultyLevel, worldCoefficient);
+
   return BattleRewardRegulator.adjustBattleSpiritStone(
     baseReward,
     playerLevel,

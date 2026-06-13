@@ -15,7 +15,7 @@ import {
 } from '@/modules/progression/logic/balanceConfig';
 import { calculateEnemyCombatPower } from '@/modules/combat/logic/combatPower';
 import { calculateEnemyEnhancement } from '@/modules/combat/logic/enemy/enemyEnhancement';
-import type { WorldType, DungeonConfig } from '@/core/types';
+import type { WorldType, WorldBalanceStats, DungeonConfig } from '@/core/types';
 import { WorldViewRegistry } from '@/core/registry/WorldViewRegistry';
 import type { RealmSystem, RealmTier } from './realmCore';
 import { getRealmName, getRealmMultiplier } from './realmCore';
@@ -301,9 +301,10 @@ export function getAvailableDifficultiesForRealm(
     // 计算Boss属性（使用统一的敌人属性计算函数）
     // 禁用随机浮动，确保战力要求稳定显示
     // 传入 level 作为 difficultyValue 用于新手Boss判断
-    let bossHp = calculateEnemyHp(bossLevel, 'boss', difficultyLevel, '修仙', false, level);
-    let bossAttack = calculateEnemyAttack(bossLevel, 'boss', difficultyLevel, '修仙', false, level);
-    let bossDefense = calculateEnemyDefense(bossLevel, 'boss', difficultyLevel, '修仙', false, level);
+    const DEFAULT_WS: WorldBalanceStats = { baseHp: 100, hpPerLevel: 15, hpPerConstitution: 10, baseAttack: 12, attackPerLevel: 2, attackPerConstitution: 1, attackPerSpiritRoot: 0.5, baseDefense: 6, defensePerLevel: 1, defensePerWillpower: 0.8 };
+    let bossHp = calculateEnemyHp(bossLevel, 'boss', difficultyLevel, DEFAULT_WS, false, level);
+    let bossAttack = calculateEnemyAttack(bossLevel, 'boss', difficultyLevel, DEFAULT_WS, false, level);
+    let bossDefense = calculateEnemyDefense(bossLevel, 'boss', difficultyLevel, DEFAULT_WS, false, level);
     
     // 应用Boss增强（传入 level 用于新手区域判断）
     const bossEnhancement = calculateEnemyEnhancement(bossLevel, 'boss', level);
@@ -317,9 +318,9 @@ export function getAvailableDifficultiesForRealm(
     // 计算精英敌人战力
     const eliteLevel = level + 2;
     // 禁用随机浮动，确保战力要求稳定显示
-    let eliteHp = calculateEnemyHp(eliteLevel, 'elite', difficultyLevel, '修仙', false);
-    let eliteAttack = calculateEnemyAttack(eliteLevel, 'elite', difficultyLevel, '修仙', false);
-    let eliteDefense = calculateEnemyDefense(eliteLevel, 'elite', difficultyLevel, '修仙', false);
+    let eliteHp = calculateEnemyHp(eliteLevel, 'elite', difficultyLevel, DEFAULT_WS, false);
+    let eliteAttack = calculateEnemyAttack(eliteLevel, 'elite', difficultyLevel, DEFAULT_WS, false);
+    let eliteDefense = calculateEnemyDefense(eliteLevel, 'elite', difficultyLevel, DEFAULT_WS, false);
     // 传入 level 用于新手区域判断
     const eliteEnhancement = calculateEnemyEnhancement(eliteLevel, 'elite', level);
     eliteHp = Math.floor(eliteHp * (1 + eliteEnhancement.totalHpBonus / 100));

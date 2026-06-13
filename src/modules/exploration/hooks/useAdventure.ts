@@ -380,9 +380,10 @@ export function useGameAdventure({
   const getDifficulties = useCallback(() => {
     if (!gameState.protagonist) return [];
     const difficulties = getAvailableDifficultiesForRealm(
-      gameState.protagonist.world.realmSystem, 
+      gameState.protagonist.world.realmSystem,
       gameState.protagonist.level,
-      gameState.statistics?.clearedDifficulties || []
+      gameState.statistics?.clearedDifficulties || [],
+      gameState.protagonist.world.worldStats
     );
     
     // ========================================

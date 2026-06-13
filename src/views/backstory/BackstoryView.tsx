@@ -2,7 +2,7 @@
 
 import { Globe, Scroll, Sparkles, User } from 'lucide-react';
 
-import type { WorldType } from '@/core/types';
+import type { WorldType } from '@/core/types'; // 仅用于 confirmText 类型签名
 import { useStatLabels } from '@/modules/identity/hooks/useStatLabels';
 import { MysticalBackground } from '@/shared/components';
 import { Badge } from '@/shared/ui/badge';
@@ -20,6 +20,8 @@ interface BackstoryProps {
   worldName?: string;
   /** 世界类型 */
   worldType?: WorldType;
+  /** 世界属性显示名映射 */
+  statDisplayNames?: Record<string, string>;
   /** 世界视觉配置 */
   visualConfig?: {
     icon: string;
@@ -105,10 +107,10 @@ function formatText(text: string): React.ReactNode {
  * 带四角隅饰的故事卷轴卡片，叙事化标题和确认按钮。
  */
 export function BackstoryView({
-  backstory, onConfirm, characterName, worldName, worldType = '修仙', visualConfig,
+  backstory, onConfirm, characterName, worldName, worldType = '修仙', visualConfig, statDisplayNames,
 }: BackstoryProps) {
   const paragraphs = backstory.split('\n\n').filter(p => p.trim());
-  const { displayNames } = useStatLabels(worldType);
+  const { displayNames } = useStatLabels(statDisplayNames);
 
   return (
     <div className="min-h-dvh md:min-h-screen bg-background relative flex items-center justify-center">
