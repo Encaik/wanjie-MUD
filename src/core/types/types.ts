@@ -249,6 +249,178 @@ export interface CheckResult {
 }
 
 // ============================================
+// NPC 系统
+// ============================================
+
+/** 态度等级（NPC 对玩家的好感度分层） */
+export type AttitudeLevel = 'adoration' | 'friendly' | 'amiable' | 'neutral' | 'cold' | 'hostile' | 'vengeful';
+
+/** 态度等级区间映射 */
+export const ATTITUDE_LEVEL_RANGES: Record<AttitudeLevel, { min: number; max: number; label: string }> = {
+  adoration: { min: 81, max: 100, label: '崇拜' },
+  friendly:  { min: 51, max: 80,  label: '友好' },
+  amiable:   { min: 21, max: 50,  label: '善意' },
+  neutral:   { min: -20, max: 20, label: '中立' },
+  cold:      { min: -50, max: -21, label: '冷淡' },
+  hostile:   { min: -80, max: -51, label: '敌视' },
+  vengeful:  { min: -100, max: -81, label: '仇恨' },
+};
+
+/** 态度配置（NPC JSON 中定义初始态度参数） */
+export interface NPCAttitudeConfig {
+  /** 初始态度值（默认 0） */
+  initialValue: number;
+  /** 态度变化速率倍率（1.0 = 标准速率） */
+  changeRateModifier: number;
+  /** 最低可能态度值（默认 -100） */
+  minValue?: number;
+  /** 最高可能态度值（默认 100） */
+  maxValue?: number;
+}
+
+/** 阵营关系等级 */
+export type FactionRelation = 'allied' | 'friendly' | 'neutral' | 'hostile' | 'atWar';
+
+/** 阵营关系对态度的影响配置 */
+export const FACTION_RELATION_CONFIG: Record<FactionRelation, {
+  initialAttitude: number;
+  positiveMultiplier: number;
+  negativeMultiplier: number;
+  label: string;
+}> = {
+  allied:   { initialAttitude: 40,  positiveMultiplier: 1.5, negativeMultiplier: 0.5, label: '同盟' },
+  friendly: { initialAttitude: 20,  positiveMultiplier: 1.2, negativeMultiplier: 0.8, label: '友好' },
+  neutral:  { initialAttitude: 0,   positiveMultiplier: 1.0, negativeMultiplier: 1.0, label: '中立' },
+  hostile:  { initialAttitude: -30, positiveMultiplier: 0.5, negativeMultiplier: 1.5, label: '敌对' },
+  atWar:    { initialAttitude: -60, positiveMultiplier: 0.3, negativeMultiplier: 2.0, label: '交战' },
+};
+
+/** 核心值门槛（对话选项中检查角色核心值是否达标） */
+export interface StatGate {
+  /** 核心值 key */
+  coreStat: CoreStatKey;
+  /** 最低值 */
+  minValue: number;
+  /** 不达标时的提示文本 */
+  failureHint: string;
+}
+
+/** NPC 对话选项 */
+export interface NPCDialogueOption {
+  /** 选项 ID */
+  id: string;
+  /** 选项文本 */
+  text: string;
+  /** 态度门槛（低于此值选项隐藏或灰掉） */
+  minAttitude?: number;
+  /** 核心值门槛列表（任一不达标则选项灰掉） */
+  statGates?: StatGate[];
+  /** CRPG 检定（达标后可选，但需 d20 投骰） */
+  check?: DialogueCheck;
+  /** 无检定时选中后跳转的对话行 ID */
+  resultBranch: string;
+}
+
+/** NPC 对话行（对话树节点） */
+export interface NPCDialogueLine {
+  /** 行 ID */
+  id: string;
+  /** NPC 说的文本 */
+  text: string;
+  /** 玩家可选选项列表 */
+  options: NPCDialogueOption[];
+  /** 是否可重复触发 */
+  repeatable: boolean;
+  /** 冷却时间（秒，仅 repeatable=true 时有效） */
+  cooldownSeconds?: number;
+  /** 进入此对话行时触发的事件 ID 列表 */
+  onEnter?: string[];
+}
+
+/** NPC 商品/交易物品 */
+export interface NPCShopItem {
+  /** 物品/道具 ID（引用物品系统） */
+  itemId: string;
+  /** 基准价格 */
+  basePrice: number;
+  /** 当前库存（undefined = 无限供应） */
+  quantity?: number;
+  /** 最大库存（用于自动补货） */
+  maxQuantity?: number;
+  /** 补货间隔（秒，undefined = 不自动补货） */
+  restockIntervalSeconds?: number;
+  /** 最低态度要求（低于此值不售卖） */
+  minAttitude?: number;
+}
+
+/** NPC 战斗风格 */
+export type NPCCombatStyle = 'melee' | 'ranged' | 'caster' | 'support';
+
+/** NPC 战斗行为配置 */
+export interface NPCCombatBehavior {
+  /** 敌意阈值（态度低于此值主动攻击，默认 -50） */
+  aggressionThreshold: number;
+  /** 逃跑阈值（HP 比例 0~1，0 = 不逃跑） */
+  fleeThreshold: number;
+  /** 战斗风格 */
+  combatStyle: NPCCombatStyle;
+  /** 技能使用优先级（技能 ID 列表） */
+  skillPriority: string[];
+}
+
+/** NPC AI 对话配置（扩展点，当前预留） */
+export interface NPCAIDialogueConfig {
+  /** 是否启用 AI 对话 */
+  enabled: boolean;
+  /** AI 角色设定 prompt */
+  systemPrompt?: string;
+  /** 上下文窗口 token 数 */
+  contextTokens?: number;
+  /** 允许的对话主题 */
+  allowedTopics?: string[];
+  /** AI 不可用时的回落对话行 ID 列表 */
+  fallbackLines?: string[];
+}
+
+/** NPC 完整定义（Mod 内容类型：npcs） */
+export interface NPCDefinition {
+  /** 全局唯一标识（kebab-case） */
+  id: string;
+  /** 中文显示名 */
+  name: string;
+  /** NPC 描述文本 */
+  description: string;
+  /** 限制出现的世界观 ID 列表（空 = 全世界观可用） */
+  worldviewRestrictions?: string[];
+  /** 所属阵营 ID */
+  factionId?: string;
+
+  // 战斗相关（复用角色模型）
+  /** 属性值（key 需匹配目标世界观的 attributeDefinitions） */
+  attributes: Record<string, number>;
+  /** 核心值 */
+  coreStats: Record<CoreStatKey, number>;
+  /** 种族 ID（引用 races 注册中心） */
+  raceId?: string;
+  /** 天赋 ID 列表（引用 talents 注册中心） */
+  talentIds?: string[];
+
+  // NPC 专属字段
+  /** 态度配置 */
+  attitude: NPCAttitudeConfig;
+  /** 对话行库（ID → 对话树节点） */
+  dialogueLines: Record<string, NPCDialogueLine>;
+  /** 交易物品（空数组或 undefined = 非商人） */
+  shopItems?: NPCShopItem[];
+  /** 是否支持 AI 对话 */
+  supportsAIDialogue: boolean;
+  /** AI 对话配置（supportsAIDialogue=true 时生效） */
+  aiDialogueConfig?: NPCAIDialogueConfig;
+  /** 战斗行为配置 */
+  combatBehavior: NPCCombatBehavior;
+}
+
+// ============================================
 // 旧属性系统（DEPRECATED — 迁移到新 Attribute/CoreStat 系统）
 // ============================================
 

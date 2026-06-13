@@ -7,7 +7,7 @@
   "gameVersion": ">=1.0.0",
   "dependencies": [],
   "required": true,
-  "contentTypes": ["worldview", "attributes", "races", "talents"],
+  "contentTypes": ["worldview", "attributes", "races", "talents", "npcs"],
   "dataFiles": {
     "worldview": [
       "data/worldview/cultivation.json",
@@ -36,6 +36,10 @@
     ],
     "talents": [
       "data/talents/universal.json"
+    ],
+    "npcs": [
+      "data/npcs/cultivation.json",
+      "data/npcs/martial.json"
     ]
   }
 }

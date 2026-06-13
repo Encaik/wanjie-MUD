@@ -45,6 +45,18 @@ export type {
   // 对话检定
   DialogueCheck,
   CheckResult,
+  // NPC 系统
+  AttitudeLevel,
+  NPCAttitudeConfig,
+  StatGate,
+  NPCDialogueOption,
+  NPCDialogueLine,
+  NPCShopItem,
+  NPCCombatStyle,
+  NPCCombatBehavior,
+  NPCAIDialogueConfig,
+  NPCDefinition,
+  FactionRelation,
   // 角色
   Character,
   DimensionScores,
@@ -142,6 +154,9 @@ export {
   createInventoryItem,
   migrateInventoryItem,
   getBuiltinWorldTypes,
+  // NPC 系统常量
+  ATTITUDE_LEVEL_RANGES,
+  FACTION_RELATION_CONFIG,
 } from './types';
 
 // 扩展类型（typesExtension.ts）

@@ -109,6 +109,7 @@ export function validateModData(
       }
       case 'races':
       case 'talents':
+      case 'npcs':
       // traits, text, items are not validated with schema checks (complex nested structure)
       case 'traits':
       case 'text':

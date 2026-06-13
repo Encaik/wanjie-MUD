@@ -18,7 +18,9 @@ import { WorldViewRegistry } from '@/core/registry/WorldViewRegistry';
 import { AttributeRegistry } from '@/core/registry/AttributeRegistry';
 import { RaceRegistry } from '@/core/registry/RaceRegistry';
 import { TalentRegistry } from '@/core/registry/TalentRegistry';
+import { NPCDataRegistry } from '@/core/registry/NPCDataRegistry';
 import type { WorldviewDefinition } from '@/core/registry/WorldViewRegistry';
+import type { NPCDefinition } from '@/core/types';
 
 import { parseManifest, ModLoadError } from './ModManifest';
 
@@ -488,6 +490,14 @@ export class ModLoader {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         TalentRegistry.getInstance().registerAll(data as any);
         log.info(`Mod "${modId}": 注册了天赋数据`);
+      }
+      return;
+    }
+
+    if (contentType === 'npcs') {
+      if (Array.isArray(data)) {
+        NPCDataRegistry.getInstance().registerAll(data as NPCDefinition[]);
+        log.info(`Mod "${modId}": 注册了 ${(data as unknown[]).length} 个 NPC`);
       }
       return;
     }
