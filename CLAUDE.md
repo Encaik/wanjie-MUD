@@ -78,6 +78,13 @@ app/page.tsx → views/View.tsx → modules/hooks/ → modules/logic/
 - logic 调 logic：纯函数调用纯函数 ✅
 - 循环依赖（A→B→A）：禁止 ❌
 
+### 设计文档同步规则
+
+- **创建 Change 时**：如果变更涉及游戏设计改动，同步更新 `game-design/` 对应章节
+- **归档 Change 时**：追加一条记录到 `game-design/changelog.md`（格式见 README.md）
+- **非 Change 小改动**：顺手更新，不做强制
+- **关系说明**：`game-design/` 记录系统最终设计，`openspec/changes/` 记录变更过程，两者互为补充
+
 ### 通用编写原则
 - 函数更新 setState：始终用 `setGameState(prev => ...)`，不依赖闭包旧值
 - ActionResult 模式：logic 函数返回 `{ success, data }` 或 `{ success, error }`
