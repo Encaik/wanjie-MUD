@@ -38,11 +38,18 @@
       "Bash(pnpm eslint *)",
       "Bash(git reset *)",
       "Bash(git commit -m 'feat: 属性\\(Attribute\\)/核心值\\(CoreStat\\)解耦 + 角色Seed系统 + 全链路打通 *)",
-      "Bash(pnpm dev *)"
+      "Bash(pnpm dev *)",
+      "Bash(git commit -m 'feat\\(npc\\): NPC Mod 内容类型系统 — 完整数据模型 + 态度 + 对话 + 交易 *)",
+      "Bash(mkdir -p \"f:/VSCode_workspace/wanjie-MUD/src/app/api/v1/quests/complete-stage\" \"f:/VSCode_workspace/wanjie-MUD/src/app/api/v1/quests/[id]\")",
+      "Bash(git restore *)",
+      "Bash(git commit -m 'feat\\(quest\\): 多阶段分支任务系统 — 完整数据流打通 *)",
+      "Bash(git pull *)",
+      "Bash(git stash *)"
     ],
     "additionalDirectories": [
       "D:\\vs_workspace\\wanjie\\wanjie-MUD\\src\\app\\api\\v1\\worldviews\\[id]",
-      "D:\\vs_workspace\\wanjie\\wanjie-MUD\\src\\app\\api\\v1\\characters"
+      "D:\\vs_workspace\\wanjie\\wanjie-MUD\\src\\app\\api\\v1\\characters",
+      "f:\\VSCode_workspace\\wanjie-MUD\\src\\app\\api\\v1\\quests"
     ]
   }
 }
