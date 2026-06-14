@@ -13,11 +13,19 @@ import { useCallback } from 'react';
 import type { ThemeMode, WorldThemeData } from '../types';
 
 // ============================================
-// localStorage keys
+// localStorage keys & cache version
 // ============================================
 
 const THEME_PREFS_KEY = 'theme_prefs';
 const WORLD_THEME_CACHE_KEY = 'world_theme_cache';
+
+/** 缓存版本号——修改 themeConfig 后递增，使旧缓存自动失效 */
+const THEME_CACHE_VERSION = 2;
+
+/** 带版本号的缓存数据类型 */
+interface CachedThemeData extends WorldThemeData {
+  _v: number;
+}
 
 interface ThemePrefs {
   themeMode: ThemeMode;
@@ -56,23 +64,30 @@ export function saveThemePrefs(prefs: ThemePrefs): void {
   }
 }
 
-/** 从 localStorage 读取缓存的世界主题数据 */
+/** 从 localStorage 读取缓存的世界主题数据，版本不匹配返回 null */
 export function loadCachedWorldTheme(): WorldThemeData | null {
   if (typeof localStorage === 'undefined') return null;
   try {
     const raw = localStorage.getItem(WORLD_THEME_CACHE_KEY);
     if (!raw) return null;
-    return JSON.parse(raw) as WorldThemeData;
+    const data = JSON.parse(raw) as CachedThemeData;
+    // 版本校验：旧版本缓存自动失效
+    if (!data || data._v !== THEME_CACHE_VERSION) {
+      localStorage.removeItem(WORLD_THEME_CACHE_KEY);
+      return null;
+    }
+    return data;
   } catch {
     return null;
   }
 }
 
-/** 将世界主题数据写入 localStorage 缓存 */
+/** 将世界主题数据写入 localStorage 缓存（带内嵌版本号，兼容防 FOUC 脚本） */
 export function saveCachedWorldTheme(data: WorldThemeData): void {
   if (typeof localStorage === 'undefined') return;
   try {
-    localStorage.setItem(WORLD_THEME_CACHE_KEY, JSON.stringify(data));
+    const cached: CachedThemeData = { _v: THEME_CACHE_VERSION, ...data };
+    localStorage.setItem(WORLD_THEME_CACHE_KEY, JSON.stringify(cached));
   } catch {
     // 静默失败
   }
@@ -113,7 +128,9 @@ export async function fetchWorldTheme(worldviewId: string): Promise<WorldThemeDa
   try {
     const res = await fetch(`/api/v1/worldviews/${worldviewId}/theme`);
     if (!res.ok) return null;
-    return (await res.json()) as WorldThemeData;
+    const body = await res.json();
+    // API 统一响应格式：{ code, data, message } → 解包 data
+    return (body?.data ?? body) as WorldThemeData;
   } catch {
     return null;
   }

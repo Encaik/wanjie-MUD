@@ -79,7 +79,7 @@
 - [x] 11.1 `pnpm ts-check` 确保类型检查通过
 - [x] 11.2 `pnpm lint` 确保 ESLint 检查通过（无新增错误，仅有预存在的 import order/complexity 警告）
 - [x] 11.3 `pnpm build` 确保构建成功
-- [ ] 11.4 `pnpm check-sizes` 确认所有文件在大小限制内
+- [x] 11.4 `pnpm check-sizes` 确认所有文件在大小限制内
 - [ ] 11.5 手动验证：首页 → 选世界 → 选角色 → 背景故事 → 主游戏 五个页面流程的视觉连贯性
 - [ ] 11.6 手动验证：dark/light 主题切换后所有页面内容清晰可读
 - [ ] 11.7 手动验证：移动端（375px 宽度）和 PC 端（1920px 宽度）均正常显示

@@ -36,31 +36,32 @@ import { ShopPanel } from '@/modules/economy/components/ShopPanel';
 import { AlchemyPanel } from '@/modules/crafting/components/AlchemyPanel';
 import { ForgePanel } from '@/modules/crafting/components/ForgePanel';
 import { TowerPanel } from '@/modules/tower/components/TowerPanel';
-import { UpgradePanel } from '@/views/game/UpgradePanel';
 import { CollectionPanel } from '@/modules/collection/components/CollectionPanel';
 import { FragmentPanel } from '@/modules/equipment/components/FragmentPanel';
 import { StatisticsPanel } from '@/modules/collection/components/StatisticsPanel';
-
-// Dialogs
-import { DifficultySelect } from './DifficultySelect';
-import { GameDialogs } from './GameDialogs';
-import { InheritanceSelect } from './InheritanceSelect';
-import { WorldReveal } from './WorldReveal';
 
 // Battle
 import { GuardianBattle } from '@/modules/combat/components/GuardianBattle';
 import { BattleDialog } from '@/modules/combat/components/BattleDialog';
 
+// Views
+import { GameHeader } from '@/views/game/GameHeader';
+import { SettingsPanel } from '@/views/game/SettingsPanel';
+import { UpgradePanel } from '@/views/game/UpgradePanel';
+
 // Shared
 import { CharacterInfoInline } from '@/shared/components/CharacterInfo';
-import { GameHeader } from '@/views/game/GameHeader';
 import { AdventureLootPanel } from '@/shared/components/AdventureLootPanel';
 import { DeveloperPanel } from '@/shared/components/DeveloperPanel';
 import { CriticalHealthOverlay } from '@/shared/components/CriticalHealthOverlay';
 import { DeathDialog } from '@/shared/components/DeathDialog';
 import { MysticalBackground } from '@/shared/components';
 
-// Layout
+// Relative
+import { DifficultySelect } from './DifficultySelect';
+import { GameDialogs } from './GameDialogs';
+import { InheritanceSelect } from './InheritanceSelect';
+import { WorldReveal } from './WorldReveal';
 import { LeftSidebar } from './LeftSidebar';
 import { RightSidebar } from './RightSidebar';
 import { MobileLayout } from './MobileLayout';
@@ -335,6 +336,7 @@ export function MainGame({
   const [showResetConfirm, setShowResetConfirm] = useState(false);
   const [showExitConfirm, setShowExitConfirm] = useState(false);
   const [showPathSelect, setShowPathSelect] = useState(false);
+  const [showSettings, setShowSettings] = useState(false);
   
   // 技能 Tab 状态
   const [skillTabActiveTab, setSkillTabActiveTab] = useState<'technique' | 'combat'>('technique');
@@ -823,7 +825,7 @@ export function MainGame({
         <span className="absolute bottom-0 left-0 w-3 h-3 border-b-2 border-l-2 border-primary/15 rounded-bl-sm" aria-hidden="true" />
         <span className="absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2 border-primary/15 rounded-br-sm" aria-hidden="true" />
         <div className="relative max-w-7xl mx-auto px-6 sm:px-10 py-4">
-          <GameHeader protagonist={protagonist} timeSystem={timeSystem} mentalState={mentalState} />
+          <GameHeader protagonist={protagonist} timeSystem={timeSystem} mentalState={mentalState} onSettings={() => setShowSettings(true)} />
         </div>
       </header>
 
@@ -1007,6 +1009,9 @@ export function MainGame({
       })()}
       
       {/* 全服公告 Toast 容器 */}
+      {/* 偏好设置面板（右侧抽屉） */}
+      <SettingsPanel open={showSettings} onOpenChange={setShowSettings} />
+
       <AnnouncementContainer
         announcement={announcements[0]}
         maxVisible={3}

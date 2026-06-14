@@ -27,6 +27,7 @@ import {
   applyThemeVariables,
   removeThemeVariables,
   fetchWorldTheme,
+  getVarNamesFromThemeData,
 } from '../hooks/useThemeSettings';
 
 /**
@@ -110,21 +111,18 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
 
   // 加载并应用世界主题
   const loadWorldTheme = useCallback(async (worldviewId: string) => {
-    // 避免重复加载同一世界观
     if (loadedWorldviewId.current === worldviewId) return;
 
     setTheme(prev => ({ ...prev, themeLoading: true }));
     loadedWorldviewId.current = worldviewId;
 
     try {
-      // 尝试缓存优先
       const cached = loadCachedWorldTheme();
       if (cached && cached.worldviewId === worldviewId) {
         setTheme(prev => ({ ...prev, worldThemeData: cached, themeLoading: false }));
         return;
       }
 
-      // 从后端获取
       const data = await fetchWorldTheme(worldviewId);
       if (data) {
         saveCachedWorldTheme(data);
@@ -146,23 +144,54 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (typeof document === 'undefined') return;
 
-    if (theme.useWorldTheme && theme.worldThemeData) {
-      const vars = theme.isDark
-        ? theme.worldThemeData.darkTheme
-        : theme.worldThemeData.lightTheme;
-      if (vars) {
-        applyThemeVariables(vars);
+    if (theme.useWorldTheme) {
+      if (theme.worldThemeData) {
+        const vars = theme.isDark
+          ? theme.worldThemeData.darkTheme
+          : theme.worldThemeData.lightTheme;
+        if (vars) applyThemeVariables(vars);
+      } else {
+        // 回退：无主题数据 → localStorage 缓存 → API 推断
+        const cached = loadCachedWorldTheme();
+        if (cached) {
+          const vars = theme.isDark ? cached.darkTheme : cached.lightTheme;
+          if (vars) {
+            applyThemeVariables(vars);
+            setTheme(prev => ({ ...prev, worldThemeData: cached }));
+          }
+        } else if (window.location.pathname.includes('/game')) {
+          // 仅在游戏页面推断 worldviewId
+          let worldviewId: string | null =
+            document.documentElement.getAttribute('data-world');
+          if (!worldviewId) {
+            try {
+              const gs = JSON.parse(localStorage.getItem('gameState') || 'null');
+              worldviewId = gs?.protagonist?.world?.worldviewId || null;
+            } catch { /* ignore */ }
+          }
+          if (worldviewId) {
+            fetchWorldTheme(worldviewId).then(data => {
+              if (data) {
+                saveCachedWorldTheme(data);
+                const vars2 = theme.isDark ? data.darkTheme : data.lightTheme;
+                if (vars2) applyThemeVariables(vars2);
+                setTheme(prev => ({ ...prev, worldThemeData: data }));
+              }
+            });
+          }
+        }
       }
     } else if (theme.worldThemeData?.lightTheme) {
-      // 用户关闭了世界主题 → 移除注入的变量
-      removeThemeVariables(Object.keys(theme.worldThemeData.lightTheme));
+      removeThemeVariables(getVarNamesFromThemeData(theme.worldThemeData));
+    } else {
+      const cached = loadCachedWorldTheme();
+      if (cached?.lightTheme) removeThemeVariables(Object.keys(cached.lightTheme));
     }
   }, [theme.useWorldTheme, theme.isDark, theme.worldThemeData]);
 
   // === 副作用：订阅主题事件 + 注册世界切换回调 ===
   useEffect(() => {
     subscribeThemeEvents();
-    // 将 loadWorldTheme 注册为世界切换回调
     setOnWorldChanged((worldviewId: string) => {
       loadWorldTheme(worldviewId);
     });

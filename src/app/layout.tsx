@@ -25,14 +25,16 @@ const THEME_FLICKER_GUARD = `
       document.documentElement.classList.add('dark');
     }
 
-    // 3. 应用缓存的世界主题
+    // 3. 应用缓存的世界主题（兼容带 _v 版本号的新格式）
     if (useWorld) {
       var cache = JSON.parse(localStorage.getItem('world_theme_cache') || 'null');
-      if (cache) {
+      if (cache && cache.lightTheme && cache.darkTheme) {
         var vars = isDark ? cache.darkTheme : cache.lightTheme;
-        for (var key in vars) {
-          if (vars.hasOwnProperty(key)) {
-            document.documentElement.style.setProperty(key, vars[key]);
+        if (vars) {
+          for (var key in vars) {
+            if (vars.hasOwnProperty(key)) {
+              document.documentElement.style.setProperty(key, vars[key]);
+            }
           }
         }
       }

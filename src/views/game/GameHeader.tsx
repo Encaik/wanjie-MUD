@@ -1,8 +1,8 @@
 'use client';
 
-import { 
+import {
   Clock, Heart, Zap, Brain, Gem,
-  Swords, Shield, Flame, Sparkles
+  Swords, Shield, Flame, Sparkles, Settings
 } from 'lucide-react';
 
 import { Badge } from '@/shared/ui/data-display/badge';
@@ -32,9 +32,11 @@ interface GameHeaderProps {
   actions?: React.ReactNode;
   timeSystem?: TimeState;
   mentalState?: MentalState | null;
+  /** 点击设置按钮回调 */
+  onSettings?: () => void;
 }
 
-export function GameHeader({ protagonist, actions, timeSystem, mentalState }: GameHeaderProps) {
+export function GameHeader({ protagonist, actions, timeSystem, mentalState, onSettings }: GameHeaderProps) {
   const realmSystem = protagonist.world.realmSystem;
   const currentRealm = getRealmName(realmSystem, protagonist.level);
   const ascensionCount = protagonist.ascensionMark?.count ?? 0;
@@ -138,6 +140,16 @@ export function GameHeader({ protagonist, actions, timeSystem, mentalState }: Ga
               <Sparkles className="w-2.5 h-2.5" />
               {ascensionCount}
             </Badge>
+          )}
+          {onSettings && (
+            <button
+              onClick={onSettings}
+              className="p-1 rounded hover:bg-accent transition-colors text-muted-foreground hover:text-foreground shrink-0"
+              title="偏好设置"
+              aria-label="打开偏好设置"
+            >
+              <Settings className="w-3.5 h-3.5" />
+            </button>
           )}
           {actions}
         </div>
@@ -317,6 +329,16 @@ export function GameHeader({ protagonist, actions, timeSystem, mentalState }: Ga
                 )}
               </div>
             </div>
+            {onSettings && (
+              <button
+                onClick={onSettings}
+                className="p-1.5 rounded-md hover:bg-accent transition-colors text-muted-foreground hover:text-foreground"
+                title="偏好设置"
+                aria-label="打开偏好设置"
+              >
+                <Settings className="w-4 h-4" />
+              </button>
+            )}
             {actions}
           </div>
         </div>
