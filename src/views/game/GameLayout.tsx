@@ -11,7 +11,7 @@
 
 import { ReactNode } from 'react';
 
-import { ScrollArea } from '@/shared/ui/scroll-area';
+import { ScrollArea } from '@/shared/ui/layout/scroll-area';
 
 interface GameLayoutProps {
   /** 左侧边栏内容（状态信息） */

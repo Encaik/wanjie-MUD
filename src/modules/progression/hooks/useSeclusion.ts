@@ -13,7 +13,7 @@ import { getMaxExperience, getMaxLevel } from '@/modules/progression/logic/culti
 import { applyMentalChange, updateTaskProgress } from '@/core/engine';
 import { processExperienceGain, calculateBreakthroughTransfer } from '@/modules/progression/logic/experienceSystem';
 import { gameSystems } from '@/core/engine';
-import { getRealmName } from '@/modules/identity/logic/generators';
+import { getRealmName } from '@/modules/progression/data/realmCore';
 import { applyGrowthStatChanges } from '@/modules/progression/logic/realmSystem';
 import {
   SeclusionType,

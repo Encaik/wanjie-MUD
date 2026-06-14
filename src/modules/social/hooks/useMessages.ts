@@ -8,7 +8,7 @@
 import { useCallback } from 'react';
 import type { Dispatch, SetStateAction } from 'react';
 
-import { generateId } from '@/modules/identity/logic/generators';
+import { generateId } from '@/shared/utils/id';
 import {
   addMessage as dbAddMessage,
   getMessagesPage,

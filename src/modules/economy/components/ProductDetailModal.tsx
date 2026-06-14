@@ -10,15 +10,15 @@ import { useState, useEffect } from 'react';
 
 import { Minus, Plus, Heart, ShoppingCart, Lock, AlertCircle } from 'lucide-react';
 
-import { Badge } from '@/shared/ui/badge';
-import { Button } from '@/shared/ui/button';
+import { Badge } from '@/shared/ui/data-display/badge';
+import { Button } from '@/shared/ui/actions/button';
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogDescription,
-} from '@/shared/ui/dialog';
+} from '@/shared/ui/overlay/dialog';
 import { getRarityStyle } from '@/modules/theme/data/rarityStyles';
 import { CurrencyService } from '@/modules/economy/logic/shop/currencyService';
 import { ShopLevelService } from '@/modules/economy/logic/shop/shopLevelService';

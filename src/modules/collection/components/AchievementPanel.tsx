@@ -4,12 +4,12 @@ import { useState, useMemo } from 'react';
 
 import { Trophy, Swords, Package, Map, Sparkles, Star, Lock, CheckCircle, Gift } from 'lucide-react';
 
-import { Badge } from '@/shared/ui/badge';
-import { Button } from '@/shared/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/card';
-import { Progress } from '@/shared/ui/progress';
-import { ScrollArea } from '@/shared/ui/scroll-area';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/shared/ui/tabs';
+import { Badge } from '@/shared/ui/data-display/badge';
+import { Button } from '@/shared/ui/actions/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/data-display/card';
+import { Progress } from '@/shared/ui/feedback/progress';
+import { ScrollArea } from '@/shared/ui/layout/scroll-area';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/shared/ui/data-display/tabs';
 import { 
   ACHIEVEMENTS, 
   getAchievementsByType, 

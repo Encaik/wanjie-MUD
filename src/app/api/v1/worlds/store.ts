@@ -35,6 +35,7 @@ function extractFields(world: World) {
   return {
     name: world.name,
     type: world.type,
+    worldviewId: world.worldviewId,
     gameVersion: world.gameVersion,
     difficulty: world.difficulty,
     baseCoefficient: world.baseCoefficient,

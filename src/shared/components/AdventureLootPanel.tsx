@@ -4,8 +4,8 @@ import { useMemo } from 'react';
 
 import { Package, EyeOff, Sparkles } from 'lucide-react';
 
-import { Badge } from '@/shared/ui/badge';
-import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/card';
+import { Badge } from '@/shared/ui/data-display/badge';
+import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/data-display/card';
 import { getTerminology } from '@/modules/narrative/logic/terminology';
 import { InventoryItem, ItemRarity, WorldType } from '@/core/types';
 

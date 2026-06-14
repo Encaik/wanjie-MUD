@@ -5,7 +5,7 @@ import { Sparkles, Users } from 'lucide-react';
 import type { WorldType, AttributeTemplate } from '@/core/types';
 import type { CharacterTemplate } from '@/modules/identity/hooks';
 import { MysticalBackground } from '@/shared/components';
-import { Button } from '@/shared/ui/button';
+import { Button } from '@/shared/ui/actions/button';
 
 import { CharacterCard } from './CharacterCard';
 import { WorldInfoBar } from './WorldInfoBar';
@@ -131,13 +131,6 @@ export function CharacterSelect({
           ))}
         </div>
 
-        {/* ===== 底部提示 ===== */}
-        <p
-          className="text-center mt-6 text-xs text-muted-foreground/50 tracking-wide"
-          style={{ animation: 'fade-in-up 0.5s ease-out 0.6s both' }}
-        >
-          点击卡片或「选定此身」选择角色，在背景故事页可进一步自定义
-        </p>
       </div>
     </div>
   );

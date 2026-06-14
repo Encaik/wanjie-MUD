@@ -16,7 +16,7 @@ import type { WorldviewDefinition } from '@/core/registry/WorldViewRegistry';
 import { WorldMechanicsRegistry } from '@/core/registry/WorldMechanicsRegistry';
 import { WorldProviderRegistry } from '@/core/world/WorldProviderRegistry';
 import { buildWorldMechanics } from '@/modules/identity/logic/worlds/builder';
-import { ModRandomWorldProvider } from '@/modules/identity/logic/worlds/ModRandomWorldProvider';
+import { CoreWorldProvider } from '@/core/world/CoreWorldProvider';
 
 import type { MechanicsConfig } from '@/modules/identity/logic/worlds/types';
 
@@ -204,7 +204,7 @@ function registerWorldProviders(): void {
   if (worldviewRegistry.getAllIds().length > 0) {
     const randomProviderId = 'wanjie-core';
     if (!providerRegistry.has(randomProviderId)) {
-      providerRegistry.register(new ModRandomWorldProvider(randomProviderId, '万界随机生成'));
+      providerRegistry.register(new CoreWorldProvider(randomProviderId, '万界随机生成'));
     }
   }
 }

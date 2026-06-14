@@ -7,9 +7,9 @@ import {
   Sparkles, User, SwordsIcon, AlertTriangle, Loader2
 } from 'lucide-react';
 
-import { Badge } from '@/shared/ui/badge';
-import { Button } from '@/shared/ui/button';
-import { Card } from '@/shared/ui/card';
+import { Badge } from '@/shared/ui/data-display/badge';
+import { Button } from '@/shared/ui/actions/button';
+import { Card } from '@/shared/ui/data-display/card';
 import {
   Dialog,
   DialogContent,
@@ -17,8 +17,8 @@ import {
   DialogHeader,
   DialogTitle,
   DialogFooter,
-} from '@/shared/ui/dialog';
-import { Progress } from '@/shared/ui/progress';
+} from '@/shared/ui/overlay/dialog';
+import { Progress } from '@/shared/ui/feedback/progress';
 import { WORLD_GUARDIANS, ASCENSION_CONFIG } from '@/modules/ascension/data/ascensionData';
 import { 
   createGuardianBattleState, 

@@ -1,0 +1,277 @@
+[
+  {
+    "id": "dojo_master_zhang",
+    "name": "张师傅",
+    "description": "武馆馆长，年过半百但一身横练功夫已达化境。为人豪爽，好为人师。",
+    "worldviewRestrictions": ["martial", "wuxia"],
+    "factionId": "martial_alliance",
+    "attributes": {
+      "physique": 18,
+      "boneRoot": 16,
+      "insight": 10,
+      "fortune": 8,
+      "battleWill": 14
+    },
+    "coreStats": {
+      "maxHp": 100,
+      "physicalATK": 32,
+      "specialATK": 0,
+      "physicalDEF": 28,
+      "specialDEF": 10,
+      "speed": 16,
+      "intelligence": 10,
+      "willpower": 16,
+      "lifespan": 90,
+      "perception": 12,
+      "specialResourceCap": 0
+    },
+    "raceId": "human",
+    "talentIds": ["iron_body"],
+    "attitude": {
+      "initialValue": 20,
+      "changeRateModifier": 1.1
+    },
+    "dialogueLines": {
+      "greeting": {
+        "id": "greeting",
+        "text": "哈哈，年轻人！想学功夫吗？老夫这里从基本功到绝世秘籍，应有尽有！",
+        "options": [
+          {
+            "id": "train",
+            "text": "请师傅指点一下练功方法",
+            "statGates": [
+              { "coreStat": "willpower", "minValue": 8, "failureHint": "需要至少 8 点毅力才能承受高强度训练" }
+            ],
+            "resultBranch": "training"
+          },
+          {
+            "id": "spar",
+            "text": "想和师傅过两招！",
+            "minAttitude": 50,
+            "resultBranch": "spar_offer"
+          },
+          { "id": "shop", "text": "看看有没有趁手的兵器", "resultBranch": "open_shop" },
+          { "id": "leave", "text": "下次再来", "resultBranch": "__exit__" }
+        ],
+        "repeatable": true
+      },
+      "training": {
+        "id": "training",
+        "text": "好！记住了——外练筋骨皮，内练一口气。先扎马步一个时辰！",
+        "options": [
+          { "id": "accept", "text": "练！", "resultBranch": "greeting" }
+        ],
+        "repeatable": true,
+        "cooldownSeconds": 600,
+        "onEnter": ["give_physical_training_buff"]
+      },
+      "spar_offer": {
+        "id": "spar_offer",
+        "text": "好胆色！老夫只用三成功力，点到为止！",
+        "options": [
+          { "id": "fight", "text": "请！", "resultBranch": "__exit__" }
+        ],
+        "repeatable": true,
+        "cooldownSeconds": 7200,
+        "onEnter": ["trigger_spar_battle_dojo_master"]
+      },
+      "open_shop": {
+        "id": "open_shop",
+        "text": "兵器拳谱都在这里了，挑吧！",
+        "options": [
+          { "id": "back", "text": "再看看别的", "resultBranch": "greeting" }
+        ],
+        "repeatable": true
+      }
+    },
+    "shopItems": [
+      { "itemId": "iron_sword", "basePrice": 100, "quantity": 5, "maxQuantity": 5, "restockIntervalSeconds": 3600 },
+      { "itemId": "training_manual", "basePrice": 200, "quantity": 3, "maxQuantity": 3, "restockIntervalSeconds": 7200 },
+      { "itemId": "strength_pill", "basePrice": 60, "minAttitude": 20 }
+    ],
+    "supportsAIDialogue": false,
+    "combatBehavior": {
+      "aggressionThreshold": -70,
+      "fleeThreshold": 0,
+      "combatStyle": "melee",
+      "skillPriority": ["iron_palm", "tiger_stance", "basic_strike"]
+    }
+  },
+  {
+    "id": "assassin_ye",
+    "name": "叶影",
+    "description": "暗影楼的金牌杀手，没人见过ta的真面目。据说只要出得起价，没有ta杀不了的人。",
+    "worldviewRestrictions": ["martial", "wuxia"],
+    "factionId": "shadow_guild",
+    "attributes": {
+      "physique": 10,
+      "boneRoot": 12,
+      "insight": 14,
+      "fortune": 6,
+      "battleWill": 18
+    },
+    "coreStats": {
+      "maxHp": 60,
+      "physicalATK": 28,
+      "specialATK": 0,
+      "physicalDEF": 12,
+      "specialDEF": 16,
+      "speed": 24,
+      "intelligence": 14,
+      "willpower": 12,
+      "lifespan": 70,
+      "perception": 18,
+      "specialResourceCap": 0
+    },
+    "raceId": "human",
+    "talentIds": ["shadow_step"],
+    "attitude": {
+      "initialValue": -10,
+      "changeRateModifier": 0.5
+    },
+    "dialogueLines": {
+      "greeting": {
+        "id": "greeting",
+        "text": "……（沉默地看着你，似乎在评估什么）",
+        "options": [
+          {
+            "id": "hire",
+            "text": "听说你接生意？我想雇你杀一个人",
+            "minAttitude": -40,
+            "resultBranch": "assassination_deal"
+          },
+          {
+            "id": "info",
+            "text": "我想打听一些江湖消息",
+            "minAttitude": 0,
+            "statGates": [
+              { "coreStat": "perception", "minValue": 14, "failureHint": "需要至少 14 点感知才能察觉杀手话语中的信息" }
+            ],
+            "resultBranch": "intel_trade"
+          },
+          { "id": "pass", "text": "打扰了……", "resultBranch": "__exit__" }
+        ],
+        "repeatable": true
+      },
+      "assassination_deal": {
+        "id": "assassination_deal",
+        "text": "目标是谁？出价多少？——先说好，低于一千两不接。",
+        "options": [
+          { "id": "later", "text": "我再考虑考虑", "resultBranch": "greeting" }
+        ],
+        "repeatable": true,
+        "onEnter": ["open_assassination_menu"]
+      },
+      "intel_trade": {
+        "id": "intel_trade",
+        "text": "……武林盟主最近在暗中招募高手，据说要对付魔教。具体你去城东茶楼打听吧。",
+        "options": [
+          { "id": "thanks", "text": "多谢", "resultBranch": "greeting" }
+        ],
+        "repeatable": false,
+        "onEnter": ["unlock_quest_martial_alliance"]
+      }
+    },
+    "shopItems": [
+      { "itemId": "poison_dagger", "basePrice": 300, "minAttitude": -30 },
+      { "itemId": "smoke_bomb", "basePrice": 40, "minAttitude": -20 }
+    ],
+    "supportsAIDialogue": false,
+    "combatBehavior": {
+      "aggressionThreshold": -20,
+      "fleeThreshold": 0.3,
+      "combatStyle": "melee",
+      "skillPriority": ["shadow_strike", "poison_blade", "vanish"]
+    }
+  },
+  {
+    "id": "wandering_doctor",
+    "name": "游方郎中",
+    "description": "背着药箱走遍天涯的游医，据说是某位神医的传人。医术高明，但不轻易出手。",
+    "worldviewRestrictions": ["martial", "wuxia"],
+    "factionId": "neutral",
+    "attributes": {
+      "physique": 9,
+      "boneRoot": 7,
+      "insight": 16,
+      "fortune": 12,
+      "battleWill": 10
+    },
+    "coreStats": {
+      "maxHp": 38,
+      "physicalATK": 8,
+      "specialATK": 0,
+      "physicalDEF": 6,
+      "specialDEF": 14,
+      "speed": 10,
+      "intelligence": 16,
+      "willpower": 14,
+      "lifespan": 85,
+      "perception": 16,
+      "specialResourceCap": 0
+    },
+    "raceId": "human",
+    "talentIds": ["medical_genius"],
+    "attitude": {
+      "initialValue": 15,
+      "changeRateModifier": 1.0
+    },
+    "dialogueLines": {
+      "greeting": {
+        "id": "greeting",
+        "text": "年轻人，面色不太好啊……是不是最近修炼过度了？老夫这里有几副药方，要不要瞧瞧？",
+        "options": [
+          {
+            "id": "heal",
+            "text": "请帮我疗伤",
+            "minAttitude": 10,
+            "resultBranch": "healing"
+          },
+          { "id": "shop", "text": "看看有什么药", "resultBranch": "open_shop" },
+          { "id": "chat", "text": "老先生走南闯北，可有什么养生之道？", "resultBranch": "wisdom" },
+          { "id": "leave", "text": "不用了，谢谢", "resultBranch": "__exit__" }
+        ],
+        "repeatable": true
+      },
+      "healing": {
+        "id": "healing",
+        "text": "来，把手伸过来……嗯，问题不大。服下这帖药，静养片刻就好。",
+        "options": [
+          { "id": "pay", "text": "多谢老先生！", "resultBranch": "greeting" }
+        ],
+        "repeatable": true,
+        "cooldownSeconds": 3600,
+        "onEnter": ["full_heal_player"]
+      },
+      "wisdom": {
+        "id": "wisdom",
+        "text": "养生之道，贵在阴阳平衡。练功过猛则伤身，懈怠过度则退步。一张一弛，文武之道也。",
+        "options": [
+          { "id": "nod", "text": "受教了", "resultBranch": "greeting" }
+        ],
+        "repeatable": true,
+        "onEnter": ["give_wisdom_buff"]
+      },
+      "open_shop": {
+        "id": "open_shop",
+        "text": "都是老夫亲手炼制的药，比坊市那些偷工减料的货色强多了。",
+        "options": [
+          { "id": "back", "text": "好的", "resultBranch": "greeting" }
+        ],
+        "repeatable": true
+      }
+    },
+    "shopItems": [
+      { "itemId": "healing_salve", "basePrice": 20, "minAttitude": 0 },
+      { "itemId": "energy_tonic", "basePrice": 35, "minAttitude": 10 },
+      { "itemId": "antidote", "basePrice": 50, "quantity": 5, "maxQuantity": 5, "restockIntervalSeconds": 7200 }
+    ],
+    "supportsAIDialogue": false,
+    "combatBehavior": {
+      "aggressionThreshold": -90,
+      "fleeThreshold": 0.5,
+      "combatStyle": "support",
+      "skillPriority": []
+    }
+  }
+]

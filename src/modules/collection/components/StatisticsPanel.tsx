@@ -15,7 +15,7 @@ import {
   BarChart3,
 } from 'lucide-react';
 
-import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/data-display/card';
 import { calculateStatisticsSummary, StatisticsSummary } from '@/modules/collection/logic/statistics/statisticsSystem';
 import { GameStatistics, Protagonist, getFinalStats } from '@/core/types';
 import { cn } from '@/shared/utils';

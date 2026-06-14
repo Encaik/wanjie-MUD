@@ -9,7 +9,7 @@
 'use client';
 
 import { useState, useCallback } from 'react';
-import { Button } from '@/shared/ui/button';
+import { Button } from '@/shared/ui/actions/button';
 
 interface WorldRatingFormProps {
   /** 世界 ID */

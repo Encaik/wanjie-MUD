@@ -4,19 +4,19 @@ import { useState } from 'react';
 
 import { Bug, Settings, Sparkles, Swords, Shield, Heart, Zap, Globe, ShieldCheck } from 'lucide-react';
 
-import { Badge } from '@/shared/ui/badge';
-import { Button } from '@/shared/ui/button';
-import { Input } from '@/shared/ui/input';
-import { Label } from '@/shared/ui/label';
-import { ScrollArea } from '@/shared/ui/scroll-area';
+import { Badge } from '@/shared/ui/data-display/badge';
+import { Button } from '@/shared/ui/actions/button';
+import { Input } from '@/shared/ui/forms/input';
+import { Label } from '@/shared/ui/forms/label';
+import { ScrollArea } from '@/shared/ui/layout/scroll-area';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/shared/ui/select';
-import { Separator } from '@/shared/ui/separator';
+} from '@/shared/ui/forms/select';
+import { Separator } from '@/shared/ui/layout/separator';
 import {
   Sheet,
   SheetContent,
@@ -24,9 +24,9 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from '@/shared/ui/sheet';
-import { Switch } from '@/shared/ui/switch';
-import { ControlledTabs, TabsContent, TabsList, TabsTrigger } from '@/shared/ui/tabs';
+} from '@/shared/ui/overlay/sheet';
+import { Switch } from '@/shared/ui/forms/switch';
+import { ControlledTabs, TabsContent, TabsList, TabsTrigger } from '@/shared/ui/data-display/tabs';
 import { EQUIPMENT_NAMES } from '@/modules/equipment/data/equipment';
 import { TECHNIQUE_NAMES, RARITY_POWER_RANGE, RARITY_BONUS_RANGE } from '@/modules/techniques/data/techniques';
 import { Protagonist, CultivationPath, WorldType, ItemRarity, TechniqueType, EquipmentSlot } from '@/core/types';

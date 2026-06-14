@@ -18,16 +18,16 @@ import {
   Package,
 } from 'lucide-react';
 
-import { Badge } from '@/shared/ui/badge';
-import { Button } from '@/shared/ui/button';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/shared/ui/card';
+import { Badge } from '@/shared/ui/data-display/badge';
+import { Button } from '@/shared/ui/actions/button';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/shared/ui/data-display/card';
 import { getRarityBgClass, getRarityColorClass, getRarityBorderClass } from '@/modules/equipment/data/raritySystem';
 import { generateTowerEnemy } from '@/modules/tower/logic/towerSystem';
 import { 
   TowerProgress, 
   TowerEnemy, 
 } from '@/modules/tower/logic/types';
-import { WorldType, ItemRarity } from '@/core/types';
+import { WorldBalanceStats, ItemRarity } from '@/core/types';
 
 
 interface TowerPanelProps {
@@ -35,8 +35,8 @@ interface TowerPanelProps {
   towerProgress: TowerProgress;
   /** 玩家等级 */
   playerLevel: number;
-  /** 世界类型 */
-  worldType: WorldType;
+  /** 世界平衡数值 */
+  worldBalanceStats: WorldBalanceStats;
   /** 当前HP */
   currentHp: number;
   /** 最大HP */
@@ -58,7 +58,7 @@ interface TowerPanelProps {
 export function TowerPanel({
   towerProgress,
   playerLevel,
-  worldType,
+  worldBalanceStats,
   currentHp,
   maxHp,
   currentMp,
@@ -79,7 +79,7 @@ export function TowerPanel({
   const nextFloor = maxFloor + 1;
   
   // 下一层敌人
-  const nextFloorEnemy = generateTowerEnemy(nextFloor, playerLevel, worldType);
+  const nextFloorEnemy = generateTowerEnemy(nextFloor, playerLevel, worldBalanceStats);
   
   // 已通关楼层敌人（最近5层）
   const clearedFloorEnemies = [];
@@ -88,7 +88,7 @@ export function TowerPanel({
     if (clearedFloorsSet.has(f)) {
       clearedFloorEnemies.push({
         floor: f,
-        enemy: generateTowerEnemy(f, playerLevel, worldType),
+        enemy: generateTowerEnemy(f, playerLevel, worldBalanceStats),
       });
     }
   }

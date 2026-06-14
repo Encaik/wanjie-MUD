@@ -1,0 +1,177 @@
+[
+  {
+    "id": "main_intro_temple",
+    "name": "初入宗门",
+    "description": "通过入门试炼，正式成为青云宗外门弟子。",
+    "type": "main",
+    "worldviewRestrictions": ["cultivation", "xianxia"],
+    "prerequisites": [],
+    "stages": [
+      {
+        "id": "visit_temple",
+        "name": "拜访宗门",
+        "description": "前往青云宗山门，拜见接引长老。",
+        "objectives": [
+          { "type": "talk_to_npc", "target": "senior_brother_li", "count": 1, "description": "与李师兄对话" }
+        ],
+        "completions": {
+          "done": { "description": "见到李师兄", "nextStageId": "pass_trial" }
+        },
+        "npcDialogueOnEnter": { "npcId": "senior_brother_li", "lineId": "greeting" }
+      },
+      {
+        "id": "pass_trial",
+        "name": "入门试炼",
+        "description": "完成李师兄安排的入门试炼。",
+        "objectives": [
+          { "type": "kill_enemy", "target": "wolf", "count": 3, "description": "击败 3 只山狼" },
+          { "type": "collect_item", "target": "spirit_herb", "count": 2, "description": "采集 2 株灵草" }
+        ],
+        "completions": {
+          "done": { "description": "完成试炼", "nextStageId": "report_back" }
+        }
+      },
+      {
+        "id": "report_back",
+        "name": "回报",
+        "description": "回到宗门向李师兄汇报试炼结果。",
+        "objectives": [
+          { "type": "talk_to_npc", "target": "senior_brother_li", "count": 1, "description": "向李师兄汇报" }
+        ],
+        "completions": {
+          "done": { "description": "正式入门", "stageRewards": [{ "experience": 200, "spiritStones": 50 }] }
+        },
+        "npcDialogueOnEnter": { "npcId": "senior_brother_li", "lineId": "teach_cultivation" }
+      }
+    ],
+    "rewards": [
+      { "experience": 500, "spiritStones": 100 },
+      { "items": [{ "itemId": "basic_sword", "quantity": 1 }] },
+      { "attitudeChanges": [{ "npcId": "senior_brother_li", "change": 30 }] }
+    ],
+    "repeatable": false
+  },
+  {
+    "id": "side_collect_herbs",
+    "name": "收集灵药",
+    "description": "王掌柜急需一批灵草入药，答应给帮忙的人丰厚报酬。",
+    "type": "side",
+    "worldviewRestrictions": ["cultivation"],
+    "prerequisites": [
+      { "type": "level", "target": "3" }
+    ],
+    "stages": [
+      {
+        "id": "accept_quest",
+        "name": "接取委托",
+        "description": "与王掌柜对话接取委托。",
+        "objectives": [
+          { "type": "talk_to_npc", "target": "merchant_wang", "count": 1, "description": "与王掌柜对话" }
+        ],
+        "completions": {
+          "done": { "description": "接受委托", "nextStageId": "gather_herbs" }
+        }
+      },
+      {
+        "id": "gather_herbs",
+        "name": "采集灵草",
+        "description": "前往青云山脉采集灵草。",
+        "objectives": [
+          { "type": "collect_item", "target": "spirit_herb", "count": 5, "description": "采集 5 株灵草" },
+          { "type": "explore_location", "target": "qingyun_mountain", "count": 1, "description": "前往青云山脉" }
+        ],
+        "completions": {
+          "done": { "description": "采集完成", "nextStageId": "deliver" }
+        }
+      },
+      {
+        "id": "deliver",
+        "name": "交付灵草",
+        "description": "将采集的灵草交给王掌柜。",
+        "objectives": [
+          { "type": "talk_to_npc", "target": "merchant_wang", "count": 1, "description": "将灵草交给王掌柜" }
+        ],
+        "completions": {
+          "done": { "description": "领取报酬", "stageRewards": [{ "spiritStones": 80 }] }
+        },
+        "npcDialogueOnEnter": { "npcId": "merchant_wang", "lineId": "greeting" }
+      }
+    ],
+    "rewards": [
+      { "experience": 300, "spiritStones": 150 },
+      { "attitudeChanges": [{ "npcId": "merchant_wang", "change": 20 }] },
+      { "unlockQuests": ["side_rare_herb_hunt"] }
+    ],
+    "repeatable": false
+  },
+  {
+    "id": "hidden_secret_cave",
+    "name": "散修的秘密",
+    "description": "据说黑风散修在山中藏了一个秘密洞府，里面可能有宝物。",
+    "type": "hidden",
+    "worldviewRestrictions": ["cultivation"],
+    "prerequisites": [
+      { "type": "level", "target": "5" },
+      { "type": "attitude", "target": "rogue_cultivator_hei", "minValue": -10 }
+    ],
+    "stages": [
+      {
+        "id": "discover",
+        "name": "探听消息",
+        "description": "从黑风散修口中套出洞府位置。",
+        "objectives": [
+          { "type": "dialogue_check", "target": "rogue_cave_persuasion", "count": 1, "description": "通过对话检定获取洞府信息" }
+        ],
+        "completions": {
+          "persuade": { "description": "说服成功，获得洞府位置", "nextStageId": "explore_cave" },
+          "intimidate": { "description": "威逼成功，但散修可能会报复", "nextStageId": "explore_cave", "stageRewards": [{ "attitudeChanges": [{ "npcId": "rogue_cultivator_hei", "change": -30 }] }] }
+        }
+      },
+      {
+        "id": "explore_cave",
+        "name": "探索洞府",
+        "description": "进入秘密洞府，寻找宝物。",
+        "objectives": [
+          { "type": "explore_location", "target": "secret_cave", "count": 1, "description": "探索秘密洞府" },
+          { "type": "kill_enemy", "target": "cave_guardian", "count": 1, "description": "击败洞府守卫", "hidden": true }
+        ],
+        "completions": {
+          "done": { "description": "获得洞府宝物" }
+        }
+      }
+    ],
+    "rewards": [
+      { "experience": 1000, "spiritStones": 300 },
+      { "items": [{ "itemId": "rare_treasure", "quantity": 1 }] }
+    ],
+    "repeatable": false
+  },
+  {
+    "id": "daily_clear_wolves",
+    "name": "清剿山狼",
+    "description": "宗门发布日常任务：清剿山脚下的狼群，维护周边安全。",
+    "type": "daily",
+    "worldviewRestrictions": ["cultivation"],
+    "prerequisites": [
+      { "type": "quest_completed", "target": "main_intro_temple" }
+    ],
+    "stages": [
+      {
+        "id": "kill_wolves",
+        "name": "清剿狼群",
+        "description": "击败山脚下的山狼。",
+        "objectives": [
+          { "type": "kill_enemy", "target": "wolf", "count": 8, "description": "击败 8 只山狼" }
+        ],
+        "completions": {
+          "done": { "description": "回宗门领赏" }
+        }
+      }
+    ],
+    "rewards": [
+      { "experience": 150, "spiritStones": 40 }
+    ],
+    "repeatable": true,
+    "cooldownSeconds": 86400
+  }
+]

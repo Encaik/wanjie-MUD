@@ -365,8 +365,8 @@ export function useMessages() {
  * 获取游戏阶段
  */
 export function useGamePhase() {
-  const { gameState, startNewGame, refreshCharacters, resetGame } = useGame();
-  
+  const { gameState, startNewGame, resetGame } = useGame();
+
   return useMemo(() => {
     return {
       phase: gameState.phase,
@@ -377,7 +377,6 @@ export function useGamePhase() {
       currentTab: gameState.currentTab,
       autoCultivating: gameState.autoCultivating,
       startNewGame,
-      refreshCharacters,
       resetGame,
     };
   }, [
@@ -389,7 +388,6 @@ export function useGamePhase() {
     gameState.currentTab,
     gameState.autoCultivating,
     startNewGame,
-    refreshCharacters,
     resetGame
   ]);
 }

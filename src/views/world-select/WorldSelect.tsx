@@ -66,13 +66,6 @@ export function WorldSelect({ worlds, onSelect }: WorldSelectProps) {
           ))}
         </div>
 
-        {/* ===== 底部提示 ===== */}
-        <p
-          className="text-center mt-6 text-xs text-muted-foreground/50 tracking-wide"
-          style={{ animation: 'fade-in-up 0.5s ease-out 0.6s both' }}
-        >
-          点击世界卡片直接踏入，无需二次确认
-        </p>
       </div>
     </div>
   );

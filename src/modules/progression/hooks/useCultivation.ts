@@ -17,7 +17,7 @@ import { applyMentalChange } from '@/core/engine';
 import { updateTaskProgress } from '@/core/engine';
 import { processExperienceGain, calculateBreakthroughTransfer } from '@/modules/progression/logic/experienceSystem';
 import { gameSystems } from '@/core/engine';
-import { getRealmName } from '@/modules/identity/logic/generators';
+import { getRealmName } from '@/modules/progression/data/realmCore';
 import { applyGrowthStatChanges, getGrowthStatCap } from '@/modules/progression/logic/realmSystem';
 import { gameClock, cooldown } from '@/core/time';
 import { 

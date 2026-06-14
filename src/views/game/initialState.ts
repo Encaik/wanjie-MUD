@@ -5,7 +5,7 @@
  */
 
 import type { GameState } from '@/core/types';
-import { DEFAULT_ASCENSION_FLOW_STATE } from '@/core/types';
+import { DEFAULT_ASCENSION_FLOW_STATE, createDefaultQuestState } from '@/core/types';
 import { createDefaultGameClock, createDefaultRealClock } from '@/core/time';
 
 /** 创建初始游戏状态 */
@@ -87,5 +87,6 @@ export function createInitialGameState(): GameState {
     ascensionFlow: {
       ...DEFAULT_ASCENSION_FLOW_STATE,
     },
+    questState: createDefaultQuestState(),
   };
 }

@@ -4,8 +4,8 @@ import { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 
 import { FlaskConical, Clock, Package, AlertCircle } from 'lucide-react';
 
-import { Badge } from '@/shared/ui/badge';
-import { Button } from '@/shared/ui/button';
+import { Badge } from '@/shared/ui/data-display/badge';
+import { Button } from '@/shared/ui/actions/button';
 import { getRarityStyle } from '@/modules/theme/data/rarityStyles';
 import { 
   ALCHEMY_RECIPES, 

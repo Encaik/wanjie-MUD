@@ -70,6 +70,25 @@
   --color-quality-basic: var(--quality-basic);
 
   /* ========================================
+   * 游戏领域色令牌（战斗、修炼、恢复等）
+   * 用途：模块组件使用语义色，不再硬编码 Tailwind 色盘
+   * ======================================== */
+  --color-game-combat: var(--game-combat);
+  --color-game-cultivation: var(--game-cultivation);
+  --color-game-recovery: var(--game-recovery);
+  --color-game-economy: var(--game-economy);
+  --color-game-mental: var(--game-mental);
+  --color-game-tribulation: var(--game-tribulation);
+
+  /* 背景色版（10-15% 不透明度基准） */
+  --color-game-combat-bg: var(--game-combat-bg);
+  --color-game-cultivation-bg: var(--game-cultivation-bg);
+  --color-game-recovery-bg: var(--game-recovery-bg);
+  --color-game-economy-bg: var(--game-economy-bg);
+  --color-game-mental-bg: var(--game-mental-bg);
+  --color-game-tribulation-bg: var(--game-tribulation-bg);
+
+  /* ========================================
    * 圆角令牌
    * ======================================== */
   --radius-sm: calc(var(--radius) - 4px);
@@ -89,12 +108,14 @@
 
   /* ========================================
    * 阴影令牌
+   * 色相偏暖（hue ~55，暖褐），替代默认中性灰阴影
+   * 为修仙题材营造温润、纸张般的视觉质感
    * ======================================== */
-  --shadow-2xs: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  --shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
-  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
-  --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+  --shadow-2xs: 0 1px 2px 0 oklch(0.3 0.04 55 / 0.05);
+  --shadow-xs: 0 1px 2px 0 oklch(0.3 0.04 55 / 0.05);
+  --shadow-sm: 0 1px 3px 0 oklch(0.3 0.04 55 / 0.1), 0 1px 2px -1px oklch(0.3 0.04 55 / 0.1);
+  --shadow-md: 0 4px 6px -1px oklch(0.3 0.04 55 / 0.12), 0 2px 4px -2px oklch(0.3 0.04 55 / 0.08);
+  --shadow-lg: 0 10px 15px -3px oklch(0.3 0.04 55 / 0.12), 0 4px 6px -4px oklch(0.3 0.04 55 / 0.08);
+  --shadow-xl: 0 20px 25px -5px oklch(0.3 0.04 55 / 0.12), 0 8px 10px -6px oklch(0.3 0.04 55 / 0.08);
+  --shadow-2xl: 0 25px 50px -12px oklch(0.3 0.04 55 / 0.25);
 }

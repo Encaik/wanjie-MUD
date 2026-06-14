@@ -8,6 +8,8 @@
 
 import { Sparkles, Lock, Check, Clock } from 'lucide-react';
 
+import { Empty, EmptyMedia, EmptyContent } from '@/shared/ui/feedback/empty';
+
 import { getRarityStyle } from '@/modules/theme/data/rarityStyles';
 import { CurrencyService } from '@/modules/economy/logic/shop/currencyService';
 import { ShopProduct, PlayerCurrencies, CurrencyType } from '@/modules/economy/logic/shop/types';
@@ -174,34 +176,42 @@ export function ProductCard({
   );
 }
 
-/** 商品空状态 */
+/** 商品空状态 — 使用统一 Empty 组件 */
 export function ProductEmptyState({ message = '暂无商品' }: { message?: string }) {
   return (
-    <div className="flex flex-col items-center justify-center py-8 text-muted-foreground">
-      <Sparkles className="w-8 h-8 mb-2 opacity-50" />
-      <span className="text-sm">{message}</span>
-    </div>
+    <Empty>
+      <EmptyMedia variant="icon">
+        <Sparkles className="w-8 h-8 opacity-50" />
+      </EmptyMedia>
+      <EmptyContent>
+        <p className="text-sm text-muted-foreground font-serif">{message}</p>
+      </EmptyContent>
+    </Empty>
   );
 }
 
-/** 商店锁定状态 */
-export function ShopLockedState({ 
-  icon, 
-  name, 
-  unlockDescription 
-}: { 
-  icon: string; 
-  name: string; 
+/** 商店锁定状态 — 使用统一 Empty 组件 */
+export function ShopLockedState({
+  icon,
+  name,
+  unlockDescription
+}: {
+  icon: string;
+  name: string;
   unlockDescription: string;
 }) {
   return (
-    <div className="flex flex-col items-center justify-center py-12 text-center">
-      <div className="text-4xl mb-3 opacity-50">{icon}</div>
-      <div className="text-lg font-medium mb-1">{name}</div>
-      <div className="text-sm text-muted-foreground flex items-center gap-1">
-        <Lock className="w-3 h-3" />
-        {unlockDescription}
-      </div>
-    </div>
+    <Empty>
+      <EmptyMedia variant="icon">
+        <span className="text-4xl opacity-50">{icon}</span>
+      </EmptyMedia>
+      <EmptyContent>
+        <p className="text-lg font-medium font-serif mb-1">{name}</p>
+        <p className="text-sm text-muted-foreground flex items-center gap-1 font-serif">
+          <Lock className="w-3 h-3" />
+          {unlockDescription}
+        </p>
+      </EmptyContent>
+    </Empty>
   );
 }

@@ -5,10 +5,10 @@ import {  useState, useEffect, useRef } from 'react';
 import {  Sparkles, AlertTriangle, Coins, Play, Square, Moon, Swords, TrendingUp, Droplets, Zap, Flame, Shield, Wand2, Heart, Swords as SwordIcon, Brain, CloudLightning, FlaskConical, Anvil, CheckCircle2, Circle, ChevronRight } from 'lucide-react';
 
 import { CardCornerDecorations } from '@/shared/components';
-import {  Badge } from '@/shared/ui/badge';
-import {  Button } from '@/shared/ui/button';
-import {  Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/card';
-import {  Progress } from '@/shared/ui/progress';
+import {  Badge } from '@/shared/ui/data-display/badge';
+import {  Button } from '@/shared/ui/actions/button';
+import {  Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/data-display/card';
+import {  Progress } from '@/shared/ui/feedback/progress';
 import {  CULTIVATION_PATHS } from '@/modules/progression/data/cultivationPathData';
 import {  TRIBULATION_CONFIGS, getNextTribulationLevel } from '@/modules/ascension/data/tribulationData';
 import {  getMaxExperience, calculateBreakthroughRate, calculateBreakthroughBoost, calculateCultivationBoost } from '@/modules/progression/logic/cultivation';
@@ -103,12 +103,12 @@ function getPathIcon(pathType: string) {
 // 获取流派颜色
 function getPathColor(pathType: string) {
   switch (pathType) {
-    case 'body': return 'text-orange-600 dark:text-orange-400 bg-orange-100 dark:bg-orange-900/30 border-orange-300 dark:border-orange-700';
-    case 'sword': return 'text-cyan-600 dark:text-cyan-400 bg-cyan-100 dark:bg-cyan-900/30 border-cyan-300 dark:border-cyan-700';
-    case 'spell': return 'text-blue-600 dark:text-blue-400 bg-blue-100 dark:bg-blue-900/30 border-blue-300 dark:border-blue-700';
-    case 'alchemy': return 'text-green-600 dark:text-green-400 bg-green-100 dark:bg-green-900/30 border-green-300 dark:border-green-700';
-    case 'demon': return 'text-purple-600 dark:text-purple-400 bg-purple-100 dark:bg-purple-900/30 border-purple-300 dark:border-purple-700';
-    default: return 'text-gray-600 dark:text-gray-400 bg-gray-100 dark:bg-gray-800 border-gray-300 dark:border-gray-700';
+    case 'body': return 'text-game-combat bg-game-combat/10 border-game-combat/30';
+    case 'sword': return 'text-game-tribulation bg-game-tribulation/10 border-game-tribulation/30';
+    case 'spell': return 'text-game-cultivation bg-game-cultivation/10 border-game-cultivation/30';
+    case 'alchemy': return 'text-game-recovery bg-game-recovery/10 border-game-recovery/30';
+    case 'demon': return 'text-game-mental bg-game-mental/10 border-game-mental/30';
+    default: return 'text-muted-foreground bg-muted/30 border-muted';
   }
 }
 
@@ -316,9 +316,9 @@ export function CultivationPanel({
           if (progress >= 1) return null;
           
           return (
-            <div className="bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-950/50 dark:to-purple-950/50 rounded-lg p-2 border border-blue-200 dark:border-blue-800">
+            <div className="bg-gradient-to-r from-game-cultivation/10 to-game-mental/10 rounded-lg p-2 border border-game-cultivation/30">
               <div className="flex items-center justify-between mb-1.5">
-                <div className="flex items-center gap-1.5 text-xs font-medium text-blue-700 dark:text-blue-300">
+                <div className="flex items-center gap-1.5 text-xs font-medium text-game-cultivation">
                   <Sparkles className="w-3.5 h-3.5" />
                   <span>新手引导</span>
                 </div>
@@ -328,18 +328,18 @@ export function CultivationPanel({
               </div>
               
               {/* 进度条 */}
-              <div className="h-1.5 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden mb-2">
-                <div 
-                  className="h-full bg-gradient-to-r from-blue-500 to-purple-500 rounded-full transition-all"
+              <div className="h-1.5 bg-muted rounded-full overflow-hidden mb-2">
+                <div
+                  className="h-full bg-gradient-to-r from-game-cultivation to-game-mental rounded-full transition-all"
                   style={{ width: `${progress * 100}%` }}
                 />
               </div>
               
               {/* 当前任务 */}
               {currentTask && (
-                <div className="bg-white dark:bg-gray-900 rounded p-2 space-y-1">
+                <div className="bg-card rounded p-2 space-y-1">
                   <div className="flex items-start gap-1.5">
-                    <Circle className="w-3 h-3 text-blue-500 mt-0.5 flex-shrink-0" />
+                    <Circle className="w-3 h-3 text-game-cultivation mt-0.5 flex-shrink-0" />
                     <div className="flex-1 min-w-0">
                       <div className="text-xs font-medium text-foreground">
                         {currentTask.title}
@@ -349,7 +349,7 @@ export function CultivationPanel({
                       </div>
                     </div>
                   </div>
-                  <div className="text-[10px] text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-950 px-1.5 py-0.5 rounded">
+                  <div className="text-[10px] text-game-cultivation bg-game-cultivation/10 px-1.5 py-0.5 rounded">
                     💡 {currentTask.hint}
                   </div>
                 </div>
@@ -359,7 +359,7 @@ export function CultivationPanel({
               {completedTasks.length > 0 && (
                 <div className="mt-1.5 space-y-0.5">
                   {TUTORIAL_TASKS.filter(t => completedTasks.includes(t.id)).map(task => (
-                    <div key={task.id} className="flex items-center gap-1 text-[10px] text-green-600 dark:text-green-400">
+                    <div key={task.id} className="flex items-center gap-1 text-[10px] text-game-recovery">
                       <CheckCircle2 className="w-2.5 h-2.5" />
                       <span className="line-through">{task.title}</span>
                     </div>
@@ -412,17 +412,17 @@ export function CultivationPanel({
         
         {/* 满级天道挑战区域 */}
         {isMaxLevel && (
-          <div className="border-2 border-purple-500/30 rounded-lg p-2 bg-gradient-to-r from-purple-500/10 to-blue-500/10">
+          <div className="border-2 border-game-tribulation/30 rounded-lg p-2 bg-gradient-to-r from-game-tribulation/10 to-game-cultivation/10">
             <div className="flex items-center justify-between mb-1.5">
-              <div className="flex items-center gap-1.5 text-xs font-medium text-purple-700 dark:text-purple-300">
+              <div className="flex items-center gap-1.5 text-xs font-medium text-game-tribulation">
                 <Swords className="w-3.5 h-3.5" />
                 <span>天道</span>
               </div>
               <span className="text-[10px] text-muted-foreground">满级挑战</span>
             </div>
-            <Button 
+            <Button
               variant="default"
-              className="w-full h-8 text-xs bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700" 
+              className="w-full h-8 text-xs bg-gradient-to-r from-game-tribulation to-game-cultivation hover:brightness-110"
               onClick={onChallengeGuardian}
               disabled={disabled || !canChallengeGuardian || autoCultivating}
             >
@@ -439,31 +439,31 @@ export function CultivationPanel({
 
         {/* 突破提示与概率显示 */}
         {canAttemptBreakthrough && !isMaxLevel && (
-          <div className="bg-gradient-to-r from-purple-50 to-blue-50 dark:from-purple-950 dark:to-blue-950 p-2 rounded-lg space-y-1.5">
+          <div className="bg-gradient-to-r from-game-tribulation/10 to-game-cultivation/10 p-2 rounded-lg space-y-1.5">
             <div className="flex items-center justify-between">
-              <div className="flex items-center gap-1 text-xs text-purple-700 dark:text-purple-300">
+              <div className="flex items-center gap-1 text-xs text-game-tribulation">
                 <TrendingUp className="w-3.5 h-3.5" />
                 <span className="font-medium">可尝试突破</span>
               </div>
-              <Badge variant="outline" className="text-[10px] bg-purple-100 dark:bg-purple-900 text-purple-700 dark:text-purple-300 border-purple-300">
+              <Badge variant="outline" className="text-[10px] bg-game-tribulation/10 text-game-tribulation border-game-tribulation/30">
                 {level}级 → {level + 1}级
               </Badge>
             </div>
             
             {/* 突破概率显示 */}
-            <div className="bg-white dark:bg-gray-900 rounded p-1.5 space-y-1">
+            <div className="bg-card rounded p-1.5 space-y-1">
               <div className="flex items-center justify-between text-[10px]">
                 <span className="text-muted-foreground">突破成功率</span>
-                <span className={`font-bold ${breakthroughRate >= 70 ? 'text-green-600' : breakthroughRate >= 40 ? 'text-yellow-600' : 'text-red-600'}`}>
+                <span className={`font-bold ${breakthroughRate >= 70 ? 'text-game-recovery' : breakthroughRate >= 40 ? 'text-game-economy' : 'text-game-combat'}`}>
                   {breakthroughRate.toFixed(1)}%
                 </span>
               </div>
               
               {/* 概率进度条 */}
-              <div className="h-1.5 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
-                <div 
+              <div className="h-1.5 bg-muted rounded-full overflow-hidden">
+                <div
                   className={`h-full rounded-full transition-all ${
-                    breakthroughRate >= 70 ? 'bg-green-500' : breakthroughRate >= 40 ? 'bg-yellow-500' : 'bg-red-500'
+                    breakthroughRate >= 70 ? 'bg-game-recovery' : breakthroughRate >= 40 ? 'bg-game-economy' : 'bg-game-combat'
                   }`}
                   style={{ width: `${Math.min(breakthroughRate, 100)}%` }}
                 />
@@ -471,7 +471,7 @@ export function CultivationPanel({
               
               {/* 丹药加成显示 */}
               {breakthroughEffect && (
-                <div className="flex items-center gap-1 text-[10px] text-blue-600 dark:text-blue-400">
+                <div className="flex items-center gap-1 text-[10px] text-game-cultivation">
                   <Droplets className="w-2.5 h-2.5" />
                   <span>{breakthroughEffect.itemName}加成 +{breakthroughEffect.value}%</span>
                 </div>
@@ -482,7 +482,7 @@ export function CultivationPanel({
 
         {/* 经验溢出警告 */}
         {overflowExperience > 0 && !isMaxLevel && (
-          <div className="text-xs bg-yellow-50 dark:bg-yellow-950 text-yellow-700 dark:text-yellow-300 p-2 rounded-lg flex items-center gap-1">
+          <div className="text-xs bg-game-economy/10 text-game-economy p-2 rounded-lg flex items-center gap-1">
             <AlertTriangle className="w-3 h-3" />
             经验溢出 {overflowExperience}，修炼效率降低
           </div>
@@ -494,14 +494,14 @@ export function CultivationPanel({
             <div className="flex items-center justify-between text-[10px] text-muted-foreground">
               <span>消耗资源修炼</span>
               <div className="flex items-center gap-1">
-                <Coins className="w-3 h-3 text-yellow-500" />
-                <span className={hasEnoughStones ? '' : 'text-red-500'}>20 {terminology.resource}</span>
+                <Coins className="w-3 h-3 text-game-economy" />
+                <span className={hasEnoughStones ? '' : 'text-game-combat'}>20 {terminology.resource}</span>
               </div>
             </div>
             
             {/* 修炼丹药加成显示 */}
             {cultivationEffect && (
-              <div className="flex items-center gap-1 text-[10px] text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-950 px-2 py-1 rounded">
+              <div className="flex items-center gap-1 text-[10px] text-game-cultivation bg-game-cultivation/10 px-2 py-1 rounded">
                 <Zap className="w-2.5 h-2.5" />
                 <span>{cultivationEffect.itemName}：修炼效果+{cultivationEffect.value}%（剩余{cultivationEffect.remainingCount}次）</span>
               </div>
@@ -509,14 +509,14 @@ export function CultivationPanel({
             
             {/* 冷却提示 */}
             {cultivationCooldown && cultivationCooldown > Date.now() ? (
-              <div className="text-[10px] text-orange-500 text-center">
+              <div className="text-[10px] text-game-tribulation text-center">
                 冥想冷却中，剩余 {Math.ceil((cultivationCooldown - Date.now()) / 1000)} 秒
               </div>
             ) : null}
 
             {/* 顿悟印记 */}
             {insightMarks > 0 && (
-              <div className="text-[10px] text-purple-500 text-center">
+              <div className="text-[10px] text-game-mental text-center">
                 ✦ 顿悟印记：{insightMarks} 枚（集齐3枚可兑换）
               </div>
             )}
@@ -620,8 +620,8 @@ export function CultivationPanel({
           <div className="flex items-center justify-between text-[10px] text-muted-foreground mb-1">
             <span>休生养息，恢复状态</span>
             <div className="flex items-center gap-1">
-              <Coins className="w-3 h-3 text-yellow-500" />
-              <span className={hasEnoughStonesForRest ? '' : 'text-red-500'}>5 {terminology.resource}</span>
+              <Coins className="w-3 h-3 text-game-economy" />
+              <span className={hasEnoughStonesForRest ? '' : 'text-game-combat'}>5 {terminology.resource}</span>
             </div>
           </div>
           <Button 
@@ -638,12 +638,12 @@ export function CultivationPanel({
         {/* 心魔概率警告 - 当有风险时显示 */}
         {mentalState.demonChance > 0 && (
           <div className="border-t pt-2">
-            <div className="flex items-center justify-between text-[10px] bg-orange-500/10 rounded px-2 py-1.5">
+            <div className="flex items-center justify-between text-[10px] bg-game-mental/10 rounded px-2 py-1.5">
               <div className="flex items-center gap-1">
-                <AlertTriangle className="w-3 h-3 text-orange-500" />
-                <span className="text-orange-700 dark:text-orange-300">心魔概率</span>
+                <AlertTriangle className="w-3 h-3 text-game-mental" />
+                <span className="text-game-mental">心魔概率</span>
               </div>
-              <span className="font-medium text-orange-600">
+              <span className="font-medium text-game-mental">
                 {(mentalState.demonChance * 100).toFixed(1)}%
               </span>
             </div>
@@ -652,22 +652,22 @@ export function CultivationPanel({
 
         {/* 渡劫提示区域 - 当达到渡劫等级时显示 */}
         {needsTribulation && !isMaxLevel && (
-          <div className="border-2 border-purple-500/30 rounded-lg p-2 bg-gradient-to-r from-purple-500/10 to-red-500/10">
+          <div className="border-2 border-game-tribulation/30 rounded-lg p-2 bg-gradient-to-r from-game-tribulation/10 to-game-combat/10">
             <div className="flex items-center justify-between mb-1.5">
-              <div className="flex items-center gap-1.5 text-xs font-medium text-purple-700 dark:text-purple-300">
+              <div className="flex items-center gap-1.5 text-xs font-medium text-game-tribulation">
                 <CloudLightning className="w-3.5 h-3.5" />
                 <span>天劫将至</span>
               </div>
-              <Badge variant="outline" className="text-[10px] border-red-500 text-red-600">
+              <Badge variant="outline" className="text-[10px] border-game-combat text-game-combat">
                 境界瓶颈
               </Badge>
             </div>
             <p className="text-[10px] text-muted-foreground mb-2">
               你的修为已达到瓶颈，需要渡劫才能继续突破。
             </p>
-            <Button 
+            <Button
               variant="outline"
-              className="w-full h-7 text-xs border-purple-500 text-purple-600 hover:bg-purple-50 dark:hover:bg-purple-950" 
+              className="w-full h-7 text-xs border-game-tribulation text-game-tribulation hover:bg-game-tribulation/10"
               disabled={disabled || autoCultivating || !onTribulation}
               onClick={onTribulation}
             >

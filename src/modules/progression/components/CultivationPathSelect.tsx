@@ -17,9 +17,9 @@ import {
   Minus
 } from 'lucide-react';
 
-import {  Badge } from '@/shared/ui/badge';
-import {  Button } from '@/shared/ui/button';
-import {  Card, CardContent } from '@/shared/ui/card';
+import {  Badge } from '@/shared/ui/data-display/badge';
+import {  Button } from '@/shared/ui/actions/button';
+import {  Card, CardContent } from '@/shared/ui/data-display/card';
 import { 
   Dialog,
   DialogContent,
@@ -27,7 +27,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogFooter,
-} from '@/shared/ui/dialog';
+} from '@/shared/ui/overlay/dialog';
 import { 
   CULTIVATION_PATHS,
   checkPathUnlockConditions,

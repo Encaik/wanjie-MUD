@@ -9,7 +9,7 @@ import { createRng } from '@/shared/utils/rng';
 // ============================================
 
 /** 背景场景变体 */
-export type BgVariant = 'runes' | 'stars' | 'destiny';
+export type BgVariant = 'runes' | 'stars' | 'destiny' | 'fated';
 
 /** 粒子强度 */
 export type BgIntensity = 'subtle' | 'full';
@@ -83,6 +83,7 @@ const DEFAULT_WATERMARKS: Record<BgVariant, string> = {
   runes: '万界',
   stars: '万象',
   destiny: '命运',
+  fated: '宿命',
 };
 
 // ============================================
@@ -155,10 +156,11 @@ function generateConstellationLines(
 /**
  * 东方玄幻氛围背景系统
  *
- * 从首页提取的通用背景组件，支持三种场景变体：
+ * 从首页提取的通用背景组件，支持四种场景变体：
  * - runes：浮动汉字 + 光点 + 万界水印（首页）
  * - stars：星点粒子 + 星座连线 + 万象水印（世界选择）
  * - destiny：密集金色光点 + 命运之线 + 命运水印（人物选择）
+ * - fated：金色光点 + 宿命水印（故事背景）
  *
  * 所有粒子位置通过 seed 确定性生成，确保 SSR 一致。
  */
@@ -172,28 +174,31 @@ export function MysticalBackground({
   // 粒子密度系数
   const densityMul = intensity === 'subtle' ? 0.6 : 1.0;
 
+  /** 是否为密集粒子风格（destiny / fated） */
+  const isDenseStyle = variant === 'destiny' || variant === 'fated';
+
   // 确定性生成粒子（使用固定的页面级 seed）
   const starParticles = useMemo(() => {
-    const baseCount = variant === 'destiny' ? 90 : variant === 'stars' ? 70 : 0;
+    const baseCount = isDenseStyle ? 90 : variant === 'stars' ? 70 : 0;
     return generateParticles(
       `bg-${variant}-stars`,
       Math.round(baseCount * densityMul),
-      variant === 'destiny' ? 1 : 1.5,
-      variant === 'destiny' ? 3 : 4,
+      isDenseStyle ? 1 : 1.5,
+      isDenseStyle ? 3 : 4,
     );
-  }, [variant, densityMul]);
+  }, [variant, densityMul, isDenseStyle]);
 
   const constellationLines = useMemo(() => {
     if (variant === 'runes') return [];
-    const baseCount = variant === 'destiny' ? 14 : 10;
+    const baseCount = isDenseStyle ? 14 : 10;
     const lineCount = Math.round(baseCount * densityMul);
     return generateConstellationLines(
       `bg-${variant}-lines`,
       lineCount,
-      variant === 'destiny' ? 0.06 : 0.12,
-      variant === 'destiny' ? 0.12 : 0.25,
+      isDenseStyle ? 0.06 : 0.12,
+      isDenseStyle ? 0.12 : 0.25,
     );
-  }, [variant, densityMul]);
+  }, [variant, densityMul, isDenseStyle]);
 
   // 是否显示符文和首页光点
   const showRunes = variant === 'runes';

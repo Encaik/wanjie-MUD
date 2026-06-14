@@ -56,6 +56,7 @@ function createMockProvider(id: string, type: 'random'): WorldProvider {
         ratingScore: 0,
         attributeDefinitions: [],
         racePool: ['human'],
+        questPool: [],
       };
     },
     generateWorlds(seeds, _ascensionCount?, _worldviewId?) {

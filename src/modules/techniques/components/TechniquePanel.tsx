@@ -5,20 +5,20 @@ import { useState, useMemo } from 'react';
 import { Sword, Shield, Zap, Droplets, Package, Link2, Star, ArrowUpDown, Filter, Flame, Snowflake, Zap as Thunder, Wind, Mountain, Sun, Moon, Swords, Settings2 } from 'lucide-react';
 
 import { ElementRestraintChart } from '@/modules/combat/components/RestraintChart';
-import { Badge } from '@/shared/ui/badge';
-import { Button } from '@/shared/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/card';
+import { Badge } from '@/shared/ui/data-display/badge';
+import { Button } from '@/shared/ui/actions/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/data-display/card';
 import { getRarityStyle } from '@/modules/theme/data/rarityStyles';
-import { BackpackHeader, EmptyBackpackHint } from '@/shared/ui/empty-slot';
-import { UpgradeableItemTooltip } from '@/shared/ui/upgradeable-item-tooltip';
+import { BackpackHeader, EmptyBackpackHint } from '@/shared/ui/feedback/empty-slot';
+import { UpgradeableItemTooltip } from '@/shared/ui/data-display/upgradeable-item-tooltip';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/shared/ui/select';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/shared/ui/tooltip';
+} from '@/shared/ui/forms/select';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/shared/ui/overlay/tooltip';
 import { useTechniques } from '@/views/game';
 import { TECHNIQUE_BONDS, PROFICIENCY_LEVELS, getProficiencyLevel } from '@/modules/techniques/data/techniqueBondData';
 import { getElementRestraintHint, getElementIcon, WEAPON_CATEGORY_DEFAULT_ELEMENT, WEAPON_CATEGORY_COMPATIBLE_TECHNIQUE } from '@/modules/combat/logic/restraintSystem';

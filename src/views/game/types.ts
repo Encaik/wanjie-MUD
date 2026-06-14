@@ -30,8 +30,6 @@ import type { TowerEnemy } from '@/modules/tower/logic/types';
 export interface GameContextType {
   gameState: GameState;
   startNewGame: () => void;
-  refreshCharacters: () => Promise<void>;
-  selectCharacter: (character: Character) => void;
   selectWorld: (world: World) => void;
   /** V3: 从保存角色+世界创建主角并开始游戏 */
   startGameWithCharacter: (characterData: {

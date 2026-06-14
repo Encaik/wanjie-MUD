@@ -3,6 +3,4 @@ export * from './types';
 export * from './factory';
 export * from './builder';
 export * from './registerBuiltin';
-export * from './registerProviders';
 export * from './worldMigration';
-export { ModRandomWorldProvider } from './ModRandomWorldProvider';

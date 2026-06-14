@@ -2,13 +2,13 @@
 
 import { Globe, Scroll, Sparkles, User } from 'lucide-react';
 
-import type { WorldType } from '@/core/types';
+import type { WorldType } from '@/core/types'; // 仅用于 confirmText 类型签名
 import { useStatLabels } from '@/modules/identity/hooks/useStatLabels';
 import { MysticalBackground } from '@/shared/components';
-import { Badge } from '@/shared/ui/badge';
-import { Button } from '@/shared/ui/button';
-import { Card, CardContent } from '@/shared/ui/card';
-import { ScrollArea } from '@/shared/ui/scroll-area';
+import { Badge } from '@/shared/ui/data-display/badge';
+import { Button } from '@/shared/ui/actions/button';
+import { Card, CardContent } from '@/shared/ui/data-display/card';
+import { ScrollArea } from '@/shared/ui/layout/scroll-area';
 import { cn } from '@/shared/utils';
 
 interface BackstoryProps {
@@ -20,6 +20,8 @@ interface BackstoryProps {
   worldName?: string;
   /** 世界类型 */
   worldType?: WorldType;
+  /** 世界属性显示名映射 */
+  statDisplayNames?: Record<string, string>;
   /** 世界视觉配置 */
   visualConfig?: {
     icon: string;
@@ -101,19 +103,19 @@ function formatText(text: string): React.ReactNode {
 /**
  * 背景故事页 — "宿命之章"
  *
- * 展示角色背景故事，使用 MysticalBackground（destiny）与前序页面统一。
+ * 展示角色背景故事，使用 MysticalBackground（fated）与水印"宿命"呼应。
  * 带四角隅饰的故事卷轴卡片，叙事化标题和确认按钮。
  */
 export function BackstoryView({
-  backstory, onConfirm, characterName, worldName, worldType = '修仙', visualConfig,
+  backstory, onConfirm, characterName, worldName, worldType = '修仙', visualConfig, statDisplayNames,
 }: BackstoryProps) {
   const paragraphs = backstory.split('\n\n').filter(p => p.trim());
-  const { displayNames } = useStatLabels(worldType);
+  const { displayNames } = useStatLabels(statDisplayNames);
 
   return (
     <div className="min-h-dvh md:min-h-screen bg-background relative flex items-center justify-center">
       {/* ===== 背景 ===== */}
-      <MysticalBackground variant="destiny" intensity="subtle" />
+      <MysticalBackground variant="fated" intensity="subtle" />
 
       <div className="w-full max-w-5xl relative z-10 flex flex-col px-4 sm:px-6 py-6">
         {/* ===== 叙事化标题 ===== */}

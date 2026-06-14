@@ -19,10 +19,24 @@
 }
 
 /* ========================================
- * 动画工具类
- * 对应的 @keyframes 定义在 animations.css 中
+ * 九宫格边框工具类
  * ======================================== */
 @layer utilities {
+  /**
+   * 九宫格边框 — border-image 实现，四角不拉伸
+   *
+   * 使用 public/img/border-bg.png（500×500 PNG）
+   * border-image-slice: 100 → 从原图每边切 100px 作为四角及边线
+   * border-image-width: 30px → 渲染到屏幕上的边框宽度
+   *
+   * @example <button className="nine-slice-border ...">
+   */
+  .nine-slice-border {
+    border: 6px solid #0000;
+    border-image: url('/img/border-bg.png') 100 / 30px;
+    border-radius: 4px;
+  }
+
   .animate-float {
     animation: float ease-in-out infinite;
   }

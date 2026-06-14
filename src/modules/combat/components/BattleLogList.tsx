@@ -16,7 +16,7 @@ import {
   Star,
 } from 'lucide-react';
 
-import { Badge } from '@/shared/ui/badge';
+import { Badge } from '@/shared/ui/data-display/badge';
 
 interface BattleLogListProps {
   logs: string[];

@@ -264,6 +264,7 @@ export function getDb() {
       id TEXT PRIMARY KEY,
       name TEXT NOT NULL,
       type TEXT NOT NULL,
+      worldview_id TEXT NOT NULL,
       data TEXT NOT NULL,
       game_version TEXT,
       difficulty TEXT,
@@ -286,6 +287,10 @@ export function getDb() {
     CREATE INDEX IF NOT EXISTS idx_worlds_difficulty ON worlds(difficulty);
     CREATE INDEX IF NOT EXISTS idx_worlds_created_at ON worlds(created_at);
     CREATE INDEX IF NOT EXISTS idx_ratings_world_id ON ratings(world_id);
+  `);
+
+  // 后续建表
+  sqliteInstance.exec(`
 
     CREATE TABLE IF NOT EXISTS characters (
       seed TEXT PRIMARY KEY,

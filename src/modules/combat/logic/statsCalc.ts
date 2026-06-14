@@ -34,16 +34,15 @@ const LEVEL_GROWTH = {
   speed: 0.5,
 } as const;
 
-// 世界系数从权威数据源导入（identity/data/worldData.ts）
-import { WORLD_COEFFICIENTS } from '@/modules/identity/data/worldData';
+import { getWorldBaseCoefficient } from '@/modules/identity/data/worldSystem';
 
 /**
  * 将世界难度系数转换为敌人属性倍率
  * 公式：enemyMultiplier = 0.5 + coefficient * 0.5
  * 范围：武侠(1.0) → 1.0x，末世(1.5) → 1.25x
  */
-function getWorldEnemyMultiplier(worldType: WorldType): number {
-  const coefficient = WORLD_COEFFICIENTS[worldType] || 1.0;
+function getWorldEnemyMultiplier(worldviewId: string): number {
+  const coefficient = getWorldBaseCoefficient(worldviewId);
   return 0.5 + coefficient * 0.5;
 }
 

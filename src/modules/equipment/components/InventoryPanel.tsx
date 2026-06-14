@@ -4,11 +4,11 @@ import { useState } from 'react';
 
 import { Package, Heart, Zap, Star, TrendingUp, Sword } from 'lucide-react';
 
-import { Badge } from '@/shared/ui/badge';
-import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/card';
-import { ItemTooltip } from '@/shared/ui/item-tooltip';
+import { Badge } from '@/shared/ui/data-display/badge';
+import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/data-display/card';
+import { ItemTooltip } from '@/shared/ui/data-display/item-tooltip';
 import { getRarityStyle } from '@/modules/theme/data/rarityStyles';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/shared/ui/tabs';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/shared/ui/data-display/tabs';
 import { useInventory, useProtagonist } from '@/views/game';
 import { getResourceName } from '@/modules/equipment/logic/items';
 import { InventoryItem, ActiveEffect, WorldType, ItemRarity } from '@/core/types';

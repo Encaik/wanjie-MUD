@@ -2,7 +2,7 @@
 
 import { Sparkles } from 'lucide-react';
 
-import { Badge } from '@/shared/ui/badge';
+import { Badge } from '@/shared/ui/data-display/badge';
 import { 
   getRealmName, 
   getNextRealm, 
@@ -39,7 +39,7 @@ export function CharacterInfo({ protagonist, showLevel = true, compact = false, 
         </Badge>
         <span className="text-sm font-medium text-primary">{currentRealm}</span>
         {showAscension && ascensionCount > 0 && (
-          <Badge variant="outline" className="text-xs bg-yellow-500/10 border-yellow-500/30 text-yellow-600">
+          <Badge variant="outline" className="text-xs bg-game-economy/10 border-game-economy/30 text-game-economy">
             <Sparkles className="w-3 h-3 mr-0.5" />
             飞升{ascensionCount}次
           </Badge>
@@ -59,7 +59,7 @@ export function CharacterInfo({ protagonist, showLevel = true, compact = false, 
             </Badge>
           )}
           {showAscension && ascensionCount > 0 && (
-            <Badge variant="outline" className="text-xs bg-yellow-500/10 border-yellow-500/30 text-yellow-600">
+            <Badge variant="outline" className="text-xs bg-game-economy/10 border-game-economy/30 text-game-economy">
               <Sparkles className="w-3 h-3 mr-0.5" />
               飞升{ascensionCount}次
             </Badge>
@@ -87,7 +87,7 @@ export function CharacterInfoInline({ protagonist, showAscension = true }: { pro
       <span className="text-sm font-medium text-primary">{currentRealm}</span>
       <Badge variant="outline" className="text-xs">Lv.{protagonist.level}</Badge>
       {showAscension && ascensionCount > 0 && (
-        <Badge variant="outline" className="text-xs bg-yellow-500/10 border-yellow-500/30 text-yellow-600">
+        <Badge variant="outline" className="text-xs bg-game-economy/10 border-game-economy/30 text-game-economy">
           <Sparkles className="w-3 h-3 mr-0.5" />
           飞升{ascensionCount}次
         </Badge>
@@ -133,7 +133,7 @@ export function AscensionCountBadge({ protagonist }: { protagonist: Protagonist 
   if (ascensionCount === 0) return null;
   
   return (
-    <Badge variant="outline" className="bg-yellow-500/10 border-yellow-500/30 text-yellow-600">
+    <Badge variant="outline" className="bg-game-economy/10 border-game-economy/30 text-game-economy">
       <Sparkles className="w-3 h-3 mr-1" />
       飞升 {ascensionCount} 次
     </Badge>

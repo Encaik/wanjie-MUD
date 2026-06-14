@@ -7,7 +7,7 @@
 'use client';
 
 import { useCallback, useState } from 'react';
-import { Button } from '@/shared/ui/button';
+import { Button } from '@/shared/ui/actions/button';
 import type { AutoBattleStrategy, CombatTechniqueSlot, ManualBattleState } from '@/modules/combat/logic/engine/types';
 import type { UseBattleReturn } from '@/modules/combat/hooks/useBattle';
 

@@ -10,7 +10,7 @@
  */
 
 import { getEventExpReward } from '@/modules/progression/logic/balanceConfig';
-import { getWorldTerms } from '@/modules/identity/logic/generators';
+import { getTerminology } from '@/modules/narrative/logic/terminology';
 import { getItemById, cultivationPillItems, materialItems } from '@/modules/equipment/logic/items';
 import { AdventureEvent, WorldType, InventoryItem, createInventoryItem } from '@/core/types';
 import {
@@ -26,7 +26,7 @@ const randomItem = <T>(arr: T[]): T => arr[Math.floor(Math.random() * arr.length
 
 // 根据世界类型生成事件
 function generateEventForWorld(baseEvent: AdventureEvent, worldType: WorldType): AdventureEvent {
-  const terms = getWorldTerms(worldType);
+  const terms = getTerminology(worldType);
   
   // 替换事件中的通用术语
   const processText = (text: string): string => {

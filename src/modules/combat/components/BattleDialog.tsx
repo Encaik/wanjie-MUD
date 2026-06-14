@@ -26,17 +26,17 @@ import {
   Flame,
 } from 'lucide-react';
 
-import { Badge } from '@/shared/ui/badge';
-import { Button } from '@/shared/ui/button';
+import { Badge } from '@/shared/ui/data-display/badge';
+import { Button } from '@/shared/ui/actions/button';
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogDescription,
-} from '@/shared/ui/dialog';
-import { ScrollArea } from '@/shared/ui/scroll-area';
-import { Separator } from '@/shared/ui/separator';
+} from '@/shared/ui/overlay/dialog';
+import { ScrollArea } from '@/shared/ui/layout/scroll-area';
+import { Separator } from '@/shared/ui/layout/separator';
 import { 
   initInteractiveBattle, 
   initTowerBattle, 

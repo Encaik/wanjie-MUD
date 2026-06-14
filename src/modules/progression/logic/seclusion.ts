@@ -12,7 +12,7 @@
 
 import { getMaxExperience } from '@/modules/progression/logic/cultivation';
 import { processExperienceGain, calculateBreakthroughTransfer } from '@/modules/progression/logic/experienceSystem';
-import { getRealmName } from '@/modules/identity/logic/generators';
+import { getRealmName } from '@/modules/progression/data/realmCore';
 import { spiritStoneItems } from '@/modules/equipment/logic/items';
 import { getTerminology } from '@/modules/narrative/logic/terminology';
 import { Protagonist, CultivationResult, CharacterStats, GrowthStats, WorldType, InventoryItem, createInventoryItem, getGrowthStatCap } from '@/core/types';

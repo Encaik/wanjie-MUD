@@ -4,13 +4,13 @@ import { useState, useMemo, useEffect } from 'react';
 
 import { Sparkles, Sword, Shield, ChevronUp, Info } from 'lucide-react';
 
-import { Badge } from '@/shared/ui/badge';
-import { Button } from '@/shared/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/card';
-import { Checkbox } from '@/shared/ui/checkbox';
+import { Badge } from '@/shared/ui/data-display/badge';
+import { Button } from '@/shared/ui/actions/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/data-display/card';
+import { Checkbox } from '@/shared/ui/forms/checkbox';
 import { getRarityStyle } from '@/modules/theme/data/rarityStyles';
-import { Progress } from '@/shared/ui/progress';
-import { ScrollArea } from '@/shared/ui/scroll-area';
+import { Progress } from '@/shared/ui/feedback/progress';
+import { ScrollArea } from '@/shared/ui/layout/scroll-area';
 import { 
   Technique, 
   Equipment, 

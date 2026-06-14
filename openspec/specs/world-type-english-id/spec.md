@@ -32,19 +32,6 @@
 - **THEN** 文件路径为 `data/world/cultivation.json`
 - **AND** 文件内 `"type"` 字段值为 `"cultivation"`
 
-### Requirement: WorldDataRegistry SHALL support lookup by type
-
-`WorldDataRegistry` SHALL 新增 `getWorldTypeByEnglishType(type: string)` 方法，根据英文 `type` 查找世界类型数据。原有的 `getWorldType(id: string)` SHALL 继续支持中文 ID 查找（过渡期兼容）。
-
-#### Scenario: Lookup by English type
-- **WHEN** 调用 `registry.getWorldTypeByEnglishType("cultivation")`
-- **THEN** 返回修仙世界的 `WorldTypeData`
-
-#### Scenario: Legacy lookup by Chinese ID still works
-- **WHEN** 调用 `registry.getWorldType("修仙")`
-- **THEN** 返回修仙世界的 `WorldTypeData`
-- **AND** console 输出 deprecation warning
-
 ### Requirement: World files SHALL use type field as primary identity
 
 每个世界类型 JSON 文件的根对象 SHALL 以 `type` 字段为主要代码标识。`id` 为数字编号，`type` 为英文标识，`name` 为中文名。
@@ -55,16 +42,21 @@
 - **AND** 文件根对象包含 `"type": "cultivation"`
 - **AND** 文件根对象包含 `"name": "修仙世界"`
 
-### Requirement: Code SHALL migrate from Chinese to English type indexing
+### Requirement: Code MUST use worldviewId for all indexing
 
-`src/` 中所有使用中文世界类型字符串做键名、switch 分支、条件判断的代码 SHALL 逐步迁移到英文 `type`。新增代码 MUST 使用英文 `type`。
+`src/` 中所有使用中文世界类型字符串做键名、switch 分支、条件判断的代码 MUST 改用英文 `worldviewId`。不存在过渡期——所有代码 MUST 一次性迁移完成。
 
-#### Scenario: New code uses English type
-- **WHEN** 新增涉及世界类型的代码
-- **THEN** 使用英文 `type` 值（如 `"cultivation"`）而非中文名（如 `"修仙"`）
-- **AND** 中文名仅用于 UI 显示（通过 `WorldTypeData.name` 获取）
+#### Scenario: All lookups use worldviewId
+- **WHEN** 任何代码需要索引世界类型
+- **THEN** 使用 `worldviewId`（如 `"cultivation"`）而非中文名（如 `"修仙"`）
+- **AND** 中文名通过 `world.type` 字段仅用于 UI 显示
 
-#### Scenario: Existing Chinese references are deprecated
-- **WHEN** 现有代码中存在 `worldType === "修仙"` 的硬编码判断
-- **THEN** 该处标注 `@deprecated` 注释
-- **AND** 过渡期内通过 `WorldTypeData` 的中文 ID 查找保持功能正常
+#### Scenario: No Chinese-keyed constants remain
+- **WHEN** 检查所有 `Record<WorldType, T>` 类型常量
+- **THEN** 其 key 值 MUST 使用英文 worldviewId
+- **AND** 无任何以中文名作为 key 的运行时数据结构
+
+#### Scenario: Registry fallback removed
+- **WHEN** `WorldViewRegistry` 未加载指定 worldviewId 的数据
+- **THEN** `getWorldData()` MUST 抛出明确异常
+- **AND** 不返回任何硬编码 fallback 数据

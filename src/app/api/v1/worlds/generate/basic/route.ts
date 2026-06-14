@@ -63,29 +63,8 @@ export async function POST(request: NextRequest) {
       // 指定世界观：校验并生成
       const worldview = registry.get(worldviewId);
       if (!worldview) {
-        // 回退到旧 API
-        const { generateBasic } = await import('../generator');
-        if (body.seed) {
-          for (let i = 0; i < count; i++) {
-            const uniqueSeed = count > 1 ? `${body.seed}-${i + 1}` : body.seed;
-            const world = generateBasic(uniqueSeed, worldviewId);
-            if (!getWorldById(world.id)) {
-              log.error(`世界保存验证失败（旧管线）：${world.id} 未写入数据库`);
-              return apiError(500, `世界保存验证失败：数据未写入数据库`);
-            }
-            worlds.push(world);
-          }
-        } else {
-          for (let i = 0; i < count; i++) {
-            const world = generateBasic(generateSeed(), worldviewId);
-            if (!getWorldById(world.id)) {
-              log.error(`世界保存验证失败（旧管线）：${world.id} 未写入数据库`);
-              return apiError(500, `世界保存验证失败：数据未写入数据库`);
-            }
-            worlds.push(world);
-          }
-        }
-      } else {
+        return apiError(400, `世界观 '${worldviewId}' 未注册`);
+      }
         // V3: 只生成基础字段（名称、描述、境界、难度、属性定义），详情由 details API 补全
         if (body.seed) {
           for (let i = 0; i < count; i++) {
@@ -111,45 +90,22 @@ export async function POST(request: NextRequest) {
             worlds.push(world);
           }
         }
-      }
     } else {
       // 随机选择世界观
       const allWorldviews = registry.getAll();
-      if (allWorldviews.length > 0) {
-        for (let i = 0; i < count; i++) {
-          const wv = allWorldviews[Math.floor(Math.random() * allWorldviews.length)];
-          const basic = generateWorldBasicFields(wv, body.seed || generateSeed(), 0);
-          const world = { ...basic, factions: [], majorForces: '', dangers: [], opportunities: [] } as World;
-          saveWorld(world);
-          if (!getWorldById(world.id)) {
-            log.error(`世界保存验证失败：${world.id} 未写入数据库`);
-            return apiError(500, `世界保存验证失败：数据未写入数据库`);
-          }
-          worlds.push(world);
+      if (allWorldviews.length === 0) {
+        return apiError(500, '没有已注册的世界观');
+      }
+      for (let i = 0; i < count; i++) {
+        const wv = allWorldviews[Math.floor(Math.random() * allWorldviews.length)];
+        const basic = generateWorldBasicFields(wv, body.seed || generateSeed(), 0);
+        const world = { ...basic, factions: [], majorForces: '', dangers: [], opportunities: [] } as World;
+        saveWorld(world);
+        if (!getWorldById(world.id)) {
+          log.error(`世界保存验证失败：${world.id} 未写入数据库`);
+          return apiError(500, `世界保存验证失败：数据未写入数据库`);
         }
-      } else {
-        // 回退到旧 API
-        const { generateBasic } = await import('../generator');
-        if (body.seed) {
-          for (let i = 0; i < count; i++) {
-            const uniqueSeed = count > 1 ? `${body.seed}-${i + 1}` : body.seed;
-            const world = generateBasic(uniqueSeed, undefined);
-            if (!getWorldById(world.id)) {
-              log.error(`世界保存验证失败（旧管线）：${world.id} 未写入数据库`);
-              return apiError(500, `世界保存验证失败：数据未写入数据库`);
-            }
-            worlds.push(world);
-          }
-        } else {
-          for (let i = 0; i < count; i++) {
-            const world = generateBasic(generateSeed(), undefined);
-            if (!getWorldById(world.id)) {
-              log.error(`世界保存验证失败（旧管线）：${world.id} 未写入数据库`);
-              return apiError(500, `世界保存验证失败：数据未写入数据库`);
-            }
-            worlds.push(world);
-          }
-        }
+        worlds.push(world);
       }
     }
 

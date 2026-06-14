@@ -4,9 +4,9 @@ import { useState, useEffect } from 'react';
 
 import { Swords, Map, AlertTriangle, Star, Zap, Lock, Battery, BatteryLow, BatteryMedium, BatteryFull, Timer, CheckCircle } from 'lucide-react';
 
-import { Badge } from '@/shared/ui/badge';
-import { Button } from '@/shared/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/card';
+import { Badge } from '@/shared/ui/data-display/badge';
+import { Button } from '@/shared/ui/actions/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/data-display/card';
 import { getDungeonInfo } from '@/modules/narrative/logic/terminology';
 import { DungeonConfig, WorldType, Protagonist } from '@/core/types';
 

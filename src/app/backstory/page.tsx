@@ -139,9 +139,11 @@ function BackstoryContent() {
   }
 
   // 展示用：优先 API 返回的世界，回退到 gameState
-  const displayWorldName = apiWorld?.name || gameState.selectedWorld?.name || '万界';
-  const displayWorldType = apiWorld?.type || gameState.selectedWorld?.type || '';
-  const displayVisualConfig = apiWorld?.visualConfig || gameState.selectedWorld?.visualConfig;
+  const displayWorld = apiWorld || gameState.selectedWorld;
+  const displayWorldName = displayWorld?.name || '万界';
+  const displayWorldType = displayWorld?.type || '';
+  const displayVisualConfig = displayWorld?.visualConfig;
+  const displayStatNames = displayWorld?.statDisplayNames;
 
   return (
     <BackstoryView
@@ -150,6 +152,7 @@ function BackstoryContent() {
       characterName={character.name}
       worldName={displayWorldName}
       worldType={displayWorldType}
+      statDisplayNames={displayStatNames}
       visualConfig={displayVisualConfig}
     />
   );

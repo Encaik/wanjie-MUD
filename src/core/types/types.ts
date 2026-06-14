@@ -249,6 +249,336 @@ export interface CheckResult {
 }
 
 // ============================================
+// NPC 系统
+// ============================================
+
+/** 态度等级（NPC 对玩家的好感度分层） */
+export type AttitudeLevel = 'adoration' | 'friendly' | 'amiable' | 'neutral' | 'cold' | 'hostile' | 'vengeful';
+
+/** 态度等级区间映射 */
+export const ATTITUDE_LEVEL_RANGES: Record<AttitudeLevel, { min: number; max: number; label: string }> = {
+  adoration: { min: 81, max: 100, label: '崇拜' },
+  friendly:  { min: 51, max: 80,  label: '友好' },
+  amiable:   { min: 21, max: 50,  label: '善意' },
+  neutral:   { min: -20, max: 20, label: '中立' },
+  cold:      { min: -50, max: -21, label: '冷淡' },
+  hostile:   { min: -80, max: -51, label: '敌视' },
+  vengeful:  { min: -100, max: -81, label: '仇恨' },
+};
+
+/** 态度配置（NPC JSON 中定义初始态度参数） */
+export interface NPCAttitudeConfig {
+  /** 初始态度值（默认 0） */
+  initialValue: number;
+  /** 态度变化速率倍率（1.0 = 标准速率） */
+  changeRateModifier: number;
+  /** 最低可能态度值（默认 -100） */
+  minValue?: number;
+  /** 最高可能态度值（默认 100） */
+  maxValue?: number;
+}
+
+/** 阵营关系等级 */
+export type FactionRelation = 'allied' | 'friendly' | 'neutral' | 'hostile' | 'atWar';
+
+/** 阵营关系对态度的影响配置 */
+export const FACTION_RELATION_CONFIG: Record<FactionRelation, {
+  initialAttitude: number;
+  positiveMultiplier: number;
+  negativeMultiplier: number;
+  label: string;
+}> = {
+  allied:   { initialAttitude: 40,  positiveMultiplier: 1.5, negativeMultiplier: 0.5, label: '同盟' },
+  friendly: { initialAttitude: 20,  positiveMultiplier: 1.2, negativeMultiplier: 0.8, label: '友好' },
+  neutral:  { initialAttitude: 0,   positiveMultiplier: 1.0, negativeMultiplier: 1.0, label: '中立' },
+  hostile:  { initialAttitude: -30, positiveMultiplier: 0.5, negativeMultiplier: 1.5, label: '敌对' },
+  atWar:    { initialAttitude: -60, positiveMultiplier: 0.3, negativeMultiplier: 2.0, label: '交战' },
+};
+
+/** 核心值门槛（对话选项中检查角色核心值是否达标） */
+export interface StatGate {
+  /** 核心值 key */
+  coreStat: CoreStatKey;
+  /** 最低值 */
+  minValue: number;
+  /** 不达标时的提示文本 */
+  failureHint: string;
+}
+
+/** NPC 对话选项 */
+export interface NPCDialogueOption {
+  /** 选项 ID */
+  id: string;
+  /** 选项文本 */
+  text: string;
+  /** 态度门槛（低于此值选项隐藏或灰掉） */
+  minAttitude?: number;
+  /** 核心值门槛列表（任一不达标则选项灰掉） */
+  statGates?: StatGate[];
+  /** CRPG 检定（达标后可选，但需 d20 投骰） */
+  check?: DialogueCheck;
+  /** 无检定时选中后跳转的对话行 ID */
+  resultBranch: string;
+}
+
+/** NPC 对话行（对话树节点） */
+export interface NPCDialogueLine {
+  /** 行 ID */
+  id: string;
+  /** NPC 说的文本 */
+  text: string;
+  /** 玩家可选选项列表 */
+  options: NPCDialogueOption[];
+  /** 是否可重复触发 */
+  repeatable: boolean;
+  /** 冷却时间（秒，仅 repeatable=true 时有效） */
+  cooldownSeconds?: number;
+  /** 进入此对话行时触发的事件 ID 列表 */
+  onEnter?: string[];
+}
+
+/** NPC 商品/交易物品 */
+export interface NPCShopItem {
+  /** 物品/道具 ID（引用物品系统） */
+  itemId: string;
+  /** 基准价格 */
+  basePrice: number;
+  /** 当前库存（undefined = 无限供应） */
+  quantity?: number;
+  /** 最大库存（用于自动补货） */
+  maxQuantity?: number;
+  /** 补货间隔（秒，undefined = 不自动补货） */
+  restockIntervalSeconds?: number;
+  /** 最低态度要求（低于此值不售卖） */
+  minAttitude?: number;
+}
+
+/** NPC 战斗风格 */
+export type NPCCombatStyle = 'melee' | 'ranged' | 'caster' | 'support';
+
+/** NPC 战斗行为配置 */
+export interface NPCCombatBehavior {
+  /** 敌意阈值（态度低于此值主动攻击，默认 -50） */
+  aggressionThreshold: number;
+  /** 逃跑阈值（HP 比例 0~1，0 = 不逃跑） */
+  fleeThreshold: number;
+  /** 战斗风格 */
+  combatStyle: NPCCombatStyle;
+  /** 技能使用优先级（技能 ID 列表） */
+  skillPriority: string[];
+}
+
+/** NPC AI 对话配置（扩展点，当前预留） */
+export interface NPCAIDialogueConfig {
+  /** 是否启用 AI 对话 */
+  enabled: boolean;
+  /** AI 角色设定 prompt */
+  systemPrompt?: string;
+  /** 上下文窗口 token 数 */
+  contextTokens?: number;
+  /** 允许的对话主题 */
+  allowedTopics?: string[];
+  /** AI 不可用时的回落对话行 ID 列表 */
+  fallbackLines?: string[];
+}
+
+/** NPC 完整定义（Mod 内容类型：npcs） */
+export interface NPCDefinition {
+  /** 全局唯一标识（kebab-case） */
+  id: string;
+  /** 中文显示名 */
+  name: string;
+  /** NPC 描述文本 */
+  description: string;
+  /** 限制出现的世界观 ID 列表（空 = 全世界观可用） */
+  worldviewRestrictions?: string[];
+  /** 所属阵营 ID */
+  factionId?: string;
+
+  // 战斗相关（复用角色模型）
+  /** 属性值（key 需匹配目标世界观的 attributeDefinitions） */
+  attributes: Record<string, number>;
+  /** 核心值 */
+  coreStats: Record<CoreStatKey, number>;
+  /** 种族 ID（引用 races 注册中心） */
+  raceId?: string;
+  /** 天赋 ID 列表（引用 talents 注册中心） */
+  talentIds?: string[];
+
+  // NPC 专属字段
+  /** 态度配置 */
+  attitude: NPCAttitudeConfig;
+  /** 对话行库（ID → 对话树节点） */
+  dialogueLines: Record<string, NPCDialogueLine>;
+  /** 交易物品（空数组或 undefined = 非商人） */
+  shopItems?: NPCShopItem[];
+  /** 是否支持 AI 对话 */
+  supportsAIDialogue: boolean;
+  /** AI 对话配置（supportsAIDialogue=true 时生效） */
+  aiDialogueConfig?: NPCAIDialogueConfig;
+  /** 战斗行为配置 */
+  combatBehavior: NPCCombatBehavior;
+}
+
+// ============================================
+// 任务系统 (Quest)
+// ============================================
+
+/** 任务类型 */
+export type QuestType = 'main' | 'side' | 'hidden' | 'daily' | 'event';
+
+/** 任务目标类型 */
+export type QuestObjectiveType =
+  | 'talk_to_npc'
+  | 'kill_enemy'
+  | 'collect_item'
+  | 'reach_realm'
+  | 'reach_level'
+  | 'explore_location'
+  | 'use_item'
+  | 'dialogue_check'
+  | 'custom';
+
+/** 前置条件类型 */
+export type QuestPrerequisiteType =
+  | 'level'
+  | 'realm'
+  | 'quest_completed'
+  | 'faction'
+  | 'attitude'
+  | 'coreStat'
+  | 'attribute'
+  | 'item_owned';
+
+/** 任务目标定义 */
+export interface QuestObjective {
+  /** 目标类型 */
+  type: QuestObjectiveType;
+  /** 目标 ID（NPC ID / 物品 ID / 境界名 / 位置 ID） */
+  target: string;
+  /** 数量要求（默认 1） */
+  count?: number;
+  /** 显示给玩家的描述 */
+  description: string;
+  /** 是否隐藏目标（不显示给玩家） */
+  hidden?: boolean;
+}
+
+/** Stage 完成后的分支选项 */
+export interface QuestStageCompletion {
+  /** 本分支的描述 */
+  description: string;
+  /** 下一 Stage ID（undefined = 任务结束） */
+  nextStageId?: string;
+  /** 本阶段奖励 */
+  stageRewards?: QuestReward[];
+}
+
+/** 任务阶段 */
+export interface QuestStage {
+  /** Stage ID */
+  id: string;
+  /** Stage 名称 */
+  name: string;
+  /** Stage 描述 */
+  description: string;
+  /** 完成目标列表 */
+  objectives: QuestObjective[];
+  /** 完成后的分支选项（key = 完成方式标识，如 "fight"、"persuade"） */
+  completions: Record<string, QuestStageCompletion>;
+  /** 进入此 Stage 时触发的 NPC 对话（可选） */
+  npcDialogueOnEnter?: { npcId: string; lineId: string };
+}
+
+/** 任务前置条件 */
+export interface QuestPrerequisite {
+  /** 条件类型 */
+  type: QuestPrerequisiteType;
+  /** 目标值（level=5, realm=筑基, quest=quest_001, faction=righteous_sect 等） */
+  target: string;
+  /** 最小值 */
+  minValue?: number;
+  /** 最大值（可选） */
+  maxValue?: number;
+}
+
+/** 任务奖励 */
+export interface QuestReward {
+  /** 经验值 */
+  experience?: number;
+  /** 灵石 */
+  spiritStones?: number;
+  /** 物品奖励 */
+  items?: { itemId: string; quantity: number }[];
+  /** 声望变化 */
+  reputation?: { factionId: string; change: number };
+  /** 态度值变化 */
+  attitudeChanges?: { npcId: string; change: number }[];
+  /** 解锁新任务 ID 列表 */
+  unlockQuests?: string[];
+}
+
+/** 任务完整定义（Mod 内容类型：quests） */
+export interface QuestDefinition {
+  /** 全局唯一标识（kebab-case） */
+  id: string;
+  /** 任务名称 */
+  name: string;
+  /** 任务描述 */
+  description: string;
+  /** 任务类型 */
+  type: QuestType;
+  /** 限制出现的世界观 ID 列表 */
+  worldviewRestrictions?: string[];
+  /** 前置条件（所有条件必须同时满足） */
+  prerequisites: QuestPrerequisite[];
+  /** 阶段列表 */
+  stages: QuestStage[];
+  /** 最终完成奖励 */
+  rewards: QuestReward[];
+  /** 是否可重复（daily 类型默认为 true） */
+  repeatable: boolean;
+  /** 冷却时间（秒，仅 repeatable 任务有效） */
+  cooldownSeconds?: number;
+}
+
+// ── 运行时状态 ──
+
+/** 活跃任务（玩家进行中的任务） */
+export interface ActiveQuest {
+  /** 任务 ID */
+  questId: string;
+  /** 当前阶段 ID */
+  currentStageId: string;
+  /** 目标进度（key = "type:target"，value = 当前进度） */
+  objectives: Record<string, number>;
+  /** 开始时间戳 */
+  startedAt: number;
+}
+
+/** 任务系统全局状态 */
+export interface QuestState {
+  /** 活跃任务（key = questId） */
+  activeQuests: Record<string, ActiveQuest>;
+  /** 已完成任务 ID 列表 */
+  completedQuests: string[];
+  /** 已领取奖励的任务 ID 列表（用于 repeatable 任务） */
+  claimedRewards: string[];
+  /** 阶段历史（questId → 已完成的 stageId 列表，用于分支追踪） */
+  stageHistory: Record<string, string[]>;
+}
+
+/** 创建默认任务状态 */
+export function createDefaultQuestState(): QuestState {
+  return {
+    activeQuests: {},
+    completedQuests: [],
+    claimedRewards: [],
+    stageHistory: {},
+  };
+}
+
+// ============================================
 // 旧属性系统（DEPRECATED — 迁移到新 Attribute/CoreStat 系统）
 // ============================================
 
@@ -705,6 +1035,8 @@ export interface World {
   attributeDefinitions: (AttributeTemplate & { growthRule: AttributeGrowthRule })[];
   /** 该世界观可用的种族 ID 列表（V3 新增） */
   racePool: string[];
+  /** 该世界观可遭遇的任务 ID 列表（V3 新增，空数组 = 所有 worldview 兼容任务可用） */
+  questPool: string[];
   /** 专项数值定义（V3 新增，如修仙的"法力"——仅定义显示名，基础值在代码常量） */
   specialResource?: SpecialResourceDef;
   /** 世界战斗基础数值（由服务端从 WorldviewDefinition.stats 填入，供前端计算 HP/MP/攻击/防御，避免访问 WorldViewRegistry） */
@@ -1361,6 +1693,8 @@ export interface GameState {
   ascensionFlow?: import('./typesExtension').AscensionFlowState;
   // 死亡状态（显示死亡弹窗）
   deathState?: import('./typesExtension').DeathState;
+  // 任务系统状态
+  questState: QuestState;
 }
 
 // 消息存储配置

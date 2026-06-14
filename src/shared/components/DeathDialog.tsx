@@ -4,8 +4,8 @@ import { useEffect, useState } from 'react';
 
 import { Skull, Heart, Sparkles } from 'lucide-react';
 
-import { Button } from '@/shared/ui/button';
-import { Dialog, DialogContent, DialogTitle, DialogDescription } from '@/shared/ui/dialog';
+import { Button } from '@/shared/ui/actions/button';
+import { Dialog, DialogContent, DialogTitle, DialogDescription } from '@/shared/ui/overlay/dialog';
 import { DeathState, DEFAULT_DEATH_STATE } from '@/core/types';
 
 
@@ -75,11 +75,11 @@ export function DeathDialog({ deathState, onClose, recoveryHp }: DeathDialogProp
           {/* 血迹效果 */}
           <div 
             className="absolute -top-20 -left-20 w-40 h-40 rounded-full blur-3xl opacity-20"
-            style={{ background: 'radial-gradient(circle, rgba(239, 68, 68, 0.4) 0%, transparent 70%)' }}
+            style={{ background: 'radial-gradient(circle, color-mix(in oklab, var(--destructive) 40%, transparent) 0%, transparent 70%)' }}
           />
-          <div 
+          <div
             className="absolute -bottom-20 -right-20 w-40 h-40 rounded-full blur-3xl opacity-20"
-            style={{ background: 'radial-gradient(circle, rgba(239, 68, 68, 0.4) 0%, transparent 70%)' }}
+            style={{ background: 'radial-gradient(circle, color-mix(in oklab, var(--destructive) 40%, transparent) 0%, transparent 70%)' }}
           />
         </div>
         
@@ -105,7 +105,7 @@ export function DeathDialog({ deathState, onClose, recoveryHp }: DeathDialogProp
             className={`text-3xl font-bold text-destructive mb-4 tracking-widest transition-all duration-500 ${isAnimating ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4'}`}
             style={{ 
               fontFamily: 'var(--font-serif, serif)',
-              textShadow: '0 0 30px rgba(239, 68, 68, 0.3)',
+              textShadow: '0 0 30px color-mix(in oklab, var(--destructive) 30%, transparent)',
               transitionDelay: '400ms',
             }}
           >
@@ -131,9 +131,9 @@ export function DeathDialog({ deathState, onClose, recoveryHp }: DeathDialogProp
             className={`flex items-center gap-2 text-sm text-muted-foreground mb-6 transition-all duration-500 ${isAnimating ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
             style={{ transitionDelay: '1000ms' }}
           >
-            <Heart className="w-4 h-4 text-red-500" />
+            <Heart className="w-4 h-4 text-game-combat" />
             <span>生命值恢复至</span>
-            <span className="text-red-500 font-medium">{hp}</span>
+            <span className="text-game-combat font-medium">{hp}</span>
           </div>
           
           {/* 按钮 */}

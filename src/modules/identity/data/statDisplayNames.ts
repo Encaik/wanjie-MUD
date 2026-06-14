@@ -1,14 +1,9 @@
 /**
  * 属性显示名映射
  *
- * 根据世界类型将内部属性键（体质/灵根/悟性/幸运/意志）映射为世界对应的显示名。
- * 数据从 WorldViewRegistry 获取，无硬编码兜底。
- *
- * 设计决策：BaseStats/GrowthStats 底层键名保持不变（避免 50+ 处引用的大重构），
- * 通过此显示层映射函数在 UI 层展示世界正确的属性名。
+ * 根据世界观将内部属性键（体质/灵根/悟性/幸运/意志）映射为对应的显示名。
+ * 显示名数据从 World.statDisplayNames 读取，由后端 API 返回。
  */
-import type { WorldType } from '@/core/types';
-import { getWorldData } from './worldData';
 
 /** 内部属性键 */
 export type StatKey = '体质' | '灵根' | '悟性' | '幸运' | '意志';
@@ -16,7 +11,7 @@ export type StatKey = '体质' | '灵根' | '悟性' | '幸运' | '意志';
 /** 所有内部属性键列表 */
 export const STAT_KEYS: StatKey[] = ['体质', '灵根', '悟性', '幸运', '意志'];
 
-/** @deprecated 兜底数据，数据已迁移到 WorldViewRegistry */
+/** 兜底显示名 */
 const DEFAULT_STAT_DISPLAY: Record<StatKey, string> = {
   '体质': '体质',
   '灵根': '灵根',
@@ -29,17 +24,12 @@ const DEFAULT_STAT_DISPLAY: Record<StatKey, string> = {
  * 获取单个属性的世界显示名
  *
  * @param statKey - 内部属性键
- * @param worldType - 世界类型
+ * @param statDisplayNames - 从 World 对象获取的显示名映射
  * @returns 世界对应的属性显示名
  */
-export function getStatDisplayName(statKey: string, worldType: WorldType): string {
-  try {
-    const worldData = getWorldData(worldType);
-    if (worldData?.statDisplayNames?.[statKey]) {
-      return worldData.statDisplayNames[statKey];
-    }
-  } catch {
-    // registry 未初始化时使用兜底
+export function getStatDisplayName(statKey: string, statDisplayNames?: Record<string, string>): string {
+  if (statDisplayNames?.[statKey]) {
+    return statDisplayNames[statKey];
   }
   return DEFAULT_STAT_DISPLAY[statKey as StatKey] || statKey;
 }
@@ -47,25 +37,17 @@ export function getStatDisplayName(statKey: string, worldType: WorldType): strin
 /**
  * 获取当前世界的完整属性标签映射
  *
- * @param worldType - 世界类型
+ * @param statDisplayNames - 从 World 对象获取的显示名映射
  * @returns { labels, statKeys, displayNames }
  */
-export function getStatLabels(worldType: WorldType): {
+export function getStatLabels(statDisplayNames?: Record<string, string>): {
   labels: Record<string, string>;
   statKeys: StatKey[];
   displayNames: string[];
 } {
   const labels: Record<string, string> = {};
-
-  try {
-    const worldData = getWorldData(worldType);
-    for (const key of STAT_KEYS) {
-      labels[key] = worldData.statDisplayNames?.[key] || DEFAULT_STAT_DISPLAY[key];
-    }
-  } catch {
-    for (const key of STAT_KEYS) {
-      labels[key] = DEFAULT_STAT_DISPLAY[key];
-    }
+  for (const key of STAT_KEYS) {
+    labels[key] = statDisplayNames?.[key] || DEFAULT_STAT_DISPLAY[key];
   }
 
   return {

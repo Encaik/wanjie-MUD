@@ -2,9 +2,9 @@
 
 import { CheckCircle2, XCircle, Package } from 'lucide-react';
 
-import { Badge } from '@/shared/ui/badge';
-import { Button } from '@/shared/ui/button';
-import { Card, CardContent } from '@/shared/ui/card';
+import { Badge } from '@/shared/ui/data-display/badge';
+import { Button } from '@/shared/ui/actions/button';
+import { Card, CardContent } from '@/shared/ui/data-display/card';
 import { ActionResult } from '@/core/types';
 
 
@@ -19,13 +19,13 @@ export function ResultDisplay({ result, onClose }: ResultDisplayProps) {
   const isSuccess = result.success !== false && result.victory !== false;
 
   return (
-    <Card className={`border-2 ${isSuccess ? 'border-green-500/50' : 'border-red-500/50'}`}>
+    <Card className={`border-2 ${isSuccess ? 'border-game-recovery/50' : 'border-game-combat/50'}`}>
       <CardContent className="pt-6">
         <div className="flex items-start gap-3 mb-4">
           {isSuccess ? (
-            <CheckCircle2 className="w-6 h-6 text-green-500 shrink-0 mt-0.5" />
+            <CheckCircle2 className="w-6 h-6 text-game-recovery shrink-0 mt-0.5" />
           ) : (
-            <XCircle className="w-6 h-6 text-red-500 shrink-0 mt-0.5" />
+            <XCircle className="w-6 h-6 text-game-combat shrink-0 mt-0.5" />
           )}
           <div className="flex-1">
             <div className="whitespace-pre-line text-sm leading-relaxed">
@@ -36,13 +36,13 @@ export function ResultDisplay({ result, onClose }: ResultDisplayProps) {
 
         {/* 突破提示 */}
         {result.breakthroughAttempt && (
-          <div className={`text-xs p-3 rounded mb-4 ${result.breakthroughSuccess ? 'bg-yellow-500/10' : 'bg-red-500/10'}`}>
+          <div className={`text-xs p-3 rounded mb-4 ${result.breakthroughSuccess ? 'bg-game-economy/10' : 'bg-game-combat/10'}`}>
             {result.breakthroughSuccess ? (
-              <p className="text-yellow-600 dark:text-yellow-400 font-medium">
+              <p className="text-game-economy font-medium">
                 恭喜！突破成功，你的境界提升了！
               </p>
             ) : (
-              <p className="text-red-600 dark:text-red-400">
+              <p className="text-game-combat">
                 突破失败，需要更多准备或服用突破丹药。
               </p>
             )}
@@ -51,11 +51,11 @@ export function ResultDisplay({ result, onClose }: ResultDisplayProps) {
 
         {/* 消耗的道具 */}
         {result.itemsCost && result.itemsCost.length > 0 && (
-          <div className="text-xs bg-red-500/10 p-3 rounded mb-4">
-            <p className="text-red-600 dark:text-red-400 mb-1">消耗道具：</p>
+          <div className="text-xs bg-game-combat/10 p-3 rounded mb-4">
+            <p className="text-game-combat mb-1">消耗道具：</p>
             <div className="flex flex-wrap gap-1">
               {result.itemsCost.map((item, idx) => (
-                <Badge key={idx} variant="outline" className="text-red-600 dark:text-red-400">
+                <Badge key={idx} variant="outline" className="text-game-combat">
                   {item.definition.name} x{item.quantity}
                 </Badge>
               ))}
@@ -70,7 +70,7 @@ export function ResultDisplay({ result, onClose }: ResultDisplayProps) {
               <div>
                 <span className="text-muted-foreground">属性变化：</span>
                 {Object.entries(result.rewards.stats).map(([key, value]) => (
-                  <Badge key={key} variant="outline" className={Number(value) > 0 ? 'text-green-500 border-green-500/50' : 'text-red-500 border-red-500/50'} style={{marginLeft: '4px'}}>
+                  <Badge key={key} variant="outline" className={Number(value) > 0 ? 'text-game-recovery border-game-recovery/50' : 'text-game-combat border-game-combat/50'} style={{marginLeft: '4px'}}>
                     {key} {Number(value) > 0 ? '+' : ''}{value}
                   </Badge>
                 ))}
@@ -84,7 +84,7 @@ export function ResultDisplay({ result, onClose }: ResultDisplayProps) {
                 </span>
                 <div className="flex flex-wrap gap-1 mt-1">
                   {result.rewards.items.map((item, idx) => (
-                    <Badge key={idx} className="bg-blue-500/20 text-blue-600 dark:text-blue-400">
+                    <Badge key={idx} className="bg-game-cultivation/20 text-game-cultivation">
                       {item.definition.name} x{item.quantity}
                     </Badge>
                   ))}
@@ -93,7 +93,7 @@ export function ResultDisplay({ result, onClose }: ResultDisplayProps) {
             )}
             {result.rewards.experience && (
               <div>
-                <Badge className="bg-purple-500/20 text-purple-600 dark:text-purple-400">
+                <Badge className="bg-game-cultivation/20 text-game-cultivation">
                   经验 +{result.rewards.experience}
                 </Badge>
               </div>
@@ -107,7 +107,7 @@ export function ResultDisplay({ result, onClose }: ResultDisplayProps) {
             <div>
               <span className="text-muted-foreground">属性变化：</span>
               {Object.entries(result.statChanges).map(([key, value]) => (
-                <Badge key={key} variant="outline" className={Number(value) > 0 ? 'text-green-500 border-green-500/50' : 'text-red-500 border-red-500/50'} style={{marginLeft: '4px'}}>
+                <Badge key={key} variant="outline" className={Number(value) > 0 ? 'text-game-recovery border-game-recovery/50' : 'text-game-combat border-game-combat/50'} style={{marginLeft: '4px'}}>
                   {key} {Number(value) > 0 ? '+' : ''}{value}
                 </Badge>
               ))}

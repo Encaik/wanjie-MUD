@@ -4,12 +4,12 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 
 import { MessageCircle, Send, Users, Crown, Sparkles, Bell, ChevronDown, AlertTriangle } from 'lucide-react';
 
-import { Badge } from '@/shared/ui/badge';
-import { Button } from '@/shared/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/card';
-import { Input } from '@/shared/ui/input';
-import { ScrollArea } from '@/shared/ui/scroll-area';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/shared/ui/tooltip';
+import { Badge } from '@/shared/ui/data-display/badge';
+import { Button } from '@/shared/ui/actions/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/data-display/card';
+import { Input } from '@/shared/ui/forms/input';
+import { ScrollArea } from '@/shared/ui/layout/scroll-area';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/shared/ui/overlay/tooltip';
 import { ChatMessage, OnlinePlayer } from '@/modules/social/chatTypes';
 
 

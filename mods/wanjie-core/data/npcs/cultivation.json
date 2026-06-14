@@ -1,0 +1,395 @@
+[
+  {
+    "id": "merchant_wang",
+    "name": "王掌柜",
+    "description": "坊市丹药铺的老板，精于商道，见钱眼开但为人还算公道。对各种灵药了如指掌。",
+    "worldviewRestrictions": ["cultivation", "xianxia"],
+    "factionId": "merchant_guild",
+    "attributes": {
+      "constitution": 8,
+      "insight": 10,
+      "luck": 12,
+      "willpower": 8,
+      "spiritPower": 6
+    },
+    "coreStats": {
+      "maxHp": 36,
+      "physicalATK": 13,
+      "specialATK": 6,
+      "physicalDEF": 8,
+      "specialDEF": 10,
+      "speed": 8,
+      "intelligence": 12,
+      "willpower": 8,
+      "lifespan": 80,
+      "perception": 10,
+      "specialResourceCap": 0
+    },
+    "raceId": "human",
+    "talentIds": ["merchant_insight"],
+    "attitude": {
+      "initialValue": 10,
+      "changeRateModifier": 1.2
+    },
+    "dialogueLines": {
+      "greeting": {
+        "id": "greeting",
+        "text": "哟，客官来啦！小店虽小，但灵丹妙药应有尽有。想看看什么？",
+        "options": [
+          {
+            "id": "browse_shop",
+            "text": "看看有什么好东西",
+            "resultBranch": "open_shop"
+          },
+          {
+            "id": "ask_discount",
+            "text": "王掌柜，老顾客了，打个折呗？",
+            "minAttitude": 50,
+            "statGates": [
+              { "coreStat": "intelligence", "minValue": 10, "failureHint": "需要至少 10 点智力才能讨价还价" }
+            ],
+            "check": {
+              "type": "attribute",
+              "target": "insight",
+              "difficulty": 10,
+              "successText": "王掌柜眯眼一笑：'行吧行吧，老顾客了，给你打个八折！'",
+              "failureText": "王掌柜摆摆手：'小本生意，概不赊账，也不打折。'",
+              "successBranch": "discount_shop",
+              "failureBranch": "open_shop"
+            },
+            "resultBranch": "discount_shop"
+          },
+          {
+            "id": "chat_world",
+            "text": "王掌柜走南闯北，可听说过什么奇闻异事？",
+            "minAttitude": 20,
+            "resultBranch": "gossip"
+          },
+          {
+            "id": "leave",
+            "text": "告辞",
+            "resultBranch": "__exit__"
+          }
+        ],
+        "repeatable": true
+      },
+      "open_shop": {
+        "id": "open_shop",
+        "text": "请随意挑选，价格公道！",
+        "options": [
+          { "id": "leave_shop", "text": "好，再看看别的", "resultBranch": "greeting" }
+        ],
+        "repeatable": true
+      },
+      "discount_shop": {
+        "id": "discount_shop",
+        "text": "好好好，既然是老主顾，今日给你打八折！挑吧。",
+        "options": [
+          { "id": "leave_discount", "text": "多谢掌柜！", "resultBranch": "greeting" }
+        ],
+        "repeatable": true,
+        "cooldownSeconds": 3600
+      },
+      "gossip": {
+        "id": "gossip",
+        "text": "嘿，最近青云山脉那边不太平，听说有妖兽出没。不过据说那妖兽守护着一株千年灵芝……要不要去碰碰运气？",
+        "options": [
+          { "id": "interested", "text": "详细说说位置", "resultBranch": "gossip_detail" },
+          { "id": "not_interested", "text": "多谢提醒，我会小心的", "resultBranch": "greeting" }
+        ],
+        "repeatable": true
+      },
+      "gossip_detail": {
+        "id": "gossip_detail",
+        "text": "从这儿往东走三十里，青云山脉第三峰。不过丑话说在前头，那妖兽可不好惹，至少得筑基期的修为才敢去。",
+        "options": [
+          { "id": "acknowledge", "text": "知道了，多谢王掌柜！", "resultBranch": "greeting" }
+        ],
+        "repeatable": false,
+        "onEnter": ["unlock_quest_qingyun_herb"]
+      }
+    },
+    "shopItems": [
+      { "itemId": "healing_pill_low", "basePrice": 30, "quantity": 20, "maxQuantity": 20, "restockIntervalSeconds": 1800 },
+      { "itemId": "healing_pill_mid", "basePrice": 80, "quantity": 10, "maxQuantity": 10, "restockIntervalSeconds": 3600 },
+      { "itemId": "mana_pill_low", "basePrice": 25, "quantity": 15, "maxQuantity": 15, "restockIntervalSeconds": 1800 },
+      { "itemId": "cultivation_pill", "basePrice": 100, "quantity": 5, "maxQuantity": 5, "restockIntervalSeconds": 7200 },
+      { "itemId": "breakthrough_pill", "basePrice": 500, "quantity": 1, "maxQuantity": 1, "restockIntervalSeconds": 86400, "minAttitude": 40 },
+      { "itemId": "spirit_stone_small", "basePrice": 10, "minAttitude": 0 }
+    ],
+    "supportsAIDialogue": false,
+    "combatBehavior": {
+      "aggressionThreshold": -80,
+      "fleeThreshold": 0.3,
+      "combatStyle": "support",
+      "skillPriority": []
+    }
+  },
+  {
+    "id": "senior_brother_li",
+    "name": "李师兄",
+    "description": "宗门内门弟子，修为已达金丹期。为人正直，乐于指点后辈修炼。",
+    "worldviewRestrictions": ["cultivation", "xianxia"],
+    "factionId": "righteous_sect",
+    "attributes": {
+      "constitution": 15,
+      "insight": 16,
+      "luck": 10,
+      "willpower": 14,
+      "spiritPower": 18
+    },
+    "coreStats": {
+      "maxHp": 80,
+      "physicalATK": 25,
+      "specialATK": 36,
+      "physicalDEF": 20,
+      "specialDEF": 28,
+      "speed": 18,
+      "intelligence": 16,
+      "willpower": 14,
+      "lifespan": 200,
+      "perception": 14,
+      "specialResourceCap": 150
+    },
+    "raceId": "human",
+    "talentIds": ["sword_mastery"],
+    "attitude": {
+      "initialValue": 25,
+      "changeRateModifier": 1.0
+    },
+    "dialogueLines": {
+      "greeting": {
+        "id": "greeting",
+        "text": "师弟/师妹来了啊。修行路上可有什么困惑？",
+        "options": [
+          {
+            "id": "ask_cultivation",
+            "text": "请教师兄修炼心得",
+            "statGates": [
+              { "coreStat": "willpower", "minValue": 10, "failureHint": "需要至少 10 点毅力才能领悟高深心法" }
+            ],
+            "resultBranch": "teach_cultivation"
+          },
+          {
+            "id": "ask_spar",
+            "text": "想和师兄切磋一番",
+            "minAttitude": 40,
+            "resultBranch": "spar_confirm"
+          },
+          { "id": "greet_leave", "text": "只是来看看师兄", "resultBranch": "__exit__" }
+        ],
+        "repeatable": true
+      },
+      "teach_cultivation": {
+        "id": "teach_cultivation",
+        "text": "修炼之道，贵在坚持。你且记下：心静则气顺，气顺则丹成。每日打坐一个时辰，胜过囫囵吞枣十枚丹药。",
+        "options": [
+          { "id": "thank", "text": "多谢师兄指点", "resultBranch": "greeting" }
+        ],
+        "repeatable": true,
+        "cooldownSeconds": 600,
+        "onEnter": ["give_cultivation_buff_1h"]
+      },
+      "spar_confirm": {
+        "id": "spar_confirm",
+        "text": "好！点到为止，让我看看你最近的进步。",
+        "options": [
+          { "id": "fight", "text": "请师兄赐教！", "resultBranch": "__exit__" }
+        ],
+        "repeatable": true,
+        "cooldownSeconds": 3600,
+        "onEnter": ["trigger_spar_battle_senior_li"]
+      }
+    },
+    "shopItems": [],
+    "supportsAIDialogue": false,
+    "combatBehavior": {
+      "aggressionThreshold": -60,
+      "fleeThreshold": 0.1,
+      "combatStyle": "melee",
+      "skillPriority": ["sword_technique_01", "sword_technique_02"]
+    }
+  },
+  {
+    "id": "rogue_cultivator_hei",
+    "name": "黑风散修",
+    "description": "一介散修，行踪不定，据说修炼的是旁门左道。面色阴鸷，但对强者还算恭敬。",
+    "worldviewRestrictions": ["cultivation"],
+    "factionId": "rogue_cultivators",
+    "attributes": {
+      "constitution": 12,
+      "insight": 13,
+      "luck": 8,
+      "willpower": 16,
+      "spiritPower": 9
+    },
+    "coreStats": {
+      "maxHp": 64,
+      "physicalATK": 22,
+      "specialATK": 28,
+      "physicalDEF": 14,
+      "specialDEF": 18,
+      "speed": 20,
+      "intelligence": 13,
+      "willpower": 16,
+      "lifespan": 120,
+      "perception": 16,
+      "specialResourceCap": 80
+    },
+    "raceId": "human",
+    "talentIds": [],
+    "attitude": {
+      "initialValue": -15,
+      "changeRateModifier": 0.8
+    },
+    "dialogueLines": {
+      "greeting": {
+        "id": "greeting",
+        "text": "哼，什么人？这地方可不是随便来的。",
+        "options": [
+          {
+            "id": "intimidate",
+            "text": "少废话，交出你手里的灵草！",
+            "minAttitude": -80,
+            "statGates": [
+              { "coreStat": "physicalATK", "minValue": 20, "failureHint": "需要至少 20 点物理攻击才能威慑对方" }
+            ],
+            "resultBranch": "intimidated"
+          },
+          {
+            "id": "trade",
+            "text": "我来做交易的，听说你有好货？",
+            "minAttitude": -30,
+            "resultBranch": "open_black_market"
+          },
+          { "id": "greet_neutral", "text": "路过而已，并无恶意", "resultBranch": "neutral_response" },
+          { "id": "leave", "text": "打扰了", "resultBranch": "__exit__" }
+        ],
+        "repeatable": true
+      },
+      "intimidated": {
+        "id": "intimidated",
+        "text": "别……别动手！灵草给你就是。",
+        "options": [
+          { "id": "take", "text": "算你识相", "resultBranch": "__exit__" }
+        ],
+        "repeatable": false,
+        "onEnter": ["give_item_spirit_herb", "attitude_change_hostile_30"]
+      },
+      "open_black_market": {
+        "id": "open_black_market",
+        "text": "有点意思……没错，我手里有些市面上买不到的东西。不过价格嘛，可不便宜。",
+        "options": [
+          { "id": "browse", "text": "看看货", "resultBranch": "greeting" }
+        ],
+        "repeatable": true
+      },
+      "neutral_response": {
+        "id": "neutral_response",
+        "text": "行，既然不是来找麻烦的，我也不为难你。快走吧。",
+        "options": [
+          { "id": "ok", "text": "告辞", "resultBranch": "__exit__" }
+        ],
+        "repeatable": true
+      }
+    },
+    "shopItems": [
+      { "itemId": "forbidden_pill", "basePrice": 300, "quantity": 3, "maxQuantity": 3, "restockIntervalSeconds": 86400, "minAttitude": 0 },
+      { "itemId": "poison_dart", "basePrice": 50, "minAttitude": -20 }
+    ],
+    "supportsAIDialogue": false,
+    "combatBehavior": {
+      "aggressionThreshold": -40,
+      "fleeThreshold": 0.25,
+      "combatStyle": "caster",
+      "skillPriority": ["dark_spell_01", "dark_spell_02"]
+    }
+  },
+  {
+    "id": "demon_beast_serpent",
+    "name": "赤鳞蟒妖",
+    "description": "青云山脉中的妖兽，灵智已开，能口吐人言。性情暴戾，对闯入领地者毫不留情。",
+    "worldviewRestrictions": ["cultivation", "xianxia"],
+    "factionId": "demon_beasts",
+    "attributes": {
+      "constitution": 20,
+      "insight": 6,
+      "luck": 5,
+      "willpower": 18,
+      "spiritPower": 4
+    },
+    "coreStats": {
+      "maxHp": 120,
+      "physicalATK": 30,
+      "specialATK": 8,
+      "physicalDEF": 25,
+      "specialDEF": 8,
+      "speed": 22,
+      "intelligence": 6,
+      "willpower": 18,
+      "lifespan": 500,
+      "perception": 20,
+      "specialResourceCap": 40
+    },
+    "raceId": "demon",
+    "talentIds": [],
+    "attitude": {
+      "initialValue": -70,
+      "changeRateModifier": 0.3
+    },
+    "dialogueLines": {
+      "greeting": {
+        "id": "greeting",
+        "text": "嘶嘶嘶……人类，竟敢踏入吾之领地！",
+        "options": [
+          { "id": "fight", "text": "妖兽受死！", "resultBranch": "__exit__" },
+          {
+            "id": "offer",
+            "text": "我是来献祭的，这枚灵果献给您",
+            "statGates": [
+              { "coreStat": "intelligence", "minValue": 12, "failureHint": "需要至少 12 点智力才能想到用计谋哄骗妖兽" }
+            ],
+            "check": {
+              "type": "attribute",
+              "target": "insight",
+              "difficulty": 14,
+              "successText": "赤鳞蟒嗅了嗅灵果，眼中的凶光渐渐褪去。'算你识相，拿了东西快走！'",
+              "failureText": "赤鳞蟒一口吞掉灵果，却更加暴躁：'区区一枚果子就想打发我？！'",
+              "successBranch": "pacified",
+              "failureBranch": "enraged"
+            },
+            "resultBranch": "pacified"
+          },
+          { "id": "flee", "text": "快跑！", "resultBranch": "__exit__" }
+        ],
+        "repeatable": true
+      },
+      "pacified": {
+        "id": "pacified",
+        "text": "……算你识相。山腰的千年灵芝你可以取走，但别再来了。",
+        "options": [
+          { "id": "thanks", "text": "多谢蛇仙大人", "resultBranch": "__exit__" }
+        ],
+        "repeatable": false,
+        "onEnter": ["unlock_herb_location"]
+      },
+      "enraged": {
+        "id": "enraged",
+        "text": "找死！！",
+        "options": [
+          { "id": "battle", "text": "迎战！", "resultBranch": "__exit__" }
+        ],
+        "repeatable": false,
+        "onEnter": ["trigger_boss_battle_serpent"]
+      }
+    },
+    "shopItems": [],
+    "supportsAIDialogue": false,
+    "combatBehavior": {
+      "aggressionThreshold": -50,
+      "fleeThreshold": 0.05,
+      "combatStyle": "melee",
+      "skillPriority": ["serpent_poison_bite", "tail_sweep", "constrict"]
+    }
+  }
+]

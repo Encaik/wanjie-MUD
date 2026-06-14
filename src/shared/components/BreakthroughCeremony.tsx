@@ -7,8 +7,8 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Button } from '@/shared/ui/button';
-import { Progress } from '@/shared/ui/progress';
+import { Button } from '@/shared/ui/actions/button';
+import { Progress } from '@/shared/ui/feedback/progress';
 import type { Milestone } from '@/modules/progression/logic/milestones';
 
 interface BreakthroughCeremonyProps {

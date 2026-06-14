@@ -16,8 +16,8 @@ import { Sun, Moon, Monitor, Palette, Globe } from 'lucide-react';
 import { useTheme } from '@/modules/theme/hooks/useTheme';
 import type { ThemeMode } from '@/modules/theme';
 import { cn } from '@/shared/utils';
-import { Button } from '@/shared/ui/button';
-import { Card, CardContent } from '@/shared/ui/card';
+import { Button } from '@/shared/ui/actions/button';
+import { Card, CardContent } from '@/shared/ui/data-display/card';
 
 /** 外观模式选项配置 */
 const MODE_OPTIONS: { mode: ThemeMode; icon: React.ReactNode; label: string }[] = [
