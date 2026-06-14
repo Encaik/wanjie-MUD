@@ -58,6 +58,7 @@ import { AdventureLootPanel } from '@/shared/components/AdventureLootPanel';
 import { DeveloperPanel } from '@/shared/components/DeveloperPanel';
 import { CriticalHealthOverlay } from '@/shared/components/CriticalHealthOverlay';
 import { DeathDialog } from '@/shared/components/DeathDialog';
+import { MysticalBackground } from '@/shared/components';
 
 // Layout
 import { LeftSidebar } from './LeftSidebar';
@@ -431,9 +432,9 @@ export function MainGame({
       <div className="flex flex-col gap-1">
         {/* 第一行：修炼核心 */}
         <div className="flex items-center gap-1">
-          <span className="text-[10px] text-muted-foreground shrink-0 px-1">修炼</span>
-          <TabsList className="grid grid-cols-5 h-8 flex-1">
-            <TabsTrigger value="cultivation" className="flex items-center gap-1 text-xs px-1.5">
+          <span className="text-[10px] text-primary/50 font-serif tracking-wider shrink-0 px-1.5 py-0 border-[1.5px] border-primary/15 rounded-sm -rotate-1">修炼</span>
+          <TabsList className="grid grid-cols-5 h-8 flex-1 tab-gradient-active">
+            <TabsTrigger value="cultivation" className="flex items-center gap-1 text-xs px-1.5 transition-all duration-200">
               <Sparkles className="w-3.5 h-3.5" />
               <span>修炼</span>
             </TabsTrigger>
@@ -471,9 +472,9 @@ export function MainGame({
         
         {/* 第二行：制造系统 */}
         <div className="flex items-center gap-1">
-          <span className="text-[10px] text-muted-foreground shrink-0 px-1">制造</span>
-          <TabsList className="grid grid-cols-5 h-8 flex-1">
-            <TabsTrigger value="alchemy" className="flex items-center gap-1 text-xs px-1.5 relative">
+          <span className="text-[10px] text-primary/50 font-serif tracking-wider shrink-0 px-1.5 py-0 border-[1.5px] border-primary/15 rounded-sm rotate-1">制造</span>
+          <TabsList className="grid grid-cols-5 h-8 flex-1 tab-gradient-active">
+            <TabsTrigger value="alchemy" className="flex items-center gap-1 text-xs px-1.5 relative transition-all duration-200">
               <FlaskConical className="w-3.5 h-3.5" />
               <span>炼丹</span>
               {crafting && (
@@ -528,9 +529,9 @@ export function MainGame({
         
         {/* 第三行：收集系统 */}
         <div className="flex items-center gap-1">
-          <span className="text-[10px] text-muted-foreground shrink-0 px-1">收集</span>
-          <TabsList className="grid grid-cols-5 h-8 flex-1">
-            <TabsTrigger value="tower" className="flex items-center gap-1 text-xs px-1">
+          <span className="text-[10px] text-primary/50 font-serif tracking-wider shrink-0 px-1.5 py-0 border-[1.5px] border-primary/15 rounded-sm -rotate-1">收集</span>
+          <TabsList className="grid grid-cols-5 h-8 flex-1 tab-gradient-active">
+            <TabsTrigger value="tower" className="flex items-center gap-1 text-xs px-1 transition-all duration-200">
               <Landmark className="w-3.5 h-3.5" />
               <span>试炼</span>
             </TabsTrigger>
@@ -807,10 +808,22 @@ export function MainGame({
   );
 
   return (
-    <div className="min-h-dvh md:h-dvh flex flex-col bg-background">
+    <div className="min-h-dvh md:h-dvh flex flex-col bg-background relative">
+      {/* ===== 东方玄幻氛围背景 ===== */}
+      <MysticalBackground variant="runes" intensity="subtle" />
+
       {/* 顶部标题栏 - 固定 */}
-      <header className="shrink-0 z-10 bg-gradient-to-r from-card via-muted/80 to-card border-b shadow-sm">
-        <div className="max-w-7xl mx-auto px-6 sm:px-10 py-4">
+      <header className="shrink-0 z-10 relative border-b shadow-sm overflow-hidden">
+        {/* 背景 */}
+        <div className="absolute inset-0 bg-gradient-to-r from-card via-muted/80 to-card" />
+        {/* 顶部渐变光线 */}
+        <div className="absolute top-0 left-6 right-6 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
+        {/* 四角隅饰 */}
+        <span className="absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-primary/20 rounded-tl-sm" aria-hidden="true" />
+        <span className="absolute top-0 right-0 w-3 h-3 border-t-2 border-r-2 border-primary/20 rounded-tr-sm" aria-hidden="true" />
+        <span className="absolute bottom-0 left-0 w-3 h-3 border-b-2 border-l-2 border-primary/15 rounded-bl-sm" aria-hidden="true" />
+        <span className="absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2 border-primary/15 rounded-br-sm" aria-hidden="true" />
+        <div className="relative max-w-7xl mx-auto px-6 sm:px-10 py-4">
           <GameHeader protagonist={protagonist} timeSystem={timeSystem} mentalState={mentalState} />
         </div>
       </header>

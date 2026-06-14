@@ -110,7 +110,7 @@ export function GameDialogs({
       <Dialog open={showResetConfirm} onOpenChange={onCloseResetConfirm}>
         <DialogContent className="max-w-sm">
           <DialogHeader>
-            <DialogTitle className="flex items-center gap-2">
+            <DialogTitle className="flex items-center gap-2 font-serif tracking-[0.1em]">
               <AlertTriangle className="w-5 h-5 text-yellow-500" />
               确认重新开始
             </DialogTitle>
@@ -139,7 +139,7 @@ export function GameDialogs({
       <Dialog open={showExitConfirm} onOpenChange={onCloseExitConfirm}>
         <DialogContent className="max-w-sm">
           <DialogHeader>
-            <DialogTitle className="flex items-center gap-2">
+            <DialogTitle className="flex items-center gap-2 font-serif tracking-[0.1em]">
               <LogOut className="w-5 h-5" />
               {isBossDefeated ? '完成机缘' : '确认退出机缘'}
             </DialogTitle>
@@ -176,7 +176,7 @@ export function GameDialogs({
       <Dialog open={showNoviceCompletionDialog} onOpenChange={onCloseNoviceCompletionDialog}>
         <DialogContent className="max-w-sm">
           <DialogHeader>
-            <DialogTitle className="flex items-center gap-2 text-green-500">
+            <DialogTitle className="flex items-center gap-2 text-green-500 font-serif tracking-[0.1em]">
               <PartyPopper className="w-5 h-5" />
               新手引导完成！
             </DialogTitle>
@@ -207,7 +207,7 @@ export function GameDialogs({
       <Dialog open={showTutorialCompletionDialog} onOpenChange={onCloseTutorialCompletionDialog}>
         <DialogContent className="max-w-sm">
           <DialogHeader>
-            <DialogTitle className="flex items-center gap-2 text-yellow-500">
+            <DialogTitle className="flex items-center gap-2 text-yellow-500 font-serif tracking-[0.1em]">
               <Trophy className="w-5 h-5" />
               新手任务全部完成！
             </DialogTitle>

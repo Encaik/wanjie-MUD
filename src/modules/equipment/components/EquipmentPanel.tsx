@@ -550,11 +550,11 @@ function ActiveSetEffects({ equippedItems }: { equippedItems: (Equipment | null)
                     {count}/{set.bonuses[set.bonuses.length - 1]?.requiredPieces || count}件
                   </Badge>
                 </div>
-                <div className="text-[9px] text-primary mt-1">
+                <div className="text-[10px] text-primary mt-1">
                   ✦ {activeBonuses.description}
                 </div>
                 {nextBonus && (
-                  <div className="text-[8px] text-muted-foreground mt-0.5">
+                  <div className="text-[10px] text-muted-foreground mt-0.5">
                     下一级 ({nextBonus.requiredPieces}件): {nextBonus.description}
                   </div>
                 )}

@@ -62,6 +62,11 @@ export function WorldInfoPanel({ world, protagonist }: WorldInfoPanelProps) {
 
   return (
     <Card className="relative overflow-hidden">
+      {/* 四角隅饰 */}
+      <span className="absolute top-0 left-0 w-2.5 h-2.5 border-t-2 border-l-2 border-primary/20 rounded-tl-sm z-10" aria-hidden="true" />
+      <span className="absolute top-0 right-0 w-2.5 h-2.5 border-t-2 border-r-2 border-primary/20 rounded-tr-sm z-10" aria-hidden="true" />
+      <span className="absolute bottom-0 left-0 w-2.5 h-2.5 border-b-2 border-l-2 border-primary/20 rounded-bl-sm z-10" aria-hidden="true" />
+      <span className="absolute bottom-0 right-0 w-2.5 h-2.5 border-b-2 border-r-2 border-primary/20 rounded-br-sm z-10" aria-hidden="true" />
       <CardHeader className="pb-1 pt-2">
         <CardTitle className="text-sm flex items-center gap-2">
           <Globe className="w-4 h-4" />
@@ -89,7 +94,7 @@ export function WorldInfoPanel({ world, protagonist }: WorldInfoPanelProps) {
           <p className="text-[10px] text-muted-foreground line-clamp-1">{world.description}</p>
         </div>
 
-        <Separator />
+        <div className="h-px bg-gradient-to-r from-transparent via-border/40 to-transparent" />
 
         {/* 境界体系 - 横向卡片展示 */}
         <div className="space-y-1">
@@ -240,7 +245,7 @@ export function WorldInfoPanel({ world, protagonist }: WorldInfoPanelProps) {
         {/* 玩家进度 */}
         {protagonist && (
           <>
-            <Separator />
+            <div className="h-px bg-gradient-to-r from-transparent via-border/40 to-transparent" />
             <div className="space-y-1">
               <div className="flex items-center justify-between text-[10px]">
                 <span className="text-muted-foreground">

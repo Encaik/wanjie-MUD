@@ -4,6 +4,7 @@ import {  useState, useEffect, useRef } from 'react';
 
 import {  Sparkles, AlertTriangle, Coins, Play, Square, Moon, Swords, TrendingUp, Droplets, Zap, Flame, Shield, Wand2, Heart, Swords as SwordIcon, Brain, CloudLightning, FlaskConical, Anvil, CheckCircle2, Circle, ChevronRight } from 'lucide-react';
 
+import { CardCornerDecorations } from '@/shared/components';
 import {  Badge } from '@/shared/ui/badge';
 import {  Button } from '@/shared/ui/button';
 import {  Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/card';
@@ -283,7 +284,8 @@ export function CultivationPanel({
   const pathConfig = cultivationPath ? CULTIVATION_PATHS[cultivationPath] : null;
 
   return (
-    <Card>
+    <Card className="relative overflow-hidden">
+      <CardCornerDecorations />
       <CardHeader className="pb-1 pt-2">
         <CardTitle className="flex items-center gap-2 text-sm">
           <Sparkles className="w-4 h-4 text-primary" />

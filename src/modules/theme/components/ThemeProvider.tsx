@@ -56,7 +56,10 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     // 立即应用缓存的世界主题
     const cached = loadCachedWorldTheme();
     if (prefs.useWorldTheme && cached) {
-      applyThemeVariables(isDark ? cached.darkTheme : cached.lightTheme);
+      const themeVars = isDark ? cached.darkTheme : cached.lightTheme;
+      if (themeVars) {
+        applyThemeVariables(themeVars);
+      }
     }
     return {
       ...initial,
@@ -147,8 +150,10 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
       const vars = theme.isDark
         ? theme.worldThemeData.darkTheme
         : theme.worldThemeData.lightTheme;
-      applyThemeVariables(vars);
-    } else if (theme.worldThemeData) {
+      if (vars) {
+        applyThemeVariables(vars);
+      }
+    } else if (theme.worldThemeData?.lightTheme) {
       // 用户关闭了世界主题 → 移除注入的变量
       removeThemeVariables(Object.keys(theme.worldThemeData.lightTheme));
     }

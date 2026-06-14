@@ -11,4 +11,5 @@ export { ExperiencePanel } from './ExperiencePanel';
 export { AdventureLootPanel } from './AdventureLootPanel';
 export { DeveloperPanel } from './DeveloperPanel';
 // 战斗结果弹窗已迁移到 battle 目录
+export { CardCornerDecorations } from './CardCornerDecorations';
 export { BattleResultDialog } from '@/modules/combat/components';

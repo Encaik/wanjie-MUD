@@ -61,6 +61,26 @@
 }
 
 /* ========================================
+ * Tab 激活态渐变指示器
+ * ======================================== */
+@layer utilities {
+  .tab-gradient-active [data-state="active"] {
+    position: relative;
+  }
+  .tab-gradient-active [data-state="active"]::after {
+    content: '';
+    position: absolute;
+    bottom: -3px;
+    left: 4px;
+    right: 4px;
+    height: 2px;
+    background: linear-gradient(to right, transparent, var(--primary), transparent);
+    border-radius: 1px;
+    transition: opacity 0.2s ease;
+  }
+}
+
+/* ========================================
  * 动画降级：prefers-reduced-motion
  * ======================================== */
 @media (prefers-reduced-motion: reduce) {

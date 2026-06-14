@@ -56,6 +56,15 @@ export function SaveLoadPanel({
 
   return (
     <div className={className}>
+      {/* 印章式装饰容器 */}
+      <div className="relative rounded-lg border border-border/40 p-2 overflow-hidden">
+        {/* 顶部渐变光线 */}
+        <div className="absolute top-0 left-4 right-4 h-px bg-gradient-to-r from-transparent via-primary/15 to-transparent" aria-hidden="true" />
+        {/* 四角隅饰 */}
+        <span className="absolute top-0 left-0 w-2 h-2 border-t-2 border-l-2 border-primary/15 rounded-tl-sm" aria-hidden="true" />
+        <span className="absolute top-0 right-0 w-2 h-2 border-t-2 border-r-2 border-primary/15 rounded-tr-sm" aria-hidden="true" />
+        <span className="absolute bottom-0 left-0 w-2 h-2 border-b-2 border-l-2 border-primary/15 rounded-bl-sm" aria-hidden="true" />
+        <span className="absolute bottom-0 right-0 w-2 h-2 border-b-2 border-r-2 border-primary/15 rounded-br-sm" aria-hidden="true" />
       <div className="grid grid-cols-2 gap-2">
         <Button
           variant="outline"
@@ -75,6 +84,7 @@ export function SaveLoadPanel({
           <Upload className="w-4 h-4 mr-1.5" />
           导入存档
         </Button>
+      </div>
       </div>
       {importError && (
         <div className="flex items-center gap-1 mt-1.5 p-1.5 rounded bg-destructive/10 border border-destructive/30 text-destructive text-[11px]">

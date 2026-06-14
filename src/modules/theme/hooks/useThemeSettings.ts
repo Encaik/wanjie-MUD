@@ -83,8 +83,9 @@ export function saveCachedWorldTheme(data: WorldThemeData): void {
 // ============================================
 
 /** 应用世界主题 CSS 变量到 documentElement */
-export function applyThemeVariables(vars: Record<string, string>): void {
+export function applyThemeVariables(vars: Record<string, string> | null | undefined): void {
   if (typeof document === 'undefined') return;
+  if (!vars) return;
   for (const [key, value] of Object.entries(vars)) {
     document.documentElement.style.setProperty(key, value);
   }

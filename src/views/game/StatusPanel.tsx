@@ -88,7 +88,12 @@ export function StatusPanel({ protagonist }: StatusPanelProps) {
   }
 
   return (
-    <Card>
+    <Card className="relative overflow-hidden">
+      {/* 四角隅饰 */}
+      <span className="absolute top-0 left-0 w-2.5 h-2.5 border-t-2 border-l-2 border-primary/20 rounded-tl-sm" aria-hidden="true" />
+      <span className="absolute top-0 right-0 w-2.5 h-2.5 border-t-2 border-r-2 border-primary/20 rounded-tr-sm" aria-hidden="true" />
+      <span className="absolute bottom-0 left-0 w-2.5 h-2.5 border-b-2 border-l-2 border-primary/20 rounded-bl-sm" aria-hidden="true" />
+      <span className="absolute bottom-0 right-0 w-2.5 h-2.5 border-b-2 border-r-2 border-primary/20 rounded-br-sm" aria-hidden="true" />
       <CardHeader className="pb-1 pt-2">
         <CardTitle className="text-sm flex items-center gap-2">
           <User className="w-4 h-4" />
@@ -117,9 +122,9 @@ export function StatusPanel({ protagonist }: StatusPanelProps) {
                 className={`flex flex-col items-center justify-center p-1.5 rounded-lg ${config.bg} border ${config.border} relative`}
               >
                 <config.icon className={`w-3.5 h-3.5 ${config.color} shrink-0`} />
-                <span className="text-[9px] text-muted-foreground mt-0.5">{stat.displayName}</span>
+                <span className="text-[10px] text-muted-foreground mt-0.5">{stat.displayName}</span>
                 <span className={`text-xs font-bold ${config.color}`}>{stat.value}</span>
-                <span className="text-[8px] text-muted-foreground/70">
+                <span className="text-[10px] text-muted-foreground/70">
                   {stat.baseValue}+{stat.growthValue}
                 </span>
                 {change.direction === 'up' && (
@@ -137,7 +142,8 @@ export function StatusPanel({ protagonist }: StatusPanelProps) {
           })}
         </div>
 
-        <Separator />
+        {/* 装饰分隔线 */}
+        <div className="h-px bg-gradient-to-r from-transparent via-border/40 to-transparent" />
 
         {/* 战力值 */}
         <CombatPowerDisplay protagonist={protagonist} />
@@ -152,7 +158,7 @@ export function StatusPanel({ protagonist }: StatusPanelProps) {
             <div className="flex items-center gap-1">
               <span className="text-sm font-bold text-red-600 dark:text-red-400">{combatStats.attack}</span>
               {(combatStats.totalAttackBonus > 0) && (
-                <span className="text-[8px] text-red-500/70">+{combatStats.totalAttackBonus}%</span>
+                <span className="text-[10px] text-red-500/70">+{combatStats.totalAttackBonus}%</span>
               )}
             </div>
           </div>
@@ -164,7 +170,7 @@ export function StatusPanel({ protagonist }: StatusPanelProps) {
             <div className="flex items-center gap-1">
               <span className="text-sm font-bold text-blue-600 dark:text-blue-400">{combatStats.defense}</span>
               {(combatStats.totalDefenseBonus > 0) && (
-                <span className="text-[8px] text-blue-500/70">+{combatStats.totalDefenseBonus}%</span>
+                <span className="text-[10px] text-blue-500/70">+{combatStats.totalDefenseBonus}%</span>
               )}
             </div>
           </div>
