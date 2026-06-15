@@ -1,58 +1,50 @@
 /**
  * WanjiePanel — 万界盘
  *
- * 底部滑出面板，展示 9 个次要功能分三组：炼造、武备、记载。
- * 点击面板 → 关闭 + 切换，点击蒙层 → 关闭。
+ * 底部滑出面板，展示次要功能面板（从 panelRegistry 获取）。
+ * 点击面板 → 关闭 + router.push(route)，点击蒙层 → 关闭。
+ * 通过 GameMenu 的"更多"按钮触发。
  */
 
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useMemo } from 'react';
 
-import { X, FlaskConical, Anvil, Package, Swords, Landmark, Trophy, BookOpen, BarChart3, Shield } from 'lucide-react';
+import { X } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+
 
 import { cn } from '@/shared/utils';
 
-import type { PanelId } from './PanelNav';
+import { SECONDARY_PANELS } from './panelRegistry';
 
-/** 万界盘中可选的扩展面板 ID */
-export type WanjiePanelId = Exclude<PanelId, 'cultivation' | 'adventure' | 'faction' | 'technique' | 'shop'>;
-
-export const WANJIE_GROUPS: { title: string; panels: { id: string; icon: React.ReactNode; label: string }[] }[] = [
-  {
-    title: '炼造',
-    panels: [
-      { id: 'alchemy', icon: <FlaskConical className="w-5 h-5" />, label: '炼丹' },
-      { id: 'forge', icon: <Anvil className="w-5 h-5" />, label: '炼器' },
-      { id: 'fragment', icon: <Package className="w-5 h-5" />, label: '碎片' },
-    ],
-  },
-  {
-    title: '武备',
-    panels: [
-      { id: 'skill', icon: <Swords className="w-5 h-5" />, label: '技能' },
-      { id: 'equipment', icon: <Shield className="w-5 h-5" />, label: '装备' },
-      { id: 'tower', icon: <Landmark className="w-5 h-5" />, label: '试炼' },
-    ],
-  },
-  {
-    title: '记载',
-    panels: [
-      { id: 'achievement', icon: <Trophy className="w-5 h-5" />, label: '成就' },
-      { id: 'collection', icon: <BookOpen className="w-5 h-5" />, label: '图鉴' },
-      { id: 'statistics', icon: <BarChart3 className="w-5 h-5" />, label: '统计' },
-    ],
-  },
-];
+import type { PanelDefinition } from './panelRegistry';
 
 interface WanjiePanelProps {
   open: boolean;
   onClose: () => void;
-  onPanelSelect: (panel: string) => void;
 }
 
-export function WanjiePanel({ open, onClose, onPanelSelect }: WanjiePanelProps) {
+export function WanjiePanel({ open, onClose }: WanjiePanelProps) {
+  const router = useRouter();
   const panelRef = useRef<HTMLDivElement>(null);
+
+  // 按 group 分组
+  const groupedPanels = useMemo(() => {
+    const groups: Record<string, PanelDefinition[]> = {};
+    for (const p of SECONDARY_PANELS) {
+      const g = p.group ?? '其他';
+      if (!groups[g]) groups[g] = [];
+      groups[g].push(p);
+    }
+    return groups;
+  }, []);
+
+  // 面板点击 → 路由跳转 + 关闭
+  const handlePanelSelect = (route: string) => {
+    router.push(route);
+    onClose();
+  };
 
   // Escape 键关闭
   useEffect(() => {
@@ -85,7 +77,7 @@ export function WanjiePanel({ open, onClose, onPanelSelect }: WanjiePanelProps) 
           'animate-slide-up',
         )}
         role="dialog"
-        aria-label="万界盘"
+        aria-label="更多功能"
       >
         {/* 手柄 */}
         <div className="flex justify-center pt-3 pb-1">
@@ -94,24 +86,24 @@ export function WanjiePanel({ open, onClose, onPanelSelect }: WanjiePanelProps) 
 
         {/* 标题栏 */}
         <div className="flex items-center justify-between px-5 py-2">
-          <h2 className="text-base font-serif tracking-[0.1em] text-foreground">✦ 万 界 盘 ✦</h2>
-          <button onClick={onClose} className="p-1 rounded-md hover:bg-accent transition-colors" aria-label="关闭万界盘">
+          <h2 className="text-base font-serif tracking-[0.1em] text-foreground">✦ 更 多 功 能 ✦</h2>
+          <button onClick={onClose} className="p-1 rounded-md hover:bg-accent transition-colors" aria-label="关闭">
             <X className="w-5 h-5 text-muted-foreground" />
           </button>
         </div>
 
         {/* 内容 */}
         <div className="px-5 pb-6 space-y-4 max-h-[50vh] overflow-y-auto">
-          {WANJIE_GROUPS.map((group) => (
-            <div key={group.title}>
+          {Object.entries(groupedPanels).map(([groupTitle, panels]) => (
+            <div key={groupTitle}>
               <h3 className="text-[10px] text-primary/50 font-serif tracking-wider mb-2 pl-1">
-                {group.title}
+                {groupTitle}
               </h3>
               <div className="grid grid-cols-3 gap-2">
-                {group.panels.map((p) => (
+                {panels.map((p) => (
                   <button
                     key={p.id}
-                    onClick={() => { onPanelSelect(p.id); onClose(); }}
+                    onClick={() => handlePanelSelect(p.route)}
                     className={cn(
                       'flex flex-col items-center gap-1.5 p-3 rounded-xl',
                       'bg-muted/50 hover:bg-accent hover:text-accent-foreground',

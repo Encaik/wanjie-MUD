@@ -2,7 +2,6 @@
 export { getRouteGuard } from './state/routeGuard';
 
 // 布局组件
-export { GameLayout } from './GameLayout';
 export { GameHeader } from './layout/GameHeader';
 export { LeftSidebar } from './layout/LeftSidebar';
 export { CenterPanel } from './layout/CenterPanel';
@@ -10,11 +9,8 @@ export { RightSidebar } from './layout/RightSidebar';
 export { MobileLayout } from './layout/MobileLayout';
 
 // 面板导航
-export { PanelNav } from './navigation/PanelNav';
-export type { PanelId, PanelNavStatusDots } from './navigation/PanelNav';
-export { WanjiePanel } from './navigation/WanjiePanel';
-export type { WanjiePanelId } from './navigation/WanjiePanel';
-export { PanelContent } from './navigation/PanelContent';
+export { GameMenu, WanjiePanel, PANELS, PRIMARY_PANELS, SECONDARY_PANELS } from './navigation';
+export type { GameMenuStatusDots, PanelDefinition } from './navigation';
 
 // 弹窗系统
 export { DialogLayer } from './dialogs/DialogLayer';
@@ -22,6 +18,24 @@ export { useDialogController, openDialog, closeDialog } from './dialogs/useDialo
 
 // 设置
 export { SettingsPanel } from './settings/SettingsPanel';
+
+// PanelPage 页面组件
+export {
+  CultivationPage,
+  AdventurePage,
+  FactionPage,
+  TechniquePage,
+  ShopPage,
+  EquipmentPage,
+  AlchemyPage,
+  ForgePage,
+  FragmentPage,
+  SkillPage,
+  TowerPage,
+  AchievementPage,
+  CollectionPage,
+  StatisticsPage,
+} from './pages';
 
 // 信息卡片
 export { StatusPanel } from './cards/StatusPanel';

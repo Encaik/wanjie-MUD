@@ -1,8 +1,9 @@
 /**
- * GameLayout — 游戏主页面布局
+ * Game Layout — 游戏主界面共享布局
  *
- * 组合 Header + LeftSidebar + CenterArea（PanelNav + PanelContent + WanjiePanel）+ RightSidebar + DialogLayer。
- * 使用领域 Hook 获取数据和 action，向子组件透传 props。
+ * 组合 Header + LeftSidebar + GameMenu + {children} + RightSidebar + DialogLayer。
+ * 只调用全局基础设施 Hook 和弹窗层需要的领域 Hook。
+ * 各功能面板的路由页面通过 {children} 渲染。
  */
 
 'use client';
@@ -10,77 +11,56 @@
 import { useEffect, useRef, useState } from 'react';
 
 import { checkRankPromotion } from '@/core/engine';
-import { DEFAULT_PROTAGONIST_EXTENSION, getFinalStats } from '@/core/types';
 import type { MentalState } from '@/core/types';
-import type { GameState } from '@/core/types';
-
+import { DEFAULT_PROTAGONIST_EXTENSION, getFinalStats } from '@/core/types';
+import { BattleDialog } from '@/modules/combat/components/BattleDialog';
 import { getFactionById } from '@/modules/faction/data/factionData';
+import { CultivationPathSelect } from '@/modules/progression/components/CultivationPathSelect';
 import { getRealmName } from '@/modules/progression/data/realmData';
 import type { Announcement } from '@/modules/social/announcementTypes';
 import { AnnouncementContainer } from '@/modules/social/components';
-import { createDefaultTowerProgress } from '@/modules/tower/logic/types';
-
-import { BattleDialog } from '@/modules/combat/components/BattleDialog';
-import { CultivationPathSelect } from '@/modules/progression/components/CultivationPathSelect';
 import { CriticalHealthOverlay } from '@/shared/components/CriticalHealthOverlay';
 import { DeathDialog } from '@/shared/components/DeathDialog';
 import { useMultiplayerHttp } from '@/shared/lib/multiplayer/useMultiplayerHttp';
-
+import { DialogLayer } from '@/views/game/dialogs/DialogLayer';
+import { openDialog } from '@/views/game/dialogs/useDialogController';
+import { useAdventure } from '@/views/game/domainHooks/useAdventure';
+import { useAscension } from '@/views/game/domainHooks/useAscension';
+import { useDevMode } from '@/views/game/domainHooks/useDevMode';
+import { useEquipment } from '@/views/game/domainHooks/useEquipment';
+import { useFaction } from '@/views/game/domainHooks/useFaction';
+import { useGameActions } from '@/views/game/domainHooks/useGameActions';
+import { useSaveLoad } from '@/views/game/domainHooks/useSaveLoad';
 import { useGameSystems } from '@/views/game/hooks/useGameSystems';
+import { GameHeader } from '@/views/game/layout/GameHeader';
+import { LeftSidebar } from '@/views/game/layout/LeftSidebar';
+import { MobileLayout } from '@/views/game/layout/MobileLayout';
+import { RightSidebar } from '@/views/game/layout/RightSidebar';
+import { GameMenu } from '@/views/game/navigation/GameMenu';
+import { SettingsPanel } from '@/views/game/settings/SettingsPanel';
+import { useGameStore } from '@/views/game/state/GameStore';
 
-import { DialogLayer } from './dialogs/DialogLayer';
-import { GameHeader } from './layout/GameHeader';
-import { useGameStore } from './state/GameStore';
-import { LeftSidebar } from './layout/LeftSidebar';
-import { MobileLayout } from './layout/MobileLayout';
-import { PanelContent } from './navigation/PanelContent';
-import { PanelNav } from './navigation/PanelNav';
-import type { PanelId } from './navigation/PanelNav';
-import { RightSidebar } from './layout/RightSidebar';
-import { SettingsPanel } from './settings/SettingsPanel';
-import { WanjiePanel } from './navigation/WanjiePanel';
-import { useAdventure } from './domainHooks/useAdventure';
-import { useAscension } from './domainHooks/useAscension';
-import { useBattle } from './domainHooks/useBattle';
-import { useCrafting } from './domainHooks/useCrafting';
-import { useCultivation } from './domainHooks/useCultivation';
-import { useDevMode } from './domainHooks/useDevMode';
-import { useEquipment } from './domainHooks/useEquipment';
-import { useFaction } from './domainHooks/useFaction';
-import { useGameActions } from './domainHooks/useGameActions';
-import { useInventory } from './domainHooks/useInventory';
-import { useSaveLoad } from './domainHooks/useSaveLoad';
-import { useShop } from './domainHooks/useShop';
-import { openDialog } from './dialogs/useDialogController';
-
-export function GameLayout() {
+export default function GameLayout({ children }: { children: React.ReactNode }) {
   useGameSystems();
 
   const { gameState } = useGameStore();
   const protagonist = gameState.protagonist!;
 
-  // 领域 Hook
-  const cultivation = useCultivation();
+  // 弹窗层需要的领域 Hook
   const adventure = useAdventure();
-  const equipment = useEquipment();
-  const shop = useShop();
-  const crafting = useCrafting();
   const ascension = useAscension();
-  const battle = useBattle();
-  const inventory = useInventory();
+  const equipment = useEquipment();
+  const dev = useDevMode();
+  const faction = useFaction();
   const saveLoad = useSaveLoad();
   const gameActions = useGameActions();
-  const faction = useFaction();
-  const dev = useDevMode();
+  const ascensionBattleEndedRef = useRef(false);
 
   // 本地 UI 状态
   const [mentalState, setMentalState] = useState<MentalState>(
     protagonist.mentalState ?? DEFAULT_PROTAGONIST_EXTENSION.mentalState,
   );
   const [showSettings, setShowSettings] = useState(false);
-  const ascensionBattleEndedRef = useRef(false);
-  const [activePanel, setActivePanel] = useState<PanelId | string>('cultivation');
-  const [showWanjiePanel, setShowWanjiePanel] = useState(false);
 
   // 状态提示点
   const statusDots = {
@@ -113,57 +93,9 @@ export function GameLayout() {
     onAnnouncement: (a: Announcement) => setAnnouncements(prev => [a, ...prev].slice(0, 50)),
   });
 
-  // 同步 mentalState
   useEffect(() => {
     if (protagonist.mentalState) setMentalState(protagonist.mentalState);
   }, [protagonist.mentalState]);
-
-  // 面板内容
-  const panelContent = (
-    <PanelContent
-      activePanel={activePanel}
-      protagonist={protagonist}
-      gameState={gameState}
-      mentalState={mentalState}
-      onMentalStateChange={setMentalState}
-      onCultivate={cultivation.performCultivation}
-      onRest={cultivation.performRest}
-      onSeclusion={cultivation.performSeclusion}
-      onToggleAutoCultivation={cultivation.toggleAutoCultivation}
-      onChallengeGuardian={ascension.challengeGuardian}
-      onTribulation={ascension.performTribulation}
-      startAdventure={adventure.startAdventure}
-      quickSweep={adventure.quickSweep}
-      moveInAdventure={adventure.moveInAdventure}
-      exitAdventure={adventure.exitAdventure}
-      getAvailableDifficulties={adventure.getAvailableDifficulties}
-      startExperience={adventure.startExperience}
-      handleEventChoice={adventure.handleEventChoice}
-      equipTechnique={equipment.equipTechnique}
-      unequipTechnique={equipment.unequipTechnique}
-      equipEquipment={equipment.equipEquipment}
-      unequipEquipment={equipment.unequipEquipment}
-      updateTechnique={equipment.updateTechnique}
-      updateEquipment={equipment.updateEquipment}
-      synthesizeFragment={equipment.synthesizeFragment}
-      buyShopItem={shop.buyShopItem}
-      startCrafting={crafting.startCrafting}
-      finishCrafting={crafting.finishCrafting}
-      startForging={crafting.startForging}
-      finishForging={crafting.finishForging}
-      joinFaction={faction.joinFaction}
-      leaveFaction={faction.leaveFaction}
-      acceptTask={faction.acceptTask}
-      submitTask={faction.submitTask}
-      refreshTasks={() => faction.refreshTasks() as any}
-      claimDailySalary={faction.claimDailySalary}
-      promoteRank={faction.promoteRank}
-      donate={faction.donate}
-      claimAchievementReward={faction.claimAchievementReward}
-      challengeTower={battle.challengeTower}
-      useItem={inventory.useItem}
-    />
-  );
 
   return (
     <div className="min-h-dvh md:h-dvh flex flex-col relative">
@@ -187,8 +119,10 @@ export function GameLayout() {
         mentalState={mentalState} battleState={gameState.battleState}
         onReset={() => openDialog('resetConfirm')}
         onExportSave={saveLoad.exportSave} onImportSave={saveLoad.importSave}
-        onCloseResult={adventure.clearLastResult} TabsContentSection={panelContent}
+        onCloseResult={adventure.clearLastResult} TabsContentSection={children}
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any -- MobileLayout 类型与 protagonist 技术类型不完全匹配，与旧 GameLayout 保持一致
         playerTechniques={protagonist.equippedAttackTechniques.filter(Boolean) as any[]}
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any -- MobileLayout playerWeapons 类型与旧 GameLayout 保持一致
         playerWeapons={{ melee: protagonist.equippedMelee, ranged: protagonist.equippedRanged } as any}
       />
 
@@ -204,16 +138,11 @@ export function GameLayout() {
             />
           </div>
           <div className="col-span-6 h-full flex flex-col overflow-hidden">
-            <div className="flex-1 overflow-y-auto pr-1 space-y-3">
-              {panelContent}
-            </div>
-            <div className="shrink-0 pt-2">
-              <PanelNav
-                activePanel={activePanel === 'cultivation' || activePanel === 'adventure' || activePanel === 'faction' || activePanel === 'technique' || activePanel === 'shop' ? activePanel as PanelId : null}
-                onPanelChange={(p) => setActivePanel(p)}
-                onWanjieOpen={() => setShowWanjiePanel(true)}
-                statusDots={statusDots}
-              />
+            {/* 顶部标签菜单（均分空间，"更多"内联展开） */}
+            <GameMenu statusDots={statusDots} />
+            {/* 路由驱动的内容区域 */}
+            <div className="flex-1 overflow-y-auto pr-1 space-y-3 mt-2">
+              {children}
             </div>
           </div>
           <div className="col-span-3 h-full overflow-hidden">
@@ -227,9 +156,6 @@ export function GameLayout() {
           </div>
         </div>
       </main>
-
-      {/* 万界盘 + 弹窗层 */}
-      <WanjiePanel open={showWanjiePanel} onClose={() => setShowWanjiePanel(false)} onPanelSelect={(panel) => setActivePanel(panel)} />
 
       <CultivationPathSelect
         isOpen={false} onClose={() => {}}
@@ -247,6 +173,7 @@ export function GameLayout() {
         onUpgradeEquipment={equipment.performUpgradeEquipment}
         devInvincible={dev.devInvincible}
         onToggleDevInvincible={dev.onToggleDevInvincible}
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any -- DialogLayer devHandlers 类型较复杂，与旧 GameLayout 保持一致
         devHandlers={dev.devHandlers as any}
         onAscensionBattleEnd={ascension.onAscensionBattleEnd}
         onInheritanceConfirm={ascension.onInheritanceConfirm}

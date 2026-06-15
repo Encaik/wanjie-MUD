@@ -23,7 +23,7 @@ export function getRouteGuard(currentPath: string, state: GameState): string | n
   const isPlaying = state.phase === 'playing' && hasProtagonist;
 
   // 已在游戏中 — 所有非游戏页面都重定向到 /game
-  if (isPlaying && currentPath !== '/game') {
+  if (isPlaying && !currentPath.startsWith('/game')) {
     return '/game';
   }
 
@@ -44,15 +44,19 @@ export function getRouteGuard(currentPath: string, state: GameState): string | n
     case '/backstory':
       return null;
 
-    case '/game':
-      if (!hasProtagonist) {
-        if (hasSelectedWorld) return '/character-select';
-        if (hasWorlds) return '/world-select';
-        return '/';
-      }
-      return null;
-
     default:
-      return null;
+      break;
   }
+
+  // /game 和 /game/* 的守卫逻辑
+  if (currentPath.startsWith('/game')) {
+    if (!hasProtagonist) {
+      if (hasSelectedWorld) return '/character-select';
+      if (hasWorlds) return '/world-select';
+      return '/';
+    }
+    return null;
+  }
+
+  return null;
 }
