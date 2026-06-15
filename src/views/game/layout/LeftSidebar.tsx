@@ -2,10 +2,9 @@
 
 import { RotateCcw } from 'lucide-react';
 
+import type { Protagonist, MentalState } from '@/core/types';
 import { Button } from '@/shared/ui/actions/button';
 import { ScrollArea } from '@/shared/ui/layout/scroll-area';
-import { Protagonist } from '@/core/types';
-import { MentalState } from '@/core/types';
 
 import { SaveLoadPanel } from '../cards/SaveLoadPanel';
 import { StatusPanel } from '../cards/StatusPanel';
@@ -37,8 +36,12 @@ export function LeftSidebar({
     <div className="col-span-4 lg:col-span-3 h-full overflow-hidden">
       <ScrollArea className="h-full">
         <div className="space-y-3 pr-1">
-          <StatusPanel 
+          <StatusPanel
             protagonist={protagonist}
+            cultivationPath={cultivationPath}
+            pathLevel={pathLevel}
+            pathExp={pathExp}
+            mentalState={mentalState}
           />
           
           <Button 

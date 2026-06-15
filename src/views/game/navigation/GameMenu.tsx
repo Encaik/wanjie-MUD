@@ -106,7 +106,7 @@ export function GameMenu({ statusDots }: GameMenuProps) {
       <div
         className={cn(
           'transition-all duration-300 ease-out overflow-hidden',
-          expanded ? 'max-h-40 opacity-100' : 'max-h-0 opacity-0',
+          expanded ? 'max-h-80 opacity-100 overflow-y-auto' : 'max-h-0 opacity-0',
         )}
       >
         <div className="px-3 pb-3 pt-0 space-y-2">
