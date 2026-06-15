@@ -2,16 +2,19 @@
   "id": "spirit",
   "name": "灵族",
   "description": "天地灵气所化，天生亲近大道，灵根资质极佳但肉身脆弱",
-  "worldviewRestrictions": ["cultivation", "xianxia", "magic"],
+  "worldviewRestrictions": [
+    "cultivation",
+    "xianxia",
+    "magic"
+  ],
   "baseAttributeBonuses": {
     "spiritPower": 3
   },
   "talentPool": [
-    "meditation",
-    "elementalAffinity",
-    "spiritSight",
-    "oneWithNature",
-    "charismatic"
+    "spiritGrace",
+    "spiritWisdom",
+    "quickLearner",
+    "ironWill"
   ],
   "innateAbilities": [
     {
@@ -19,8 +22,12 @@
       "name": "灵体",
       "description": "灵族天生与灵力共鸣",
       "effects": {
-        "specialATK": { "flat": 3 },
-        "specialResourceCap": { "flat": 15 }
+        "specialATK": {
+          "flat": 3
+        },
+        "specialResourceCap": {
+          "flat": 15
+        }
       }
     }
   ],

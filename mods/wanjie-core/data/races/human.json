@@ -5,11 +5,13 @@
   "worldviewRestrictions": [],
   "baseAttributeBonuses": {},
   "talentPool": [
-    "swordMastery",
-    "meditation",
-    "merchantMind",
-    "survivalist",
-    "charismatic"
+    "strongPhysique",
+    "techPhysique",
+    "quickLearner",
+    "ironWill",
+    "techSavvy",
+    "adaptable",
+    "luckyStar"
   ],
   "innateAbilities": [
     {
@@ -17,9 +19,15 @@
       "name": "万物适应",
       "description": "人族对环境有极强的适应力，全属性 +1",
       "effects": {
-        "maxHp": { "flat": 2 },
-        "physicalATK": { "flat": 1 },
-        "specialATK": { "flat": 1 }
+        "maxHp": {
+          "flat": 2
+        },
+        "physicalATK": {
+          "flat": 1
+        },
+        "specialATK": {
+          "flat": 1
+        }
       }
     }
   ],

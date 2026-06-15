@@ -1,163 +1,262 @@
 {
-  "swordMastery": {
-    "id": "swordMastery",
-    "name": "剑道天赋",
-    "description": "天生对剑法有超常领悟，物理攻击力提升",
-    "raceRestrictions": ["human"],
-    "worldviewRestrictions": [],
+  "strongPhysique": {
+    "id": "strongPhysique",
+    "name": "天生神力",
+    "description": "体魄远超常人，修炼肉身功法事半功倍",
+    "raceRestrictions": [],
+    "worldviewRestrictions": ["cultivation", "martial", "xianxia", "apocalypse"],
     "effects": [
-      { "target": "physicalATK", "type": "multiplier", "value": 1.1 }
+      { "target": "constitution", "type": "attribute_flat", "value": 2 }
+    ],
+    "rarity": "uncommon",
+    "conflictsWith": [],
+    "dialogueTag": "strong"
+  },
+  "techPhysique": {
+    "id": "techPhysique",
+    "name": "完美体格",
+    "description": "基因优秀，体能测试常年满分",
+    "raceRestrictions": [],
+    "worldviewRestrictions": ["tech", "psi"],
+    "effects": [
+      { "target": "fitness", "type": "attribute_flat", "value": 2 }
+    ],
+    "rarity": "uncommon",
+    "conflictsWith": [],
+    "dialogueTag": "strong"
+  },
+  "magicStrength": {
+    "id": "magicStrength",
+    "name": "天生神力",
+    "description": "身体蕴含着超越常人的力量",
+    "raceRestrictions": [],
+    "worldviewRestrictions": ["magic"],
+    "effects": [
+      { "target": "strength", "type": "attribute_flat", "value": 2 }
+    ],
+    "rarity": "uncommon",
+    "conflictsWith": [],
+    "dialogueTag": "strong"
+  },
+  "quickLearner": {
+    "id": "quickLearner",
+    "name": "才思敏捷",
+    "description": "举一反三，悟性超群",
+    "raceRestrictions": [],
+    "worldviewRestrictions": ["cultivation", "martial", "xianxia", "wuxia"],
+    "effects": [
+      { "target": "insight", "type": "attribute_flat", "value": 2 }
+    ],
+    "rarity": "uncommon",
+    "conflictsWith": [],
+    "dialogueTag": "smart"
+  },
+  "techGenius": {
+    "id": "techGenius",
+    "name": "天才头脑",
+    "description": "智商超群，对技术有天然的敏感度",
+    "raceRestrictions": [],
+    "worldviewRestrictions": ["tech", "psi"],
+    "effects": [
+      { "target": "intelligence", "type": "attribute_flat", "value": 2 }
+    ],
+    "rarity": "uncommon",
+    "conflictsWith": [],
+    "dialogueTag": "smart"
+  },
+  "magicPerceptive": {
+    "id": "magicPerceptive",
+    "name": "敏锐感知",
+    "description": "对魔力波动有着超常的感知力",
+    "raceRestrictions": [],
+    "worldviewRestrictions": ["magic", "psi"],
+    "effects": [
+      { "target": "perception", "type": "attribute_flat", "value": 2 }
+    ],
+    "rarity": "uncommon",
+    "conflictsWith": [],
+    "dialogueTag": "smart"
+  },
+  "ironWill": {
+    "id": "ironWill",
+    "name": "钢铁意志",
+    "description": "意志坚定如铁，任何困难都无法动摇",
+    "raceRestrictions": [],
+    "worldviewRestrictions": ["cultivation", "psi", "apocalypse"],
+    "effects": [
+      { "target": "willpower", "type": "attribute_flat", "value": 2 }
+    ],
+    "rarity": "uncommon",
+    "conflictsWith": [],
+    "dialogueTag": "will"
+  },
+  "daoHeart": {
+    "id": "daoHeart",
+    "name": "道心坚定",
+    "description": "修道之心坚如磐石，不受外物所惑",
+    "raceRestrictions": [],
+    "worldviewRestrictions": ["xianxia"],
+    "effects": [
+      { "target": "daoHeart", "type": "attribute_flat", "value": 2 }
+    ],
+    "rarity": "rare",
+    "conflictsWith": [],
+    "dialogueTag": "will"
+  },
+  "perseverance": {
+    "id": "perseverance",
+    "name": "百折不挠",
+    "description": "数次失败也无法磨灭心中的斗志",
+    "raceRestrictions": [],
+    "worldviewRestrictions": ["wuxia", "martial"],
+    "effects": [
+      { "target": "perseverance", "type": "attribute_flat", "value": 2 }
+    ],
+    "rarity": "uncommon",
+    "conflictsWith": [],
+    "dialogueTag": "will"
+  },
+  "luckyStar": {
+    "id": "luckyStar",
+    "name": "福星高照",
+    "description": "天生气运过人，好事总是不期而至",
+    "raceRestrictions": [],
+    "worldviewRestrictions": ["cultivation", "xianxia"],
+    "effects": [
+      { "target": "luck", "type": "attribute_flat", "value": 2 }
+    ],
+    "rarity": "rare",
+    "conflictsWith": [],
+    "dialogueTag": "luck"
+  },
+  "spiritualGift": {
+    "id": "spiritualGift",
+    "name": "灵力天赋",
+    "description": "天生灵力充沛，修炼速度远超常人",
+    "raceRestrictions": [],
+    "worldviewRestrictions": ["cultivation", "xianxia"],
+    "effects": [
+      { "target": "spiritPower", "type": "attribute_flat", "value": 2 }
+    ],
+    "rarity": "rare",
+    "conflictsWith": [],
+    "dialogueTag": "spirit"
+  },
+  "magicGift": {
+    "id": "magicGift",
+    "name": "魔力共鸣",
+    "description": "与魔力的共鸣超乎常人，施法信手拈来",
+    "raceRestrictions": [],
+    "worldviewRestrictions": ["magic"],
+    "effects": [
+      { "target": "magic", "type": "attribute_flat", "value": 2 }
+    ],
+    "rarity": "rare",
+    "conflictsWith": [],
+    "dialogueTag": "spirit"
+  },
+  "psiGift": {
+    "id": "psiGift",
+    "name": "源能觉醒",
+    "description": "源能在体内自然流淌，操控力远超常人",
+    "raceRestrictions": [],
+    "worldviewRestrictions": ["psi"],
+    "effects": [
+      { "target": "sourceEnergy", "type": "attribute_flat", "value": 2 }
+    ],
+    "rarity": "rare",
+    "conflictsWith": [],
+    "dialogueTag": "spirit"
+  },
+  "demonicPhysique": {
+    "id": "demonicPhysique",
+    "name": "妖魔之躯",
+    "description": "妖族血统带来的强悍体魄，寿元更比人族悠长",
+    "raceRestrictions": ["demon"],
+    "worldviewRestrictions": ["cultivation", "martial", "xianxia", "wuxia", "apocalypse"],
+    "effects": [
+      { "target": "constitution", "type": "attribute_flat", "value": 3 }
+    ],
+    "rarity": "epic",
+    "conflictsWith": ["strongPhysique"],
+    "dialogueTag": "demon"
+  },
+  "demonicSpirit": {
+    "id": "demonicSpirit",
+    "name": "妖力磅礴",
+    "description": "体内妖力汹涌澎湃，法术威力大幅提升",
+    "raceRestrictions": ["demon"],
+    "worldviewRestrictions": ["cultivation", "xianxia"],
+    "effects": [
+      { "target": "spiritPower", "type": "attribute_flat", "value": 3 }
+    ],
+    "rarity": "epic",
+    "conflictsWith": ["spiritualGift"],
+    "dialogueTag": "demon"
+  },
+  "spiritGrace": {
+    "id": "spiritGrace",
+    "name": "灵体通透",
+    "description": "灵族天生与大道共鸣，灵力运转畅通无阻",
+    "raceRestrictions": ["spirit"],
+    "worldviewRestrictions": ["cultivation", "xianxia", "magic"],
+    "effects": [
+      { "target": "spiritPower", "type": "attribute_flat", "value": 3 }
+    ],
+    "rarity": "epic",
+    "conflictsWith": ["spiritualGift"],
+    "dialogueTag": "spirit"
+  },
+  "spiritWisdom": {
+    "id": "spiritWisdom",
+    "name": "万载智慧",
+    "description": "灵族悠久的生命带来了超越凡人的智慧",
+    "raceRestrictions": ["spirit"],
+    "worldviewRestrictions": ["cultivation", "xianxia", "magic", "wuxia"],
+    "effects": [
+      { "target": "insight", "type": "attribute_flat", "value": 2 }
+    ],
+    "rarity": "rare",
+    "conflictsWith": ["quickLearner"],
+    "dialogueTag": "spirit"
+  },
+  "adaptable": {
+    "id": "adaptable",
+    "name": "适者生存",
+    "description": "在任何环境中都能快速适应并找到优势",
+    "raceRestrictions": ["human"],
+    "worldviewRestrictions": ["apocalypse", "tech"],
+    "effects": [
+      { "target": "adaptability", "type": "attribute_flat", "value": 2 }
+    ],
+    "rarity": "uncommon",
+    "conflictsWith": [],
+    "dialogueTag": "survival"
+  },
+  "techSavvy": {
+    "id": "techSavvy",
+    "name": "技术奇才",
+    "description": "对科技有着直觉般的理解力",
+    "raceRestrictions": ["human"],
+    "worldviewRestrictions": ["tech"],
+    "effects": [
+      { "target": "tech", "type": "attribute_flat", "value": 3 }
+    ],
+    "rarity": "rare",
+    "conflictsWith": [],
+    "dialogueTag": "tech"
+  },
+  "swordHeart": {
+    "id": "swordHeart",
+    "name": "剑心通明",
+    "description": "天生剑心，对剑道的领悟远超常人",
+    "raceRestrictions": ["human"],
+    "worldviewRestrictions": ["xianxia"],
+    "effects": [
+      { "target": "swordHeart", "type": "attribute_flat", "value": 2 }
     ],
     "rarity": "rare",
     "conflictsWith": [],
     "dialogueTag": "sword"
-  },
-  "meditation": {
-    "id": "meditation",
-    "name": "冥想",
-    "description": "天生定力超群，修炼效率提升",
-    "raceRestrictions": [],
-    "worldviewRestrictions": [],
-    "effects": [
-      { "target": "willpower", "type": "attribute_flat", "value": 2 },
-      { "target": "intelligence", "type": "flat", "value": 1 }
-    ],
-    "rarity": "uncommon",
-    "conflictsWith": [],
-    "dialogueTag": "calm"
-  },
-  "merchantMind": {
-    "id": "merchantMind",
-    "name": "商贾之才",
-    "description": "精于算计，对数字敏感",
-    "raceRestrictions": ["human"],
-    "worldviewRestrictions": [],
-    "effects": [
-      { "target": "intelligence", "type": "flat", "value": 2 }
-    ],
-    "rarity": "common",
-    "conflictsWith": [],
-    "dialogueTag": "merchant"
-  },
-  "survivalist": {
-    "id": "survivalist",
-    "name": "生存专家",
-    "description": "在任何环境中都能找到出路",
-    "raceRestrictions": [],
-    "worldviewRestrictions": [],
-    "effects": [
-      { "target": "perception", "type": "flat", "value": 3 }
-    ],
-    "rarity": "common",
-    "conflictsWith": [],
-    "dialogueTag": "survival"
-  },
-  "charismatic": {
-    "id": "charismatic",
-    "name": "魅力非凡",
-    "description": "天生有领袖气质，与人交往如鱼得水",
-    "raceRestrictions": [],
-    "worldviewRestrictions": [],
-    "effects": [
-      { "target": "intelligence", "type": "flat", "value": 1 },
-      { "target": "perception", "type": "flat", "value": 1 }
-    ],
-    "rarity": "uncommon",
-    "conflictsWith": [],
-    "dialogueTag": "charm"
-  },
-  "demonicResilience": {
-    "id": "demonicResilience",
-    "name": "妖躯坚韧",
-    "description": "妖族体质进一步增强",
-    "raceRestrictions": ["demon"],
-    "worldviewRestrictions": [],
-    "effects": [
-      { "target": "maxHp", "type": "flat", "value": 5 },
-      { "target": "physicalDEF", "type": "flat", "value": 2 }
-    ],
-    "rarity": "uncommon",
-    "conflictsWith": [],
-    "dialogueTag": "tough"
-  },
-  "bloodFury": {
-    "id": "bloodFury",
-    "name": "血怒",
-    "description": "受伤时爆发出更强战力",
-    "raceRestrictions": ["demon"],
-    "worldviewRestrictions": [],
-    "effects": [
-      { "target": "physicalATK", "type": "multiplier", "value": 1.15 }
-    ],
-    "rarity": "rare",
-    "conflictsWith": ["meditation"],
-    "dialogueTag": "rage"
-  },
-  "predatorInstinct": {
-    "id": "predatorInstinct",
-    "name": "猎手本能",
-    "description": "天生猎手，感知敏锐",
-    "raceRestrictions": ["demon"],
-    "worldviewRestrictions": [],
-    "effects": [
-      { "target": "perception", "type": "flat", "value": 3 },
-      { "target": "speed", "type": "flat", "value": 2 }
-    ],
-    "rarity": "uncommon",
-    "conflictsWith": [],
-    "dialogueTag": "hunt"
-  },
-  "nightVision": {
-    "id": "nightVision",
-    "name": "夜视",
-    "description": "黑暗中视物如白昼",
-    "raceRestrictions": ["demon"],
-    "worldviewRestrictions": [],
-    "effects": [
-      { "target": "perception", "type": "flat", "value": 2 }
-    ],
-    "rarity": "common",
-    "conflictsWith": [],
-    "dialogueTag": "night"
-  },
-  "elementalAffinity": {
-    "id": "elementalAffinity",
-    "name": "元素亲和",
-    "description": "与天地元素有天然的共鸣",
-    "raceRestrictions": ["spirit"],
-    "worldviewRestrictions": [],
-    "effects": [
-      { "target": "specialATK", "type": "multiplier", "value": 1.1 },
-      { "target": "specialResourceCap", "type": "flat", "value": 10 }
-    ],
-    "rarity": "rare",
-    "conflictsWith": [],
-    "dialogueTag": "element"
-  },
-  "spiritSight": {
-    "id": "spiritSight",
-    "name": "灵视",
-    "description": "能看见常人看不见的灵体与能量流动",
-    "raceRestrictions": ["spirit"],
-    "worldviewRestrictions": [],
-    "effects": [
-      { "target": "perception", "type": "flat", "value": 4 }
-    ],
-    "rarity": "uncommon",
-    "conflictsWith": [],
-    "dialogueTag": "spirit"
-  },
-  "oneWithNature": {
-    "id": "oneWithNature",
-    "name": "天人合一",
-    "description": "与自然融为一体，修炼事半功倍",
-    "raceRestrictions": ["spirit"],
-    "worldviewRestrictions": ["cultivation", "xianxia"],
-    "effects": [
-      { "target": "willpower", "type": "attribute_flat", "value": 3 }
-    ],
-    "rarity": "epic",
-    "conflictsWith": ["bloodFury"],
-    "dialogueTag": "nature"
   }
 }

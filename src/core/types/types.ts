@@ -32,19 +32,31 @@ export type EnemyTier = 'normal' | 'elite' | 'miniboss' | 'boss';
 /** 属性分类标签（用于计算引擎按分类查找属性，不依赖属性名） */
 export type AttributeCategory = 'primary_physical' | 'primary_spiritual' | 'primary_martial' | 'secondary';
 
-/** 核心值维度 key（固定 11 维，全世界观通用） */
+/**
+ * 核心值维度 key（固定 11 维，全世界观通用）
+ *
+ * 核心值是战斗/养成系统消费的统一数值层，
+ * 由世界观属性通过 AttributeDefinition.calculations 映射派生。
+ *
+ * 分类：
+ *   战斗(6): maxHp 生命值 / physicalATK 物理攻击 / specialATK 特殊攻击
+ *            physicalDEF 物理防御 / specialDEF 特殊防御 / speed 出手速度
+ *   养成(4): intelligence 学习速度 / willpower 修炼毅力/突破
+ *            lifespan 剩余寿元 / perception 探索范围/隐藏发现
+ *   专属(1): specialResourceCap 专项数值上限(修仙→法力/魔法→魔力/科技→能量)
+ */
 export type CoreStatKey =
-  | 'maxHp'
-  | 'physicalATK'
-  | 'specialATK'
-  | 'physicalDEF'
-  | 'specialDEF'
-  | 'speed'
-  | 'intelligence'
-  | 'willpower'
-  | 'lifespan'
-  | 'perception'
-  | 'specialResourceCap';
+  | 'maxHp'              // 生命值 —— 归零死亡
+  | 'physicalATK'        // 物理攻击 —— 肉体/武器造成的伤害基准
+  | 'specialATK'         // 特殊攻击 —— 法术/精神/元素伤害基准
+  | 'physicalDEF'        // 物理防御 —— 减免物理伤害
+  | 'specialDEF'         // 特殊防御 —— 减免特殊伤害
+  | 'speed'              // 速度 —— 回合制出手顺序
+  | 'intelligence'       // 智力 —— 学习功法/技能的速度
+  | 'willpower'          // 毅力 —— 挂机修炼收益、突破成功率
+  | 'lifespan'           // 寿命 —— 剩余寿元，耗尽陨落
+  | 'perception'         // 感知 —— 探索范围、隐藏事件发现
+  | 'specialResourceCap'; // 专项数值上限 —— 修仙=法力/魔法=魔力/科技=能量
 
 /** 核心值基础值定义 */
 export type CoreStatBaseValues = Record<CoreStatKey, number>;
@@ -83,6 +95,32 @@ export interface EnumAttributeTemplate {
   displayName: string;
   category: AttributeCategory;
   enumValues: AttributeEnumValue[];
+}
+
+// ── 用户可见的属性分解 ——
+
+/**
+ * 属性明细（玩家可见的数值构成）
+ *
+ * 影响链：基础值 + 随机分配 + 等级成长 + 天赋 + 种族 + 物品 = 最终属性值 → 核心值
+ */
+
+/** 单个属性的贡献来源 */
+export interface AttributeBreakdown {
+  /** 最终值 */
+  value: number;
+  /** 属性模板基础值 */
+  base: number;
+  /** 随机分配（角色模板生成时） */
+  rolled: number;
+  /** 天赋加成 */
+  talent: number;
+  /** 种族加成 */
+  race: number;
+  /** 等级成长 */
+  growth: number;
+  /** 物品/丹药加成（预留） */
+  item: number;
 }
 
 // ── 属性成长规则 ——
@@ -173,12 +211,12 @@ export interface RaceDefinition {
   lifespanModifier: number;
 }
 
-/** 天赋修正效果 */
+/** 天赋修正效果（仅影响属性层，核心值自动重新计算） */
 export interface TalentEffect {
-  /** 修正目标（核心值 key 或属性 displayName） */
+  /** 修正目标（属性 key，如 "constitution"、"spiritPower"） */
   target: string;
-  /** 效果类型 */
-  type: 'attribute_flat' | 'multiplier' | 'flat';
+  /** 效果类型（attribute_flat = 属性值固定加成） */
+  type: 'attribute_flat';
   /** 修正值 */
   value: number;
 }
@@ -623,8 +661,10 @@ export interface CharacterStats {
 
 /** 角色属性 V3（新系统） */
 export interface CharacterAttributesV3 {
-  /** 动态属性值（key = AttributeDefinition.key，value = 数值） */
+  /** 属性最终值（key → 数值，已含天赋/种族/等级加成） */
   attributes: Record<string, number>;
+  /** 属性分解明细（key → 各来源贡献值） */
+  attributeBreakdown?: Record<string, AttributeBreakdown>;
   /** 派生的核心值 */
   coreStats: Record<CoreStatKey, number>;
   /** 种族 ID */
