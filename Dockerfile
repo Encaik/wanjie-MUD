@@ -9,13 +9,13 @@
 # --------------------------------------------
 # 阶段 1: 依赖安装
 # --------------------------------------------
-FROM node:20-alpine AS deps
+FROM node:22-alpine AS deps
 
 # 安装原生模块编译工具（better-sqlite3 需要）
 RUN apk add --no-cache python3 build-base
 
 # 启用 pnpm
-RUN corepack enable && corepack prepare pnpm@9 --activate
+RUN corepack enable
 
 WORKDIR /app
 
@@ -28,9 +28,9 @@ RUN pnpm install --frozen-lockfile
 # --------------------------------------------
 # 阶段 2: 构建
 # --------------------------------------------
-FROM node:20-alpine AS builder
+FROM node:22-alpine AS builder
 
-RUN corepack enable && corepack prepare pnpm@9 --activate
+RUN corepack enable
 
 WORKDIR /app
 
@@ -54,12 +54,12 @@ RUN rm -rf /app/.next/standalone/node_modules
 # --------------------------------------------
 # 阶段 3: 生产运行时
 # --------------------------------------------
-FROM node:20-alpine AS runner
+FROM node:22-alpine AS runner
 
 # 安装运行时系统依赖（better-sqlite3 运行时需要）
 RUN apk add --no-cache python3
 
-RUN corepack enable && corepack prepare pnpm@9 --activate
+RUN corepack enable
 
 WORKDIR /app
 
