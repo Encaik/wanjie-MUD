@@ -8,8 +8,10 @@
  */
 
 import type { World, Protagonist, CharacterStats } from '@/core/types';
+import { createInventoryItem } from '@/core/types';
 import { DEFAULT_PROTAGONIST_EXTENSION } from '@/core/types/typesExtension';
 import type { StoredCharacter } from '@/app/api/v1/characters/store';
+import { spiritStoneItems, cultivationPillItems, breakthroughItems, restorePillItems } from '@/modules/equipment/logic/items';
 
 /**
  * 从保存的角色数据 + 世界数据创建 Protagonist
@@ -56,7 +58,13 @@ export function createProtagonistFromSaved(
     maxHp,
     currentMp: maxMp,
     maxMp,
-    inventory: [],
+    /** 初始背包：200灵石 + 5聚气丹 + 1筑基丹 + 3回春丹 */
+    inventory: [
+      createInventoryItem(spiritStoneItems[0], 200),
+      createInventoryItem(cultivationPillItems[0], 5),
+      createInventoryItem(breakthroughItems[0], 1),
+      createInventoryItem(restorePillItems[0], 3),
+    ],
     activeEffects: [],
     experience: 0,
     overflowExperience: 0,

@@ -5,6 +5,8 @@ export { PageLoading } from './PageLoading';
 export { GameHeader } from '@/views/game/layout/GameHeader';
 export { ChatRoom } from './ChatRoom';
 export { MessagePanel } from './MessagePanel';
+export type { MessageFilter } from './MessagePanel';
+export { MessageItem } from './MessageItem';
 export { ResultDisplay } from './ResultDisplay';
 export { CharacterInfo, CharacterInfoInline } from './CharacterInfo';
 export { RealmTable } from './RealmTable';

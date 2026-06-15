@@ -27,6 +27,7 @@ import { worldEvents } from '@/modules/theme';
 
 import { checkNewlyCompletedTask, getTaskRewards } from '@/modules/faction/logic';
 import { createInventoryItem } from '@/core/types';
+import { spiritStoneItems } from '@/modules/equipment/logic/items';
 import { createInitialGameState } from './initialState';
 import { loadGameStateWithRecovery, safeSaveGameState } from '@/shared/utils/saveUtils';
 
@@ -206,7 +207,11 @@ export function GameStoreProvider({ children }: { children: React.ReactNode }) {
             }
             if (rewards.spiritStones > 0) {
               const si = newInventory.findIndex(i => i.definition.id === 'spirit_stone');
-              if (si >= 0) newInventory[si] = { ...newInventory[si], quantity: newInventory[si].quantity + rewards.spiritStones };
+              if (si >= 0) {
+                newInventory[si] = { ...newInventory[si], quantity: newInventory[si].quantity + rewards.spiritStones };
+              } else {
+                newInventory.push(createInventoryItem(spiritStoneItems[0], rewards.spiritStones));
+              }
             }
             const isLastTask = taskId === 'tutorial_claim_achievement';
             return {

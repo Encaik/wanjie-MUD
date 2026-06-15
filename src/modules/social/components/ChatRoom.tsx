@@ -20,6 +20,10 @@ interface ChatRoomProps {
   playerRealm: string;
   /** 新消息回调，用于通知父组件有新消息 */
   onNewMessage?: (hasNew: boolean) => void;
+  /** 消息列表变更回调（用于父组件获取聊天消息） */
+  onMessagesUpdate?: (messages: ChatMessage[]) => void;
+  /** 仅显示输入区域（用于合并到消息面板时） */
+  compact?: boolean;
 }
 
 // 表情快捷输入
@@ -58,7 +62,7 @@ function formatTime(timestamp: number): string {
   return `${date.getMonth() + 1}/${date.getDate()} ${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
 }
 
-export function ChatRoom({ playerId, playerName, playerLevel, playerRealm, onNewMessage }: ChatRoomProps) {
+export function ChatRoom({ playerId, playerName, playerLevel, playerRealm, onNewMessage, onMessagesUpdate, compact = false }: ChatRoomProps) {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [inputValue, setInputValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -91,6 +95,11 @@ export function ChatRoom({ playerId, playerName, playerLevel, playerRealm, onNew
   useEffect(() => {
     onNewMessage?.(hasNewMessage);
   }, [hasNewMessage, onNewMessage]);
+
+  // 通知父组件消息列表变更
+  useEffect(() => {
+    onMessagesUpdate?.(messages);
+  }, [messages, onMessagesUpdate]);
 
   // 发送消息
   const sendMessage = async () => {
@@ -184,6 +193,55 @@ export function ChatRoom({ playerId, playerName, playerLevel, playerRealm, onNew
       setTimeout(scrollToBottom, 50);
     }
   }, [messages.length, isAtBottom, scrollToBottom]);
+
+  // compact 模式：仅输入区域
+  if (compact) {
+    return (
+      <div className="shrink-0 space-y-1.5">
+        {/* 快捷输入栏 */}
+        <div className="flex gap-0.5 overflow-x-auto pb-0.5">
+          {QUICK_INPUTS.map((item, index) => (
+            <Tooltip key={index}>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="h-5 px-1.5 text-xs shrink-0"
+                  onClick={() => insertQuickInput(item)}
+                >
+                  {item.emoji}
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>{item.text}</p>
+              </TooltipContent>
+            </Tooltip>
+          ))}
+        </div>
+        {/* 输入区域 */}
+        <div className="flex gap-1.5">
+          <Input
+            ref={inputRef}
+            value={inputValue}
+            onChange={(e) => setInputValue(e.target.value)}
+            onKeyDown={handleKeyDown}
+            placeholder="输入消息... (Enter发送)"
+            className="flex-1 h-8 text-xs"
+            maxLength={200}
+            disabled={isLoading}
+          />
+          <Button
+            size="sm"
+            className="h-8 px-3"
+            onClick={sendMessage}
+            disabled={!inputValue.trim() || isLoading}
+          >
+            <Send className="w-3.5 h-3.5" />
+          </Button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <Card className="h-full flex flex-col">

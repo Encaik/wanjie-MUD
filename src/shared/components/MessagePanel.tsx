@@ -1,245 +1,141 @@
 'use client';
 
-import { useState, useRef, useCallback, useMemo, memo, useEffect } from 'react';
+import { useState, useRef, useCallback, useMemo, useEffect } from 'react';
 
-import { Bell, CheckCircle, XCircle, Info, AlertTriangle, Loader2, ChevronUp } from 'lucide-react';
+import { Bell, Loader2, ChevronUp, MessageCircle, Newspaper } from 'lucide-react';
 
 import { Badge } from '@/shared/ui/data-display/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/data-display/card';
 import { ScrollArea } from '@/shared/ui/layout/scroll-area';
 import { Empty, EmptyContent } from '@/shared/ui/feedback/empty';
-import { getRarityStyle } from '@/modules/theme/data/rarityStyles';
-import { MessageRecord, ItemRarity } from '@/core/types';
-import type { FragmentDropData } from '@/modules/crafting/logic/fragmentSystem';
+import { MessageRecord } from '@/core/types';
+import type { ChatMessage } from '@/modules/social/chatTypes';
+import type { Announcement } from '@/modules/social/announcementTypes';
+import { chatToMessageRecord, announcementToMessageRecord } from '@/shared/utils/messageAdapters';
+import { MessageItem } from '@/shared/components/MessageItem';
+
+/** 消息筛选类型 */
+export type MessageFilter = 'all' | 'system' | 'chat' | 'announcement';
+
+/** 筛选选项配置 */
+const FILTER_OPTIONS: { key: MessageFilter; label: string; icon?: React.ReactNode }[] = [
+  { key: 'all', label: '全部' },
+  { key: 'system', label: '系统' },
+  { key: 'chat', label: '聊天', icon: <MessageCircle className="w-3 h-3" /> },
+  { key: 'announcement', label: '公告', icon: <Newspaper className="w-3 h-3" /> },
+];
+
+/** 系统消息 channels（来自 core/message-log 预设通道 + 未设置 channel 的消息） */
+const SYSTEM_CHANNELS = new Set(['system', 'combat', 'cultivation', 'exploration', 'economy', undefined]);
 
 
 interface MessagePanelProps {
+  /** 系统消息（MessageRecord[]，来自 gameState） */
   messages: MessageRecord[];
   compact?: boolean;
   totalMessageCount?: number;
   hasMoreMessages?: boolean;
   isLoadingMessages?: boolean;
   onLoadMore?: () => Promise<boolean>;
+  /** 聊天消息（WebSocket 实时消息） */
+  chatMessages?: ChatMessage[];
+  /** 服务器公告 */
+  announcements?: Announcement[];
+  /** 消息类型筛选（受控模式） */
+  messageFilter?: MessageFilter;
+  /** 筛选变更回调 */
+  onMessageFilterChange?: (filter: MessageFilter) => void;
+  /** 是否有未读聊天消息 */
+  hasChatUnread?: boolean;
+  /** 用户查看聊天后清除未读 */
+  onChatViewed?: () => void;
 }
-
-const typeConfig = {
-  success: { icon: CheckCircle, color: 'text-game-recovery', bg: 'bg-game-recovery/10' },
-  failure: { icon: XCircle, color: 'text-game-combat', bg: 'bg-game-combat/10' },
-  info: { icon: Info, color: 'text-game-cultivation', bg: 'bg-game-cultivation/10' },
-  warning: { icon: AlertTriangle, color: 'text-game-economy', bg: 'bg-game-economy/10' },
-};
-
-// 物品品质颜色 — 使用全局 quality 色系统一
-// 参见 modules/theme/data/rarityStyles.ts
-
-function formatTime(timestamp: number): string {
-  const date = new Date(timestamp);
-  return `${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
-}
-
-// 单条消息组件
-const MessageItem = memo(({ msg, compact }: { msg: MessageRecord; compact: boolean }) => {
-  const config = typeConfig[msg.type];
-  const Icon = config.icon;
-
-  return (
-    <div
-      className={`p-1.5 rounded ${config.bg} [content-visibility:auto]`}
-    >
-      <div className="flex items-start gap-1.5">
-        <Icon className={`w-3 h-3 ${config.color} shrink-0 mt-0.5`} />
-        <div className="flex-1 min-w-0">
-          <div className="flex items-center justify-between gap-1">
-            <span className="text-[11px] font-medium">{msg.title}</span>
-            <span className="text-[9px] text-muted-foreground shrink-0">
-              {formatTime(msg.timestamp)}
-            </span>
-          </div>
-          <div className="text-[10px] text-muted-foreground mt-0.5 whitespace-pre-wrap">
-            {msg.content}
-          </div>
-          {msg.rewards && !compact && (
-            <div className="mt-1.5 space-y-1">
-              {/* 属性变化 */}
-              {(() => {
-                // 计算实际有变化的属性
-                let statBadges: React.ReactNode[] = [];
-                if (msg.rewards.statDetails) {
-                  statBadges = msg.rewards.statDetails
-                    .filter(({ base, boost }) => base !== 0 || boost !== 0)
-                    .map(({ stat, base, boost }) => {
-                      // 根据实际值动态显示
-                      let displayValue = '';
-                      if (base > 0 && boost > 0) {
-                        displayValue = `${base}+${boost}`;
-                      } else if (base > 0) {
-                        displayValue = `+${base}`;
-                      } else if (boost > 0) {
-                        displayValue = `+${boost}`;
-                      }
-                      return (
-                        <Badge key={stat} variant="outline" className="text-[9px] h-4">
-                          {stat} {displayValue}
-                        </Badge>
-                      );
-                    });
-                } else if (msg.rewards.stats) {
-                  statBadges = Object.entries(msg.rewards.stats)
-                    .filter(([, value]) => Number(value) !== 0)
-                    .map(([key, value]) => (
-                      <Badge key={key} variant="outline" className="text-[9px] h-4">
-                        {key}{Number(value) > 0 ? '+' : ''}{value}
-                      </Badge>
-                    ));
-                }
-                // 只有有实际属性变化时才显示
-                return statBadges.length > 0 ? (
-                  <div className="flex flex-wrap gap-1">
-                    <span className="text-[9px] text-muted-foreground">属性:</span>
-                    {statBadges}
-                  </div>
-                ) : null;
-              })()}
-              {/* 获得物品 */}
-              {msg.rewards.items && msg.rewards.items.length > 0 && (
-                <div className="flex flex-wrap gap-1">
-                  <span className="text-[9px] text-muted-foreground">物品:</span>
-                  {msg.rewards.items.map((item, idx) => {
-                    const itemName = item.definition?.name || '未知物品';
-                    const displayText = item.quantity > 1 ? `${itemName} x${item.quantity}` : itemName;
-                    return (
-                      <Badge 
-                        key={idx} 
-                        className={`text-[9px] h-4 ${item.definition?.rarity ? getRarityStyle(item.definition.rarity, 'badge') : ''}`}
-                      >
-                        {displayText}
-                      </Badge>
-                    );
-                  })}
-                </div>
-              )}
-              {/* 获得功法 */}
-              {msg.rewards.technique && (
-                <div className="flex flex-wrap gap-1">
-                  <span className="text-[9px] text-muted-foreground">功法:</span>
-                  <Badge className={`text-[9px] h-4 ${getRarityStyle(msg.rewards.technique.rarity, 'badge')}`}>
-                    「{msg.rewards.technique.name}」
-                  </Badge>
-                </div>
-              )}
-              {/* 获得装备 */}
-              {msg.rewards.equipment && (
-                <div className="flex flex-wrap gap-1">
-                  <span className="text-[9px] text-muted-foreground">装备:</span>
-                  <Badge className={`text-[9px] h-4 ${getRarityStyle(msg.rewards.equipment.rarity, 'badge')}`}>
-                    「{msg.rewards.equipment.name}」
-                  </Badge>
-                </div>
-              )}
-              {/* 获得碎片 */}
-              {msg.rewards.fragments && msg.rewards.fragments.length > 0 && (
-                <div className="flex flex-wrap gap-1">
-                  <span className="text-[9px] text-muted-foreground">碎片:</span>
-                  {(() => {
-                    // 合并同类型碎片
-                    const fragmentMap = new Map<string, { 
-                      name: string; 
-                      rarity: ItemRarity; 
-                      count: number;
-                      type: 'technique' | 'equipment';
-                    }>();
-                    
-                    for (const fragment of msg.rewards.fragments as FragmentDropData[]) {
-                      const key = fragment.sourceName || `${fragment.rarity}-${fragment.type}`;
-                      const existing = fragmentMap.get(key);
-                      if (existing) {
-                        existing.count += fragment.count;
-                      } else {
-                        fragmentMap.set(key, {
-                          name: fragment.sourceName || `${fragment.rarity}${fragment.type === 'technique' ? '功法' : '装备'}残片`,
-                          rarity: fragment.rarity,
-                          count: fragment.count,
-                          type: fragment.type,
-                        });
-                      }
-                    }
-                    
-                    return Array.from(fragmentMap.values()).map((frag, idx) => (
-                      <Badge 
-                        key={idx} 
-                        className={`text-[9px] h-4 ${getRarityStyle(frag.rarity, 'badge')}`}
-                      >
-                        「{frag.name}」{frag.count > 1 ? `x${frag.count}` : ''}
-                      </Badge>
-                    ));
-                  })()}
-                </div>
-              )}
-              {/* 获得经验 */}
-              {msg.rewards.experience && (
-                <div className="flex flex-wrap gap-1">
-                  <span className="text-[9px] text-muted-foreground">经验:</span>
-                  <Badge variant="outline" className="text-[9px] h-4">
-                    +{msg.rewards.experience}
-                  </Badge>
-                </div>
-              )}
-            </div>
-          )}
-        </div>
-      </div>
-    </div>
-  );
-});
-
-MessageItem.displayName = 'MessageItem';
 
 const BATCH_SIZE = 20;
 
-export function MessagePanel({ 
-  messages, 
+export function MessagePanel({
+  messages,
   compact = false,
   totalMessageCount = 0,
   hasMoreMessages = false,
   isLoadingMessages = false,
   onLoadMore,
+  chatMessages = [],
+  announcements = [],
+  messageFilter: controlledFilter,
+  onMessageFilterChange,
+  hasChatUnread = false,
+  onChatViewed,
 }: MessagePanelProps) {
+  // 内部筛选状态（非受控模式）
+  const [internalFilter, setInternalFilter] = useState<MessageFilter>('all');
+  const messageFilter = controlledFilter ?? internalFilter;
+
+  const handleFilterChange = useCallback((filter: MessageFilter) => {
+    if (onMessageFilterChange) {
+      onMessageFilterChange(filter);
+    } else {
+      setInternalFilter(filter);
+    }
+    // 切换到聊天或全部时清除未读
+    if ((filter === 'chat' || filter === 'all') && hasChatUnread && onChatViewed) {
+      onChatViewed();
+    }
+  }, [onMessageFilterChange, hasChatUnread, onChatViewed]);
+
+  // 将聊天和公告适配为 MessageRecord 并合并
+  const allMessages = useMemo(() => {
+    const adaptedChat = chatMessages.map(chatToMessageRecord);
+    const adaptedAnnouncements = announcements.map(announcementToMessageRecord);
+    return [...messages, ...adaptedChat, ...adaptedAnnouncements]
+      .sort((a, b) => b.timestamp - a.timestamp);
+  }, [messages, chatMessages, announcements]);
+
+  // 根据筛选过滤
+  const filteredMessages = useMemo(() => {
+    if (messageFilter === 'all') return allMessages;
+    if (messageFilter === 'system') return allMessages.filter(m => SYSTEM_CHANNELS.has(m.channel));
+    return allMessages.filter(m => m.channel === messageFilter);
+  }, [allMessages, messageFilter]);
+
+  // 是否有多类消息（决定是否显示筛选器）
+  const hasMultipleSources = (chatMessages.length > 0 || announcements.length > 0);
   const [displayCount, setDisplayCount] = useState(BATCH_SIZE);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const isLoadingRef = useRef(false);
   
-  // 显示的消息（虚拟分页）
+  // 显示的消息（虚拟分页，基于过滤后的消息）
   const displayMessages = useMemo(() => {
     if (compact) {
-      return messages.slice(0, 5);
+      return filteredMessages.slice(0, 5);
     }
-    return messages.slice(0, displayCount);
-  }, [messages, compact, displayCount]);
+    return filteredMessages.slice(0, displayCount);
+  }, [filteredMessages, compact, displayCount]);
 
   // 是否还有更多本地消息可显示
-  const hasMoreLocal = displayCount < messages.length;
-  
+  const hasMoreLocal = displayCount < filteredMessages.length;
+
   // 是否可以加载更多
   const canLoadMore = !compact && (hasMoreLocal || hasMoreMessages);
-  
+
   // 显示总数
   const displayTotal = totalMessageCount || messages.length;
-  
-  const showFooter = !compact && messages.length > 0;
+
+  const showFooter = !compact && filteredMessages.length > 0;
 
   // 加载更多消息
   const handleLoadMore = useCallback(async () => {
     if (isLoadingRef.current || !canLoadMore) return;
-    
+
     isLoadingRef.current = true;
     setIsLoadingMore(true);
-    
+
     try {
       // 先显示更多本地消息
       if (hasMoreLocal) {
-        setDisplayCount(prev => Math.min(prev + BATCH_SIZE, messages.length + BATCH_SIZE));
-      } 
+        setDisplayCount(prev => Math.min(prev + BATCH_SIZE, filteredMessages.length + BATCH_SIZE));
+      }
       // 本地消息显示完了，从服务器加载更多
       else if (hasMoreMessages && onLoadMore) {
         await onLoadMore();
@@ -249,7 +145,7 @@ export function MessagePanel({
       setIsLoadingMore(false);
       isLoadingRef.current = false;
     }
-  }, [canLoadMore, hasMoreLocal, hasMoreMessages, messages.length, onLoadMore]);
+  }, [canLoadMore, hasMoreLocal, hasMoreMessages, filteredMessages.length, onLoadMore]);
 
   // 滚动监听
   useEffect(() => {
@@ -279,7 +175,7 @@ export function MessagePanel({
   // 重置显示数量
   useEffect(() => {
     setDisplayCount(BATCH_SIZE);
-  }, [messages.length]);
+  }, [filteredMessages.length]);
 
   return (
     <Card className="h-full flex flex-col overflow-hidden">
@@ -294,8 +190,33 @@ export function MessagePanel({
           )}
         </CardTitle>
       </CardHeader>
+      {/* 消息类型筛选器（仅有多类消息时显示） */}
+      {hasMultipleSources && (
+        <div className="px-3 pb-1 shrink-0">
+          <div className="flex gap-1 bg-muted/50 rounded-md p-0.5">
+            {FILTER_OPTIONS.map((opt) => (
+              <button
+                key={opt.key}
+                type="button"
+                className={`flex-1 flex items-center justify-center gap-1 px-2 py-1 rounded-sm text-[10px] font-medium transition-colors relative ${
+                  messageFilter === opt.key
+                    ? 'bg-background text-foreground shadow-sm'
+                    : 'text-muted-foreground hover:text-foreground'
+                }`}
+                onClick={() => handleFilterChange(opt.key)}
+              >
+                {opt.icon}
+                {opt.label}
+                {opt.key === 'chat' && hasChatUnread && messageFilter !== 'chat' && messageFilter !== 'all' && (
+                  <span className="absolute -top-0.5 -right-0.5 w-2 h-2 bg-destructive rounded-full" />
+                )}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
       <CardContent className="pt-0 pb-1 flex-1 min-h-0 overflow-hidden flex flex-col">
-        {messages.length === 0 ? (
+        {filteredMessages.length === 0 ? (
           <Empty>
             <EmptyContent>
               <p className="text-xs text-muted-foreground font-serif">暂无消息记录</p>

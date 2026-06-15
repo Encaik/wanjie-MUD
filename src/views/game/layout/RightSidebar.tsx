@@ -1,22 +1,20 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 
-import { MessageCircle, Bell, Trophy, Newspaper } from 'lucide-react';
+import { MessageCircle, Trophy } from 'lucide-react';
 
-import { Badge } from '@/shared/ui/data-display/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/shared/ui/data-display/tabs';
 import { RealmSystem } from '@/modules/progression/data/realmData';
 import { getRealmName } from '@/modules/progression/data/realmData';
 import { MessageRecord } from '@/core/types';
 import type { Announcement } from '@/modules/social/announcementTypes';
+import type { ChatMessage } from '@/modules/social/chatTypes';
 import type { AllLeaderboards } from '@/modules/social/multiplayerTypes';
 
-import { AnnouncementHistory } from '@/modules/social/components';
 import { LeaderboardPanel } from '@/modules/social/components';
 import { ChatRoom } from '@/modules/social/components/ChatRoom';
-import { MessagePanel } from '@/shared/components/MessagePanel';
-
+import { MessagePanel, MessageFilter } from '@/shared/components/MessagePanel';
 
 
 
@@ -53,77 +51,82 @@ export function RightSidebar({
   announcements = [],
   setActiveMode,
 }: RightSidebarProps) {
-  // 聊天群是否有新消息
-  const [hasChatNewMessage, setHasChatNewMessage] = useState(false);
-  // 内部 tab 状态 - 避免重新渲染时重置
-  const [sidebarTab, setSidebarTab] = useState<string>('messages');
-  
+  // 聊天消息状态（由 ChatRoom 回调更新）
+  const [chatMessages, setChatMessages] = useState<ChatMessage[]>([]);
+  // 消息筛选状态
+  const [messageFilter, setMessageFilter] = useState<MessageFilter>('all');
+  // 聊天未读标记
+  const [hasChatUnread, setHasChatUnread] = useState(false);
+
+  // ChatRoom 新消息回调
+  const handleChatNewMessage = useCallback((hasNew: boolean) => {
+    if (hasNew && messageFilter !== 'chat' && messageFilter !== 'all') {
+      setHasChatUnread(true);
+    }
+  }, [messageFilter]);
+
+  // 筛选变更时处理未读清除
+  const handleFilterChange = useCallback((filter: MessageFilter) => {
+    setMessageFilter(filter);
+    if (filter === 'chat' || filter === 'all') {
+      setHasChatUnread(false);
+    }
+  }, []);
+
   // Tab 切换时控制活跃模式
   const handleTabChange = (value: string) => {
-    setSidebarTab(value);
-    // 排行榜 tab 激活时启用活跃模式（5秒刷新）
     setActiveMode?.(value === 'leaderboard');
   };
-  
+
   return (
     <div className="hidden lg:flex lg:col-span-3 flex-col h-full overflow-hidden">
-      <Tabs value={sidebarTab} onValueChange={handleTabChange} className="flex flex-col h-full">
-        <TabsList className="grid w-full grid-cols-4 shrink-0">
-          <TabsTrigger value="chat" className="text-xs relative">
-            <MessageCircle className="w-3.5 h-3.5 mr-1" />
-            聊天
-            {hasChatNewMessage && (
-              <Badge variant="destructive" className="absolute -top-1 -right-1 h-4 w-4 p-0 flex items-center justify-center text-[9px] animate-pulse">
-                •
-              </Badge>
-            )}
-          </TabsTrigger>
+      <Tabs defaultValue="messages" onValueChange={handleTabChange} className="flex flex-col h-full">
+        <TabsList className="grid w-full grid-cols-2 shrink-0">
           <TabsTrigger value="messages" className="text-xs">
-            <Bell className="w-3.5 h-3.5 mr-1" />
+            <MessageCircle className="w-3.5 h-3.5 mr-1" />
             消息
           </TabsTrigger>
           <TabsTrigger value="leaderboard" className="text-xs">
             <Trophy className="w-3.5 h-3.5 mr-1" />
             排行
           </TabsTrigger>
-          <TabsTrigger value="announcements" className="text-xs relative">
-            <Newspaper className="w-3.5 h-3.5 mr-1" />
-            公告
-            {announcements.filter(a => !a.read).length > 0 && (
-              <Badge variant="destructive" className="absolute -top-1 -right-1 h-4 w-4 p-0 flex items-center justify-center text-[9px]">
-                {announcements.filter(a => !a.read).length}
-              </Badge>
-            )}
-          </TabsTrigger>
         </TabsList>
-        <TabsContent value="chat" className="flex-1 mt-2 overflow-hidden">
-          <ChatRoom 
-            playerId={`player-${protagonistId}`}
-            playerName={protagonistName}
-            playerLevel={protagonistLevel}
-            playerRealm={getRealmName(realmSystem, protagonistLevel)}
-            onNewMessage={setHasChatNewMessage}
-          />
+        {/* 统一消息 Tab */}
+        <TabsContent value="messages" className="flex-1 mt-2 min-h-0 flex flex-col overflow-hidden">
+          <div className="flex-1 min-h-0">
+            <MessagePanel
+              messages={messages}
+              totalMessageCount={totalMessageCount}
+              hasMoreMessages={hasMoreMessages}
+              isLoadingMessages={isLoadingMessages}
+              onLoadMore={onLoadMoreMessages}
+              chatMessages={chatMessages}
+              announcements={announcements}
+              messageFilter={messageFilter}
+              onMessageFilterChange={handleFilterChange}
+              hasChatUnread={hasChatUnread}
+              onChatViewed={() => setHasChatUnread(false)}
+            />
+          </div>
+          {/* 聊天输入栏（compact 模式） */}
+          <div className="shrink-0 mt-1.5 pt-1.5 border-t">
+            <ChatRoom
+              playerId={`player-${protagonistId}`}
+              playerName={protagonistName}
+              playerLevel={protagonistLevel}
+              playerRealm={getRealmName(realmSystem, protagonistLevel)}
+              onNewMessage={handleChatNewMessage}
+              onMessagesUpdate={setChatMessages}
+              compact
+            />
+          </div>
         </TabsContent>
-        <TabsContent value="messages" className="flex-1 mt-2 overflow-hidden">
-          <MessagePanel 
-            messages={messages}
-            totalMessageCount={totalMessageCount}
-            hasMoreMessages={hasMoreMessages}
-            isLoadingMessages={isLoadingMessages}
-            onLoadMore={onLoadMoreMessages}
-          />
-        </TabsContent>
+        {/* 排行榜 Tab */}
         <TabsContent value="leaderboard" className="flex-1 mt-2 overflow-hidden">
           <LeaderboardPanel
             leaderboards={leaderboards || null}
             currentPlayerId={`player-${protagonistId}`}
             onlineCount={onlineCount}
-          />
-        </TabsContent>
-        <TabsContent value="announcements" className="flex-1 mt-2 overflow-hidden">
-          <AnnouncementHistory
-            announcements={announcements}
           />
         </TabsContent>
       </Tabs>
