@@ -8,6 +8,8 @@ export { MessagePanel } from './MessagePanel';
 export { ResultDisplay } from './ResultDisplay';
 export { CharacterInfo, CharacterInfoInline } from './CharacterInfo';
 export { RealmTable } from './RealmTable';
+export { RadarChart } from './RadarChart';
+export type { RadarAxis, RadarSeries } from './RadarChart';
 export { ExperiencePanel } from './ExperiencePanel';
 export { AdventureLootPanel } from './AdventureLootPanel';
 export { DeveloperPanel } from './DeveloperPanel';
