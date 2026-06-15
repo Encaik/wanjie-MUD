@@ -216,7 +216,8 @@ export function generateCharacterTemplates(
     // 种族天生能力对核心值的直接修正（种族层面，不在属性层）
     if (raceDef) {
       for (const ability of raceDef.innateAbilities) {
-        for (const [stat, bonus] of Object.entries(ability.effects)) {
+        for (const [key, bonus] of Object.entries(ability.effects)) {
+          const stat = key as keyof typeof coreStats;
           if (bonus.flat) coreStats[stat] = (coreStats[stat] ?? 0) + bonus.flat;
           if (bonus.multiplier) coreStats[stat] = Math.floor((coreStats[stat] ?? 0) * bonus.multiplier);
         }
