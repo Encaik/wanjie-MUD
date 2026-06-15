@@ -20,7 +20,7 @@ RUN corepack enable
 WORKDIR /app
 
 # 复制包管理文件
-COPY package.json pnpm-lock.yaml ./
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 
 # 安装全部依赖（含 devDependencies，构建阶段需要 tsx 等）
 RUN pnpm install --frozen-lockfile
