@@ -1,6 +1,7 @@
 // Shared game components
 export { MysticalBackground } from './MysticalBackground';
 export type { BgVariant, BgIntensity } from './MysticalBackground';
+export { PageLoading } from './PageLoading';
 export { GameHeader } from '@/views/game/GameHeader';
 export { ChatRoom } from './ChatRoom';
 export { MessagePanel } from './MessagePanel';

@@ -7,7 +7,7 @@ import type { CharacterTemplate } from '@/modules/identity/hooks';
 import { Badge } from '@/shared/ui/data-display/badge';
 import { Button } from '@/shared/ui/actions/button';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/shared/ui/overlay/tooltip';
-import { cn } from '@/shared/utils';
+import { cn, useDebounce } from '@/shared/utils';
 
 // ============================================
 // 常量
@@ -157,18 +157,18 @@ export function CharacterCard({
   const maxAttr = Math.max(...numericAttrs.map(([, v]) => v), 1);
   const isMale = character.gender === '男';
   const getAttrLabel = (key: string) => attributeDefinitions?.find(a => a.key === key)?.displayName ?? key;
+  const handleSelect = useDebounce(() => onSelect(character.index), 600);
 
   return (
     <div
       className={cn(
-        'group relative flex flex-col overflow-hidden cursor-pointer',
+        'group relative flex flex-col overflow-hidden',
         'border-2 rounded-xl transition-all duration-300',
         'hover:shadow-xl hover:-translate-y-1',
         'bg-card',
         visualConfig?.borderColor ?? 'border-border',
       )}
       style={{ animation: `fade-in-up 0.5s ease-out ${index * 0.08}s both` }}
-      onClick={() => onSelect(character.index)}
     >
       {/* ===== 四角隅饰 ===== */}
       <span className="absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-amber-400/30 rounded-tl-sm opacity-50 group-hover:opacity-80 transition-opacity" aria-hidden="true" />
@@ -185,7 +185,7 @@ export function CharacterCard({
         )} />
       )}
 
-      <div className="p-3 flex flex-col flex-1 relative gap-2.5">
+      <div className="p-2.5 flex flex-col flex-1 relative gap-2">
         {/* ===== 命星之镜 ===== */}
         <DestinyMirror
           gender={character.gender}
@@ -194,14 +194,14 @@ export function CharacterCard({
         />
 
         {/* ===== 名字 + 装饰线 ===== */}
-        <div className="text-center space-y-1">
+        <div className="text-center space-y-0.5">
           <span className="text-sm font-bold text-foreground font-serif tracking-[0.15em]">
             {character.name}
           </span>
           <div className="flex items-center gap-1 justify-center">
-            <span className="h-px w-6 bg-gradient-to-r from-transparent via-border/30 to-transparent" />
-            <span className="text-[8px] text-muted-foreground/20">◆</span>
-            <span className="h-px w-6 bg-gradient-to-r from-transparent via-border/30 to-transparent" />
+            <span className="h-px w-5 bg-gradient-to-r from-transparent via-border/30 to-transparent" />
+            <span className="text-[7px] text-muted-foreground/20">◆</span>
+            <span className="h-px w-5 bg-gradient-to-r from-transparent via-border/30 to-transparent" />
           </div>
         </div>
 
@@ -228,7 +228,7 @@ export function CharacterCard({
         </div>
 
         {/* ===== 天赋（印章风格） ===== */}
-        <div className="flex items-center justify-center gap-1 flex-wrap min-h-[22px]">
+        <div className="flex items-center justify-center gap-1 flex-wrap min-h-[20px]">
           {character.talents && character.talents.length > 0 ? (
             character.talents.map(t => <TalentSeal key={t.id} talent={t} />)
           ) : (
@@ -237,8 +237,8 @@ export function CharacterCard({
         </div>
 
         {/* ===== 经脉图属性条 ===== */}
-        <div className="rounded-lg border border-border/30 bg-muted/10 p-2.5 space-y-1.5">
-          <div className="text-[9px] text-muted-foreground/50 tracking-wide font-serif text-center mb-0.5">
+        <div className="rounded-lg border border-border/30 bg-muted/10 p-2 space-y-1">
+          <div className="text-[9px] text-muted-foreground/50 tracking-wide font-serif text-center">
             经脉资质
           </div>
           {numericAttrs.slice(0, 5).map(([key, value]) => (
@@ -247,13 +247,13 @@ export function CharacterCard({
         </div>
 
         {/* ===== 核心值 ===== */}
-        <div className="flex justify-center gap-3 flex-wrap mt-auto">
+        <div className="flex justify-center gap-2 flex-wrap mt-auto">
           {Object.entries(CORE_ICONS).map(([key, { icon: Icon, color, label }]) => {
             const val = character.coreStats[key as keyof typeof character.coreStats];
             if (val === undefined) return null;
             return (
-              <div key={key} className="flex items-center gap-1 text-[10px]">
-                <Icon className={cn('w-3 h-3', color)} />
+              <div key={key} className="flex items-center gap-0.5 text-[10px]">
+                <Icon className={cn('w-2.5 h-2.5', color)} />
                 <span className="text-muted-foreground/60 font-serif">{label}</span>
                 <span className="font-semibold tabular-nums text-foreground">{Math.round(val as number)}</span>
               </div>
@@ -263,8 +263,9 @@ export function CharacterCard({
 
         {/* ===== 选定按钮 ===== */}
         <Button
+          onClick={handleSelect}
           className={cn(
-            'w-full font-serif tracking-[0.15em] text-xs h-9',
+            'w-full font-serif tracking-[0.15em] text-xs h-8',
             'transition-all duration-300',
             'group-hover:shadow-md group-hover:shadow-primary/10',
           )}

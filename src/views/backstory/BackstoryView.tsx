@@ -4,12 +4,11 @@ import { Globe, Scroll, Sparkles, User } from 'lucide-react';
 
 import type { WorldType } from '@/core/types'; // 仅用于 confirmText 类型签名
 import { useStatLabels } from '@/modules/identity/hooks/useStatLabels';
-import { MysticalBackground } from '@/shared/components';
 import { Badge } from '@/shared/ui/data-display/badge';
 import { Button } from '@/shared/ui/actions/button';
 import { Card, CardContent } from '@/shared/ui/data-display/card';
 import { ScrollArea } from '@/shared/ui/layout/scroll-area';
-import { cn } from '@/shared/utils';
+import { cn, useDebounce } from '@/shared/utils';
 
 interface BackstoryProps {
   backstory: string;
@@ -103,20 +102,18 @@ function formatText(text: string): React.ReactNode {
 /**
  * 背景故事页 — "宿命之章"
  *
- * 展示角色背景故事，使用 MysticalBackground（fated）与水印"宿命"呼应。
- * 带四角隅饰的故事卷轴卡片，叙事化标题和确认按钮。
+ * 展示角色背景故事，带四角隅饰的故事卷轴卡片和叙事化标题。
+ * 背景由全局 BackgroundLayout 统一提供。
  */
 export function BackstoryView({
   backstory, onConfirm, characterName, worldName, worldType = '修仙', visualConfig, statDisplayNames,
 }: BackstoryProps) {
   const paragraphs = backstory.split('\n\n').filter(p => p.trim());
   const { displayNames } = useStatLabels(statDisplayNames);
+  const debouncedConfirm = useDebounce(onConfirm, 600);
 
   return (
-    <div className="min-h-dvh md:min-h-screen bg-background relative flex items-center justify-center">
-      {/* ===== 背景 ===== */}
-      <MysticalBackground variant="fated" intensity="subtle" />
-
+    <div className="min-h-dvh md:min-h-screen relative flex items-center justify-center">
       <div className="w-full max-w-5xl relative z-10 flex flex-col px-4 sm:px-6 py-6">
         {/* ===== 叙事化标题 ===== */}
         <div className="text-center mb-4 shrink-0" style={{ animation: 'fade-in-up 0.6s ease-out forwards' }}>
@@ -252,7 +249,7 @@ export function BackstoryView({
             />
             <Button
               size="lg"
-              onClick={onConfirm}
+              onClick={debouncedConfirm}
               className="relative font-serif tracking-[0.15em] transition-all duration-500
                 hover:scale-[1.03] hover:shadow-lg hover:shadow-primary/20 active:scale-[0.98]"
             >

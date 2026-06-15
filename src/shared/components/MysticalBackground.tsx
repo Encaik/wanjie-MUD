@@ -8,234 +8,247 @@ import { createRng } from '@/shared/utils/rng';
 // 类型
 // ============================================
 
-/** 背景场景变体 */
 export type BgVariant = 'runes' | 'stars' | 'destiny' | 'fated';
-
-/** 粒子强度 */
 export type BgIntensity = 'subtle' | 'full';
 
-/** 单个粒子的静态属性 */
 interface Particle {
-  /** 水平位置百分比 */
-  left: string;
-  /** 垂直位置百分比 */
-  top: string;
-  /** 宽度 (px) */
-  width: number;
-  /** 高度 (px) */
-  height: number;
-  /** 动画延迟 (s) */
-  delay: string;
-  /** 动画时长 (s) */
-  duration: string;
-  /** 额外颜色类 */
-  colorClass: string;
+  left: string; top: string; width: number; height: number;
+  delay: string; duration: string; colorClass: string;
 }
 
-/** 星座连线 */
+interface Mote {
+  left: string; top: string; size: number;
+  delay: string; duration: string; drift: string;
+}
+
 interface ConstellationLine {
-  x1: string;
-  y1: string;
-  x2: string;
-  y2: string;
-  opacity: number;
+  x1: string; y1: string; x2: string; y2: string; opacity: number;
 }
 
 interface MysticalBackgroundProps {
-  /** 场景变体 */
   variant?: BgVariant;
-  /** 粒子强度 */
   intensity?: BgIntensity;
-  /** 水印文字（覆盖默认值） */
   watermarkText?: string;
+  scaleFactor?: number;
 }
 
 // ============================================
 // 静态配置
 // ============================================
 
-/** 首页浮动符文 */
 const FLOATING_RUNES = [
-  { char: '道', x: '8%', y: '18%', delay: '0s', dur: '7s' },
-  { char: '法', x: '88%', y: '12%', delay: '1.2s', dur: '8s' },
-  { char: '修', x: '12%', y: '78%', delay: '0.6s', dur: '6.5s' },
-  { char: '仙', x: '82%', y: '72%', delay: '2s', dur: '7.5s' },
-  { char: '灵', x: '48%', y: '8%', delay: '1.8s', dur: '9s' },
-  { char: '气', x: '52%', y: '88%', delay: '0.3s', dur: '7.2s' },
-  { char: '天', x: '93%', y: '42%', delay: '2.5s', dur: '8.5s' },
-  { char: '地', x: '4%', y: '52%', delay: '1.5s', dur: '6.8s' },
+  { char: '道', x: '8%', y: '15%', delay: '0s', dur: '7.5s', opacity: 0.18 },
+  { char: '法', x: '85%', y: '10%', delay: '1.2s', dur: '8.5s', opacity: 0.15 },
+  { char: '修', x: '10%', y: '75%', delay: '0.6s', dur: '7s', opacity: 0.20 },
+  { char: '仙', x: '80%', y: '68%', delay: '2s', dur: '8s', opacity: 0.16 },
+  { char: '灵', x: '45%', y: '6%', delay: '1.8s', dur: '9s', opacity: 0.14 },
+  { char: '气', x: '55%', y: '90%', delay: '0.3s', dur: '7.8s', opacity: 0.17 },
+  { char: '天', x: '92%', y: '38%', delay: '2.5s', dur: '9.5s', opacity: 0.13 },
+  { char: '地', x: '4%', y: '48%', delay: '1.5s', dur: '7.2s', opacity: 0.19 },
+  { char: '玄', x: '40%', y: '45%', delay: '3s', dur: '11s', opacity: 0.10 },
+  { char: '真', x: '60%', y: '55%', delay: '2.2s', dur: '10s', opacity: 0.09 },
 ];
 
-/** 首页光点 */
-const LIGHT_DOTS = [
-  { x: '20%', y: '30%', delay: '0s', size: '2px' },
-  { x: '70%', y: '25%', delay: '0.8s', size: '3px' },
-  { x: '35%', y: '65%', delay: '1.6s', size: '2px' },
-  { x: '65%', y: '70%', delay: '2.2s', size: '1.5px' },
-  { x: '25%', y: '85%', delay: '0.4s', size: '2.5px' },
-  { x: '75%', y: '15%', delay: '1.2s', size: '2px' },
-  { x: '55%', y: '55%', delay: '2.8s', size: '1.5px' },
-  { x: '15%', y: '40%', delay: '3.2s', size: '3px' },
-];
-
-/** 默认水印文字映射 */
 const DEFAULT_WATERMARKS: Record<BgVariant, string> = {
-  runes: '万界',
-  stars: '万象',
-  destiny: '命运',
-  fated: '宿命',
+  runes: '万界', stars: '万象', destiny: '命运', fated: '宿命',
 };
 
-// ============================================
-// 粒子生成（确定性，使用 seed）
-// ============================================
-
-/** 金色/琥珀色系粒子颜色 */
+// 粒子色彩方案 — 暖金/琥珀光谱
 const STAR_COLORS = [
-  'bg-amber-400/50',
-  'bg-amber-300/40',
-  'bg-yellow-400/45',
-  'bg-amber-200/55',
-  'bg-amber-500/35',
-  'bg-red-400/25',   // 朱砂暖红点缀
-  'bg-amber-400/60',
-  'bg-yellow-300/50',
+  'bg-amber-400/55', 'bg-amber-300/45', 'bg-yellow-400/50',
+  'bg-amber-200/60', 'bg-amber-500/40', 'bg-amber-400/65',
+  'bg-yellow-300/55', 'bg-orange-400/30', 'bg-amber-300/35',
+  'bg-yellow-200/50', 'bg-amber-400/30', 'bg-amber-500/25',
 ];
 
-/**
- * 从种子确定性生成粒子数组
- */
+// 微尘色彩（更淡）
+const MOTE_COLORS = [
+  'bg-amber-300/30', 'bg-amber-200/25', 'bg-yellow-300/30',
+  'bg-amber-400/20', 'bg-stone-300/20', 'bg-amber-200/35',
+];
+
+// ============================================
+// 确定性生成器
+// ============================================
+
 function generateParticles(
-  seed: string,
-  count: number,
-  minSize: number,
-  maxSize: number,
+  seed: string, count: number, minSize: number, maxSize: number,
 ): Particle[] {
   const rng = createRng(seed);
-  const particles: Particle[] = [];
-  for (let i = 0; i < count; i++) {
+  return Array.from({ length: count }, () => {
     const size = minSize + rng() * (maxSize - minSize);
-    particles.push({
-      left: `${rng() * 94 + 3}%`,
-      top: `${rng() * 94 + 3}%`,
-      width: Math.round(size * 10) / 10,
-      height: Math.round(size * 10) / 10,
+    return {
+      left: `${rng() * 94 + 3}%`, top: `${rng() * 94 + 3}%`,
+      width: Math.round(size * 10) / 10, height: Math.round(size * 10) / 10,
       delay: `${(rng() * 4).toFixed(1)}s`,
-      duration: `${(2 + rng() * 2).toFixed(1)}s`,
+      duration: `${(2 + rng() * 3).toFixed(1)}s`,
       colorClass: STAR_COLORS[Math.floor(rng() * STAR_COLORS.length)],
-    });
-  }
-  return particles;
+    };
+  });
 }
 
-/** 生成星座连线 */
+/** 生成微尘 — 极小的缓慢漂浮光点，营造空气质感 */
+function generateMotes(seed: string, count: number): Mote[] {
+  const rng = createRng(seed);
+  return Array.from({ length: count }, () => ({
+    left: `${rng() * 96 + 2}%`,
+    top: `${rng() * 96 + 2}%`,
+    size: 1 + rng() * 2.5,
+    delay: `${(rng() * 6).toFixed(1)}s`,
+    duration: `${(8 + rng() * 12).toFixed(1)}s`,
+    drift: `${((rng() - 0.5) * 30).toFixed(0)}px`,
+  }));
+}
+
 function generateConstellationLines(
-  seed: string,
-  count: number,
-  minOpacity: number,
-  maxOpacity: number,
+  seed: string, count: number, minO: number, maxO: number,
 ): ConstellationLine[] {
   const rng = createRng(seed + '_lines');
-  const lines: ConstellationLine[] = [];
-  for (let i = 0; i < count; i++) {
-    lines.push({
-      x1: `${rng() * 90 + 5}%`,
-      y1: `${rng() * 90 + 5}%`,
-      x2: `${rng() * 90 + 5}%`,
-      y2: `${rng() * 90 + 5}%`,
-      opacity: minOpacity + rng() * (maxOpacity - minOpacity),
-    });
-  }
-  return lines;
+  return Array.from({ length: count }, () => ({
+    x1: `${rng() * 90 + 5}%`, y1: `${rng() * 90 + 5}%`,
+    x2: `${rng() * 90 + 5}%`, y2: `${rng() * 90 + 5}%`,
+    opacity: minO + rng() * (maxO - minO),
+  }));
 }
 
 // ============================================
 // 组件
 // ============================================
 
-/**
- * 东方玄幻氛围背景系统
- *
- * 从首页提取的通用背景组件，支持四种场景变体：
- * - runes：浮动汉字 + 光点 + 万界水印（首页）
- * - stars：星点粒子 + 星座连线 + 万象水印（世界选择）
- * - destiny：密集金色光点 + 命运之线 + 命运水印（人物选择）
- * - fated：金色光点 + 宿命水印（故事背景）
- *
- * 所有粒子位置通过 seed 确定性生成，确保 SSR 一致。
- */
 export function MysticalBackground({
   variant = 'runes',
   intensity = 'full',
   watermarkText,
+  scaleFactor = 1.0,
 }: MysticalBackgroundProps) {
   const watermark = watermarkText ?? DEFAULT_WATERMARKS[variant];
-
-  // 粒子密度系数
-  const densityMul = intensity === 'subtle' ? 0.6 : 1.0;
-
-  /** 是否为密集粒子风格（destiny / fated） */
+  const densityMul = intensity === 'subtle' ? 0.5 : 1.0;
   const isDenseStyle = variant === 'destiny' || variant === 'fated';
+  const showRunes = variant === 'runes';
 
-  // 确定性生成粒子（使用固定的页面级 seed）
+  // 分辨率动态尺寸
+  const watermarkBaseSize = watermark.length <= 2 ? 62 : 42;
+  const ringOuter = Math.round(720 * scaleFactor);
+  const ringInner = Math.round(480 * scaleFactor);
+  const glowLarge = Math.round(600 * scaleFactor);
+  const glowMedium = Math.round(350 * scaleFactor);
+  const glowSmall = Math.round(180 * scaleFactor);
+
+  // 粒子
   const starParticles = useMemo(() => {
-    const baseCount = isDenseStyle ? 90 : variant === 'stars' ? 70 : 0;
+    const baseCount = isDenseStyle ? 100 : variant === 'stars' ? 80 : 0;
     return generateParticles(
-      `bg-${variant}-stars`,
+      `bg-${variant}-v2`,
       Math.round(baseCount * densityMul),
       isDenseStyle ? 1 : 1.5,
-      isDenseStyle ? 3 : 4,
+      isDenseStyle ? 3.5 : 4.5,
     );
   }, [variant, densityMul, isDenseStyle]);
 
-  const constellationLines = useMemo(() => {
-    if (variant === 'runes') return [];
-    const baseCount = isDenseStyle ? 14 : 10;
-    const lineCount = Math.round(baseCount * densityMul);
+  // 微尘（全部变体通用）
+  const motes = useMemo(() => {
+    return generateMotes(`motes-${variant}-v2`, Math.round((showRunes ? 45 : 35) * densityMul));
+  }, [variant, densityMul, showRunes]);
+
+  // 星座连线
+  const lines = useMemo(() => {
+    if (showRunes) return [];
+    const baseCount = isDenseStyle ? 16 : 12;
     return generateConstellationLines(
-      `bg-${variant}-lines`,
-      lineCount,
-      isDenseStyle ? 0.06 : 0.12,
-      isDenseStyle ? 0.12 : 0.25,
+      `cl-${variant}-v2`, Math.round(baseCount * densityMul),
+      isDenseStyle ? 0.05 : 0.10, isDenseStyle ? 0.13 : 0.22,
     );
-  }, [variant, densityMul, isDenseStyle]);
-
-  // 是否显示符文和首页光点
-  const showRunes = variant === 'runes';
-  const showLightDots = variant === 'runes';
+  }, [variant, densityMul, showRunes, isDenseStyle]);
 
   return (
-    <div
-      className="absolute inset-0 overflow-hidden pointer-events-none select-none"
-      aria-hidden="true"
-    >
-      {/* ========== 第 1 层：柔光团 ========== */}
+    <div className="absolute inset-0 overflow-hidden pointer-events-none select-none" aria-hidden="true">
+
+      {/* ===== 第 1 层：多点柔光（无模糊，纯半透明色块） ===== */}
+      {/* 主光 — 画面中央偏上 */}
       <div
-        className="absolute top-1/2 left-1/2 w-[500px] h-[500px] rounded-full bg-primary/[0.04] blur-3xl"
+        className="absolute rounded-full bg-amber-300/4"
         style={{
+          width: `${glowLarge}px`, height: `${glowLarge}px`,
+          top: '30%', left: '50%',
           transform: 'translate(-50%, -50%)',
-          animation: showRunes ? 'pulse-glow 4s ease-in-out infinite' : 'pulse-glow 5s ease-in-out infinite',
+          animationName: 'pulse-glow',
+          animationDuration: '5s',
+          animationTimingFunction: 'ease-in-out',
+          animationIterationCount: 'infinite',
+        }}
+      />
+      {/* 辅光 — 左下 */}
+      <div
+        className="absolute rounded-full bg-amber-400/3"
+        style={{
+          width: `${glowMedium}px`, height: `${glowMedium}px`,
+          top: '72%', left: '18%',
+          animationName: 'pulse-glow',
+          animationDuration: '7s',
+          animationTimingFunction: 'ease-in-out',
+          animationIterationCount: 'infinite',
+          animationDelay: '1.5s',
+        }}
+      />
+      {/* 辅光 — 右上 */}
+      <div
+        className="absolute rounded-full bg-primary/4"
+        style={{
+          width: `${glowMedium}px`, height: `${glowMedium}px`,
+          top: '18%', left: '78%',
+          animationName: 'pulse-glow',
+          animationDuration: '6s',
+          animationTimingFunction: 'ease-in-out',
+          animationIterationCount: 'infinite',
+          animationDelay: '3s',
         }}
       />
 
-      {/* ========== 第 2 层：旋转光晕环 ========== */}
+      {/* ===== 第 2 层：旋转光晕环（runes 专属） ===== */}
       {showRunes && (
-        <div
-          className="absolute top-1/2 left-1/2 w-[650px] h-[650px] rounded-full border border-primary/[0.04]"
-          style={{ animation: 'glow-rotate 12s linear infinite' }}
-        />
+        <>
+          <div
+            className="absolute rounded-full border border-primary/5"
+            style={{
+              width: `${ringOuter}px`, height: `${ringOuter}px`,
+              top: '50%', left: '50%',
+              transform: 'translate(-50%, -50%)',
+              animationName: 'glow-rotate',
+              animationDuration: '14s',
+              animationTimingFunction: 'linear',
+              animationIterationCount: 'infinite',
+            }}
+          />
+          <div
+            className="absolute rounded-full border border-amber-300/6"
+            style={{
+              width: `${ringInner}px`, height: `${ringInner}px`,
+              top: '50%', left: '50%',
+              transform: 'translate(-50%, -50%) rotate(180deg)',
+              animationName: 'glow-rotate',
+              animationDuration: '10s',
+              animationTimingFunction: 'linear',
+              animationIterationCount: 'infinite',
+              animationDirection: 'reverse',
+            }}
+          />
+        </>
       )}
 
-      {/* ========== 第 3 层：浮动符文（runes 专属） ========== */}
+      {/* ===== 第 3 层：浮动符文（runes 专属） ===== */}
       {showRunes &&
         FLOATING_RUNES.map((rune) => (
           <span
             key={rune.char}
-            className="absolute font-serif text-4xl sm:text-5xl text-primary/20"
+            className="absolute font-serif text-primary"
             style={{
-              left: rune.x,
-              top: rune.y,
-              animation: `float ${rune.dur} ease-in-out infinite`,
+              left: rune.x, top: rune.y,
+              fontSize: `${2.5 * scaleFactor}rem`,
+              opacity: rune.opacity,
+              animationName: 'float',
+              animationDuration: rune.dur,
+              animationTimingFunction: 'ease-in-out',
+              animationIterationCount: 'infinite',
               animationDelay: rune.delay,
             }}
           >
@@ -243,52 +256,50 @@ export function MysticalBackground({
           </span>
         ))}
 
-      {/* ========== 第 4 层：首页光点（runes 专属） ========== */}
-      {showLightDots &&
-        LIGHT_DOTS.map((dot, i) => (
-          <span
-            key={`dot-${i}`}
-            className="absolute rounded-full bg-primary/40"
-            style={{
-              left: dot.x,
-              top: dot.y,
-              width: dot.size,
-              height: dot.size,
-              animation: `pulse-glow ${2 + i * 0.3}s ease-in-out infinite`,
-              animationDelay: dot.delay,
-            }}
-          />
-        ))}
+      {/* ===== 第 4 层：微尘 — 极小的光点缓慢漂浮 ===== */}
+      {motes.map((m, i) => (
+        <span
+          key={`mote-${i}`}
+          className="absolute rounded-full bg-amber-300/25"
+          style={{
+            left: m.left, top: m.top,
+            width: `${m.size}px`, height: `${m.size}px`,
+            animationName: 'spirit-rise',
+            animationDuration: m.duration,
+            animationTimingFunction: 'ease-out',
+            animationIterationCount: 'infinite',
+            animationDelay: m.delay,
+          }}
+        />
+      ))}
 
-      {/* ========== 第 5 层：星点粒子（stars / destiny 专属） ========== */}
+      {/* ===== 第 5 层：星点粒子（非 runes 专属） ===== */}
       {starParticles.map((p, i) => (
         <span
           key={`star-${i}`}
           className={`absolute rounded-full ${p.colorClass}`}
           style={{
-            left: p.left,
-            top: p.top,
-            width: `${p.width}px`,
-            height: `${p.height}px`,
-            animation: `star-twinkle ${p.duration} ease-in-out infinite`,
+            left: p.left, top: p.top,
+            width: `${p.width}px`, height: `${p.height}px`,
+            animationName: 'star-twinkle',
+            animationDuration: p.duration,
+            animationTimingFunction: 'ease-in-out',
+            animationIterationCount: 'infinite',
             animationDelay: p.delay,
           }}
         />
       ))}
 
-      {/* ========== 第 6 层：星座连线（stars / destiny 专属） ========== */}
-      {constellationLines.length > 0 && (
+      {/* ===== 第 6 层：星座连线（非 runes 专属，无模糊） ===== */}
+      {lines.length > 0 && (
         <svg
           className="absolute inset-0 w-full h-full"
-          style={{ animation: 'constellation-fade 1.5s ease-out forwards' }}
+          style={{ animation: 'constellation-fade 2s ease-out forwards' }}
         >
-          {constellationLines.map((line, i) => (
+          {lines.map((line, i) => (
             <line
-              key={`cline-${i}`}
-              x1={line.x1}
-              y1={line.y1}
-              x2={line.x2}
-              y2={line.y2}
+              key={`cl-${i}`}
+              x1={line.x1} y1={line.y1} x2={line.x2} y2={line.y2}
               stroke="currentColor"
               className="text-amber-400/20"
               strokeWidth="0.5"
@@ -298,31 +309,21 @@ export function MysticalBackground({
         </svg>
       )}
 
-      {/* ========== 第 7 层：水印大字 ========== */}
+      {/* ===== 第 7 层：水印大字 ===== */}
       {watermark && (
         <div className="absolute inset-0 flex items-center justify-center overflow-hidden">
           <span
-            className="absolute text-[75vw] font-bold text-nowrap text-muted-foreground/[0.10] font-serif tracking-wider"
-            style={{ animation: 'pulse-glow 5s ease-in-out infinite' }}
+            className="absolute font-bold text-nowrap text-muted-foreground/8 font-serif tracking-wider select-none"
+            style={{
+              fontSize: `${watermarkBaseSize * scaleFactor}vw`,
+              animation: 'pulse-glow 6s ease-in-out infinite',
+            }}
           >
             {watermark}
           </span>
         </div>
       )}
 
-      {/* ========== 第 8 层：柔光团（stars/destiny 多点柔光） ========== */}
-      {!showRunes && (
-        <>
-          <div
-            className="absolute w-[300px] h-[300px] rounded-full bg-amber-400/[0.05] blur-3xl"
-            style={{ top: '15%', left: '20%', animation: 'pulse-glow 6s ease-in-out infinite' }}
-          />
-          <div
-            className="absolute w-[300px] h-[300px] rounded-full bg-amber-400/[0.05] blur-3xl"
-            style={{ top: '55%', left: '65%', animation: 'pulse-glow 7s ease-in-out infinite', animationDelay: '1.5s' }}
-          />
-        </>
-      )}
     </div>
   );
 }

@@ -55,7 +55,6 @@ import { AdventureLootPanel } from '@/shared/components/AdventureLootPanel';
 import { DeveloperPanel } from '@/shared/components/DeveloperPanel';
 import { CriticalHealthOverlay } from '@/shared/components/CriticalHealthOverlay';
 import { DeathDialog } from '@/shared/components/DeathDialog';
-import { MysticalBackground } from '@/shared/components';
 
 // Relative
 import { DifficultySelect } from './DifficultySelect';
@@ -809,10 +808,7 @@ export function MainGame({
   );
 
   return (
-    <div className="min-h-dvh md:h-dvh flex flex-col bg-background relative">
-      {/* ===== 东方玄幻氛围背景 ===== */}
-      <MysticalBackground variant="runes" intensity="subtle" />
-
+    <div className="min-h-dvh md:h-dvh flex flex-col relative">
       {/* 顶部标题栏 - 固定 */}
       <header className="shrink-0 z-10 relative border-b shadow-sm overflow-hidden">
         {/* 背景 */}

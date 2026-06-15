@@ -9,7 +9,7 @@ import { RealmTable } from '@/shared/components';
 import { Button } from '@/shared/ui/actions/button';
 import { Card, CardContent } from '@/shared/ui/data-display/card';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/shared/ui/overlay/tooltip';
-import { cn } from '@/shared/utils';
+import { cn, useDebounce } from '@/shared/utils';
 
 interface WorldCardProps {
   world: World;
@@ -57,11 +57,12 @@ const SEAL_COLORS: Record<WorldDifficulty, string> = {
  */
 export function WorldCard({ world, index, onSelect }: WorldCardProps) {
   const visualConfig = world.visualConfig;
+  const handleSelect = useDebounce(() => onSelect(world), 600);
 
   return (
     <Card
       className={cn(
-        'group relative flex flex-col overflow-hidden cursor-pointer',
+        'group relative flex flex-col overflow-hidden',
         'border-2 transition-all duration-300',
         'hover:shadow-xl hover:-translate-y-1',
         visualConfig.borderColor,
@@ -69,7 +70,6 @@ export function WorldCard({ world, index, onSelect }: WorldCardProps) {
       style={{
         animation: `fade-in-up 0.5s ease-out ${index * 0.08}s both`,
       }}
-      onClick={() => onSelect(world)}
     >
       {/* ===== 四角隅饰 ===== */}
       <span
@@ -266,6 +266,7 @@ export function WorldCard({ world, index, onSelect }: WorldCardProps) {
 
         {/* ===== 踏入按钮 ===== */}
         <Button
+          onClick={handleSelect}
           className={cn(
             'w-full font-serif tracking-[0.15em] text-xs h-9 mt-auto',
             'transition-all duration-300',

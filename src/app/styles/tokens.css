@@ -104,7 +104,8 @@
    * ======================================== */
   --font-sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-  --font-serif: "Noto Serif SC", "Songti SC", "SimSun", ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+  /* next/font 以 CSS 变量 --font-serif 注入，含完整 fallback 链 + size-adjust */
+  --font-serif: var(--font-serif-next, "Songti SC", "SimSun", ui-serif, Georgia, Cambria, "Times New Roman", Times, serif);
 
   /* ========================================
    * 阴影令牌

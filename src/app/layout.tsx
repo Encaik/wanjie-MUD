@@ -4,7 +4,9 @@ import { SpeedInsights } from "@vercel/speed-insights/next"
 import { ModInitProvider } from '@/modules/mod/components/ModInitProvider';
 import { ThemeProvider } from '@/modules/theme';
 import { GameProvider } from '@/views/game/useGameState';
+import { BackgroundLayout } from '@/views/layout';
 
+import { serifFont } from './fonts';
 import type { Metadata } from 'next';
 
 import './globals.css';
@@ -69,10 +71,12 @@ export default function RootLayout({
       <head>
         <script dangerouslySetInnerHTML={{ __html: THEME_FLICKER_GUARD }} />
       </head>
-      <body className="antialiased">
+      <body className={`${serifFont.variable} antialiased`}>
         <ThemeProvider>
           <ModInitProvider>
-            <GameProvider>{children}</GameProvider>
+            <GameProvider>
+              <BackgroundLayout>{children}</BackgroundLayout>
+            </GameProvider>
           </ModInitProvider>
         </ThemeProvider>
         <Analytics />

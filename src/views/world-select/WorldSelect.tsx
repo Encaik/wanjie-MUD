@@ -3,7 +3,6 @@
 import { Compass } from 'lucide-react';
 
 import type { World } from '@/core/types';
-import { MysticalBackground } from '@/shared/components';
 
 import { WorldCard } from './WorldCard';
 
@@ -15,15 +14,13 @@ interface WorldSelectProps {
 /**
  * 世界选择页 — "万象星盘"
  *
- * 以星图卡片网格展示 8 个世界，使用 MysticalBackground（stars）
- * 营造东方古典星图氛围。PC 端 4 列 × 2 行，移动端自动降级。
+ * 以星图卡片网格展示 8 个世界，营造东方古典星图氛围。
+ * PC 端 4 列 × 2 行，移动端自动降级。
+ * 背景由全局 BackgroundLayout 统一提供。
  */
 export function WorldSelect({ worlds, onSelect }: WorldSelectProps) {
   return (
-    <div className="min-h-dvh md:min-h-screen bg-background relative flex items-center justify-center">
-      {/* ===== 星图背景 ===== */}
-      <MysticalBackground variant="stars" />
-
+    <div className="min-h-dvh md:min-h-screen relative flex items-center justify-center">
       <div className="relative w-full max-w-7xl mx-auto p-4 md:p-8 z-10">
         {/* ===== 标题区 ===== */}
         <div className="text-center mb-6" style={{ animation: 'fade-in-up 0.6s ease-out forwards' }}>

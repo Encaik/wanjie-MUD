@@ -4,9 +4,9 @@ import { useState } from 'react';
 
 import { Sparkles, Upload, X } from 'lucide-react';
 
-import { MysticalBackground } from '@/shared/components';
 import { Button } from '@/shared/ui/actions/button';
 import { Card, CardContent } from '@/shared/ui/data-display/card';
+import { useDebounce } from '@/shared/utils';
 
 interface StartScreenProps {
   onStart: () => void;
@@ -16,11 +16,11 @@ interface StartScreenProps {
 /**
  * 首页 — "踏入万界"
  *
- * 使用 MysticalBackground（runes）替代内联背景系统，
- * 与选择页共用统一的氛围组件。
+ * 背景由全局 BackgroundLayout 统一提供。
  */
 export function StartScreen({ onStart, onImportSave }: StartScreenProps) {
   const [importError, setImportError] = useState<string | null>(null);
+  const debouncedStart = useDebounce(onStart, 600);
 
   const handleImport = () => {
     setImportError(null);
@@ -46,10 +46,7 @@ export function StartScreen({ onStart, onImportSave }: StartScreenProps) {
   };
 
   return (
-    <div className="min-h-dvh md:min-h-screen relative overflow-hidden flex items-center justify-center bg-background">
-      {/* ===== 符文背景（共享组件） ===== */}
-      <MysticalBackground variant="runes" />
-
+    <div className="min-h-dvh md:min-h-screen relative overflow-hidden flex items-center justify-center">
       {/* ===== 内容卡片 ===== */}
       <Card
         className="relative z-10 max-w-lg w-full mx-4 shadow-2xl border-primary/10 overflow-hidden"
@@ -103,7 +100,7 @@ export function StartScreen({ onStart, onImportSave }: StartScreenProps) {
               />
               <Button
                 size="lg"
-                onClick={onStart}
+                onClick={debouncedStart}
                 className="relative w-full text-base font-semibold tracking-[0.15em] font-serif
                   nine-slice-border rounded-[4px] h-auto py-2.5
                   transition-all duration-500

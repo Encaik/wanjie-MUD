@@ -9,9 +9,6 @@
  * 5. base.css       — 全局基础样式 + 动画工具类
  */
 
-/* 字体 */
-@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@200..900&display=swap');
-
 /* Tailwind 基础 */
 @import 'tailwindcss';
 @import 'tw-animate-css';
