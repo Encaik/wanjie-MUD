@@ -160,6 +160,11 @@ export function calculateCoreStats(
     }
   }
 
+  // 向下取整
+  for (const key of Object.keys(result)) {
+    result[key] = Math.floor(result[key] as number);
+  }
+
   return result as CoreStatValues;
 }
 

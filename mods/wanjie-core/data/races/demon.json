@@ -8,11 +8,10 @@
     "spiritPower": 1
   },
   "talentPool": [
-    "demonicResilience",
-    "bloodFury",
-    "predatorInstinct",
-    "nightVision",
-    "swordMastery"
+    "demonicPhysique",
+    "demonicSpirit",
+    "strongPhysique",
+    "ironWill"
   ],
   "innateAbilities": [
     {
@@ -20,8 +19,12 @@
       "name": "妖魔之躯",
       "description": "妖族身体天生坚韧",
       "effects": {
-        "maxHp": { "flat": 5 },
-        "physicalDEF": { "flat": 2 }
+        "maxHp": {
+          "flat": 5
+        },
+        "physicalDEF": {
+          "flat": 2
+        }
       }
     }
   ],

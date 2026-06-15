@@ -34,6 +34,7 @@ export type {
   EnumAttributeDefinition,
   CoreStatKey,
   CoreStatBaseValues,
+  AttributeBreakdown,
   SpecialResourceDef,
   CharacterAttributesV3,
   // 种族与天赋

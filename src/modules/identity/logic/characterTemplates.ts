@@ -35,13 +35,15 @@ export interface CharacterTemplate {
   raceId: string;
   /** 天赋 ID 列表 */
   talentIds: string[];
-  /** 属性值（key → 数值 或 枚举值字符串） */
+  /** 属性最终值（key → 数值 或 枚举值字符串，已含所有加成） */
   attributes: Record<string, number | string>;
+  /** 属性分解明细（key → 各来源贡献） */
+  attributeBreakdown: Record<string, AttributeBreakdown>;
   /** 派生的核心值 */
   coreStats: CoreStatValues;
-  /** 初始等级时的属性值（用于前端展示 baseValue） */
-  baseAttributes: Record<string, number | string>;
 }
+
+import type { AttributeBreakdown } from '@/core/types';
 
 // ============================================
 // 内部工具
@@ -145,37 +147,82 @@ export function generateCharacterTemplates(
     const raceId = availableRaces.length > 0 ? pickItem(availableRaces, rng) : (racePool[0] || 'human');
     const raceDef = raceRegistry.get(raceId);
 
-    // 天赋（从种族的 talentPool 中按稀有度概率选取 1-2 个）
+    // 天赋（从种族的 talentPool 中筛选，需匹配世界观 + 种族 + 目标属性存在）
     const talentRegistry = TalentRegistry.getInstance();
     const talentIds: string[] = [];
     if (raceDef) {
-      const raceTalents = raceDef.talentPool
+      const attrKeys = new Set(attrDefs.map(d => d.key));
+      const availableTalents = raceDef.talentPool
         .map(id => talentRegistry.get(id))
-        .filter(Boolean);
-      // 从可用天赋中随机选 1-2 个
-      const shuffled = [...raceTalents].sort(() => rng() - 0.5);
-      const count = Math.floor(rng() * 2) + 1; // 1 or 2
+        .filter(t => t && (!t.worldviewRestrictions || t.worldviewRestrictions.length === 0
+          || t.worldviewRestrictions.includes(worldviewId))
+          && (!t.raceRestrictions || t.raceRestrictions.length === 0
+          || t.raceRestrictions.includes(raceId))
+          // 天赋效果目标属性必须在当前世界观中存在
+          && t.effects.some(e => attrKeys.has(e.target)));
+      // 按稀有度概率选 1-2 个
+      const shuffled = [...availableTalents].sort(() => rng() - 0.5);
+      const count = Math.floor(rng() * 2) + 1;
       talentIds.push(...shuffled.slice(0, count).map(t => t!.id));
     }
 
-    // 属性值（对每个 numeric 属性随机分配）
+    // 属性值 + 分解明细
     const attributes: Record<string, number | string> = {};
-    const baseAttributes: Record<string, number | string> = {};
+    const breakdown: Record<string, AttributeBreakdown> = {};
+
     for (const def of attrDefs) {
       if (def.type === 'numeric') {
-        const rolled = rollAttribute(def.baseValue, rng);
-        attributes[def.key] = rolled;
-        baseAttributes[def.key] = rolled;
+        const base = def.baseValue;
+        const rolled = rollAttribute(0, rng); // 随机浮动（相对 base 的偏移）
+        const total = base + rolled;
+        attributes[def.key] = total;
+        breakdown[def.key] = { value: total, base, rolled, talent: 0, race: 0, growth: 0, item: 0 };
       } else if (def.type === 'enum') {
-        // 枚举型属性：随机选一个
         const selected = pickItem(def.enumValues, rng);
         attributes[def.key] = selected.value;
-        baseAttributes[def.key] = selected.value;
+        // 枚举型没有数值分解
       }
     }
 
-    // 计算核心值（初始等级 1）
+    // 应用天赋效果到属性
+    for (const talentId of talentIds) {
+      const talent = talentRegistry.get(talentId);
+      if (!talent) continue;
+      for (const effect of talent.effects) {
+        if (effect.type === 'attribute_flat') {
+          attributes[effect.target] = ((attributes[effect.target] as number) || 0) + effect.value;
+          if (breakdown[effect.target]) {
+            breakdown[effect.target].talent += effect.value;
+            breakdown[effect.target].value += effect.value;
+          }
+        }
+      }
+    }
+
+    // 应用种族加成到属性
+    if (raceDef) {
+      for (const [attrKey, bonus] of Object.entries(raceDef.baseAttributeBonuses)) {
+        attributes[attrKey] = ((attributes[attrKey] as number) || 0) + bonus;
+        if (breakdown[attrKey]) {
+          breakdown[attrKey].race += bonus;
+          breakdown[attrKey].value += bonus;
+        }
+      }
+    }
+
+    // 计算核心值
     const coreStats = calculateCoreStats(attributes, attrDefs);
+
+    // 种族天生能力对核心值的直接修正（种族层面，不在属性层）
+    if (raceDef) {
+      for (const ability of raceDef.innateAbilities) {
+        for (const [key, bonus] of Object.entries(ability.effects)) {
+          const stat = key as keyof typeof coreStats;
+          if (bonus.flat) coreStats[stat] = (coreStats[stat] ?? 0) + bonus.flat;
+          if (bonus.multiplier) coreStats[stat] = Math.floor((coreStats[stat] ?? 0) * bonus.multiplier);
+        }
+      }
+    }
 
     templates.push({
       index: i,
@@ -184,8 +231,8 @@ export function generateCharacterTemplates(
       raceId,
       talentIds,
       attributes,
+      attributeBreakdown: breakdown,
       coreStats,
-      baseAttributes,
     });
   }
 

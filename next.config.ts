@@ -6,6 +6,9 @@ import type { NextConfig } from 'next';
  * Docker 容器化部署，使用 standalone 模式输出自包含构建产物。
  */
 const nextConfig = {
+  // 开发环境允许局域网访问（Next.js 16 跨域安全策略）
+  allowedDevOrigins: ['172.16.11.0'],
+
   // Docker standalone 独立运行模式
   output: 'standalone',
 

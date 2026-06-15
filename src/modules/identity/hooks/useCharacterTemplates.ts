@@ -30,8 +30,12 @@ export interface CharacterTemplate {
   raceId: string;
   talentIds: string[];
   attributes: Record<string, number | string>;
+  /** 属性分解明细（各来源贡献值） */
+  attributeBreakdown?: Record<string, {
+    value: number; base: number; rolled: number;
+    talent: number; race: number; growth: number; item: number;
+  }>;
   coreStats: Record<string, number>;
-  baseAttributes: Record<string, number | string>;
   /** API 补充的种族信息 */
   race?: RaceInfo;
   /** API 补充的天赋列表 */
