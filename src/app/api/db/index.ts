@@ -60,11 +60,11 @@ let isMemoryMode = false;
 function loadWasmBinary(): Buffer {
   const candidates = [
     // 1. 从 process.cwd 的标准 node_modules 结构查找
-    path.join(process.cwd(), 'node_modules', 'sql.js', 'dist', 'sql-wasm.wasm'),
+    path.join(/*turbopackIgnore: true*/ process.cwd(), 'node_modules', 'sql.js', 'dist', 'sql-wasm.wasm'),
     // 2. pnpm 虚拟商店路径（<version> 通配）
     ...(() => {
       try {
-        const pnpmDir = path.join(process.cwd(), 'node_modules', '.pnpm');
+        const pnpmDir = path.join(/*turbopackIgnore: true*/ process.cwd(), 'node_modules', '.pnpm');
         if (!fs.existsSync(pnpmDir)) return [] as string[];
         return fs.readdirSync(pnpmDir)
           .filter(d => d.startsWith('sql.js@'))
@@ -117,14 +117,14 @@ function resolveDataDir(): { dir: string; dbPath: string; isMemory: boolean } {
   }
 
   // 2. 默认 cwd/.data
-  const defaultDir = path.resolve(process.cwd(), '.data');
+  const defaultDir = path.resolve(/*turbopackIgnore: true*/ process.cwd(), '.data');
   if (isWritableDirectory(defaultDir)) {
     return { dir: defaultDir, dbPath: path.join(defaultDir, 'worlds.db'), isMemory: false };
   }
 
   // 3. Serverless 回退：/tmp/wanjie-data
   const tmpDir = process.platform === 'win32'
-    ? path.resolve(process.cwd(), '.tmp', 'wanjie-data')
+    ? path.resolve(/*turbopackIgnore: true*/ process.cwd(), '.tmp', 'wanjie-data')
     : '/tmp/wanjie-data';
   if (isWritableDirectory(tmpDir)) {
     log.warn(`默认数据目录不可写 (${defaultDir})，回退到 ${tmpDir}`);
@@ -161,7 +161,7 @@ function isWritableDirectory(dir: string): boolean {
  * 迁移使用复制（非移动），确保旧路径保留作为备份。
  */
 function migrateLegacyData(newDbPath: string): void {
-  const legacyDir = path.resolve(process.cwd(), '.data');
+  const legacyDir = path.resolve(/*turbopackIgnore: true*/ process.cwd(), '.data');
   const legacyDbPath = path.join(legacyDir, 'worlds.db');
 
   if (legacyDbPath === newDbPath) return;

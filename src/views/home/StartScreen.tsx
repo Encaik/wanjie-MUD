@@ -70,7 +70,7 @@ export function StartScreen({ onStart, onImportSave }: StartScreenProps) {
             <div className="relative">
               <div className="absolute inset-4 bg-primary/10 rounded-full blur-3xl" />
               <img
-                src="/img/logo-透明.png"
+                src="/img/logo-transparent.png"
                 alt="万界修行录"
                 className="h-48 w-auto relative select-none pointer-events-none"
               />
