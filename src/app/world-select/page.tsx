@@ -1,19 +1,20 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-
 import { useRouter } from 'next/navigation';
 
 import type { World } from '@/core/types';
-import { useGame, getRouteGuard } from '@/views/game/useGameState';
+import { useGameStore } from '@/views/game/GameStore';
+import { getRouteGuard } from '@/views/game/routeGuard';
+import { useGameFlow } from '@/views/game/domainHooks/useGameFlow';
 import { WorldSelect } from '@/views/world-select/WorldSelect';
 
 export default function WorldSelectPage() {
   const router = useRouter();
-  const { gameState, selectWorld } = useGame();
+  const { gameState } = useGameStore();
+  const { selectWorld } = useGameFlow();
   const redirectedRef = useRef(false);
 
-  // 同步计算重定向目标
   const redirectTo = getRouteGuard('/world-select', gameState);
 
   useEffect(() => {
@@ -23,7 +24,6 @@ export default function WorldSelectPage() {
     }
   }, [redirectTo, router]);
 
-  // 需要重定向时不渲染页面内容
   if (redirectTo) return null;
 
   const handleSelect = async (world: World) => {
@@ -31,10 +31,5 @@ export default function WorldSelectPage() {
     router.push('/character-select');
   };
 
-  return (
-    <WorldSelect
-      worlds={gameState.worlds}
-      onSelect={handleSelect}
-    />
-  );
+  return <WorldSelect worlds={gameState.worlds} onSelect={handleSelect} />;
 }

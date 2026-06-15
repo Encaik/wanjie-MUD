@@ -7,11 +7,12 @@ import { useRouter } from 'next/navigation';
 import { useCharacterTemplates, useCharacterSave } from '@/modules/identity/hooks';
 import { safeSaveGameState } from '@/shared/utils/saveUtils';
 import { CharacterSelect } from '@/views/character-select/CharacterSelect';
-import { useGame, getRouteGuard } from '@/views/game/useGameState';
+import { useGameStore } from '@/views/game/GameStore';
+import { getRouteGuard } from '@/views/game/routeGuard';
 
 export default function CharacterSelectPage() {
   const router = useRouter();
-  const { gameState } = useGame();
+  const { gameState } = useGameStore();
   const redirectedRef = useRef(false);
   const loadedRef = useRef(false);
 

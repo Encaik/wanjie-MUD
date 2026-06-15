@@ -6,7 +6,7 @@
 
 import { useCallback, useMemo } from 'react';
 
-import { useGame } from '@/views/game/useGameState';
+import { useGameStore } from '@/views/game/GameStore';
 import { calculatePlayerCombatPower } from '@/modules/combat/logic/combatPower';
 import { WorldType } from '@/core/types';
 
@@ -16,32 +16,16 @@ import { TextKey, ValueContext, UseTextResult } from '@/modules/narrative/types'
 
 import { useText } from './useText';
 
-/**
- * 游戏文案 Hook
- * 
- * 自动从游戏状态获取数据，无需手动传参
- * 
- * 使用示例：
- * ```tsx
- * function CombatResult() {
- *   const { t } = useGameText();
- *   
- *   // 自动获取玩家等级、战力等数据
- *   return <span>{t('ui.combatPower')}</span>; // "战力 12,500"
- * }
- * ```
- */
 export function useGameText(): UseTextResult {
-  const gameContext = useGame();
-  const protagonist = gameContext.gameState.protagonist;
+  const { gameState } = useGameStore();
+  const protagonist = gameState.protagonist;
   const worldType = protagonist?.world.type || '修仙';
-  
-  // 构建完整的值上下文
+
   const context: ValueContext = useMemo(() => ({
-    gameState: gameContext.gameState,
+    gameState,
     protagonist,
     worldType: worldType as WorldType,
-  }), [gameContext.gameState, protagonist, worldType]);
+  }), [gameState, protagonist, worldType]);
   
   // 解析方法
   const t = useCallback((
@@ -111,8 +95,8 @@ function formatPower(power: number): string {
  * 用于不需要游戏状态的场景
  */
 export function useGameTerminology() {
-  const gameContext = useGame();
-  const worldType = gameContext.gameState.protagonist?.world.type || '修仙';
+  const { gameState } = useGameStore();
+  const worldType = gameState.protagonist?.world.type || '修仙';
   
   return useMemo(() => ({
     ...getWorldTerminology(worldType as WorldType),

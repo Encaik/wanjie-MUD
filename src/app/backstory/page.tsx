@@ -7,7 +7,8 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import type { World } from '@/core/types';
 import { post } from '@/shared/utils/api-client';
 import { BackstoryView } from '@/views/backstory/BackstoryView';
-import { useGame } from '@/views/game/useGameState';
+import { useGameStore } from '@/views/game/GameStore';
+import { useGameFlow } from '@/views/game/domainHooks/useGameFlow';
 
 interface CharacterInfo {
   name: string;
@@ -89,7 +90,8 @@ function useCharacterData(characterSeed: string | null) {
 function BackstoryContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { gameState, startGameWithCharacter } = useGame();
+  const { gameState } = useGameStore();
+  const { startGameWithCharacter } = useGameFlow();
 
   const characterSeed = searchParams.get('seed');
 
