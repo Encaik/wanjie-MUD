@@ -12,7 +12,7 @@ import type { ItemDefinition } from '@/core/types';
 import { createInventoryItem } from '@/core/types';
 import { addToInventory } from '@/modules/equipment/hooks/inventoryUtils';
 
-import { useGameStore } from '../GameStore';
+import { useGameStore } from '../state/GameStore';
 import { createAddMessageInternal } from './helpers';
 
 export function useShop() {

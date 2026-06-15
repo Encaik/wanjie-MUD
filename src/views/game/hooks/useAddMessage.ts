@@ -10,7 +10,7 @@ import { useCallback } from 'react';
 
 import type { MessageRecord } from '@/core/types';
 
-import { useGameStore } from './GameStore';
+import { useGameStore } from '../state/GameStore';
 
 /**
  * 向游戏消息列表添加一条消息

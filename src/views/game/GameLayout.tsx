@@ -28,17 +28,17 @@ import { useMultiplayerHttp } from '@/shared/lib/multiplayer/useMultiplayerHttp'
 
 import { useGameSystems } from '@/views/game/hooks/useGameSystems';
 
-import { DialogLayer } from './DialogLayer';
-import { GameHeader } from './GameHeader';
-import { useGameStore } from './GameStore';
-import { LeftSidebar } from './LeftSidebar';
-import { MobileLayout } from './MobileLayout';
-import { PanelContent } from './PanelContent';
-import { PanelNav } from './PanelNav';
-import type { PanelId } from './PanelNav';
-import { RightSidebar } from './RightSidebar';
-import { SettingsPanel } from './SettingsPanel';
-import { WanjiePanel } from './WanjiePanel';
+import { DialogLayer } from './dialogs/DialogLayer';
+import { GameHeader } from './layout/GameHeader';
+import { useGameStore } from './state/GameStore';
+import { LeftSidebar } from './layout/LeftSidebar';
+import { MobileLayout } from './layout/MobileLayout';
+import { PanelContent } from './navigation/PanelContent';
+import { PanelNav } from './navigation/PanelNav';
+import type { PanelId } from './navigation/PanelNav';
+import { RightSidebar } from './layout/RightSidebar';
+import { SettingsPanel } from './settings/SettingsPanel';
+import { WanjiePanel } from './navigation/WanjiePanel';
 import { useAdventure } from './domainHooks/useAdventure';
 import { useAscension } from './domainHooks/useAscension';
 import { useBattle } from './domainHooks/useBattle';
@@ -51,7 +51,7 @@ import { useGameActions } from './domainHooks/useGameActions';
 import { useInventory } from './domainHooks/useInventory';
 import { useSaveLoad } from './domainHooks/useSaveLoad';
 import { useShop } from './domainHooks/useShop';
-import { openDialog } from './useDialogController';
+import { openDialog } from './dialogs/useDialogController';
 
 export function GameLayout() {
   useGameSystems();

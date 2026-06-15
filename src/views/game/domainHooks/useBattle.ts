@@ -13,7 +13,7 @@ import type { ActiveBattleState } from '@/core/types';
 import { createDefaultTowerProgress } from '@/modules/tower/logic/types';
 import type { TowerEnemy } from '@/modules/tower/logic/types';
 
-import { useGameStore } from '../GameStore';
+import { useGameStore } from '../state/GameStore';
 import { createAddMessageInternal } from './helpers';
 
 export function useBattle() {

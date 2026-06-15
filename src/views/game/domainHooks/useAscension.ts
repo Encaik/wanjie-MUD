@@ -12,7 +12,7 @@ import { useCallback } from 'react';
 import { DEFAULT_ASCENSION_FLOW_STATE } from '@/core/types';
 import type { InheritanceChoice, NewWorldInfo } from '@/core/types';
 
-import { useGameStore } from '../GameStore';
+import { useGameStore } from '../state/GameStore';
 import { createAddMessageInternal } from './helpers';
 
 export function useAscension() {

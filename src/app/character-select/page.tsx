@@ -7,8 +7,8 @@ import { useRouter } from 'next/navigation';
 import { useCharacterTemplates, useCharacterSave } from '@/modules/identity/hooks';
 import { safeSaveGameState } from '@/shared/utils/saveUtils';
 import { CharacterSelect } from '@/views/character-select/CharacterSelect';
-import { useGameStore } from '@/views/game/GameStore';
-import { getRouteGuard } from '@/views/game/routeGuard';
+import { useGameStore } from '@/views/game/state/GameStore';
+import { getRouteGuard } from '@/views/game/state/routeGuard';
 
 export default function CharacterSelectPage() {
   const router = useRouter();

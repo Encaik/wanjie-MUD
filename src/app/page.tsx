@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 import { PageLoading } from '@/shared/components/PageLoading';
-import { getRouteGuard } from '@/views/game/routeGuard';
+import { getRouteGuard } from '@/views/game/state/routeGuard';
 import { useHomeGame } from '@/views/home/HomeProvider';
 import { StartScreen } from '@/views/home/StartScreen';
 

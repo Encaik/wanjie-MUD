@@ -8,7 +8,7 @@
 
 import { useCallback } from 'react';
 
-import { useGameStore, useGameDispatch } from '../GameStore';
+import { useGameStore, useGameDispatch } from '../state/GameStore';
 
 export function useGameActions() {
   const dispatch = useGameDispatch();

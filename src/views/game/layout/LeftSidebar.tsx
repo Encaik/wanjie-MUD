@@ -7,9 +7,9 @@ import { ScrollArea } from '@/shared/ui/layout/scroll-area';
 import { Protagonist } from '@/core/types';
 import { MentalState } from '@/core/types';
 
-import { SaveLoadPanel } from './SaveLoadPanel';
-import { StatusPanel } from './StatusPanel';
-import { WorldInfoPanel } from './WorldInfoPanel';
+import { SaveLoadPanel } from '../cards/SaveLoadPanel';
+import { StatusPanel } from '../cards/StatusPanel';
+import { WorldInfoPanel } from '../cards/WorldInfoPanel';
 
 
 interface LeftSidebarProps {

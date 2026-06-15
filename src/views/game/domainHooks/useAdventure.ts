@@ -12,7 +12,7 @@ import { useCallback } from 'react';
 import type { MessageRecord } from '@/core/types';
 import { useGameAdventure } from '@/modules/exploration/hooks/useAdventure';
 
-import { useGameStore } from '../GameStore';
+import { useGameStore } from '../state/GameStore';
 
 export function useAdventure() {
   const { gameState, dispatch: setGameState } = useGameStore();

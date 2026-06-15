@@ -14,7 +14,7 @@ import { useGameCultivation } from '@/modules/progression/hooks/useCultivation';
 import { useSeclusion } from '@/modules/progression/hooks/useSeclusion';
 import type { SeclusionType } from '@/modules/progression/logic/seclusion';
 
-import { useGameStore } from '../GameStore';
+import { useGameStore } from '../state/GameStore';
 
 export function useCultivation() {
   // 从 GameStore 获取 gameState 和 dispatch（类型兼容 React.Dispatch<SetStateAction<GameState>>）

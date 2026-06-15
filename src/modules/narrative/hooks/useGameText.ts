@@ -6,7 +6,7 @@
 
 import { useCallback, useMemo } from 'react';
 
-import { useGameStore } from '@/views/game/GameStore';
+import { useGameStore } from '@/views/game/state/GameStore';
 import { calculatePlayerCombatPower } from '@/modules/combat/logic/combatPower';
 import { WorldType } from '@/core/types';
 

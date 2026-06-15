@@ -12,7 +12,7 @@ import type { ItemDefinition, CraftingState, ForgingState } from '@/core/types';
 import { createInventoryItem } from '@/core/types';
 import { createMinimalEquipment } from '@/modules/equipment/logic/rarityUtils';
 
-import { useGameStore } from '../GameStore';
+import { useGameStore } from '../state/GameStore';
 import { createAddMessageInternal } from './helpers';
 
 export function useCrafting() {

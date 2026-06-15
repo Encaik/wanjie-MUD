@@ -39,7 +39,7 @@ import { AdventureLootPanel } from '@/shared/components/AdventureLootPanel';
 import { Button } from '@/shared/ui/actions/button';
 
 import { DifficultySelect } from './DifficultySelect';
-import { openDialog } from './useDialogController';
+import { openDialog } from '../dialogs/useDialogController';
 import type { PanelId } from './PanelNav';
 
 interface PanelContentProps {

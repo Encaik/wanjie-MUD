@@ -17,8 +17,8 @@ import {
 } from '@/modules/crafting/logic/fragmentSystem';
 import { upgradeTechnique, upgradeEquipment, getMaterialExpValue } from '@/modules/equipment/logic/upgradeSystem';
 
-import { useGameStore } from '../GameStore';
-import { useAddMessage } from '../useAddMessage';
+import { useGameStore } from '../state/GameStore';
+import { useAddMessage } from '../hooks/useAddMessage';
 import { createAddMessageInternal } from './helpers';
 
 

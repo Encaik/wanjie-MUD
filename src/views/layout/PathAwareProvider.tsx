@@ -18,7 +18,7 @@ import { PageLoading } from '@/shared/components/PageLoading';
 
 const GameStoreProviderLazy = dynamic(
   () =>
-    import('@/views/game/GameStore').then((m) => ({
+    import('@/views/game/state/GameStore').then((m) => ({
       default: m.GameStoreProvider,
     })),
   {

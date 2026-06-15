@@ -10,7 +10,7 @@ import { useCallback } from 'react';
 
 import { DEFAULT_PROTAGONIST_EXTENSION } from '@/core/types';
 
-import { useGameStore } from '../GameStore';
+import { useGameStore } from '../state/GameStore';
 import { createAddMessageInternal } from './helpers';
 
 export function useDevMode() {

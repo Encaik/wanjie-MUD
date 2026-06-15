@@ -16,7 +16,7 @@ import { useRouter } from 'next/navigation';
 
 import type { GameState } from '@/core/types';
 import { safeSaveGameState } from '@/shared/utils/saveUtils';
-import { createInitialGameState } from '@/views/game/initialState';
+import { createInitialGameState } from '@/views/game/state/initialState';
 
 // ============================================
 // Context

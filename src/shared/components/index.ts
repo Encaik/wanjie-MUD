@@ -2,7 +2,7 @@
 export { MysticalBackground } from './MysticalBackground';
 export type { BgVariant, BgIntensity } from './MysticalBackground';
 export { PageLoading } from './PageLoading';
-export { GameHeader } from '@/views/game/GameHeader';
+export { GameHeader } from '@/views/game/layout/GameHeader';
 export { ChatRoom } from './ChatRoom';
 export { MessagePanel } from './MessagePanel';
 export { ResultDisplay } from './ResultDisplay';

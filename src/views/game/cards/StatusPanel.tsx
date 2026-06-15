@@ -12,7 +12,7 @@ import {
   useProtagonistInfo, 
   useStats, 
   useCombatStats 
-} from '@/views/game/useGameHooks';
+} from '@/views/game/hooks/useGameHooks';
 import { calculatePlayerCombatPower, getCombatPowerRank, formatCombatPower } from '@/modules/combat/logic/combatPower';
 import { Protagonist, getFinalStats } from '@/core/types';
 

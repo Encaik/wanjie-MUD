@@ -10,8 +10,8 @@ import { useCallback } from 'react';
 
 import { createLogger } from '@/core/logger';
 
-import { useGameStore } from '../GameStore';
-import { createInitialGameState } from '../initialState';
+import { useGameStore } from '../state/GameStore';
+import { createInitialGameState } from '../state/initialState';
 
 const log = createLogger('SaveLoad');
 

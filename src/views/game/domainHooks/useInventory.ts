@@ -13,7 +13,7 @@ import { createInventoryItem } from '@/core/types';
 import { calculatePillEffect, getPillRealmLevel } from '@/modules/progression/logic/pillRealmSystem';
 import { applyBaseStatChanges } from '@/modules/progression/logic/realmSystem';
 
-import { useGameStore } from '../GameStore';
+import { useGameStore } from '../state/GameStore';
 import { createAddMessageInternal } from './helpers';
 
 

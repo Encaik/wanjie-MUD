@@ -3,8 +3,8 @@
 import { useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 
-import { useGameStore } from '@/views/game/GameStore';
-import { getRouteGuard } from '@/views/game/routeGuard';
+import { useGameStore } from '@/views/game/state/GameStore';
+import { getRouteGuard } from '@/views/game/state/routeGuard';
 import { GameLayout } from '@/views/game/GameLayout';
 
 export default function GamePage() {

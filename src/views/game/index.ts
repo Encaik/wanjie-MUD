@@ -1,24 +1,41 @@
 // 路由守卫
-export { getRouteGuard } from './routeGuard';
+export { getRouteGuard } from './state/routeGuard';
 
 // 布局组件
 export { GameLayout } from './GameLayout';
-export { GameHeader } from './GameHeader';
-export { LeftSidebar } from './LeftSidebar';
-export { CenterPanel } from './CenterPanel';
-export { RightSidebar } from './RightSidebar';
-export { MobileLayout } from './MobileLayout';
-export { SettingsPanel } from './SettingsPanel';
-export { StatusPanel } from './StatusPanel';
-export { WorldInfoPanel } from './WorldInfoPanel';
-export { SaveLoadPanel } from './SaveLoadPanel';
-export { MentalStateCard } from './MentalStateCard';
-export { RankDetailDialog } from './RankDetailDialog';
-export { ReputationDetailDialog } from './ReputationDetailDialog';
+export { GameHeader } from './layout/GameHeader';
+export { LeftSidebar } from './layout/LeftSidebar';
+export { CenterPanel } from './layout/CenterPanel';
+export { RightSidebar } from './layout/RightSidebar';
+export { MobileLayout } from './layout/MobileLayout';
+
+// 面板导航
+export { PanelNav } from './navigation/PanelNav';
+export type { PanelId, PanelNavStatusDots } from './navigation/PanelNav';
+export { WanjiePanel } from './navigation/WanjiePanel';
+export type { WanjiePanelId } from './navigation/WanjiePanel';
+export { PanelContent } from './navigation/PanelContent';
+
+// 弹窗系统
+export { DialogLayer } from './dialogs/DialogLayer';
+export { useDialogController, openDialog, closeDialog } from './dialogs/useDialogController';
+
+// 设置
+export { SettingsPanel } from './settings/SettingsPanel';
+
+// 信息卡片
+export { StatusPanel } from './cards/StatusPanel';
+export { WorldInfoPanel } from './cards/WorldInfoPanel';
+export { SaveLoadPanel } from './cards/SaveLoadPanel';
+export { MentalStateCard } from './cards/MentalStateCard';
+
+// 弹窗组件
+export { RankDetailDialog } from './dialogs/RankDetailDialog';
+export { ReputationDetailDialog } from './dialogs/ReputationDetailDialog';
 
 // 状态存储
-export { GameStoreProvider, useGameStore, useGameDispatch } from './GameStore';
-export { useAddMessage } from './useAddMessage';
+export { GameStoreProvider, useGameStore, useGameDispatch } from './state/GameStore';
+export { useAddMessage } from './hooks/useAddMessage';
 
 // 领域 Hook
 export {
@@ -47,13 +64,4 @@ export {
   useInventory,
   useTechniques,
   useTerminology,
-} from './useGameHooks';
-
-// 导航与弹窗
-export { PanelNav } from './PanelNav';
-export type { PanelId, PanelNavStatusDots } from './PanelNav';
-export { WanjiePanel } from './WanjiePanel';
-export type { WanjiePanelId } from './WanjiePanel';
-export { PanelContent } from './PanelContent';
-export { DialogLayer } from './DialogLayer';
-export { useDialogController, openDialog, closeDialog } from './useDialogController';
+} from './hooks/useGameHooks';

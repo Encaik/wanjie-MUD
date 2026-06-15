@@ -7,7 +7,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import type { World } from '@/core/types';
 import { post } from '@/shared/utils/api-client';
 import { BackstoryView } from '@/views/backstory/BackstoryView';
-import { useGameStore } from '@/views/game/GameStore';
+import { useGameStore } from '@/views/game/state/GameStore';
 import { useGameFlow } from '@/views/game/domainHooks/useGameFlow';
 
 interface CharacterInfo {

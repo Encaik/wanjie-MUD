@@ -8,8 +8,8 @@
 
 import { useCallback, useRef } from 'react';
 import type { World } from '@/core/types';
-import { useGameStore, useGameDispatch } from '../GameStore';
-import { createInitialGameState } from '../initialState';
+import { useGameStore, useGameDispatch } from '../state/GameStore';
+import { createInitialGameState } from '../state/initialState';
 import { post } from '@/shared/utils/api-client';
 import { createLogger } from '@/core/logger';
 import { emit } from '@/core/events';

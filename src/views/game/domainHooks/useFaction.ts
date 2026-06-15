@@ -13,7 +13,7 @@ import type { MessageRecord } from '@/core/types';
 import { addToInventory } from '@/modules/equipment/hooks/inventoryUtils';
 import { useGameFaction } from '@/modules/faction/hooks/useFaction';
 
-import { useGameStore } from '../GameStore';
+import { useGameStore } from '../state/GameStore';
 
 
 export function useFaction() {

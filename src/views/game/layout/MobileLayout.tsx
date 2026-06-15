@@ -7,8 +7,8 @@ import { Protagonist, BattleState, Technique, Equipment } from '@/core/types';
 import { MentalState } from '@/core/types';
 
 import { BattleResultDialog } from '@/modules/combat/components';
-import { SaveLoadPanel } from '@/views/game/SaveLoadPanel';
-import { StatusPanel } from '@/views/game/StatusPanel';
+import { SaveLoadPanel } from '@/views/game/cards/SaveLoadPanel';
+import { StatusPanel } from '@/views/game/cards/StatusPanel';
 
 interface MobileLayoutProps {
   protagonist: Protagonist;

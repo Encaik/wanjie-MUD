@@ -4,8 +4,8 @@ import { useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 
 import type { World } from '@/core/types';
-import { useGameStore } from '@/views/game/GameStore';
-import { getRouteGuard } from '@/views/game/routeGuard';
+import { useGameStore } from '@/views/game/state/GameStore';
+import { getRouteGuard } from '@/views/game/state/routeGuard';
 import { useGameFlow } from '@/views/game/domainHooks/useGameFlow';
 import { WorldSelect } from '@/views/world-select/WorldSelect';
 
