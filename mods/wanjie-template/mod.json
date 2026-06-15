@@ -7,9 +7,9 @@
   "gameVersion": ">=1.0.0",
   "dependencies": ["wanjie-core"],
   "template": true,
-  "contentTypes": ["world", "traits", "dangers", "opportunities", "realms", "factions", "names", "text"],
+  "contentTypes": ["worldview", "traits", "dangers", "opportunities", "realms", "factions", "names", "text"],
   "dataFiles": {
-    "world": "data/world.json",
+    "worldview": "data/world.json",
     "traits": "data/traits.json",
     "dangers": "data/dangers.json",
     "opportunities": "data/opportunities.json",

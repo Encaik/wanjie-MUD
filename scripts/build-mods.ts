@@ -54,7 +54,7 @@ function copyDir(src: string, dest: string) {
  * 读取 mod.json 的 dataFiles 字段，按 content type 分组读取各文件，
  * 合并后写入目标目录的 data.json。
  *
- * world 类型数据以每个文件的 type 字段为 key 合并为对象映射。
+ * worldview 类型数据以每个文件的 type 字段为 key 合并为对象映射。
  */
 function bundleModData(modDir: string, targetDir: string, modJson: Record<string, unknown>) {
   const dataFiles = modJson.dataFiles as Record<string, string | string[]> | undefined;
@@ -80,13 +80,13 @@ function bundleModData(modDir: string, targetDir: string, modJson: Record<string
       try {
         const content = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
 
-        if (contentType === 'world' && isArrayMode && content && typeof content === 'object' && !Array.isArray(content)) {
-          // world 类型：以 type 字段为 key 合并
+        if (contentType === 'worldview' && isArrayMode && content && typeof content === 'object' && !Array.isArray(content)) {
+          // worldview 类型：以 type 字段为 key 合并
           const worldType = (content as Record<string, unknown>).type as string;
           if (worldType) {
             entries[worldType] = content;
           } else {
-            console.warn(`  ⚠ world 数据文件缺少 type 字段，跳过: ${dataPath}`);
+            console.warn(`  ⚠ worldview 数据文件缺少 type 字段，跳过: ${dataPath}`);
           }
         } else {
           // 其他类型：直接使用内容（单文件用内容本身，多文件用数组合并）
@@ -101,8 +101,8 @@ function bundleModData(modDir: string, targetDir: string, modJson: Record<string
       }
     }
 
-    // world 类型或数组模式写回合并结果
-    if (contentType === 'world' && isArrayMode && Object.keys(entries).length > 0) {
+    // worldview 类型或数组模式写回合并结果
+    if (contentType === 'worldview' && isArrayMode && Object.keys(entries).length > 0) {
       merged[contentType] = entries;
     } else if (!isArrayMode) {
       // 单文件模式已在上面直接赋值

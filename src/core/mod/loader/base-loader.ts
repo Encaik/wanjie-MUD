@@ -142,12 +142,17 @@ export abstract class BaseModLoader {
       let failed = 0;
       const failedRequired: Array<{ id: string; name: string; error: string }> = [];
 
-      // 2. 加载所有清单
+      // 2. 加载所有清单（跳过 template Mod）
       const manifests: Map<string, ModManifest> = new Map();
       for (const entry of entries) {
         this.emitProgress(loaded + failed + 1, total, entry.id);
         try {
           const manifest = await this.loadModManifest(entry.path);
+          // 跳过模板 Mod（template: true），不加载也不计数
+          if (manifest.template) {
+            log.info(`跳过模板 Mod "${entry.id}"，不加载`);
+            continue;
+          }
           manifests.set(entry.id, manifest);
           this.loadedMods.push({ manifest, status: 'loaded' });
           loaded++;
