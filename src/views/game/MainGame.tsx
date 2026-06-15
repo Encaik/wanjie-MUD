@@ -17,6 +17,7 @@ import { Protagonist, ActionResult, ActionTab, BattleState, DungeonConfig, Techn
 import type { SeclusionType } from '@/modules/progression/logic/seclusion';
 import type { TimeState } from '@/core/time';
 import { createLogger } from '@/core/logger';
+import { useGameSystems } from '@/views/game/hooks/useGameSystems';
 
 /** MainGame 日志记录器 */
 const log = createLogger('MainGame');
@@ -332,6 +333,9 @@ export function MainGame({
   // 爬塔系统
   onChallengeTower,
 }: MainGameProps) {
+  // 初始化游戏核心系统（事件监听器等，仅在 /game 路由加载）
+  useGameSystems();
+
   const [showResetConfirm, setShowResetConfirm] = useState(false);
   const [showExitConfirm, setShowExitConfirm] = useState(false);
   const [showPathSelect, setShowPathSelect] = useState(false);

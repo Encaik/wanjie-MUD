@@ -1,10 +1,10 @@
 import { Analytics } from "@vercel/analytics/next"
 import { SpeedInsights } from "@vercel/speed-insights/next"
 
-import { ModInitProvider } from '@/modules/mod/components/ModInitProvider';
-import { ThemeProvider } from '@/modules/theme';
-import { GameProvider } from '@/views/game/useGameState';
+import { Suspense } from 'react';
+import { PathAwareProvider } from '@/views/layout';
 import { BackgroundLayout } from '@/views/layout';
+import { PageLoading } from '@/shared/components/PageLoading';
 
 import { serifFont } from './fonts';
 import type { Metadata } from 'next';
@@ -72,13 +72,13 @@ export default function RootLayout({
         <script dangerouslySetInnerHTML={{ __html: THEME_FLICKER_GUARD }} />
       </head>
       <body className={`${serifFont.variable} antialiased`}>
-        <ThemeProvider>
-          <ModInitProvider>
-            <GameProvider>
-              <BackgroundLayout>{children}</BackgroundLayout>
-            </GameProvider>
-          </ModInitProvider>
-        </ThemeProvider>
+        <PathAwareProvider>
+          <BackgroundLayout>
+            <Suspense fallback={<PageLoading />}>
+              {children}
+            </Suspense>
+          </BackgroundLayout>
+        </PathAwareProvider>
         <Analytics />
         <SpeedInsights />
       </body>

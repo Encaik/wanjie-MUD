@@ -30,6 +30,8 @@ interface MysticalBackgroundProps {
   intensity?: BgIntensity;
   watermarkText?: string;
   scaleFactor?: number;
+  /** 轻量模式：减少粒子/符文/光环数量，用于首页等首屏关键路径 */
+  minimal?: boolean;
 }
 
 // ============================================
@@ -120,6 +122,7 @@ export function MysticalBackground({
   intensity = 'full',
   watermarkText,
   scaleFactor = 1.0,
+  minimal = false,
 }: MysticalBackgroundProps) {
   const watermark = watermarkText ?? DEFAULT_WATERMARKS[variant];
   const densityMul = intensity === 'subtle' ? 0.5 : 1.0;
@@ -145,10 +148,11 @@ export function MysticalBackground({
     );
   }, [variant, densityMul, isDenseStyle]);
 
-  // 微尘（全部变体通用）
+  // 微尘（全部变体通用，minimal 模式减少 67%）
   const motes = useMemo(() => {
+    if (minimal) return generateMotes(`motes-${variant}-minimal`, 15);
     return generateMotes(`motes-${variant}-v2`, Math.round((showRunes ? 45 : 35) * densityMul));
-  }, [variant, densityMul, showRunes]);
+  }, [variant, densityMul, showRunes, minimal]);
 
   // 星座连线
   const lines = useMemo(() => {
@@ -164,48 +168,53 @@ export function MysticalBackground({
     <div className="absolute inset-0 overflow-hidden pointer-events-none select-none" aria-hidden="true">
 
       {/* ===== 第 1 层：多点柔光（无模糊，纯半透明色块） ===== */}
-      {/* 主光 — 画面中央偏上 */}
+      {/* 主光 — 画面中央偏上（GPU 合成层提升） */}
       <div
         className="absolute rounded-full bg-amber-300/4"
         style={{
           width: `${glowLarge}px`, height: `${glowLarge}px`,
           top: '30%', left: '50%',
           transform: 'translate(-50%, -50%)',
+          willChange: 'transform, opacity',
           animationName: 'pulse-glow',
           animationDuration: '5s',
           animationTimingFunction: 'ease-in-out',
           animationIterationCount: 'infinite',
         }}
       />
-      {/* 辅光 — 左下 */}
-      <div
-        className="absolute rounded-full bg-amber-400/3"
-        style={{
-          width: `${glowMedium}px`, height: `${glowMedium}px`,
-          top: '72%', left: '18%',
-          animationName: 'pulse-glow',
-          animationDuration: '7s',
-          animationTimingFunction: 'ease-in-out',
-          animationIterationCount: 'infinite',
-          animationDelay: '1.5s',
-        }}
-      />
-      {/* 辅光 — 右上 */}
-      <div
-        className="absolute rounded-full bg-primary/4"
-        style={{
-          width: `${glowMedium}px`, height: `${glowMedium}px`,
-          top: '18%', left: '78%',
-          animationName: 'pulse-glow',
-          animationDuration: '6s',
-          animationTimingFunction: 'ease-in-out',
-          animationIterationCount: 'infinite',
-          animationDelay: '3s',
-        }}
-      />
+      {/* 辅光 — 左下（minimal 模式跳过） */}
+      {!minimal && (
+        <div
+          className="absolute rounded-full bg-amber-400/3"
+          style={{
+            width: `${glowMedium}px`, height: `${glowMedium}px`,
+            top: '72%', left: '18%',
+            animationName: 'pulse-glow',
+            animationDuration: '7s',
+            animationTimingFunction: 'ease-in-out',
+            animationIterationCount: 'infinite',
+            animationDelay: '1.5s',
+          }}
+        />
+      )}
+      {/* 辅光 — 右上（minimal 模式跳过） */}
+      {!minimal && (
+        <div
+          className="absolute rounded-full bg-primary/4"
+          style={{
+            width: `${glowMedium}px`, height: `${glowMedium}px`,
+            top: '18%', left: '78%',
+            animationName: 'pulse-glow',
+            animationDuration: '6s',
+            animationTimingFunction: 'ease-in-out',
+            animationIterationCount: 'infinite',
+            animationDelay: '3s',
+          }}
+        />
+      )}
 
-      {/* ===== 第 2 层：旋转光晕环（runes 专属） ===== */}
-      {showRunes && (
+      {/* ===== 第 2 层：旋转光晕环（runes 专属，minimal 模式跳过） ===== */}
+      {showRunes && !minimal && (
         <>
           <div
             className="absolute rounded-full border border-primary/5"
@@ -235,9 +244,9 @@ export function MysticalBackground({
         </>
       )}
 
-      {/* ===== 第 3 层：浮动符文（runes 专属） ===== */}
+      {/* ===== 第 3 层：浮动符文（runes 专属，minimal 只显示 3 个） ===== */}
       {showRunes &&
-        FLOATING_RUNES.map((rune) => (
+        (minimal ? FLOATING_RUNES.slice(0, 3) : FLOATING_RUNES).map((rune) => (
           <span
             key={rune.char}
             className="absolute font-serif text-primary"

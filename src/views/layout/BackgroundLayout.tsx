@@ -65,6 +65,7 @@ export function BackgroundLayout({ children }: { children: React.ReactNode }) {
 
   const variant = useMemo(() => pathnameToVariant(pathname), [pathname]);
   const intensity: BgIntensity = pathnameNeedsSubtle(pathname) ? 'subtle' : 'full';
+  const isHomePage = pathname === '/';
 
   return (
     <div className="relative min-h-dvh overflow-hidden bg-background">
@@ -72,6 +73,7 @@ export function BackgroundLayout({ children }: { children: React.ReactNode }) {
         variant={variant}
         intensity={intensity}
         scaleFactor={scaleFactor}
+        minimal={isHomePage}
       />
       {children}
     </div>

@@ -139,63 +139,14 @@ import {  createInitialGameState } from './initialState';
 import type { GameContextType } from './types';
 const GameContext = createContext<GameContextType | null>(null);
 
-/**
- * 同步路由守卫：根据 gameState 和当前路径返回应重定向的目标路径
- *
- * 在各路由页面的渲染阶段同步调用，避免 useEffect 异步守卫造成的先渲染后跳转闪烁。
- * 守卫不触发任何数据生成函数——仅检查已有数据是否存在。
- *
- * @param currentPath - 当前页面路径（如 '/world-select'）
- * @param state - 当前 GameState
- * @returns 应重定向到的路径，或 null 表示允许访问当前页面
- */
-export function getRouteGuard(currentPath: string, state: GameState): string | null {
-  const hasWorlds = state.worlds.length > 0;
-  const hasSelectedWorld = !!state.selectedWorld;
-  const hasCharacters = state.characters.length > 0;
-  const hasProtagonist = !!state.protagonist;
-  const hasSelectedCharacter = !!state.selectedCharacter;
-  const isPlaying = state.phase === 'playing' && hasProtagonist;
-
-  // 已在游戏中 — 所有非游戏页面都重定向到 /game
-  if (isPlaying && currentPath !== '/game') {
-    return '/game';
-  }
-
-  switch (currentPath) {
-    case '/':
-      // 首页始终允许访问，但在游戏中时重定向
-      if (isPlaying) return '/game';
-      return null;
-
-    case '/world-select':
-      if (!hasWorlds) return '/';
-      return null;
-
-    case '/character-select':
-      if (!hasSelectedWorld) return '/world-select';
-      // V3: 角色通过 API 模板生成，不再依赖预加载的 characters
-      return null;
-
-    case '/backstory':
-      // V3: 从 character-select 保存角色后跳转，通过 query seed 加载
-      return null;
-
-    case '/game':
-      if (!hasProtagonist) {
-        if (hasSelectedWorld) return '/character-select';
-        if (hasWorlds) return '/world-select';
-        return '/';
-      }
-      return null;
-
-    default:
-      return null;
-  }
-}
+// getRouteGuard 已提取到独立文件，此处重导出以保持 API 兼容
+export { getRouteGuard } from './routeGuard';
 
 export function GameProvider({ children }: { children: React.ReactNode }) {
-  const [gameState, setGameState] = useState<GameState>(createInitialGameState);
+  const [gameState, setGameState] = useState<GameState>(
+    // 懒初始化：同步从 localStorage 恢复，避免首次渲染空状态导致路由守卫误判
+    () => loadGameStateWithRecovery() ?? createInitialGameState(),
+  );
   const isInitialized = useRef(false);
   const [hasMoreMessages, setHasMoreMessages] = useState(false);
   const [isLoadingMessages, setIsLoadingMessages] = useState(false);
@@ -270,37 +221,37 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     addToInventory,
   });
 
-  // 初始化游戏状态
+  // 初始化游戏状态（存档已在 useState 懒初始化中同步恢复）
   useEffect(() => {
     if (isInitialized.current) return;
     isInitialized.current = true;
 
-    // 异步初始化：获取服务端时间，处理离线
-    (async () => {
+    // 延迟网络时间校准 + 离线处理（空闲时执行，不阻塞首次渲染）
+    const scheduleDeferred = window.requestIdleCallback ?? ((cb: () => void) => setTimeout(cb, 50));
+    const idleHandle = scheduleDeferred(async () => {
       const serverNow = await fetchServerTime();
 
-      // 使用带恢复的存档加载
-      const savedState = loadGameStateWithRecovery();
-      if (savedState && savedState.protagonist) {
-        // === 1. 离线时间处理 ===
-        const time = savedState.time;
+      // 使用函数式更新读取最新 state（避免覆盖初始化后的用户操作）
+      setGameState((prev) => {
+        if (!prev.protagonist) {
+          // 无主角（选角/选世界阶段）— 无需离线处理
+          return prev;
+        }
+
+        const time = prev.time;
         const offlineResult = offline.process(
           time,
-          savedState.protagonist,
+          prev.protagonist!,
           serverNow,
-          savedState.autoCultivating || false,
+          prev.autoCultivating || false,
         );
 
-        // 应用离线收益到主角
-        let updatedProtagonist = offline.applyResult(savedState.protagonist, offlineResult);
+        let updatedProtagonist = offline.applyResult(prev.protagonist, offlineResult);
 
-        // === 2. 更新 TimeState ===
-        // 登录更新 lastLoginAt，清理过期冷却
         let updatedTime = realClock.login(time, serverNow);
         const { time: cleanedTime } = cooldown.clearExpired(updatedTime, serverNow);
         updatedTime = cleanedTime;
 
-        // 请求时刷新
         if (offlineResult.needsDailyRefresh) {
           updatedTime = {
             ...updatedTime,
@@ -314,7 +265,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
           };
         }
 
-        // === 3. 检查势力轮次冷却 ===
+        // 检查势力轮次冷却
         let updatedFactionProgress = updatedProtagonist.factionProgress;
         if (updatedFactionProgress) {
           const { dailyRound, weeklyRound } = updatedFactionProgress;
@@ -335,34 +286,32 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
 
         updatedProtagonist = { ...updatedProtagonist, factionProgress: updatedFactionProgress };
 
-        // === 4. 构建最终状态 ===
         const finalState: GameState = {
-          ...savedState,
+          ...prev,
           protagonist: updatedProtagonist,
           time: updatedTime,
         };
 
-        setGameState(finalState);
-
-        // 通知主题系统：世界已切换（从存档恢复）
-        if (finalState.protagonist) {
-          emit(worldEvents.events.world_changed, {
-            worldviewId: finalState.protagonist.world.worldviewId,
-            worldType: finalState.protagonist.world.type,
-          });
-        }
+        // 通知主题系统：世界已切换
+        emit(worldEvents.events.world_changed, {
+          worldviewId: finalState.protagonist!.world.worldviewId,
+          worldType: finalState.protagonist!.world.type,
+        });
 
         // 启动运行时定时器
         timerService.start(serverNow, updatedTime);
-      } else if (savedState) {
-        // 无主角但有存档（选角/选世界阶段）— 仅初始化时间
-        const timeState = savedState.time;
-        setGameState({
-          ...savedState,
-          time: timeState,
-        });
+
+        return finalState;
+      });
+    });
+
+    return () => {
+      if (window.cancelIdleCallback) {
+        window.cancelIdleCallback(idleHandle);
+      } else {
+        clearTimeout(idleHandle as unknown as number);
       }
-    })();
+    };
   }, []);
 
   // 保存游戏状态（登出时记录时间）
@@ -528,26 +477,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     }
   }, [gameState.phase, gameState.protagonist, gameState.statistics, addMessageInternal]);
 
-  // 修复 P1-005: 初始化和清理游戏系统（事件监听器内存泄漏防护）
-  useEffect(() => {
-    // 动态导入 gameSystems 以避免循环依赖
-    let gameSystems: { initialize: () => void; destroy: () => void } | null = null;
-    
-    import('@/core/engine').then(module => {
-      gameSystems = module.gameSystems;
-      gameSystems.initialize();
-    }).catch(err => {
-      // 初始化失败不阻塞应用
-      log.warn('GameSystems initialization skipped:', err);
-    });
-    
-    return () => {
-      // 组件卸载时清理事件监听器
-      if (gameSystems) {
-        gameSystems.destroy();
-      }
-    };
-  }, []);
+  // gameSystems 初始化已移至 useGameSystems hook（按需在游戏路由中加载）
 
   // ========================================
   // 自动修炼逻辑已移至 useGameCultivation hook
