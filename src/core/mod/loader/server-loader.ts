@@ -49,7 +49,7 @@ export class ServerModLoader extends BaseModLoader {
   private stagedData: Map<string, Map<string, unknown>> = new Map();
 
   constructor(basePath?: string) {
-    super(basePath ?? path.resolve(process.cwd(), 'mods'));
+    super(basePath ?? path.resolve(/*turbopackIgnore: true*/ process.cwd(), 'mods'));
   }
 
   /**

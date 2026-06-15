@@ -28,6 +28,10 @@ const nextConfig = {
   outputFileTracingIncludes: {
     '/api/**/*': ['./node_modules/sql.js/dist/*.wasm'],
   },
+  // 排除因 process.cwd() / fs 操作导致的过度追踪文件
+  outputFileTracingExcludes: {
+    '/api/**/*': ['next.config.ts', 'next.config.mjs', 'next.config.js'],
+  },
 };
 
 export default nextConfig as NextConfig;
