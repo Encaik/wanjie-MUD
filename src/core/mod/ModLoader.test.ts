@@ -207,7 +207,7 @@ function makeManifest(id: string, dependencies: string[]) {
     dependencies,
     required: false,
     template: false,
-    contentTypes: ['worldview'] as import('./ModManifest').ModContentType[],
+    contentTypes: ['worldview'] as import('./types').ModContentType[],
     dataFiles: {},
   };
 }

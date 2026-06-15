@@ -11,5 +11,4 @@ export type { ModLoaderState, ModLoadPhase, ModLoadWarning } from './types';
 export { useModContext, ModInitProvider } from './components/ModInitProvider';
 
 // Components
-export { ModLoadingOverlay } from './components/ModLoadingOverlay';
 export { ModErrorBanner } from './components/ModErrorBanner';

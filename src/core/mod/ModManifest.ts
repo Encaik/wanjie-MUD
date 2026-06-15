@@ -1,49 +1,17 @@
 /**
  * Mod 清单（mod.json）类型定义和校验
  *
- * @module shared/lib/mod
+ * 纯类型 + 纯校验函数，无 I/O、无浏览器 API 依赖。
+ *
+ * @module core/mod
  */
+
+import { ALL_MOD_CONTENT_TYPES } from './types';
+import type { ModContentType } from './types';
 
 // ============================================
 // 类型定义
 // ============================================
-
-/** Mod 可提供的内容类型 */
-export type ModContentType =
-  | 'worldview'
-  | 'attributes'
-  | 'races'
-  | 'talents'
-  | 'npcs'
-  | 'quests'
-  | 'traits'
-  | 'dangers'
-  | 'opportunities'
-  | 'realms'
-  | 'factions'
-  | 'names'
-  | 'text'
-  | 'items'
-  | 'styles';
-
-/** 所有支持的 Mod 内容类型列表 */
-export const ALL_MOD_CONTENT_TYPES: ModContentType[] = [
-  'worldview',
-  'attributes',
-  'races',
-  'talents',
-  'npcs',
-  'quests',
-  'traits',
-  'dangers',
-  'opportunities',
-  'realms',
-  'factions',
-  'names',
-  'text',
-  'items',
-  'styles',
-];
 
 /**
  * Mod 清单
@@ -82,52 +50,6 @@ export interface ModManifest {
    * 数组模式下每个文件包含一个独立条目，按数组顺序依次加载注册。
    */
   dataFiles: Record<string, string | string[]>;
-}
-
-/** Mod 加载失败错误 */
-export class ModLoadError extends Error {
-  /** 失败的 Mod 列表 */
-  failedMods: Array<{ id: string; name: string; error: string }>;
-
-  constructor(failedMods: Array<{ id: string; name: string; error: string }>) {
-    const names = failedMods.map(m => `"${m.name || m.id}"`).join('、');
-    super(`Mod 加载失败: ${names}`);
-    this.name = 'ModLoadError';
-    this.failedMods = failedMods;
-  }
-}
-
-/** Mod 加载状态 */
-export type ModLoadStatus = 'pending' | 'loading' | 'loaded' | 'error';
-
-/** 加载完成的 Mod 信息（运行时状态） */
-export interface LoadedMod {
-  /** Mod 清单 */
-  manifest: ModManifest;
-  /** 加载状态 */
-  status: ModLoadStatus;
-  /** 错误信息（仅 status === 'error' 时有值） */
-  error?: string;
-}
-
-/** Mod 加载进度事件数据 */
-export interface ModLoadProgressEvent {
-  /** 当前正在加载的 Mod 编号（从 1 开始） */
-  current: number;
-  /** 待加载 Mod 总数 */
-  total: number;
-  /** 当前正在加载的 Mod ID */
-  currentModId: string;
-}
-
-/** Mod 加载完成事件数据 */
-export interface ModLoadCompleteEvent {
-  /** 成功加载的 Mod 数量 */
-  loaded: number;
-  /** 加载失败的 Mod 数量 */
-  failed: number;
-  /** 扫描到的 Mod 总数 */
-  total: number;
 }
 
 // ============================================

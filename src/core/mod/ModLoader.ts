@@ -23,15 +23,16 @@ import { QuestRegistry } from '@/core/registry/QuestRegistry';
 import type { WorldviewDefinition } from '@/core/registry/WorldViewRegistry';
 import type { NPCDefinition, QuestDefinition } from '@/core/types';
 
-import { parseManifest, ModLoadError } from './ModManifest';
+import { parseManifest } from './ModManifest';
+import { ModLoadError } from './types';
 
+import type { ModManifest } from './ModManifest';
 import type {
-  ModManifest,
   ModLoadStatus,
-  ModLoadProgressEvent,
-  ModLoadCompleteEvent,
+  ModLoadProgress,
+  ModLoadResult,
   LoadedMod,
-} from './ModManifest';
+} from './types';
 
 /** ModLoader 日志记录器 */
 const log = createLogger('ModLoader');
@@ -56,8 +57,8 @@ interface ModList {
 // ============================================
 
 /** Mod 加载事件的回调类型 */
-export type ModProgressCallback = (event: ModLoadProgressEvent) => void;
-export type ModCompleteCallback = (event: ModLoadCompleteEvent) => void;
+export type ModProgressCallback = (event: ModLoadProgress) => void;
+export type ModCompleteCallback = (event: ModLoadResult) => void;
 
 // ============================================
 // ModLoader
@@ -140,7 +141,7 @@ export class ModLoader {
    * @returns 加载结果摘要
    * @throws {ModLoadError} 当强制 Mod 加载失败时
    */
-  async loadAll(): Promise<ModLoadCompleteEvent> {
+  async loadAll(): Promise<ModLoadResult> {
     if (this.loading) {
       log.warn('已经在加载中，跳过重复调用');
       return { loaded: this.loadedMods.filter(m => m.status === 'loaded').length, failed: this.loadedMods.filter(m => m.status === 'error').length, total: this.loadedMods.length };
@@ -154,7 +155,7 @@ export class ModLoader {
       const entries = await this.discoverMods();
       if (entries.length === 0) {
         log.warn('未发现任何 Mod，游戏数据可能不完整');
-        const event: ModLoadCompleteEvent = { loaded: 0, failed: 0, total: 0 };
+        const event: ModLoadResult = { loaded: 0, failed: 0, total: 0 };
         this.onComplete?.(event);
         return event;
       }
@@ -249,7 +250,7 @@ export class ModLoader {
         throw error;
       }
 
-      const event: ModLoadCompleteEvent = { loaded, failed, total };
+      const event: ModLoadResult = { loaded, failed, total };
       this.onComplete?.(event);
       return event;
     } finally {

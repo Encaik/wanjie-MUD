@@ -34,7 +34,7 @@ src/
 ├── app/       ← ① Next.js 路由（只放 page.tsx, layout.tsx）
 ├── views/     ← ② 页面组件（组合模块 Panel，无业务逻辑）
 ├── modules/   ← ③ 功能模块（一个业务域一个目录，自包含）
-├── core/      ← ④ 核心系统（游戏基础设施：事件、计算、世界、注册、Mod、引擎）
+├── core/      ← ④ 核心系统（游戏基础设施：事件、计算、世界、注册、服务端、Mod、引擎）
 └── shared/    ← ⑤ 公共工具（跨模块工具性代码：AI、WebSocket、cn、logger）
 ```
 
@@ -68,7 +68,7 @@ app/page.tsx → views/View.tsx → modules/hooks/ → modules/logic/
 ├── Next.js 路由页面（page.tsx, layout.tsx）？ → app/
 ├── 与路由挂钩的页面组件（组合模块 Panel）？    → views/<route>/
 ├── 某个业务功能的逻辑/状态/组件/数据？        → modules/<domain>/
-├── 游戏核心基础设施（事件、计算、世界、注册、Mod、引擎）？ → core/
+├── 游戏核心基础设施（事件、计算、世界、注册、服务端、Mod、引擎）？ → core/
 └── 纯通用工具性代码？                         → shared/
 ```
 
@@ -77,6 +77,10 @@ app/page.tsx → views/View.tsx → modules/hooks/ → modules/logic/
 - 写跨模块状态：通过 `GameEventManager` 事件总线 ✅
 - logic 调 logic：纯函数调用纯函数 ✅
 - 循环依赖（A→B→A）：禁止 ❌
+
+### README 文档同步
+
+- **新增/删除/重命名 `src/core/` 或 `src/modules/` 下的子模块时**：必须同步更新 `src/core/README.md` 或 `src/modules/README.md`，确保文档与实际结构一致
 
 ### 设计文档同步规则
 

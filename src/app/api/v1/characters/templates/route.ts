@@ -22,7 +22,7 @@ interface TemplatesRequest {
 
 export async function POST(request: NextRequest) {
   try {
-    ensureWorldSystemInitialized();
+    await ensureWorldSystemInitialized();
   } catch (err) {
     log.error('初始化失败:', err);
     return apiError(500, '世界系统初始化失败');

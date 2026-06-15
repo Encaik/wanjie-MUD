@@ -33,7 +33,7 @@ export async function POST(request: NextRequest) {
 
   // 1. 初始化
   try {
-    ensureWorldSystemInitialized();
+    await ensureWorldSystemInitialized();
     log.info('初始化完成');
   } catch (err) {
     log.error('初始化失败:', err);

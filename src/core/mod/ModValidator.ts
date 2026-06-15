@@ -19,7 +19,8 @@ import {
   validateNamePool,
   validateFactionTemplates,
 } from '@/core/registry/schemas';
-import type { ModManifest, ModContentType } from './ModManifest';
+import type { ModManifest } from './ModManifest';
+import type { ModContentType } from './types';
 import { validateManifest } from './ModManifest';
 
 // ============================================

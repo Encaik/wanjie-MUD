@@ -65,6 +65,7 @@ src/
 | `core/calculation/` | ④ 统一数值计算引擎 | 属性计算、效果优先级、边界保护 | React 组件/Hooks、依赖 modules/ |
 | `core/world/` | ④ 世界系统 | WorldProviderRegistry、WorldPoolEngine、模板验证 | React 组件/Hooks |
 | `core/registry/` | ④ 数据注册中心 | WorldDataRegistry、WorldMechanicsRegistry | React 组件/Hooks、依赖 modules/ |
+| `core/server/` | ④ 服务端核心代码 | instrumentation、中间件等服务端基础设施 | React 组件/Hooks、依赖 modules/ |
 | `core/mod/` | ④ Mod 系统 | Mod 加载、验证、清单管理 | React 组件/Hooks |
 | `core/engine/` | ④ 引擎集成层 | 跨系统集成逻辑（gameSystems、expansionLogic、messageDB） | React 组件/Hooks |
 | `shared/ui/` | ⑤ shadcn/ui 组件 | shadcn 官方组件 | **任何自定义代码** |
@@ -136,7 +137,18 @@ modules/<domain>/
 - ❌ 在 `core/` 之外重新实现 `core/` 已有的功能（如自己写 logger、自己写事件总线、自己写计算引擎）
 - ❌ 绕过 `core/` 提供的 API 直接用底层方式实现（如用 `console.log` 代替 `createLogger()`、用自定义事件代替 `gameEventBus`）
 - ❌ 在 `modules/` 或 `shared/` 中创建与 `core/` 功能重复的系统
-- ✅ 开发前必须确认 `core/` 中是否已有对应能力：`core/logger/`（系统日志）、`core/message-log/`（玩家消息）、`core/events/`（事件总线）、`core/calculation/`（数值计算）、`core/types/`（核心类型）、`core/world/`（世界系统）、`core/registry/`（数据注册）、`core/engine/`（引擎集成）
+- ✅ 开发前必须确认 `core/` 中是否已有对应能力：`core/logger/`（系统日志）、`core/message-log/`（玩家消息）、`core/events/`（事件总线）、`core/calculation/`（数值计算）、`core/types/`（核心类型）、`core/world/`（世界系统）、`core/registry/`（数据注册）、`core/server/`（服务端核心）、`core/engine/`（引擎集成）
+
+---
+
+### 5.5 README 文档同步（MUST）
+
+`src/core/README.md` 和 `src/modules/README.md` 是模块总览文档，新增、删除或重命名核心或业务模块时必须同步更新。
+
+- ❌ 新增子模块后忘记在对应 README.md 中添加描述
+- ❌ 删除子模块后忘记在对应 README.md 中移除描述
+- ❌ 重命名子模块后忘记在对应 README.md 中更新名称和描述
+- ✅ 变更涉及 `src/core/` 或 `src/modules/` 的子模块时，变更前后必须检查并同步更新对应 README.md
 
 ---
 
