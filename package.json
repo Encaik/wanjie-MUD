@@ -100,6 +100,15 @@
     "vitest": "^4.1.0"
   },
   "packageManager": "pnpm@11.6.0",
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "better-sqlite3",
+      "esbuild",
+      "msw",
+      "sharp",
+      "unrs-resolver"
+    ]
+  },
   "engines": {
     "pnpm": ">=9.0.0"
   }
