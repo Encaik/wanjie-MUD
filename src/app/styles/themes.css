@@ -111,84 +111,84 @@
  * 启用方式：在 <html> 添加 .dark 类
  * ======================================== */
 .dark {
-  /* 背景层 */
-  --background: oklch(0.18 0.02 55);
-  --foreground: oklch(0.92 0.015 70);
+  /* ===== 背景层 — 浅暖棕，和亮色一样明亮清晰 ===== */
+  --background: oklch(0.82 0.06 78);
+  --foreground: oklch(0.22 0.035 55);
 
-  /* 卡片层 */
-  --card: oklch(0.22 0.025 55);
-  --card-foreground: oklch(0.92 0.015 70);
+  /* ===== 卡片层 ===== */
+  --card: oklch(0.88 0.05 76);
+  --card-foreground: oklch(0.22 0.035 55);
 
-  /* 弹出层 */
-  --popover: oklch(0.22 0.025 55);
-  --popover-foreground: oklch(0.92 0.015 70);
+  /* ===== 弹出层 ===== */
+  --popover: oklch(0.93 0.04 74);
+  --popover-foreground: oklch(0.20 0.04 55);
 
-  /* 主色调 - 金棕色 */
-  --primary: oklch(0.70 0.12 65);
-  --primary-foreground: oklch(0.15 0.02 55);
+  /* ===== 主色调 - 琥珀棕 ===== */
+  --primary: oklch(0.48 0.16 58);
+  --primary-foreground: oklch(0.97 0.02 65);
 
-  /* 次要色 */
-  --secondary: oklch(0.28 0.03 55);
-  --secondary-foreground: oklch(0.88 0.015 70);
+  /* ===== 次要色 ===== */
+  --secondary: oklch(0.85 0.04 72);
+  --secondary-foreground: oklch(0.28 0.04 55);
 
-  /* 柔和色 */
-  --muted: oklch(0.25 0.025 55);
-  --muted-foreground: oklch(0.65 0.03 60);
+  /* ===== 柔和色 ===== */
+  --muted: oklch(0.86 0.035 74);
+  --muted-foreground: oklch(0.42 0.035 62);
 
-  /* 强调色 */
-  --accent: oklch(0.32 0.04 55);
-  --accent-foreground: oklch(0.90 0.015 70);
+  /* ===== 强调色 ===== */
+  --accent: oklch(0.80 0.06 70);
+  --accent-foreground: oklch(0.25 0.05 55);
 
-  /* 危险色 */
-  --destructive: oklch(0.65 0.18 25);
+  /* ===== 危险色 ===== */
+  --destructive: oklch(0.52 0.22 22);
 
-  /* 边框与输入 */
-  --border: oklch(0.30 0.02 55);
-  --input: oklch(0.25 0.025 55);
-  --ring: oklch(0.70 0.12 65);
+  /* ===== 边框与输入 ===== */
+  --border: oklch(0.78 0.05 72);
+  --input: oklch(0.86 0.035 74);
+  --ring: oklch(0.48 0.16 58);
 
-  /* 图表色 */
-  --chart-1: oklch(0.75 0.12 55);
-  --chart-2: oklch(0.65 0.15 40);
-  --chart-3: oklch(0.70 0.10 75);
-  --chart-4: oklch(0.55 0.08 55);
-  --chart-5: oklch(0.60 0.06 70);
+  /* ===== 图表色 ===== */
+  --chart-1: oklch(0.60 0.14 48);
+  --chart-2: oklch(0.52 0.16 38);
+  --chart-3: oklch(0.58 0.12 75);
+  --chart-4: oklch(0.45 0.08 52);
+  --chart-5: oklch(0.55 0.08 68);
 
-  /* 侧边栏 */
-  --sidebar: oklch(0.20 0.025 55);
-  --sidebar-foreground: oklch(0.90 0.015 70);
-  --sidebar-primary: oklch(0.70 0.12 65);
-  --sidebar-primary-foreground: oklch(0.15 0.02 55);
-  --sidebar-accent: oklch(0.28 0.04 55);
-  --sidebar-accent-foreground: oklch(0.88 0.015 70);
-  --sidebar-border: oklch(0.30 0.02 55);
-  --sidebar-ring: oklch(0.70 0.12 65);
+  /* ===== 侧边栏 — 微深于主背景，形成画框 ===== */
+  --sidebar: oklch(0.75 0.06 76);
+  --sidebar-foreground: oklch(0.22 0.035 55);
+  --sidebar-primary: oklch(0.48 0.16 58);
+  --sidebar-primary-foreground: oklch(0.97 0.02 65);
+  --sidebar-accent: oklch(0.80 0.05 68);
+  --sidebar-accent-foreground: oklch(0.25 0.05 55);
+  --sidebar-border: oklch(0.72 0.05 70);
+  --sidebar-ring: oklch(0.48 0.16 58);
 
-  /* 品质颜色 - 暗色模式下提高亮度 */
-  --quality-mythic: oklch(0.70 0.22 25);
-  --quality-legendary: oklch(0.75 0.18 55);
-  --quality-epic: oklch(0.88 0.15 90);
-  --quality-rare: oklch(0.65 0.20 300);
-  --quality-uncommon: oklch(0.65 0.15 250);
-  --quality-common: oklch(0.70 0.12 145);
-  --quality-poor: oklch(0.55 0.02 70);
-  --quality-basic: oklch(0.80 0.01 75);
+  /* ===== 品质颜色 ===== */
+  --quality-mythic: oklch(0.52 0.26 22);
+  --quality-legendary: oklch(0.56 0.22 48);
+  --quality-epic: oklch(0.60 0.20 85);
+  --quality-rare: oklch(0.48 0.24 298);
+  --quality-uncommon: oklch(0.50 0.18 248);
+  --quality-common: oklch(0.50 0.14 142);
+  --quality-poor: oklch(0.48 0.04 68);
+  --quality-basic: oklch(0.60 0.03 72);
 
-  /* 游戏领域色（暗色模式提高明度） */
-  --game-combat: oklch(0.70 0.16 25);
-  --game-cultivation: oklch(0.65 0.12 260);
-  --game-recovery: oklch(0.68 0.12 145);
-  --game-economy: oklch(0.75 0.14 75);
-  --game-mental: oklch(0.65 0.12 310);
-  --game-tribulation: oklch(0.72 0.14 50);
+  /* ===== 游戏领域色 ===== */
+  --game-combat: oklch(0.50 0.22 22);
+  --game-cultivation: oklch(0.48 0.17 260);
+  --game-recovery: oklch(0.50 0.16 142);
+  --game-economy: oklch(0.54 0.18 70);
+  --game-mental: oklch(0.48 0.17 308);
+  --game-tribulation: oklch(0.53 0.18 45);
 
-  /* 游戏领域色背景（暗色模式提高亮度后等比例背景） */
-  --game-combat-bg: oklch(0.70 0.16 25 / 0.15);
-  --game-cultivation-bg: oklch(0.65 0.12 260 / 0.15);
-  --game-recovery-bg: oklch(0.68 0.12 145 / 0.15);
-  --game-economy-bg: oklch(0.75 0.14 75 / 0.15);
-  --game-mental-bg: oklch(0.65 0.12 310 / 0.15);
-  --game-tribulation-bg: oklch(0.72 0.14 50 / 0.15);
+  /* ===== 游戏领域色背景 ===== */
+  --game-combat-bg: oklch(0.50 0.22 22 / 0.08);
+  --game-cultivation-bg: oklch(0.48 0.17 260 / 0.08);
+  --game-recovery-bg: oklch(0.50 0.16 142 / 0.08);
+  --game-economy-bg: oklch(0.54 0.18 70 / 0.08);
+  --game-mental-bg: oklch(0.48 0.17 308 / 0.08);
+  --game-tribulation-bg: oklch(0.53 0.18 45 / 0.08);
 }
 
 /* ========================================

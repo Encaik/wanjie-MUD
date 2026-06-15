@@ -95,8 +95,8 @@ export function RadarChart({
             }).join(' ')}
             fill="none"
             stroke={gridColor}
-            strokeWidth={li === 2 ? 1 : 0.5}
-            opacity={li === 2 ? 0.4 : 0.2}
+            strokeWidth={li === 2 ? 1 : 0.6}
+            opacity={li === 2 ? 0.5 : 0.3}
           />
         ))}
 
@@ -168,9 +168,9 @@ export function RadarChart({
               key={`label-${i}`}
               x={lx.toFixed(2)} y={ly.toFixed(2)}
               textAnchor={anchor} dominantBaseline="middle" dy={dy}
-              fontSize="9" fontFamily="var(--font-serif)"
-              fill={axis.color ?? labelColor}
-              className="font-medium pointer-events-none"
+              fontSize="11" fontFamily="var(--font-serif)"
+              fill={axis.color ?? 'var(--foreground)'}
+              className="font-medium pointer-events-none opacity-85"
             >
               {axis.label}
             </text>
@@ -197,7 +197,7 @@ export function RadarChart({
           <div className="space-y-1">
             {tooltipRows.map((row, i) => (
               <div key={i} className="flex items-center justify-between gap-4">
-                <span className="flex items-center gap-1.5 text-[10px] text-muted-foreground font-serif">
+                <span className="flex items-center gap-1.5 text-[11px] text-foreground/80 font-serif">
                   <span
                     className="w-1.5 h-1.5 rounded-full shrink-0"
                     style={{ backgroundColor: row.color }}

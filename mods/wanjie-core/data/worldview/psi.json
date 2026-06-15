@@ -565,23 +565,23 @@
       "--input": "oklch(0.92 0.018 285)"
     },
     "dark": {
-      "--primary": "oklch(0.68 0.22 285)",
-      "--primary-foreground": "oklch(0.10 0.02 275)",
-      "--accent": "oklch(0.28 0.06 280)",
-      "--background": "oklch(0.14 0.04 275)",
-      "--foreground": "oklch(0.92 0.020 282)",
-      "--border": "oklch(0.24 0.05 280)",
-      "--ring": "oklch(0.68 0.22 285)",
-      "--card": "oklch(0.18 0.05 278)",
-      "--card-foreground": "oklch(0.92 0.020 282)",
-      "--popover": "oklch(0.18 0.05 278)",
-      "--popover-foreground": "oklch(0.92 0.020 282)",
-      "--secondary": "oklch(0.22 0.05 280)",
-      "--secondary-foreground": "oklch(0.88 0.020 282)",
-      "--muted": "oklch(0.20 0.045 280)",
-      "--muted-foreground": "oklch(0.60 0.05 280)",
-      "--accent-foreground": "oklch(0.90 0.020 282)",
-      "--input": "oklch(0.20 0.045 280)"
+      "--primary": "oklch(0.43 0.22 283)",
+      "--primary-foreground": "oklch(0.97 0.01 280)",
+      "--accent": "oklch(0.80 0.08 278)",
+      "--background": "oklch(0.82 0.08 278)",
+      "--foreground": "oklch(0.20 0.035 280)",
+      "--border": "oklch(0.76 0.07 278)",
+      "--ring": "oklch(0.43 0.22 283)",
+      "--card": "oklch(0.88 0.07 280)",
+      "--card-foreground": "oklch(0.20 0.035 280)",
+      "--popover": "oklch(0.93 0.06 278)",
+      "--popover-foreground": "oklch(0.18 0.04 278)",
+      "--secondary": "oklch(0.86 0.06 280)",
+      "--secondary-foreground": "oklch(0.26 0.045 280)",
+      "--muted": "oklch(0.87 0.055 280)",
+      "--muted-foreground": "oklch(0.40 0.05 278)",
+      "--accent-foreground": "oklch(0.22 0.045 280)",
+      "--input": "oklch(0.87 0.055 280)"
     }
   }
 }

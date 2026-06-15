@@ -124,16 +124,16 @@ export function StatusPanel({ protagonist }: StatusPanelProps) {
                 <config.icon className={`w-3.5 h-3.5 ${config.color} shrink-0`} />
                 <span className="text-[10px] text-muted-foreground mt-0.5">{stat.displayName}</span>
                 <span className={`text-xs font-bold ${config.color}`}>{stat.value}</span>
-                <span className="text-[10px] text-muted-foreground/70">
+                <span className="text-[10px] text-muted-foreground/85">
                   {stat.baseValue}+{stat.growthValue}
                 </span>
                 {change.direction === 'up' && (
-                  <span className="absolute -top-1 -right-1 text-[9px] text-green-500 flex items-center bg-green-100 dark:bg-green-900/50 rounded-full px-0.5">
+                  <span className="absolute -top-1 -right-1 text-[10px] text-green-500 flex items-center bg-green-100 dark:bg-green-900/50 rounded-full px-0.5">
                     <TrendingUp className="w-2 h-2" />{change.amount}
                   </span>
                 )}
                 {change.direction === 'down' && (
-                  <span className="absolute -top-1 -right-1 text-[9px] text-red-500 flex items-center bg-red-100 dark:bg-red-900/50 rounded-full px-0.5">
+                  <span className="absolute -top-1 -right-1 text-[10px] text-red-500 flex items-center bg-red-100 dark:bg-red-900/50 rounded-full px-0.5">
                     <TrendingDown className="w-2 h-2" />{change.amount}
                   </span>
                 )}
@@ -179,7 +179,7 @@ export function StatusPanel({ protagonist }: StatusPanelProps) {
         {/* 加成详情 */}
         {(combatStats.attackBonus > 0 || combatStats.equipmentAttackBonus > 0 || 
           combatStats.defenseBonus > 0 || combatStats.equipmentDefenseBonus > 0) && (
-          <div className="grid grid-cols-2 gap-2 text-[9px]">
+          <div className="grid grid-cols-2 gap-2 text-[10px]">
             <div className="flex items-center justify-between text-muted-foreground">
               <span>功法攻击</span>
               <span className="text-red-500">+{combatStats.attackBonus}%</span>

@@ -4,10 +4,10 @@ import { useEffect, useRef, useState } from 'react';
 
 import { useRouter } from 'next/navigation';
 
-import { useHomeGame } from '@/views/home/HomeProvider';
-import { getRouteGuard } from '@/views/game/routeGuard';
-import { StartScreen } from '@/views/home/StartScreen';
 import { PageLoading } from '@/shared/components/PageLoading';
+import { getRouteGuard } from '@/views/game/routeGuard';
+import { useHomeGame } from '@/views/home/HomeProvider';
+import { StartScreen } from '@/views/home/StartScreen';
 
 export default function HomePage() {
   const router = useRouter();
@@ -15,18 +15,16 @@ export default function HomePage() {
   const redirectedRef = useRef(false);
   const [isStarting, setIsStarting] = useState(false);
 
-  // 同步计算重定向目标，在 useEffect 中执行跳转（渲染 null 避免闪烁）
-  const redirectTo = getRouteGuard('/', gameState);
-
+  // 路由守卫在 useEffect 中执行，避免 SSR/客户端渲染不一致导致的水合不匹配
+  // 服务端和客户端首次渲染始终展示 StartScreen，状态恢复后再判断重定向
   useEffect(() => {
-    if (redirectTo && !redirectedRef.current) {
+    if (redirectedRef.current) return;
+    const redirectTo = getRouteGuard('/', gameState);
+    if (redirectTo) {
       redirectedRef.current = true;
       router.replace(redirectTo);
     }
-  }, [redirectTo, router]);
-
-  // 需要重定向时不渲染页面内容
-  if (redirectTo) return null;
+  }, [gameState, router]);
 
   // 正在跳转到世界选择页时显示加载态
   if (isStarting) {

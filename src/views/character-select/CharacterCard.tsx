@@ -288,7 +288,7 @@ export function CharacterCard({
               size={130}
               className="w-full max-w-[105px]"
             />
-            <span className="text-[9px] text-muted-foreground/50 font-serif tracking-wider">
+            <span className="text-[11px] text-muted-foreground/80 font-serif tracking-wider">
               经脉资质
             </span>
           </div>
@@ -301,7 +301,7 @@ export function CharacterCard({
               size={120}
               className="w-full max-w-[95px]"
             />
-            <span className="text-[9px] text-muted-foreground/50 font-serif tracking-wider">
+            <span className="text-[11px] text-muted-foreground/80 font-serif tracking-wider">
               核心值
             </span>
           </div>

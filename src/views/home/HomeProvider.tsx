@@ -11,12 +11,12 @@
 'use client';
 
 import React, { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react';
+
 import { useRouter } from 'next/navigation';
 
 import type { GameState } from '@/core/types';
-import { createInitialGameState } from '@/views/game/initialState';
-import { getRouteGuard } from '@/views/game/routeGuard';
 import { safeSaveGameState } from '@/shared/utils/saveUtils';
+import { createInitialGameState } from '@/views/game/initialState';
 
 // ============================================
 // Context
@@ -44,30 +44,26 @@ const HomeGameContext = createContext<HomeGameContextType | null>(null);
  */
 export function HomeProvider({ children }: { children: React.ReactNode }) {
   const router = useRouter();
-  const [gameState, setGameState] = useState<GameState>(
-    // 懒初始化：同步从 localStorage 恢复，避免首次渲染空状态导致闪烁
-    () => {
-      try {
-        const raw = localStorage.getItem('gameState');
-        if (raw) {
-          const saved = JSON.parse(raw) as GameState;
-          if (saved && typeof saved === 'object') {
-            return saved;
-          }
-        }
-      } catch { /* 存档损坏时使用默认状态 */ }
-      return createInitialGameState();
-    },
-  );
+  // 初始状态始终为 createInitialGameState()，确保 SSR 与客户端首次渲染一致，避免水合不匹配
+  const [gameState, setGameState] = useState<GameState>(createInitialGameState);
   const isInitialized = useRef(false);
   const gameStateRef = useRef(gameState);
   gameStateRef.current = gameState;
 
   // ========================================
-  // 初始化标记（存档已在 useState 懒初始化中同步恢复）
+  // 客户端挂载后从 localStorage 恢复存档状态
   // ========================================
 
   useEffect(() => {
+    try {
+      const raw = localStorage.getItem('gameState');
+      if (raw) {
+        const saved = JSON.parse(raw) as GameState;
+        if (saved && typeof saved === 'object') {
+          setGameState(saved);
+        }
+      }
+    } catch { /* 存档损坏时使用默认状态 */ }
     isInitialized.current = true;
   }, []);
 

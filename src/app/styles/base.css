@@ -15,6 +15,10 @@
   }
   body {
     @apply bg-background text-foreground font-serif;
+    font-size: 1rem;
+    /* 暗色模式下 CJK 宋体笔画密集，抗锯齿可减少笔画粘连 */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 }
 
