@@ -30,7 +30,7 @@ export function ItemTooltip({
       <TooltipContent
         side={side}
         data-slot="item-tooltip-content"
-        className={`max-w-[200px] bg-popover text-popover-foreground border-2 border-border shadow-lg ${className}`}
+        className={`max-w-[200px] border-2 shadow-lg ${className}`}
       >
         <div className="space-y-1.5">
           {/* 名称 */}

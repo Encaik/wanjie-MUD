@@ -64,7 +64,7 @@ export function UpgradeableItemTooltip({
       <TooltipContent
         side={side}
         data-slot="upgradeable-item-tooltip-content"
-        className={`min-w-[280px] max-w-[320px] bg-popover text-popover-foreground border-2 border-border shadow-lg ${className}`}
+        className={`min-w-[280px] max-w-[320px] border-2 shadow-lg ${className}`}
       >
         <div className="space-y-1.5">
           {/* 名称 */}

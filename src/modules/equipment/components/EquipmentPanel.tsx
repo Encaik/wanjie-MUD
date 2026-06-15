@@ -560,7 +560,7 @@ function ActiveSetEffects({ equippedItems }: { equippedItems: (Equipment | null)
                 )}
               </div>
             </TooltipTrigger>
-            <TooltipContent side="top" className="max-w-xs bg-popover border-border shadow-lg">
+            <TooltipContent side="top" className="max-w-xs shadow-lg">
               <div className="space-y-2">
                 <div className="text-xs font-medium text-foreground">{set.name}</div>
                 <div className="text-[10px] text-muted-foreground">{set.description}</div>
