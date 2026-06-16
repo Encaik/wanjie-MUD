@@ -7,8 +7,10 @@
 import { ContextBuilder } from '../context/builder';
 
 import type { WorldDanger, WorldOpportunity } from '@/modules/identity/data/worldEffectsData';
-import type { Protagonist, Technique, Equipment, ActiveEffect, EnemyTier } from '@/core/types';
+import type { Protagonist, ActiveEffect, EnemyTier } from '@/core/types';
 import type { CalculationContext, WorldEffectInput } from '../context/types';
+import type { ResolvedItem } from '@/modules/item/types';
+import { resolveItem, findItemByInstance } from '@/modules/item/logic/itemManager';
 
 /**
  * 从主角对象构建计算上下文
@@ -17,105 +19,7 @@ import type { CalculationContext, WorldEffectInput } from '../context/types';
  * @returns 计算上下文
  */
 export function buildContextFromProtagonist(protagonist: Protagonist): CalculationContext {
-  const builder = new ContextBuilder();
-  
-  // 基础角色数据
-  const stats = {
-    体质: protagonist.stats.base.体质 + protagonist.stats.growth.体质,
-    灵根: protagonist.stats.base.灵根 + protagonist.stats.growth.灵根,
-    悟性: protagonist.stats.base.悟性 + protagonist.stats.growth.悟性,
-    幸运: protagonist.stats.base.幸运 + protagonist.stats.growth.幸运,
-    意志: protagonist.stats.base.意志 + protagonist.stats.growth.意志,
-  };
-  
-  // 构建上下文
-  const context: CalculationContext = {
-    calculationId: `calc_${Date.now()}_${Math.random().toString(36).substring(2, 8)}`,
-    timestamp: Date.now(),
-    
-    character: {
-      id: String(protagonist.character.id),
-      type: 'protagonist',
-      level: protagonist.level,
-      realm: protagonist.realm,
-      realmLevel: getRealmLevel(protagonist.realm),
-      baseStats: stats,
-    },
-    
-    equipment: {
-      melee: protagonist.equippedMelee ? convertEquipment(protagonist.equippedMelee) : null,
-      ranged: protagonist.equippedRanged ? convertEquipment(protagonist.equippedRanged) : null,
-      head: protagonist.equippedHead ? convertEquipment(protagonist.equippedHead) : null,
-      body: protagonist.equippedBody ? convertEquipment(protagonist.equippedBody) : null,
-      legs: protagonist.equippedLegs ? convertEquipment(protagonist.equippedLegs) : null,
-      feet: protagonist.equippedFeet ? convertEquipment(protagonist.equippedFeet) : null,
-    },
-    
-    techniques: [
-      ...(protagonist.equippedAttackTechniques || []),
-      ...(protagonist.equippedDefenseTechniques || []),
-    ].filter((t): t is Technique => t !== null).map(convertTechnique),
-    
-    world: {
-      id: String(protagonist.world.id),
-      type: protagonist.world.type,
-      actualCoefficient: protagonist.world.actualCoefficient,
-      dangers: (protagonist.world.dangers || []).map(convertWorldDanger),
-      opportunities: (protagonist.world.opportunities || []).map(convertWorldOpportunity),
-    },
-    
-    state: {
-      inBattle: false,
-      currentHp: protagonist.currentHp,
-      maxHp: protagonist.maxHp,
-      currentMp: protagonist.currentMp,
-      maxMp: protagonist.maxMp,
-      activeBuffs: [],
-      activeEffects: (protagonist.activeEffects || []).map(convertActiveEffect),
-    },
-    
-    titles: [],
-    
-    realm: {
-      name: protagonist.realm,
-      level: getRealmLevel(protagonist.realm),
-    },
-  };
-  
-  return context;
-}
-
-/**
- * 转换装备数据格式
- */
-function convertEquipment(eq: Equipment): CalculationContext['equipment']['melee'] {
-  return {
-    id: eq.id,
-    name: eq.name,
-    slot: eq.slot,
-    rarity: eq.rarity,
-    level: eq.level,
-    attackBonus: eq.attackBonus || 0,
-    defenseBonus: eq.defenseBonus || 0,
-    power: eq.power || 0,
-    element: eq.element || null,
-  };
-}
-
-/**
- * 转换功法数据格式
- */
-function convertTechnique(tech: Technique): CalculationContext['techniques'][0] {
-  return {
-    id: tech.id,
-    name: tech.name,
-    type: tech.type,
-    rarity: tech.rarity,
-    level: tech.level,
-    power: tech.power || 0,
-    bonus: tech.bonus || 0,
-    element: tech.element,
-  };
+  return buildContextFromUnifiedProtagonist(protagonist);
 }
 
 /**
@@ -196,105 +100,11 @@ function getRealmLevel(realmName: string): number {
  */
 export function quickCalculatePlayerPower(
   protagonist: Protagonist,
-  techniques: Technique[] = [],
-  equipments: Equipment[] = [],
-  activeEffects: ActiveEffect[] = []
+  _techniques?: unknown[],
+  _equipments?: unknown[],
+  _activeEffects?: unknown[]
 ): number {
-  // 使用旧的计算逻辑（暂时保留兼容）
-  // 后续完全迁移后会使用新的计算系统
-  
-  const equippedTechniques: Technique[] = [
-    ...(protagonist.equippedAttackTechniques || []),
-    ...(protagonist.equippedDefenseTechniques || [])
-  ].filter((t): t is Technique => t !== null && t !== undefined);
-  
-  const equippedEquipments: Equipment[] = [
-    protagonist.equippedMelee,
-    protagonist.equippedRanged,
-    protagonist.equippedHead,
-    protagonist.equippedBody,
-    protagonist.equippedLegs,
-    protagonist.equippedFeet
-  ].filter((e): e is Equipment => e !== null && e !== undefined);
-  
-  const stats = {
-    体质: protagonist.stats.base.体质 + protagonist.stats.growth.体质,
-    灵根: protagonist.stats.base.灵根 + protagonist.stats.growth.灵根,
-    悟性: protagonist.stats.base.悟性 + protagonist.stats.growth.悟性,
-    幸运: protagonist.stats.base.幸运 + protagonist.stats.growth.幸运,
-    意志: protagonist.stats.base.意志 + protagonist.stats.growth.意志,
-  };
-  
-  const maxHp = protagonist.maxHp;
-  const maxMp = protagonist.maxMp;
-  
-  // 基础战力
-  const hpCoefficient = 0.5;
-  const mpCoefficient = 0.3;
-  const attackCoefficient = 2.5;
-  const defenseCoefficient = 2.0;
-  
-  // 简化的攻击/防御计算
-  const attack = Math.floor(10 + stats.体质 * 2 + protagonist.level);
-  const defense = Math.floor(5 + stats.意志 + protagonist.level * 0.5);
-  
-  const basePower = 
-    hpCoefficient * maxHp + 
-    mpCoefficient * maxMp + 
-    attackCoefficient * attack + 
-    defenseCoefficient * defense;
-  
-  // 属性战力
-  const geometricMean = Math.pow(
-    stats.体质 * stats.灵根 * stats.悟性 * stats.幸运 * stats.意志,
-    1 / 5
-  );
-  const statCoefficient = 8;
-  const statPower = geometricMean * statCoefficient;
-  
-  // 等级加成
-  const levelCoefficient = 0.03;
-  const levelBonus = 1 + protagonist.level * levelCoefficient;
-  
-  // 功法加成
-  const techniqueLevels = equippedTechniques.reduce((sum, t) => sum + t.level, 0);
-  const techniqueCoefficient = 0.01;
-  const techniqueBonus = techniqueLevels * techniqueCoefficient;
-  
-  // 装备加成
-  const rarityMultipliers: Record<string, number> = {
-    '传说': 0.15,
-    '史诗': 0.10,
-    '稀有': 0.06,
-    '普通': 0.03,
-  };
-  
-  let equipmentBonus = 0;
-  for (const eq of equippedEquipments) {
-    const rarityBonus = rarityMultipliers[eq.rarity] || 0.02;
-    equipmentBonus += rarityBonus * eq.level;
-  }
-  
-  // 临时增益效果
-  let effectBonus = 0;
-  for (const effect of activeEffects) {
-    if (effect.type === 'combat_boost') {
-      effectBonus += effect.value * 0.01;
-    } else if (effect.type === 'stat_boost') {
-      effectBonus += effect.value * 0.005;
-    }
-  }
-  
-  // 总战力计算
-  const totalPower = Math.floor(
-    (basePower + statPower) * 
-    levelBonus * 
-    (1 + techniqueBonus) * 
-    (1 + equipmentBonus) * 
-    (1 + effectBonus)
-  );
-  
-  return Math.max(1, totalPower);
+  return quickCalculatePlayerPowerUnified(protagonist);
 }
 
 /**
@@ -406,4 +216,169 @@ export function buildContextFromEnemy(
   };
   
   return context;
+}
+
+// ══════════════════════════════════════════════════════════════════
+// 统一物品系统适配（unified-item-system）
+// ══════════════════════════════════════════════════════════════════
+
+/** 从 ResolvedItem 转换为 CalculationContext 装备格式 */
+function convertResolvedEquipment(item: ResolvedItem): NonNullable<CalculationContext['equipment']['melee']> {
+  return {
+    id: item.instanceId,
+    name: item.name,
+    slot: (item.ext as { equipSlot?: string }).equipSlot || 'melee',
+    rarity: item.rarity,
+    level: item.level,
+    attackBonus: item.actualStats.attackBonus || 0,
+    defenseBonus: item.actualStats.defenseBonus || 0,
+    power: item.actualStats.power || 0,
+    element: item.element || null,
+  };
+}
+
+/** 从 ResolvedItem 转换为 CalculationContext 功法格式 */
+function convertResolvedTechnique(item: ResolvedItem): CalculationContext['techniques'][0] {
+  return {
+    id: item.instanceId,
+    name: item.name,
+    type: item.subcategory as 'attack' | 'defense',
+    rarity: item.rarity,
+    level: item.level,
+    power: item.actualStats.power || 0,
+    bonus: item.actualStats.bonus || 0,
+    element: item.element || 'fire',
+  };
+}
+
+/** 从主角 slots + items 构建装备/功法列表 */
+function getEquippedFromSlots(protagonist: Protagonist): {
+  equipmentSlots: Record<string, CalculationContext['equipment']['melee']>;
+  techniques: CalculationContext['techniques'];
+} {
+  const items = protagonist.items || [];
+  const slots = protagonist.slots || {};
+
+  const eqSlots: Record<string, CalculationContext['equipment']['melee']> = {};
+  const techniques: CalculationContext['techniques'] = [];
+
+  for (const [slotId, instanceId] of Object.entries(slots)) {
+    if (!instanceId) continue;
+    const instance = findItemByInstance(items, instanceId);
+    if (!instance) continue;
+    const resolved = resolveItem(instance);
+
+    if (resolved.category === 'equipment') {
+      const slotKey = slotId.replace('weapon_', '').replace('armor_', '');
+      eqSlots[slotKey] = convertResolvedEquipment(resolved);
+    } else if (resolved.category === 'technique') {
+      techniques.push(convertResolvedTechnique(resolved));
+    }
+  }
+
+  return { equipmentSlots: eqSlots, techniques };
+}
+
+/** 从统一物品 Protagonist 构建计算上下文（新路径） */
+export function buildContextFromUnifiedProtagonist(protagonist: Protagonist): CalculationContext {
+  const stats = {
+    体质: protagonist.stats.base.体质 + protagonist.stats.growth.体质,
+    灵根: protagonist.stats.base.灵根 + protagonist.stats.growth.灵根,
+    悟性: protagonist.stats.base.悟性 + protagonist.stats.growth.悟性,
+    幸运: protagonist.stats.base.幸运 + protagonist.stats.growth.幸运,
+    意志: protagonist.stats.base.意志 + protagonist.stats.growth.意志,
+  };
+
+  const { equipmentSlots, techniques } = getEquippedFromSlots(protagonist);
+
+  return {
+    calculationId: `calc_${Date.now()}_${Math.random().toString(36).substring(2, 8)}`,
+    timestamp: Date.now(),
+
+    character: {
+      id: String(protagonist.character.id),
+      type: 'protagonist',
+      level: protagonist.level,
+      realm: protagonist.realm,
+      realmLevel: getRealmLevel(protagonist.realm),
+      baseStats: stats,
+    },
+
+    equipment: {
+      melee: equipmentSlots['melee'] || null,
+      ranged: equipmentSlots['ranged'] || null,
+      head: equipmentSlots['head'] || null,
+      body: equipmentSlots['body'] || null,
+      legs: equipmentSlots['legs'] || null,
+      feet: equipmentSlots['feet'] || null,
+    },
+
+    techniques,
+
+    world: {
+      id: String(protagonist.world.id),
+      type: protagonist.world.type,
+      actualCoefficient: protagonist.world.actualCoefficient,
+      dangers: (protagonist.world.dangers || []).map(convertWorldDanger),
+      opportunities: (protagonist.world.opportunities || []).map(convertWorldOpportunity),
+    },
+
+    state: {
+      inBattle: false,
+      currentHp: protagonist.currentHp,
+      maxHp: protagonist.maxHp,
+      currentMp: protagonist.currentMp,
+      maxMp: protagonist.maxMp,
+      activeBuffs: [],
+      activeEffects: (protagonist.activeEffects || []).map(convertActiveEffect),
+    },
+
+    titles: [],
+
+    realm: {
+      name: protagonist.realm,
+      level: getRealmLevel(protagonist.realm),
+    },
+  };
+}
+
+/** 快速计算玩家战力（统一物品路径） */
+export function quickCalculatePlayerPowerUnified(protagonist: Protagonist): number {
+  const stats = {
+    体质: protagonist.stats.base.体质 + protagonist.stats.growth.体质,
+    灵根: protagonist.stats.base.灵根 + protagonist.stats.growth.灵根,
+    悟性: protagonist.stats.base.悟性 + protagonist.stats.growth.悟性,
+    幸运: protagonist.stats.base.幸运 + protagonist.stats.growth.幸运,
+    意志: protagonist.stats.base.意志 + protagonist.stats.growth.意志,
+  };
+
+  const maxHp = protagonist.maxHp || 100;
+  const maxMp = protagonist.maxMp || 50;
+
+  const attack = Math.floor(10 + stats.体质 * 2 + protagonist.level);
+  const defense = Math.floor(5 + stats.意志 + protagonist.level * 0.5);
+
+  const basePower = 0.5 * maxHp + 0.3 * maxMp + 2.5 * attack + 2.0 * defense;
+
+  const geometricMean = Math.pow(
+    stats.体质 * stats.灵根 * stats.悟性 * stats.幸运 * stats.意志, 1 / 5
+  );
+  const statPower = geometricMean * 8;
+
+  const items = protagonist.items || [];
+  const slots = protagonist.slots || {};
+  let equipBonus = 0;
+
+  for (const instanceId of Object.values(slots)) {
+    if (!instanceId) continue;
+    const instance = findItemByInstance(items, instanceId);
+    if (!instance) continue;
+    const resolved = resolveItem(instance);
+    equipBonus += (resolved.actualStats.power || 0)
+      + (resolved.actualStats.attackBonus || 0) * 2
+      + (resolved.actualStats.defenseBonus || 0) * 1.5;
+  }
+
+  const levelBonus = 1 + protagonist.level * 0.03;
+  return Math.floor((basePower + statPower + equipBonus) * levelBonus);
 }

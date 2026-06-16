@@ -49,6 +49,9 @@ function makeProtagonist(overrides: Partial<Protagonist> = {}): Protagonist {
     factionId: null,
     stamina: 50,
     maxStamina: 100,
+    items: [],
+    slots: {},
+    maxSlotCounts: {},
     ...overrides,
   };
 }

@@ -1234,28 +1234,31 @@ export interface Protagonist {
   level: number;
   realm: string;
   stats: CharacterStats;
-  statCapBonuses: Partial<BaseStats>; // 属性上限加成（来自机缘等）
-  inventory: InventoryItem[]; // 背包（包含所有物品和资源）
+  statCapBonuses: Partial<BaseStats>;
+  // ══ 统一物品系统 ══
+  items: import('@/modules/item/types').ItemInstance[];
+  slots: Record<string, string | null>;
+  maxSlotCounts: Record<string, number>;
+  // ══ @deprecated 旧字段 ══
+  inventory: InventoryItem[];
+  equipments: Equipment[];
+  equippedMelee: Equipment | null;
+  equippedRanged: Equipment | null;
+  equippedHead: Equipment | null;
+  equippedBody: Equipment | null;
+  equippedLegs: Equipment | null;
+  equippedFeet: Equipment | null;
+  techniques: Technique[];
+  equippedAttackTechniques: (Technique | null)[];
+  equippedDefenseTechniques: (Technique | null)[];
+  currencies?: PlayerCurrencies;
+  fragmentInventory?: import('@/modules/crafting/logic/fragmentSystem').FragmentInventory;
   activeEffects: ActiveEffect[]; // 当前生效的效果
   experience: number;
   overflowExperience: number; // 超出上限的经验（升级后会保留到下一级）
   // HP/MP系统
-  currentHp: number; // 当前生命值
-  maxHp: number; // 最大生命值
-  currentMp: number; // 当前法力值
-  maxMp: number; // 最大法力值
-  // 功法系统
-  techniques: Technique[]; // 已获得的功法
-  equippedAttackTechniques: (Technique | null)[]; // 装备的攻击功法（最多3本）
-  equippedDefenseTechniques: (Technique | null)[]; // 装备的防御功法（最多3本）
-  // 装备系统
-  equipments: Equipment[]; // 已获得的装备
-  equippedMelee: Equipment | null; // 装备的近战武器
-  equippedRanged: Equipment | null; // 装备的远程武器
-  equippedHead: Equipment | null; // 装备的头部护甲
-  equippedBody: Equipment | null; // 装备的身体护甲
-  equippedLegs: Equipment | null; // 装备的腿部护甲
-  equippedFeet: Equipment | null; // 装备的脚部护甲
+  currentHp: number; maxHp: number;
+  currentMp: number; maxMp: number;
   // 势力系统
   factionId: string | null; // 当前加入的势力ID
   factionJoinTime?: number; // 加入势力的时间戳
@@ -1268,8 +1271,7 @@ export interface Protagonist {
   // 扩展系统 - 心境状态
   mentalState?: import('./typesExtension').MentalState; // 心境状态
   // 扩展系统 - 势力进度
-  factionProgress?: import('./typesExtension').FactionProgress | null; // 势力声望与任务进度
-  currencies?: PlayerCurrencies; // 玩家货币（贡献点等）
+  factionProgress?: import('./typesExtension').FactionProgress | null;
   /** 当前体力 */
   stamina?: number;
   /** 最大体力 */
@@ -1279,8 +1281,6 @@ export interface Protagonist {
   guardianBattle?: import('./typesExtension').GuardianBattleState; // 守卫战斗状态
   worldVisitHistory?: import('./typesExtension').WorldVisitRecord[]; // 世界访问历史
   ascensionHistory?: import('./typesExtension').AscensionRecord[]; // 飞升历史记录
-  // 残本/残片系统
-  fragmentInventory?: import('@/modules/crafting/logic/fragmentSystem').FragmentInventory; // 残本/残片库存
   // 爬塔系统
   towerProgress?: import('@/modules/tower/logic/types').TowerProgress; // 爬塔进度
   // V3 新格式属性数据

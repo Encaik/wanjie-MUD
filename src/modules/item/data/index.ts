@@ -1,0 +1,79 @@
+/**
+ * 统一物品数据索引
+ *
+ * ALL_TEMPLATES 映射表 + getTemplate() 查询函数
+ */
+
+import type { ItemTemplate } from '../types';
+import { CURRENCY_TEMPLATES } from './templates/currency';
+import { CONSUMABLE_TEMPLATES } from './templates/consumable';
+import { MATERIAL_TEMPLATES } from './templates/material';
+import { CULTIVATION_EQUIPMENT_TEMPLATES } from './templates/equipment/cultivation';
+import { CULTIVATION_TECHNIQUE_TEMPLATES } from './templates/technique/cultivation';
+import { MAGIC_SKILL_TEMPLATES } from './templates/skill/magic';
+import { COMBAT_SKILL_TEMPLATES } from './templates/skill/combat';
+
+/** 所有物品模板的平面列表 */
+export const ALL_TEMPLATES: ItemTemplate[] = [
+  ...CURRENCY_TEMPLATES,
+  ...CONSUMABLE_TEMPLATES,
+  ...MATERIAL_TEMPLATES,
+  ...CULTIVATION_EQUIPMENT_TEMPLATES,
+  ...CULTIVATION_TECHNIQUE_TEMPLATES,
+  ...MAGIC_SKILL_TEMPLATES,
+  ...COMBAT_SKILL_TEMPLATES,
+];
+
+/** 模板 ID → 模板 的快速查找映射 */
+export const TEMPLATE_MAP: Record<string, ItemTemplate> = {};
+for (const tpl of ALL_TEMPLATES) {
+  if (TEMPLATE_MAP[tpl.templateId]) {
+    // 重复 templateId 是配置错误
+    console.error(`[ITEM DATA] 重复的 templateId: "${tpl.templateId}"`);
+    continue;
+  }
+  TEMPLATE_MAP[tpl.templateId] = tpl;
+}
+
+/**
+ * 通过 templateId 查询模板
+ *
+ * @param templateId - 模板唯一标识
+ * @returns ItemTemplate，如果不存在则抛出错误
+ */
+export function getTemplate(templateId: string): ItemTemplate {
+  const tpl = TEMPLATE_MAP[templateId];
+  if (!tpl) {
+    throw new Error(`[ITEM DATA] 未找到物品模板: "${templateId}"`);
+  }
+  return tpl;
+}
+
+/**
+ * 按类别获取模板列表
+ *
+ * @param category - 物品大类
+ * @returns 该类别下的所有模板
+ */
+export function getTemplatesByCategory<T extends ItemTemplate>(
+  category: T['category']
+): T[] {
+  return ALL_TEMPLATES.filter(t => t.category === category) as T[];
+}
+
+/**
+ * 按世界观获取模板列表
+ */
+export function getTemplatesByWorldView(worldType: string): ItemTemplate[] {
+  return ALL_TEMPLATES.filter(t => !t.worldviewRestrictions || t.worldviewRestrictions.includes(worldType));
+}
+
+export {
+  CURRENCY_TEMPLATES,
+  CONSUMABLE_TEMPLATES,
+  MATERIAL_TEMPLATES,
+  CULTIVATION_EQUIPMENT_TEMPLATES,
+  CULTIVATION_TECHNIQUE_TEMPLATES,
+  MAGIC_SKILL_TEMPLATES,
+  COMBAT_SKILL_TEMPLATES,
+};

@@ -58,6 +58,9 @@ export function createProtagonistFromSaved(
     maxHp,
     currentMp: maxMp,
     maxMp,
+    items: [],
+    slots: {},
+    maxSlotCounts: {},
     /** 初始背包：200灵石 + 5聚气丹 + 1筑基丹 + 3回春丹 */
     inventory: [
       createInventoryItem(spiritStoneItems[0], 200),
