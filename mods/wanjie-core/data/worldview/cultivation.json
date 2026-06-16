@@ -3,98 +3,42 @@
   "name": "修仙世界",
   "description": "灵气充沛，仙门林立，修士们追求长生大道，适合初入万界的修行者",
   "baseCoefficient": 1,
+
   "attributes": [
-    {
-      "key": "constitution",
-      "growthRule": [
-        {
-          "type": "linear",
-          "multiplier": 0.5
-        }
-      ]
-    },
-    {
-      "key": "insight",
-      "growthRule": [
-        {
-          "type": "linear",
-          "multiplier": 0.5
-        }
-      ]
-    },
-    {
-      "key": "luck",
-      "growthRule": [
-        {
-          "type": "linear",
-          "multiplier": 0.3
-        }
-      ]
-    },
-    {
-      "key": "willpower",
-      "growthRule": [
-        {
-          "type": "linear",
-          "multiplier": 0.5
-        }
-      ]
-    },
-    {
-      "key": "spiritRoot",
-      "growthRule": []
-    },
-    {
-      "key": "spiritPower",
-      "growthRule": [
-        {
-          "type": "linear",
-          "multiplier": 0.5
-        },
-        {
-          "type": "perRealm",
-          "realmBonuses": {
-            "筑基": 2,
-            "金丹": 4,
-            "元婴": 6,
-            "化神": 8
-          }
-        }
-      ]
-    }
+    { "key": "constitution", "growthRule": [{ "type": "linear", "multiplier": 0.5 }] },
+    { "key": "insight",      "growthRule": [{ "type": "linear", "multiplier": 0.5 }] },
+    { "key": "luck",         "growthRule": [{ "type": "linear", "multiplier": 0.3 }] },
+    { "key": "willpower",    "growthRule": [{ "type": "linear", "multiplier": 0.5 }] },
+    { "key": "spiritRoot",   "growthRule": [] },
+    { "key": "spiritPower",  "growthRule": [
+      { "type": "linear", "multiplier": 0.5 },
+      { "type": "perRealm", "realmBonuses": { "筑基": 2, "金丹": 4, "元婴": 6, "化神": 8, "炼虚": 10, "合体": 12, "大乘": 15, "渡劫": 20 } }
+    ]}
   ],
-  "racePool": [
-    "human"
-  ],
+
+  "racePool": ["human", "demon"],
   "questPool": [
-    "main_intro_temple",
-    "side_collect_herbs",
-    "hidden_secret_cave",
-    "daily_clear_wolves"
+    "main_intro_temple", "side_collect_herbs", "side_rare_herb_hunt",
+    "hidden_secret_cave", "daily_clear_wolves", "daily_meditation", "daily_beast_hunt",
+    "visit_elder_quest", "hidden_ascension_path",
+    "alchemy_materials_quest", "sword_immortal_trial",
+    "sword_guild_trial", "sword_master_duel",
+    "demon_cult_initiation", "demon_cult_artifact_hunt",
+    "buddhist_temple_pilgrimage",
+    "array_family_commission", "ancient_array_exploration",
+    "bounty_hunt_demon_leader",
+    "ancient_clan_investigation", "bloodline_awakening"
   ],
+
   "specialResource": {
     "displayName": "法力",
     "defaultCap": 100,
     "capGrowthPerLevel": 10,
-    "affectedBy": [
-      "spiritPower"
-    ]
+    "affectedBy": ["spiritPower"]
   },
-  "namePrefixes": [
-    "青云",
-    "紫霄",
-    "太虚",
-    "玄天",
-    "昆仑",
-    "蓬莱"
-  ],
-  "nameSuffixes": [
-    "界",
-    "域",
-    "天",
-    "境",
-    "州"
-  ],
+
+  "namePrefixes": ["青云", "紫霄", "太虚", "玄天", "昆仑", "蓬莱"],
+  "nameSuffixes": ["界", "域", "天", "境", "州"],
   "descriptions": [
     "灵气充沛，仙门林立，修士们追求长生大道，适合初入万界的修行者",
     "宗门遍布，灵脉纵横，是修仙者的圣地，万界之旅的起点",
@@ -103,11 +47,6 @@
   "powerSystems": [
     "炼气化神，以灵力为根基，追求天人合一",
     "道法自然，感悟天地法则，证得大道"
-  ],
-  "majorForces": [
-    "五大仙门各据一方，暗流涌动",
-    "三宗两门一阁，势力错综复杂",
-    "十大宗门并立，争夺灵脉资源"
   ],
   "stats": {
     "baseHp": 100,
@@ -121,15 +60,9 @@
     "defensePerLevel": 1,
     "defensePerWillpower": 0.8,
     "enemyAttackBonus": 0,
-    "enemyDefenseBonus": 0,
-    "statDisplayNames": {
-      "体质": "体质",
-      "灵根": "灵根",
-      "悟性": "悟性",
-      "幸运": "幸运",
-      "意志": "意志"
-    }
+    "enemyDefenseBonus": 0
   },
+
   "visualConfig": {
     "icon": "☯",
     "accentColor": "text-amber-400",
@@ -138,235 +71,191 @@
     "bgGradient": "bg-gradient-to-br from-amber-50 to-yellow-50 dark:from-amber-950/30 dark:to-yellow-950/30",
     "colorGradient": "from-amber-500 to-yellow-500"
   },
+
   "version": "1.0.0",
+
   "rewardCoefficient": {
     "expCoefficient": 1,
     "spiritStoneCoefficient": 1,
     "dropCoefficient": 1,
-    "rarityBonus": {
-      "rare": 0.05,
-      "epic": 0.02,
-      "legendary": 0.01,
-      "mythic": 0.005
-    },
-    "specialRewards": {
-      "ascensionMarkBonus": 0.05,
-      "titleChance": 0.02,
-      "specialItemChance": 0.01
-    }
+    "rarityBonus": { "rare": 0.05, "epic": 0.02, "legendary": 0.01, "mythic": 0.005 },
+    "specialRewards": { "ascensionMarkBonus": 0.05, "titleChance": 0.02, "specialItemChance": 0.01 }
   },
+
+  "rewardTraits": [
+    { "id": "spiritRich",       "name": "灵气充沛",   "desc": "灵力获取 +30%",   "modifiers": { "expCoefficient": 0.3 } },
+    { "id": "treasureHaven",    "name": "秘境宝库",   "desc": "道具掉落率 +20%",  "modifiers": { "dropCoefficient": 0.2 } },
+    { "id": "ancientRuins",     "name": "古修遗迹",   "desc": "稀有品质概率翻倍", "modifiers": { "rarityBonus": { "rare": 0.05, "epic": 0.03 } } },
+    { "id": "richVeins",        "name": "灵脉富集",   "desc": "灵石获取 +40%",   "modifiers": { "spiritStoneCoefficient": 0.4 } },
+    { "id": "luckyLand",        "name": "洞天福地",   "desc": "奇遇概率 +15%",   "modifiers": { "specialItemChance": 0.15 } },
+    { "id": "titleLegacy",      "name": "称号传承",   "desc": "获得称号概率 +10%", "modifiers": { "titleChance": 0.1 } }
+  ],
+
+  "resourceConfig": {
+    "_comment": "世界观基础资源数值，rewardTraits 在此基础上加成",
+    "spiritStoneRate": 1.0,
+    "dropRate": 0.1,
+    "specialEventChance": 0.05,
+    "titleChance": 0.02,
+    "rareDropBonus": 0.05,
+    "epicDropBonus": 0.02
+  },
+
   "realmSystem": {
     "mainRealmName": "仙阶",
     "subRealmName": "品",
+    "subRealmMultiplier": 1.05,
+    "tierJumpMultiplier": 1.3,
     "tiers": [
       {
         "name": "炼气",
-        "subRealms": [
-          "初期",
-          "中期",
-          "后期",
-          "圆满"
-        ],
-        "levelRange": [
-          1,
-          15
-        ]
+        "desc": "引气入体，淬炼肉身，踏上修仙之路",
+        "subRealms": ["初期", "中期", "后期", "圆满"],
+        "levelRange": [1, 10],
+        "expToNext": 100,
+        "attrGrowthPerLevel": { "constitution": 0.3, "insight": 0.3, "luck": 0.2, "willpower": 0.3, "spiritPower": 0.2 },
+        "breakthroughRewards": {}
       },
       {
         "name": "筑基",
-        "subRealms": [
-          "初期",
-          "中期",
-          "后期",
-          "圆满"
-        ],
-        "levelRange": [
-          16,
-          30
-        ]
+        "desc": "筑就道基，脱胎换骨，寿元大增",
+        "subRealms": ["初期", "中期", "后期", "圆满"],
+        "levelRange": [11, 22],
+        "expToNext": 300,
+        "attrGrowthPerLevel": { "constitution": 0.5, "insight": 0.5, "luck": 0.3, "willpower": 0.5, "spiritPower": 0.4 },
+        "breakthroughRewards": { "lifespan": 50, "specialResourceCap": 20, "willpower": 3 }
       },
       {
         "name": "金丹",
-        "subRealms": [
-          "初期",
-          "中期",
-          "后期",
-          "圆满"
-        ],
-        "levelRange": [
-          31,
-          50
-        ]
+        "desc": "凝结金丹，法力质变，可御剑飞行",
+        "subRealms": ["初期", "中期", "后期", "圆满"],
+        "levelRange": [23, 36],
+        "expToNext": 800,
+        "attrGrowthPerLevel": { "constitution": 0.7, "insight": 0.7, "luck": 0.4, "willpower": 0.7, "spiritPower": 0.6 },
+        "breakthroughRewards": { "lifespan": 80, "specialResourceCap": 40, "intelligence": 3 }
       },
       {
         "name": "元婴",
-        "subRealms": [
-          "初期",
-          "中期",
-          "后期",
-          "圆满"
-        ],
-        "levelRange": [
-          51,
-          80
-        ]
+        "desc": "元婴出窍，神识外放，一念千里",
+        "subRealms": ["初期", "中期", "后期", "圆满"],
+        "levelRange": [37, 52],
+        "expToNext": 2000,
+        "attrGrowthPerLevel": { "constitution": 1.0, "insight": 1.0, "luck": 0.5, "willpower": 1.0, "spiritPower": 0.8 },
+        "breakthroughRewards": { "lifespan": 120, "specialResourceCap": 60, "perception": 3 }
       },
       {
         "name": "化神",
-        "subRealms": [
-          "初期",
-          "中期",
-          "后期",
-          "圆满"
-        ],
-        "levelRange": [
-          81,
-          100
-        ]
+        "desc": "化神归一，天人感应，可窥天道",
+        "subRealms": ["初期", "中期", "后期", "圆满"],
+        "levelRange": [53, 68],
+        "expToNext": 5000,
+        "attrGrowthPerLevel": { "constitution": 1.5, "insight": 1.5, "luck": 0.7, "willpower": 1.5, "spiritPower": 1.2 },
+        "breakthroughRewards": { "lifespan": 200, "specialResourceCap": 100, "willpower": 5, "intelligence": 3 }
+      },
+      {
+        "name": "炼虚",
+        "desc": "炼虚合道，窥破虚空，可跨界域",
+        "subRealms": ["初期", "中期", "后期", "圆满"],
+        "levelRange": [69, 82],
+        "expToNext": 12000,
+        "attrGrowthPerLevel": { "constitution": 2.0, "insight": 2.0, "luck": 1.0, "willpower": 2.0, "spiritPower": 1.8 },
+        "breakthroughRewards": { "lifespan": 300, "specialResourceCap": 150, "perception": 5, "speed": 3 }
+      },
+      {
+        "name": "合体",
+        "desc": "身与道合，万法归宗，一念定乾坤",
+        "subRealms": ["初期", "中期", "后期", "圆满"],
+        "levelRange": [83, 93],
+        "expToNext": 30000,
+        "attrGrowthPerLevel": { "constitution": 3.0, "insight": 3.0, "luck": 1.5, "willpower": 3.0, "spiritPower": 2.5 },
+        "breakthroughRewards": { "lifespan": 500, "specialResourceCap": 250, "willpower": 8, "intelligence": 5 }
+      },
+      {
+        "name": "大乘",
+        "desc": "大乘圆满，半步飞升，万界无敌",
+        "subRealms": ["初期", "中期", "后期", "圆满"],
+        "levelRange": [94, 99],
+        "expToNext": 80000,
+        "attrGrowthPerLevel": { "constitution": 4.0, "insight": 4.0, "luck": 2.0, "willpower": 4.0, "spiritPower": 3.5 },
+        "breakthroughRewards": { "lifespan": 1000, "specialResourceCap": 500, "perception": 8, "speed": 5 }
+      },
+      {
+        "name": "渡劫",
+        "desc": "天劫降临，九死一生，渡过则白日飞升",
+        "subRealms": ["天劫一重", "天劫二重", "天劫三重", "天劫四重", "天劫五重", "天劫六重", "天劫七重", "天劫八重", "天劫九重", "飞升"],
+        "levelRange": [100, 100],
+        "expToNext": 999999,
+        "attrGrowthPerLevel": { "constitution": 5.0, "insight": 5.0, "luck": 3.0, "willpower": 5.0, "spiritPower": 5.0 },
+        "breakthroughRewards": { "lifespan": 5000, "specialResourceCap": 2000, "willpower": 15, "intelligence": 10, "perception": 10, "speed": 10 }
       }
-    ],
-    "subRealmMultiplier": 1.05,
-    "tierJumpMultiplier": 1.3
-  },
-  "dangers": [
-    {
-      "id": "d1",
-      "name": "妖兽袭击",
-      "description": "山林中遭遇妖兽袭击，需战斗应对",
-      "dangerLevel": 2,
-      "type": "enemy_buff",
-      "triggerCondition": {
-        "type": "random",
-        "chance": 0.2
-      },
-      "effect": {},
-      "duration": 3,
-      "dispellable": true
-    }
-  ],
-  "opportunities": [
-    {
-      "id": "o1",
-      "name": "仙缘降临",
-      "description": "机缘巧合之下遇到仙缘，获得修炼感悟",
-      "opportunityLevel": 4,
-      "type": "stat_buff",
-      "triggerCondition": {
-        "type": "random",
-        "chance": 0.1
-      },
-      "effect": {},
-      "duration": 2
-    }
-  ],
-  "factions": [
-    {
-      "id": "f1",
-      "name": "青云宗",
-      "type": "正道",
-      "description": "正道第一仙门，以剑修闻名",
-      "worldTypeId": "cultivation"
-    },
-    {
-      "id": "f2",
-      "name": "魔教",
-      "type": "邪道",
-      "description": "修魔势力，行事狠辣",
-      "worldTypeId": "cultivation"
-    },
-    {
-      "id": "f3",
-      "name": "散修联盟",
-      "type": "中立",
-      "description": "散修互助组织",
-      "worldTypeId": "cultivation"
-    }
-  ],
-  "traits": {
-    "origin": {},
-    "trait": {},
-    "personality": {},
-    "talent": {}
-  },
-  "namePool": {
-    "surnames": [
-      "李",
-      "王",
-      "张",
-      "刘",
-      "陈"
-    ],
-    "maleNames": [
-      "天",
-      "云",
-      "风",
-      "尘",
-      "羽"
-    ],
-    "femaleNames": [
-      "月",
-      "雪",
-      "瑶",
-      "紫",
-      "清",
-      "灵",
-      "瑶"
     ]
   },
-  "texts": {
-    "name": "修仙世界",
-    "description": "修仙世界",
-    "terminology": {},
-    "stats": {},
-    "combat": {},
-    "cultivation": {},
-    "resource": {},
-    "item": {},
-    "dungeon": {},
-    "ui": {},
-    "breakthrough": {},
-    "message": {},
-    "paths": {}
+
+  "dangers": [
+    { "id": "d1", "name": "妖兽袭击", "description": "山林中遭遇妖兽袭击", "dangerLevel": 2, "type": "enemy_buff", "triggerCondition": { "type": "random", "chance": 0.2 }, "effect": {}, "duration": 3, "dispellable": true },
+    { "id": "d2", "name": "灵气枯竭", "description": "此地灵气稀薄，修炼效率降低", "dangerLevel": 1, "type": "resource_drain", "triggerCondition": { "type": "on_explore", "chance": 0.15 }, "effect": {}, "duration": 5, "dispellable": false },
+    { "id": "d3", "name": "心魔入侵", "description": "心魔趁虚而入，扰乱修行", "dangerLevel": 3, "type": "stat_debuff", "triggerCondition": { "type": "on_breakthrough", "chance": 0.1 }, "effect": {}, "duration": 10, "dispellable": true },
+    { "id": "d4", "name": "天雷地火", "description": "天降雷劫，地涌火海", "dangerLevel": 4, "type": "special_mechanic", "triggerCondition": { "type": "random", "chance": 0.05 }, "effect": {}, "duration": 1, "dispellable": false }
+  ],
+
+  "opportunities": [
+    { "id": "o1", "name": "仙缘降临", "description": "机缘巧合之下遇到仙缘，获得修炼感悟", "opportunityLevel": 4, "type": "stat_buff", "triggerCondition": { "type": "random", "chance": 0.1 }, "effect": {}, "duration": 2 },
+    { "id": "o2", "name": "灵脉发现", "description": "发现隐藏灵脉，灵气充沛之地", "opportunityLevel": 2, "type": "resource_gain", "triggerCondition": { "type": "on_explore", "chance": 0.15 }, "effect": {}, "duration": 3 },
+    { "id": "o3", "name": "古修洞府", "description": "发现上古修士遗留的洞府", "opportunityLevel": 5, "type": "rare_drop", "triggerCondition": { "type": "random", "chance": 0.03 }, "effect": {}, "duration": 1 },
+    { "id": "o4", "name": "天道感悟", "description": "顿悟天道法则，修为大进", "opportunityLevel": 6, "type": "stat_buff", "triggerCondition": { "type": "on_cultivate", "chance": 0.05 }, "effect": {}, "duration": 1 }
+  ],
+
+  "factions": [
+    { "id": "qingyun_sect",      "name": "青云宗",   "type": "正道", "description": "正道第一仙门，坐拥青云山脉七峰，以剑修闻名天下。掌门青云真人化神境，门下弟子三千。", "worldTypeId": "cultivation", "associatedNpcs": ["senior_brother_li", "elder_qingyun", "sword_immortal_xuan"], "associatedQuests": ["main_intro_temple", "daily_clear_wolves", "daily_meditation", "visit_elder_quest", "sword_immortal_trial"] },
+    { "id": "alchemy_guild",     "name": "丹霞宗",   "type": "正道", "description": "以炼丹术闻名修仙界，垄断了七成以上的丹药市场。宗主丹阳真人元婴境，门下丹师数百。", "worldTypeId": "cultivation", "associatedNpcs": ["alchemist_su"], "associatedQuests": ["alchemy_materials_quest"] },
+    { "id": "sword_guild",       "name": "万剑阁",   "type": "正道", "description": "纯粹的剑修势力，阁中弟子终生只修一剑。不问世事，但剑道修为冠绝天下。", "worldTypeId": "cultivation", "associatedNpcs": ["sword_master_ye"], "associatedQuests": ["sword_guild_trial", "sword_master_duel"] },
+    { "id": "demon_cult",        "name": "天魔教",   "type": "魔道", "description": "魔道第一势力，信奉天魔大道。教众行事狠辣果决，以战养战，对敌人毫不留情。", "worldTypeId": "cultivation", "associatedNpcs": ["demon_elder_mo"], "associatedQuests": ["demon_cult_initiation", "demon_cult_artifact_hunt"] },
+    { "id": "rogue_cultivators", "name": "散修联盟", "type": "中立", "description": "由无数散修自发组成的互助组织，在各大坊市设有据点。鱼龙混杂，消息灵通。", "worldTypeId": "cultivation", "associatedNpcs": ["rogue_cultivator_hei"], "associatedQuests": ["hidden_secret_cave"] },
+    { "id": "merchant_guild",    "name": "商会同盟", "type": "中立", "description": "跨域商贸势力，掌控灵石流通和珍稀资源交易。只要有灵石，在这里什么都能买到。", "worldTypeId": "cultivation", "associatedNpcs": ["merchant_wang"], "associatedQuests": ["side_collect_herbs", "side_rare_herb_hunt"] },
+    { "id": "demon_beasts",      "name": "万妖谷",   "type": "魔道", "description": "妖族聚集之地，强者为尊。谷中妖族种类繁多，从刚化形的妖兽到元婴境大妖皆有。", "worldTypeId": "cultivation", "associatedNpcs": ["demon_beast_serpent", "beast_merchant_hu"], "associatedQuests": ["daily_beast_hunt"] },
+    { "id": "buddhist_sect",     "name": "佛门禅宗", "type": "正道", "description": "隐于深山古刹的佛修势力，以慈悲为本，以降魔为用。功法独树一帜，不修灵力修佛力。", "worldTypeId": "cultivation", "associatedNpcs": ["monk_kongjian"], "associatedQuests": ["buddhist_temple_pilgrimage"] },
+    { "id": "array_family",      "name": "阵法世家", "type": "中立", "description": "传承数千年的阵法世家，族中人人精通阵法之道。出售阵盘、阵旗，也承接护山大阵布置。", "worldTypeId": "cultivation", "associatedNpcs": ["array_master_zhao"], "associatedQuests": ["array_family_commission", "ancient_array_exploration"] },
+    { "id": "intelligence_guild","name": "天机阁",   "type": "中立", "description": "神秘的情报组织，号称「无事不知天机阁」。贩卖消息、悬赏任务、刺杀委托，无所不接。", "worldTypeId": "cultivation", "associatedNpcs": ["intelligence_dealer_jiu"], "associatedQuests": ["bounty_hunt_demon_leader", "demon_cult_artifact_hunt"] },
+    { "id": "ancient_clan",      "name": "古族遗民", "type": "中立", "description": "上古大战后遗留下来的远古氏族，隐世不出。血脉中蕴含上古秘术，族中子弟天赋异禀。", "worldTypeId": "cultivation", "associatedNpcs": ["ancient_elder_cang"], "associatedQuests": ["ancient_clan_investigation", "bloodline_awakening"] }
+  ],
+
+  "traits": { "origin": {}, "trait": {}, "personality": {}, "talent": {} },
+  "namePool": {
+    "surnames": ["李", "王", "张", "刘", "陈", "赵", "孙", "周"],
+    "maleNames": ["天", "云", "风", "尘", "羽", "玄", "昊", "龙", "剑", "道"],
+    "femaleNames": ["月", "雪", "瑶", "紫", "清", "灵", "霜", "烟", "蕊", "霓"]
   },
+
+  "texts": {
+    "name": "修仙世界", "description": "修仙世界",
+    "terminology": {}, "stats": {}, "combat": {}, "cultivation": {},
+    "resource": {}, "item": {}, "dungeon": {}, "ui": {}, "breakthrough": {},
+    "message": {}, "paths": {}
+  },
+
   "mechanics": {},
   "builtin": true,
   "themeConfig": {
     "light": {
-      "--primary": "oklch(0.50 0.18 65)",
-      "--primary-foreground": "oklch(0.98 0.01 70)",
-      "--accent": "oklch(0.90 0.06 68)",
-      "--background": "oklch(0.97 0.020 70)",
-      "--foreground": "oklch(0.22 0.04 58)",
-      "--border": "oklch(0.85 0.04 68)",
-      "--ring": "oklch(0.55 0.18 65)",
-      "--card": "oklch(0.99 0.010 70)",
-      "--card-foreground": "oklch(0.22 0.04 60)",
-      "--popover": "oklch(0.99 0.010 70)",
-      "--popover-foreground": "oklch(0.22 0.04 60)",
-      "--secondary": "oklch(0.92 0.025 68)",
-      "--secondary-foreground": "oklch(0.30 0.05 60)",
-      "--muted": "oklch(0.94 0.020 70)",
-      "--muted-foreground": "oklch(0.45 0.04 60)",
-      "--accent-foreground": "oklch(0.25 0.05 60)",
+      "--primary": "oklch(0.50 0.18 65)", "--primary-foreground": "oklch(0.98 0.01 70)",
+      "--accent": "oklch(0.90 0.06 68)", "--background": "oklch(0.97 0.020 70)",
+      "--foreground": "oklch(0.22 0.04 58)", "--border": "oklch(0.85 0.04 68)",
+      "--ring": "oklch(0.55 0.18 65)", "--card": "oklch(0.99 0.010 70)",
+      "--card-foreground": "oklch(0.22 0.04 60)", "--popover": "oklch(0.99 0.010 70)",
+      "--popover-foreground": "oklch(0.22 0.04 60)", "--secondary": "oklch(0.92 0.025 68)",
+      "--secondary-foreground": "oklch(0.30 0.05 60)", "--muted": "oklch(0.94 0.020 70)",
+      "--muted-foreground": "oklch(0.45 0.04 60)", "--accent-foreground": "oklch(0.25 0.05 60)",
       "--input": "oklch(0.92 0.020 70)"
     },
     "dark": {
-      "--primary": "oklch(0.46 0.18 62)",
-      "--primary-foreground": "oklch(0.97 0.02 68)",
-      "--accent": "oklch(0.82 0.08 64)",
-      "--background": "oklch(0.82 0.08 68)",
-      "--foreground": "oklch(0.22 0.04 58)",
-      "--border": "oklch(0.76 0.065 64)",
-      "--ring": "oklch(0.46 0.18 62)",
-      "--card": "oklch(0.88 0.07 66)",
-      "--card-foreground": "oklch(0.22 0.04 58)",
-      "--popover": "oklch(0.93 0.06 64)",
-      "--popover-foreground": "oklch(0.20 0.045 56)",
-      "--secondary": "oklch(0.86 0.055 66)",
-      "--secondary-foreground": "oklch(0.28 0.05 58)",
-      "--muted": "oklch(0.87 0.045 66)",
-      "--muted-foreground": "oklch(0.42 0.045 62)",
-      "--accent-foreground": "oklch(0.24 0.055 58)",
+      "--primary": "oklch(0.46 0.18 62)", "--primary-foreground": "oklch(0.97 0.02 68)",
+      "--accent": "oklch(0.82 0.08 64)", "--background": "oklch(0.82 0.08 68)",
+      "--foreground": "oklch(0.22 0.04 58)", "--border": "oklch(0.76 0.065 64)",
+      "--ring": "oklch(0.46 0.18 62)", "--card": "oklch(0.88 0.07 66)",
+      "--card-foreground": "oklch(0.22 0.04 58)", "--popover": "oklch(0.93 0.06 64)",
+      "--popover-foreground": "oklch(0.20 0.045 56)", "--secondary": "oklch(0.86 0.055 66)",
+      "--secondary-foreground": "oklch(0.28 0.05 58)", "--muted": "oklch(0.87 0.045 66)",
+      "--muted-foreground": "oklch(0.42 0.045 62)", "--accent-foreground": "oklch(0.24 0.055 58)",
       "--input": "oklch(0.87 0.045 66)"
     }
   }

@@ -5,125 +5,30 @@
     "description": "坊市丹药铺的老板，精于商道，见钱眼开但为人还算公道。对各种灵药了如指掌。",
     "worldviewRestrictions": ["cultivation", "xianxia"],
     "factionId": "merchant_guild",
-    "attributes": {
-      "constitution": 8,
-      "insight": 10,
-      "luck": 12,
-      "willpower": 8,
-      "spiritPower": 6
-    },
-    "coreStats": {
-      "maxHp": 36,
-      "physicalATK": 13,
-      "specialATK": 6,
-      "physicalDEF": 8,
-      "specialDEF": 10,
-      "speed": 8,
-      "intelligence": 12,
-      "willpower": 8,
-      "lifespan": 80,
-      "perception": 10,
-      "specialResourceCap": 0
-    },
+    "attributes": { "constitution": 8, "insight": 10, "luck": 12, "willpower": 8, "spiritPower": 6 },
+    "coreStats": { "maxHp": 36, "physicalATK": 13, "specialATK": 6, "physicalDEF": 8, "specialDEF": 10, "speed": 8, "intelligence": 12, "willpower": 8, "lifespan": 80, "perception": 10, "specialResourceCap": 0 },
     "raceId": "human",
-    "talentIds": ["merchant_insight"],
-    "attitude": {
-      "initialValue": 10,
-      "changeRateModifier": 1.2
-    },
+    "talentIds": ["merchantMind"],
+    "attitude": { "initialValue": 10, "changeRateModifier": 1.2 },
     "dialogueLines": {
-      "greeting": {
-        "id": "greeting",
-        "text": "哟，客官来啦！小店虽小，但灵丹妙药应有尽有。想看看什么？",
-        "options": [
-          {
-            "id": "browse_shop",
-            "text": "看看有什么好东西",
-            "resultBranch": "open_shop"
-          },
-          {
-            "id": "ask_discount",
-            "text": "王掌柜，老顾客了，打个折呗？",
-            "minAttitude": 50,
-            "statGates": [
-              { "coreStat": "intelligence", "minValue": 10, "failureHint": "需要至少 10 点智力才能讨价还价" }
-            ],
-            "check": {
-              "type": "attribute",
-              "target": "insight",
-              "difficulty": 10,
-              "successText": "王掌柜眯眼一笑：'行吧行吧，老顾客了，给你打个八折！'",
-              "failureText": "王掌柜摆摆手：'小本生意，概不赊账，也不打折。'",
-              "successBranch": "discount_shop",
-              "failureBranch": "open_shop"
-            },
-            "resultBranch": "discount_shop"
-          },
-          {
-            "id": "chat_world",
-            "text": "王掌柜走南闯北，可听说过什么奇闻异事？",
-            "minAttitude": 20,
-            "resultBranch": "gossip"
-          },
-          {
-            "id": "leave",
-            "text": "告辞",
-            "resultBranch": "__exit__"
-          }
-        ],
-        "repeatable": true
-      },
-      "open_shop": {
-        "id": "open_shop",
-        "text": "请随意挑选，价格公道！",
-        "options": [
-          { "id": "leave_shop", "text": "好，再看看别的", "resultBranch": "greeting" }
-        ],
-        "repeatable": true
-      },
-      "discount_shop": {
-        "id": "discount_shop",
-        "text": "好好好，既然是老主顾，今日给你打八折！挑吧。",
-        "options": [
-          { "id": "leave_discount", "text": "多谢掌柜！", "resultBranch": "greeting" }
-        ],
-        "repeatable": true,
-        "cooldownSeconds": 3600
-      },
-      "gossip": {
-        "id": "gossip",
-        "text": "嘿，最近青云山脉那边不太平，听说有妖兽出没。不过据说那妖兽守护着一株千年灵芝……要不要去碰碰运气？",
-        "options": [
-          { "id": "interested", "text": "详细说说位置", "resultBranch": "gossip_detail" },
-          { "id": "not_interested", "text": "多谢提醒，我会小心的", "resultBranch": "greeting" }
-        ],
-        "repeatable": true
-      },
-      "gossip_detail": {
-        "id": "gossip_detail",
-        "text": "从这儿往东走三十里，青云山脉第三峰。不过丑话说在前头，那妖兽可不好惹，至少得筑基期的修为才敢去。",
-        "options": [
-          { "id": "acknowledge", "text": "知道了，多谢王掌柜！", "resultBranch": "greeting" }
-        ],
-        "repeatable": false,
-        "onEnter": ["unlock_quest_qingyun_herb"]
-      }
+      "greeting": { "id": "greeting", "text": "哟，客官来啦！小店虽小，但灵丹妙药应有尽有。想看看什么？", "options": [
+        { "id": "browse_shop", "text": "看看有什么好东西", "resultBranch": "open_shop" },
+        { "id": "ask_discount", "text": "王掌柜，老顾客了，打个折呗？", "minAttitude": 50, "check": { "type": "attribute", "target": "insight", "difficulty": 10 }, "resultBranch": "discount_shop" },
+        { "id": "chat_world", "text": "王掌柜走南闯北，可听说过什么奇闻异事？", "minAttitude": 20, "resultBranch": "gossip" },
+        { "id": "leave", "text": "告辞", "resultBranch": "__exit__" }], "repeatable": true },
+      "open_shop": { "id": "open_shop", "text": "请随意挑选，价格公道！", "options": [{ "id": "leave_shop", "text": "好，再看看别的", "resultBranch": "greeting" }], "repeatable": true },
+      "gossip": { "id": "gossip", "text": "最近青云山脉那边不太平，听说有妖兽出没。据说那妖兽守护着一株千年灵芝……", "options": [{ "id": "interested", "text": "详细说说位置", "resultBranch": "gossip_detail" }, { "id": "not_interested", "text": "多谢提醒", "resultBranch": "greeting" }], "repeatable": true },
+      "gossip_detail": { "id": "gossip_detail", "text": "往东三十里，青云山脉第三峰。不过那妖兽至少筑基期才敢去。", "options": [{ "id": "acknowledge", "text": "知道了，多谢掌柜！", "resultBranch": "greeting" }], "repeatable": false, "onEnter": ["unlock_quest_qingyun_herb"] }
     },
     "shopItems": [
       { "itemId": "healing_pill_low", "basePrice": 30, "quantity": 20, "maxQuantity": 20, "restockIntervalSeconds": 1800 },
       { "itemId": "healing_pill_mid", "basePrice": 80, "quantity": 10, "maxQuantity": 10, "restockIntervalSeconds": 3600 },
       { "itemId": "mana_pill_low", "basePrice": 25, "quantity": 15, "maxQuantity": 15, "restockIntervalSeconds": 1800 },
       { "itemId": "cultivation_pill", "basePrice": 100, "quantity": 5, "maxQuantity": 5, "restockIntervalSeconds": 7200 },
-      { "itemId": "breakthrough_pill", "basePrice": 500, "quantity": 1, "maxQuantity": 1, "restockIntervalSeconds": 86400, "minAttitude": 40 },
-      { "itemId": "spirit_stone_small", "basePrice": 10, "minAttitude": 0 }
+      { "itemId": "breakthrough_pill", "basePrice": 500, "quantity": 1, "maxQuantity": 1, "restockIntervalSeconds": 86400, "minAttitude": 40 }
     ],
     "supportsAIDialogue": false,
-    "combatBehavior": {
-      "aggressionThreshold": -80,
-      "fleeThreshold": 0.3,
-      "combatStyle": "support",
-      "skillPriority": []
-    }
+    "combatBehavior": { "aggressionThreshold": -80, "fleeThreshold": 0.3, "combatStyle": "support", "skillPriority": [] }
   },
   {
     "id": "senior_brother_li",
@@ -131,179 +36,49 @@
     "description": "宗门内门弟子，修为已达金丹期。为人正直，乐于指点后辈修炼。",
     "worldviewRestrictions": ["cultivation", "xianxia"],
     "factionId": "righteous_sect",
-    "attributes": {
-      "constitution": 15,
-      "insight": 16,
-      "luck": 10,
-      "willpower": 14,
-      "spiritPower": 18
-    },
-    "coreStats": {
-      "maxHp": 80,
-      "physicalATK": 25,
-      "specialATK": 36,
-      "physicalDEF": 20,
-      "specialDEF": 28,
-      "speed": 18,
-      "intelligence": 16,
-      "willpower": 14,
-      "lifespan": 200,
-      "perception": 14,
-      "specialResourceCap": 150
-    },
+    "attributes": { "constitution": 15, "insight": 16, "luck": 10, "willpower": 14, "spiritPower": 18 },
+    "coreStats": { "maxHp": 80, "physicalATK": 25, "specialATK": 36, "physicalDEF": 20, "specialDEF": 28, "speed": 18, "intelligence": 16, "willpower": 14, "lifespan": 200, "perception": 14, "specialResourceCap": 150 },
     "raceId": "human",
-    "talentIds": ["sword_mastery"],
-    "attitude": {
-      "initialValue": 25,
-      "changeRateModifier": 1.0
-    },
+    "talentIds": ["swordHeart"],
+    "attitude": { "initialValue": 25, "changeRateModifier": 1.0 },
     "dialogueLines": {
-      "greeting": {
-        "id": "greeting",
-        "text": "师弟/师妹来了啊。修行路上可有什么困惑？",
-        "options": [
-          {
-            "id": "ask_cultivation",
-            "text": "请教师兄修炼心得",
-            "statGates": [
-              { "coreStat": "willpower", "minValue": 10, "failureHint": "需要至少 10 点毅力才能领悟高深心法" }
-            ],
-            "resultBranch": "teach_cultivation"
-          },
-          {
-            "id": "ask_spar",
-            "text": "想和师兄切磋一番",
-            "minAttitude": 40,
-            "resultBranch": "spar_confirm"
-          },
-          { "id": "greet_leave", "text": "只是来看看师兄", "resultBranch": "__exit__" }
-        ],
-        "repeatable": true
-      },
-      "teach_cultivation": {
-        "id": "teach_cultivation",
-        "text": "修炼之道，贵在坚持。你且记下：心静则气顺，气顺则丹成。每日打坐一个时辰，胜过囫囵吞枣十枚丹药。",
-        "options": [
-          { "id": "thank", "text": "多谢师兄指点", "resultBranch": "greeting" }
-        ],
-        "repeatable": true,
-        "cooldownSeconds": 600,
-        "onEnter": ["give_cultivation_buff_1h"]
-      },
-      "spar_confirm": {
-        "id": "spar_confirm",
-        "text": "好！点到为止，让我看看你最近的进步。",
-        "options": [
-          { "id": "fight", "text": "请师兄赐教！", "resultBranch": "__exit__" }
-        ],
-        "repeatable": true,
-        "cooldownSeconds": 3600,
-        "onEnter": ["trigger_spar_battle_senior_li"]
-      }
+      "greeting": { "id": "greeting", "text": "师弟/师妹来了。修行路上可有什么困惑？", "options": [
+        { "id": "ask_cultivation", "text": "请教师兄修炼心得", "resultBranch": "teach_cultivation" },
+        { "id": "ask_spar", "text": "想和师兄切磋一番", "minAttitude": 40, "resultBranch": "spar_confirm" },
+        { "id": "ask_sect", "text": "师兄，咱们宗门有什么大人物吗？", "minAttitude": 20, "resultBranch": "tell_sect" },
+        { "id": "greet_leave", "text": "只是来看看师兄", "resultBranch": "__exit__" }], "repeatable": true },
+      "teach_cultivation": { "id": "teach_cultivation", "text": "心静则气顺，气顺则丹成。每日打坐一个时辰，胜过囫囵吞枣十枚丹药。", "options": [{ "id": "thank", "text": "多谢师兄指点", "resultBranch": "greeting" }], "repeatable": true, "cooldownSeconds": 600, "onEnter": ["give_cultivation_buff_1h"] },
+      "tell_sect": { "id": "tell_sect", "text": "咱们青云宗最厉害的当然是掌门青云真人，化神境的大能！藏书阁的守阁长老也是元婴境的高手。", "options": [{ "id": "interested", "text": "元婴境……真是令人向往", "resultBranch": "greeting" }], "repeatable": true, "onEnter": ["unlock_quest_visit_elder"] },
+      "spar_confirm": { "id": "spar_confirm", "text": "好！点到为止，让我看看你最近的进步。", "options": [{ "id": "fight", "text": "请师兄赐教！", "resultBranch": "__exit__" }], "repeatable": true, "cooldownSeconds": 3600, "onEnter": ["trigger_spar_battle_senior_li"] }
     },
     "shopItems": [],
     "supportsAIDialogue": false,
-    "combatBehavior": {
-      "aggressionThreshold": -60,
-      "fleeThreshold": 0.1,
-      "combatStyle": "melee",
-      "skillPriority": ["sword_technique_01", "sword_technique_02"]
-    }
+    "combatBehavior": { "aggressionThreshold": -60, "fleeThreshold": 0.1, "combatStyle": "melee", "skillPriority": ["sword_technique_01", "sword_technique_02"] }
   },
   {
     "id": "rogue_cultivator_hei",
     "name": "黑风散修",
-    "description": "一介散修，行踪不定，据说修炼的是旁门左道。面色阴鸷，但对强者还算恭敬。",
+    "description": "一介散修，行踪不定，修炼旁门左道。面色阴鸷，对强者还算恭敬。",
     "worldviewRestrictions": ["cultivation"],
     "factionId": "rogue_cultivators",
-    "attributes": {
-      "constitution": 12,
-      "insight": 13,
-      "luck": 8,
-      "willpower": 16,
-      "spiritPower": 9
-    },
-    "coreStats": {
-      "maxHp": 64,
-      "physicalATK": 22,
-      "specialATK": 28,
-      "physicalDEF": 14,
-      "specialDEF": 18,
-      "speed": 20,
-      "intelligence": 13,
-      "willpower": 16,
-      "lifespan": 120,
-      "perception": 16,
-      "specialResourceCap": 80
-    },
+    "attributes": { "constitution": 12, "insight": 13, "luck": 8, "willpower": 16, "spiritPower": 9 },
+    "coreStats": { "maxHp": 64, "physicalATK": 22, "specialATK": 28, "physicalDEF": 14, "specialDEF": 18, "speed": 20, "intelligence": 13, "willpower": 16, "lifespan": 120, "perception": 16, "specialResourceCap": 80 },
     "raceId": "human",
     "talentIds": [],
-    "attitude": {
-      "initialValue": -15,
-      "changeRateModifier": 0.8
-    },
+    "attitude": { "initialValue": -15, "changeRateModifier": 0.8 },
     "dialogueLines": {
-      "greeting": {
-        "id": "greeting",
-        "text": "哼，什么人？这地方可不是随便来的。",
-        "options": [
-          {
-            "id": "intimidate",
-            "text": "少废话，交出你手里的灵草！",
-            "minAttitude": -80,
-            "statGates": [
-              { "coreStat": "physicalATK", "minValue": 20, "failureHint": "需要至少 20 点物理攻击才能威慑对方" }
-            ],
-            "resultBranch": "intimidated"
-          },
-          {
-            "id": "trade",
-            "text": "我来做交易的，听说你有好货？",
-            "minAttitude": -30,
-            "resultBranch": "open_black_market"
-          },
-          { "id": "greet_neutral", "text": "路过而已，并无恶意", "resultBranch": "neutral_response" },
-          { "id": "leave", "text": "打扰了", "resultBranch": "__exit__" }
-        ],
-        "repeatable": true
-      },
-      "intimidated": {
-        "id": "intimidated",
-        "text": "别……别动手！灵草给你就是。",
-        "options": [
-          { "id": "take", "text": "算你识相", "resultBranch": "__exit__" }
-        ],
-        "repeatable": false,
-        "onEnter": ["give_item_spirit_herb", "attitude_change_hostile_30"]
-      },
-      "open_black_market": {
-        "id": "open_black_market",
-        "text": "有点意思……没错，我手里有些市面上买不到的东西。不过价格嘛，可不便宜。",
-        "options": [
-          { "id": "browse", "text": "看看货", "resultBranch": "greeting" }
-        ],
-        "repeatable": true
-      },
-      "neutral_response": {
-        "id": "neutral_response",
-        "text": "行，既然不是来找麻烦的，我也不为难你。快走吧。",
-        "options": [
-          { "id": "ok", "text": "告辞", "resultBranch": "__exit__" }
-        ],
-        "repeatable": true
-      }
+      "greeting": { "id": "greeting", "text": "什么人？这地方可不是随便来的。", "options": [
+        { "id": "intimidate", "text": "少废话，交出灵草！", "minAttitude": -80, "resultBranch": "intimidated" },
+        { "id": "trade", "text": "我来做交易的，听说你有好货？", "minAttitude": -30, "resultBranch": "open_black_market" },
+        { "id": "greet_neutral", "text": "路过而已，并无恶意", "resultBranch": "neutral_response" },
+        { "id": "leave", "text": "打扰了", "resultBranch": "__exit__" }], "repeatable": true },
+      "intimidated": { "id": "intimidated", "text": "别……别动手！灵草给你就是。", "options": [{ "id": "take", "text": "算你识相", "resultBranch": "__exit__" }], "repeatable": false, "onEnter": ["give_item_spirit_herb", "attitude_change_hostile_30"] },
+      "open_black_market": { "id": "open_black_market", "text": "有点意思……我手里有些市面上买不到的东西。不过价格嘛，可不便宜。", "options": [{ "id": "browse", "text": "看看货", "resultBranch": "greeting" }], "repeatable": true },
+      "neutral_response": { "id": "neutral_response", "text": "行，既然不是来找麻烦的，我也不为难你。快走吧。", "options": [{ "id": "ok", "text": "告辞", "resultBranch": "__exit__" }], "repeatable": true }
     },
-    "shopItems": [
-      { "itemId": "forbidden_pill", "basePrice": 300, "quantity": 3, "maxQuantity": 3, "restockIntervalSeconds": 86400, "minAttitude": 0 },
-      { "itemId": "poison_dart", "basePrice": 50, "minAttitude": -20 }
-    ],
+    "shopItems": [{ "itemId": "forbidden_pill", "basePrice": 300, "quantity": 3, "maxQuantity": 3, "restockIntervalSeconds": 86400, "minAttitude": 0 }, { "itemId": "poison_dart", "basePrice": 50, "minAttitude": -20 }],
     "supportsAIDialogue": false,
-    "combatBehavior": {
-      "aggressionThreshold": -40,
-      "fleeThreshold": 0.25,
-      "combatStyle": "caster",
-      "skillPriority": ["dark_spell_01", "dark_spell_02"]
-    }
+    "combatBehavior": { "aggressionThreshold": -40, "fleeThreshold": 0.25, "combatStyle": "caster", "skillPriority": ["dark_spell_01", "dark_spell_02"] }
   },
   {
     "id": "demon_beast_serpent",
@@ -311,85 +86,273 @@
     "description": "青云山脉中的妖兽，灵智已开，能口吐人言。性情暴戾，对闯入领地者毫不留情。",
     "worldviewRestrictions": ["cultivation", "xianxia"],
     "factionId": "demon_beasts",
-    "attributes": {
-      "constitution": 20,
-      "insight": 6,
-      "luck": 5,
-      "willpower": 18,
-      "spiritPower": 4
-    },
-    "coreStats": {
-      "maxHp": 120,
-      "physicalATK": 30,
-      "specialATK": 8,
-      "physicalDEF": 25,
-      "specialDEF": 8,
-      "speed": 22,
-      "intelligence": 6,
-      "willpower": 18,
-      "lifespan": 500,
-      "perception": 20,
-      "specialResourceCap": 40
-    },
+    "attributes": { "constitution": 20, "insight": 6, "luck": 5, "willpower": 18, "spiritPower": 4 },
+    "coreStats": { "maxHp": 120, "physicalATK": 30, "specialATK": 8, "physicalDEF": 25, "specialDEF": 8, "speed": 22, "intelligence": 6, "willpower": 18, "lifespan": 500, "perception": 20, "specialResourceCap": 40 },
     "raceId": "demon",
     "talentIds": [],
-    "attitude": {
-      "initialValue": -70,
-      "changeRateModifier": 0.3
-    },
+    "attitude": { "initialValue": -70, "changeRateModifier": 0.3 },
     "dialogueLines": {
-      "greeting": {
-        "id": "greeting",
-        "text": "嘶嘶嘶……人类，竟敢踏入吾之领地！",
-        "options": [
-          { "id": "fight", "text": "妖兽受死！", "resultBranch": "__exit__" },
-          {
-            "id": "offer",
-            "text": "我是来献祭的，这枚灵果献给您",
-            "statGates": [
-              { "coreStat": "intelligence", "minValue": 12, "failureHint": "需要至少 12 点智力才能想到用计谋哄骗妖兽" }
-            ],
-            "check": {
-              "type": "attribute",
-              "target": "insight",
-              "difficulty": 14,
-              "successText": "赤鳞蟒嗅了嗅灵果，眼中的凶光渐渐褪去。'算你识相，拿了东西快走！'",
-              "failureText": "赤鳞蟒一口吞掉灵果，却更加暴躁：'区区一枚果子就想打发我？！'",
-              "successBranch": "pacified",
-              "failureBranch": "enraged"
-            },
-            "resultBranch": "pacified"
-          },
-          { "id": "flee", "text": "快跑！", "resultBranch": "__exit__" }
-        ],
-        "repeatable": true
-      },
-      "pacified": {
-        "id": "pacified",
-        "text": "……算你识相。山腰的千年灵芝你可以取走，但别再来了。",
-        "options": [
-          { "id": "thanks", "text": "多谢蛇仙大人", "resultBranch": "__exit__" }
-        ],
-        "repeatable": false,
-        "onEnter": ["unlock_herb_location"]
-      },
-      "enraged": {
-        "id": "enraged",
-        "text": "找死！！",
-        "options": [
-          { "id": "battle", "text": "迎战！", "resultBranch": "__exit__" }
-        ],
-        "repeatable": false,
-        "onEnter": ["trigger_boss_battle_serpent"]
-      }
+      "greeting": { "id": "greeting", "text": "嘶嘶嘶……人类，竟敢踏入吾之领地！", "options": [
+        { "id": "fight", "text": "妖兽受死！", "resultBranch": "__exit__" },
+        { "id": "offer", "text": "我是来献祭的，这枚灵果献给您", "check": { "type": "attribute", "target": "insight", "difficulty": 14 }, "resultBranch": "pacified" },
+        { "id": "flee", "text": "快跑！", "resultBranch": "__exit__" }], "repeatable": true },
+      "pacified": { "id": "pacified", "text": "……算你识相。山腰的千年灵芝你可以取走，但别再来了。", "options": [{ "id": "thanks", "text": "多谢蛇仙大人", "resultBranch": "__exit__" }], "repeatable": false, "onEnter": ["unlock_herb_location"] },
+      "enraged": { "id": "enraged", "text": "找死！！", "options": [{ "id": "battle", "text": "迎战！", "resultBranch": "__exit__" }], "repeatable": false, "onEnter": ["trigger_boss_battle_serpent"] }
     },
     "shopItems": [],
     "supportsAIDialogue": false,
-    "combatBehavior": {
-      "aggressionThreshold": -50,
-      "fleeThreshold": 0.05,
-      "combatStyle": "melee",
-      "skillPriority": ["serpent_poison_bite", "tail_sweep", "constrict"]
-    }
+    "combatBehavior": { "aggressionThreshold": -50, "fleeThreshold": 0.05, "combatStyle": "melee", "skillPriority": ["serpent_poison_bite", "tail_sweep", "constrict"] }
+  },
+  {
+    "id": "elder_qingyun",
+    "name": "青云真人",
+    "description": "青云宗掌门，修为已至化神境。仙风道骨，深不可测。轻易不出关，但偶尔会指点有缘的弟子。",
+    "worldviewRestrictions": ["cultivation"],
+    "factionId": "righteous_sect",
+    "attributes": { "constitution": 25, "insight": 30, "luck": 20, "willpower": 28, "spiritPower": 35 },
+    "coreStats": { "maxHp": 200, "physicalATK": 55, "specialATK": 80, "physicalDEF": 40, "specialDEF": 50, "speed": 28, "intelligence": 35, "willpower": 40, "lifespan": 800, "perception": 30, "specialResourceCap": 500 },
+    "raceId": "human",
+    "talentIds": ["daoHeart", "spiritualGift", "spiritWisdom"],
+    "attitude": { "initialValue": 30, "changeRateModifier": 0.5 },
+    "dialogueLines": {
+      "greeting": { "id": "greeting", "text": "年轻人，你身上有一股不凡的气息。来找本座可是为了求道？", "options": [
+        { "id": "ask_dao", "text": "请真人指点大道", "minAttitude": 40, "check": { "type": "coreStat", "target": "willpower", "difficulty": 18 }, "resultBranch": "teach_dao" },
+        { "id": "ask_secret", "text": "听说此界之外还有万界？", "minAttitude": 60, "resultBranch": "tell_ascension" },
+        { "id": "offer_gift", "text": "晚辈带来一株千年灵芝孝敬真人", "minAttitude": 20, "resultBranch": "accept_gift" },
+        { "id": "leave", "text": "不敢打扰真人清修", "resultBranch": "__exit__" }], "repeatable": true },
+      "teach_dao": { "id": "teach_dao", "text": "道可道，非常道。你且记住：修行不是为了变强，而是为了看清自己。心若明镜，则万物皆可为师。", "options": [{ "id": "enlightened", "text": "弟子明白了！", "resultBranch": "greeting" }], "repeatable": true, "cooldownSeconds": 7200, "onEnter": ["give_major_cultivation_buff", "attitude_change_friendly_10"] },
+      "tell_ascension": { "id": "tell_ascension", "text": "不错，此界之外确有无穷万界。渡劫飞升之后，便能踏足万界之旅。但切记：飞升容易，回头难。", "options": [{ "id": "determined", "text": "我一定会踏上万界之路！", "resultBranch": "greeting" }], "repeatable": false, "onEnter": ["give_ascension_knowledge_buff"] },
+      "accept_gift": { "id": "accept_gift", "text": "千年灵芝……不错，你有心了。本座便传你一道剑意，好生领悟。", "options": [{ "id": "thank", "text": "多谢真人赐教！", "resultBranch": "greeting" }], "repeatable": false, "onEnter": ["give_sword_insight", "attitude_change_friendly_15"] }
+    },
+    "shopItems": [],
+    "supportsAIDialogue": true,
+    "combatBehavior": { "aggressionThreshold": -30, "fleeThreshold": 0, "combatStyle": "caster", "skillPriority": ["supreme_sword_art", "heavenly_lightning"] }
+  },
+  {
+    "id": "alchemist_su",
+    "name": "苏丹师",
+    "description": "丹霞宗炼丹长老，痴迷于炼丹术，常年守在丹炉旁。脾气古怪但对丹道极有见地。",
+    "worldviewRestrictions": ["cultivation", "xianxia"],
+    "factionId": "alchemy_guild",
+    "attributes": { "constitution": 10, "insight": 18, "luck": 15, "willpower": 12, "spiritPower": 14 },
+    "coreStats": { "maxHp": 45, "physicalATK": 14, "specialATK": 25, "physicalDEF": 10, "specialDEF": 16, "speed": 10, "intelligence": 22, "willpower": 14, "lifespan": 150, "perception": 12, "specialResourceCap": 100 },
+    "raceId": "human",
+    "talentIds": ["quickLearner", "luckyStar"],
+    "attitude": { "initialValue": 0, "changeRateModifier": 1.0 },
+    "dialogueLines": {
+      "greeting": { "id": "greeting", "text": "谁啊？没看我正忙着呢！这炉丹还差半个时辰——嗯？你是来求丹的？", "options": [
+        { "id": "ask_pill", "text": "想请教炼丹之道", "minAttitude": 20, "resultBranch": "teach_alchemy" },
+        { "id": "commission", "text": "想请苏丹师定制一枚丹药", "minAttitude": 40, "resultBranch": "take_commission" },
+        { "id": "donate_herbs", "text": "我这里有些灵草，愿意捐给苏丹师", "resultBranch": "accept_herbs" },
+        { "id": "leave", "text": "不打扰了", "resultBranch": "__exit__" }], "repeatable": true },
+      "teach_alchemy": { "id": "teach_alchemy", "text": "炼丹讲究火候、配比、时机。三味缺一不可。你若有心，先学会辨认灵草再来。", "options": [{ "id": "ok", "text": "多谢指点", "resultBranch": "greeting" }], "repeatable": true, "cooldownSeconds": 600, "onEnter": ["give_alchemy_knowledge"] },
+      "take_commission": { "id": "take_commission", "text": "定制丹药？行啊，不过材料得你自己出。我最近缺凤凰羽和龙涎草，你若有，我帮你炼一枚破境丹。", "options": [{ "id": "accept", "text": "我去找材料", "resultBranch": "greeting" }], "repeatable": false, "onEnter": ["unlock_quest_alchemy_materials"] },
+      "accept_herbs": { "id": "accept_herbs", "text": "哦？让我看看……这些灵草品相不错！这枚聚气丹就当谢礼了。", "options": [{ "id": "thanks", "text": "多谢苏丹师", "resultBranch": "greeting" }], "repeatable": true, "cooldownSeconds": 86400, "onEnter": ["give_cultivation_pill", "attitude_change_friendly_5"] }
+    },
+    "shopItems": [{ "itemId": "breakthrough_pill", "basePrice": 400, "quantity": 2, "maxQuantity": 2, "restockIntervalSeconds": 86400, "minAttitude": 30 }],
+    "supportsAIDialogue": false,
+    "combatBehavior": { "aggressionThreshold": -70, "fleeThreshold": 0.4, "combatStyle": "support", "skillPriority": [] }
+  },
+  {
+    "id": "sword_immortal_xuan",
+    "name": "剑玄仙子",
+    "description": "青云宗第一剑修，元婴境。以剑入道，性格清冷，但对剑道有着近乎痴迷的执着。",
+    "worldviewRestrictions": ["cultivation", "xianxia"],
+    "factionId": "righteous_sect",
+    "attributes": { "constitution": 18, "insight": 24, "luck": 12, "willpower": 20, "spiritPower": 22 },
+    "coreStats": { "maxHp": 100, "physicalATK": 45, "specialATK": 50, "physicalDEF": 28, "specialDEF": 30, "speed": 32, "intelligence": 20, "willpower": 25, "lifespan": 400, "perception": 22, "specialResourceCap": 200 },
+    "raceId": "human",
+    "talentIds": ["swordHeart", "daoHeart"],
+    "attitude": { "initialValue": 0, "changeRateModifier": 0.6 },
+    "dialogueLines": {
+      "greeting": { "id": "greeting", "text": "……何事？若是闲聊，恕不奉陪。若是论剑，尚可一谈。", "options": [
+        { "id": "challenge", "text": "我想挑战仙子的剑法！", "minAttitude": 50, "resultBranch": "accept_challenge" },
+        { "id": "learn_sword", "text": "请仙子传授剑道真谛", "minAttitude": 70, "check": { "type": "attribute", "target": "insight", "difficulty": 16 }, "resultBranch": "teach_sword" },
+        { "id": "gift_sword_manual", "text": "晚辈得了一本剑谱，想请仙子鉴赏", "minAttitude": 20, "resultBranch": "appraise_manual" },
+        { "id": "leave", "text": "打扰仙子了", "resultBranch": "__exit__" }], "repeatable": true },
+      "accept_challenge": { "id": "accept_challenge", "text": "勇气可嘉。出剑吧，我会把修为压到和你同境。", "options": [{ "id": "fight", "text": "请仙子赐教！", "resultBranch": "__exit__" }], "repeatable": true, "cooldownSeconds": 7200, "onEnter": ["trigger_spar_battle_sword_immortal"] },
+      "teach_sword": { "id": "teach_sword", "text": "剑道即心道。心若不正，剑亦不正。记住：手中无剑，心中有剑，方为大成。", "options": [{ "id": "enlightened", "text": "剑心通明……我悟了", "resultBranch": "greeting" }], "repeatable": false, "onEnter": ["give_sword_mastery_permanent"] },
+      "appraise_manual": { "id": "appraise_manual", "text": "这剑谱……竟有几分上古剑意的影子。虽然不是原本，但足够你修炼一阵了。", "options": [{ "id": "thanks", "text": "多谢仙子指点", "resultBranch": "greeting" }], "repeatable": false, "cooldownSeconds": 604800, "onEnter": ["attitude_change_friendly_20"] }
+    },
+    "shopItems": [],
+    "supportsAIDialogue": false,
+    "combatBehavior": { "aggressionThreshold": -40, "fleeThreshold": 0, "combatStyle": "melee", "skillPriority": ["supreme_sword_art", "sword_dance", "blade_storm"] }
+  },
+  {
+    "id": "beast_merchant_hu",
+    "name": "虎掌柜",
+    "description": "妖族商人，化形为虎头人身的壮汉。性格豪爽，爱酒如命，做买卖凭心情。",
+    "worldviewRestrictions": ["cultivation"],
+    "factionId": "demon_beasts",
+    "attributes": { "constitution": 16, "insight": 8, "luck": 18, "willpower": 14, "spiritPower": 6 },
+    "coreStats": { "maxHp": 90, "physicalATK": 28, "specialATK": 10, "physicalDEF": 22, "specialDEF": 10, "speed": 16, "intelligence": 8, "willpower": 14, "lifespan": 300, "perception": 18, "specialResourceCap": 30 },
+    "raceId": "demon",
+    "talentIds": ["demonicPhysique", "predatorInstinct"],
+    "attitude": { "initialValue": 5, "changeRateModifier": 1.5 },
+    "dialogueLines": {
+      "greeting": { "id": "greeting", "text": "哈哈哈！人类修士！来来来，喝酒喝酒！喝完再谈买卖！", "options": [
+        { "id": "drink", "text": "好！干了！", "resultBranch": "drink_together" },
+        { "id": "browse", "text": "虎掌柜，我听说你这有好东西？", "minAttitude": 10, "resultBranch": "show_wares" },
+        { "id": "gift_wine", "text": "我带了上好的灵酒，孝敬虎掌柜", "resultBranch": "accept_wine" },
+        { "id": "leave", "text": "下次再来喝酒", "resultBranch": "__exit__" }], "repeatable": true },
+      "drink_together": { "id": "drink_together", "text": "痛快！你这人类不错，够豪爽！今天所有货品打八折！", "options": [{ "id": "cheers", "text": "虎掌柜也是痛快人！", "resultBranch": "show_wares" }], "repeatable": true, "cooldownSeconds": 86400, "onEnter": ["trigger_discount_20", "attitude_change_friendly_15"] },
+      "show_wares": { "id": "show_wares", "text": "看看，妖族特产的灵材，你们人类坊市可买不到！", "options": [{ "id": "thanks", "text": "确实好东西", "resultBranch": "greeting" }], "repeatable": true },
+      "accept_wine": { "id": "accept_wine", "text": "灵酒？！哈哈哈这可是好东西！来来来，这块妖骨你拿回去炼器，保证比你那破铜烂铁强！", "options": [{ "id": "thanks", "text": "多谢虎掌柜", "resultBranch": "greeting" }], "repeatable": false, "cooldownSeconds": 172800, "onEnter": ["give_demon_bone_item", "attitude_change_friendly_25"] }
+    },
+    "shopItems": [{ "itemId": "demon_bone", "basePrice": 80, "quantity": 5, "maxQuantity": 5, "restockIntervalSeconds": 86400 }, { "itemId": "beast_blood_essence", "basePrice": 200, "quantity": 2, "maxQuantity": 2, "restockIntervalSeconds": 172800, "minAttitude": 30 }],
+    "supportsAIDialogue": false,
+    "combatBehavior": { "aggressionThreshold": -50, "fleeThreshold": 0.15, "combatStyle": "melee", "skillPriority": ["tiger_claw", "roar_intimidate"] }
+  },
+  {
+    "id": "sword_master_ye",
+    "name": "叶剑尊",
+    "description": "万剑阁剑尊，元婴境剑修。独居剑冢之中，与万剑为伴。性格孤僻，但剑道修为深不可测。",
+    "worldviewRestrictions": ["cultivation"],
+    "factionId": "sword_guild",
+    "attributes": { "constitution": 20, "insight": 26, "luck": 10, "willpower": 22, "spiritPower": 16 },
+    "coreStats": { "maxHp": 110, "physicalATK": 50, "specialATK": 30, "physicalDEF": 30, "specialDEF": 25, "speed": 30, "intelligence": 22, "willpower": 28, "lifespan": 500, "perception": 24, "specialResourceCap": 120 },
+    "raceId": "human",
+    "talentIds": ["swordHeart", "daoHeart", "battleInstinct"],
+    "attitude": { "initialValue": -10, "changeRateModifier": 0.4 },
+    "dialogueLines": {
+      "greeting": { "id": "greeting", "text": "……剑冢重地，闲人免入。你身上有剑意，来此何为？", "options": [
+        { "id": "learn_sword", "text": "请剑尊指点剑道", "minAttitude": 30, "check": { "type": "attribute", "target": "insight", "difficulty": 15 }, "resultBranch": "teach_sword_art" },
+        { "id": "challenge", "text": "晚辈斗胆挑战剑尊！", "minAttitude": 60, "resultBranch": "accept_duel" },
+        { "id": "offer_sword", "text": "晚辈得了一柄古剑，想请剑尊鉴赏", "minAttitude": 10, "resultBranch": "appraise_sword" },
+        { "id": "leave", "text": "不敢打扰剑尊清修", "resultBranch": "__exit__" }], "repeatable": true },
+      "teach_sword_art": { "id": "teach_sword_art", "text": "剑之道，不在招数，而在剑心。看好了——这一剑，名为'破虚'。", "options": [{ "id": "awed", "text": "这一剑……不可思议", "resultBranch": "greeting" }], "repeatable": false, "onEnter": ["give_ultimate_sword_skill", "attitude_change_friendly_20"] },
+      "accept_duel": { "id": "accept_duel", "text": "有胆识。我只出一剑，你若能接下来，万剑阁的剑典任你翻阅。", "options": [{ "id": "ready", "text": "来吧！", "resultBranch": "__exit__" }], "repeatable": true, "cooldownSeconds": 86400, "onEnter": ["trigger_boss_battle_sword_master"] },
+      "appraise_sword": { "id": "appraise_sword", "text": "这剑……竟是上古名剑'断念'的仿制品。虽是仿品，但锻造手法已得其七分神韵。好剑。", "options": [{ "id": "thanks", "text": "多谢剑尊指点", "resultBranch": "greeting" }], "repeatable": false, "cooldownSeconds": 604800, "onEnter": ["give_sword_upgrade", "attitude_change_friendly_15"] }
+    },
+    "shopItems": [],
+    "supportsAIDialogue": false,
+    "combatBehavior": { "aggressionThreshold": -20, "fleeThreshold": 0, "combatStyle": "melee", "skillPriority": ["ultimate_sword_art", "blade_storm", "sword_dance"] }
+  },
+  {
+    "id": "demon_elder_mo",
+    "name": "魔云长老",
+    "description": "天魔教外门长老，元婴境。表面阴沉冷酷，实则对教中弟子极为护短。信奉以战养战的魔道理念。",
+    "worldviewRestrictions": ["cultivation"],
+    "factionId": "demon_cult",
+    "attributes": { "constitution": 18, "insight": 14, "luck": 8, "willpower": 24, "spiritPower": 22 },
+    "coreStats": { "maxHp": 100, "physicalATK": 30, "specialATK": 55, "physicalDEF": 22, "specialDEF": 30, "speed": 22, "intelligence": 16, "willpower": 30, "lifespan": 350, "perception": 18, "specialResourceCap": 250 },
+    "raceId": "demon",
+    "talentIds": ["demonicPhysique", "demonicSpirit", "bloodFury"],
+    "attitude": { "initialValue": -30, "changeRateModifier": 0.7 },
+    "dialogueLines": {
+      "greeting": { "id": "greeting", "text": "哼，正道的小崽子？敢来我天魔教的地盘，胆量不小。", "options": [
+        { "id": "prove_strength", "text": "实力才是硬道理——请长老赐教！", "resultBranch": "test_strength" },
+        { "id": "join_demon", "text": "我想了解天魔教的道义", "minAttitude": -10, "resultBranch": "explain_demon_path" },
+        { "id": "trade_dark", "text": "听说天魔教有独特的修炼资源？", "minAttitude": -20, "resultBranch": "show_dark_shop" },
+        { "id": "leave", "text": "告辞", "resultBranch": "__exit__" }], "repeatable": true },
+      "test_strength": { "id": "test_strength", "text": "哈哈哈！有种！打赢我，天魔教的大门为你敞开！输了的话……就把命留下吧。", "options": [{ "id": "fight", "text": "来战！", "resultBranch": "__exit__" }], "repeatable": true, "cooldownSeconds": 7200, "onEnter": ["trigger_boss_battle_demon_elder"] },
+      "explain_demon_path": { "id": "explain_demon_path", "text": "天地不仁，万物刍狗。正道修仙不过是自欺欺人。真正的道，是力量——绝对的、碾压一切的力量！", "options": [{ "id": "ponder", "text": "……受教了", "resultBranch": "greeting" }], "repeatable": true, "onEnter": ["attitude_change_friendly_10"] },
+      "show_dark_shop": { "id": "show_dark_shop", "text": "天魔教的'魔元丹'，一枚抵得上正道十枚聚气丹。不过嘛……服用之后可能会有些'副作用'。要试试吗？", "options": [{ "id": "buy", "text": "给我来一枚", "resultBranch": "greeting" }], "repeatable": true }
+    },
+    "shopItems": [{ "itemId": "demon_pill", "basePrice": 200, "quantity": 3, "maxQuantity": 3, "restockIntervalSeconds": 86400, "minAttitude": -10 }],
+    "supportsAIDialogue": false,
+    "combatBehavior": { "aggressionThreshold": -50, "fleeThreshold": 0.1, "combatStyle": "caster", "skillPriority": ["demon_art_01", "dark_spell_02", "blood_sacrifice"] }
+  },
+  {
+    "id": "monk_kongjian",
+    "name": "空见禅师",
+    "description": "佛门禅宗高僧，化神境。慈眉善目，佛法高深。常说'放下屠刀，立地成佛'，但降魔手段丝毫不弱。",
+    "worldviewRestrictions": ["cultivation"],
+    "factionId": "buddhist_sect",
+    "attributes": { "constitution": 16, "insight": 22, "luck": 14, "willpower": 26, "spiritPower": 18 },
+    "coreStats": { "maxHp": 130, "physicalATK": 25, "specialATK": 40, "physicalDEF": 35, "specialDEF": 40, "speed": 16, "intelligence": 28, "willpower": 35, "lifespan": 600, "perception": 20, "specialResourceCap": 200 },
+    "raceId": "human",
+    "talentIds": ["meditationMaster", "ironWill", "daoHeart"],
+    "attitude": { "initialValue": 20, "changeRateModifier": 0.8 },
+    "dialogueLines": {
+      "greeting": { "id": "greeting", "text": "阿弥陀佛。施主面有戾气，可是心中有惑？不妨与老衲一谈。", "options": [
+        { "id": "ask_dharma", "text": "请禅师开示佛法", "resultBranch": "teach_dharma" },
+        { "id": "ask_purify", "text": "我近来心魔缠身，请禅师相助", "minAttitude": 30, "resultBranch": "purify_heart" },
+        { "id": "donate", "text": "弟子愿捐一些灵石给寺庙", "resultBranch": "accept_donation" },
+        { "id": "leave", "text": "阿弥陀佛，弟子告退", "resultBranch": "__exit__" }], "repeatable": true },
+      "teach_dharma": { "id": "teach_dharma", "text": "菩提本无树，明镜亦非台。本来无一物，何处惹尘埃。修行不在外求，而在内观。", "options": [{ "id": "enlightened", "text": "弟子有所悟了", "resultBranch": "greeting" }], "repeatable": true, "cooldownSeconds": 3600, "onEnter": ["give_wisdom_buff", "attitude_change_friendly_5"] },
+      "purify_heart": { "id": "purify_heart", "text": "心魔乃修行者大敌。让老衲为你诵一段《清心咒》，可暂时压制心魔。", "options": [{ "id": "grateful", "text": "多谢禅师！", "resultBranch": "greeting" }], "repeatable": true, "cooldownSeconds": 43200, "onEnter": ["remove_mental_debuff", "give_mental_resist_buff"] },
+      "accept_donation": { "id": "accept_donation", "text": "善哉善哉。施主有此善心，老衲便赠你一枚佛门舍利，可保心境清明。", "options": [{ "id": "thanks", "text": "多谢禅师厚赠", "resultBranch": "greeting" }], "repeatable": true, "cooldownSeconds": 86400, "onEnter": ["give_buddhist_relic", "attitude_change_friendly_10"] }
+    },
+    "shopItems": [{ "itemId": "buddhist_relic", "basePrice": 150, "quantity": 1, "maxQuantity": 1, "restockIntervalSeconds": 86400, "minAttitude": 20 }],
+    "supportsAIDialogue": false,
+    "combatBehavior": { "aggressionThreshold": -100, "fleeThreshold": 0.2, "combatStyle": "caster", "skillPriority": ["buddhist_palm", "purification_light", "dharma_shield"] }
+  },
+  {
+    "id": "array_master_zhao",
+    "name": "赵阵师",
+    "description": "阵法世家传人，金丹境。痴迷于阵法研究，对各种阵图如数家珍。说话总带三分傲气，但确有真才实学。",
+    "worldviewRestrictions": ["cultivation"],
+    "factionId": "array_family",
+    "attributes": { "constitution": 10, "insight": 20, "luck": 12, "willpower": 16, "spiritPower": 14 },
+    "coreStats": { "maxHp": 50, "physicalATK": 14, "specialATK": 35, "physicalDEF": 12, "specialDEF": 22, "speed": 12, "intelligence": 24, "willpower": 18, "lifespan": 120, "perception": 14, "specialResourceCap": 80 },
+    "raceId": "human",
+    "talentIds": ["quickLearner", "meditationMaster"],
+    "attitude": { "initialValue": 0, "changeRateModifier": 1.0 },
+    "dialogueLines": {
+      "greeting": { "id": "greeting", "text": "又是来求阵的？说吧，要什么阵——困阵、杀阵、幻阵还是护山大阵？", "options": [
+        { "id": "buy_array", "text": "我想买一套阵盘", "minAttitude": 10, "resultBranch": "show_arrays" },
+        { "id": "learn_array", "text": "赵阵师能教我阵法之道吗？", "minAttitude": 40, "check": { "type": "attribute", "target": "insight", "difficulty": 14 }, "resultBranch": "teach_array" },
+        { "id": "offer_materials", "text": "我有些阵法材料，想请赵阵师鉴定", "resultBranch": "appraise_materials" },
+        { "id": "leave", "text": "告辞", "resultBranch": "__exit__" }], "repeatable": true },
+      "show_arrays": { "id": "show_arrays", "text": "看看吧——聚灵阵盘、五行杀阵、幻心迷阵，都是本店的招牌货。不过嘛，价格可不便宜。", "options": [{ "id": "browse", "text": "我自己看看", "resultBranch": "greeting" }], "repeatable": true },
+      "teach_array": { "id": "teach_array", "text": "阵法之道，首重布局。天时、地利、灵气走向，缺一不可。你先从最基础的五行阵开始吧。", "options": [{ "id": "thanks", "text": "多谢赵阵师", "resultBranch": "greeting" }], "repeatable": false, "onEnter": ["give_array_knowledge", "attitude_change_friendly_20"] },
+      "appraise_materials": { "id": "appraise_materials", "text": "哦？这是……上古阵基碎片！你在哪找到的？这东西现在可不多见了。", "options": [{ "id": "tell", "text": "在一处古遗迹中发现的", "resultBranch": "greeting" }], "repeatable": false, "onEnter": ["unlock_quest_ancient_array", "attitude_change_friendly_25"] }
+    },
+    "shopItems": [{ "itemId": "array_plate_gathering", "basePrice": 300, "quantity": 3, "maxQuantity": 3, "restockIntervalSeconds": 86400, "minAttitude": 10 }, { "itemId": "array_plate_kill", "basePrice": 500, "quantity": 1, "maxQuantity": 1, "restockIntervalSeconds": 172800, "minAttitude": 30 }],
+    "supportsAIDialogue": false,
+    "combatBehavior": { "aggressionThreshold": -60, "fleeThreshold": 0.3, "combatStyle": "support", "skillPriority": ["array_trap", "formation_boost"] }
+  },
+  {
+    "id": "intelligence_dealer_jiu",
+    "name": "九爷",
+    "description": "天机阁在东南域的情报头子。看似一个普通的茶馆老板，实则掌握着半个修仙界的情报网。说话滴水不漏。",
+    "worldviewRestrictions": ["cultivation"],
+    "factionId": "intelligence_guild",
+    "attributes": { "constitution": 9, "insight": 22, "luck": 16, "willpower": 14, "spiritPower": 10 },
+    "coreStats": { "maxHp": 40, "physicalATK": 12, "specialATK": 18, "physicalDEF": 8, "specialDEF": 14, "speed": 14, "intelligence": 26, "willpower": 16, "lifespan": 100, "perception": 24, "specialResourceCap": 40 },
+    "raceId": "human",
+    "talentIds": ["quickLearner", "charismaticLeader", "luckyStar"],
+    "attitude": { "initialValue": 5, "changeRateModifier": 0.9 },
+    "dialogueLines": {
+      "greeting": { "id": "greeting", "text": "客官请坐，上好的灵茶。想打听点什么？还是……想让我们帮您办点什么事？", "options": [
+        { "id": "buy_info", "text": "我想买些情报", "resultBranch": "sell_info" },
+        { "id": "bounty", "text": "天机阁接悬赏任务吗？", "minAttitude": 20, "resultBranch": "show_bounties" },
+        { "id": "sell_secret", "text": "我有一条消息，不知道天机阁有没有兴趣？", "resultBranch": "buy_secret" },
+        { "id": "leave", "text": "只是来喝杯茶", "resultBranch": "__exit__" }], "repeatable": true },
+      "sell_info": { "id": "sell_info", "text": "情报分三档：普通消息五十灵石，秘闻消息五百灵石，绝密消息五千灵石。客官要哪一档？", "options": [{ "id": "common", "text": "普通消息（50灵石）", "resultBranch": "give_common_info" }, { "id": "secret", "text": "秘闻消息（500灵石）", "resultBranch": "give_secret_info" }, { "id": "nevermind", "text": "算了", "resultBranch": "greeting" }], "repeatable": true, "cooldownSeconds": 3600 },
+      "show_bounties": { "id": "show_bounties", "text": "刚好有个大单子——天魔教在悬赏一件魔器'噬魂幡'的下落，报酬极其丰厚。不过嘛……风险也大。", "options": [{ "id": "accept", "text": "我接了", "resultBranch": "greeting" }], "repeatable": false, "onEnter": ["unlock_quest_bounty_demon_artifact"] },
+      "buy_secret": { "id": "buy_secret", "text": "哦？说来听听。如果消息属实，灵石少不了你的。如果是假的……下次来就不是喝茶了。", "options": [{ "id": "tell", "text": "如实相告", "resultBranch": "greeting" }], "repeatable": true, "cooldownSeconds": 86400, "onEnter": ["evaluate_secret_value"] },
+      "give_common_info": { "id": "give_common_info", "text": "最近青云山脉出现了一批来路不明的修士，修为不低，似乎在找什么东西。小心为上。", "options": [{ "id": "thanks", "text": "多谢九爷", "resultBranch": "greeting" }], "repeatable": true },
+      "give_secret_info": { "id": "give_secret_info", "text": "古族遗民最近有异动。据说他们在找一件上古神器，可能与飞升之路有关。此事非同小可，切勿外传。", "options": [{ "id": "shocked", "text": "飞升之路？！", "resultBranch": "greeting" }], "repeatable": false, "onEnter": ["unlock_quest_ancient_clan_investigation"] }
+    },
+    "shopItems": [],
+    "supportsAIDialogue": false,
+    "combatBehavior": { "aggressionThreshold": -80, "fleeThreshold": 0.5, "combatStyle": "support", "skillPriority": [] }
+  },
+  {
+    "id": "ancient_elder_cang",
+    "name": "苍老",
+    "description": "古族遗民的长老，活了不知多少万年。面貌古拙，双眼却透着洞察万古的沧桑。掌握着上古秘术的一鳞半爪。",
+    "worldviewRestrictions": ["cultivation"],
+    "factionId": "ancient_clan",
+    "attributes": { "constitution": 28, "insight": 32, "luck": 18, "willpower": 30, "spiritPower": 30 },
+    "coreStats": { "maxHp": 250, "physicalATK": 50, "specialATK": 70, "physicalDEF": 45, "specialDEF": 55, "speed": 20, "intelligence": 35, "willpower": 40, "lifespan": 5000, "perception": 30, "specialResourceCap": 500 },
+    "raceId": "spirit",
+    "talentIds": ["spiritGrace", "spiritWisdom", "ancientBloodline", "daoHeart"],
+    "attitude": { "initialValue": 15, "changeRateModifier": 0.3 },
+    "dialogueLines": {
+      "greeting": { "id": "greeting", "text": "年轻人……你身上有'变数'的味道。上一次见到变数之人，已经是三万年以前了。", "options": [
+        { "id": "ask_ancient", "text": "请前辈讲述上古之事", "minAttitude": 30, "resultBranch": "tell_history" },
+        { "id": "ask_secret_art", "text": "晚辈想学习上古秘术", "minAttitude": 70, "check": { "type": "coreStat", "target": "willpower", "difficulty": 25 }, "resultBranch": "teach_ancient_art" },
+        { "id": "offer_blood", "text": "我有一滴古族之血，想请前辈鉴定", "minAttitude": 20, "resultBranch": "appraise_blood" },
+        { "id": "leave", "text": "不敢打扰前辈清修", "resultBranch": "__exit__" }], "repeatable": true },
+      "tell_history": { "id": "tell_history", "text": "三万年前，万界尚未分离，诸天大道皆为一体。后来……发生了一场大战，天道崩碎，万界分裂。我族便是那场大战的幸存者。", "options": [{ "id": "fascinated", "text": "原来如此……", "resultBranch": "greeting" }], "repeatable": false, "onEnter": ["give_ancient_knowledge", "attitude_change_friendly_10"] },
+      "teach_ancient_art": { "id": "teach_ancient_art", "text": "上古秘术非同小可，施用不当会折损寿元。但既然你执意要学……记住：此术名为'万古一念'，一念之间可窥天道。", "options": [{ "id": "learned", "text": "晚辈铭记于心", "resultBranch": "greeting" }], "repeatable": false, "onEnter": ["give_ancient_skill", "attitude_change_friendly_30"] },
+      "appraise_blood": { "id": "appraise_blood", "text": "这是……我族的血脉？！虽然已经很稀薄了，但确实是我族后裔。年轻人，你与我族有缘。", "options": [{ "id": "surprised", "text": "我竟是古族后人？", "resultBranch": "greeting" }], "repeatable": false, "onEnter": ["unlock_quest_bloodline_awakening", "attitude_change_friendly_50"] }
+    },
+    "shopItems": [],
+    "supportsAIDialogue": true,
+    "combatBehavior": { "aggressionThreshold": -10, "fleeThreshold": 0.05, "combatStyle": "caster", "skillPriority": ["ancient_seal", "time_slow", "primordial_lightning"] }
   }
 ]

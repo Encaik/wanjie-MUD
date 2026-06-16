@@ -3,30 +3,14 @@
   "name": "妖族",
   "description": "天生体魄强健，寿元悠长，但灵智开化较慢",
   "worldviewRestrictions": [],
-  "baseAttributeBonuses": {
-    "constitution": 2,
-    "spiritPower": 1
-  },
+  "baseAttributeBonuses": { "constitution": 2, "spiritPower": 1 },
   "talentPool": [
-    "demonicPhysique",
-    "demonicSpirit",
-    "strongPhysique",
-    "ironWill"
+    "demonicPhysique", "demonicSpirit", "strongPhysique", "ironWill",
+    "bloodFury", "predatorInstinct", "nightHunter", "beastResilience",
+    "primalRage", "ancientBloodline"
   ],
   "innateAbilities": [
-    {
-      "id": "demonicPhysique",
-      "name": "妖魔之躯",
-      "description": "妖族身体天生坚韧",
-      "effects": {
-        "maxHp": {
-          "flat": 5
-        },
-        "physicalDEF": {
-          "flat": 2
-        }
-      }
-    }
+    { "id": "demonicPhysique", "name": "妖魔之躯", "description": "妖族身体天生坚韧", "effects": { "maxHp": { "flat": 5 }, "physicalDEF": { "flat": 2 } } }
   ],
   "lifespanModifier": 1.5
 }
