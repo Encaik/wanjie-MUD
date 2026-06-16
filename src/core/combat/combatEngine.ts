@@ -1,57 +1,54 @@
 /**
- * 回合制战斗引擎
+ * ATB 时间条战斗引擎
  *
- * 基于核心值系统的统一战斗引擎。消费 CoreStatValues，
- * 不依赖旧属性系统。支持手动/自动模式。
+ * 非纯回合制——速度决定行动频率。速度快的单位可在对方行动前多次出手。
  *
- * 战斗流程：
- *   1. 开场类型 → 速度修正 → 出手顺序
- *   2. 回合循环 → 选技能 → 伤害计算 → HP扣除 → CD更新
- *   3. 一方全灭 → 返回结果
+ * 时间条机制：
+ *   - 每个单位有 actionTime, 每 tick 增加 speed
+ *   - actionTime >= THRESHOLD(100) 时行动
+ *   - 行动后 actionTime 扣除 THRESHOLD, 余量保留（连续行动可能）
  *
- * 伤害公式 (宝可梦式):
- *   Damage = floor(((2×L+10)/250 × ATK/DEF × Power + 2) × random(0.85~1.0))
+ * 示例：speed=95 每 ~1.05 tick 行动一次, speed=3 每 ~33 tick 行动一次
+ *       速度 95 的单位可以行动 30+ 次后速度 3 的单位才行动 1 次！
  *
  * @module core/combat
  */
 
-import type {
-  EngagementType,
-  CombatUnit,
-  CombatSkill,
-  CombatMode,
-  CombatResult,
-  CombatRoundLog,
-} from './types';
+import type { EngagementType, CombatUnit, CombatSkill, CombatMode, CombatResult, CombatRoundLog, SessionState, PendingAction } from './types';
+import type { EquipmentModifier } from './types';
+import type { CoreStatValues } from '@/core/world/calculateCoreStats';
 
 // ============================================
-// 开场类型配置
+// 时间条常量
 // ============================================
 
-const ENGAGEMENT_CONFIG: Record<EngagementType, {
-  attackerSpeedMult: number;
-  firstStrike: boolean;
-  defPhysDefBonus: number;
-  defSpecDefBonus: number;
-}> = {
-  encounter: { attackerSpeedMult: 1.0, firstStrike: false, defPhysDefBonus: 0, defSpecDefBonus: 0 },
-  ambush:    { attackerSpeedMult: 1.0, firstStrike: true,  defPhysDefBonus: 0, defSpecDefBonus: 0 },
-  surprise:  { attackerSpeedMult: 1.5, firstStrike: false, defPhysDefBonus: 0, defSpecDefBonus: 0 },
-  defense:   { attackerSpeedMult: 1.0, firstStrike: false, defPhysDefBonus: 0.5, defSpecDefBonus: 0.5 },
+/** 行动阈值（达到此值即可行动） */
+const ACTION_THRESHOLD = 100;
+
+/** 最大 tick 数（防止死循环） */
+const MAX_TICKS = 10000;
+
+// ============================================
+// 开场类型
+// ============================================
+
+const ENGAGEMENT_CONFIG: Record<EngagementType, { speedMult: number; firstStrike: boolean; defHpBonus: number }> = {
+  encounter: { speedMult: 1.0, firstStrike: false, defHpBonus: 0 },
+  ambush:    { speedMult: 1.0, firstStrike: true,  defHpBonus: 0 },
+  surprise:  { speedMult: 1.5, firstStrike: false, defHpBonus: 0 },
+  defense:   { speedMult: 1.0, firstStrike: false, defHpBonus: 0.1 },
 };
 
 // ============================================
-// RNG (seeded)
+// RNG
 // ============================================
 
 let _seed = 0;
-function seededRandom(): number {
+function rng(): number {
   _seed = (_seed * 1103515245 + 12345) & 0x7fffffff;
   return _seed / 0x7fffffff;
 }
-export function setCombatSeed(seed: number): void {
-  _seed = seed;
-}
+export function setCombatSeed(seed: number): void { _seed = seed; }
 
 // ============================================
 // 伤害计算
@@ -59,198 +56,177 @@ export function setCombatSeed(seed: number): void {
 
 /**
  * 宝可梦式伤害公式
- *
- * Damage = floor(((2×level+10)/250 × ATK/DEF × power + 2) × random(0.85, 1.0))
- *
- * @param level - 攻击方等级
- * @param atk - 攻击方攻击值
- * @param def - 防御方防御值
- * @param power - 技能威力
- * @param weaponMod - 武器修正
+ * Damage = floor(((2L+10)/250 × ATK/DEF × power + 2) × random(0.85~1.0) × crit)
  */
 export function calculateDamage(
-  level: number,
-  atk: number,
-  def: number,
-  power: number,
-  weaponMod: number = 0,
+  level: number, atk: number, def: number, power: number, weaponMod = 0,
 ): { damage: number; isCritical: boolean } {
-  const effectiveDef = Math.max(1, def);
-  const effectivePower = power + weaponMod;
-  const baseRatio = (2 * level + 10) / 250;
-  const atkDefRatio = atk / effectiveDef;
-  const baseDamage = baseRatio * atkDefRatio * Math.max(1, effectivePower) + 2;
-
-  // 随机波动 0.85 ~ 1.0
-  const randomFactor = 0.85 + seededRandom() * 0.15;
-
-  // 暴击判定 5%
-  const isCritical = seededRandom() < 0.05;
-  const critMultiplier = isCritical ? 1.5 : 1.0;
-
-  const damage = Math.max(1, Math.floor(baseDamage * randomFactor * critMultiplier));
-  return { damage, isCritical };
-}
-
-// ============================================
-// 技能选择
-// ============================================
-
-/** 自动模式：选择可用中威力最高的技能 */
-function autoSelectSkill(skills: CombatSkill[]): CombatSkill | null {
-  const available = skills.filter(s => s.currentCooldown <= 0);
-  if (available.length === 0) return null;
-  return available.reduce((best, s) => s.power > best.power ? s : best, available[0]);
-}
-
-/** 手动模式：使用指定技能（需检查冷却） */
-function manualSelectSkill(skills: CombatSkill[], skillId: string): CombatSkill | null {
-  const skill = skills.find(s => s.id === skillId);
-  if (!skill || skill.currentCooldown > 0) return null;
-  return skill;
-}
-
-// ============================================
-// 出手顺序
-// ============================================
-
-/** 计算出手顺序 */
-function getTurnOrder(
-  attacker: CombatUnit,
-  defender: CombatUnit,
-  engagement: EngagementType,
-  isFirstRound: boolean,
-): [CombatUnit, CombatUnit] {
-  const config = ENGAGEMENT_CONFIG[engagement];
-
-  // ambush 首轮先手
-  if (config.firstStrike && isFirstRound) {
-    return [attacker, defender];
-  }
-
-  // 计算有效速度
-  const attackerSpeed = attacker.coreStats.speed * config.attackerSpeedMult;
-  const defenderSpeed = defender.coreStats.speed;
-
-  if (attackerSpeed >= defenderSpeed) {
-    return [attacker, defender];
-  }
-  return [defender, attacker];
+  const d = Math.max(1, def);
+  const p = power + weaponMod;
+  const base = (2 * level + 10) / 250 * (atk / d) * Math.max(1, p) + 2;
+  const rand = 0.85 + rng() * 0.15;
+  const crit = rng() < 0.05;
+  const dmg = Math.max(1, Math.floor(base * rand * (crit ? 1.5 : 1)));
+  return { damage: dmg, isCritical: crit };
 }
 
 // ============================================
 // 装备修正
 // ============================================
 
-import type { EquipmentModifier } from './types';
-import type { CoreStatValues } from '@/core/world/calculateCoreStats';
-
-/** 应用装备修正到核心值 */
 export function applyEquipmentModifiers(
-  coreStats: CoreStatValues,
-  modifiers: EquipmentModifier[],
-  isFirstRound: boolean,
-  hpRatio: number,
+  stats: CoreStatValues, mods: EquipmentModifier[],
+  isFirstAction: boolean, hpRatio: number,
 ): CoreStatValues {
-  const result = { ...coreStats };
-  for (const mod of modifiers) {
-    // 条件判断
-    const active =
-      !mod.condition || mod.condition === 'always' ||
-      (mod.condition === 'first_round' && isFirstRound) ||
-      (mod.condition === 'hp_below_50' && hpRatio < 0.5) ||
-      (mod.condition === 'hp_below_25' && hpRatio < 0.25);
+  const r = { ...stats };
+  for (const m of mods) {
+    const active = !m.condition || m.condition === 'always'
+      || (m.condition === 'first_round' && isFirstAction)
+      || (m.condition === 'hp_below_50' && hpRatio < 0.5)
+      || (m.condition === 'hp_below_25' && hpRatio < 0.25);
     if (!active) continue;
-
-    const key = mod.target as keyof CoreStatValues;
-    if (mod.type === 'flat') {
-      result[key] = (result[key] ?? 0) + mod.value;
-    } else if (mod.type === 'multiplier') {
-      result[key] = (result[key] ?? 0) * mod.value;
-    }
+    if (m.type === 'flat') r[m.target] = (r[m.target] ?? 0) + m.value;
+    else r[m.target] = (r[m.target] ?? 0) * m.value;
   }
-  return result;
+  return r;
+}
+
+// ============================================
+// 技能选择
+// ============================================
+
+function pickSkill(unit: InternalUnit): CombatSkill | null {
+  const avail = unit.skills.filter(s => s.currentCooldown <= 0);
+  if (!avail.length) return null;
+  return avail.reduce((a, b) => a.power > b.power ? a : b, avail[0]);
+}
+
+// ============================================
+// 内部运行时
+// ============================================
+
+interface InternalUnit {
+  name: string;
+  isPlayer: boolean;
+  level: number;
+  coreStats: CoreStatValues;
+  skills: CombatSkill[];
+  currentHp: number;
+  maxHp: number;
+  actionTime: number;
+  equipmentModifiers?: EquipmentModifier[];
+  firstAction: boolean;
 }
 
 // ============================================
 // 主战斗流程
 // ============================================
 
-/** 最大回合数（防止死循环） */
-const MAX_ROUNDS = 100;
-
 /**
- * 执行战斗
+ * 执行 ATB 时间条战斗
  *
- * @param attacker - 攻击方
- * @param defender - 防御方
- * @param engagement - 开场类型
- * @param mode - 战斗模式 (manual/auto)
- * @param manualSkillCallback - 手动模式下选择技能的回调 (仅在 manual 模式下需要)
+ * @param attacker 攻击方
+ * @param defender 防御方
+ * @param engagement 开场类型
+ * @returns 战斗结果（含完整时间线日志）
  */
 export function executeCombat(
   attacker: CombatUnit,
   defender: CombatUnit,
   engagement: EngagementType = 'encounter',
-  mode: CombatMode = 'auto',
-  manualSkillCallback?: (turn: number, skills: CombatSkill[], availableIds: string[]) => string,
+  _mode: CombatMode = 'auto',
 ): CombatResult {
-  // 深拷贝单位（避免修改原数据）
-  const atk: CombatUnit = JSON.parse(JSON.stringify(attacker));
-  const def: CombatUnit = JSON.parse(JSON.stringify(defender));
+  const cfg = ENGAGEMENT_CONFIG[engagement];
 
-  // 应用装备修正（战斗前）
-  if (atk.equipmentModifiers) {
-    atk.coreStats = applyEquipmentModifiers(atk.coreStats, atk.equipmentModifiers, true, atk.currentHp / atk.coreStats.maxHp);
-  }
-  if (def.equipmentModifiers) {
-    def.coreStats = applyEquipmentModifiers(def.coreStats, def.equipmentModifiers, true, def.currentHp / def.coreStats.maxHp);
+  function toInternal(u: CombatUnit, speedMult: number): InternalUnit {
+    const stats = { ...u.coreStats };
+    stats.speed = Math.max(1, Math.floor(stats.speed * speedMult));
+    const eq = u.equipmentModifiers;
+    if (eq) {
+      const modified = applyEquipmentModifiers(stats, eq, true, u.currentHp / stats.maxHp);
+      Object.assign(stats, modified);
+    }
+    return {
+      name: u.name, isPlayer: u.isPlayer, level: u.level,
+      coreStats: stats, skills: u.skills.map(s => ({ ...s })),
+      currentHp: u.currentHp, maxHp: stats.maxHp,
+      actionTime: 0, equipmentModifiers: eq, firstAction: true,
+    };
   }
 
-  // defense 开场类型：防御方首轮防御加成
-  if (engagement === 'defense') {
-    def.currentHp = Math.ceil(def.currentHp * 1.1); // 临时血量加成10%
-  }
+  const a = toInternal(attacker, cfg.speedMult);
+  const d = toInternal(defender, 1.0);
+
+  // ambush: 攻击方首轮立即行动
+  if (cfg.firstStrike) a.actionTime = ACTION_THRESHOLD;
+
+  // defense: 防御方临时血量
+  if (cfg.defHpBonus > 0) d.currentHp = Math.ceil(d.currentHp * (1 + cfg.defHpBonus));
 
   const logs: CombatRoundLog[] = [];
-  let round = 0;
+  let sequence = 0;
+  let tick = 0;
 
-  while (round < MAX_ROUNDS) {
-    round++;
-    const isFirstRound = round === 1;
-    const [first, second] = getTurnOrder(atk, def, engagement, isFirstRound);
+  while (tick < MAX_TICKS && a.currentHp > 0 && d.currentHp > 0) {
+    // 双方同时推进时间条（按各自速度）
+    a.actionTime += a.coreStats.speed;
+    d.actionTime += d.coreStats.speed;
 
-    // ── 先手方攻击 ──
-    const firstSkill = selectSkill(first, atk, def, mode, manualSkillCallback, round);
-    if (firstSkill) {
-      const target = first === atk ? def : atk;
-      const log = performAttack(first, target, firstSkill, round);
-      logs.push(log);
-      // CD
-      firstSkill.currentCooldown = firstSkill.cooldownSeconds;
-      if (target.currentHp <= 0) break;
+    // 检查谁能行动（速度快的一方可能先达到阈值）
+    // 如果双方都达到阈值，速度快者先
+    const aReady = a.actionTime >= ACTION_THRESHOLD;
+    const dReady = d.actionTime >= ACTION_THRESHOLD;
+
+    if (aReady || dReady) {
+      // 决定谁先：速度高者优先，同等速度则攻击方先
+      let first: InternalUnit, second: InternalUnit | null = null;
+      if (aReady && dReady) {
+        if (a.coreStats.speed >= d.coreStats.speed) { first = a; second = d; }
+        else { first = d; second = a; }
+      } else if (aReady) {
+        first = a;
+      } else {
+        first = d;
+      }
+
+      // 先手行动
+      sequence++;
+      const target1 = first === a ? d : a;
+      const skill1 = pickSkill(first);
+      if (skill1) {
+        logs.push(doAction(first, target1, skill1, tick, sequence));
+        if (target1.currentHp <= 0 || first.currentHp <= 0) break;
+      }
+      first.actionTime -= ACTION_THRESHOLD;
+      first.firstAction = false;
+
+      // CD 自然衰减（仅行动者）
+      tickCooldown(first, tick);
+
+      // 后手行动（如果也准备好了）
+      if (second && second.actionTime >= ACTION_THRESHOLD) {
+        sequence++;
+        const target2 = second === a ? d : a;
+        const skill2 = pickSkill(second);
+        if (skill2) {
+          logs.push(doAction(second, target2, skill2, tick, sequence));
+          if (target2.currentHp <= 0 || second.currentHp <= 0) break;
+        }
+        second.actionTime -= ACTION_THRESHOLD;
+        second.firstAction = false;
+        tickCooldown(second, tick);
+      }
     }
 
-    // ── 后手方攻击 ──
-    const secondSkill = selectSkill(second, atk, def, mode, manualSkillCallback, round);
-    if (secondSkill) {
-      const target = second === atk ? def : atk;
-      const log = performAttack(second, target, secondSkill, round);
-      logs.push(log);
-      secondSkill.currentCooldown = secondSkill.cooldownSeconds;
-      if (target.currentHp <= 0) break;
-    }
-
-    // ── CD 衰减 ──
-    tickCooldowns(atk, def);
+    tick++;
   }
 
   return {
-    victory: def.currentHp <= 0,
+    victory: d.currentHp <= 0,
     logs,
-    totalRounds: round,
-    attackerRemainingHp: atk.currentHp,
-    defenderRemainingHp: def.currentHp,
+    totalRounds: sequence,
+    attackerRemainingHp: a.currentHp,
+    defenderRemainingHp: d.currentHp,
   };
 }
 
@@ -258,62 +234,222 @@ export function executeCombat(
 // 内部辅助
 // ============================================
 
-function selectSkill(
-  unit: CombatUnit,
-  attacker: CombatUnit,
-  defender: CombatUnit,
-  mode: CombatMode,
-  callback: ((turn: number, skills: CombatSkill[], availableIds: string[]) => string) | undefined,
-  round: number,
-): CombatSkill | null {
-  if (mode === 'auto') {
-    return autoSelectSkill(unit.skills);
-  }
-  // manual
-  if (callback) {
-    const availableIds = unit.skills.filter(s => s.currentCooldown <= 0).map(s => s.id);
-    const chosen = callback(round, unit.skills, availableIds);
-    if (chosen) return manualSelectSkill(unit.skills, chosen);
-  }
-  return autoSelectSkill(unit.skills); // fallback
-}
-
-function performAttack(
-  attackerUnit: CombatUnit,
-  defenderUnit: CombatUnit,
-  skill: CombatSkill,
-  round: number,
+function doAction(
+  actor: InternalUnit, target: InternalUnit,
+  skill: CombatSkill, tick: number, seq: number,
 ): CombatRoundLog {
-  const isPhysical = skill.damageType === 'physical';
-  const atk = isPhysical ? attackerUnit.coreStats.physicalATK : attackerUnit.coreStats.specialATK;
-  const def = isPhysical ? defenderUnit.coreStats.physicalDEF : defenderUnit.coreStats.specialDEF;
+  const isPhys = skill.damageType === 'physical';
+  const atk = isPhys ? actor.coreStats.physicalATK : actor.coreStats.specialATK;
+  const def = isPhys ? target.coreStats.physicalDEF : target.coreStats.specialDEF;
+  const { damage, isCritical } = calculateDamage(actor.level, atk, def, skill.power, skill.weaponModifier);
+  target.currentHp = Math.max(0, target.currentHp - damage);
 
-  const { damage, isCritical } = calculateDamage(
-    attackerUnit.level, atk, def, skill.power, skill.weaponModifier,
-  );
-
-  defenderUnit.currentHp = Math.max(0, defenderUnit.currentHp - damage);
+  // 冷却
+  skill.currentCooldown = skill.cooldownSeconds;
 
   return {
-    round,
-    attackerName: attackerUnit.name,
-    defenderName: defenderUnit.name,
+    round: seq,
+    attackerName: actor.name,
+    defenderName: target.name,
     skillName: skill.name,
     damage,
-    attackerHpAfter: attackerUnit.currentHp,
-    defenderHpAfter: defenderUnit.currentHp,
+    attackerHpAfter: actor.currentHp,
+    defenderHpAfter: target.currentHp,
     isCritical,
+    speed: actor.coreStats.speed,
+    tick,
   };
 }
 
-function tickCooldowns(atk: CombatUnit, def: CombatUnit): void {
-  for (const unit of [atk, def]) {
-    for (const skill of unit.skills) {
-      if (skill.currentCooldown > 0) {
-        // CD按速度衰减：速度越快衰减越多
-        const decay = Math.max(1, Math.floor(unit.coreStats.speed / 10));
-        skill.currentCooldown = Math.max(0, skill.currentCooldown - decay);
+function tickCooldown(unit: InternalUnit, _tick: number): void {
+  for (const s of unit.skills) {
+    if (s.currentCooldown > 0) {
+      const decay = Math.max(1, Math.floor(unit.coreStats.speed / 20));
+      s.currentCooldown = Math.max(0, s.currentCooldown - decay);
+    }
+  }
+}
+
+// ============================================
+// CombatSession — 暂停式手动战斗
+// ============================================
+
+/**
+ * 战斗会话（支持暂停、手动选技能、tick-by-tick 推进）
+ *
+ * 用法：
+ *   const session = new CombatSession(attacker, defender, 'encounter');
+ *   while (session.state !== 'finished') {
+ *     session.tick();  // 推进一个 tick
+ *     if (session.state === 'pending_input') {
+ *       // 调用 session.performAction(skillId) 手动选择技能
+ *     }
+ *   }
+ *   const result = session.getResult();
+ */
+export class CombatSession {
+  private a: InternalUnit;
+  private d: InternalUnit;
+  private cfg: { speedMult: number; firstStrike: boolean; defHpBonus: number };
+  public logs: CombatRoundLog[] = [];
+  public state: SessionState = 'running';
+  public pendingAction: PendingAction | null = null;
+  private seq = 0;
+  private tickCount = 0;
+  private waitingUnit: InternalUnit | null = null;
+  private waitingTarget: InternalUnit | null = null;
+
+  constructor(
+    attacker: CombatUnit,
+    defender: CombatUnit,
+    engagement: EngagementType = 'encounter',
+  ) {
+    this.cfg = ENGAGEMENT_CONFIG[engagement];
+
+    const toInternal = (u: CombatUnit, speedMult: number): InternalUnit => {
+      const stats = { ...u.coreStats };
+      stats.speed = Math.max(1, Math.floor(stats.speed * speedMult));
+      if (u.equipmentModifiers) {
+        Object.assign(stats, applyEquipmentModifiers(stats, u.equipmentModifiers, true, u.currentHp / stats.maxHp));
       }
+      return {
+        name: u.name, isPlayer: u.isPlayer, level: u.level,
+        coreStats: stats, skills: u.skills.map(s => ({ ...s })),
+        currentHp: u.currentHp, maxHp: stats.maxHp,
+        actionTime: 0, equipmentModifiers: u.equipmentModifiers, firstAction: true,
+      };
+    };
+
+    this.a = toInternal(attacker, this.cfg.speedMult);
+    this.d = toInternal(defender, 1.0);
+
+    if (this.cfg.firstStrike) this.a.actionTime = ACTION_THRESHOLD;
+    if (this.cfg.defHpBonus > 0) this.d.currentHp = Math.ceil(this.d.currentHp * (1 + this.cfg.defHpBonus));
+  }
+
+  /** 推进一个 tick。返回当前状态。 */
+  tick(): SessionState {
+    if (this.state === 'finished') return 'finished';
+    if (this.state === 'pending_input') return 'pending_input';
+
+    this.tickCount++;
+
+    this.a.actionTime += this.a.coreStats.speed;
+    this.d.actionTime += this.d.coreStats.speed;
+
+    const aReady = this.a.actionTime >= ACTION_THRESHOLD;
+    const dReady = this.d.actionTime >= ACTION_THRESHOLD;
+
+    if (!aReady && !dReady) return 'running';
+
+    // 确定谁先出手
+    const first = aReady && dReady
+      ? (this.a.coreStats.speed >= this.d.coreStats.speed ? this.a : this.d)
+      : aReady ? this.a : this.d;
+    const second = (first === this.a && dReady) ? this.d
+      : (first === this.d && aReady) ? this.a : null;
+
+    // ── 处理先手 ──
+    if (first.isPlayer) {
+      this.waitingUnit = first;
+      this.waitingTarget = first === this.a ? this.d : this.a;
+      this.state = 'pending_input';
+      this.pendingAction = {
+        unitId: first === this.a ? 'attacker' : 'defender',
+        unitName: first.name,
+        availableSkills: first.skills.filter(s => s.currentCooldown <= 0),
+      };
+      return 'pending_input';
+    }
+    this.doAutoAction(first, first === this.a ? this.d : this.a);
+    if (this.state === 'finished') return 'finished';
+
+    // ── 处理后手 ──
+    if (this.state === 'pending_input') return 'pending_input'; // 先手可能是玩家的第二个单位
+    if (second) {
+      if (second.isPlayer) {
+        this.waitingUnit = second;
+        this.waitingTarget = second === this.a ? this.d : this.a;
+        this.state = 'pending_input';
+        this.pendingAction = {
+          unitId: second === this.a ? 'attacker' : 'defender',
+          unitName: second.name,
+          availableSkills: second.skills.filter(s => s.currentCooldown <= 0),
+        };
+        return 'pending_input';
+      }
+      this.doAutoAction(second, second === this.a ? this.d : this.a);
+    }
+
+    this.checkFinished();
+    return this.state;
+  }
+
+  /** 手动选择技能执行 */
+  performAction(skillId: string): CombatRoundLog | null {
+    if (this.state !== 'pending_input' || !this.waitingUnit || !this.waitingTarget) return null;
+
+    const skill = this.waitingUnit.skills.find(s => s.id === skillId && s.currentCooldown <= 0);
+    if (!skill) return null;
+
+    const log = doAction(this.waitingUnit, this.waitingTarget, skill, this.tickCount, ++this.seq);
+    this.logs.push(log);
+    this.waitingUnit.actionTime -= ACTION_THRESHOLD;
+    this.waitingUnit.firstAction = false;
+    tickCooldown(this.waitingUnit, this.tickCount);
+
+    this.waitingUnit = null;
+    this.waitingTarget = null;
+    this.pendingAction = null;
+    this.state = 'running';
+
+    // 处理敌方等待中的行动
+    this.processAiActions();
+    this.checkFinished();
+    return log;
+  }
+
+  getResult(): CombatResult {
+    return {
+      victory: this.d.currentHp <= 0,
+      logs: this.logs,
+      totalRounds: this.seq,
+      attackerRemainingHp: this.a.currentHp,
+      defenderRemainingHp: this.d.currentHp,
+    };
+  }
+
+  /** 自动推进到结束或需要输入 */
+  autoAdvance(): void {
+    while (this.state === 'running') this.tick();
+  }
+
+  private doAutoAction(actor: InternalUnit, target: InternalUnit): void {
+    const skill = pickSkill(actor);
+    if (skill) {
+      const log = doAction(actor, target, skill, this.tickCount, ++this.seq);
+      this.logs.push(log);
+      if (target.currentHp <= 0) { this.state = 'finished'; return; }
+    }
+    actor.actionTime -= ACTION_THRESHOLD;
+    actor.firstAction = false;
+    tickCooldown(actor, this.tickCount);
+  }
+
+  private checkFinished(): void {
+    if (this.a.currentHp <= 0 || this.d.currentHp <= 0) this.state = 'finished';
+  }
+
+  /** 处理所有就绪的 AI 行动 */
+  private processAiActions(): void {
+    while (this.state === 'running') {
+      const aReady = this.a.actionTime >= ACTION_THRESHOLD && !this.a.isPlayer;
+      const dReady = this.d.actionTime >= ACTION_THRESHOLD && !this.d.isPlayer;
+      if (!aReady && !dReady) break;
+
+      const actor = aReady ? this.a : this.d;
+      const target = actor === this.a ? this.d : this.a;
+      this.doAutoAction(actor, target);
     }
   }
 }

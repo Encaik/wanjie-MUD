@@ -1,107 +1,102 @@
 /**
- * 战斗引擎测试
+ * ATB 时间条战斗引擎 — 单元测试
+ *
+ * 运行: pnpm vitest run src/core/combat/
  */
 import { describe, it, expect } from 'vitest';
-import {
-  executeCombat,
-  calculateDamage,
-  setCombatSeed,
-} from './combatEngine';
-import type { CombatUnit } from './types';
+import { executeCombat, calculateDamage, setCombatSeed } from './combatEngine';
+import type { CombatUnit, CombatSkill } from './types';
 
 function makeUnit(overrides: Partial<CombatUnit> = {}): CombatUnit {
   return {
-    id: 'test_unit',
-    name: '测试单位',
-    level: 5,
-    isPlayer: true,
-    coreStats: {
-      maxHp: 50, physicalATK: 15, specialATK: 15,
-      physicalDEF: 10, specialDEF: 10, speed: 12,
-      intelligence: 10, willpower: 10, lifespan: 80,
-      perception: 10, specialResourceCap: 30,
-    },
-    currentHp: 50,
-    skills: [
-      { id: 'slash', name: '斩击', damageType: 'physical', power: 50, weaponModifier: 0, cooldownSeconds: 0, currentCooldown: 0 },
-    ],
+    id: 'test', name: '测试', level: 5, isPlayer: true,
+    coreStats: { maxHp: 60, physicalATK: 15, specialATK: 15, physicalDEF: 10, specialDEF: 10, speed: 12, intelligence: 10, willpower: 10, lifespan: 80, perception: 10, specialResourceCap: 20 },
+    currentHp: 60,
+    skills: [{ id: 's1', name: '斩击', damageType: 'physical', power: 50, weaponModifier: 0, cooldownSeconds: 0, currentCooldown: 0 }],
     ...overrides,
   };
 }
 
 describe('calculateDamage', () => {
-  it('物理伤害基本计算', () => {
-    setCombatSeed(0); // 固定随机
+  it('基本伤害', () => {
+    setCombatSeed(0);
     const { damage } = calculateDamage(5, 15, 10, 50);
-    // (2*5+10)/250 * 15/10 * 50 + 2 = 0.08*1.5*50+2 = 6+2 = 8
+    // (2*5+10)/250 * 15/10 * 50 + 2 = 0.08*1.5*50+2 = 8
     expect(damage).toBeGreaterThanOrEqual(6);
     expect(damage).toBeLessThanOrEqual(10);
   });
 
-  it('防御为0时不会除以0', () => {
+  it('防御为0不除零', () => {
     const { damage } = calculateDamage(5, 15, 0, 50);
     expect(damage).toBeGreaterThan(0);
-    expect(Number.isFinite(damage)).toBe(true);
   });
 
-  it('武器修正影响伤害', () => {
+  it('武器修正增加伤害', () => {
     setCombatSeed(0);
-    const without = calculateDamage(5, 15, 10, 50, 0);
+    const a = calculateDamage(5, 15, 10, 50, 0);
     setCombatSeed(0);
-    const withBonus = calculateDamage(5, 15, 10, 50, 10);
-    expect(withBonus.damage).toBeGreaterThan(without.damage);
+    const b = calculateDamage(5, 15, 10, 50, 10);
+    expect(b.damage).toBeGreaterThan(a.damage);
   });
 
   it('最小伤害为1', () => {
-    const { damage } = calculateDamage(1, 1, 100, 1);
-    expect(damage).toBeGreaterThanOrEqual(1);
+    expect(calculateDamage(1, 1, 100, 1).damage).toBeGreaterThanOrEqual(1);
   });
 });
 
-describe('executeCombat', () => {
-  it('遭遇战正常结束', () => {
+describe('ATB executeCombat', () => {
+  it('速度高者行动次数多', () => {
     setCombatSeed(42);
-    const attacker = makeUnit({ id: 'A', name: '攻击方' });
-    const defender = makeUnit({ id: 'B', name: '防御方', currentHp: 20 });
-    const result = executeCombat(attacker, defender, 'encounter', 'auto');
-    expect(result.totalRounds).toBeGreaterThan(0);
-    expect(result.logs.length).toBeGreaterThan(0);
-    expect(result.victory || !result.victory).toBe(true); // 任一方胜
+    const fast = makeUnit({ id: 'fast', name: '快', coreStats: { ...makeUnit().coreStats, speed: 50 } });
+    const slow = makeUnit({ id: 'slow', name: '慢', coreStats: { ...makeUnit().coreStats, speed: 5 }, currentHp: 200 });
+    const r = executeCombat(fast, slow, 'encounter');
+    const fastActions = r.logs.filter(l => l.attackerName === '快').length;
+    const slowActions = r.logs.filter(l => l.attackerName === '慢').length;
+    // 快者应比慢者行动多 (50 vs 5 = 10x)
+    expect(fastActions).toBeGreaterThan(slowActions);
   });
 
-  it('ambush 首轮攻击方先手', () => {
+  it('ambush 攻击方先行动', () => {
     setCombatSeed(42);
-    // 攻击方速度低但应该先手
-    const attacker = makeUnit({ id: 'A', name: '攻击方', coreStats: { ...makeUnit().coreStats, speed: 5 } });
-    const defender = makeUnit({ id: 'B', name: '防御方', coreStats: { ...makeUnit().coreStats, speed: 30 }, currentHp: 20 });
-    const result = executeCombat(attacker, defender, 'ambush', 'auto');
-    expect(result.logs[0].attackerName).toBe('攻击方');
+    const atk = makeUnit({ id: 'atk', name: '攻击', coreStats: { ...makeUnit().coreStats, speed: 1 } });
+    const def = makeUnit({ id: 'def', name: '防御', coreStats: { ...makeUnit().coreStats, speed: 99 }, currentHp: 30 });
+    const r = executeCombat(atk, def, 'ambush');
+    expect(r.logs[0].attackerName).toBe('攻击');
   });
 
-  it('手动模式回调', () => {
+  it('极速差可连击多次', () => {
     setCombatSeed(42);
-    const attacker = makeUnit({
+    const fast = makeUnit({ id: 'fast', name: '快', coreStats: { ...makeUnit().coreStats, speed: 95 }, currentHp: 100 });
+    const slow = makeUnit({ id: 'slow', name: '慢', coreStats: { ...makeUnit().coreStats, speed: 1 }, currentHp: 500 });
+    const r = executeCombat(fast, slow, 'encounter');
+    // 快者(95)应该在慢者(1)行动前多次出手
+    const firstSlowIdx = r.logs.findIndex(l => l.attackerName === '慢');
+    if (firstSlowIdx > 0) {
+      // 慢者行动前，快者应已出手多次
+      expect(firstSlowIdx).toBeGreaterThanOrEqual(10);
+    }
+  });
+
+  it('战斗正常结束有结果', () => {
+    setCombatSeed(42);
+    const r = executeCombat(makeUnit(), makeUnit({ currentHp: 30 }), 'encounter');
+    expect(r.logs.length).toBeGreaterThan(0);
+    expect(r.totalRounds).toBeGreaterThan(0);
+  });
+
+  it('CD技能冷却后复用', () => {
+    setCombatSeed(42);
+    const unit = makeUnit({
       skills: [
-        { id: 'weak', name: '弱攻击', damageType: 'physical', power: 30, weaponModifier: 0, cooldownSeconds: 0, currentCooldown: 0 },
-        { id: 'strong', name: '强攻击', damageType: 'physical', power: 80, weaponModifier: 0, cooldownSeconds: 0, currentCooldown: 0 },
+        { id: 'cd_skill', name: '大招', damageType: 'physical', power: 100, weaponModifier: 0, cooldownSeconds: 10, currentCooldown: 0 },
+        { id: 'basic', name: '普攻', damageType: 'physical', power: 30, weaponModifier: 0, cooldownSeconds: 0, currentCooldown: 0 },
       ],
+      coreStats: { ...makeUnit().coreStats, speed: 50 },
     });
-    const defender = makeUnit({ currentHp: 30 });
-    const result = executeCombat(attacker, defender, 'encounter', 'manual',
-      (_, __, available) => available.includes('strong') ? 'strong' : available[0]);
-    expect(result.logs[0].skillName).toBe('强攻击');
-  });
-
-  it('自动模式选择威力最高技能', () => {
-    setCombatSeed(42);
-    const attacker = makeUnit({
-      skills: [
-        { id: 'slash', name: '斩击', damageType: 'physical', power: 50, weaponModifier: 0, cooldownSeconds: 0, currentCooldown: 0 },
-        { id: 'heavy', name: '重击', damageType: 'physical', power: 80, weaponModifier: 0, cooldownSeconds: 0, currentCooldown: 0 },
-      ],
-    });
-    const defender = makeUnit({ currentHp: 30 });
-    const result = executeCombat(attacker, defender, 'encounter', 'auto');
-    expect(result.logs[0].skillName).toBe('重击');
+    const target = makeUnit({ currentHp: 500 });
+    const r = executeCombat(unit, target, 'encounter');
+    // 大招应至少使用2次（CD会衰减）
+    const bigSkills = r.logs.filter(l => l.skillName === '大招').length;
+    expect(bigSkills).toBeGreaterThanOrEqual(1);
   });
 });

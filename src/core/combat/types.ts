@@ -99,6 +99,10 @@ export interface CombatRoundLog {
   defenderHpAfter: number;
   /** 是否暴击 */
   isCritical: boolean;
+  /** 行动者速度 */
+  speed?: number;
+  /** 触发时的 tick 数 */
+  tick?: number;
 }
 
 // ============================================
@@ -115,6 +119,23 @@ export interface EquipmentModifier {
   value: number;
   /** 触发条件（条件满足时生效，空=始终生效） */
   condition?: 'always' | 'first_round' | 'hp_below_50' | 'hp_below_25';
+}
+
+// ============================================
+// CombatSession 暂停系统
+// ============================================
+
+/** 战斗会话状态 */
+export type SessionState = 'running' | 'pending_input' | 'finished';
+
+/** 待处理的行动（需要玩家选择技能） */
+export interface PendingAction {
+  /** 等待行动的单位 */
+  unitId: string;
+  /** 单位名称 */
+  unitName: string;
+  /** 可选技能列表 */
+  availableSkills: CombatSkill[];
 }
 
 /** 战斗结果 */

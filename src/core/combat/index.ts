@@ -6,6 +6,7 @@
 
 export {
   executeCombat,
+  CombatSession,
   calculateDamage,
   setCombatSeed,
 } from './combatEngine';
