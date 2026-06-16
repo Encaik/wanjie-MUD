@@ -14,6 +14,7 @@ import { post } from '@/shared/utils/api-client';
 import { createLogger } from '@/core/logger';
 import { emit } from '@/core/events';
 import { worldEvents } from '@/modules/theme';
+import { getTemplate } from '@/modules/item/data';
 
 const log = createLogger('GameFlow');
 
@@ -75,8 +76,23 @@ export function useGameFlow() {
       worldId = prev.protagonist.world.worldviewId;
       worldType = prev.protagonist.world.type;
 
-      const msg = { id: `msg_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`, timestamp: Date.now(), type: 'success' as const, title: '游戏开始', content: '欢迎来到修仙世界！', details: undefined, rewards: undefined };
-      return { ...prev, phase: 'playing', messages: [msg, ...prev.messages].slice(0, 100) };
+      const now = Date.now();
+      const makeId = () => `msg_${now}_${Math.random().toString(36).substr(2, 9)}`;
+
+      // 游戏开始消息
+      const welcomeMsg = { id: makeId(), timestamp: now, type: 'success' as const, title: '游戏开始', content: '欢迎来到修仙世界！', details: undefined, rewards: undefined };
+
+      // 初始物品获得消息
+      const items = prev.protagonist.items ?? [];
+      const itemNames = items.map(i => {
+        try { return `${getTemplate(i.templateId).name} x${i.quantity}`; }
+        catch { return `${i.templateId} x${i.quantity}`; }
+      }).join('、');
+      const itemMsgs = items.length > 0
+        ? [{ id: makeId(), timestamp: now, type: 'info' as const, title: '初始物品', content: `获得初始物品：${itemNames}`, details: undefined, rewards: undefined }]
+        : [];
+
+      return { ...prev, phase: 'playing', messages: [...itemMsgs, welcomeMsg, ...prev.messages].slice(0, 100) };
     });
 
     if (worldId || worldType) {

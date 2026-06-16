@@ -110,4 +110,6 @@ export {
 export {
   ItemTooltip,
   InventoryPanel,
+  ItemCard,
+  ItemGrid,
 } from './components';

@@ -76,6 +76,14 @@
   .animate-spirit-rise {
     animation: spirit-rise 2s ease-out infinite;
   }
+
+  .animate-glow-pulse {
+    animation: glow-pulse 3s ease-in-out infinite;
+  }
+
+  .animate-glow-pulse-strong {
+    animation: glow-pulse-strong 2s ease-in-out infinite;
+  }
 }
 
 /* ========================================
@@ -110,7 +118,9 @@
   .animate-star-twinkle,
   .animate-gold-glow,
   .animate-constellation-fade,
-  .animate-spirit-rise {
+  .animate-spirit-rise,
+  .animate-glow-pulse,
+  .animate-glow-pulse-strong {
     animation: none !important;
   }
 }

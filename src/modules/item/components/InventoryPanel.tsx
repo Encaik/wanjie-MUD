@@ -3,23 +3,27 @@
 /**
  * 统一背包面板
  *
- * 按 category Tab 切换显示所有物品。
- * 使用 useInventory() 从全局状态获取数据。
+ * 卡片网格布局 + 品类 Tab 筛选。
+ * 操作按钮在 ItemTooltip 浮层中。
  */
 
 import { useState, useMemo, useCallback } from 'react';
-import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/shared/ui/data-display/tabs';
+
+import { Package } from 'lucide-react';
+
 import { Badge } from '@/shared/ui/data-display/badge';
-import { Button } from '@/shared/ui/actions/button';
-import { Progress } from '@/shared/ui/feedback/progress';
-import { cn } from '@/shared/utils/cn';
-import { useInventory } from '../hooks/useInventory';
-import { useEquipment } from '../hooks/useEquipment';
-import { useSkills } from '../hooks/useSkills';
+import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/data-display/card';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/shared/ui/data-display/tabs';
+
+import { ItemCard } from './ItemCard';
+import { ItemGrid } from './ItemGrid';
 import { ItemTooltip } from './ItemTooltip';
+import { useEquipment } from '../hooks/useEquipment';
+import { useInventory } from '../hooks/useInventory';
+import { useSkills } from '../hooks/useSkills';
+
 import type { ResolvedItem, ItemCategory } from '../types';
 
-/** Tab 定义 */
 const CATEGORY_TABS: { key: ItemCategory | 'all'; label: string }[] = [
   { key: 'all', label: '全部' },
   { key: 'equipment', label: '装备' },
@@ -33,162 +37,91 @@ const CATEGORY_TABS: { key: ItemCategory | 'all'; label: string }[] = [
 
 export function InventoryPanel() {
   const [activeTab, setActiveTab] = useState<string>('all');
-  const { items, useItem, getResolvedItem, addItem } = useInventory();
+  const { items, useItem: consumeItem, getResolvedItem } = useInventory();
   const { equipItem } = useEquipment();
   const { equipSkill } = useSkills();
 
-  /** 解析所有物品 */
   const allItems = useMemo(() => {
-    return items.map(i => {
-      try { return getResolvedItem(i); }
-      catch { return null; }
-    }).filter(Boolean) as ResolvedItem[];
+    return items
+      .map(i => {
+        try { return getResolvedItem(i); } catch { return null; }
+      })
+      .filter((item): item is ResolvedItem => item !== null);
   }, [items, getResolvedItem]);
 
-  /** 按 Tab 筛选 */
   const filteredItems = useMemo(() => {
     if (activeTab === 'all') return allItems;
     return allItems.filter(i => i.category === activeTab);
   }, [allItems, activeTab]);
 
-  /** 处理物品点击 */
-  const handleItemClick = useCallback((item: ResolvedItem) => {
-    if (item.equipped) return;
-    if (item.category === 'consumable') {
-      useItem(item.instanceId);
+  const handleUse = useCallback((item: ResolvedItem) => {
+    if (item.category === 'consumable' && item.quantity > 0) {
+      consumeItem(item.instanceId);
     }
-  }, [useItem]);
+  }, [consumeItem]);
 
-  /** 渲染物品卡片 */
-  const renderItem = (item: ResolvedItem) => {
-    const isEquippable = item.category === 'equipment' || item.category === 'technique';
-    const isSkill = item.category === 'skill';
-    const isUpgradable = item.maxLevel > 1 && item.level < item.maxLevel;
+  const handleEquip = useCallback((item: ResolvedItem) => {
+    if (item.equipped) return;
+    if (item.category === 'equipment') {
+      const ext = item.ext as { equipSlot?: string };
+      if (ext.equipSlot) equipItem(item.instanceId, ext.equipSlot);
+    } else if (item.category === 'technique') {
+      const slotPrefix = item.subcategory === 'attack' ? 'technique_attack' : 'technique_defense';
+      equipItem(item.instanceId, `${slotPrefix}_0`);
+    } else if (item.category === 'skill') {
+      equipSkill(item.instanceId, 'skill_weapon_melee_0');
+    }
+  }, [equipItem, equipSkill]);
 
+  const renderItem = useCallback((item: ResolvedItem) => {
     return (
-      <ItemTooltip key={item.instanceId} item={item}>
-        <div
-          className={cn(
-            'relative flex items-center gap-2 rounded-lg border p-2 cursor-pointer',
-            'hover:bg-accent/50 transition-colors',
-            item.equipped && 'border-blue-500/50 bg-blue-500/5',
-          )}
-          onClick={() => handleItemClick(item)}
-        >
-          {/* 稀有度色条 */}
-          <div className={cn(
-            'w-0.5 h-8 rounded-full',
-            item.rarity === 'common' && 'bg-gray-400',
-            item.rarity === 'uncommon' && 'bg-green-500',
-            item.rarity === 'rare' && 'bg-blue-500',
-            item.rarity === 'epic' && 'bg-purple-500',
-            item.rarity === 'legendary' && 'bg-orange-500',
-            item.rarity === 'mythic' && 'bg-red-500',
-          )} />
-
-          <div className="flex-1 min-w-0">
-            <div className="flex items-center gap-1.5">
-              <span className="text-sm font-medium truncate">{item.name}</span>
-              {item.quantity > 1 && (
-                <span className="text-xs text-muted-foreground">x{item.quantity}</span>
-              )}
-              {item.equipped && (
-                <Badge variant="secondary" className="text-[10px] px-1 h-4">已装备</Badge>
-              )}
-            </div>
-
-            {isUpgradable && (
-              <div className="mt-1">
-                <Progress
-                  value={(item.exp / item.expToNext) * 100}
-                  className="h-1"
-                  indicatorClassName="bg-yellow-500"
-                />
-              </div>
-            )}
-          </div>
-
-          {/* 快捷操作 */}
-          <div className="flex items-center gap-1 shrink-0">
-            {isEquippable && !item.equipped && item.ext && (
-              <Button
-                size="icon"
-                variant="ghost"
-                className="h-6 w-6"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  const slotId = (item.ext as { equipSlot?: string }).equipSlot;
-                  if (slotId) equipItem(item.instanceId, slotId);
-                }}
-              >
-                <span className="text-[10px]">装备</span>
-              </Button>
-            )}
-            {isSkill && !item.equipped && (
-              <Button
-                size="icon"
-                variant="ghost"
-                className="h-6 w-6"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  // 尝试装备到第一个可用技能槽
-                  const slotId = item.category === 'skill' ? 'skill_weapon_melee_0' : '';
-                  if (slotId) equipSkill(item.instanceId, slotId);
-                }}
-              >
-                <span className="text-[10px]">装备</span>
-              </Button>
-            )}
-            {item.category === 'consumable' && item.quantity > 0 && (
-              <Button
-                size="icon"
-                variant="ghost"
-                className="h-6 w-6"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleItemClick(item);
-                }}
-              >
-                <span className="text-[10px]">使用</span>
-              </Button>
-            )}
-          </div>
-        </div>
+      <ItemTooltip key={item.instanceId} item={item} side="top" onUse={handleUse} onEquip={handleEquip}>
+        <ItemCard item={item} />
       </ItemTooltip>
     );
-  };
+  }, [handleUse, handleEquip]);
+
+  const getTabCount = useCallback((key: string) => {
+    if (key === 'all') return allItems.length;
+    return allItems.filter(i => i.category === key).length;
+  }, [allItems]);
 
   return (
-    <div className="space-y-3">
-      <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <TabsList className="w-full flex-wrap h-auto gap-1">
-          {CATEGORY_TABS.map(tab => {
-            const count = tab.key === 'all'
-              ? allItems.length
-              : allItems.filter(i => i.category === tab.key).length;
-            return (
+    <Card className="flex flex-col">
+      <CardHeader className="pb-2 pt-3 shrink-0">
+        <CardTitle className="flex items-center gap-2 text-sm">
+          <Package className="w-4 h-4 text-primary" />
+          背包
+          <span className="text-[10px] text-muted-foreground font-normal">
+            ({allItems.length}种)
+          </span>
+        </CardTitle>
+      </CardHeader>
+
+      <CardContent className="pt-0 pb-3 flex-1 overflow-hidden space-y-2">
+        <Tabs value={activeTab} onValueChange={setActiveTab}>
+          <TabsList className="w-full flex-wrap h-auto gap-1">
+            {CATEGORY_TABS.map(tab => (
               <TabsTrigger key={tab.key} value={tab.key} className="text-xs px-2 py-1">
                 {tab.label}
-                {count > 0 && (
-                  <Badge variant="secondary" className="ml-1 text-[10px] px-1 h-4">{count}</Badge>
+                {getTabCount(tab.key) > 0 && (
+                  <Badge variant="secondary" className="ml-1 text-[10px] px-1 h-4">
+                    {getTabCount(tab.key)}
+                  </Badge>
                 )}
               </TabsTrigger>
-            );
-          })}
-        </TabsList>
+            ))}
+          </TabsList>
 
-        <TabsContent value={activeTab} className="mt-2">
-          {filteredItems.length === 0 ? (
-            <div className="text-center text-muted-foreground text-sm py-8">
-              暂无物品
+          <TabsContent value={activeTab} className="mt-2">
+            <div className="min-h-[280px] max-h-[460px] overflow-y-auto">
+              <ItemGrid emptyMessage={`暂无${CATEGORY_TABS.find(t => t.key === activeTab)?.label || '物品'}`}>
+                {filteredItems.map(renderItem)}
+              </ItemGrid>
             </div>
-          ) : (
-            <div className="space-y-1 max-h-[400px] overflow-y-auto">
-              {filteredItems.map(renderItem)}
-            </div>
-          )}
-        </TabsContent>
-      </Tabs>
-    </div>
+          </TabsContent>
+        </Tabs>
+      </CardContent>
+    </Card>
   );
 }
