@@ -21,7 +21,6 @@ export type {
   // 槽位
   SlotId,
   SlotDefinition,
-  UnlockCondition,
   // 模板
   ItemTemplate,
   CurrencyTemplate,

@@ -24,17 +24,13 @@ export {
   CultivationPage,
   AdventurePage,
   FactionPage,
-  TechniquePage,
-  ShopPage,
-  EquipmentPage,
-  AlchemyPage,
-  ForgePage,
-  FragmentPage,
-  SkillPage,
+  BackpackPage,
   TowerPage,
   AchievementPage,
   CollectionPage,
   StatisticsPage,
+  EquipManagePage,
+  CraftPage,
 } from './pages';
 
 // 信息卡片

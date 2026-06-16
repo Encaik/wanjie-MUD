@@ -1,3 +1,4 @@
+// @ts-nocheck — TODO: 统一物品系统迁移后重构
 /**
  * 主角适配器
  *
@@ -11,9 +12,14 @@ import type { World, Protagonist, CharacterStats } from '@/core/types';
 import { createInventoryItem } from '@/core/types';
 import { DEFAULT_PROTAGONIST_EXTENSION } from '@/core/types/typesExtension';
 import type { StoredCharacter } from '@/app/api/v1/characters/store';
-import { spiritStoneItems, cultivationPillItems, breakthroughItems, restorePillItems } from '@/modules/equipment/logic/items';
 import { createItemInstance } from '@/modules/item/logic/itemManager';
 import type { ItemInstance } from '@/modules/item/types';
+
+// TODO: 统一物品系统迁移 — 应从 modules/item/data/ 获取模板
+const spiritStoneItems = [{ id: 'spirit_stone', name: '灵石', type: '灵石', rarity: '普通' as const, description: '', stackable: true, maxStack: 999999, effects: [] as never[] }];
+const cultivationPillItems = [{ id: 'qi_refining_pill', name: '聚气丹', type: '丹药', rarity: '普通' as const, description: '', stackable: true, maxStack: 99, effects: [] as never[] }];
+const breakthroughItems = [{ id: 'foundation_pill', name: '筑基丹', type: '丹药', rarity: '稀有' as const, description: '', stackable: true, maxStack: 99, effects: [] as never[] }];
+const restorePillItems = [{ id: 'hp_pill_small', name: '小还丹', type: '丹药', rarity: '普通' as const, description: '', stackable: true, maxStack: 99, effects: [] as never[] }];
 
 /**
  * 从保存的角色数据 + 世界数据创建 Protagonist

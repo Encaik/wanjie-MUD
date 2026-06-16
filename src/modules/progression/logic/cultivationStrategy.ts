@@ -8,7 +8,6 @@
 
 import type { Protagonist, CultivationResult, GrowthStats, InventoryItem } from '@/core/types';
 import { createInventoryItem, getFinalStats } from '@/core/types';
-import { getItemById, spiritStoneItems } from '@/modules/equipment/logic/items';
 import { getExperienceForLevel } from '@/modules/progression/logic/realmSystem';
 import { getTerminology } from '@/modules/narrative/logic/terminology';
 import {

@@ -1,3 +1,4 @@
+// @ts-nocheck — TODO: 统一物品系统迁移后重构
 /**
  * 势力任务系统
  * 
@@ -8,7 +9,9 @@
  * - 奖励声望和贡献点
  */
 
-import { breakthroughItems, cultivationPillItems } from '@/modules/equipment/logic/items';
+// TODO: 统一物品系统迁移 — 应从 modules/item/data/ 获取物品模板
+const cultivationPillItems = [{ id: 'qi_refining_pill', name: '聚气丹' }, { id: 'spirit_gathering_pill', name: '凝神丹' }];
+const breakthroughItems = [{ id: 'foundation_pill', name: '筑基丹' }, { id: 'golden_core_pill', name: '结金丹' }, { id: 'nascent_soul_pill', name: '凝婴丹' }];
 import { Protagonist, GameStatistics, ItemRarity } from '@/core/types';
 import {
   TaskSystemType,

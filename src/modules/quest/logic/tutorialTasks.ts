@@ -10,13 +10,22 @@
  * @module modules/quest/logic
  */
 
-import {
-  spiritStoneItems,
-  cultivationPillItems,
-  breakthroughItems,
-  restorePillItems,
-} from '@/modules/equipment/logic/items';
+// TODO: 统一物品系统迁移 — spiritStoneItems/cultivationPillItems/breakthroughItems/restorePillItems（equipment/logic/items 已删除）
 import type { Protagonist, GameStatistics, ItemDefinition } from '@/core/types';
+const spiritStoneItems: ItemDefinition[] = [{ id: 'spirit_stone', name: '灵石', type: '灵石' as const, rarity: '普通' as const, description: '修仙界的通用货币', stackable: true, maxStack: 999999, effects: [] }];
+const cultivationPillItems: ItemDefinition[] = [
+  { id: 'qi_gathering_pill', name: '聚气丹', type: '丹药' as const, rarity: '普通' as const, description: '用于辅助修炼', stackable: true, maxStack: 99, effects: [] },
+  { id: 'spirit_gathering_pill', name: '凝神丹', type: '丹药' as const, rarity: '稀有' as const, description: '用于加速修炼', stackable: true, maxStack: 99, effects: [] },
+];
+const breakthroughItems: ItemDefinition[] = [
+  { id: 'foundation_pill', name: '筑基丹', type: '丹药' as const, rarity: '稀有' as const, description: '用于突破筑基境界', stackable: true, maxStack: 99, effects: [] },
+  { id: 'golden_core_pill', name: '结金丹', type: '丹药' as const, rarity: '史诗' as const, description: '用于突破金丹境界', stackable: true, maxStack: 99, effects: [] },
+  { id: 'nascent_soul_pill', name: '凝婴丹', type: '丹药' as const, rarity: '传说' as const, description: '用于突破元婴境界', stackable: true, maxStack: 99, effects: [] },
+];
+const restorePillItems: ItemDefinition[] = [
+  { id: 'rejuvenation_pill', name: '回春丹', type: '丹药' as const, rarity: '普通' as const, description: '恢复少量生命值', stackable: true, maxStack: 99, effects: [] },
+  { id: 'vitality_pill', name: '元气丹', type: '丹药' as const, rarity: '稀有' as const, description: '恢复较多生命值', stackable: true, maxStack: 99, effects: [] },
+];
 import { createInventoryItem } from '@/core/types';
 import {
   TaskSystemType,

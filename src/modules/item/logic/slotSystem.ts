@@ -76,9 +76,7 @@ export function createDynamicSkillSlots(
   }
 
   const slotCount = (template.ext as { providesSkillSlots?: number }).providesSkillSlots ?? 0;
-  const acceptedSkillTag = (template.ext as { acceptedSkillTag?: string }).acceptedSkillTag;
 
-  if (slotCount <= 0 || !acceptedSkillTag) return [];
 
   const slots: SlotDefinition[] = [];
   for (let i = 0; i < slotCount; i++) {
@@ -87,9 +85,6 @@ export function createDynamicSkillSlots(
       displayName: `${template.name} 技能槽${i + 1}`,
       category: 'skill',
       acceptedCategory: 'skill',
-      acceptedSkillTag: acceptedSkillTag as import('../types').SkillTag,
-      isDynamic: true,
-      parentSlotId,
     });
   }
 

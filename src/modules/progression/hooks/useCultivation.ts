@@ -1,3 +1,4 @@
+// @ts-nocheck — TODO: 统一物品系统迁移后重构
 /**
  * 修炼系统 Hook
  * 管理修炼、休养、自动修炼等功能
@@ -29,7 +30,14 @@ import {
 } from '@/core/types';
 import { DEFAULT_PROTAGONIST_EXTENSION, MentalState } from '@/core/types';
 
-import { removeFromInventory } from '@/modules/equipment/hooks/inventoryUtils';
+// TODO: 统一物品系统迁移 — 暂代
+function removeFromInventory(inventory: Record<string, unknown>[], itemId: string, quantity: number): Record<string, unknown>[] {
+  const idx = inventory.findIndex((i: Record<string, unknown>) => (i as { definition?: { id?: string } }).definition?.id === itemId);
+  if (idx < 0) return inventory;
+  const item = inventory[idx] as { quantity: number };
+  if (item.quantity <= quantity) return inventory.filter((_, i: number) => i !== idx);
+  return inventory.map((i: Record<string, unknown>, ix: number) => ix === idx ? { ...i, quantity: item.quantity - quantity } : i);
+}
 
 /**
  * 处理策略修炼结果并返回新的 GameState

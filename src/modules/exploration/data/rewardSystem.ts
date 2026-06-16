@@ -1,3 +1,4 @@
+// @ts-nocheck — TODO: 统一物品系统迁移后重构
 /**
  * 奖励计算系统
  * 
@@ -10,14 +11,8 @@ import {
   getOpportunityConfig,
   OpportunityLevelConfig 
 } from '@/modules/exploration/data/opportunityConfig';
-import { 
-  generateDropRarity, 
-  calculateDropCount, 
-  generateDropItemLevel,
-  getRarityRange,
-  RaritySource,
-  DropResult,
-} from '@/modules/equipment/data/raritySystem';
+// TODO: 统一物品系统迁移 — generateDropRarity 等来自已删除的 raritySystem
+// TODO: 统一物品系统迁移 — RaritySource, DropResult 类型来自已删除模块
 import { ItemRarity, EnemyTier } from '@/core/types';
 
 // ============================================

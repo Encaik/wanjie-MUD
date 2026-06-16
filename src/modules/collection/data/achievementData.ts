@@ -10,7 +10,21 @@
  * - special: 特殊成就
  */
 
-import { spiritStoneItems, breakthroughItems, cultivationPillItems } from '@/modules/equipment/logic/items';
+// TODO: 统一物品系统迁移 — 应从 modules/item/data/ 获取物品模板
+const spiritStoneItems = [{ id: 'spirit_stone', name: '灵石', type: '灵石', rarity: '普通' as const, description: '修仙界通用货币', stackable: true, maxStack: 999999, effects: [] as never[] }];
+const breakthroughItems = [
+  { id: 'foundation_pill', name: '筑基丹', type: '丹药', rarity: '稀有' as const, description: '用于突破筑基境界', stackable: true, maxStack: 99, effects: [] as never[] },
+  { id: 'golden_core_pill', name: '结金丹', type: '丹药', rarity: '史诗' as const, description: '用于突破金丹境界', stackable: true, maxStack: 99, effects: [] as never[] },
+  { id: 'nascent_soul_pill', name: '凝婴丹', type: '丹药', rarity: '传说' as const, description: '用于突破元婴境界', stackable: true, maxStack: 99, effects: [] as never[] },
+];
+const cultivationPillItems = [
+  { id: 'qi_refining_pill', name: '聚气丹', type: '丹药', rarity: '普通' as const, description: '提升修炼速度', stackable: true, maxStack: 99, effects: [] as never[] },
+  { id: 'spirit_gathering_pill', name: '凝神丹', type: '丹药', rarity: '稀有' as const, description: '大幅提升修炼速度', stackable: true, maxStack: 99, effects: [] as never[] },
+];
+const restorePillItems = [
+  { id: 'hp_pill_small', name: '小还丹', type: '丹药', rarity: '普通' as const, description: '恢复少量生命', stackable: true, maxStack: 99, effects: [] as never[] },
+  { id: 'mp_pill_small', name: '回灵丹', type: '丹药', rarity: '普通' as const, description: '恢复少量法力', stackable: true, maxStack: 99, effects: [] as never[] },
+];
 import { AchievementDefinition, AchievementType, ItemRarity, createInventoryItem } from '@/core/types';
 
 // 成就图标（使用 lucide-react 图标名称）
@@ -48,7 +62,7 @@ export const ACHIEVEMENTS: AchievementDefinition[] = [
     rarity: '普通',
     rewards: {
       experience: 100,
-      items: [createInventoryItem(spiritStoneItems[0], 100)],
+      items: [createInventoryItem(spiritStoneItems[0] as any, 100)],
     },
   },
   {
@@ -61,7 +75,7 @@ export const ACHIEVEMENTS: AchievementDefinition[] = [
     rarity: '普通',
     rewards: {
       experience: 300,
-      items: [createInventoryItem(breakthroughItems[0], 2)],
+      items: [createInventoryItem(breakthroughItems[0] as any, 2)],
     },
   },
   {
@@ -74,7 +88,7 @@ export const ACHIEVEMENTS: AchievementDefinition[] = [
     rarity: '稀有',
     rewards: {
       experience: 500,
-      items: [createInventoryItem(spiritStoneItems[0], 500)],
+      items: [createInventoryItem(spiritStoneItems[0] as any, 500)],
     },
   },
   {
@@ -88,8 +102,8 @@ export const ACHIEVEMENTS: AchievementDefinition[] = [
     rewards: {
       experience: 1000,
       items: [
-        createInventoryItem(breakthroughItems[1], 2),
-        createInventoryItem(cultivationPillItems[1], 3),
+        createInventoryItem(breakthroughItems[1] as any, 2),
+        createInventoryItem(cultivationPillItems[1] as any, 3),
       ],
     },
   },
@@ -103,7 +117,7 @@ export const ACHIEVEMENTS: AchievementDefinition[] = [
     rarity: '史诗',
     rewards: {
       experience: 2000,
-      items: [createInventoryItem(breakthroughItems[2], 1)],
+      items: [createInventoryItem(breakthroughItems[2] as any, 1)],
     },
   },
   {
@@ -131,7 +145,7 @@ export const ACHIEVEMENTS: AchievementDefinition[] = [
     rarity: '普通',
     rewards: {
       experience: 200,
-      items: [createInventoryItem(spiritStoneItems[0], 200)],
+      items: [createInventoryItem(spiritStoneItems[0] as any, 200)],
     },
   },
   {
@@ -144,7 +158,7 @@ export const ACHIEVEMENTS: AchievementDefinition[] = [
     rarity: '普通',
     rewards: {
       experience: 500,
-      items: [createInventoryItem(cultivationPillItems[0], 5)],
+      items: [createInventoryItem(cultivationPillItems[0] as any, 5)],
     },
   },
   {
@@ -157,7 +171,7 @@ export const ACHIEVEMENTS: AchievementDefinition[] = [
     rarity: '稀有',
     rewards: {
       experience: 1000,
-      items: [createInventoryItem(cultivationPillItems[1], 3)],
+      items: [createInventoryItem(cultivationPillItems[1] as any, 3)],
     },
   },
   {
@@ -170,7 +184,7 @@ export const ACHIEVEMENTS: AchievementDefinition[] = [
     rarity: '稀有',
     rewards: {
       experience: 500,
-      items: [createInventoryItem(breakthroughItems[0], 1)],
+      items: [createInventoryItem(breakthroughItems[0] as any, 1)],
     },
   },
   {
@@ -183,7 +197,7 @@ export const ACHIEVEMENTS: AchievementDefinition[] = [
     rarity: '史诗',
     rewards: {
       experience: 2000,
-      items: [createInventoryItem(breakthroughItems[1], 2)],
+      items: [createInventoryItem(breakthroughItems[1] as any, 2)],
     },
   },
   {
@@ -288,7 +302,7 @@ export const ACHIEVEMENTS: AchievementDefinition[] = [
     rarity: '普通',
     rewards: {
       experience: 300,
-      items: [createInventoryItem(spiritStoneItems[0], 300)],
+      items: [createInventoryItem(spiritStoneItems[0] as any, 300)],
     },
   },
   {
@@ -301,7 +315,7 @@ export const ACHIEVEMENTS: AchievementDefinition[] = [
     rarity: '稀有',
     rewards: {
       experience: 1000,
-      items: [createInventoryItem(breakthroughItems[0], 2)],
+      items: [createInventoryItem(breakthroughItems[0] as any, 2)],
     },
   },
   {
@@ -314,7 +328,7 @@ export const ACHIEVEMENTS: AchievementDefinition[] = [
     rarity: '史诗',
     rewards: {
       experience: 3000,
-      items: [createInventoryItem(breakthroughItems[1], 2)],
+      items: [createInventoryItem(breakthroughItems[1] as any, 2)],
     },
   },
 
@@ -367,7 +381,7 @@ export const ACHIEVEMENTS: AchievementDefinition[] = [
     rarity: '稀有',
     rewards: {
       experience: 500,
-      items: [createInventoryItem(breakthroughItems[0], 2)],
+      items: [createInventoryItem(breakthroughItems[0] as any, 2)],
     },
   },
   {
@@ -450,7 +464,7 @@ export const ACHIEVEMENTS: AchievementDefinition[] = [
     rarity: '普通',
     rewards: {
       experience: 200,
-      items: [createInventoryItem(spiritStoneItems[0], 200)],
+      items: [createInventoryItem(spiritStoneItems[0] as any, 200)],
     },
   },
   {

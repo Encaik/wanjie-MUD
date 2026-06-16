@@ -18,7 +18,7 @@ export function useTechniques() {
 
   /** 功法槽位列表 */
   const techniqueSlots = useMemo(() =>
-    SLOT_DEFINITIONS.filter(s => s.category === 'technique' && !s.isDynamic),
+    SLOT_DEFINITIONS.filter(s => s.category === 'technique'),
   []);
 
   /** 装备功法 */

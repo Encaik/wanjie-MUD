@@ -7,8 +7,18 @@
  * - 与统计系统紧密集成
  */
 
-import { breakthroughItems, cultivationPillItems } from '@/modules/equipment/logic/items';
-import { Protagonist, GameStatistics, ItemDefinition } from '@/core/types';
+// TODO: 统一物品系统迁移 — breakthroughItems/cultivationPillItems（equipment/logic/items 已删除）
+import type { ItemDefinition } from '@/core/types';
+const breakthroughItems: ItemDefinition[] = [
+  { id: 'foundation_pill', name: '筑基丹', type: '丹药' as const, rarity: '稀有' as const, description: '用于突破筑基境界', stackable: true, maxStack: 99, effects: [] },
+  { id: 'golden_core_pill', name: '结金丹', type: '丹药' as const, rarity: '史诗' as const, description: '用于突破金丹境界', stackable: true, maxStack: 99, effects: [] },
+  { id: 'nascent_soul_pill', name: '凝婴丹', type: '丹药' as const, rarity: '传说' as const, description: '用于突破元婴境界', stackable: true, maxStack: 99, effects: [] },
+];
+const cultivationPillItems: ItemDefinition[] = [
+  { id: 'qi_gathering_pill', name: '聚气丹', type: '丹药' as const, rarity: '普通' as const, description: '用于辅助修炼', stackable: true, maxStack: 99, effects: [] },
+  { id: 'spirit_gathering_pill', name: '凝神丹', type: '丹药' as const, rarity: '稀有' as const, description: '用于加速修炼', stackable: true, maxStack: 99, effects: [] },
+];
+import { Protagonist, GameStatistics } from '@/core/types';
 import {
   TaskDefinition,
   TaskRequirementType,

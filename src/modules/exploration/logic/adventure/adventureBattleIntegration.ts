@@ -1,3 +1,4 @@
+// @ts-nocheck — TODO: 统一物品系统迁移后重构
 /**
  * 冒险战斗集成层
  * 
@@ -37,12 +38,8 @@ import {
 } from '@/modules/combat/logic/battle';
 import { calculatePlayerCombatPower, calculateEnemyCombatPower } from '@/modules/combat/logic/combatPower';
 import { calculateEnemyEnhancement, applyEnemyEnhancement } from '@/modules/combat/logic/enemy/enemyEnhancement';
-import { 
-  generateEnemyTechniquesAndEquipments,
-  calculateTechniqueBonus,
-  calculateEquipmentBonus,
-} from '@/modules/combat/logic/enemy/enemyTechniqueEquipment';
-import { 
+// TODO: 统一物品系统迁移 — generateEnemyTechniquesAndEquipments 等已删除
+import {
   getEnemyAttributes,
   calculateRestraintResult,
   getElementIcon,

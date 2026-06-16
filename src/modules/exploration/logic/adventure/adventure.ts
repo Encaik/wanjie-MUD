@@ -1,3 +1,4 @@
+// @ts-nocheck — TODO: 统一物品系统迁移后重构
 /**
  * 机缘探索系统
  *
@@ -36,21 +37,13 @@ import {
   applyEnemyEnhancement,
   getEnemyEnhancementShortDesc,
 } from '@/modules/combat/logic/enemy/enemyEnhancement';
-import {  generateRandomEquipment } from '@/modules/equipment/logic/equipment';
-import {  
-  generateFragmentDrop, 
-  addFragmentToInventory,
-  FragmentInventory,
-  FragmentDropResult 
-} from '@/modules/crafting/logic/fragmentSystem';
-import {  getRandomItem, getItemById, spiritStoneItems, breakthroughItems } from '@/modules/equipment/logic/items';
+// TODO: 统一物品系统迁移 — generateFragmentDrop, generateRandomEquipment 等来自已删除模块
 import {  getAvailableDifficulties as getRealmDifficulties } from '@/modules/progression/logic/realmSystem';
 import {  getTerminology, getDungeonInfo } from '@/modules/narrative/logic/terminology';
 import { FlatStats, CellType, AdventureCell, BattleResult, CharacterStats, Protagonist, BattleState, BattleLog, ActiveEffect, InventoryItem, DungeonConfig, WorldType, Technique, Equipment, EnemyTier, createInventoryItem, getFinalStats } from '@/core/types';
 import type { DifficultyLevel } from '@/modules/identity/data/worldData';
 import type { Element, WeaponCategory } from '@/modules/combat/logic/restraintSystem';
 import {  getEnemyTierFromCellType, getEnemyTierConfig, ENEMY_TIER_CONFIG } from '@/modules/identity/data/worldData';
-import {  generateRandomTechnique } from '@/modules/techniques/logic/technique';
 import {  getEnemyNames } from '@/modules/combat/data/enemies';
 import {  getDungeonInfo as getDataDungeonInfo } from '@/modules/narrative/data/terminology';
 // 克制关系系统

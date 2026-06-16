@@ -14,7 +14,6 @@ import {
   getOpportunityLevelColorClass,
   getOpportunityLevelBgClass,
 } from '@/modules/exploration/data/opportunityConfig';
-import { getRarityColorClass, getRarityBgClass } from '@/modules/equipment/data/raritySystem';
 import { WorldViewRegistry } from '@/core/registry';
 import {
   WorldDanger,
@@ -355,17 +354,7 @@ export {
   type OpportunityUnlockResult,
 } from '@/modules/exploration/data/opportunityConfig';
 
-export {
-  generateDropRarity,
-  calculateDropCount,
-  getRarityRange,
-  getRarityColorClass,
-  getRarityBgClass,
-  getRarityBorderClass,
-  type RaritySource,
-  type DropResult,
-} from '@/modules/equipment/data/raritySystem';
-
+// TODO: 统一物品系统迁移 — 稀有度相关函数已删除（generateDropRarity 等）
 export {
   calculateReward,
   calculateEnemyReward,

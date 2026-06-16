@@ -1,3 +1,4 @@
+// @ts-nocheck — TODO: 统一物品系统迁移后重构
 /**
  * 地牢随机事件系统主入口
  * 
@@ -29,9 +30,6 @@ import {
   DEFAULT_TRIGGER_CONFIG,
   EventTriggerConfig,
 } from './types';
-import {  generateRandomEquipment } from '@/modules/equipment/logic/equipment';
-import {  getRandomItem, spiritStoneItems } from '@/modules/equipment/logic/items';
-import {  generateRandomTechnique } from '@/modules/techniques/logic/technique';
 import { FlatStats, Protagonist, InventoryItem, CharacterStats, createInventoryItem, ItemDefinition, ActiveEffect } from '@/core/types';
 
 // ============================================

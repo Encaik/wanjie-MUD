@@ -1,11 +1,9 @@
-import { FragmentDropData, FragmentDropResult } from '@/modules/crafting/logic/fragmentSystem';
 import type { RealmSystem } from '@/modules/progression/data/realmCore';
 
 // 重新导出难度级别类型
 export type { DifficultyLevel } from '@/modules/identity/data/worldData';
 
-// 重新导出碎片相关类型
-export type { FragmentDropData, FragmentDropResult } from '@/modules/crafting/logic/fragmentSystem';
+// FragmentDropData, FragmentDropResult — 已迁移至统一物品系统
 
 // 重新导出势力相关类型
 export type { Faction, FactionType } from '@/modules/faction/data/factionData';
@@ -1252,7 +1250,7 @@ export interface Protagonist {
   equippedAttackTechniques: (Technique | null)[];
   equippedDefenseTechniques: (Technique | null)[];
   currencies?: PlayerCurrencies;
-  fragmentInventory?: import('@/modules/crafting/logic/fragmentSystem').FragmentInventory;
+  fragmentInventory?: Record<string, unknown>; // TODO: 统一物品系统迁移
   activeEffects: ActiveEffect[]; // 当前生效的效果
   experience: number;
   overflowExperience: number; // 超出上限的经验（升级后会保留到下一级）
@@ -1345,7 +1343,7 @@ export interface Technique {
   // ========== 法技系统 ==========
   skillSlots: number; // 已解锁的技能槽位数量
   maxSkillSlots: number; // 最大技能槽位数量
-  allSkills: import('@/modules/techniques/logic/skillTypes').TechniqueSkill[]; // 全部可解锁技能
+  allSkills: Record<string, unknown>[]; // TODO: 统一物品系统迁移 — 全部可解锁技能
   equippedSkills: (string | null)[]; // 当前装备的技能ID列表（按槽位顺序，null表示空槽）
   
   // ========== 来源信息 ==========
@@ -1418,7 +1416,7 @@ export interface Equipment {
   // ========== 斗技系统 ==========
   techniqueSlots: number; // 已解锁的技巧槽位数量
   maxTechniqueSlots: number; // 最大技巧槽位数量
-  allTechniques: import('@/modules/techniques/logic/skillTypes').WeaponTechnique[]; // 全部可解锁技巧
+  allTechniques: Record<string, unknown>[]; // TODO: 统一物品系统迁移 — 全部可解锁技巧
   equippedTechniques: (string | null)[]; // 当前装备的技巧ID列表
   
   // ========== 来源信息 ==========
@@ -1433,12 +1431,11 @@ export interface Equipment {
   // ========== 兼容字段（旧代码过渡用，后续可删除） ==========
   enhancement?: number; // 强化等级（旧系统）
   refinement?: number; // 重铸次数（旧系统）
-  affixes?: import('@/modules/equipment/data/equipmentAffixData').EquipmentAffix[]; // 词缀列表（旧系统）
+  affixes?: Record<string, unknown>[]; // TODO: 统一物品系统迁移 — 词缀列表
   setId?: string | null; // 套装ID（旧系统）
 }
 
-// 装备词缀 - 重新导出以保持类型一致
-export type { EquipmentAffix, AffixType, AffixEffect } from '@/modules/equipment/data/equipmentAffixData';
+// 装备词缀 — 已迁移至统一物品系统 (modules/item/types.ts 的 ItemAffix)
 
 // 升级系统类型
 export type UpgradeableItemType = 'technique' | 'equipment';
@@ -1563,16 +1560,16 @@ export interface BattleResult {
     experience?: number;
     technique?: Technique; // 可能获得功法
     equipment?: Equipment; // 可能获得装备
-    fragments?: FragmentDropData[]; // 碎片奖励
+    fragments?: Record<string, unknown>[]; // 碎片奖励
     techniques?: Technique[]; // 完整功法掉落（多个，新增）
     equipments?: Equipment[]; // 完整装备掉落（多个，新增）
-    completeItems?: FragmentDropResult['completeItems']; // 完整物品掉落（功法/装备，新增）
+    completeItems?: Record<string, unknown>['completeItems']; // 完整物品掉落（功法/装备，新增）
   };
   hpRestored?: number; // 休息格恢复的HP
   mpRestored?: number; // 休息格恢复的MP
   playerHpAfter?: number; // 战斗后的HP
   playerMpAfter?: number; // 战斗后的MP
-  fragmentDrop?: FragmentDropResult; // 碎片掉落详情
+  fragmentDrop?: Record<string, unknown>; // 碎片掉落详情
 }
 
 // 消息记录
@@ -1595,7 +1592,7 @@ export interface MessageRecord {
     equipment?: Equipment;
     techniques?: Technique[]; // 完整功法掉落（多个，新增）
     equipments?: Equipment[]; // 完整装备掉落（多个，新增）
-    fragments?: FragmentDropData[]; // 碎片掉落奖励
+    fragments?: Record<string, unknown>[]; // 碎片掉落奖励
   };
 }
 
@@ -1678,7 +1675,7 @@ export interface GameState {
   adventurePhase: AdventurePhase; // 机缘阶段
   adventureLoot: InventoryItem[]; // 机缘战利品（物品）
   adventureExperience: number; // 机缘战利品（待结算经验值）
-  adventureFragments?: FragmentDropData[]; // 机缘战利品（碎片）
+  adventureFragments?: Record<string, unknown>[]; // 机缘战利品（碎片）
   /** 机缘会话状态（行动力、击败数等） */
   adventureSession?: AdventureSessionState | null;
   currentTab: ActionTab;

@@ -24,8 +24,8 @@ export const IRON_SWORD: EquipmentTemplate = {
   isDroppable: true,
   ext: {
     equipSlot: 'weapon_melee',
-    providesSkillSlots: 1,
-    acceptedSkillTag: 'combat' as SkillTag,
+    
+    
     weaponCategory: 'sword',
     compatibleElement: null,
     compatibleBonus: 0,
@@ -48,8 +48,8 @@ export const SPIRIT_SWORD: EquipmentTemplate = {
   isDroppable: true,
   ext: {
     equipSlot: 'weapon_melee',
-    providesSkillSlots: 1,
-    acceptedSkillTag: 'combat' as SkillTag,
+    
+    
     weaponCategory: 'sword',
     compatibleElement: null,
     compatibleBonus: 0,
@@ -72,8 +72,8 @@ export const FLAME_DRAGON_SWORD: EquipmentTemplate = {
   isDroppable: true,
   ext: {
     equipSlot: 'weapon_melee',
-    providesSkillSlots: 3,
-    acceptedSkillTag: 'combat' as SkillTag,
+    
+    
     weaponCategory: 'sword',
     compatibleElement: 'fire',
     compatibleBonus: 15,
@@ -96,8 +96,8 @@ export const THUNDER_BLADE: EquipmentTemplate = {
   isDroppable: true,
   ext: {
     equipSlot: 'weapon_melee',
-    providesSkillSlots: 2,
-    acceptedSkillTag: 'combat' as SkillTag,
+    
+    
     weaponCategory: 'blade',
     compatibleElement: 'thunder',
     compatibleBonus: 10,
@@ -122,8 +122,8 @@ export const HUNTING_BOW: EquipmentTemplate = {
   isDroppable: true,
   ext: {
     equipSlot: 'weapon_ranged',
-    providesSkillSlots: 1,
-    acceptedSkillTag: 'combat' as SkillTag,
+    
+    
     weaponCategory: 'bow',
     compatibleElement: null,
     compatibleBonus: 0,
@@ -146,8 +146,8 @@ export const STARFALL_BOW: EquipmentTemplate = {
   isDroppable: true,
   ext: {
     equipSlot: 'weapon_ranged',
-    providesSkillSlots: 2,
-    acceptedSkillTag: 'combat' as SkillTag,
+    
+    
     weaponCategory: 'bow',
     compatibleElement: 'wind',
     compatibleBonus: 12,
@@ -172,8 +172,8 @@ export const CLOTH_HAT: EquipmentTemplate = {
   isDroppable: true,
   ext: {
     equipSlot: 'armor_head',
-    providesSkillSlots: 0,
-    acceptedSkillTag: 'combat' as SkillTag,
+    
+    
     weaponCategory: null,
     compatibleElement: null,
     compatibleBonus: 0,
@@ -196,8 +196,8 @@ export const SPIRIT_CROWN: EquipmentTemplate = {
   isDroppable: true,
   ext: {
     equipSlot: 'armor_head',
-    providesSkillSlots: 0,
-    acceptedSkillTag: 'combat' as SkillTag,
+    
+    
     weaponCategory: null,
     compatibleElement: 'light',
     compatibleBonus: 8,
@@ -220,8 +220,8 @@ export const COTTON_ROBE: EquipmentTemplate = {
   isDroppable: true,
   ext: {
     equipSlot: 'armor_body',
-    providesSkillSlots: 0,
-    acceptedSkillTag: 'combat' as SkillTag,
+    
+    
     weaponCategory: null,
     compatibleElement: null,
     compatibleBonus: 0,
@@ -244,8 +244,8 @@ export const DRAGON_SCALE_ARMOR: EquipmentTemplate = {
   isDroppable: true,
   ext: {
     equipSlot: 'armor_body',
-    providesSkillSlots: 0,
-    acceptedSkillTag: 'combat' as SkillTag,
+    
+    
     weaponCategory: null,
     compatibleElement: 'fire',
     compatibleBonus: 10,
@@ -268,8 +268,8 @@ export const COTTON_LEGGINGS: EquipmentTemplate = {
   isDroppable: true,
   ext: {
     equipSlot: 'armor_legs',
-    providesSkillSlots: 0,
-    acceptedSkillTag: 'combat' as SkillTag,
+    
+    
     weaponCategory: null,
     compatibleElement: null,
     compatibleBonus: 0,
@@ -292,8 +292,8 @@ export const WIND_WALKER_LEGGINGS: EquipmentTemplate = {
   isDroppable: true,
   ext: {
     equipSlot: 'armor_legs',
-    providesSkillSlots: 0,
-    acceptedSkillTag: 'combat' as SkillTag,
+    
+    
     weaponCategory: null,
     compatibleElement: 'wind',
     compatibleBonus: 5,
@@ -316,8 +316,8 @@ export const COTTON_BOOTS: EquipmentTemplate = {
   isDroppable: true,
   ext: {
     equipSlot: 'armor_feet',
-    providesSkillSlots: 0,
-    acceptedSkillTag: 'combat' as SkillTag,
+    
+    
     weaponCategory: null,
     compatibleElement: null,
     compatibleBonus: 0,
@@ -340,8 +340,8 @@ export const CLOUD_BOOTS: EquipmentTemplate = {
   isDroppable: true,
   ext: {
     equipSlot: 'armor_feet',
-    providesSkillSlots: 0,
-    acceptedSkillTag: 'combat' as SkillTag,
+    
+    
     weaponCategory: null,
     compatibleElement: 'wind',
     compatibleBonus: 8,

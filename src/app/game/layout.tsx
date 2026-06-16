@@ -17,7 +17,6 @@ import { DEFAULT_PROTAGONIST_EXTENSION, getFinalStats } from '@/core/types';
 import { BattleDialog } from '@/modules/combat/components/BattleDialog';
 import { getFactionById } from '@/modules/faction/data/factionData';
 import { CultivationPathSelect } from '@/modules/progression/components/CultivationPathSelect';
-import { getResourceName } from '@/modules/equipment/logic/items';
 import { CriticalHealthOverlay } from '@/shared/components/CriticalHealthOverlay';
 import { DeathDialog } from '@/shared/components/DeathDialog';
 import { DialogLayer } from '@/views/game/dialogs/DialogLayer';
@@ -38,6 +37,7 @@ import { GameMenu } from '@/views/game/navigation/GameMenu';
 import { SettingsPanel } from '@/views/game/settings/SettingsPanel';
 import { useGameStore } from '@/views/game/state/GameStore';
 
+function getResourceName(worldType: string): string { const names: Record<string,string> = { '修仙': '灵石', '高武': '武晶', '科幻': '能量块', '魔法': '魔晶', '异能': '源能石', '仙界': '仙石', '武侠': '银两', '末世': '补给点' }; return names[worldType] || '灵石'; }
 export default function GameLayout({ children }: { children: React.ReactNode }) {
   useGameSystems();
 

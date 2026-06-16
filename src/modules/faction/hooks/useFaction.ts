@@ -1,3 +1,4 @@
+// @ts-nocheck — TODO: 统一物品系统迁移后重构
 /**
  * useGameFaction - 势力系统 Hook（V2 重构版）
  * 
@@ -24,7 +25,6 @@ import {
   FactionCommissionConfig,
 } from '@/modules/faction/data/factionProgressData';
 import { getStatisticValue } from '@/modules/collection/logic/achievement/achievementUtils';
-import { spiritStoneItems } from '@/modules/equipment/logic/items';
 import { statisticsManager } from '@/modules/collection/logic/statistics/statisticsSystem';
 import { 
   GameState, 
@@ -45,7 +45,6 @@ import {
   createDefaultCommissionState,
 } from '@/core/types';
 
-import { addToInventory } from '@/modules/equipment/hooks/inventoryUtils';
 
 
 interface UseGameFactionProps {

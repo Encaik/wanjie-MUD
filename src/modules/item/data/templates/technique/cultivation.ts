@@ -21,10 +21,10 @@ export const FIRE_SCRIPTURE: TechniqueTemplate = {
   worldType: 'cultivation',
   isDroppable: true,
   ext: {
-    providesSkillSlots: 2,
-    acceptedSkillTag: SKILL_TAG,
-    compatibleWeapon: 'sword',
-    compatibleBonus: 15,
+    
+    
+    
+    
     baseMpCost: 25,
   },
 };
@@ -44,10 +44,10 @@ export const THUNDER_FIST_MANUAL: TechniqueTemplate = {
   worldType: 'cultivation',
   isDroppable: true,
   ext: {
-    providesSkillSlots: 2,
-    acceptedSkillTag: SKILL_TAG,
-    compatibleWeapon: 'fist',
-    compatibleBonus: 12,
+    
+    
+    
+    
     baseMpCost: 20,
   },
 };
@@ -67,10 +67,10 @@ export const WIND_SWORD_ART: TechniqueTemplate = {
   worldType: 'cultivation',
   isDroppable: true,
   ext: {
-    providesSkillSlots: 1,
-    acceptedSkillTag: SKILL_TAG,
-    compatibleWeapon: 'sword',
-    compatibleBonus: 8,
+    
+    
+    
+    
     baseMpCost: 12,
   },
 };
@@ -90,10 +90,10 @@ export const IRON_BODY_SCRIPTURE: TechniqueTemplate = {
   worldType: 'cultivation',
   isDroppable: true,
   ext: {
-    providesSkillSlots: 2,
-    acceptedSkillTag: SKILL_TAG,
-    compatibleWeapon: null,
-    compatibleBonus: 0,
+    
+    
+    
+    
     baseMpCost: 30,
   },
 };
@@ -113,10 +113,10 @@ export const WATER_SHIELD_ART: TechniqueTemplate = {
   worldType: 'cultivation',
   isDroppable: true,
   ext: {
-    providesSkillSlots: 2,
-    acceptedSkillTag: SKILL_TAG,
-    compatibleWeapon: null,
-    compatibleBonus: 0,
+    
+    
+    
+    
     baseMpCost: 18,
   },
 };
@@ -136,10 +136,10 @@ export const LIGHT_ARMOR_MANTRA: TechniqueTemplate = {
   worldType: 'cultivation',
   isDroppable: true,
   ext: {
-    providesSkillSlots: 1,
-    acceptedSkillTag: SKILL_TAG,
-    compatibleWeapon: null,
-    compatibleBonus: 0,
+    
+    
+    
+    
     baseMpCost: 8,
   },
 };

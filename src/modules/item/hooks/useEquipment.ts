@@ -67,7 +67,7 @@ export function useEquipment() {
   }, [items, slots]);
 
   const getEquipmentSlots = useCallback(() => {
-    return SLOT_DEFINITIONS.filter(s => s.category === 'equipment' && !s.isDynamic);
+    return SLOT_DEFINITIONS.filter(s => s.category === 'equipment');
   }, []);
 
   return {
