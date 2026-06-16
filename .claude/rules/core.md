@@ -139,9 +139,35 @@ modules/<domain>/
 - ❌ 在 `modules/` 或 `shared/` 中创建与 `core/` 功能重复的系统
 - ✅ 开发前必须确认 `core/` 中是否已有对应能力：`core/logger/`（系统日志）、`core/message-log/`（玩家消息）、`core/events/`（事件总线）、`core/calculation/`（数值计算）、`core/types/`（核心类型）、`core/world/`（世界系统）、`core/registry/`（数据注册）、`core/server/`（服务端核心）、`core/engine/`（引擎集成）
 
+### 5.5 可视化组件与图表库（MUST）
+
+**图表、进度条、数据可视化等 UI 组件必须使用已安装的库实现，禁止手写 SVG/Canvas 渲染。**
+
+项目已安装的图表与 UI 库：
+
+- `recharts` — 图表库（折线图、柱状图、雷达图、饼图等）
+- `@radix-ui/react-progress` — 进度条
+- shadcn/ui `ChartContainer`（`@/shared/ui/data-display/chart`）— recharts 的 shadcn 风格包装器
+
+**规则**：
+
+- ❌ 禁止手写 SVG `<polygon>`、`<line>`、`<circle>` 等元素来实现图表（如雷达图、折线图、柱状图）
+- ❌ 禁止手写 `<div>` + CSS `width%` 来实现进度条——使用 `@/shared/ui/feedback/progress` 的 `Progress` 组件
+- ❌ 禁止在组件内定义仅自己使用的 `ProgressBar`、`ChartXxx` 等内联可视化组件
+- ✅ 图表需求 → 使用 `recharts` + shadcn `ChartContainer`（`@/shared/ui/data-display/chart`）
+- ✅ 进度条需求 → 使用 `@/shared/ui/feedback/progress` 的 `Progress` 组件
+- ✅ 开发前先检查 `@/shared/ui/` 和 `package.json` 中是否已有对应库
+
+**理由**：手写 SVG/CSS 实现存在以下问题：
+
+- 无法利用库的动画、响应式、无障碍能力
+- 无法自动适配明/暗主题 CSS 变量
+- 增加维护负担（三角函数计算、跨浏览器兼容）
+- 违反"同一份内容只在一处存在"原则（重复造轮子）
+
 ---
 
-### 5.5 README 文档同步（MUST）
+### 5.6 README 文档同步（MUST）
 
 `src/core/README.md` 和 `src/modules/README.md` 是模块总览文档，新增、删除或重命名核心或业务模块时必须同步更新。
 

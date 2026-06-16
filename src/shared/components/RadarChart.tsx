@@ -1,8 +1,24 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import {
+  RadarChart as RechartsRadar,
+  PolarGrid,
+  PolarAngleAxis,
+  PolarRadiusAxis,
+  Radar,
+} from 'recharts';
 
+import {
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+} from '@/shared/ui/data-display/chart';
+import type { ChartConfig } from '@/shared/ui/data-display/chart';
 import { cn } from '@/shared/utils';
+
+// ============================================
+// 类型定义（保持与旧版完全兼容）
+// ============================================
 
 /** 雷达图轴定义 */
 export interface RadarAxis {
@@ -12,8 +28,11 @@ export interface RadarAxis {
 
 /** 一个数据系列 */
 export interface RadarSeries {
+  /** 0-1 归一化值，用于多边形顶点位置 */
   values: number[];
+  /** tooltip 中显示的原值 */
   rawValues: (string | number)[];
+  /** 该系列覆盖的轴索引 */
   axisIndices: number[];
   fillColor: string;
   strokeColor: string;
@@ -22,196 +41,144 @@ export interface RadarSeries {
 interface RadarChartProps {
   axes: RadarAxis[];
   series: RadarSeries[];
+  /** 默认宽度（可用 className 的 max-w 等覆盖） */
   size?: number;
-  gridColor?: string;
-  labelColor?: string;
   className?: string;
 }
 
+// ============================================
+// 组件
+// ============================================
+
 /**
- * 雷达图组件 — 多系列叠加 + 整体 hover tooltip
+ * 雷达图组件 — 基于 recharts + shadcn ChartContainer
  *
- * hover 多边形区域时弹出浮层，一次性展示该系列所有轴的值。
+ * 内部将 axes + series 接口适配为 recharts RadarChart 格式。
+ * 支持多系列叠加、入场动画、明暗主题自动适配、无障碍标注。
  */
 export function RadarChart({
   axes,
   series,
   size = 180,
-  gridColor = 'var(--border)',
-  labelColor = 'var(--muted-foreground)',
   className,
 }: RadarChartProps) {
   const axCount = axes.length;
-  const [hoveredSeries, setHoveredSeries] = useState<RadarSeries | null>(null);
-  const clearHover = useCallback(() => setHoveredSeries(null), []);
-
   if (axCount < 3) return null;
 
-  const cx = size / 2;
-  const cy = size / 2;
-  const radius = size * 0.32;
-  const labelRadius = radius + 16;
-  const GRID_LEVELS = [0.33, 0.66, 1.0];
+  // ---- 将 axes + series 转换为 recharts data[] ----
+  const chartData = axes.map((axis, ai) => {
+    const point: Record<string, string | number> = { axis: axis.label };
+    series.forEach((s, si) => {
+      const vi = s.axisIndices.indexOf(ai);
+      if (vi >= 0) {
+        point[`s${si}`] = s.values[vi] ?? 0;
+        point[`s${si}_raw`] = s.rawValues[vi] ?? s.values[vi] ?? 0;
+      } else {
+        point[`s${si}`] = 0;
+        point[`s${si}_raw`] = 0;
+      }
+    });
+    return point;
+  });
 
-  const point = (axisIndex: number, r: number): [number, number] => {
-    const angle = -Math.PI / 2 + (axisIndex * 2 * Math.PI) / axCount;
-    return [cx + r * Math.cos(angle), cy + r * Math.sin(angle)];
+  // ---- 构建 shadcn ChartConfig ----
+  const chartConfig = series.reduce<ChartConfig>((acc, s, si) => {
+    const firstAxisLabel = axes[s.axisIndices[0]]?.label;
+    acc[`s${si}`] = {
+      label: firstAxisLabel ?? `系列 ${si + 1}`,
+      color: s.strokeColor,
+    };
+    return acc;
+  }, {});
+
+  // ---- 轴标签渲染函数 ----
+  const renderTick = (props: unknown) => {
+    const { payload, x, y, cx } = props as {
+      payload?: { value?: string };
+      x?: number; y?: number; cx?: number;
+    };
+    const axisLabel = payload?.value ?? '';
+    const axisItem = axes.find(a => a.label === axisLabel);
+    const dx = (x ?? 0) - (cx ?? 0);
+    const textAnchor = Math.abs(dx) < 2 ? 'middle' : dx > 0 ? 'start' : 'end';
+
+    return (
+      <text
+        x={x} y={y}
+        fill={axisItem?.color ?? 'var(--foreground)'}
+        fontSize={axCount > 5 ? 9 : 10}
+        fontFamily="var(--font-serif)"
+        fontWeight={500}
+        textAnchor={textAnchor}
+        dominantBaseline="central"
+        opacity={0.9}
+      >
+        {axisLabel}
+      </text>
+    );
   };
 
-  const polygonPoints = (axisIndices: number[], values: number[]): string => {
-    return axisIndices
-      .map((ai, vi) => {
-        const v = Math.min(1, Math.max(0, values[vi] ?? 0));
-        const [px, py] = point(ai, radius * v);
-        return `${px.toFixed(2)},${py.toFixed(2)}`;
-      })
-      .join(' ');
+  // ---- tooltip 格式化：显示 rawValues ----
+  const renderTooltipValue = (
+    _value: unknown,
+    name: unknown,
+    _item: unknown,
+    _index: number,
+    payload: unknown,
+  ) => {
+    const raw = (payload as Record<string, unknown>)?.[`${name}_raw`];
+    return (
+      <span className="font-mono tabular-nums text-xs">
+        {raw !== undefined ? String(raw) : '-'}
+      </span>
+    );
   };
-
-  /** 构建 tooltip 行数据 */
-  const tooltipRows = hoveredSeries
-    ? hoveredSeries.axisIndices.map((ai, vi) => ({
-        label: axes[ai]?.label ?? '',
-        color: axes[ai]?.color ?? hoveredSeries.strokeColor,
-        value: hoveredSeries.rawValues[vi] ?? '',
-      }))
-    : [];
 
   return (
-    <div className={cn('relative inline-block', className)}>
-      <svg
-        viewBox={`0 0 ${size} ${size}`}
-        className="w-full h-auto overflow-visible"
-        role="img"
-        aria-label={`雷达图：${axes.map(a => a.label).join('、')}`}
-      >
-        {/* 网格 */}
-        {GRID_LEVELS.map((level, li) => (
-          <polygon
-            key={li}
-            points={Array.from({ length: axCount }, (_, i) => {
-              const [px, py] = point(i, radius * level);
-              return `${px.toFixed(2)},${py.toFixed(2)}`;
-            }).join(' ')}
-            fill="none"
-            stroke={gridColor}
-            strokeWidth={li === 2 ? 1 : 0.6}
-            opacity={li === 2 ? 0.5 : 0.3}
-          />
-        ))}
-
-        {/* 轴线 */}
-        {Array.from({ length: axCount }, (_, i) => {
-          const [ex, ey] = point(i, radius);
-          return (
-            <line
-              key={i}
-              x1={cx.toFixed(2)} y1={cy.toFixed(2)}
-              x2={ex.toFixed(2)} y2={ey.toFixed(2)}
-              stroke={gridColor} strokeWidth={0.5} opacity={0.25}
-            />
-          );
-        })}
-
-        {/* 数据系列 */}
-        {series.map((s, si) => (
-          <g key={si}>
-            {/* 可见填充多边形 */}
-            <polygon
-              points={polygonPoints(s.axisIndices, s.values)}
-              fill={s.fillColor} fillOpacity={0.1}
-              stroke={s.strokeColor} strokeWidth={1.5} strokeOpacity={0.75}
-              className="transition-all duration-500"
-            />
-            {/* 不可见 hover 热区（同形状多边形，大 stroke 方便命中） */}
-            <polygon
-              points={polygonPoints(s.axisIndices, s.values)}
-              fill={s.fillColor} fillOpacity={0}
-              stroke="transparent" strokeWidth={18}
-              className="cursor-crosshair transition-all duration-500"
-              onMouseEnter={() => setHoveredSeries(s)}
-              onMouseLeave={clearHover}
-            />
-            {/* 数据点 */}
-            {s.axisIndices.map((ai, vi) => {
-              const v = Math.min(1, Math.max(0, s.values[vi] ?? 0));
-              const [px, py] = point(ai, radius * v);
-              return (
-                <g key={vi}>
-                  <circle
-                    cx={px.toFixed(2)} cy={py.toFixed(2)} r={3}
-                    fill={s.strokeColor} fillOpacity={0.85}
-                    className="transition-all duration-500 pointer-events-none"
-                  />
-                  <circle
-                    cx={px.toFixed(2)} cy={py.toFixed(2)} r={5}
-                    fill="none" stroke={s.strokeColor}
-                    strokeWidth={0.5} strokeOpacity={0.3}
-                    className="pointer-events-none"
-                  />
-                </g>
-              );
-            })}
-          </g>
-        ))}
-
-        {/* 轴标签 */}
-        {axes.map((axis, i) => {
-          const [lx, ly] = point(i, labelRadius);
-          const angle = -Math.PI / 2 + (i * 2 * Math.PI) / axCount;
-          const anchor = angle > -0.15 && angle < 0.15 ? 'middle' : angle > 0 ? 'start' : 'end';
-          const dy = Math.abs(angle + Math.PI / 2) < 0.3 || Math.abs(angle - 3 * Math.PI / 2) < 0.3
-            ? '-0.3em' : '0.3em';
-
-          return (
-            <text
-              key={`label-${i}`}
-              x={lx.toFixed(2)} y={ly.toFixed(2)}
-              textAnchor={anchor} dominantBaseline="middle" dy={dy}
-              fontSize="11" fontFamily="var(--font-serif)"
-              fill={axis.color ?? 'var(--foreground)'}
-              className="font-medium pointer-events-none opacity-85"
-            >
-              {axis.label}
-            </text>
-          );
-        })}
-      </svg>
-
-      {/* ===== 整体 hover tooltip — 一次性展示所有值 ===== */}
-      {hoveredSeries && (
-        <div
-          className={cn(
-            'absolute z-50 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2',
-            'pointer-events-none',
-            'rounded-xl border border-border/60',
-            'bg-popover/95 backdrop-blur-sm',
-            'shadow-xl shadow-black/5',
-            'px-3 py-2 min-w-[120px]',
-            'animate-in fade-in-0 zoom-in-95 duration-150',
-          )}
+    <div
+      className={cn(className)}
+      style={{ width: size }}
+      role="img"
+      aria-label={`雷达图：${axes.map(a => a.label).join('、')}`}
+    >
+      <ChartContainer config={chartConfig} className="aspect-square">
+        <RechartsRadar
+          data={chartData}
+          margin={{ top: 10, right: 10, bottom: 2, left: 10 }}
         >
-          {/* 小三角指示器 */}
-          <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-2 h-2 rotate-45 bg-popover/95 border-l border-t border-border/60" />
-
-          <div className="space-y-1">
-            {tooltipRows.map((row, i) => (
-              <div key={i} className="flex items-center justify-between gap-4">
-                <span className="flex items-center gap-1.5 text-[11px] text-foreground/80 font-serif">
-                  <span
-                    className="w-1.5 h-1.5 rounded-full shrink-0"
-                    style={{ backgroundColor: row.color }}
-                  />
-                  {row.label}
-                </span>
-                <span className="text-xs font-bold text-foreground tabular-nums font-mono">
-                  {row.value}
-                </span>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
+          <PolarGrid stroke="var(--border)" />
+          <PolarAngleAxis dataKey="axis" tick={renderTick} />
+          <PolarRadiusAxis
+            domain={[0, 1]}
+            tick={false}
+            axisLine={false}
+            tickCount={4}
+          />
+          {series.map((s, si) => (
+            <Radar
+              key={si}
+              dataKey={`s${si}`}
+              fill={s.fillColor}
+              fillOpacity={0.1}
+              stroke={s.strokeColor}
+              strokeWidth={1.5}
+              animationBegin={si * 150}
+              animationDuration={800}
+              animationEasing="ease-out"
+              dot={{ r: 2, fillOpacity: 0.85, strokeWidth: 0 }}
+            />
+          ))}
+          <ChartTooltip
+            content={
+              <ChartTooltipContent
+                labelKey="axis"
+                indicator="dot"
+                formatter={renderTooltipValue}
+              />
+            }
+          />
+        </RechartsRadar>
+      </ChartContainer>
     </div>
   );
 }

@@ -15,9 +15,10 @@ import {
   BarChart3,
 } from 'lucide-react';
 
-import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/data-display/card';
-import { calculateStatisticsSummary, StatisticsSummary } from '@/modules/collection/logic/statistics/statisticsSystem';
 import { GameStatistics, Protagonist, getFinalStats } from '@/core/types';
+import { calculateStatisticsSummary } from '@/modules/collection/logic/statistics/statisticsSystem';
+import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/data-display/card';
+import { Progress } from '@/shared/ui/feedback/progress';
 import { cn } from '@/shared/utils';
 
 interface StatisticsPanelProps {
@@ -83,41 +84,6 @@ function StatSection({
   );
 }
 
-// 进度条组件
-function ProgressBar({ 
-  label, 
-  current, 
-  max, 
-  color = "primary" 
-}: { 
-  label: string; 
-  current: number; 
-  max: number;
-  color?: string;
-}) {
-  const percent = max > 0 ? Math.min((current / max) * 100, 100) : 0;
-  
-  return (
-    <div className="space-y-1">
-      <div className="flex justify-between text-xs">
-        <span className="text-muted-foreground">{label}</span>
-        <span className="tabular-nums">{current}/{max}</span>
-      </div>
-      <div className="h-1.5 bg-muted rounded-full overflow-hidden">
-        <div 
-          className={cn(
-            "h-full rounded-full transition-all",
-            color === "primary" && "bg-primary",
-            color === "emerald" && "bg-emerald-500",
-            color === "amber" && "bg-amber-500",
-            color === "blue" && "bg-blue-500",
-          )}
-          style={{ width: `${percent}%` }}
-        />
-      </div>
-    </div>
-  );
-}
 
 export function StatisticsPanel({ statistics, protagonist }: StatisticsPanelProps) {
   const summary = useMemo(() => calculateStatisticsSummary(statistics), [statistics]);
@@ -125,8 +91,9 @@ export function StatisticsPanel({ statistics, protagonist }: StatisticsPanelProp
   // 计算成就进度
   const achievementProgress = useMemo(() => {
     const claimed = statistics.achievementRewardsClaimed;
-    const unlocked = statistics.maxLevel; // 简化：用等级作为解锁参考
-    return { claimed, unlocked };
+    const max = Math.max(claimed + 5, 10);
+    const percent = max > 0 ? Math.min((claimed / max) * 100, 100) : 0;
+    return { claimed, max, percent };
   }, [statistics]);
   
   return (
@@ -265,12 +232,14 @@ export function StatisticsPanel({ statistics, protagonist }: StatisticsPanelProp
             value={summary.extended.achievementsClaimed} 
             highlight
           />
-          <div className="px-3 pt-2">
-            <ProgressBar 
-              label="成就领取" 
-              current={achievementProgress.claimed} 
-              max={Math.max(achievementProgress.claimed + 5, 10)} 
-              color="amber"
+          <div className="px-3 pt-2 space-y-1">
+            <div className="flex justify-between text-xs">
+              <span className="text-muted-foreground">成就领取</span>
+              <span className="tabular-nums">{achievementProgress.claimed}/{achievementProgress.max}</span>
+            </div>
+            <Progress
+              value={achievementProgress.percent}
+              className="h-1.5"
             />
           </div>
         </StatSection>
