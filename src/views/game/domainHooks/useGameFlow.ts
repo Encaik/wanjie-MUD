@@ -37,6 +37,8 @@ export function useGameFlow() {
   }, []);
 
   const startNewGame = useCallback(async (worldviewId?: string) => {
+    // 清除旧世界的主题（CSS 变量、localStorage 缓存、data-world 属性）
+    emit(worldEvents.events.new_game_started, {});
     dispatch(() => ({ ...createInitialGameState(), phase: 'world-select', worlds: [] }));
     const body: Record<string, unknown> = { count: 8 };
     if (worldviewId) body.worldviewId = worldviewId;

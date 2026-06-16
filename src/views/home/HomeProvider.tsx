@@ -84,6 +84,11 @@ export function HomeProvider({ children }: { children: React.ReactNode }) {
     // 延迟导入 api-client，避免首屏加载
     const { post } = await import('@/shared/utils/api-client');
 
+    // 清除旧世界的主题（CSS 变量、localStorage 缓存、data-world 属性）
+    const { emit } = await import('@/core/events');
+    const { worldEvents } = await import('@/modules/theme');
+    emit(worldEvents.events.new_game_started, {});
+
     // 1. 重置为初始状态，进入世界选择阶段
     const newState: GameState = {
       ...createInitialGameState(),

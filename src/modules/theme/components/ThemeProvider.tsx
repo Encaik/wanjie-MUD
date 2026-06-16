@@ -18,7 +18,7 @@ import type { ReactNode } from 'react';
 import { ThemeContext } from '../hooks/useTheme';
 import type { ThemeSlice, ThemeMode } from '../types';
 import { createInitialThemeState, resolveIsDark, toggleDark } from '../state';
-import { subscribeThemeEvents, unsubscribeThemeEvents, setOnWorldChanged } from '../events';
+import { subscribeThemeEvents, unsubscribeThemeEvents, setOnWorldChanged, setOnNewGameStarted } from '../events';
 import {
   loadThemePrefs,
   saveThemePrefs,
@@ -189,15 +189,37 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     }
   }, [theme.useWorldTheme, theme.isDark, theme.worldThemeData]);
 
-  // === 副作用：订阅主题事件 + 注册世界切换回调 ===
+  // === 副作用：订阅主题事件 + 注册回调 ===
   useEffect(() => {
     subscribeThemeEvents();
+
+    // 世界切换回调：加载新世界主题 + 自动启用世界主题
     setOnWorldChanged((worldviewId: string) => {
+      // 每次世界切换（新游戏），重置为使用世界主题（覆盖之前用户的手动设置）
+      setTheme(prev => {
+        saveThemePrefs({ themeMode: prev.themeMode, useWorldTheme: true });
+        return { ...prev, useWorldTheme: true };
+      });
       loadWorldTheme(worldviewId);
     });
+
+    // 新游戏开始回调：清除旧世界主题的 CSS 变量和状态
+    setOnNewGameStarted(() => {
+      setTheme(prev => {
+        // 移除旧世界主题的 CSS 变量
+        if (prev.worldThemeData) {
+          removeThemeVariables(getVarNamesFromThemeData(prev.worldThemeData));
+        }
+        return { ...prev, worldThemeData: null };
+      });
+      // 重置已加载的世界 ID，确保下次 world_changed 时重新加载
+      loadedWorldviewId.current = null;
+    });
+
     return () => {
       unsubscribeThemeEvents();
       setOnWorldChanged(null);
+      setOnNewGameStarted(null);
     };
   }, [loadWorldTheme]);
 

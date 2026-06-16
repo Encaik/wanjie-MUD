@@ -24,6 +24,7 @@ import type { WorldType } from '@/core/types';
  */
 export const worldEvents = eventRegistry.registerModule('world', {
   world_changed: { description: '世界切换' },
+  new_game_started: { description: '新游戏开始，清除旧世界主题' },
 });
 
 /** 世界事件类型 */
@@ -57,6 +58,16 @@ export function setOnWorldChanged(cb: ((worldviewId: string) => void) | null): v
   onWorldChangedCallback = cb;
 }
 
+/** 新游戏开始回调类型（ThemeProvider 注入） */
+let onNewGameStartedCallback: (() => void) | null = null;
+
+/**
+ * 注册新游戏开始回调（由 ThemeProvider 调用）
+ */
+export function setOnNewGameStarted(cb: (() => void) | null): void {
+  onNewGameStartedCallback = cb;
+}
+
 /**
  * 处理世界变更事件 — 调用 ThemeProvider 注入的回调
  */
@@ -72,8 +83,29 @@ function handleWorldChanged(event: GameEvent): void {
   }
 }
 
+/**
+ * 处理新游戏开始事件 — 清除旧世界主题
+ */
+function handleNewGameStarted(): void {
+  // 清除 data-world 属性
+  clearWorldTheme();
+  // 清除 localStorage 中的世界主题缓存
+  if (typeof localStorage !== 'undefined') {
+    try {
+      localStorage.removeItem('world_theme_cache');
+    } catch {
+      // 静默失败
+    }
+  }
+  // 通知 ThemeProvider 清除状态和 CSS 变量
+  if (onNewGameStartedCallback) {
+    onNewGameStartedCallback();
+  }
+}
+
 /** 取消订阅函数引用 */
 let unsubscribeWorldChanged: (() => void) | null = null;
+let unsubscribeNewGameStarted: (() => void) | null = null;
 
 /**
  * 订阅主题相关事件
@@ -87,6 +119,10 @@ export function subscribeThemeEvents(): void {
     worldEvents.events.world_changed,
     handleWorldChanged,
   );
+  unsubscribeNewGameStarted = on(
+    worldEvents.events.new_game_started,
+    handleNewGameStarted,
+  );
 }
 
 /**
@@ -98,5 +134,9 @@ export function unsubscribeThemeEvents(): void {
   if (unsubscribeWorldChanged) {
     unsubscribeWorldChanged();
     unsubscribeWorldChanged = null;
+  }
+  if (unsubscribeNewGameStarted) {
+    unsubscribeNewGameStarted();
+    unsubscribeNewGameStarted = null;
   }
 }
