@@ -12,7 +12,7 @@
  * - 边界条件完整处理
  */
 
-import { StatisticsEventType } from '@/modules/collection/logic/statistics/statisticsSystem';
+import type { StatisticsEventType } from '@/core/statistics';
 import { GameStatistics } from '@/core/types';
 
 // ============================================
@@ -125,24 +125,24 @@ export const TASK_STAT_MAP: Record<TaskRequirementType, keyof GameStatistics> = 
  * 统计事件 -> 任务需求类型映射
  */
 export const EVENT_TO_TASK_TYPE_MAP: Partial<Record<StatisticsEventType, TaskRequirementType[]>> = {
-  enemy_killed: ['kill_any'],
-  boss_killed: ['kill_boss'],
-  elite_killed: ['kill_elite'],
-  adventure_completed: ['adventure'],
-  cultivation_done: ['cultivate'],
-  breakthrough_done: ['breakthrough'],
-  technique_collected: ['collect_technique'],
-  equipment_collected: ['collect_equipment'],
-  material_collected: ['collect_material'],
-  fragment_collected: ['collect_fragment'],
-  equipment_crafted: ['craft_equipment'],
-  technique_synthesized: ['synthesize_technique'],
-  fragment_synthesized: ['synthesize_fragment'],
-  donation_made: ['donate_spirit_stones', 'donate_count'],
-  contribution_gained: ['gain_contribution'],
-  item_used: ['use_item'],
-  spirit_stones_gained: ['gain_spirit_stones'],
-  spirit_stones_spent: ['spend_spirit_stones'],
+  'combat:enemy_killed': ['kill_any'],
+  'combat:boss_killed': ['kill_boss'],
+  'combat:elite_killed': ['kill_elite'],
+  'adventure:completed': ['adventure'],
+  'cultivation:performed': ['cultivate'],
+  'cultivation:breakthrough': ['breakthrough'],
+  'collection:technique_obtained': ['collect_technique'],
+  'collection:equipment_obtained': ['collect_equipment'],
+  'collection:material_obtained': ['collect_material'],
+  'collection:fragment_obtained': ['collect_fragment'],
+  'equipment:crafted': ['craft_equipment'],
+  'crafting:technique_synthesized': ['synthesize_technique'],
+  'crafting:fragment_synthesized': ['synthesize_fragment'],
+  'faction:donation_made': ['donate_spirit_stones', 'donate_count'],
+  'faction:contribution_gained': ['gain_contribution'],
+  'item:used': ['use_item'],
+  'economy:spirit_stones_gained': ['gain_spirit_stones'],
+  'economy:spirit_stones_spent': ['spend_spirit_stones'],
 };
 
 // ============================================

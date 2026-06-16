@@ -42,7 +42,7 @@ import {
 } from '@/core/types';
 import { applyMentalChange } from '@/core/engine';
 // 统计系统
-import { statisticsManager, StatisticsEventType } from '@/modules/collection/logic/statistics/statisticsSystem';
+import { processStatisticsEvents } from '@/core/statistics';
 import { gameSystems } from '@/core/engine';
 import { getAvailableDifficultiesForRealm } from '@/modules/exploration/logic/adventureDifficulties';
 import { applyGrowthStatChanges, getGrowthStatCap } from '@/modules/progression/logic/realmSystem';
@@ -220,12 +220,13 @@ export function useGameAdventure({
           }
           if (eventExp + battleExp > 0) rewards.experience = eventExp + battleExp;
           
-          // 使用统计管理器更新统计数据
+          // 使用统计追踪器更新统计数据
           const fragmentCount = result.rewards?.fragments?.length || 0;
-          const newStatistics = statisticsManager.processEvents(prev.statistics, [
-            { type: 'enemy_killed' },
-            ...(isBoss ? [{ type: 'boss_killed' as StatisticsEventType }] : []),
-            ...(fragmentCount > 0 ? [{ type: 'fragment_collected' as StatisticsEventType, payload: { count: fragmentCount } }] : []),
+          const now = Date.now();
+          const newStatistics = processStatisticsEvents(prev.statistics, [
+            { type: 'combat:enemy_killed', payload: {}, timestamp: now },
+            ...(isBoss ? [{ type: 'combat:boss_killed' as const, payload: {}, timestamp: now }] : []),
+            ...(fragmentCount > 0 ? [{ type: 'collection:fragment_obtained' as const, payload: { count: fragmentCount }, timestamp: now }] : []),
           ]);
           
           let newFactionProgress = prev.protagonist.factionProgress;
@@ -1116,13 +1117,14 @@ export function useGameAdventure({
               }
             }
             
-            // 使用统计管理器更新统计数据
+            // 使用统计追踪器更新统计数据
             const isElite = targetCell.type === 'elite' || targetCell.type === 'miniboss';
-            const newStatistics = statisticsManager.processEvents(prev.statistics, [
-              { type: 'enemy_killed' },
-              ...(isBoss ? [{ type: 'boss_killed' as StatisticsEventType }] : []),
-              ...(isElite ? [{ type: 'elite_killed' as StatisticsEventType }] : []),
-              ...(fragmentCount > 0 ? [{ type: 'fragment_collected' as StatisticsEventType, payload: { count: fragmentCount } }] : []),
+            const now2 = Date.now();
+            const newStatistics = processStatisticsEvents(prev.statistics, [
+              { type: 'combat:enemy_killed', payload: {}, timestamp: now2 },
+              ...(isBoss ? [{ type: 'combat:boss_killed' as const, payload: {}, timestamp: now2 }] : []),
+              ...(isElite ? [{ type: 'combat:elite_killed' as const, payload: {}, timestamp: now2 }] : []),
+              ...(fragmentCount > 0 ? [{ type: 'collection:fragment_obtained' as const, payload: { count: fragmentCount }, timestamp: now2 }] : []),
             ]);
             
             let newFactionProgress = prev.protagonist.factionProgress;
@@ -1959,16 +1961,17 @@ export function useGameAdventure({
           ? [...prev.protagonist.equipments, ...droppedEquipments]
           : prev.protagonist.equipments;
         
-        // 使用统计管理器更新统计数据
+        // 使用统计追踪器更新统计数据
         const isElite = cellType === 'elite' || cellType === 'miniboss';
         const fragmentCount = fragmentDrop.fragments.length;
-        const newStatistics = statisticsManager.processEvents(prev.statistics, [
-          { type: 'enemy_killed' },
-          ...(isBoss ? [{ type: 'boss_killed' as StatisticsEventType }] : []),
-          ...(isElite ? [{ type: 'elite_killed' as StatisticsEventType }] : []),
-          ...(fragmentCount > 0 ? [{ type: 'fragment_collected' as StatisticsEventType, payload: { count: fragmentCount } }] : []),
-          ...(droppedTechniques.length > 0 ? [{ type: 'technique_collected' as StatisticsEventType, payload: { name: droppedTechniques[0].name } }] : []),
-          ...(droppedEquipments.length > 0 ? [{ type: 'equipment_collected' as StatisticsEventType, payload: { name: droppedEquipments[0].name } }] : []),
+        const now3 = Date.now();
+        const newStatistics = processStatisticsEvents(prev.statistics, [
+          { type: 'combat:enemy_killed', payload: {}, timestamp: now3 },
+          ...(isBoss ? [{ type: 'combat:boss_killed' as const, payload: {}, timestamp: now3 }] : []),
+          ...(isElite ? [{ type: 'combat:elite_killed' as const, payload: {}, timestamp: now3 }] : []),
+          ...(fragmentCount > 0 ? [{ type: 'collection:fragment_obtained' as const, payload: { count: fragmentCount }, timestamp: now3 }] : []),
+          ...(droppedTechniques.length > 0 ? [{ type: 'collection:technique_obtained' as const, payload: { name: droppedTechniques[0].name }, timestamp: now3 }] : []),
+          ...(droppedEquipments.length > 0 ? [{ type: 'collection:equipment_obtained' as const, payload: { name: droppedEquipments[0].name }, timestamp: now3 }] : []),
         ]);
         
         let newFactionProgress = prev.protagonist.factionProgress;

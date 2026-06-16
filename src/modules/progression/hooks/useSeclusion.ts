@@ -29,6 +29,7 @@ import {
   SECLUSION_OUTCOMES,
 } from '@/modules/progression/logic/seclusion';
 import { gameClock, ACTION_TIME_COST } from '@/core/time';
+import { processStatisticsEvents } from '@/core/statistics';
 import { GameState, MessageRecord, ActiveEffect } from '@/core/types';
 import { DEFAULT_PROTAGONIST_EXTENSION, MentalState } from '@/core/types';
 
@@ -195,25 +196,17 @@ export function useSeclusion({
       }
       
       // 统计信息
-      let newStatistics = prev.statistics;
-      newStatistics = {
-        ...newStatistics,
-        totalCultivations: newStatistics.totalCultivations + 1,
-      };
-      
+      const now = Date.now();
+      const statsEvents = [
+        { type: 'cultivation:performed' as const, payload: { count: 1 }, timestamp: now },
+      ];
       if (result.breakthroughSuccess) {
-        newStatistics = {
-          ...newStatistics,
-          totalBreakthroughs: newStatistics.totalBreakthroughs + 1,
-        };
+        statsEvents.push({ type: 'cultivation:breakthrough' as const, payload: { count: 1 }, timestamp: now });
       }
-      
-      if (newLevel > newStatistics.maxLevel) {
-        newStatistics = {
-          ...newStatistics,
-          maxLevel: newLevel,
-        };
+      if (newLevel > prev.statistics.maxLevel) {
+        statsEvents.push({ type: 'player:level_up' as const, payload: { newLevel }, timestamp: now });
       }
+      const newStatistics = processStatisticsEvents(prev.statistics, statsEvents);
       
       // 触发游戏系统事件
       gameSystems.triggerCultivationDone(

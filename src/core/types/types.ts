@@ -1702,6 +1702,8 @@ export interface GameState {
   showNoviceCompletionDialog?: boolean;
   // 是否显示新手任务全部完成弹窗（显示后清除）
   showTutorialCompletionDialog?: boolean;
+  // 新手引导状态（分阶段事件驱动）
+  tutorialState?: import('@/modules/quest').TutorialState;
   // 任务系统状态 - 统一管理各任务系统
   taskSystems?: import('@/modules/quest').AllTaskSystemsState;
   // 扩展系统 - 势力相关

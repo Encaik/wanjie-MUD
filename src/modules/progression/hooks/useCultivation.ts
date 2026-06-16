@@ -21,6 +21,7 @@ import { gameSystems } from '@/core/engine';
 import { getRealmName } from '@/modules/progression/data/realmCore';
 import { applyGrowthStatChanges, getGrowthStatCap } from '@/modules/progression/logic/realmSystem';
 import { gameClock, cooldown } from '@/core/time';
+import { processStatisticsEvent, processStatisticsEvents } from '@/core/statistics';
 import { 
   GameState, 
   MessageRecord, 
@@ -87,10 +88,9 @@ function handleStrategyCultivationImpl(
   newOverflowExp = expResult.newOverflow;
 
   // 统计
-  const newStatistics = {
-    ...prev.statistics,
-    totalCultivations: prev.statistics.totalCultivations + 1,
-  };
+  const newStatistics = processStatisticsEvent(prev.statistics, {
+    type: 'cultivation:performed', payload: { count: 1 }, timestamp: Date.now(),
+  });
 
   // 流派经验
   let newPathExp = prev.protagonist.pathExp ?? 0;
@@ -355,24 +355,18 @@ export function useGameCultivation({
       }
       
       const details = costDetails.length > 0 ? `消耗: ${costDetails.join(', ')}` : undefined;
-      
-      let newStatistics = prev.statistics;
-      newStatistics = {
-        ...newStatistics,
-        totalCultivations: newStatistics.totalCultivations + 1,
-      };
+
+      const now = Date.now();
+      const statsEvents = [
+        { type: 'cultivation:performed' as const, payload: { count: 1 }, timestamp: now },
+      ];
       if (result.breakthroughSuccess) {
-        newStatistics = {
-          ...newStatistics,
-          totalBreakthroughs: newStatistics.totalBreakthroughs + 1,
-        };
+        statsEvents.push({ type: 'cultivation:breakthrough' as const, payload: { count: 1 }, timestamp: now });
       }
-      if (newLevel > newStatistics.maxLevel) {
-        newStatistics = {
-          ...newStatistics,
-          maxLevel: newLevel,
-        };
+      if (newLevel > prev.statistics.maxLevel) {
+        statsEvents.push({ type: 'player:level_up' as const, payload: { newLevel }, timestamp: now });
       }
+      const newStatistics = processStatisticsEvents(prev.statistics, statsEvents);
       
       // 将 statChanges 转换为 Record<string, number> 格式
       const statGains: Record<string, number> = {};
@@ -665,23 +659,17 @@ export function useGameCultivation({
           rewards.experience = result.success ? 20 : 5;
         }
         
-        let newStatistics = prev.statistics;
-        newStatistics = {
-          ...newStatistics,
-          totalCultivations: newStatistics.totalCultivations + 1,
-        };
+        const now3 = Date.now();
+        const statsEvents3 = [
+          { type: 'cultivation:performed' as const, payload: { count: 1 }, timestamp: now3 },
+        ];
         if (result.breakthroughSuccess) {
-          newStatistics = {
-            ...newStatistics,
-            totalBreakthroughs: newStatistics.totalBreakthroughs + 1,
-          };
+          statsEvents3.push({ type: 'cultivation:breakthrough' as const, payload: { count: 1 }, timestamp: now3 });
         }
-        if (newLevel > newStatistics.maxLevel) {
-          newStatistics = {
-            ...newStatistics,
-            maxLevel: newLevel,
-          };
+        if (newLevel > prev.statistics.maxLevel) {
+          statsEvents3.push({ type: 'player:level_up' as const, payload: { newLevel }, timestamp: now3 });
         }
+        const newStatistics = processStatisticsEvents(prev.statistics, statsEvents3);
         
         return {
           ...prev,

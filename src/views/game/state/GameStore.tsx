@@ -10,8 +10,9 @@
 
 import React, { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react';
 
-import { emit } from '@/core/events';
+import { emit, on } from '@/core/events';
 import { createLogger } from '@/core/logger';
+import { processStatisticsEvent } from '@/core/statistics';
 import {
   cooldown,
   fetchServerTime,
@@ -25,7 +26,13 @@ import {
   createDefaultWeeklyRoundState,
 } from '@/core/types';
 import { createInventoryItem } from '@/core/types';
-import { checkNewlyCompletedTutorialTask, getTaskRewards } from '@/modules/quest';
+import {
+  createDefaultTutorialState,
+  createLegacyCompatibleTutorialState,
+  checkTutorialProgress,
+  getPendingDialog,
+  markDialogViewed,
+} from '@/modules/quest';
 import { worldEvents } from '@/modules/theme';
 import { loadGameStateWithRecovery, safeSaveGameState } from '@/shared/utils/saveUtils';
 
@@ -51,6 +58,43 @@ export interface GameStoreValue {
 }
 
 export const StoreContext = createContext<GameStoreValue | null>(null);
+
+/** 发放引导奖励到主角背包和状态 */
+function applyTutorialReward(state: GameState, reward: { spiritStones?: number; experience?: number; items?: Array<{ item: { id: string; name?: string; description?: string; type?: string; rarity?: string; stackable?: boolean; maxStack?: number; effects?: unknown[] }; quantity: number }>; message?: string }): GameState {
+  if (!state.protagonist) return state;
+  let newInventory = [...state.protagonist.inventory];
+
+  // 发放物品
+  if (reward.items) {
+    for (const r of reward.items) {
+      const idx = newInventory.findIndex(i => (i as any).definition?.id === r.item.id);
+      if (idx >= 0) {
+        newInventory[idx] = { ...newInventory[idx], quantity: newInventory[idx].quantity + r.quantity };
+      } else {
+        newInventory.push(createInventoryItem(r.item as any, r.quantity));
+      }
+    }
+  }
+
+  // 发放灵石
+  if (reward.spiritStones && reward.spiritStones > 0) {
+    const si = newInventory.findIndex(i => (i as any).definition?.id === 'spirit_stone');
+    if (si >= 0) {
+      newInventory[si] = { ...newInventory[si], quantity: newInventory[si].quantity + reward.spiritStones };
+    } else {
+      newInventory.push(createInventoryItem(spiritStoneItems[0], reward.spiritStones));
+    }
+  }
+
+  return {
+    ...state,
+    protagonist: {
+      ...state.protagonist,
+      inventory: newInventory,
+      experience: state.protagonist.experience + (reward.experience || 0),
+    },
+  };
+}
 
 /** 内部消息添加辅助（不 dispatch，仅计算新数组） */
 function addMsgToArr(
@@ -184,58 +228,93 @@ export function GameStoreProvider({ children }: { children: React.ReactNode }) {
     };
   }, [gameState, saveWithLogout]);
 
-  // ===== 新手任务奖励 =====
+  // ===== 补全旧存档的 tutorialState =====
   useEffect(() => {
     if (!isInitialized.current) return;
     if (gameState.phase !== 'playing' || !gameState.protagonist) return;
 
-    const completed = gameState.completedTutorialTaskIds || [];
-    const newTask = checkNewlyCompletedTutorialTask(completed, gameState.protagonist, gameState.statistics);
-
-    if (newTask) {
-      const { taskId, task } = newTask;
-      const rewards = getTaskRewards(taskId);
-      if (rewards) {
-        setTimeout(() => {
-          setGameState(prev => {
-            if (!prev.protagonist) return prev;
-            let newInventory = [...prev.protagonist.inventory];
-            for (const r of rewards.items) {
-              const idx = newInventory.findIndex(i => i.definition.id === r.item.id);
-              if (idx >= 0) {
-                newInventory[idx] = { ...newInventory[idx], quantity: newInventory[idx].quantity + r.quantity };
-              } else {
-                newInventory.push(createInventoryItem(r.item, r.quantity));
-              }
-            }
-            if (rewards.spiritStones > 0) {
-              const si = newInventory.findIndex(i => i.definition.id === 'spirit_stone');
-              if (si >= 0) {
-                newInventory[si] = { ...newInventory[si], quantity: newInventory[si].quantity + rewards.spiritStones };
-              } else {
-                newInventory.push(createInventoryItem(spiritStoneItems[0], rewards.spiritStones));
-              }
-            }
-            const isLastTask = taskId === 'tutorial_claim_achievement';
-            return {
-              ...prev,
-              completedTutorialTaskIds: [...completed, taskId],
-              showTutorialCompletionDialog: isLastTask,
-              protagonist: {
-                ...prev.protagonist,
-                inventory: newInventory,
-                experience: prev.protagonist.experience + rewards.experience,
-              },
-              messages: addMsgToArr(prev.messages, 'success', '新手任务完成', `【${(task as any).title || task.name}】\n${task.reward.message}`, undefined, {
-                items: rewards.items.map(r => ({ id: `inv_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`, definition: r.item, quantity: r.quantity })),
-                experience: rewards.experience,
-              }),
-            };
-          });
-        }, 500);
-      }
+    // 如果 tutorialState 不存在但有旧存档，创建兼容状态
+    if (!gameState.tutorialState) {
+      const legacyState = createLegacyCompatibleTutorialState(gameState.protagonist);
+      setGameState(prev => ({ ...prev, tutorialState: legacyState }));
     }
-  }, [gameState.phase, gameState.protagonist, gameState.statistics]);
+  }, [gameState.phase]);
+
+  // ===== 事件驱动：集中统计更新 + 引导进度 =====
+  useEffect(() => {
+    if (!isInitialized.current) return;
+
+    // 节流：1 秒批量处理
+    let pendingEvents: Array<{ type: string; payload: Record<string, unknown>; timestamp: number }> = [];
+    let flushTimer: ReturnType<typeof setTimeout> | null = null;
+
+    const flushEvents = () => {
+      if (pendingEvents.length === 0) return;
+      const events = pendingEvents;
+      pendingEvents = [];
+
+      setGameState(prev => {
+        if (!prev.protagonist) return prev;
+
+        let next = prev;
+
+        for (const event of events) {
+          // 1. 统计更新
+          next = { ...next, statistics: processStatisticsEvent(next.statistics, event as any) };
+
+          // 2. 引导进度检查
+          const tutorialState = next.tutorialState || createDefaultTutorialState();
+          const result = checkTutorialProgress(event as any, tutorialState, next.protagonist!);
+
+          if (result.newlyCompletedStep) {
+            let updatedState = result.tutorialState;
+
+            // 发放步骤/阶段奖励
+            const reward = result.stepRewardToClaim || result.phaseRewardToClaim;
+            if (reward) {
+              next = applyTutorialReward(next, reward);
+            }
+
+            // 阶段/引导完成消息
+            if (result.phaseRewardToClaim) {
+              next = {
+                ...next,
+                messages: addMsgToArr(next.messages, 'success', `【${result.newlyCompletedPhase?.name || '阶段'}完成】`, reward?.message || ''),
+              };
+            } else if (result.stepRewardToClaim) {
+              next = {
+                ...next,
+                messages: addMsgToArr(next.messages, 'info', `新手引导`, `「${result.newlyCompletedStep.name}」完成！`),
+              };
+            }
+
+            if (result.allCompleted) {
+              next = { ...next, showTutorialCompletionDialog: true, messages: addMsgToArr(next.messages, 'success', '🎉 新手引导全部完成！', '你已掌握修行基础，正式任务系统已解锁！') };
+            }
+
+            next = { ...next, tutorialState: updatedState };
+          }
+        }
+
+        return next;
+      });
+    };
+
+    const unsub = on('*', (event: { type: string; payload: unknown; timestamp: number }) => {
+      pendingEvents.push(event as any);
+      if (!flushTimer) {
+        flushTimer = setTimeout(() => {
+          flushTimer = null;
+          flushEvents();
+        }, 1000); // 1 秒节流
+      }
+    });
+
+    return () => {
+      unsub();
+      if (flushTimer) clearTimeout(flushTimer);
+    };
+  }, []);
 
   const value: GameStoreValue = { gameState, dispatch: setGameState, messagePagination, setMessagePagination };
 

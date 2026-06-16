@@ -362,10 +362,10 @@ export class CombatSession {
       return 'pending_input';
     }
     this.doAutoAction(first, first === this.a ? this.d : this.a);
-    if (this.state === 'finished') return 'finished';
+    if ((this.state as SessionState) === 'finished') return 'finished';
 
     // ── 处理后手 ──
-    if (this.state === 'pending_input') return 'pending_input'; // 先手可能是玩家的第二个单位
+    if ((this.state as SessionState) === 'pending_input') return 'pending_input'; // 先手可能是玩家的第二个单位
     if (second) {
       if (second.isPlayer) {
         this.waitingUnit = second;

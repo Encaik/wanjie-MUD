@@ -10,6 +10,7 @@ import { useCallback } from 'react';
 
 import type { ItemDefinition, FlatStats, GrowthStats } from '@/core/types';
 import { createInventoryItem } from '@/core/types';
+import { processStatisticsEvent } from '@/core/statistics';
 import { calculatePillEffect, getPillRealmLevel } from '@/modules/progression/logic/pillRealmSystem';
 import { applyBaseStatChanges } from '@/modules/progression/logic/realmSystem';
 
@@ -103,7 +104,7 @@ export function useInventory() {
       return {
         ...prev,
         protagonist: { ...prev.protagonist, stats: newStats, inventory: newInventory, activeEffects: newActiveEffects, currentHp: newHp, currentMp: newMp },
-        statistics: { ...prev.statistics, totalItemsUsed: (prev.statistics.totalItemsUsed || 0) + 1 },
+        statistics: processStatisticsEvent(prev.statistics, { type: 'item:used', payload: { templateId: itemId, count: 1 }, timestamp: Date.now() }),
         lastActionResult: { success: true, message: resultMessage },
         messages: addMsgInt(prev.messages, 'success', '使用道具', resultMessage),
       };

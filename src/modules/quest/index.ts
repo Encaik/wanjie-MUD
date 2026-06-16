@@ -56,7 +56,6 @@ export type { RewardResult } from './logic/rewardDistributor';
 export {
   tutorialTaskSystem,
   TUTORIAL_TASKS,
-  checkTutorialProgress,
   isNewbie,
   getTaskRewards,
   getTutorialWelcomeMessage,
@@ -64,7 +63,40 @@ export {
   checkNewlyCompletedTask as checkNewlyCompletedTutorialTask,
 } from './logic/tutorialTasks';
 
+// 旧 checkTutorialProgress 仍可用（兼容旧调用方）
+export { checkTutorialProgress as checkLegacyTutorialProgress } from './logic/tutorialTasks';
+
 export type { TutorialTask } from './logic/tutorialTasks';
+
+// 分阶段新手引导
+export {
+  TUTORIAL_GUIDE,
+  getStepById,
+  getPhaseById,
+  getTotalStepCount,
+  getTotalPhaseCount,
+} from './logic/tutorialGuide';
+export type {
+  TutorialDialog,
+  TutorialStep,
+  TutorialPhase,
+  TutorialGuideDefinition,
+} from './logic/tutorialGuide';
+
+// 事件驱动任务进度追踪
+export {
+  createDefaultTutorialState,
+  createLegacyCompatibleTutorialState,
+  checkTutorialProgress,
+  getPendingDialog,
+  markDialogViewed,
+  getTutorialProgressInfo,
+  shouldSkipPhaseZero,
+} from './logic/taskProgressTracker';
+export type {
+  TutorialState,
+  TutorialProgressResult,
+} from './logic/taskProgressTracker';
 
 // 组件
 export { QuestPanel } from './components/QuestPanel';

@@ -25,7 +25,7 @@ import {
   FactionCommissionConfig,
 } from '@/modules/faction/data/factionProgressData';
 import { getStatisticValue } from '@/modules/collection/logic/achievement/achievementUtils';
-import { statisticsManager } from '@/modules/collection/logic/statistics/statisticsSystem';
+import { processStatisticsEvent } from '@/core/statistics';
 import { 
   GameState, 
   MessageRecord,
@@ -947,7 +947,7 @@ export function useGameFaction({
           // 如果有经验奖励，加到经验值
           experience: prev.protagonist.experience + (achievement.rewards.experience || 0),
         },
-        statistics: statisticsManager.processEvent(prev.statistics, 'achievement_claimed'),
+        statistics: processStatisticsEvent(prev.statistics, { type: 'achievement:claimed', payload: {}, timestamp: Date.now() }),
         unlockedAchievementIds: newUnlockedIds,
         claimedAchievementIds: newClaimedIds,
         messages: addMessageInternal(

@@ -14,6 +14,7 @@
 | [`mod/`](mod/) | Mod 系统 — Mod 加载、验证、清单管理 |
 | [`registry/`](registry/) | 数据注册中心 — WorldDataRegistry、WorldMechanicsRegistry |
 | [`server/`](server/) | 服务端核心代码 — instrumentation、中间件等服务端基础设施 |
+| [`statistics/`](statistics/) | 统计追踪器 — 事件驱动的统计更新纯函数，全部游戏统计的单一更新入口 |
 | [`time/`](time/) | 时间系统 — 游戏时间模拟、离线收益计算 |
 | [`types/`](types/) | 核心游戏类型 — CharacterStats、Quality、World、Protagonist 等基础类型 |
 | [`world/`](world/) | 世界系统 — WorldProviderRegistry、WorldPoolEngine、模板验证 |
