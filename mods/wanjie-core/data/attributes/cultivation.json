@@ -6,9 +6,22 @@
     "baseValue": 8,
     "growthPerLevel": 0.5,
     "calculations": [
-      { "targetCoreStat": "maxHp", "multiplier": 2 },
-      { "targetCoreStat": "physicalATK", "multiplier": 1 },
-      { "targetCoreStat": "physicalDEF", "multiplier": 0.5 }
+      {
+        "targetCoreStat": "maxHp",
+        "multiplier": 2
+      },
+      {
+        "targetCoreStat": "physicalATK",
+        "multiplier": 1
+      },
+      {
+        "targetCoreStat": "physicalDEF",
+        "multiplier": 0.5
+      },
+      {
+        "targetCoreStat": "speed",
+        "multiplier": 0.5
+      }
     ]
   },
   "insight": {
@@ -18,8 +31,14 @@
     "baseValue": 8,
     "growthPerLevel": 0.5,
     "calculations": [
-      { "targetCoreStat": "intelligence", "multiplier": 0.8 },
-      { "targetCoreStat": "speed", "multiplier": 0.2 }
+      {
+        "targetCoreStat": "intelligence",
+        "multiplier": 0.8
+      },
+      {
+        "targetCoreStat": "speed",
+        "multiplier": 0.2
+      }
     ]
   },
   "luck": {
@@ -29,8 +48,14 @@
     "baseValue": 8,
     "growthPerLevel": 0.3,
     "calculations": [
-      { "targetCoreStat": "lifespan", "multiplier": 0.5 },
-      { "targetCoreStat": "perception", "multiplier": 0.3 }
+      {
+        "targetCoreStat": "lifespan",
+        "multiplier": 0.5
+      },
+      {
+        "targetCoreStat": "perception",
+        "multiplier": 0.3
+      }
     ]
   },
   "willpower": {
@@ -40,8 +65,14 @@
     "baseValue": 8,
     "growthPerLevel": 0.5,
     "calculations": [
-      { "targetCoreStat": "specialDEF", "multiplier": 0.8 },
-      { "targetCoreStat": "willpower", "multiplier": 1 }
+      {
+        "targetCoreStat": "specialDEF",
+        "multiplier": 0.8
+      },
+      {
+        "targetCoreStat": "willpower",
+        "multiplier": 1
+      }
     ]
   },
   "spiritRoot": {
@@ -49,11 +80,40 @@
     "displayName": "灵根属性",
     "category": "primary_spiritual",
     "enumValues": [
-      { "value": "金灵根", "bonuses": { "specialATK": 8 } },
-      { "value": "木灵根", "bonuses": { "maxHp": 10, "lifespan": 5 } },
-      { "value": "水灵根", "bonuses": { "specialDEF": 6, "specialResourceCap": 20 } },
-      { "value": "火灵根", "bonuses": { "specialATK": 5, "speed": 2 } },
-      { "value": "土灵根", "bonuses": { "physicalDEF": 5, "maxHp": 5 } }
+      {
+        "value": "金灵根",
+        "bonuses": {
+          "specialATK": 8
+        }
+      },
+      {
+        "value": "木灵根",
+        "bonuses": {
+          "maxHp": 10,
+          "lifespan": 5
+        }
+      },
+      {
+        "value": "水灵根",
+        "bonuses": {
+          "specialDEF": 6,
+          "specialResourceCap": 20
+        }
+      },
+      {
+        "value": "火灵根",
+        "bonuses": {
+          "specialATK": 5,
+          "speed": 2
+        }
+      },
+      {
+        "value": "土灵根",
+        "bonuses": {
+          "physicalDEF": 5,
+          "maxHp": 5
+        }
+      }
     ]
   },
   "spiritPower": {
@@ -63,8 +123,14 @@
     "baseValue": 8,
     "growthPerLevel": 0.5,
     "calculations": [
-      { "targetCoreStat": "specialATK", "multiplier": 1.5 },
-      { "targetCoreStat": "specialResourceCap", "multiplier": 3 }
+      {
+        "targetCoreStat": "specialATK",
+        "multiplier": 1.5
+      },
+      {
+        "targetCoreStat": "specialResourceCap",
+        "multiplier": 3
+      }
     ]
   }
 }

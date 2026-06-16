@@ -100,8 +100,8 @@ export function generateWorldDetails(
   const dangerRng = createRng(seed + ':danger');
   const opportunityRng = createRng(seed + ':opportunity');
 
-  // 势力生成（从门派模板中选取 2-5 个）
-  const factionCount = Math.floor(factionRng() * 4) + 2;
+  // 势力生成（从门派模板中选取 3-6 个）
+  const factionCount = Math.floor(factionRng() * 4) + 3;
   const selectedFactions = pickItems(worldview.factions, factionCount, factionRng);
   const factions: WorldFaction[] = selectedFactions.map(f => ({
     id: f.id,
@@ -109,7 +109,7 @@ export function generateWorldDetails(
     type: f.type,
     description: f.description,
   }));
-  const majorForces = factions.map(f => f.name).join('、') || '未知势力';
+  const majorForces = ''; // V3: 不再使用，由 factions[] 替代
 
   // 危险（从世界观池中选取 2-4 个）
   const dangerCount = Math.floor(dangerRng() * 3) + 2;
@@ -171,14 +171,24 @@ export function generateWorldBasicFields(
   const description = pickItem(worldview.descriptions, rng);
   const powerSystem = pickItem(worldview.powerSystems, rng);
 
+  // 随机截取最高修炼阶段（最少保留5个境界，最多全部）
+  const allTiers = worldview.realmSystem.tiers;
+  const minTiers = 5;
+  const maxTierIndex = Math.min(allTiers.length - 1, minTiers + Math.floor(rng() * (allTiers.length - minTiers + 1)));
+  const tiers = allTiers.slice(0, maxTierIndex + 1).map(t => ({
+    name: t.name,
+    subRealms: [...t.subRealms],
+    levelRange: [...t.levelRange] as [number, number],
+  }));
+  // 调整最后一阶的等级上限为 100
+  if (tiers.length > 0) {
+    tiers[tiers.length - 1].levelRange[1] = 100;
+  }
+
   const realmSystem = {
     mainRealmName: worldview.realmSystem.mainRealmName,
     subRealmName: worldview.realmSystem.subRealmName,
-    tiers: worldview.realmSystem.tiers.map(t => ({
-      name: t.name,
-      subRealms: [...t.subRealms],
-      levelRange: [...t.levelRange] as [number, number],
-    })),
+    tiers,
     subRealmMultiplier: worldview.realmSystem.subRealmMultiplier,
     tierJumpMultiplier: worldview.realmSystem.tierJumpMultiplier,
   };

@@ -1,177 +1,193 @@
 [
   {
-    "id": "main_intro_temple",
-    "name": "初入宗门",
-    "description": "通过入门试炼，正式成为青云宗外门弟子。",
-    "type": "main",
-    "worldviewRestrictions": ["cultivation", "xianxia"],
-    "prerequisites": [],
+    "id": "main_intro_temple", "name": "初入宗门", "description": "通过入门试炼，正式成为青云宗外门弟子。", "type": "main",
+    "worldviewRestrictions": ["cultivation", "xianxia"], "prerequisites": [], "repeatable": false,
     "stages": [
-      {
-        "id": "visit_temple",
-        "name": "拜访宗门",
-        "description": "前往青云宗山门，拜见接引长老。",
-        "objectives": [
-          { "type": "talk_to_npc", "target": "senior_brother_li", "count": 1, "description": "与李师兄对话" }
-        ],
-        "completions": {
-          "done": { "description": "见到李师兄", "nextStageId": "pass_trial" }
-        },
-        "npcDialogueOnEnter": { "npcId": "senior_brother_li", "lineId": "greeting" }
-      },
-      {
-        "id": "pass_trial",
-        "name": "入门试炼",
-        "description": "完成李师兄安排的入门试炼。",
-        "objectives": [
-          { "type": "kill_enemy", "target": "wolf", "count": 3, "description": "击败 3 只山狼" },
-          { "type": "collect_item", "target": "spirit_herb", "count": 2, "description": "采集 2 株灵草" }
-        ],
-        "completions": {
-          "done": { "description": "完成试炼", "nextStageId": "report_back" }
-        }
-      },
-      {
-        "id": "report_back",
-        "name": "回报",
-        "description": "回到宗门向李师兄汇报试炼结果。",
-        "objectives": [
-          { "type": "talk_to_npc", "target": "senior_brother_li", "count": 1, "description": "向李师兄汇报" }
-        ],
-        "completions": {
-          "done": { "description": "正式入门", "stageRewards": [{ "experience": 200, "spiritStones": 50 }] }
-        },
-        "npcDialogueOnEnter": { "npcId": "senior_brother_li", "lineId": "teach_cultivation" }
-      }
+      { "id": "visit_temple", "name": "拜访宗门", "description": "前往青云宗山门，拜见接引长老。", "objectives": [{ "type": "talk_to_npc", "target": "senior_brother_li", "count": 1, "description": "与李师兄对话" }], "completions": { "done": { "description": "见到李师兄", "nextStageId": "pass_trial" } }, "npcDialogueOnEnter": { "npcId": "senior_brother_li", "lineId": "greeting" } },
+      { "id": "pass_trial", "name": "入门试炼", "description": "完成李师兄安排的入门试炼。", "objectives": [{ "type": "kill_enemy", "target": "wolf", "count": 3, "description": "击败 3 只山狼" }, { "type": "collect_item", "target": "spirit_herb", "count": 2, "description": "采集 2 株灵草" }], "completions": { "done": { "description": "完成试炼", "nextStageId": "report_back" } } },
+      { "id": "report_back", "name": "回报", "description": "回到宗门向李师兄汇报试炼结果。", "objectives": [{ "type": "talk_to_npc", "target": "senior_brother_li", "count": 1, "description": "向李师兄汇报" }], "completions": { "done": { "description": "正式入门", "stageRewards": [{ "experience": 200, "spiritStones": 50 }] } }, "npcDialogueOnEnter": { "npcId": "senior_brother_li", "lineId": "teach_cultivation" } }
     ],
-    "rewards": [
-      { "experience": 500, "spiritStones": 100 },
-      { "items": [{ "itemId": "basic_sword", "quantity": 1 }] },
-      { "attitudeChanges": [{ "npcId": "senior_brother_li", "change": 30 }] }
-    ],
-    "repeatable": false
+    "rewards": [{ "experience": 500, "spiritStones": 100 }, { "items": [{ "itemId": "basic_sword", "quantity": 1 }] }, { "attitudeChanges": [{ "npcId": "senior_brother_li", "change": 30 }] }]
   },
   {
-    "id": "side_collect_herbs",
-    "name": "收集灵药",
-    "description": "王掌柜急需一批灵草入药，答应给帮忙的人丰厚报酬。",
-    "type": "side",
-    "worldviewRestrictions": ["cultivation"],
-    "prerequisites": [
-      { "type": "level", "target": "3" }
-    ],
+    "id": "side_collect_herbs", "name": "收集灵药", "description": "王掌柜急需一批灵草入药，答应给帮忙的人丰厚报酬。", "type": "side",
+    "worldviewRestrictions": ["cultivation"], "prerequisites": [{ "type": "level", "target": "3" }], "repeatable": false,
     "stages": [
-      {
-        "id": "accept_quest",
-        "name": "接取委托",
-        "description": "与王掌柜对话接取委托。",
-        "objectives": [
-          { "type": "talk_to_npc", "target": "merchant_wang", "count": 1, "description": "与王掌柜对话" }
-        ],
-        "completions": {
-          "done": { "description": "接受委托", "nextStageId": "gather_herbs" }
-        }
-      },
-      {
-        "id": "gather_herbs",
-        "name": "采集灵草",
-        "description": "前往青云山脉采集灵草。",
-        "objectives": [
-          { "type": "collect_item", "target": "spirit_herb", "count": 5, "description": "采集 5 株灵草" },
-          { "type": "explore_location", "target": "qingyun_mountain", "count": 1, "description": "前往青云山脉" }
-        ],
-        "completions": {
-          "done": { "description": "采集完成", "nextStageId": "deliver" }
-        }
-      },
-      {
-        "id": "deliver",
-        "name": "交付灵草",
-        "description": "将采集的灵草交给王掌柜。",
-        "objectives": [
-          { "type": "talk_to_npc", "target": "merchant_wang", "count": 1, "description": "将灵草交给王掌柜" }
-        ],
-        "completions": {
-          "done": { "description": "领取报酬", "stageRewards": [{ "spiritStones": 80 }] }
-        },
-        "npcDialogueOnEnter": { "npcId": "merchant_wang", "lineId": "greeting" }
-      }
+      { "id": "accept_quest", "name": "接取委托", "description": "与王掌柜对话接取委托。", "objectives": [{ "type": "talk_to_npc", "target": "merchant_wang", "count": 1, "description": "与王掌柜对话" }], "completions": { "done": { "description": "接受委托", "nextStageId": "gather_herbs" } } },
+      { "id": "gather_herbs", "name": "采集灵草", "description": "前往青云山脉采集灵草。", "objectives": [{ "type": "collect_item", "target": "spirit_herb", "count": 5, "description": "采集 5 株灵草" }, { "type": "explore_location", "target": "qingyun_mountain", "count": 1, "description": "前往青云山脉" }], "completions": { "done": { "description": "采集完成", "nextStageId": "deliver" } } },
+      { "id": "deliver", "name": "交付灵草", "description": "将采集的灵草交给王掌柜。", "objectives": [{ "type": "talk_to_npc", "target": "merchant_wang", "count": 1, "description": "将灵草交给王掌柜" }], "completions": { "done": { "description": "领取报酬", "stageRewards": [{ "spiritStones": 80 }] } }, "npcDialogueOnEnter": { "npcId": "merchant_wang", "lineId": "greeting" } }
     ],
-    "rewards": [
-      { "experience": 300, "spiritStones": 150 },
-      { "attitudeChanges": [{ "npcId": "merchant_wang", "change": 20 }] },
-      { "unlockQuests": ["side_rare_herb_hunt"] }
-    ],
-    "repeatable": false
+    "rewards": [{ "experience": 300, "spiritStones": 150 }, { "attitudeChanges": [{ "npcId": "merchant_wang", "change": 20 }] }, { "unlockQuests": ["side_rare_herb_hunt"] }]
   },
   {
-    "id": "hidden_secret_cave",
-    "name": "散修的秘密",
-    "description": "据说黑风散修在山中藏了一个秘密洞府，里面可能有宝物。",
-    "type": "hidden",
-    "worldviewRestrictions": ["cultivation"],
-    "prerequisites": [
-      { "type": "level", "target": "5" },
-      { "type": "attitude", "target": "rogue_cultivator_hei", "minValue": -10 }
-    ],
+    "id": "side_rare_herb_hunt", "name": "珍稀灵药", "description": "王掌柜需要一株千年灵芝入药，据说在青云山脉深处。", "type": "side",
+    "worldviewRestrictions": ["cultivation"], "prerequisites": [{ "type": "quest_completed", "target": "side_collect_herbs" }, { "type": "level", "target": "8" }], "repeatable": false,
     "stages": [
-      {
-        "id": "discover",
-        "name": "探听消息",
-        "description": "从黑风散修口中套出洞府位置。",
-        "objectives": [
-          { "type": "dialogue_check", "target": "rogue_cave_persuasion", "count": 1, "description": "通过对话检定获取洞府信息" }
-        ],
-        "completions": {
-          "persuade": { "description": "说服成功，获得洞府位置", "nextStageId": "explore_cave" },
-          "intimidate": { "description": "威逼成功，但散修可能会报复", "nextStageId": "explore_cave", "stageRewards": [{ "attitudeChanges": [{ "npcId": "rogue_cultivator_hei", "change": -30 }] }] }
-        }
-      },
-      {
-        "id": "explore_cave",
-        "name": "探索洞府",
-        "description": "进入秘密洞府，寻找宝物。",
-        "objectives": [
-          { "type": "explore_location", "target": "secret_cave", "count": 1, "description": "探索秘密洞府" },
-          { "type": "kill_enemy", "target": "cave_guardian", "count": 1, "description": "击败洞府守卫", "hidden": true }
-        ],
-        "completions": {
-          "done": { "description": "获得洞府宝物" }
-        }
-      }
+      { "id": "accept", "name": "接受委托", "description": "与王掌柜对话了解详情。", "objectives": [{ "type": "talk_to_npc", "target": "merchant_wang", "count": 1, "description": "与王掌柜对话" }], "completions": { "done": { "description": "了解详情", "nextStageId": "hunt_herb" } } },
+      { "id": "hunt_herb", "name": "寻找灵芝", "description": "深入青云山脉，击败守护妖兽取灵芝。", "objectives": [{ "type": "explore_location", "target": "qingyun_deep_mountain", "count": 1, "description": "深入青云山脉" }, { "type": "kill_enemy", "target": "demon_beast_serpent", "count": 1, "description": "击败守护妖兽" }, { "type": "collect_item", "target": "thousand_year_lingzhi", "count": 1, "description": "采集千年灵芝" }], "completions": { "done": { "description": "获得灵芝", "nextStageId": "deliver" } } },
+      { "id": "deliver", "name": "交付灵芝", "description": "带回灵芝给王掌柜。", "objectives": [{ "type": "talk_to_npc", "target": "merchant_wang", "count": 1, "description": "找王掌柜交付" }], "completions": { "done": { "description": "领取丰厚报酬", "stageRewards": [{ "spiritStones": 500, "experience": 1000 }] } } }
     ],
-    "rewards": [
-      { "experience": 1000, "spiritStones": 300 },
-      { "items": [{ "itemId": "rare_treasure", "quantity": 1 }] }
-    ],
-    "repeatable": false
+    "rewards": [{ "experience": 2000, "spiritStones": 800 }, { "items": [{ "itemId": "breakthrough_pill", "quantity": 1 }] }, { "attitudeChanges": [{ "npcId": "merchant_wang", "change": 40 }] }]
   },
   {
-    "id": "daily_clear_wolves",
-    "name": "清剿山狼",
-    "description": "宗门发布日常任务：清剿山脚下的狼群，维护周边安全。",
-    "type": "daily",
-    "worldviewRestrictions": ["cultivation"],
-    "prerequisites": [
-      { "type": "quest_completed", "target": "main_intro_temple" }
-    ],
+    "id": "hidden_secret_cave", "name": "散修的秘密", "description": "黑风散修在山中藏了一个秘密洞府，里面可能有宝物。", "type": "hidden",
+    "worldviewRestrictions": ["cultivation"], "prerequisites": [{ "type": "level", "target": "5" }, { "type": "attitude", "target": "rogue_cultivator_hei", "minValue": -10 }], "repeatable": false,
     "stages": [
-      {
-        "id": "kill_wolves",
-        "name": "清剿狼群",
-        "description": "击败山脚下的山狼。",
-        "objectives": [
-          { "type": "kill_enemy", "target": "wolf", "count": 8, "description": "击败 8 只山狼" }
-        ],
-        "completions": {
-          "done": { "description": "回宗门领赏" }
-        }
-      }
+      { "id": "discover", "name": "探听消息", "description": "从黑风散修口中套出洞府位置。", "objectives": [{ "type": "dialogue_check", "target": "rogue_cave_persuasion", "count": 1, "description": "通过对话检定获取洞府信息" }], "completions": { "persuade": { "description": "说服成功", "nextStageId": "explore_cave" }, "intimidate": { "description": "威逼成功", "nextStageId": "explore_cave", "stageRewards": [{ "attitudeChanges": [{ "npcId": "rogue_cultivator_hei", "change": -30 }] }] } } },
+      { "id": "explore_cave", "name": "探索洞府", "description": "进入秘密洞府寻找宝物。", "objectives": [{ "type": "explore_location", "target": "secret_cave", "count": 1, "description": "探索秘密洞府" }, { "type": "kill_enemy", "target": "cave_guardian", "count": 1, "description": "击败洞府守卫", "hidden": true }], "completions": { "done": { "description": "获得洞府宝物" } } }
     ],
-    "rewards": [
-      { "experience": 150, "spiritStones": 40 }
+    "rewards": [{ "experience": 1000, "spiritStones": 300 }, { "items": [{ "itemId": "rare_treasure", "quantity": 1 }] }]
+  },
+  {
+    "id": "daily_clear_wolves", "name": "清剿山狼", "description": "宗门发布日常任务：清剿山脚下的狼群。", "type": "daily",
+    "worldviewRestrictions": ["cultivation"], "prerequisites": [{ "type": "quest_completed", "target": "main_intro_temple" }], "repeatable": true, "cooldownSeconds": 86400,
+    "stages": [{ "id": "kill_wolves", "name": "清剿狼群", "description": "击败山脚下的山狼。", "objectives": [{ "type": "kill_enemy", "target": "wolf", "count": 8, "description": "击败 8 只山狼" }], "completions": { "done": { "description": "回宗门领赏" } } }],
+    "rewards": [{ "experience": 150, "spiritStones": 40 }]
+  },
+  {
+    "id": "visit_elder_quest", "name": "拜见掌门", "description": "李师兄说掌门青云真人偶尔会指点弟子，去碰碰运气吧。", "type": "side",
+    "worldviewRestrictions": ["cultivation"], "prerequisites": [{ "type": "level", "target": "10" }, { "type": "quest_completed", "target": "main_intro_temple" }], "repeatable": false,
+    "stages": [
+      { "id": "visit", "name": "拜见真人", "description": "前往青云宗大殿拜见青云真人。", "objectives": [{ "type": "talk_to_npc", "target": "elder_qingyun", "count": 1, "description": "拜见青云真人" }], "completions": { "done": { "description": "聆听真人教诲", "nextStageId": "learn" } } },
+      { "id": "learn", "name": "聆听真言", "description": "通过真人的考验获得指点。", "objectives": [{ "type": "dialogue_check", "target": "elder_dao_check", "count": 1, "description": "通过道心考验" }], "completions": { "done": { "description": "获得真人指点" } } }
     ],
-    "repeatable": true,
-    "cooldownSeconds": 86400
+    "rewards": [{ "experience": 5000, "spiritStones": 500 }, { "attitudeChanges": [{ "npcId": "elder_qingyun", "change": 20 }] }, { "unlockQuests": ["hidden_ascension_path"] }]
+  },
+  {
+    "id": "alchemy_materials_quest", "name": "炼丹材料", "description": "苏丹师需要凤凰羽和龙涎草来炼制破境丹。", "type": "side",
+    "worldviewRestrictions": ["cultivation"], "prerequisites": [{ "type": "level", "target": "15" }], "repeatable": false,
+    "stages": [
+      { "id": "accept", "name": "接受委托", "description": "苏丹师请你帮忙寻找珍稀炼丹材料。", "objectives": [{ "type": "talk_to_npc", "target": "alchemist_su", "count": 1, "description": "与苏丹师对话" }], "completions": { "done": { "description": "接受委托", "nextStageId": "gather_materials" } } },
+      { "id": "gather_materials", "name": "收集材料", "description": "凤凰羽在火山秘境，龙涎草在毒沼深处。", "objectives": [{ "type": "collect_item", "target": "phoenix_feather", "count": 1, "description": "获取凤凰羽" }, { "type": "collect_item", "target": "dragon_saliva_herb", "count": 1, "description": "获取龙涎草" }], "completions": { "done": { "description": "材料收集完毕", "nextStageId": "deliver" } } },
+      { "id": "deliver", "name": "交付材料", "description": "把材料交给苏丹师。", "objectives": [{ "type": "talk_to_npc", "target": "alchemist_su", "count": 1, "description": "交给苏丹师" }], "completions": { "done": { "description": "获得破境丹", "stageRewards": [{ "items": [{ "itemId": "breakthrough_pill_superior", "quantity": 1 }] }] } } }
+    ],
+    "rewards": [{ "experience": 3000, "spiritStones": 1000 }, { "attitudeChanges": [{ "npcId": "alchemist_su", "change": 50 }] }]
+  },
+  {
+    "id": "sword_immortal_trial", "name": "剑道试炼", "description": "剑玄仙子的剑道试炼，通过者可获剑道传承。", "type": "hidden",
+    "worldviewRestrictions": ["cultivation"], "prerequisites": [{ "type": "level", "target": "20" }, { "type": "attitude", "target": "sword_immortal_xuan", "minValue": 50 }], "repeatable": false,
+    "stages": [
+      { "id": "challenge", "name": "挑战仙子", "description": "向剑玄仙子发起剑道挑战。", "objectives": [{ "type": "talk_to_npc", "target": "sword_immortal_xuan", "count": 1, "description": "发起挑战" }], "completions": { "done": { "description": "仙子接受挑战", "nextStageId": "duel" } } },
+      { "id": "duel", "name": "剑道对决", "description": "与剑玄仙子进行剑道对决。", "objectives": [{ "type": "kill_enemy", "target": "sword_immortal_phantom", "count": 1, "description": "击败仙子的剑气分身" }], "completions": { "done": { "description": "获得剑道传承", "stageRewards": [{ "experience": 8000 }] } } }
+    ],
+    "rewards": [{ "experience": 10000, "spiritStones": 2000 }, { "items": [{ "itemId": "legendary_sword_manual", "quantity": 1 }] }, { "attitudeChanges": [{ "npcId": "sword_immortal_xuan", "change": 60 }] }]
+  },
+  {
+    "id": "daily_meditation", "name": "每日打坐", "description": "在宗门灵脉处打坐修炼。", "type": "daily",
+    "worldviewRestrictions": ["cultivation"], "prerequisites": [{ "type": "quest_completed", "target": "main_intro_temple" }], "repeatable": true, "cooldownSeconds": 86400,
+    "stages": [{ "id": "meditate", "name": "打坐修炼", "description": "静心打坐一个时辰。", "objectives": [{ "type": "use_stamina", "count": 20, "description": "消耗 20 体力打坐" }], "completions": { "done": { "description": "修炼完毕" } } }],
+    "rewards": [{ "experience": 300, "spiritStones": 20 }]
+  },
+  {
+    "id": "hidden_ascension_path", "name": "飞升之路", "description": "青云真人透露：化神之上，尚有炼虚、合体、大乘、渡劫四境。要渡劫飞升，需集齐五件圣物。", "type": "hidden",
+    "worldviewRestrictions": ["cultivation"], "prerequisites": [{ "type": "quest_completed", "target": "visit_elder_quest" }, { "type": "level", "target": "30" }], "repeatable": false,
+    "stages": [
+      { "id": "learn_path", "name": "了解飞升", "description": "青云真人告诉你飞升需要五件圣物。", "objectives": [{ "type": "talk_to_npc", "target": "elder_qingyun", "count": 1, "description": "向真人请教飞升" }], "completions": { "done": { "description": "了解飞升之秘", "nextStageId": "collect_relics" } } },
+      { "id": "collect_relics", "name": "收集圣物", "description": "收集天地五圣物：太阳金晶、太阴玉髓、青龙鳞、白虎牙、玄武甲。", "objectives": [{ "type": "collect_item", "target": "solar_gold_crystal", "count": 1, "description": "太阳金晶" }, { "type": "collect_item", "target": "lunar_jade_marrow", "count": 1, "description": "太阴玉髓" }, { "type": "collect_item", "target": "azure_dragon_scale", "count": 1, "description": "青龙鳞" }, { "type": "collect_item", "target": "white_tiger_fang", "count": 1, "description": "白虎牙" }, { "type": "collect_item", "target": "black_tortoise_shell", "count": 1, "description": "玄武甲" }], "completions": { "done": { "description": "集齐五圣物", "nextStageId": "return" } } },
+      { "id": "return", "name": "回报真人", "description": "将五圣物带回给青云真人。", "objectives": [{ "type": "talk_to_npc", "target": "elder_qingyun", "count": 1, "description": "回报青云真人" }], "completions": { "done": { "description": "获得飞升祝福" } } }
+    ],
+    "rewards": [{ "experience": 50000, "spiritStones": 5000 }, { "items": [{ "itemId": "ascension_amulet", "quantity": 1 }] }, { "attitudeChanges": [{ "npcId": "elder_qingyun", "change": 40 }] }]
+  },
+  {
+    "id": "sword_guild_trial", "name": "万剑试炼", "description": "进入万剑阁的剑冢，接受万剑试炼。通过者可获得剑阁认可。", "type": "side",
+    "worldviewRestrictions": ["cultivation"], "prerequisites": [{ "type": "level", "target": "12" }], "repeatable": false,
+    "stages": [
+      { "id": "enter", "name": "进入剑冢", "description": "找到万剑阁的叶剑尊请求进入剑冢试炼。", "objectives": [{ "type": "talk_to_npc", "target": "sword_master_ye", "count": 1, "description": "请求叶剑尊" }], "completions": { "done": { "description": "获准入冢", "nextStageId": "trial" } } },
+      { "id": "trial", "name": "万剑试炼", "description": "在剑冢中面对万剑幻影的考验。", "objectives": [{ "type": "kill_enemy", "target": "sword_phantom", "count": 10, "description": "击破10道剑影" }, { "type": "survive_rounds", "target": "5", "description": "坚持5回合不败" }], "completions": { "done": { "description": "通过试炼", "nextStageId": "report" } } },
+      { "id": "report", "name": "回报剑尊", "description": "向叶剑尊汇报试炼结果。", "objectives": [{ "type": "talk_to_npc", "target": "sword_master_ye", "count": 1, "description": "回报叶剑尊" }], "completions": { "done": { "description": "获得万剑阁认可" } } }
+    ],
+    "rewards": [{ "experience": 3000, "spiritStones": 800 }, { "items": [{ "itemId": "sword_manual_rare", "quantity": 1 }] }, { "attitudeChanges": [{ "npcId": "sword_master_ye", "change": 30 }] }]
+  },
+  {
+    "id": "sword_master_duel", "name": "剑尊对决", "description": "叶剑尊答应与你全力一战。接住他一剑，便能获得万剑阁的不传剑典。", "type": "hidden",
+    "worldviewRestrictions": ["cultivation"], "prerequisites": [{ "type": "quest_completed", "target": "sword_guild_trial" }, { "type": "level", "target": "20" }, { "type": "attitude", "target": "sword_master_ye", "minValue": 50 }], "repeatable": false,
+    "stages": [
+      { "id": "challenge", "name": "挑战剑尊", "description": "叶剑尊答应全力以赴。", "objectives": [{ "type": "talk_to_npc", "target": "sword_master_ye", "count": 1, "description": "发起挑战" }], "completions": { "done": { "description": "剑尊出剑", "nextStageId": "duel" } } },
+      { "id": "duel", "name": "接剑", "description": "接下叶剑尊的全力一剑。", "objectives": [{ "type": "kill_enemy", "target": "sword_master_phantom", "count": 1, "description": "接下剑尊的剑气分身" }], "completions": { "done": { "description": "获得剑典" } } }
+    ],
+    "rewards": [{ "experience": 10000, "spiritStones": 3000 }, { "items": [{ "itemId": "legendary_sword_manual", "quantity": 1 }] }, { "attitudeChanges": [{ "npcId": "sword_master_ye", "change": 50 }] }]
+  },
+  {
+    "id": "demon_cult_initiation", "name": "魔道入门", "description": "天魔教对外来者开放入教试炼。打赢魔云长老，即可获得天魔教外门弟子资格。", "type": "side",
+    "worldviewRestrictions": ["cultivation"], "prerequisites": [{ "type": "level", "target": "10" }], "repeatable": false,
+    "stages": [
+      { "id": "meet", "name": "拜见魔云长老", "description": "前往天魔教据点拜见魔云长老。", "objectives": [{ "type": "talk_to_npc", "target": "demon_elder_mo", "count": 1, "description": "拜见魔云长老" }], "completions": { "done": { "description": "接受试炼", "nextStageId": "trial" } } },
+      { "id": "trial", "name": "力量试炼", "description": "击败魔云长老以证明实力。", "objectives": [{ "type": "kill_enemy", "target": "demon_elder_mo", "count": 1, "description": "击败魔云长老" }], "completions": { "done": { "description": "通过试炼", "nextStageId": "reward" } } },
+      { "id": "reward", "name": "成为外门弟子", "description": "魔云长老认可了你的实力。", "objectives": [{ "type": "talk_to_npc", "target": "demon_elder_mo", "count": 1, "description": "接受弟子身份" }], "completions": { "done": { "description": "获得魔道功法" } } }
+    ],
+    "rewards": [{ "experience": 4000, "spiritStones": 1000 }, { "items": [{ "itemId": "demon_technique_scroll", "quantity": 1 }] }, { "attitudeChanges": [{ "npcId": "demon_elder_mo", "change": 40 }] }, { "unlockQuests": ["demon_cult_artifact_hunt"] }]
+  },
+  {
+    "id": "demon_cult_artifact_hunt", "name": "魔器追猎", "description": "天魔教悬赏寻找失落的魔器'噬魂幡'。线索指向一座上古战场遗迹。", "type": "hidden",
+    "worldviewRestrictions": ["cultivation"], "prerequisites": [{ "type": "quest_completed", "target": "demon_cult_initiation" }, { "type": "level", "target": "18" }], "repeatable": false,
+    "stages": [
+      { "id": "accept", "name": "接受悬赏", "description": "从天机阁九爷处获取魔器情报。", "objectives": [{ "type": "talk_to_npc", "target": "intelligence_dealer_jiu", "count": 1, "description": "购买魔器情报" }], "completions": { "done": { "description": "获得线索", "nextStageId": "hunt" } } },
+      { "id": "hunt", "name": "探索古战场", "description": "前往上古战场遗迹寻找噬魂幡。", "objectives": [{ "type": "explore_location", "target": "ancient_battlefield", "count": 1, "description": "探索古战场" }, { "type": "kill_enemy", "target": "ancient_wraith", "count": 5, "description": "击败5只上古怨灵" }, { "type": "collect_item", "target": "soul_devouring_banner", "count": 1, "description": "找到噬魂幡" }], "completions": { "done": { "description": "获得噬魂幡", "nextStageId": "deliver" } } },
+      { "id": "deliver", "name": "交付魔器", "description": "将噬魂幡交给魔云长老领取报酬。", "objectives": [{ "type": "talk_to_npc", "target": "demon_elder_mo", "count": 1, "description": "交付噬魂幡" }], "completions": { "done": { "description": "领取丰厚报酬" } } }
+    ],
+    "rewards": [{ "experience": 15000, "spiritStones": 5000 }, { "items": [{ "itemId": "demon_elder_token", "quantity": 1 }] }, { "attitudeChanges": [{ "npcId": "demon_elder_mo", "change": 50 }, { "npcId": "intelligence_dealer_jiu", "change": 15 }] }]
+  },
+  {
+    "id": "buddhist_temple_pilgrimage", "name": "佛门朝圣", "description": "前往佛门禅宗古刹，聆听空见禅师说法。", "type": "side",
+    "worldviewRestrictions": ["cultivation"], "prerequisites": [{ "type": "level", "target": "8" }], "repeatable": false,
+    "stages": [
+      { "id": "visit", "name": "拜访古刹", "description": "前往深山古刹拜访空见禅师。", "objectives": [{ "type": "talk_to_npc", "target": "monk_kongjian", "count": 1, "description": "拜访空见禅师" }], "completions": { "done": { "description": "聆听佛法", "nextStageId": "trial" } } },
+      { "id": "trial", "name": "心魔试炼", "description": "禅师为你开启心魔试炼。", "objectives": [{ "type": "dialogue_check", "target": "inner_demon_trial", "count": 1, "description": "战胜心魔" }], "completions": { "done": { "description": "心魔退散", "nextStageId": "reward" } } },
+      { "id": "reward", "name": "佛前受赠", "description": "禅师对你刮目相看。", "objectives": [{ "type": "talk_to_npc", "target": "monk_kongjian", "count": 1, "description": "接受禅师赠礼" }], "completions": { "done": { "description": "获得佛门舍利" } } }
+    ],
+    "rewards": [{ "experience": 2500, "spiritStones": 500 }, { "items": [{ "itemId": "buddhist_relic", "quantity": 1 }] }, { "attitudeChanges": [{ "npcId": "monk_kongjian", "change": 30 }] }]
+  },
+  {
+    "id": "array_family_commission", "name": "阵法委托", "description": "赵阵师接了一个大单——为一座新城布置护城大阵，需要帮手。", "type": "side",
+    "worldviewRestrictions": ["cultivation"], "prerequisites": [{ "type": "level", "target": "12" }], "repeatable": false,
+    "stages": [
+      { "id": "accept", "name": "接受委托", "description": "与赵阵师对话接受护城大阵的委托。", "objectives": [{ "type": "talk_to_npc", "target": "array_master_zhao", "count": 1, "description": "接受委托" }], "completions": { "done": { "description": "接受委托", "nextStageId": "layout" } } },
+      { "id": "layout", "name": "布置阵基", "description": "在城池四方布置阵基。", "objectives": [{ "type": "explore_location", "target": "new_city_east", "count": 1, "description": "布置东阵基" }, { "type": "explore_location", "target": "new_city_west", "count": 1, "description": "布置西阵基" }, { "type": "explore_location", "target": "new_city_south", "count": 1, "description": "布置南阵基" }, { "type": "explore_location", "target": "new_city_north", "count": 1, "description": "布置北阵基" }], "completions": { "done": { "description": "阵基完成", "nextStageId": "activate" } } },
+      { "id": "activate", "name": "激活大阵", "description": "与赵阵师一起激活护城大阵。", "objectives": [{ "type": "talk_to_npc", "target": "array_master_zhao", "count": 1, "description": "激活大阵" }, { "type": "kill_enemy", "target": "array_guardian", "count": 1, "description": "击败阵法守护灵", "hidden": true }], "completions": { "done": { "description": "大阵运转成功" } } }
+    ],
+    "rewards": [{ "experience": 5000, "spiritStones": 2000 }, { "items": [{ "itemId": "array_plate_gathering", "quantity": 1 }] }, { "attitudeChanges": [{ "npcId": "array_master_zhao", "change": 40 }] }, { "unlockQuests": ["ancient_array_exploration"] }]
+  },
+  {
+    "id": "ancient_array_exploration", "name": "上古阵基", "description": "赵阵师发现了上古阵基的线索，邀请你一同探索传说中的上古阵法遗迹。", "type": "hidden",
+    "worldviewRestrictions": ["cultivation"], "prerequisites": [{ "type": "quest_completed", "target": "array_family_commission" }, { "type": "level", "target": "22" }], "repeatable": false,
+    "stages": [
+      { "id": "investigate", "name": "调查遗迹", "description": "前往上古阵法遗迹探索。", "objectives": [{ "type": "explore_location", "target": "ancient_array_ruins", "count": 1, "description": "探索遗迹" }, { "type": "kill_enemy", "target": "ancient_array_guardian", "count": 1, "description": "击败守护机关" }], "completions": { "done": { "description": "发现上古阵基", "nextStageId": "return" } } },
+      { "id": "return", "name": "回报赵阵师", "description": "将上古阵基带回给赵阵师。", "objectives": [{ "type": "talk_to_npc", "target": "array_master_zhao", "count": 1, "description": "交付阵基" }], "completions": { "done": { "description": "获得阵法传承" } } }
+    ],
+    "rewards": [{ "experience": 12000, "spiritStones": 4000 }, { "items": [{ "itemId": "legendary_array_plate", "quantity": 1 }] }, { "attitudeChanges": [{ "npcId": "array_master_zhao", "change": 60 }] }]
+  },
+  {
+    "id": "bounty_hunt_demon_leader", "name": "悬赏：魔教头目", "description": "天机阁发布了高额悬赏：击杀天魔教一位叛逃的元婴境头目。", "type": "side",
+    "worldviewRestrictions": ["cultivation"], "prerequisites": [{ "type": "level", "target": "25" }, { "type": "attitude", "target": "intelligence_dealer_jiu", "minValue": 20 }], "repeatable": false,
+    "stages": [
+      { "id": "accept", "name": "接受悬赏", "description": "向九爷打听目标详情。", "objectives": [{ "type": "talk_to_npc", "target": "intelligence_dealer_jiu", "count": 1, "description": "接受悬赏" }], "completions": { "done": { "description": "获得目标位置", "nextStageId": "hunt" } } },
+      { "id": "hunt", "name": "追杀目标", "description": "前往目标藏身处。", "objectives": [{ "type": "explore_location", "target": "demon_hideout", "count": 1, "description": "找到藏身处" }, { "type": "kill_enemy", "target": "demon_traitor_boss", "count": 1, "description": "击杀叛逃头目" }], "completions": { "done": { "description": "完成悬赏", "nextStageId": "claim" } } },
+      { "id": "claim", "name": "领取赏金", "description": "回天机阁领取悬赏报酬。", "objectives": [{ "type": "talk_to_npc", "target": "intelligence_dealer_jiu", "count": 1, "description": "领取赏金" }], "completions": { "done": { "description": "获得丰厚赏金" } } }
+    ],
+    "rewards": [{ "experience": 20000, "spiritStones": 10000 }, { "attitudeChanges": [{ "npcId": "intelligence_dealer_jiu", "change": 30 }] }]
+  },
+  {
+    "id": "ancient_clan_investigation", "name": "古族之谜", "description": "天机阁的秘闻指向古族遗民。他们似乎在寻找一件与飞升有关的上古神器。", "type": "hidden",
+    "worldviewRestrictions": ["cultivation"], "prerequisites": [{ "type": "level", "target": "30" }], "repeatable": false,
+    "stages": [
+      { "id": "investigate", "name": "调查古族", "description": "根据天机阁情报找到古族遗民的隐居地。", "objectives": [{ "type": "explore_location", "target": "ancient_clan_village", "count": 1, "description": "找到古族村落" }, { "type": "talk_to_npc", "target": "ancient_elder_cang", "count": 1, "description": "拜见苍老" }], "completions": { "done": { "description": "见到苍老", "nextStageId": "gain_trust" } } },
+      { "id": "gain_trust", "name": "获取信任", "description": "完成苍老的考验以获取古族的信任。", "objectives": [{ "type": "dialogue_check", "target": "ancient_trust_trial", "count": 1, "description": "通过苍老的考验" }], "completions": { "done": { "description": "获得古族信任" } } }
+    ],
+    "rewards": [{ "experience": 8000, "spiritStones": 2000 }, { "attitudeChanges": [{ "npcId": "ancient_elder_cang", "change": 40 }] }, { "unlockQuests": ["bloodline_awakening", "ancient_relic_hunt"] }]
+  },
+  {
+    "id": "bloodline_awakening", "name": "血脉觉醒", "description": "苍老说你的血脉中有古族的痕迹。通过觉醒仪式，或许能激发沉睡的上古之力。", "type": "hidden",
+    "worldviewRestrictions": ["cultivation"], "prerequisites": [{ "type": "quest_completed", "target": "ancient_clan_investigation" }, { "type": "level", "target": "35" }], "repeatable": false,
+    "stages": [
+      { "id": "prepare", "name": "准备仪式", "description": "收集觉醒仪式所需的材料。", "objectives": [{ "type": "collect_item", "target": "ancient_blood_essence", "count": 3, "description": "收集3份古血精华" }, { "type": "collect_item", "target": "primordial_spirit_stone", "count": 1, "description": "收集1枚太古灵石" }], "completions": { "done": { "description": "材料备齐", "nextStageId": "ritual" } } },
+      { "id": "ritual", "name": "觉醒仪式", "description": "在苍老的主持下进行血脉觉醒仪式。", "objectives": [{ "type": "talk_to_npc", "target": "ancient_elder_cang", "count": 1, "description": "进行仪式" }, { "type": "survive_rounds", "target": "10", "description": "承受觉醒之痛10回合" }], "completions": { "done": { "description": "血脉觉醒！" } } }
+    ],
+    "rewards": [{ "experience": 30000, "spiritStones": 5000 }, { "permanentBuffs": ["ancient_bloodline_buff"] }, { "attitudeChanges": [{ "npcId": "ancient_elder_cang", "change": 80 }] }]
+  },
+  {
+    "id": "daily_beast_hunt", "name": "万妖谷猎妖", "description": "万妖谷外围有妖兽出没，虎掌柜悬赏猎杀。", "type": "daily",
+    "worldviewRestrictions": ["cultivation"], "prerequisites": [{ "type": "level", "target": "5" }, { "type": "attitude", "target": "beast_merchant_hu", "minValue": 5 }], "repeatable": true, "cooldownSeconds": 86400,
+    "stages": [{ "id": "hunt", "name": "猎杀妖兽", "description": "击败万妖谷外围的妖兽。", "objectives": [{ "type": "kill_enemy", "target": "wild_beast", "count": 6, "description": "击败6只妖兽" }], "completions": { "done": { "description": "找虎掌柜领赏" } } }],
+    "rewards": [{ "experience": 400, "spiritStones": 80 }, { "attitudeChanges": [{ "npcId": "beast_merchant_hu", "change": 5 }] }]
   }
 ]

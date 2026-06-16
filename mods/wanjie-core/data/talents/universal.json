@@ -258,5 +258,141 @@
     "rarity": "rare",
     "conflictsWith": [],
     "dialogueTag": "sword"
+  },
+  "meditationMaster": {
+    "id": "meditationMaster",
+    "name": "打坐奇才",
+    "description": "打坐修炼效率远超常人，灵力回复速度加倍",
+    "raceRestrictions": [],
+    "worldviewRestrictions": ["cultivation", "xianxia", "wuxia"],
+    "effects": [
+      { "target": "spiritPower", "type": "attribute_flat", "value": 1 },
+      { "target": "willpower", "type": "attribute_flat", "value": 1 }
+    ],
+    "rarity": "uncommon",
+    "conflictsWith": [],
+    "dialogueTag": "meditate"
+  },
+  "battleInstinct": {
+    "id": "battleInstinct",
+    "name": "战斗直觉",
+    "description": "在战斗中能预判对手行动，出手更快",
+    "raceRestrictions": [],
+    "worldviewRestrictions": ["cultivation", "martial", "xianxia", "wuxia"],
+    "effects": [
+      { "target": "constitution", "type": "attribute_flat", "value": 2 }
+    ],
+    "rarity": "uncommon",
+    "conflictsWith": [],
+    "dialogueTag": "battle"
+  },
+  "survivorWill": {
+    "id": "survivorWill",
+    "name": "求生意志",
+    "description": "在绝境中爆发出超乎寻常的生命力",
+    "raceRestrictions": [],
+    "worldviewRestrictions": ["cultivation", "apocalypse", "martial"],
+    "effects": [
+      { "target": "willpower", "type": "attribute_flat", "value": 2 }
+    ],
+    "rarity": "uncommon",
+    "conflictsWith": ["ironWill"],
+    "dialogueTag": "survive"
+  },
+  "charismaticLeader": {
+    "id": "charismaticLeader",
+    "name": "领袖气质",
+    "description": "天生让人信服，与NPC交际时更容易获得好感",
+    "raceRestrictions": ["human"],
+    "worldviewRestrictions": ["cultivation", "xianxia", "wuxia", "magic"],
+    "effects": [
+      { "target": "insight", "type": "attribute_flat", "value": 1 },
+      { "target": "luck", "type": "attribute_flat", "value": 1 }
+    ],
+    "rarity": "rare",
+    "conflictsWith": [],
+    "dialogueTag": "leader"
+  },
+  "bloodFury": {
+    "id": "bloodFury",
+    "name": "血怒",
+    "description": "受伤时战力暴涨，越是濒死越是危险",
+    "raceRestrictions": ["demon"],
+    "worldviewRestrictions": ["cultivation", "martial", "xianxia"],
+    "effects": [
+      { "target": "constitution", "type": "attribute_flat", "value": 3 }
+    ],
+    "rarity": "rare",
+    "conflictsWith": ["ironWill", "demonicPhysique"],
+    "dialogueTag": "rage"
+  },
+  "predatorInstinct": {
+    "id": "predatorInstinct",
+    "name": "猎手本能",
+    "description": "天生的猎手，感知敏锐，出手迅捷",
+    "raceRestrictions": ["demon"],
+    "worldviewRestrictions": ["cultivation", "apocalypse", "martial"],
+    "effects": [
+      { "target": "insight", "type": "attribute_flat", "value": 2 }
+    ],
+    "rarity": "uncommon",
+    "conflictsWith": [],
+    "dialogueTag": "hunt"
+  },
+  "nightHunter": {
+    "id": "nightHunter",
+    "name": "夜行者",
+    "description": "在黑暗中获得额外的感知能力",
+    "raceRestrictions": ["demon"],
+    "worldviewRestrictions": ["cultivation", "apocalypse", "magic"],
+    "effects": [
+      { "target": "luck", "type": "attribute_flat", "value": 2 }
+    ],
+    "rarity": "common",
+    "conflictsWith": [],
+    "dialogueTag": "night"
+  },
+  "beastResilience": {
+    "id": "beastResilience",
+    "name": "兽性坚韧",
+    "description": "妖族血统带来的超强恢复力",
+    "raceRestrictions": ["demon"],
+    "worldviewRestrictions": ["cultivation", "martial", "xianxia", "apocalypse"],
+    "effects": [
+      { "target": "constitution", "type": "attribute_flat", "value": 1 },
+      { "target": "willpower", "type": "attribute_flat", "value": 1 }
+    ],
+    "rarity": "uncommon",
+    "conflictsWith": [],
+    "dialogueTag": "beast"
+  },
+  "primalRage": {
+    "id": "primalRage",
+    "name": "原始狂怒",
+    "description": "激发妖族先祖之力，短时间内战力暴增",
+    "raceRestrictions": ["demon"],
+    "worldviewRestrictions": ["cultivation", "xianxia"],
+    "effects": [
+      { "target": "spiritPower", "type": "attribute_flat", "value": 2 }
+    ],
+    "rarity": "epic",
+    "conflictsWith": ["spiritualGift", "spiritGrace"],
+    "dialogueTag": "rage"
+  },
+  "ancientBloodline": {
+    "id": "ancientBloodline",
+    "name": "远古血脉",
+    "description": "体内流淌着上古大妖的血脉，潜力无穷",
+    "raceRestrictions": ["demon"],
+    "worldviewRestrictions": ["cultivation", "xianxia"],
+    "effects": [
+      { "target": "constitution", "type": "attribute_flat", "value": 1 },
+      { "target": "spiritPower", "type": "attribute_flat", "value": 1 },
+      { "target": "willpower", "type": "attribute_flat", "value": 1 }
+    ],
+    "rarity": "legendary",
+    "conflictsWith": ["demonicPhysique", "demonicSpirit"],
+    "dialogueTag": "ancient"
   }
 }
+
