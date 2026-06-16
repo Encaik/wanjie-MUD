@@ -10,11 +10,5 @@ export type { AnnouncementContext } from './logic/announcement/generator';
 export { AnnouncementContainer } from './components/AnnouncementContainer';
 export { AnnouncementToast } from './components/AnnouncementToast';
 
-// —— 聊天 ——
-export { ChatRoom } from './components/ChatRoom';
-
-// —— 排行榜 ——
-export { LeaderboardPanel } from './components/LeaderboardPanel';
-
 // —— 消息 Hook ——
 export { useGameMessages } from './hooks/useMessages';

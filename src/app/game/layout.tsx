@@ -9,6 +9,7 @@
 'use client';
 
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 import { checkRankPromotion } from '@/core/engine';
 import type { MentalState } from '@/core/types';
@@ -16,13 +17,9 @@ import { DEFAULT_PROTAGONIST_EXTENSION, getFinalStats } from '@/core/types';
 import { BattleDialog } from '@/modules/combat/components/BattleDialog';
 import { getFactionById } from '@/modules/faction/data/factionData';
 import { CultivationPathSelect } from '@/modules/progression/components/CultivationPathSelect';
-import { getRealmName } from '@/modules/progression/data/realmData';
 import { getResourceName } from '@/modules/equipment/logic/items';
-import type { Announcement } from '@/modules/social/announcementTypes';
-import { AnnouncementContainer } from '@/modules/social/components';
 import { CriticalHealthOverlay } from '@/shared/components/CriticalHealthOverlay';
 import { DeathDialog } from '@/shared/components/DeathDialog';
-import { useMultiplayerHttp } from '@/shared/lib/multiplayer/useMultiplayerHttp';
 import { DialogLayer } from '@/views/game/dialogs/DialogLayer';
 import { openDialog } from '@/views/game/dialogs/useDialogController';
 import { useAdventure } from '@/views/game/domainHooks/useAdventure';
@@ -45,9 +42,10 @@ export default function GameLayout({ children }: { children: React.ReactNode }) 
   useGameSystems();
 
   const { gameState } = useGameStore();
-  const protagonist = gameState.protagonist!;
+  const router = useRouter();
+  const protagonist = gameState.protagonist;
 
-  // 弹窗层需要的领域 Hook
+  // 弹窗层需要的领域 Hook（必须在条件判断前调用）
   const adventure = useAdventure();
   const ascension = useAscension();
   const equipment = useEquipment();
@@ -59,11 +57,53 @@ export default function GameLayout({ children }: { children: React.ReactNode }) 
 
   // 本地 UI 状态
   const [mentalState, setMentalState] = useState<MentalState>(
-    protagonist.mentalState ?? DEFAULT_PROTAGONIST_EXTENSION.mentalState,
+    DEFAULT_PROTAGONIST_EXTENSION.mentalState,
   );
   const [showSettings, setShowSettings] = useState(false);
 
-  // 状态提示点
+  // 同步 mentalState（必须在条件返回前调用）
+  useEffect(() => {
+    if (protagonist?.mentalState) setMentalState(protagonist.mentalState);
+  }, [protagonist?.mentalState]);
+
+  // 顶栏数据（必须在条件返回前调用）
+  const activeStatus = useMemo(() => {
+    if (gameState.autoCultivating) return '自动修炼中';
+    if (gameState.crafting) return '炼丹中';
+    if (gameState.forging) return '炼器中';
+    return null;
+  }, [gameState.autoCultivating, gameState.crafting, gameState.forging]);
+
+  const spiritStones = useMemo(
+    () => protagonist?.inventory.find(i => i.definition.id === 'spirit_stone')?.quantity ?? 0,
+    [protagonist?.inventory],
+  );
+
+  const currencyName = useMemo(
+    () => protagonist ? getResourceName(protagonist.world.type) : '灵石',
+    [protagonist?.world.type],
+  );
+
+  // 如果主角为空（如重开后），重定向到世界选择页
+  useEffect(() => {
+    if (!protagonist) {
+      router.replace('/world-select');
+    }
+  }, [protagonist, router]);
+
+  // protagonist 为空时渲染加载态（等待重定向）
+  if (!protagonist) {
+    return (
+      <div className="min-h-dvh flex items-center justify-center bg-background">
+        <div className="flex flex-col items-center gap-4">
+          <div className="animate-spin w-8 h-8 border-2 border-primary border-t-transparent rounded-full" />
+          <p className="text-muted-foreground text-sm">正在返回世界选择...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // 状态提示点（依赖 protagonist，放在条件返回之后以使用非空类型）
   const statusDots = {
     wanjieDot: !!gameState.crafting || !!gameState.forging,
     factionPromotion: (() => {
@@ -75,46 +115,6 @@ export default function GameLayout({ children }: { children: React.ReactNode }) 
     })(),
     cultivationAlert: gameState.autoCultivating,
   };
-
-  // 顶栏数据
-  const activeStatus = useMemo(() => {
-    if (gameState.autoCultivating) return '自动修炼中';
-    if (gameState.crafting) return '炼丹中';
-    if (gameState.forging) return '炼器中';
-    return null;
-  }, [gameState.autoCultivating, gameState.crafting, gameState.forging]);
-
-  const spiritStones = useMemo(
-    () => protagonist.inventory.find(i => i.definition.id === 'spirit_stone')?.quantity ?? 0,
-    [protagonist.inventory],
-  );
-
-  const currencyName = useMemo(
-    () => getResourceName(protagonist.world.type),
-    [protagonist.world.type],
-  );
-
-  // 多人游戏
-  const [announcements, setAnnouncements] = useState<Announcement[]>([]);
-  const { leaderboards, onlineCount, setActiveMode } = useMultiplayerHttp({
-    playerId: `player-${protagonist.character.id}`,
-    playerName: protagonist.character.name,
-    worldType: protagonist.world.type,
-    level: protagonist.level,
-    realm: getRealmName(protagonist.world.realmSystem, protagonist.level),
-    combatPower: Math.floor(protagonist.level * 100 + (protagonist.maxHp || 100) + (protagonist.maxMp || 50)),
-    statistics: {
-      totalEnemiesKilled: gameState.statistics.totalEnemiesKilled || 0,
-      totalBossKilled: gameState.statistics.totalBossKilled || 0,
-      legendaryItems: gameState.statistics.legendaryItemsObtained || 0,
-      adventuresCompleted: gameState.statistics.totalAdventuresCompleted || 0,
-    },
-    onAnnouncement: (a: Announcement) => setAnnouncements(prev => [a, ...prev].slice(0, 50)),
-  });
-
-  useEffect(() => {
-    if (protagonist.mentalState) setMentalState(protagonist.mentalState);
-  }, [protagonist.mentalState]);
 
   return (
     <div className="min-h-dvh md:h-dvh flex flex-col relative">
@@ -173,11 +173,7 @@ export default function GameLayout({ children }: { children: React.ReactNode }) 
           </div>
           <div className="col-span-3 h-full overflow-hidden">
             <RightSidebar
-              protagonistId={protagonist.character.id} protagonistName={protagonist.character.name}
-              protagonistLevel={protagonist.level} realmSystem={protagonist.world.realmSystem}
               messages={gameState.messages} totalMessageCount={gameState.totalMessageCount}
-              leaderboards={leaderboards} onlineCount={onlineCount}
-              announcements={announcements} setActiveMode={setActiveMode}
             />
           </div>
         </div>
@@ -230,7 +226,6 @@ export default function GameLayout({ children }: { children: React.ReactNode }) 
       })()}
 
       <SettingsPanel open={showSettings} onOpenChange={setShowSettings} />
-      <AnnouncementContainer announcement={announcements[0]} maxVisible={3} maxQueue={10} position="top-right" />
     </div>
   );
 }

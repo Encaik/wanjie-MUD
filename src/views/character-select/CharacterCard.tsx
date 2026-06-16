@@ -7,6 +7,7 @@ import type { CharacterTemplate } from '@/modules/identity/hooks';
 import type { RadarAxis, RadarSeries } from '@/shared/components/RadarChart';
 import { Badge } from '@/shared/ui/data-display/badge';
 import { Button } from '@/shared/ui/actions/button';
+import { Progress } from '@/shared/ui/feedback/progress';
 import { RadarChart } from '@/shared/components/RadarChart';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/shared/ui/overlay/tooltip';
 import { cn, useDebounce } from '@/shared/utils';
@@ -33,53 +34,20 @@ const MERIDIAN_LABEL_COLORS = [
   'oklch(0.55 0.14 25)',   // 玫红 → 意志(金)
 ];
 
-/** 核心值轴线色 */
-const CORE_LABEL_COLORS = [
-  'oklch(0.50 0.15 20)',   // 红 → 生命
-  'oklch(0.50 0.14 50)',   // 橙 → 物攻
-  'oklch(0.50 0.14 80)',   // 黄 → 特攻
-  'oklch(0.50 0.12 200)',  // 蓝 → 速度
-];
-
 /** 核心值内部键 → 显示名 */
 const CORE_LABELS: Record<string, string> = {
   maxHp: '生命', physicalATK: '物攻', specialATK: '特攻', speed: '速度',
 };
 const CORE_KEYS = ['maxHp', 'physicalATK', 'specialATK', 'speed'] as const;
 
+/** 核心值进度条颜色（对应每个 key） */
+const CORE_BAR_COLORS: Record<string, string> = {
+  maxHp: 'bg-red-500', physicalATK: 'bg-orange-500', specialATK: 'bg-yellow-500', speed: 'bg-blue-500',
+};
+
 // ============================================
 // 子组件
 // ============================================
-
-/** 命星之镜 — 圆形装饰锚点 */
-function DestinyMirror({ gender, raceName, isMale }: {
-  gender: string;
-  raceName?: string;
-  isMale: boolean;
-}) {
-  return (
-    <div className="flex justify-center">
-      <div
-        className={cn(
-          'relative w-12 h-12 rounded-full flex flex-col items-center justify-center',
-          'border-2 transition-all duration-500',
-          'group-hover:shadow-[0_0_30px_0_rgba(251,191,36,0.25)] group-hover:scale-105',
-          isMale
-            ? 'border-amber-400/40 bg-[radial-gradient(circle_at_50%_40%,rgba(251,191,36,0.12),rgba(180,120,40,0.06),rgba(80,60,30,0.03))]'
-            : 'border-slate-300/40 bg-[radial-gradient(circle_at_50%_40%,rgba(200,210,220,0.12),rgba(150,160,170,0.06),rgba(100,110,120,0.03))]',
-        )}
-        aria-hidden="true"
-      >
-        <span className={cn('text-base leading-none', isMale ? 'text-blue-400/60' : 'text-pink-400/60')}>
-          {gender === '男' ? '♂' : '♀'}
-        </span>
-        {raceName && (
-          <span className="text-[8px] text-muted-foreground/50 font-serif mt-0.5 tracking-wider">{raceName}</span>
-        )}
-      </div>
-    </div>
-  );
-}
 
 /** 印章风格天赋徽章 */
 function TalentSeal({ talent }: { talent: { id: string; name: string; description: string; rarity: string } }) {
@@ -126,8 +94,8 @@ interface CharacterCardProps {
  * 角色卡牌 — 命星
  *
  * 每个角色是一颗"命星"，包含：
- * - 命星之镜（圆形铜镜装饰，hover 辉光）
- * - 双雷达图（经脉五维 + 核心四维，固定轴序）
+ * - 经脉五维雷达图
+ * - 核心四维进度条
  * - 印章风格天赋徽章
  * - 选定按钮
  */
@@ -160,22 +128,9 @@ export function CharacterCard({
     strokeColor: 'oklch(0.55 0.14 55)',
   };
 
-  // ---- 核心值雷达图（固定轴序：CORE_KEYS） ----
-  const coreValues = CORE_KEYS.map(k => (character.coreStats[k as keyof typeof character.coreStats] as number) || 0);
-  const coreMax = Math.max(...coreValues, 1);
-
-  const coreAxes: RadarAxis[] = CORE_KEYS.map((k, i) => ({
-    label: CORE_LABELS[k],
-    color: CORE_LABEL_COLORS[i],
-  }));
-
-  const coreSeries: RadarSeries = {
-    values: coreValues.map(v => v / coreMax),
-    rawValues: coreValues,
-    axisIndices: [0, 1, 2, 3],
-    fillColor: 'oklch(0.55 0.12 260)',
-    strokeColor: 'oklch(0.50 0.14 260)',
-  };
+  // ---- 核心值进度条 ----
+  const coreEntries = CORE_KEYS.map(k => [k, (character.coreStats[k as keyof typeof character.coreStats] as number) || 0] as const);
+  const coreMax = Math.max(...coreEntries.map(([, v]) => v), 1);
 
   return (
     <div
@@ -222,13 +177,6 @@ export function CharacterCard({
       )} />
 
       <div className="p-2.5 flex flex-col flex-1 relative gap-1.5">
-        {/* ===== 命星之镜 ===== */}
-        <DestinyMirror
-          gender={character.gender}
-          raceName={character.race?.name}
-          isMale={isMale}
-        />
-
         {/* ===== 名字 ===== */}
         <div className="text-center space-y-0.5">
           <span className="text-xs font-bold text-foreground font-serif tracking-[0.15em]">
@@ -278,33 +226,33 @@ export function CharacterCard({
           )}
         </div>
 
-        {/* ===== 双雷达图 ===== */}
-        <div className="flex justify-center items-start gap-2">
-          {/* 经脉五维 */}
-          <div className="flex flex-col items-center gap-0.5 flex-1">
-            <RadarChart
-              axes={meridianAxes}
-              series={[meridianSeries]}
-              size={130}
-              className="w-full max-w-[105px]"
-            />
-            <span className="text-[11px] text-muted-foreground/80 font-serif tracking-wider">
-              经脉资质
-            </span>
-          </div>
+        {/* ===== 经脉雷达图 ===== */}
+        <div className="flex flex-col items-center gap-0.5">
+          <RadarChart
+            axes={meridianAxes}
+            series={[meridianSeries]}
+            size={180}
+            className="w-full max-w-[200px]"
+          />
+        </div>
 
-          {/* 核心四维 */}
-          <div className="flex flex-col items-center gap-0.5 flex-1">
-            <RadarChart
-              axes={coreAxes}
-              series={[coreSeries]}
-              size={120}
-              className="w-full max-w-[95px]"
-            />
-            <span className="text-[11px] text-muted-foreground/80 font-serif tracking-wider">
-              核心值
-            </span>
-          </div>
+        {/* ===== 核心值进度条 ===== */}
+        <div className="space-y-1.5 px-1">
+          {coreEntries.map(([key, value]) => (
+            <div key={key} className="flex items-center gap-1.5">
+              <span className="text-[10px] text-muted-foreground w-8 shrink-0 text-right font-serif">
+                {CORE_LABELS[key]}
+              </span>
+              <Progress
+                value={(value / coreMax) * 100}
+                className="h-2 flex-1"
+                indicatorClassName={CORE_BAR_COLORS[key] || 'bg-primary'}
+              />
+              <span className="text-[10px] text-muted-foreground w-8 shrink-0 tabular-nums">
+                {value}
+              </span>
+            </div>
+          ))}
         </div>
 
         {/* ===== 选定按钮 ===== */}

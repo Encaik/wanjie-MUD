@@ -144,7 +144,7 @@ export function RadarChart({
       <ChartContainer config={chartConfig} className="aspect-square">
         <RechartsRadar
           data={chartData}
-          margin={{ top: 10, right: 10, bottom: 2, left: 10 }}
+          margin={{ top: 16, right: 16, bottom: 4, left: 16 }}
         >
           <PolarGrid stroke="var(--border)" />
           <PolarAngleAxis dataKey="axis" tick={renderTick} />
