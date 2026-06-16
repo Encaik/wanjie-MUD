@@ -20,7 +20,7 @@ import {
   checkTasksProgress,
   checkNewlyCompletedTask,
   createDefaultTaskSystemState,
-} from './types';
+} from '@/modules/quest';
 
 // ============================================
 // 势力任务类型定义

@@ -57,7 +57,7 @@ import { gameSystems } from '@/core/engine';
 import { getAvailableDifficultiesForRealm } from '@/modules/exploration/logic/adventureDifficulties';
 import { applyGrowthStatChanges, getGrowthStatCap } from '@/modules/progression/logic/realmSystem';
 import { gameClock, cooldown } from '@/core/time';
-import { isNewbie } from '@/modules/faction/logic';
+import { isNewbie } from '@/modules/quest';
 import { getTerminology } from '@/modules/narrative/logic/terminology';
 import { 
   GameState, 

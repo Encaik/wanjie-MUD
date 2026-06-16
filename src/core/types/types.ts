@@ -1706,7 +1706,7 @@ export interface GameState {
   // 是否显示新手任务全部完成弹窗（显示后清除）
   showTutorialCompletionDialog?: boolean;
   // 任务系统状态 - 统一管理各任务系统
-  taskSystems?: import('@/modules/faction/logic/types').AllTaskSystemsState;
+  taskSystems?: import('@/modules/quest').AllTaskSystemsState;
   // 扩展系统 - 势力相关
   currentFactionId?: string | null; // 当前加入的势力ID
   factionProgress?: import('./typesExtension').FactionProgress | null; // 势力进度

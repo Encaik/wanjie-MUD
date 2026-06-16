@@ -1,40 +1,11 @@
 /**
- * 任务系统模块
- * 
- * 提供统一的任务系统架构，支持多个独立的任务系统并行运行
+ * 势力模块 logic 导出
+ *
+ * 注意：通用任务类型（BaseTask、ITaskSystem、TaskSystemState 等）
+ * 已迁移至 @/modules/quest。请从该模块导入。
+ *
+ * @module modules/faction/logic
  */
-
-// 类型定义（排除通用函数，使用各系统的专用函数）
-export type {
-  TaskSystemType,
-  TaskStatus,
-  TaskItemReward,
-  ItemReward,
-  TaskReward,
-  BaseTask,
-  TaskSystemState,
-  TaskProgressResult,
-  ITaskSystem,
-  AllTaskSystemsState,
-} from './types';
-
-export {
-  createDefaultTaskSystemState,
-  createDefaultAllTaskSystemsState,
-} from './types';
-
-// 新手任务系统
-export {
-  tutorialTaskSystem,
-  TUTORIAL_TASKS,
-  checkTutorialProgress,
-  isNewbie,
-  getTaskRewards,
-  getTutorialWelcomeMessage,
-  claimTutorialReward,
-  checkNewlyCompletedTask,
-  type TutorialTask,
-} from './tutorialTaskSystem';
 
 // 势力任务系统（旧版，保留兼容）
 export {

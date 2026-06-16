@@ -23,13 +23,13 @@ import {
   createDefaultDailyRoundState,
   createDefaultWeeklyRoundState,
 } from '@/core/types';
-import { worldEvents } from '@/modules/theme';
-
-import { checkNewlyCompletedTask, getTaskRewards } from '@/modules/faction/logic';
 import { createInventoryItem } from '@/core/types';
 import { spiritStoneItems } from '@/modules/equipment/logic/items';
-import { createInitialGameState } from './initialState';
+import { checkNewlyCompletedTutorialTask, getTaskRewards } from '@/modules/quest';
+import { worldEvents } from '@/modules/theme';
 import { loadGameStateWithRecovery, safeSaveGameState } from '@/shared/utils/saveUtils';
+
+import { createInitialGameState } from './initialState';
 
 const log = createLogger('GameStore');
 
@@ -187,7 +187,7 @@ export function GameStoreProvider({ children }: { children: React.ReactNode }) {
     if (gameState.phase !== 'playing' || !gameState.protagonist) return;
 
     const completed = gameState.completedTutorialTaskIds || [];
-    const newTask = checkNewlyCompletedTask(completed, gameState.protagonist, gameState.statistics);
+    const newTask = checkNewlyCompletedTutorialTask(completed, gameState.protagonist, gameState.statistics);
 
     if (newTask) {
       const { taskId, task } = newTask;

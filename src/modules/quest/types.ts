@@ -1,18 +1,20 @@
 /**
- * 任务系统通用架构
- * 
+ * 任务系统通用类型
+ *
  * 设计原则：
  * - 各任务系统独立运行，互不干扰
  * - 统一的接口定义，便于扩展新系统
  * - 分离的状态管理
- * 
+ *
  * 当前系统：
  * - tutorial: 新手任务系统
  * - faction: 势力任务系统
  * - 可扩展其他系统
+ *
+ * @module modules/quest
  */
 
-import { Protagonist, GameStatistics, ItemDefinition } from '@/core/types';
+import type { Protagonist, GameStatistics, ItemDefinition } from '@/core/types';
 
 // ============================================
 // 任务系统类型定义
@@ -37,12 +39,6 @@ export interface TaskItemReward {
 }
 
 /**
- * 物品奖励别名（兼容旧代码）
- * @deprecated 请使用 TaskItemReward
- */
-export type ItemReward = TaskItemReward;
-
-/**
  * 通用任务奖励
  */
 export interface TaskReward {
@@ -63,9 +59,9 @@ export interface BaseTask {
   description: string;
   hint?: string;
   reward: TaskReward;
-  // 检查任务是否完成
+  /** 检查任务是否完成 */
   check: (protagonist: Protagonist, statistics: GameStatistics) => boolean;
-  // 可选：前置任务ID
+  /** 可选：前置任务ID */
   prerequisiteIds?: string[];
 }
 
@@ -73,15 +69,15 @@ export interface BaseTask {
  * 任务系统状态 - 每个系统独立的状态
  */
 export interface TaskSystemState {
-  // 任务系统类型
+  /** 任务系统类型 */
   systemType: TaskSystemType;
-  // 已完成的任务ID列表
+  /** 已完成的任务ID列表 */
   completedTaskIds: string[];
-  // 已领取奖励的任务ID列表
+  /** 已领取奖励的任务ID列表 */
   claimedTaskIds: string[];
-  // 任务进度缓存（可选，用于UI显示）
+  /** 任务进度缓存（可选，用于UI显示） */
   progressCache?: Record<string, number>;
-  // 上次刷新时间（用于日常/周常任务重置）
+  /** 上次刷新时间（用于日常/周常任务重置） */
   lastRefreshTime?: number;
 }
 
@@ -99,29 +95,29 @@ export interface TaskProgressResult {
  * 任务系统接口 - 所有任务系统必须实现
  */
 export interface ITaskSystem<T extends BaseTask> {
-  // 系统类型
+  /** 系统类型 */
   readonly systemType: TaskSystemType;
-  // 任务列表
+  /** 任务列表 */
   readonly tasks: T[];
-  // 检查任务进度
+  /** 检查任务进度 */
   checkProgress(
     protagonist: Protagonist,
     statistics: GameStatistics,
-    state: TaskSystemState
+    state: TaskSystemState,
   ): TaskProgressResult;
-  // 检查是否有新完成的任务
+  /** 检查是否有新完成的任务 */
   checkNewlyCompleted(
     state: TaskSystemState,
     protagonist: Protagonist,
-    statistics: GameStatistics
+    statistics: GameStatistics,
   ): { taskId: string; task: T } | null;
-  // 获取任务奖励
+  /** 获取任务奖励 */
   getRewards(taskId: string): TaskReward | null;
-  // 判断是否为新玩家（针对新手任务）
+  /** 判断是否为新玩家（针对新手任务） */
   isNewbie?(
     protagonist: Protagonist,
     statistics: GameStatistics,
-    state: TaskSystemState
+    state: TaskSystemState,
   ): boolean;
 }
 
@@ -135,7 +131,7 @@ export interface ITaskSystem<T extends BaseTask> {
 export interface AllTaskSystemsState {
   tutorial: TaskSystemState;
   faction: TaskSystemState;
-  // 可扩展其他系统
+  /** 可扩展其他系统 */
   [key: string]: TaskSystemState;
 }
 
@@ -143,7 +139,7 @@ export interface AllTaskSystemsState {
  * 创建默认的任务系统状态
  */
 export function createDefaultTaskSystemState(
-  systemType: TaskSystemType
+  systemType: TaskSystemType,
 ): TaskSystemState {
   return {
     systemType,
@@ -174,7 +170,7 @@ export function checkTaskCompletion<T extends BaseTask>(
   task: T,
   completedTaskIds: string[],
   protagonist: Protagonist,
-  statistics: GameStatistics
+  statistics: GameStatistics,
 ): boolean {
   // 如果已在完成列表中，直接返回true
   if (completedTaskIds.includes(task.id)) {
@@ -183,7 +179,7 @@ export function checkTaskCompletion<T extends BaseTask>(
   // 检查前置任务
   if (task.prerequisiteIds) {
     const allPrereqsMet = task.prerequisiteIds.every(preId =>
-      completedTaskIds.includes(preId)
+      completedTaskIds.includes(preId),
     );
     if (!allPrereqsMet) {
       return false;
@@ -200,19 +196,19 @@ export function checkTasksProgress<T extends BaseTask>(
   tasks: T[],
   completedTaskIds: string[],
   protagonist: Protagonist,
-  statistics: GameStatistics
+  statistics: GameStatistics,
 ): TaskProgressResult {
   const completedIds: string[] = [];
-  
+
   for (const task of tasks) {
     if (checkTaskCompletion(task, completedTaskIds, protagonist, statistics)) {
       completedIds.push(task.id);
     }
   }
-  
+
   // 找到第一个未完成的任务
   const currentTask = tasks.find(t => !completedIds.includes(t.id)) || null;
-  
+
   return {
     completedTaskIds: completedIds,
     currentTask,
@@ -228,10 +224,10 @@ export function checkNewlyCompletedTask<T extends BaseTask>(
   tasks: T[],
   state: TaskSystemState,
   protagonist: Protagonist,
-  statistics: GameStatistics
+  statistics: GameStatistics,
 ): { taskId: string; task: T } | null {
   const { completedTaskIds } = state;
-  
+
   for (const task of tasks) {
     // 不在已完成列表中，但条件已满足
     if (!completedTaskIds.includes(task.id)) {
@@ -239,7 +235,7 @@ export function checkNewlyCompletedTask<T extends BaseTask>(
         // 检查前置任务
         if (task.prerequisiteIds) {
           const allPrereqsMet = task.prerequisiteIds.every(preId =>
-            completedTaskIds.includes(preId)
+            completedTaskIds.includes(preId),
           );
           if (!allPrereqsMet) continue;
         }
@@ -247,6 +243,6 @@ export function checkNewlyCompletedTask<T extends BaseTask>(
       }
     }
   }
-  
+
   return null;
 }

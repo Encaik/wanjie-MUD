@@ -1,10 +1,32 @@
 /**
  * 模块：Quest（任务系统）
  *
- * 职责：多阶段分支任务管理、前置条件校验、进度追踪、奖励发放、NPC 对话集成。
+ * 职责：多阶段分支任务管理、前置条件校验、进度追踪、奖励发放、NPC 对话集成、
+ * 新手引导任务、通用任务类型定义。
  *
  * @module modules/quest
  */
+
+// 通用任务类型
+export type {
+  TaskSystemType,
+  TaskStatus,
+  TaskItemReward,
+  TaskReward,
+  BaseTask,
+  TaskSystemState,
+  TaskProgressResult,
+  ITaskSystem,
+  AllTaskSystemsState,
+} from './types';
+
+export {
+  createDefaultTaskSystemState,
+  createDefaultAllTaskSystemsState,
+  checkTaskCompletion,
+  checkTasksProgress,
+  checkNewlyCompletedTask,
+} from './types';
 
 // 任务引擎
 export {
@@ -29,6 +51,23 @@ export {
 } from './logic/rewardDistributor';
 
 export type { RewardResult } from './logic/rewardDistributor';
+
+// 新手任务系统
+export {
+  tutorialTaskSystem,
+  TUTORIAL_TASKS,
+  checkTutorialProgress,
+  isNewbie,
+  getTaskRewards,
+  getTutorialWelcomeMessage,
+  claimTutorialReward,
+  checkNewlyCompletedTask as checkNewlyCompletedTutorialTask,
+} from './logic/tutorialTasks';
+
+export type { TutorialTask } from './logic/tutorialTasks';
+
+// 组件
+export { QuestPanel } from './components/QuestPanel';
 
 // Hook
 export { useQuest } from './hooks/useQuest';

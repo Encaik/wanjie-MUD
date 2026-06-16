@@ -1,20 +1,23 @@
 /**
  * 新手任务系统
- * 
+ *
  * 为新手玩家提供游戏入门指引
  * 特点：
  * - 线性任务链，按顺序完成
  * - 每个任务奖励下一阶段所需材料
  * - 完成所有任务后显示庆祝弹窗
+ *
+ * @module modules/quest/logic
  */
 
-import { 
-  spiritStoneItems, 
-  cultivationPillItems, 
+import {
+  spiritStoneItems,
+  cultivationPillItems,
   breakthroughItems,
-  restorePillItems 
+  restorePillItems,
 } from '@/modules/equipment/logic/items';
-import { Protagonist, GameStatistics, createInventoryItem, ItemDefinition } from '@/core/types';
+import type { Protagonist, GameStatistics, ItemDefinition } from '@/core/types';
+import { createInventoryItem } from '@/core/types';
 import {
   TaskSystemType,
   TaskSystemState,
@@ -26,7 +29,7 @@ import {
   checkTasksProgress,
   checkNewlyCompletedTask as checkNewlyCompletedTaskGeneric,
   createDefaultTaskSystemState,
-} from './types';
+} from '../types';
 
 // ============================================
 // 新手任务定义
@@ -38,7 +41,7 @@ import {
 export interface TutorialTask extends BaseTask {
   id: string;
   name: string;
-  // title 等同于 name
+  /** title 等同于 name */
   title: string;
   description: string;
   hint: string;
@@ -195,26 +198,26 @@ export const tutorialTaskSystem: ITaskSystem<TutorialTask> = {
   checkProgress(
     protagonist: Protagonist,
     statistics: GameStatistics,
-    state: TaskSystemState
+    state: TaskSystemState,
   ): TaskProgressResult {
     return checkTasksProgress(
       TUTORIAL_TASKS,
       state.completedTaskIds,
       protagonist,
-      statistics
+      statistics,
     );
   },
 
   checkNewlyCompleted(
     state: TaskSystemState,
     protagonist: Protagonist,
-    statistics: GameStatistics
+    statistics: GameStatistics,
   ): { taskId: string; task: TutorialTask } | null {
     return checkNewlyCompletedTaskGeneric(
       TUTORIAL_TASKS,
       state,
       protagonist,
-      statistics
+      statistics,
     );
   },
 
@@ -226,7 +229,7 @@ export const tutorialTaskSystem: ITaskSystem<TutorialTask> = {
   isNewbie(
     protagonist: Protagonist,
     statistics: GameStatistics,
-    state: TaskSystemState
+    state: TaskSystemState,
   ): boolean {
     const { progress } = this.checkProgress!(protagonist, statistics, state);
     return progress < 1;
@@ -243,7 +246,7 @@ export const tutorialTaskSystem: ITaskSystem<TutorialTask> = {
 export function checkTutorialProgress(
   protagonist: Protagonist,
   statistics: GameStatistics,
-  persistedCompletedTasks: string[] = []
+  persistedCompletedTasks: string[] = [],
 ): {
   completedTasks: string[];
   currentTask: TutorialTask | null;
@@ -254,9 +257,9 @@ export function checkTutorialProgress(
     completedTaskIds: persistedCompletedTasks,
     claimedTaskIds: [],
   };
-  
+
   const result = tutorialTaskSystem.checkProgress(protagonist, statistics, state);
-  
+
   return {
     completedTasks: result.completedTaskIds,
     currentTask: result.currentTask as TutorialTask | null,
@@ -270,14 +273,14 @@ export function checkTutorialProgress(
 export function isNewbie(
   protagonist: Protagonist,
   statistics: GameStatistics,
-  persistedCompletedTasks: string[] = []
+  persistedCompletedTasks: string[] = [],
 ): boolean {
   const state: TaskSystemState = {
     systemType: 'tutorial',
     completedTaskIds: persistedCompletedTasks,
     claimedTaskIds: [],
   };
-  
+
   return tutorialTaskSystem.isNewbie!(protagonist, statistics, state);
 }
 
@@ -287,14 +290,14 @@ export function isNewbie(
 export function checkNewlyCompletedTask(
   persistedCompletedTasks: string[],
   protagonist: Protagonist,
-  statistics: GameStatistics
+  statistics: GameStatistics,
 ): { taskId: string; task: TutorialTask } | null {
   const state: TaskSystemState = {
     systemType: 'tutorial',
     completedTaskIds: persistedCompletedTasks,
     claimedTaskIds: [],
   };
-  
+
   return tutorialTaskSystem.checkNewlyCompleted(state, protagonist, statistics);
 }
 
@@ -308,7 +311,7 @@ export function getTaskRewards(taskId: string): {
 } | null {
   const reward = tutorialTaskSystem.getRewards(taskId);
   if (!reward) return null;
-  
+
   return {
     spiritStones: reward.spiritStones || 0,
     experience: reward.experience || 0,
@@ -351,7 +354,7 @@ export function getTutorialWelcomeMessage(): string {
 export function claimTutorialReward(
   taskId: string,
   protagonist: Protagonist,
-  statistics: GameStatistics
+  statistics: GameStatistics,
 ): {
   success: boolean;
   message: string;
@@ -362,21 +365,21 @@ export function claimTutorialReward(
   };
 } {
   const task = TUTORIAL_TASKS.find(t => t.id === taskId);
-  
+
   if (!task) {
     return { success: false, message: '任务不存在' };
   }
-  
+
   if (!task.check(protagonist, statistics)) {
     return { success: false, message: '任务尚未完成' };
   }
-  
+
   const items = task.reward.items?.map((r, i) => ({
     id: `inv_${Date.now()}_${i}`,
     definition: r.item,
     quantity: r.quantity,
   })) || [];
-  
+
   return {
     success: true,
     message: task.reward.message,
