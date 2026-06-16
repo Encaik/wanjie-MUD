@@ -157,15 +157,6 @@ export interface WorldviewAttributeConfig {
   growthRule: AttributeGrowthRule;
 }
 
-// ── 兼容别名（过渡期）──
-
-/** 属性定义（兼容旧名） */
-export type AttributeDefinition = AttributeTemplate;
-/** 数值型属性（兼容旧名） */
-export type NumericAttributeDefinition = NumericAttributeTemplate;
-/** 枚举型属性（兼容旧名） */
-export type EnumAttributeDefinition = EnumAttributeTemplate;
-
 /** 专项数值定义（世界观决定槽位名和内容：修仙→法力、魔法→魔力、科技→能量） */
 export interface SpecialResourceDef {
   /** 显示名（如 "法力"、"魔力"） */

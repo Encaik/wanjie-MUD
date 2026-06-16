@@ -28,10 +28,6 @@ export type {
   AttributeGrowthTerm,
   AttributeGrowthRule,
   WorldviewAttributeConfig,
-  // 兼容别名
-  AttributeDefinition,
-  NumericAttributeDefinition,
-  EnumAttributeDefinition,
   CoreStatKey,
   CoreStatBaseValues,
   AttributeBreakdown,
