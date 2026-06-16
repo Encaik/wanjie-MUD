@@ -181,3 +181,31 @@
     opacity: 0;
   }
 }
+
+/* ========================================
+ * 稀有度辉光动画 — 物品卡片边框呼吸光效
+ * ======================================== */
+
+/* 稀有度光晕呼吸 — epic/rare 品级 */
+@keyframes glow-pulse {
+  0%, 100% {
+    box-shadow: 0 0 4px var(--glow-color, currentColor);
+  }
+  50% {
+    box-shadow: 0 0 12px var(--glow-color, currentColor);
+  }
+}
+
+/* 稀有度强光晕呼吸 — legendary/mythic 品级，双层叠加 */
+@keyframes glow-pulse-strong {
+  0%, 100% {
+    box-shadow:
+      0 0 6px var(--glow-color, currentColor),
+      0 0 12px var(--glow-color-weak, currentColor);
+  }
+  50% {
+    box-shadow:
+      0 0 16px var(--glow-color, currentColor),
+      0 0 32px var(--glow-color-weak, currentColor);
+  }
+}

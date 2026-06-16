@@ -12,6 +12,8 @@ import { createInventoryItem } from '@/core/types';
 import { DEFAULT_PROTAGONIST_EXTENSION } from '@/core/types/typesExtension';
 import type { StoredCharacter } from '@/app/api/v1/characters/store';
 import { spiritStoneItems, cultivationPillItems, breakthroughItems, restorePillItems } from '@/modules/equipment/logic/items';
+import { createItemInstance } from '@/modules/item/logic/itemManager';
+import type { ItemInstance } from '@/modules/item/types';
 
 /**
  * 从保存的角色数据 + 世界数据创建 Protagonist
@@ -33,6 +35,14 @@ export function createProtagonistFromSaved(
   };
 
   const extension = DEFAULT_PROTAGONIST_EXTENSION;
+
+  /** 初始物品（统一物品系统 ItemInstance[]） */
+  const initialItems: ItemInstance[] = [
+    createItemInstance('spirit_stone', { quantity: 200, source: 'initial' }),
+    createItemInstance('qi_gathering_pill', { quantity: 5, source: 'initial' }),
+    createItemInstance('foundation_pill', { quantity: 1, source: 'initial' }),
+    createItemInstance('rejuvenation_pill', { quantity: 3, source: 'initial' }),
+  ];
 
   const protagonist: Protagonist = {
     character: {
@@ -58,6 +68,9 @@ export function createProtagonistFromSaved(
     maxHp,
     currentMp: maxMp,
     maxMp,
+    items: initialItems,
+    slots: {},
+    maxSlotCounts: {},
     /** 初始背包：200灵石 + 5聚气丹 + 1筑基丹 + 3回春丹 */
     inventory: [
       createInventoryItem(spiritStoneItems[0], 200),
