@@ -48,7 +48,9 @@
       "Read(//mnt/c/Users/encai/Desktop/**)",
       "Bash(pnpm lint:strict)",
       "Bash(npx eslint *)",
-      "Bash(openspec --version)"
+      "Bash(openspec --version)",
+      "Bash(cd /d c:\\\\Users\\\\encai\\\\Desktop\\\\wanjie-MUD)",
+      "Bash(ls openspec/)"
     ]
   }
 }

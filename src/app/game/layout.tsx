@@ -8,7 +8,7 @@
 
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 import { checkRankPromotion } from '@/core/engine';
 import type { MentalState } from '@/core/types';
@@ -17,6 +17,7 @@ import { BattleDialog } from '@/modules/combat/components/BattleDialog';
 import { getFactionById } from '@/modules/faction/data/factionData';
 import { CultivationPathSelect } from '@/modules/progression/components/CultivationPathSelect';
 import { getRealmName } from '@/modules/progression/data/realmData';
+import { getResourceName } from '@/modules/equipment/logic/items';
 import type { Announcement } from '@/modules/social/announcementTypes';
 import { AnnouncementContainer } from '@/modules/social/components';
 import { CriticalHealthOverlay } from '@/shared/components/CriticalHealthOverlay';
@@ -75,6 +76,24 @@ export default function GameLayout({ children }: { children: React.ReactNode }) 
     cultivationAlert: gameState.autoCultivating,
   };
 
+  // 顶栏数据
+  const activeStatus = useMemo(() => {
+    if (gameState.autoCultivating) return '自动修炼中';
+    if (gameState.crafting) return '炼丹中';
+    if (gameState.forging) return '炼器中';
+    return null;
+  }, [gameState.autoCultivating, gameState.crafting, gameState.forging]);
+
+  const spiritStones = useMemo(
+    () => protagonist.inventory.find(i => i.definition.id === 'spirit_stone')?.quantity ?? 0,
+    [protagonist.inventory],
+  );
+
+  const currencyName = useMemo(
+    () => getResourceName(protagonist.world.type),
+    [protagonist.world.type],
+  );
+
   // 多人游戏
   const [announcements, setAnnouncements] = useState<Announcement[]>([]);
   const { leaderboards, onlineCount, setActiveMode } = useMultiplayerHttp({
@@ -107,8 +126,15 @@ export default function GameLayout({ children }: { children: React.ReactNode }) 
         <span className="absolute top-0 right-0 w-3 h-3 border-t-2 border-r-2 border-primary/20 rounded-tr-sm" aria-hidden="true" />
         <span className="absolute bottom-0 left-0 w-3 h-3 border-b-2 border-l-2 border-primary/15 rounded-bl-sm" aria-hidden="true" />
         <span className="absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2 border-primary/15 rounded-br-sm" aria-hidden="true" />
-        <div className="relative max-w-7xl mx-auto px-6 sm:px-10 py-4">
-          <GameHeader protagonist={protagonist} timeSystem={gameState.time} mentalState={mentalState} onSettings={() => setShowSettings(true)} />
+        <div className="relative max-w-7xl mx-auto px-6 sm:px-10 py-2">
+          <GameHeader
+            world={{ name: protagonist.world.name, type: protagonist.world.type }}
+            spiritStones={spiritStones}
+            currencyName={currencyName}
+            timeSystem={gameState.time}
+            activeStatus={activeStatus}
+            onSettings={() => setShowSettings(true)}
+          />
         </div>
       </header>
 
