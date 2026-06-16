@@ -234,9 +234,9 @@ describe('generateWorld', () => {
   it('生成的世界包含势力', () => {
     const worldview = createTestWorldview();
     const world = generateWorld(worldview, 'testseed', 0);
-    expect(world.factions.length).toBeGreaterThanOrEqual(2);
-    expect(world.factions.length).toBeLessThanOrEqual(5);
-    expect(world.majorForces.length).toBeGreaterThan(0);
+    expect(world.factions.length).toBeGreaterThanOrEqual(3);
+    expect(world.factions.length).toBeLessThanOrEqual(6);
+    // V3: majorForces 已废弃，置空
   });
 
   it('生成的世界包含危险和机遇', () => {
