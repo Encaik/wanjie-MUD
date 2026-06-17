@@ -1,4 +1,27 @@
 {
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo \"[harness] 📝 文件已变更 — 提交前记得运行: pnpm lint:strict && pnpm ts-check\""
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cd \"${CLAUDE_PROJECT_DIR}\" && if [ -n \"$(git status --porcelain 2>/dev/null)\" ]; then echo '⚠️  有未提交的变更，请运行质量门: pnpm lint:strict && pnpm ts-check && pnpm build'; fi"
+          }
+        ]
+      }
+    ]
+  },
   "permissions": {
     "allow": [
       "Bash(npx openspec *)",
