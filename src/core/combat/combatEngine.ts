@@ -1,15 +1,19 @@
 /**
- * ATB 时间条战斗引擎
+ * 事件驱动双人战斗引擎
  *
- * 非纯回合制——速度决定行动频率。速度快的单位可在对方行动前多次出手。
+ * 非 tick 模型——每次循环 = 一次行动事件。通过速度衰减和保底计数器
+ * 控制行动顺序，天然适应 speed 数值膨胀。
  *
- * 时间条机制：
- *   - 每个单位有 actionTime, 每 tick 增加 speed
- *   - actionTime >= THRESHOLD(100) 时行动
- *   - 行动后 actionTime 扣除 THRESHOLD, 余量保留（连续行动可能）
+ * 核心机制：
+ *   - 比较双方当前有效 speed，高者获得本次行动权
+ *   - 行动后行动方 speed *= DECAY（衰减）
+ *   - 对方行动后，行动方 speed 恢复为原始值
+ *   - 同一方连续行动 ≥ PITY_MAX 次 → 强制切换（保底）
  *
- * 示例：speed=95 每 ~1.05 tick 行动一次, speed=3 每 ~33 tick 行动一次
- *       速度 95 的单位可以行动 30+ 次后速度 3 的单位才行动 1 次！
+ * 示例：
+ *   speed 10 vs 5:   基本交替，3-5轮多出手一次
+ *   speed 100k vs 10k: 高者连续行动3-4次后衰减到低于对手或触发保底
+ *   speed 100k vs 50k: 比10:5差异更明显（绝对值放大衰减差距）
  *
  * @module core/combat
  */
@@ -19,17 +23,20 @@ import type { EquipmentModifier } from './types';
 import type { CoreStatValues } from '@/core/world/calculateCoreStats';
 
 // ============================================
-// 时间条常量
+// 战斗常量
 // ============================================
 
-/** 行动阈值（达到此值即可行动） */
-const ACTION_THRESHOLD = 100;
+/** 每次行动后速度衰减系数（0~1，越小衰减越狠） */
+const SPEED_DECAY = 0.5;
 
-/** 最大 tick 数（防止死循环） */
-const MAX_TICKS = 10000;
+/** 连续行动次数上限（触发保底强制切换） */
+const PITY_MAX = 4;
+
+/** 总行动次数上限（防止死循环） */
+const ACTION_CAP = 50;
 
 // ============================================
-// 开场类型
+// 开场类型配置
 // ============================================
 
 const ENGAGEMENT_CONFIG: Record<EngagementType, { speedMult: number; firstStrike: boolean; defHpBonus: number }> = {
@@ -51,7 +58,7 @@ function rng(): number {
 export function setCombatSeed(seed: number): void { _seed = seed; }
 
 // ============================================
-// 伤害计算
+// 伤害计算（宝可梦公式，不变）
 // ============================================
 
 /**
@@ -71,7 +78,7 @@ export function calculateDamage(
 }
 
 // ============================================
-// 装备修正
+// 装备修正（不变）
 // ============================================
 
 export function applyEquipmentModifiers(
@@ -110,25 +117,26 @@ interface InternalUnit {
   isPlayer: boolean;
   level: number;
   coreStats: CoreStatValues;
+  /** 原始 speed（用于对方行动后恢复） */
+  baseSpeed: number;
   skills: CombatSkill[];
   currentHp: number;
   maxHp: number;
-  actionTime: number;
   equipmentModifiers?: EquipmentModifier[];
   firstAction: boolean;
 }
 
 // ============================================
-// 主战斗流程
+// 主战斗流程（事件驱动）
 // ============================================
 
 /**
- * 执行 ATB 时间条战斗
+ * 执行事件驱动双人战斗
  *
  * @param attacker 攻击方
  * @param defender 防御方
  * @param engagement 开场类型
- * @returns 战斗结果（含完整时间线日志）
+ * @returns 战斗结果（含完整行动日志）
  */
 export function executeCombat(
   attacker: CombatUnit,
@@ -148,95 +156,117 @@ export function executeCombat(
     }
     return {
       name: u.name, isPlayer: u.isPlayer, level: u.level,
-      coreStats: stats, skills: u.skills.map(s => ({ ...s })),
+      coreStats: stats,
+      baseSpeed: stats.speed,
+      skills: u.skills.map(s => ({ ...s })),
       currentHp: u.currentHp, maxHp: stats.maxHp,
-      actionTime: 0, equipmentModifiers: eq, firstAction: true,
+      equipmentModifiers: eq, firstAction: true,
     };
   }
 
   const a = toInternal(attacker, cfg.speedMult);
   const d = toInternal(defender, 1.0);
 
-  // ambush: 攻击方首轮立即行动
-  if (cfg.firstStrike) a.actionTime = ACTION_THRESHOLD;
-
   // defense: 防御方临时血量
   if (cfg.defHpBonus > 0) d.currentHp = Math.ceil(d.currentHp * (1 + cfg.defHpBonus));
 
   const logs: CombatRoundLog[] = [];
   let sequence = 0;
-  let tick = 0;
+  let lastActor: 'a' | 'd' | null = null;
+  let consecutiveCount = 0;
+  let totalActions = 0;
 
-  while (tick < MAX_TICKS && a.currentHp > 0 && d.currentHp > 0) {
-    // 双方同时推进时间条（按各自速度）
-    a.actionTime += a.coreStats.speed;
-    d.actionTime += d.coreStats.speed;
+  // ── ambush: 攻击方首轮强制先手 ──
+  if (cfg.firstStrike) {
+    sequence++;
+    const skill = pickSkill(a);
+    if (skill) {
+      logs.push(doAction(a, d, skill, sequence));
+      if (d.currentHp <= 0) return buildResult(logs, sequence, a.currentHp, a.maxHp, d.currentHp, d.maxHp, totalActions);
+    }
+    decaySpeed(a);
+    tickCooldown(a);
+    a.firstAction = false;
+    lastActor = 'a';
+    consecutiveCount = 1;
+    totalActions++;
+  }
 
-    // 检查谁能行动（速度快的一方可能先达到阈值）
-    // 如果双方都达到阈值，速度快者先
-    const aReady = a.actionTime >= ACTION_THRESHOLD;
-    const dReady = d.actionTime >= ACTION_THRESHOLD;
+  // ── 事件驱动主循环 ──
+  while (a.currentHp > 0 && d.currentHp > 0 && totalActions < ACTION_CAP) {
 
-    if (aReady || dReady) {
-      // 决定谁先：速度高者优先，同等速度则攻击方先
-      let first: InternalUnit, second: InternalUnit | null = null;
-      if (aReady && dReady) {
-        if (a.coreStats.speed >= d.coreStats.speed) { first = a; second = d; }
-        else { first = d; second = a; }
-      } else if (aReady) {
-        first = a;
+    let actor: 'a' | 'd';
+
+    // ① 保底检查
+    if (consecutiveCount >= PITY_MAX) {
+      actor = lastActor === 'a' ? 'd' : 'a';
+      // 恢复双方速度
+      a.coreStats.speed = a.baseSpeed;
+      d.coreStats.speed = d.baseSpeed;
+      consecutiveCount = 0;
+    } else {
+      // ② 正常速度比较
+      const aSpd = a.coreStats.speed;
+      const dSpd = d.coreStats.speed;
+
+      if (aSpd > dSpd) {
+        actor = 'a';
+      } else if (dSpd > aSpd) {
+        actor = 'd';
       } else {
-        first = d;
-      }
-
-      // 先手行动
-      sequence++;
-      const target1 = first === a ? d : a;
-      const skill1 = pickSkill(first);
-      if (skill1) {
-        logs.push(doAction(first, target1, skill1, tick, sequence));
-        if (target1.currentHp <= 0 || first.currentHp <= 0) break;
-      }
-      first.actionTime -= ACTION_THRESHOLD;
-      first.firstAction = false;
-
-      // CD 自然衰减（仅行动者）
-      tickCooldown(first, tick);
-
-      // 后手行动（如果也准备好了）
-      if (second && second.actionTime >= ACTION_THRESHOLD) {
-        sequence++;
-        const target2 = second === a ? d : a;
-        const skill2 = pickSkill(second);
-        if (skill2) {
-          logs.push(doAction(second, target2, skill2, tick, sequence));
-          if (target2.currentHp <= 0 || second.currentHp <= 0) break;
-        }
-        second.actionTime -= ACTION_THRESHOLD;
-        second.firstAction = false;
-        tickCooldown(second, tick);
+        // 平局：刚动过的让给对方；无历史时攻击方优先
+        actor = lastActor === 'a' ? 'd' : lastActor === 'd' ? 'a' : 'a';
       }
     }
 
-    tick++;
+    // ③ 执行行动
+    sequence++;
+    const activeUnit = actor === 'a' ? a : d;
+    const targetUnit = actor === 'a' ? d : a;
+    const skill = pickSkill(activeUnit);
+    if (skill) {
+      logs.push(doAction(activeUnit, targetUnit, skill, sequence));
+      if (targetUnit.currentHp <= 0) break;
+    }
+
+    // ④ 行动后衰减
+    decaySpeed(activeUnit);
+    activeUnit.firstAction = false;
+
+    // ⑤ CD 衰减（按自身行动次数）
+    tickCooldown(activeUnit);
+
+    // ⑥ 更新连续计数 + 对方恢复速度
+    if (actor === lastActor) {
+      consecutiveCount++;
+    } else {
+      consecutiveCount = 1;
+      // 切换了行动方：上一次行动方（即当前等待方）的速度恢复
+      if (lastActor !== null) {
+        const waiting = lastActor === 'a' ? a : d;
+        waiting.coreStats.speed = waiting.baseSpeed;
+      }
+    }
+
+    lastActor = actor;
+    totalActions++;
   }
 
-  return {
-    victory: d.currentHp <= 0,
-    logs,
-    totalRounds: sequence,
-    attackerRemainingHp: a.currentHp,
-    defenderRemainingHp: d.currentHp,
-  };
+  return buildResult(logs, sequence, a.currentHp, a.maxHp, d.currentHp, d.maxHp, totalActions);
 }
 
 // ============================================
 // 内部辅助
 // ============================================
 
+/** 衰减行动方的有效速度 */
+function decaySpeed(unit: InternalUnit): void {
+  unit.coreStats.speed = Math.max(1, Math.floor(unit.coreStats.speed * SPEED_DECAY));
+}
+
 function doAction(
   actor: InternalUnit, target: InternalUnit,
-  skill: CombatSkill, tick: number, seq: number,
+  skill: CombatSkill, seq: number,
 ): CombatRoundLog {
   const isPhys = skill.damageType === 'physical';
   const atk = isPhys ? actor.coreStats.physicalATK : actor.coreStats.specialATK;
@@ -244,7 +274,7 @@ function doAction(
   const { damage, isCritical } = calculateDamage(actor.level, atk, def, skill.power, skill.weaponModifier);
   target.currentHp = Math.max(0, target.currentHp - damage);
 
-  // 冷却
+  // 冷却：每次自身行动后 CD-1（引擎层在 tickCooldown 中统一处理）
   skill.currentCooldown = skill.cooldownSeconds;
 
   return {
@@ -257,17 +287,48 @@ function doAction(
     defenderHpAfter: target.currentHp,
     isCritical,
     speed: actor.coreStats.speed,
-    tick,
   };
 }
 
-function tickCooldown(unit: InternalUnit, _tick: number): void {
+/**
+ * CD 衰减：每次自身行动后所有技能的 currentCooldown 减 1
+ *
+ * 与速度完全脱钩。速度越快 → 出手越多 → CD 自然转得快。
+ */
+function tickCooldown(unit: InternalUnit): void {
   for (const s of unit.skills) {
     if (s.currentCooldown > 0) {
-      const decay = Math.max(1, Math.floor(unit.coreStats.speed / 20));
-      s.currentCooldown = Math.max(0, s.currentCooldown - decay);
+      s.currentCooldown = Math.max(0, s.currentCooldown - 1);
     }
   }
+}
+
+/** 构建战斗结果 */
+function buildResult(
+  logs: CombatRoundLog[],
+  sequence: number,
+  aHp: number, aMaxHp: number,
+  dHp: number, dMaxHp: number,
+  _totalActions: number,
+): CombatResult {
+  // 防御方死亡 → 攻击方胜利
+  if (dHp <= 0) {
+    return { victory: true, logs, totalRounds: sequence, attackerRemainingHp: aHp, defenderRemainingHp: dHp };
+  }
+  // 攻击方死亡 → 攻击方失败
+  if (aHp <= 0) {
+    return { victory: false, logs, totalRounds: sequence, attackerRemainingHp: aHp, defenderRemainingHp: dHp };
+  }
+  // 行动次数上限 → 按血量比例判定
+  const aRatio = aHp / aMaxHp;
+  const dRatio = dHp / dMaxHp;
+  return {
+    victory: aRatio > dRatio,
+    logs,
+    totalRounds: sequence,
+    attackerRemainingHp: aHp,
+    defenderRemainingHp: dHp,
+  };
 }
 
 // ============================================
@@ -275,14 +336,14 @@ function tickCooldown(unit: InternalUnit, _tick: number): void {
 // ============================================
 
 /**
- * 战斗会话（支持暂停、手动选技能、tick-by-tick 推进）
+ * 战斗会话（事件驱动版，支持暂停、手动选技能、单步推进）
  *
  * 用法：
  *   const session = new CombatSession(attacker, defender, 'encounter');
  *   while (session.state !== 'finished') {
- *     session.tick();  // 推进一个 tick
+ *     session.step();  // 推进一次行动
  *     if (session.state === 'pending_input') {
- *       // 调用 session.performAction(skillId) 手动选择技能
+ *       session.performAction(skillId)  // 手动选择技能
  *     }
  *   }
  *   const result = session.getResult();
@@ -295,7 +356,9 @@ export class CombatSession {
   public state: SessionState = 'running';
   public pendingAction: PendingAction | null = null;
   private seq = 0;
-  private tickCount = 0;
+  private lastActor: 'a' | 'd' | null = null;
+  private consecutiveCount = 0;
+  private totalActions = 0;
   private waitingUnit: InternalUnit | null = null;
   private waitingTarget: InternalUnit | null = null;
 
@@ -314,74 +377,41 @@ export class CombatSession {
       }
       return {
         name: u.name, isPlayer: u.isPlayer, level: u.level,
-        coreStats: stats, skills: u.skills.map(s => ({ ...s })),
+        coreStats: stats,
+        baseSpeed: stats.speed,
+        skills: u.skills.map(s => ({ ...s })),
         currentHp: u.currentHp, maxHp: stats.maxHp,
-        actionTime: 0, equipmentModifiers: u.equipmentModifiers, firstAction: true,
+        equipmentModifiers: u.equipmentModifiers, firstAction: true,
       };
     };
 
     this.a = toInternal(attacker, this.cfg.speedMult);
     this.d = toInternal(defender, 1.0);
 
-    if (this.cfg.firstStrike) this.a.actionTime = ACTION_THRESHOLD;
     if (this.cfg.defHpBonus > 0) this.d.currentHp = Math.ceil(this.d.currentHp * (1 + this.cfg.defHpBonus));
-  }
 
-  /** 推进一个 tick。返回当前状态。 */
-  tick(): SessionState {
-    if (this.state === 'finished') return 'finished';
-    if (this.state === 'pending_input') return 'pending_input';
-
-    this.tickCount++;
-
-    this.a.actionTime += this.a.coreStats.speed;
-    this.d.actionTime += this.d.coreStats.speed;
-
-    const aReady = this.a.actionTime >= ACTION_THRESHOLD;
-    const dReady = this.d.actionTime >= ACTION_THRESHOLD;
-
-    if (!aReady && !dReady) return 'running';
-
-    // 确定谁先出手
-    const first = aReady && dReady
-      ? (this.a.coreStats.speed >= this.d.coreStats.speed ? this.a : this.d)
-      : aReady ? this.a : this.d;
-    const second = (first === this.a && dReady) ? this.d
-      : (first === this.d && aReady) ? this.a : null;
-
-    // ── 处理先手 ──
-    if (first.isPlayer) {
-      this.waitingUnit = first;
-      this.waitingTarget = first === this.a ? this.d : this.a;
+    // ambush: 标记首轮先手，在第一次 step() 时执行
+    if (this.cfg.firstStrike) {
+      this.waitingUnit = this.a;
+      this.waitingTarget = this.d;
       this.state = 'pending_input';
       this.pendingAction = {
-        unitId: first === this.a ? 'attacker' : 'defender',
-        unitName: first.name,
-        availableSkills: first.skills.filter(s => s.currentCooldown <= 0),
+        unitId: 'attacker',
+        unitName: this.a.name,
+        availableSkills: this.a.skills.filter(s => s.currentCooldown <= 0),
       };
-      return 'pending_input';
     }
-    this.doAutoAction(first, first === this.a ? this.d : this.a);
-    if ((this.state as SessionState) === 'finished') return 'finished';
+  }
 
-    // ── 处理后手 ──
-    if ((this.state as SessionState) === 'pending_input') return 'pending_input'; // 先手可能是玩家的第二个单位
-    if (second) {
-      if (second.isPlayer) {
-        this.waitingUnit = second;
-        this.waitingTarget = second === this.a ? this.d : this.a;
-        this.state = 'pending_input';
-        this.pendingAction = {
-          unitId: second === this.a ? 'attacker' : 'defender',
-          unitName: second.name,
-          availableSkills: second.skills.filter(s => s.currentCooldown <= 0),
-        };
-        return 'pending_input';
-      }
-      this.doAutoAction(second, second === this.a ? this.d : this.a);
+  /** 推进一次行动事件。返回当前状态。 */
+  step(): SessionState {
+    if (this.state === 'finished') return 'finished';
+
+    // 处理等待中的 AI 行动
+    if (this.state === 'running') {
+      this.processNextAction();
     }
 
-    this.checkFinished();
     return this.state;
   }
 
@@ -392,64 +422,138 @@ export class CombatSession {
     const skill = this.waitingUnit.skills.find(s => s.id === skillId && s.currentCooldown <= 0);
     if (!skill) return null;
 
-    const log = doAction(this.waitingUnit, this.waitingTarget, skill, this.tickCount, ++this.seq);
+    const log = this.executeAction(this.waitingUnit, this.waitingTarget, skill);
     this.logs.push(log);
-    this.waitingUnit.actionTime -= ACTION_THRESHOLD;
-    this.waitingUnit.firstAction = false;
-    tickCooldown(this.waitingUnit, this.tickCount);
 
     this.waitingUnit = null;
     this.waitingTarget = null;
     this.pendingAction = null;
-    this.state = 'running';
 
     // 处理敌方等待中的行动
     this.processAiActions();
     this.checkFinished();
+
+    if ((this.state as SessionState) === 'finished') return log;
+
     return log;
   }
 
   getResult(): CombatResult {
-    return {
-      victory: this.d.currentHp <= 0,
-      logs: this.logs,
-      totalRounds: this.seq,
-      attackerRemainingHp: this.a.currentHp,
-      defenderRemainingHp: this.d.currentHp,
-    };
+    return buildResult(
+      this.logs, this.seq,
+      this.a.currentHp, this.a.maxHp,
+      this.d.currentHp, this.d.maxHp,
+      this.totalActions,
+    );
   }
 
   /** 自动推进到结束或需要输入 */
   autoAdvance(): void {
-    while (this.state === 'running') this.tick();
+    while (this.state === 'running') this.step();
   }
 
-  private doAutoAction(actor: InternalUnit, target: InternalUnit): void {
-    const skill = pickSkill(actor);
-    if (skill) {
-      const log = doAction(actor, target, skill, this.tickCount, ++this.seq);
-      this.logs.push(log);
-      if (target.currentHp <= 0) { this.state = 'finished'; return; }
+  // ── 私有方法 ──
+
+  /** 处理一次行动事件的决策与执行 */
+  private processNextAction(): void {
+    if (this.a.currentHp <= 0 || this.d.currentHp <= 0) {
+      this.state = 'finished';
+      return;
     }
-    actor.actionTime -= ACTION_THRESHOLD;
-    actor.firstAction = false;
-    tickCooldown(actor, this.tickCount);
+    if (this.totalActions >= ACTION_CAP) {
+      this.state = 'finished';
+      return;
+    }
+
+    let actor: 'a' | 'd';
+
+    // ① 保底检查
+    if (this.consecutiveCount >= PITY_MAX) {
+      actor = this.lastActor === 'a' ? 'd' : 'a';
+      this.a.coreStats.speed = this.a.baseSpeed;
+      this.d.coreStats.speed = this.d.baseSpeed;
+      this.consecutiveCount = 0;
+    } else {
+      // ② 正常速度比较
+      const aSpd = this.a.coreStats.speed;
+      const dSpd = this.d.coreStats.speed;
+
+      if (aSpd > dSpd) {
+        actor = 'a';
+      } else if (dSpd > aSpd) {
+        actor = 'd';
+      } else {
+        actor = this.lastActor === 'a' ? 'd' : this.lastActor === 'd' ? 'a' : 'a';
+      }
+    }
+
+    const activeUnit = actor === 'a' ? this.a : this.d;
+    const targetUnit = actor === 'a' ? this.d : this.a;
+
+    // ③ 如果是玩家 → 暂停等待输入
+    if (activeUnit.isPlayer) {
+      this.waitingUnit = activeUnit;
+      this.waitingTarget = targetUnit;
+      this.state = 'pending_input';
+      this.pendingAction = {
+        unitId: actor === 'a' ? 'attacker' : 'defender',
+        unitName: activeUnit.name,
+        availableSkills: activeUnit.skills.filter(s => s.currentCooldown <= 0),
+      };
+      return;
+    }
+
+    // ④ AI 自动行动
+    const skill = pickSkill(activeUnit);
+    if (skill) {
+      this.logs.push(this.executeAction(activeUnit, targetUnit, skill));
+    }
   }
 
-  private checkFinished(): void {
-    if (this.a.currentHp <= 0 || this.d.currentHp <= 0) this.state = 'finished';
+  /** 执行一次行动（公共逻辑，供手动和自动共用） */
+  private executeAction(
+    actor: InternalUnit, target: InternalUnit, skill: CombatSkill,
+  ): CombatRoundLog {
+    this.seq++;
+    const log = doAction(actor, target, skill, this.seq);
+
+    // 衰减
+    decaySpeed(actor);
+    actor.firstAction = false;
+    tickCooldown(actor);
+
+    // 连续计数
+    const actorKey: 'a' | 'd' = actor === this.a ? 'a' : 'd';
+    if (actorKey === this.lastActor) {
+      this.consecutiveCount++;
+    } else {
+      this.consecutiveCount = 1;
+      if (this.lastActor !== null) {
+        const waiting = this.lastActor === 'a' ? this.a : this.d;
+        waiting.coreStats.speed = waiting.baseSpeed;
+      }
+    }
+
+    this.lastActor = actorKey;
+    this.totalActions++;
+
+    if (target.currentHp <= 0) this.state = 'finished';
+
+    return log;
   }
 
   /** 处理所有就绪的 AI 行动 */
   private processAiActions(): void {
-    while (this.state === 'running') {
-      const aReady = this.a.actionTime >= ACTION_THRESHOLD && !this.a.isPlayer;
-      const dReady = this.d.actionTime >= ACTION_THRESHOLD && !this.d.isPlayer;
-      if (!aReady && !dReady) break;
+    // eslint-disable-next-line no-constant-condition
+    while (true) {
+      if (this.state !== 'running') break;
+      this.processNextAction();
+    }
+  }
 
-      const actor = aReady ? this.a : this.d;
-      const target = actor === this.a ? this.d : this.a;
-      this.doAutoAction(actor, target);
+  private checkFinished(): void {
+    if (this.a.currentHp <= 0 || this.d.currentHp <= 0 || this.totalActions >= ACTION_CAP) {
+      this.state = 'finished';
     }
   }
 }

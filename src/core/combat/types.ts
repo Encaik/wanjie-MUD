@@ -44,9 +44,9 @@ export interface CombatSkill {
   power: number;
   /** 武器加成（正=加成，负=减益） */
   weaponModifier: number;
-  /** 冷却时间（秒） */
+  /** 冷却时间（自身行动次数，每次自身行动后 CD-1） */
   cooldownSeconds: number;
-  /** 当前剩余冷却回合 */
+  /** 当前剩余冷却次数 */
   currentCooldown: number;
 }
 
