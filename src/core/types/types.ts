@@ -685,94 +685,6 @@ export type StatKey = '体质' | '灵根' | '悟性' | '幸运' | '意志';
 /** 扁平属性值字典：将 StatKey 映射为数值 */
 export type FlatStats = Record<StatKey, number>;
 
-/**
- * 快捷函数：获取属性键列表
- * @deprecated 使用 AttributeDefinition[] 动态获取
- */
-export function getStatKeys(): StatKey[] {
-  return ['体质', '灵根', '悟性', '幸运', '意志'];
-}
-
-/**
- * 工厂函数：创建默认 CharacterStats
- * @deprecated 使用世界观 attributeDefinitions 创建默认属性
- */
-export function createDefaultStats(baseValues?: Partial<BaseStats>): CharacterStats {
-  const defaultBase: BaseStats = {
-    体质: 50,
-    灵根: 50,
-    悟性: 50,
-    幸运: 50,
-    意志: 50,
-    ...baseValues,
-  };
-  return {
-    base: defaultBase,
-    growth: { 体质: 0, 灵根: 0, 悟性: 0, 幸运: 0, 意志: 0 },
-  };
-}
-
-/**
- * 工厂函数：从 BaseStats 创建 CharacterStats（growth 置零）
- * @deprecated 使用新属性系统替代
- */
-export function fromOldStats(oldStats: BaseStats): CharacterStats {
-  return {
-    base: { ...oldStats },
-    growth: { 体质: 0, 灵根: 0, 悟性: 0, 幸运: 0, 意志: 0 },
-  };
-}
-
-/**
- * 工厂函数：创建带加成的 CharacterStats
- */
-export function createStatsWithBonuses(
-  baseValues: BaseStats,
-  growthBonuses: Partial<GrowthStats>
-): CharacterStats {
-  return {
-    base: { ...baseValues },
-    growth: {
-      体质: growthBonuses.体质 || 0,
-      灵根: growthBonuses.灵根 || 0,
-      悟性: growthBonuses.悟性 || 0,
-      幸运: growthBonuses.幸运 || 0,
-      意志: growthBonuses.意志 || 0,
-    },
-  };
-}
-
-/**
- * 更新成长属性
- */
-export function updateGrowthStats(
-  stats: CharacterStats,
-  changes: Partial<GrowthStats>
-): CharacterStats {
-  return {
-    ...stats,
-    growth: {
-      ...stats.growth,
-      ...changes,
-    },
-  };
-}
-
-/**
- * 更新基础属性
- */
-export function updateBaseStats(
-  stats: CharacterStats,
-  changes: Partial<BaseStats>
-): CharacterStats {
-  return {
-    ...stats,
-    base: {
-      ...stats.base,
-      ...changes,
-    },
-  };
-}
 
 /**
  * 获取可成长属性上限
@@ -781,28 +693,6 @@ export function updateBaseStats(
  */
 export function getGrowthStatCap(level: number): number {
   return level * 2;
-}
-
-/**
- * 限制可成长属性值不超过上限
- * @param value 当前属性值
- * @param level 等级
- * @returns 限制后的属性值
- */
-export function clampGrowthStatValue(value: number, level: number): number {
-  const maxCap = getGrowthStatCap(level);
-  return Math.max(0, Math.min(value, maxCap));
-}
-
-/**
- * 创建默认角色属性
- */
-export function createDefaultCharacterStats(): CharacterStats {
-  const base = 50;
-  return {
-    base: { 体质: base, 灵根: base, 悟性: base, 幸运: base, 意志: base },
-    growth: { 体质: 0, 灵根: 0, 悟性: 0, 幸运: 0, 意志: 0 },
-  };
 }
 
 /**
@@ -961,14 +851,6 @@ export type ExtensibleWorldType = string & { [WorldTypeBrand]: true };
  * 如需类型级校验，使用 ExtensibleWorldType + asWorldType()。
  */
 export type WorldType = string;
-
-/**
- * @deprecated 使用 WorldViewRegistry.getAllIds() 替代
- */
-export function getBuiltinWorldTypes(): string[] {
-  // Dynamic import not possible at module level; callers should use registry directly
-  return ['修仙', '高武', '科技', '魔幻', '异能', '仙侠', '武侠', '末世'];
-}
 
 // 世界难度等级（由世界系数决定）
 export type WorldDifficulty = '简单' | '普通' | '困难' | '噩梦' | '地狱' | '深渊';
@@ -1475,7 +1357,8 @@ export interface CultivationResult {
   success: boolean;
   message: string;
   statChanges: Partial<GrowthStats>;
-  itemsCost?: InventoryItem[]; // 消耗的道具
+  /** 消耗的物品（新统一物品格式） */
+  itemsCost?: import('@/modules/item/types').ItemInstance[];
   canAfford?: boolean; // 是否有足够资源
   breakthroughAttempt?: boolean; // 是否尝试突破
   breakthroughSuccess?: boolean; // 突破是否成功

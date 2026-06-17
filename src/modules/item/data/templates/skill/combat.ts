@@ -7,7 +7,7 @@
 import type { SkillTemplate, SkillTag } from '@/modules/item/types';
 
 export const HEAVY_STRIKE: SkillTemplate = {
-  templateId: 'heavy_strike',
+  templateId: 'wanjie:cultivation:heavy_strike',
   name: '重击',
   description: '蓄力一击，造成高于普通攻击的伤害。',
   category: 'skill',
@@ -29,7 +29,7 @@ export const HEAVY_STRIKE: SkillTemplate = {
 };
 
 export const WHIRLWIND_SLASH: SkillTemplate = {
-  templateId: 'whirlwind_slash',
+  templateId: 'wanjie:cultivation:whirlwind_slash',
   name: '旋风斩',
   description: '旋转武器攻击周围所有敌人，造成群体伤害。',
   category: 'skill',
@@ -51,7 +51,7 @@ export const WHIRLWIND_SLASH: SkillTemplate = {
 };
 
 export const LIFESTEAL_STRIKE: SkillTemplate = {
-  templateId: 'lifesteal_strike',
+  templateId: 'wanjie:cultivation:lifesteal_strike',
   name: '嗜血一击',
   description: '以血祭剑，造成伤害的同时吸取敌方生命值。',
   category: 'skill',
@@ -76,7 +76,7 @@ export const LIFESTEAL_STRIKE: SkillTemplate = {
 };
 
 export const FATAL_STRIKE: SkillTemplate = {
-  templateId: 'fatal_strike',
+  templateId: 'wanjie:cultivation:fatal_strike',
   name: '致命一击',
   description: '瞄准敌人要害的致命攻击，暴击率大幅提升。对生命值低的敌人额外造成伤害。',
   category: 'skill',
@@ -100,7 +100,7 @@ export const FATAL_STRIKE: SkillTemplate = {
 };
 
 export const COUNTER_STANCE: SkillTemplate = {
-  templateId: 'counter_stance',
+  templateId: 'wanjie:cultivation:counter_stance',
   name: '反击架势',
   description: '摆出反击架势，受到攻击时自动反击敌人。',
   category: 'skill',

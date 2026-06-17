@@ -20,7 +20,7 @@ import { gaowuTexts } from './gaowu';
 import { kejiTexts } from './keji';
 import { mohuanTexts } from './mohuan';
 import { moshiTexts } from './moshi';
-import { WorldTextDefinition, WorldTextsMap, WorldTerminology, WorldStatNames, PathTextDefinition, PathTypeId } from './types';
+import { WorldTextDefinition, WorldTextsMap, WorldTerminology, WorldStatNames } from './types';
 import { wuxiaTexts } from './wuxia';
 import { xianxiaTexts } from './xianxia';
 import { xiuxianTexts } from './xiuxian';
@@ -33,14 +33,8 @@ import { WorldType } from '@/core/types';
 
 /**
  * 所有世界观文案
- * 
- * 添加新世界观：
- * 1. 复制 worlds/xiuxian.ts 为新文件
- * 2. 修改文件中的文案内容
- * 3. 在上方 import 新文件
- * 4. 在下方映射表中添加新条目
  */
-export const worldTexts: WorldTextsMap = {
+const worldTexts: WorldTextsMap = {
   '修仙': xiuxianTexts,
   '高武': gaowuTexts,
   '科技': kejiTexts,
@@ -80,53 +74,6 @@ export function getWorldTerminology(worldType: WorldType): WorldTerminology {
  */
 export function getWorldStatNames(worldType: WorldType): WorldStatNames {
   return getWorldTexts(worldType).stats;
-}
-
-/**
- * 获取所有支持的世界观列表
- */
-export function getSupportedWorlds(): WorldType[] {
-  return Object.keys(worldTexts) as WorldType[];
-}
-
-/**
- * 检查世界观是否支持
- */
-export function isWorldSupported(worldType: string): worldType is WorldType {
-  return worldType in worldTexts;
-}
-
-// ============================================
-// 流派相关辅助函数
-// ============================================
-
-/**
- * 获取指定世界观的所有流派文案
- */
-export function getWorldPaths(worldType: WorldType): WorldTextDefinition['paths'] {
-  return getWorldTexts(worldType).paths;
-}
-
-/**
- * 获取指定世界观的特定流派文案
- */
-export function getPathText(worldType: WorldType, pathId: PathTypeId): PathTextDefinition {
-  const paths = getWorldPaths(worldType);
-  return paths[pathId];
-}
-
-/**
- * 获取流派的显示名称
- */
-export function getPathName(worldType: WorldType, pathId: PathTypeId): string {
-  return getPathText(worldType, pathId).name;
-}
-
-/**
- * 获取流派的描述
- */
-export function getPathDescription(worldType: WorldType, pathId: PathTypeId): string {
-  return getPathText(worldType, pathId).description;
 }
 
 // ============================================

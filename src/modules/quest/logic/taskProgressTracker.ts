@@ -268,7 +268,7 @@ export function getTutorialProgressInfo(state: TutorialState): {
  */
 export function shouldSkipPhaseZero(protagonist: Protagonist): boolean {
   const inventory = protagonist.inventory ?? [];
-  const starterItemIds = ['spirit_stone', 'qi_gathering_pill', 'foundation_pill', 'rejuvenation_pill'];
+  const starterItemIds = ['wanjie:common:spirit_stone', 'wanjie:cultivation:qi_gathering_pill', 'wanjie:cultivation:foundation_pill', 'wanjie:common:rejuvenation_pill'];
   // 有至少 2 种初始物品即认为是旧角色
   const foundCount = starterItemIds.filter(id =>
     inventory.some(i => {

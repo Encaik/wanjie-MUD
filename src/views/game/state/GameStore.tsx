@@ -1,4 +1,3 @@
-// @ts-nocheck — TODO: 统一物品系统迁移后重构
 /**
  * GameStore — 游戏状态存储（替代 useGameState.tsx 中的 GameProvider）
  *
@@ -25,7 +24,7 @@ import {
   createDefaultDailyRoundState,
   createDefaultWeeklyRoundState,
 } from '@/core/types';
-import { createInventoryItem } from '@/core/types';
+import { addItem } from '@/modules/item/logic';
 import {
   createDefaultTutorialState,
   createLegacyCompatibleTutorialState,
@@ -35,9 +34,6 @@ import {
 } from '@/modules/quest';
 import { worldEvents } from '@/modules/theme';
 import { loadGameStateWithRecovery, safeSaveGameState } from '@/shared/utils/saveUtils';
-
-// TODO: 统一物品系统迁移 — 应从 modules/item/data/ 获取模板
-const spiritStoneItems = [{ id: 'spirit_stone', name: '灵石', type: '灵石', rarity: '普通' as const, description: '', stackable: true, maxStack: 999999, effects: [] as never[] }];
 
 import { createInitialGameState } from './initialState';
 
@@ -60,37 +56,35 @@ export interface GameStoreValue {
 export const StoreContext = createContext<GameStoreValue | null>(null);
 
 /** 发放引导奖励到主角背包和状态 */
-function applyTutorialReward(state: GameState, reward: { spiritStones?: number; experience?: number; items?: Array<{ item: { id: string; name?: string; description?: string; type?: string; rarity?: string; stackable?: boolean; maxStack?: number; effects?: unknown[] }; quantity: number }>; message?: string }): GameState {
+function applyTutorialReward(
+  state: GameState,
+  reward: {
+    spiritStones?: number;
+    experience?: number;
+    items?: Array<{ item: { id: string }; quantity: number }>;
+    message?: string;
+  },
+): GameState {
   if (!state.protagonist) return state;
-  let newInventory = [...state.protagonist.inventory];
+  let newItems = [...state.protagonist.items];
 
   // 发放物品
   if (reward.items) {
     for (const r of reward.items) {
-      const idx = newInventory.findIndex(i => (i as any).definition?.id === r.item.id);
-      if (idx >= 0) {
-        newInventory[idx] = { ...newInventory[idx], quantity: newInventory[idx].quantity + r.quantity };
-      } else {
-        newInventory.push(createInventoryItem(r.item as any, r.quantity));
-      }
+      newItems = addItem(newItems, r.item.id, r.quantity);
     }
   }
 
   // 发放灵石
   if (reward.spiritStones && reward.spiritStones > 0) {
-    const si = newInventory.findIndex(i => (i as any).definition?.id === 'spirit_stone');
-    if (si >= 0) {
-      newInventory[si] = { ...newInventory[si], quantity: newInventory[si].quantity + reward.spiritStones };
-    } else {
-      newInventory.push(createInventoryItem(spiritStoneItems[0], reward.spiritStones));
-    }
+    newItems = addItem(newItems, 'wanjie:common:spirit_stone', reward.spiritStones);
   }
 
   return {
     ...state,
     protagonist: {
       ...state.protagonist,
-      inventory: newInventory,
+      items: newItems,
       experience: state.protagonist.experience + (reward.experience || 0),
     },
   };

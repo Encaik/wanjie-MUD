@@ -7,7 +7,7 @@ import type { TechniqueTemplate, SkillTag } from '@/modules/item/types';
 const SKILL_TAG = 'magic' as SkillTag;
 
 export const FIRE_SCRIPTURE: TechniqueTemplate = {
-  templateId: 'fire_scripture',
+  templateId: 'wanjie:cultivation:fire_scripture',
   name: '焚天诀',
   description: '至阳至烈的火系攻击功法，修炼至极致可焚尽万物。',
   category: 'technique',
@@ -30,7 +30,7 @@ export const FIRE_SCRIPTURE: TechniqueTemplate = {
 };
 
 export const THUNDER_FIST_MANUAL: TechniqueTemplate = {
-  templateId: 'thunder_fist_manual',
+  templateId: 'wanjie:cultivation:thunder_fist_manual',
   name: '奔雷拳经',
   description: '以拳御雷的霸道功法，拳出雷动，刚猛无俦。',
   category: 'technique',
@@ -53,7 +53,7 @@ export const THUNDER_FIST_MANUAL: TechniqueTemplate = {
 };
 
 export const WIND_SWORD_ART: TechniqueTemplate = {
-  templateId: 'wind_sword_art',
+  templateId: 'wanjie:cultivation:wind_sword_art',
   name: '清风剑法',
   description: '飘逸灵动的风系攻击功法，剑出如风，无迹可寻。',
   category: 'technique',
@@ -76,7 +76,7 @@ export const WIND_SWORD_ART: TechniqueTemplate = {
 };
 
 export const IRON_BODY_SCRIPTURE: TechniqueTemplate = {
-  templateId: 'iron_body_scripture',
+  templateId: 'wanjie:cultivation:iron_body_scripture',
   name: '金刚不坏功',
   description: '佛门炼体防御功法，修炼至大成可铸金刚不坏之身。',
   category: 'technique',
@@ -99,7 +99,7 @@ export const IRON_BODY_SCRIPTURE: TechniqueTemplate = {
 };
 
 export const WATER_SHIELD_ART: TechniqueTemplate = {
-  templateId: 'water_shield_art',
+  templateId: 'wanjie:cultivation:water_shield_art',
   name: '水镜术',
   description: '以水化镜的防御功法，可偏转敌方攻击，以柔克刚。',
   category: 'technique',
@@ -122,7 +122,7 @@ export const WATER_SHIELD_ART: TechniqueTemplate = {
 };
 
 export const LIGHT_ARMOR_MANTRA: TechniqueTemplate = {
-  templateId: 'light_armor_mantra',
+  templateId: 'wanjie:cultivation:light_armor_mantra',
   name: '灵光护体诀',
   description: '基础防御功法，以灵力在体表形成光甲，抵御伤害。',
   category: 'technique',

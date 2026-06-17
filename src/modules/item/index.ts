@@ -37,6 +37,15 @@ export type {
   ItemActionResult,
   // 解析
   ResolvedItem,
+  // 命名空间 ID
+  ParsedTemplateId,
+} from './types';
+
+// ID 工具
+export {
+  parseTemplateId,
+  buildTemplateId,
+  isValidTemplateId,
 } from './types';
 
 // 数据

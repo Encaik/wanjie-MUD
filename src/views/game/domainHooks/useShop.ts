@@ -1,4 +1,3 @@
-// @ts-nocheck — TODO: 统一物品系统迁移后重构
 /**
  * useShop — 商店领域 Hook
  *
@@ -9,17 +8,7 @@
 
 import { useCallback } from 'react';
 
-import type { ItemDefinition } from '@/core/types';
-import { createInventoryItem } from '@/core/types';
-
-// TODO: 统一物品系统迁移 — 暂代 addToInventory
-function addToInventory(inventory: Record<string, unknown>[], item: Record<string, unknown>): Record<string, unknown>[] {
-  const existing = inventory.find((i: Record<string, unknown>) => (i as { definition?: { id?: string } }).definition?.id === (item as { definition?: { id?: string } }).definition?.id);
-  if (existing && (existing as { quantity?: number }).quantity !== undefined) {
-    return inventory.map((i: Record<string, unknown>) => i === existing ? { ...i, quantity: ((i as { quantity: number }).quantity || 0) + ((item as { quantity: number }).quantity || 1) } : i);
-  }
-  return [...inventory, item];
-}
+import { addItem, removeItem, findItemsByTemplate, getItemCount } from '@/modules/item/logic';
 
 import { useGameStore } from '../state/GameStore';
 import { createAddMessageInternal } from './helpers';
@@ -39,62 +28,54 @@ export function useShop() {
 
   const buyShopItem = useCallback((
     itemId: string, price: number, currencyType: string, type: 'item' | 'technique' | 'equipment',
-    itemData?: any, quantity: number = 1,
+    itemData?: Record<string, unknown>, quantity: number = 1,
     newCurrencies?: { spirit_stone?: number; contribution?: number }
   ) => {
     dispatch(prev => {
       if (!prev.protagonist) return prev;
       const totalCost = price * quantity;
-      const itemDef = itemData as ItemDefinition | undefined;
-
-      if (!itemDef || !itemDef.name) {
-        const currencyName = getCurrencyName(currencyType, prev.protagonist.world.type);
-        const message = `花费 ${totalCost} ${currencyName}`;
-        let newInventory = prev.protagonist.inventory;
-        if (newCurrencies?.spirit_stone !== undefined) {
-          const idx = newInventory.findIndex(i => i.definition.id === 'spirit_stone');
-          if (idx !== -1) { newInventory = [...newInventory]; newInventory[idx] = { ...newInventory[idx], quantity: newCurrencies.spirit_stone }; }
-        }
-        return {
-          ...prev,
-          protagonist: { ...prev.protagonist, inventory: newInventory, currencies: { ...prev.protagonist.currencies, contribution: newCurrencies?.contribution ?? prev.protagonist.currencies?.contribution ?? 0 } },
-          messages: addMsgInt(prev.messages, 'success', '购买成功', message),
-        };
-      }
-
-      const itemName = itemDef.name || itemId;
+      const itemName = (itemData?.name as string) || itemId;
       const currencyName = getCurrencyName(currencyType, prev.protagonist.world.type);
-      const newItem = createInventoryItem(itemDef, quantity);
-      let newInventory = addToInventory(prev.protagonist.inventory, newItem);
 
+      // 添加购买物品到背包
+      let newItems = addItem(prev.protagonist.items, itemId, quantity);
+
+      // 更新货币余额
+      const newCurrenciesState = {
+        ...(prev.protagonist.currencies ?? { contribution: 0, spirit_stone: 0 }),
+      };
       if (newCurrencies?.spirit_stone !== undefined) {
-        const idx = newInventory.findIndex(i => i.definition.id === 'spirit_stone');
-        if (idx !== -1) { newInventory = [...newInventory]; newInventory[idx] = { ...newInventory[idx], quantity: newCurrencies.spirit_stone }; }
-        else if (newCurrencies.spirit_stone > 0) {
-          const def: ItemDefinition = { id: 'spirit_stone', name: '武晶', type: '灵石', rarity: '普通', description: '修仙界的通用货币', stackable: true, maxStack: 999999, effects: [] };
-          newInventory = addToInventory(newInventory, createInventoryItem(def, newCurrencies.spirit_stone));
+        const currentSpiritStones = getItemCount(newItems, 'wanjie:common:spirit_stone');
+        if (newCurrencies.spirit_stone > currentSpiritStones) {
+          newItems = addItem(newItems, 'wanjie:common:spirit_stone', newCurrencies.spirit_stone - currentSpiritStones);
         }
       }
+      if (newCurrencies?.contribution !== undefined) {
+        (newCurrenciesState as Record<string, number>).contribution = newCurrencies.contribution;
+      }
 
-      const message = quantity > 1 ? `花费 ${totalCost} ${currencyName}，购买了 ${quantity} 个「${itemName}」` : `花费 ${totalCost} ${currencyName}，购买了「${itemName}」`;
+      const message = quantity > 1
+        ? `花费 ${totalCost} ${currencyName}，购买了 ${quantity} 个「${itemName}」`
+        : `花费 ${totalCost} ${currencyName}，购买了「${itemName}」`;
+
       return {
         ...prev,
-        protagonist: { ...prev.protagonist, inventory: newInventory, currencies: { ...prev.protagonist.currencies, contribution: newCurrencies?.contribution ?? prev.protagonist.currencies?.contribution ?? 0 } },
+        protagonist: { ...prev.protagonist, items: newItems, currencies: newCurrenciesState },
         messages: addMsgInt(prev.messages, 'success', '购买成功', message),
       };
     });
   }, [dispatch]);
 
-  const buyWithContribution = useCallback((itemId: string, price: number, type: 'item' | 'technique' | 'equipment', itemData?: any, quantity: number = 1) => {
+  const buyWithContribution = useCallback((itemId: string, price: number, type: 'item' | 'technique' | 'equipment', itemData?: Record<string, unknown>, quantity: number = 1) => {
     dispatch(prev => {
       if (!prev.protagonist) return prev;
       const totalCost = price * quantity;
-      const itemDef = itemData as ItemDefinition;
-      const itemName = itemDef?.name || itemId;
-      const newItem = createInventoryItem(itemDef, quantity);
-      const newInventory = addToInventory(prev.protagonist.inventory, newItem);
-      const message = quantity > 1 ? `花费 ${totalCost} 贡献，购买了 ${quantity} 个「${itemName}」` : `花费 ${totalCost} 贡献，购买了「${itemName}」`;
-      return { ...prev, protagonist: { ...prev.protagonist, inventory: newInventory }, messages: addMsgInt(prev.messages, 'success', '购买成功', message) };
+      const itemName = (itemData?.name as string) || itemId;
+      const newItems = addItem(prev.protagonist.items, itemId, quantity);
+      const message = quantity > 1
+        ? `花费 ${totalCost} 贡献，购买了 ${quantity} 个「${itemName}」`
+        : `花费 ${totalCost} 贡献，购买了「${itemName}」`;
+      return { ...prev, protagonist: { ...prev.protagonist, items: newItems }, messages: addMsgInt(prev.messages, 'success', '购买成功', message) };
     });
   }, [dispatch]);
 

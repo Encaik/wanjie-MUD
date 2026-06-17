@@ -4,6 +4,7 @@
  * 所有函数接受 seed 参数，使用 seeded RNG 确保确定性。
  */
 
+import { parseTemplateId } from '../types';
 import type { ItemInstance, Rarity } from '../types';
 import type { ItemTemplate } from '../types';
 import { getTemplate, ALL_TEMPLATES } from '../data/index';
@@ -159,7 +160,11 @@ export function generateRandomDrop(
     if (!t.isDroppable) return false;
     if (t.category === 'currency' || t.category === 'fragment') return false;
     if (t.rarity !== rarity) return false;
-    if (worldType && t.worldType && t.worldType !== worldType) return false;
+    // 世界观过滤：通过 templateId 中的 worldview 段判断
+    if (worldType) {
+      const parsed = parseTemplateId(t.templateId);
+      if (parsed && parsed.worldview !== 'common' && parsed.worldview !== worldType) return false;
+    }
     return true;
   });
 

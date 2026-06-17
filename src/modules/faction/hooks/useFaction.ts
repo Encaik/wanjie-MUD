@@ -57,7 +57,7 @@ interface UseGameFactionProps {
     details?: string,
     rewards?: MessageRecord['rewards']
   ) => MessageRecord[];
-  addToInventory: (inventory: InventoryItem[], newItem: InventoryItem) => InventoryItem[];
+  addToInventory?: (inventory: InventoryItem[], newItem: InventoryItem) => InventoryItem[];
 }
 
 export interface UseGameFactionReturn {
@@ -920,7 +920,9 @@ export function useGameFaction({
       // 物品奖励
       if (achievement.rewards.items) {
         for (const item of achievement.rewards.items) {
-          newInventory = addToInventory(newInventory, item);
+          if (addToInventory) {
+            newInventory = addToInventory(newInventory, item);
+          }
           rewards.push(`${item.definition.name} x${item.quantity}`);
         }
       }

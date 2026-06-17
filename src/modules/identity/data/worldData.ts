@@ -28,57 +28,8 @@ export function getWorldviewIds(): string[] {
   return WorldViewRegistry.getInstance().getAllIds();
 }
 
-/** @deprecated 使用 getWorldviewIds() 替代 */
-export const WORLD_TYPES: WorldType[] = getWorldTypes();
-
-/**
- * 根据世界系数获取世界难度
- */
-export function getWorldDifficulty(coefficient: number): WorldDifficulty {
-  if (coefficient >= 1.5) return '噩梦';
-  if (coefficient >= 1.25) return '困难';
-  if (coefficient >= 1.05) return '普通';
-  return '简单';
-}
-
-/**
- * 获取世界系数对敌人属性的加成
- * 系数越高，敌人越强
- */
-export function getEnemyCoefficientBonus(coefficient: number): {
-  hpBonus: number;
-  attackBonus: number;
-  defenseBonus: number;
-  rewardBonus: number;
-} {
-  return {
-    hpBonus: coefficient,
-    attackBonus: coefficient * 0.9,
-    defenseBonus: coefficient * 0.8,
-    rewardBonus: 1 + (coefficient - 1) * 0.5, // 奖励线性增长
-  };
-}
-
 // ============================================
 // 世界基础数值配置
-// ============================================
-
-/** @deprecated 前端不再查询世界数据，世界数据通过后端 API 返回的 World 对象获取 */
-export interface WorldStats {
-  coefficient: number;
-  baseHp: number;
-  hpPerLevel: number;
-  hpPerConstitution: number;
-  baseAttack: number;
-  attackPerLevel: number;
-  attackPerConstitution: number;
-  attackPerSpiritRoot: number;
-  baseDefense: number;
-  defensePerLevel: number;
-  defensePerWillpower: number;
-}
-
-// ============================================
 // 世界数据定义
 // ============================================
 

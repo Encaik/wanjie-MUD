@@ -30,11 +30,12 @@ export function createItemInstance(
   overrides: Partial<Pick<ItemInstance, 'level' | 'quantity' | 'element' | 'affixes' | 'isFragment' | 'source'>> = {}
 ): ItemInstance {
   const template = getTemplate(templateId);
+  const resolvedId = template.templateId; // 使用模板的标准 ID（兼容旧 ID 自动映射）
   const rarityConfig = getRarityConfig(template.rarity);
 
   return {
     instanceId: generateInstanceId(),
-    templateId,
+    templateId: resolvedId,
     quantity: overrides.quantity ?? 1,
     level: overrides.level ?? 1,
     exp: 0,

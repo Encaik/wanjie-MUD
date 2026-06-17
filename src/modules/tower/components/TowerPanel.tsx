@@ -1,4 +1,3 @@
-// @ts-nocheck — TODO: 统一物品系统迁移后重构
 /**
  * 试炼面板组件
  */
@@ -7,9 +6,9 @@
 
 import { useState } from 'react';
 
-import { 
-  Swords, 
-  Trophy, 
+import {
+  Swords,
+  Trophy,
   Clock,
   CheckCircle2,
   ChevronDown,
@@ -23,11 +22,12 @@ import { Badge } from '@/shared/ui/data-display/badge';
 import { Button } from '@/shared/ui/actions/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/shared/ui/data-display/card';
 import { generateTowerEnemy } from '@/modules/tower/logic/towerSystem';
-import { 
-  TowerProgress, 
-  TowerEnemy, 
+import {
+  TowerProgress,
+  TowerEnemy,
 } from '@/modules/tower/logic/types';
-import { WorldBalanceStats, ItemRarity } from '@/core/types';
+import type { WorldBalanceStats, ItemRarity } from '@/core/types';
+import { getRarityStyle } from '@/modules/theme/data/rarityStyles';
 
 
 interface TowerPanelProps {
@@ -111,9 +111,9 @@ export function TowerPanel({
   
   // 获取品质对应的 Badge 样式
   const getRarityBadgeStyle = (rarity: ItemRarity): string => {
-    const bgClass = getRarityBgClass(rarity);
-    const textClass = getRarityColorClass(rarity);
-    const borderClass = getRarityBorderClass(rarity);
+    const bgClass = getRarityStyle(rarity, 'bg');
+    const textClass = getRarityStyle(rarity, 'text');
+    const borderClass = getRarityStyle(rarity, 'border');
     return `${bgClass} ${textClass} ${borderClass}`;
   };
   

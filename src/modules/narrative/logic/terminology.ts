@@ -54,7 +54,7 @@ export interface WorldTerminology {
 }
 
 // 世界术语映射表
-export const worldTerminology: Record<WorldType, WorldTerminology> = {
+const worldTerminology: Record<WorldType, WorldTerminology> = {
   '修仙': {
     power: '灵力',
     energy: '灵气',
@@ -246,19 +246,6 @@ export function getTerminology(worldType: WorldType): WorldTerminology {
   return worldTerminology[worldType] || worldTerminology['修仙'];
 }
 
-// 快捷获取方法
-export function getResourceName(worldType: WorldType): string {
-  return getTerminology(worldType).resource;
-}
-
-export function getResourceDesc(worldType: WorldType): string {
-  return getTerminology(worldType).resourceDesc;
-}
-
-export function getDungeonName(worldType: WorldType): string {
-  return getTerminology(worldType).dungeon;
-}
-
 export function getDungeonInfo(worldType: WorldType): { name: string; desc: string; location: string } {
   const term = getTerminology(worldType);
   return {
@@ -280,65 +267,3 @@ export function getAttributeNames(worldType: WorldType): Record<string, string> 
   };
 }
 
-// 获取突破丹药名称（根据境界等级）
-export function getBreakthroughPillName(worldType: WorldType, level: number): string {
-  const term = getTerminology(worldType);
-  
-  // 根据等级返回不同品质的突破丹药名称
-  if (level < 15) {
-    // 低境界
-    if (worldType === '修仙') return '筑基丹';
-    if (worldType === '科技') return '低级进化液';
-    if (worldType === '魔幻') return '低级魔力药剂';
-    return term.breakthroughPill;
-  } else if (level < 50) {
-    // 中境界
-    if (worldType === '修仙') return '结金丹';
-    if (worldType === '科技') return '中级进化液';
-    if (worldType === '魔幻') return '中级魔力药剂';
-    return term.breakthroughPill;
-  } else {
-    // 高境界
-    if (worldType === '修仙') return '渡劫丹';
-    if (worldType === '科技') return '高级进化液';
-    if (worldType === '魔幻') return '高级魔力药剂';
-    return term.breakthroughPill;
-  }
-}
-
-// 获取修炼丹药名称（根据品质）
-export function getCultivationPillName(worldType: WorldType, quality: 'low' | 'mid' | 'high'): string {
-  const term = getTerminology(worldType);
-  
-  const qualityNames: Record<WorldType, { low: string; mid: string; high: string }> = {
-    '修仙': { low: '聚气丹', mid: '凝元丹', high: '化神丹' },
-    '高武': { low: '聚气丹', mid: '凝元丹', high: '化神丹' },
-    '科技': { low: '初级强化剂', mid: '中级强化剂', high: '高级强化剂' },
-    '魔幻': { low: '初级冥想药剂', mid: '中级冥想药剂', high: '高级冥想药剂' },
-    '异能': { low: '初级觉醒剂', mid: '中级觉醒剂', high: '高级觉醒剂' },
-    '仙侠': { low: '聚仙丹', mid: '凝仙丹', high: '化仙丹' },
-    '武侠': { low: '培元丹', mid: '凝气丹', high: '洗髓丹' },
-    '末世': { low: '初级进化剂', mid: '中级进化剂', high: '高级进化剂' },
-  };
-  
-  return qualityNames[worldType]?.[quality] || term.cultivationPill;
-}
-
-// 导出所有丹药名称（用于items.ts）
-export function getAllPillNames(worldType: WorldType): {
-  breakthroughLow: string;
-  breakthroughMid: string;
-  breakthroughHigh: string;
-  cultivationLow: string;
-  cultivationMid: string;
-  cultivationHigh: string;
-} {
-  return {
-    breakthroughLow: getBreakthroughPillName(worldType, 1),
-    breakthroughMid: getBreakthroughPillName(worldType, 25),
-    breakthroughHigh: getBreakthroughPillName(worldType, 60),
-    cultivationLow: getCultivationPillName(worldType, 'low'),
-    cultivationMid: getCultivationPillName(worldType, 'mid'),
-    cultivationHigh: getCultivationPillName(worldType, 'high'),
-  };
-}

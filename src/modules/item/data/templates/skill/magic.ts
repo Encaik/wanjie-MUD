@@ -7,7 +7,7 @@
 import type { SkillTemplate, SkillTag } from '@/modules/item/types';
 
 export const FIREBALL: SkillTemplate = {
-  templateId: 'fireball',
+  templateId: 'wanjie:cultivation:fireball',
   name: '火球术',
   description: '凝聚火焰之力，释放一颗火球攻击单个敌人，造成火焰伤害。',
   category: 'skill',
@@ -29,7 +29,7 @@ export const FIREBALL: SkillTemplate = {
 };
 
 export const ICE_LANCE: SkillTemplate = {
-  templateId: 'ice_lance',
+  templateId: 'wanjie:cultivation:ice_lance',
   name: '冰枪术',
   description: '凝结寒冰为枪，投射攻击单个敌人，造成冰霜伤害并可能减速。',
   category: 'skill',
@@ -54,7 +54,7 @@ export const ICE_LANCE: SkillTemplate = {
 };
 
 export const THUNDER_STORM: SkillTemplate = {
-  templateId: 'thunder_storm',
+  templateId: 'wanjie:cultivation:thunder_storm',
   name: '雷霆万钧',
   description: '召唤天雷轰击所有敌人，造成大范围雷电伤害。',
   category: 'skill',
@@ -78,7 +78,7 @@ export const THUNDER_STORM: SkillTemplate = {
 };
 
 export const HEALING_LIGHT: SkillTemplate = {
-  templateId: 'healing_light',
+  templateId: 'wanjie:cultivation:healing_light',
   name: '治愈之光',
   description: '以灵力化为治愈之光，恢复自身或单个友方生命值。',
   category: 'skill',
@@ -102,7 +102,7 @@ export const HEALING_LIGHT: SkillTemplate = {
 };
 
 export const SPIRIT_SHIELD: SkillTemplate = {
-  templateId: 'spirit_shield',
+  templateId: 'wanjie:cultivation:spirit_shield',
   name: '灵气护盾',
   description: '以灵力在身前凝聚护盾，吸收一定量的伤害。',
   category: 'skill',
@@ -126,7 +126,7 @@ export const SPIRIT_SHIELD: SkillTemplate = {
 };
 
 export const EARTH_QUAKE: SkillTemplate = {
-  templateId: 'earth_quake',
+  templateId: 'wanjie:cultivation:earth_quake',
   name: '地动术',
   description: '震动大地，对所有敌人造成土系伤害并可能眩晕。',
   category: 'skill',

@@ -1,4 +1,3 @@
-// @ts-nocheck — TODO: 统一物品系统迁移后重构
 /**
  * useDevMode — 开发者模式 Hook
  *
@@ -10,6 +9,7 @@
 import { useCallback } from 'react';
 
 import { DEFAULT_PROTAGONIST_EXTENSION } from '@/core/types';
+import { addItem } from '@/modules/item/logic';
 
 import { useGameStore } from '../state/GameStore';
 import { createAddMessageInternal } from './helpers';
@@ -77,25 +77,15 @@ export function useDevMode() {
     onAddItem: useCallback((itemId: string, quantity: number) => {
       dispatch(prev => {
         if (!prev.protagonist) return prev;
-        const existing = prev.protagonist.inventory.find(i => i.definition.id === itemId);
-        if (existing) {
-          return { ...prev, protagonist: { ...prev.protagonist, inventory: prev.protagonist.inventory.map(i => i.definition.id === itemId ? { ...i, quantity: i.quantity + quantity } : i) } };
-        }
-        const { createInventoryItem } = require('@/core/types');
-        const def = { id: itemId, name: itemId, type: '材料' as const, rarity: '普通' as const, description: '', effects: [] as never[], stackable: true, maxStack: 99 };
-        return { ...prev, protagonist: { ...prev.protagonist, inventory: [...prev.protagonist.inventory, createInventoryItem(def, quantity)] } };
+        const newItems = addItem(prev.protagonist.items, itemId, quantity);
+        return { ...prev, protagonist: { ...prev.protagonist, items: newItems }, messages: addMsgInt(prev.messages, 'info', '开发者', `添加物品: ${itemId} x${quantity}`) };
       });
     }, [dispatch]),
     onAddSpiritStones: useCallback((amount: number) => {
       dispatch(prev => {
         if (!prev.protagonist) return prev;
-        const idx = prev.protagonist.inventory.findIndex(i => i.definition.id === 'spirit_stone');
-        if (idx >= 0) {
-          return { ...prev, protagonist: { ...prev.protagonist, inventory: prev.protagonist.inventory.map((i, j) => j === idx ? { ...i, quantity: i.quantity + amount } : i) } };
-        }
-        const def: any = { id: 'spirit_stone', name: '灵石', type: '灵石', rarity: '普通', description: '', effects: [], stackable: true, maxStack: 999999 };
-        const { createInventoryItem } = require('@/core/types');
-        return { ...prev, protagonist: { ...prev.protagonist, inventory: [...prev.protagonist.inventory, createInventoryItem(def, amount)] } };
+        const newItems = addItem(prev.protagonist.items, 'wanjie:common:spirit_stone', amount);
+        return { ...prev, protagonist: { ...prev.protagonist, items: newItems }, messages: addMsgInt(prev.messages, 'info', '开发者', `添加灵石: ${amount}`) };
       });
     }, [dispatch]),
     onAddTechnique: useCallback((techniqueId: string) => { /* 由 DeveloperPanel 处理 */ }, []),

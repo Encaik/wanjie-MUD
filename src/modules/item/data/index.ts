@@ -5,6 +5,7 @@
  */
 
 import type { ItemTemplate } from '../types';
+import { parseTemplateId } from '../types';
 import { CURRENCY_TEMPLATES } from './templates/currency';
 import { CONSUMABLE_TEMPLATES } from './templates/consumable';
 import { MATERIAL_TEMPLATES } from './templates/material';
@@ -12,6 +13,7 @@ import { CULTIVATION_EQUIPMENT_TEMPLATES } from './templates/equipment/cultivati
 import { CULTIVATION_TECHNIQUE_TEMPLATES } from './templates/technique/cultivation';
 import { MAGIC_SKILL_TEMPLATES } from './templates/skill/magic';
 import { COMBAT_SKILL_TEMPLATES } from './templates/skill/combat';
+import { LEGACY_ID_MAP } from './compat';
 
 /** 所有物品模板的平面列表 */
 export const ALL_TEMPLATES: ItemTemplate[] = [
@@ -28,7 +30,6 @@ export const ALL_TEMPLATES: ItemTemplate[] = [
 export const TEMPLATE_MAP: Record<string, ItemTemplate> = {};
 for (const tpl of ALL_TEMPLATES) {
   if (TEMPLATE_MAP[tpl.templateId]) {
-    // 重复 templateId 是配置错误
     console.error(`[ITEM DATA] 重复的 templateId: "${tpl.templateId}"`);
     continue;
   }
@@ -38,11 +39,15 @@ for (const tpl of ALL_TEMPLATES) {
 /**
  * 通过 templateId 查询模板
  *
- * @param templateId - 模板唯一标识
+ * 兼容旧式简单 ID（通过 LEGACY_ID_MAP 自动映射到新三段式 ID）。
+ *
+ * @param templateId - 模板唯一标识（支持新旧两种格式）
  * @returns ItemTemplate，如果不存在则抛出错误
  */
 export function getTemplate(templateId: string): ItemTemplate {
-  const tpl = TEMPLATE_MAP[templateId];
+  // 旧 ID → 新 ID 兼容映射
+  const resolvedId = LEGACY_ID_MAP[templateId] || templateId;
+  const tpl = TEMPLATE_MAP[resolvedId];
   if (!tpl) {
     throw new Error(`[ITEM DATA] 未找到物品模板: "${templateId}"`);
   }
@@ -51,9 +56,6 @@ export function getTemplate(templateId: string): ItemTemplate {
 
 /**
  * 按类别获取模板列表
- *
- * @param category - 物品大类
- * @returns 该类别下的所有模板
  */
 export function getTemplatesByCategory<T extends ItemTemplate>(
   category: T['category']
@@ -63,9 +65,18 @@ export function getTemplatesByCategory<T extends ItemTemplate>(
 
 /**
  * 按世界观获取模板列表
+ *
+ * 通过解析 templateId 中的 worldview 段过滤：
+ * - common 对所有世界观可见
+ * - 指定 worldview 仅对该世界观可见
  */
 export function getTemplatesByWorldView(worldType: string): ItemTemplate[] {
-  return ALL_TEMPLATES.filter(t => !t.worldviewRestrictions || t.worldviewRestrictions.includes(worldType));
+  return ALL_TEMPLATES.filter(t => {
+    const parsed = parseTemplateId(t.templateId);
+    if (!parsed) return true; // 非标准 ID，保留兼容
+    if (parsed.worldview === 'common') return true;
+    return parsed.worldview === worldType;
+  });
 }
 
 export {

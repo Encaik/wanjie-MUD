@@ -1,7 +1,6 @@
-// @ts-nocheck — TODO: 统一物品系统迁移后重构
 /**
  * 势力任务系统
- * 
+ *
  * 势力专属任务，提供声望和贡献奖励
  * 特点：
  * - 日常/周常任务，定时刷新
@@ -9,10 +8,8 @@
  * - 奖励声望和贡献点
  */
 
-// TODO: 统一物品系统迁移 — 应从 modules/item/data/ 获取物品模板
-const cultivationPillItems = [{ id: 'qi_refining_pill', name: '聚气丹' }, { id: 'spirit_gathering_pill', name: '凝神丹' }];
-const breakthroughItems = [{ id: 'foundation_pill', name: '筑基丹' }, { id: 'golden_core_pill', name: '结金丹' }, { id: 'nascent_soul_pill', name: '凝婴丹' }];
-import { Protagonist, GameStatistics, ItemRarity } from '@/core/types';
+import { getTemplate } from '@/modules/item/data';
+import type { Protagonist, GameStatistics, ItemRarity, ItemDefinition } from '@/core/types';
 import {
   TaskSystemType,
   TaskSystemState,
@@ -24,6 +21,28 @@ import {
   checkNewlyCompletedTask,
   createDefaultTaskSystemState,
 } from '@/modules/quest';
+
+/** Rarity (英文) → ItemRarity (中文) 映射 */
+const RARITY_TO_ITEM_RARITY: Record<string, ItemRarity> = {
+  mythic: '神话', legendary: '传说', epic: '史诗',
+  rare: '稀有', uncommon: '稀有', common: '普通',
+  poor: '普通', basic: '普通',
+};
+
+/** 从物品模板构建 ItemDefinition 兼容对象（过渡期） */
+function toItemDefinition(templateId: string): ItemDefinition {
+  const t = getTemplate(templateId);
+  return {
+    id: t.templateId,
+    name: t.name,
+    type: t.category as ItemDefinition['type'],
+    rarity: RARITY_TO_ITEM_RARITY[t.rarity] || '普通',
+    description: t.description,
+    stackable: t.maxStack > 1,
+    maxStack: t.maxStack,
+    effects: [],
+  };
+}
 
 // ============================================
 // 势力任务类型定义
@@ -126,7 +145,7 @@ export const FACTION_TASKS: FactionTask[] = [
     type: 'daily',
     difficulty: 'easy',
     requirements: [
-      { type: 'donate', target: 'spirit_stone', count: 500, description: '捐献500灵石' }
+      { type: 'donate', target: 'wanjie:common:spirit_stone', count: 500, description: '捐献500灵石' }
     ],
     reward: {
       reputation: 150,
@@ -153,8 +172,8 @@ export const FACTION_TASKS: FactionTask[] = [
       contribution: 300,
       experience: 300,
       items: [
-        { item: cultivationPillItems[1], quantity: 3 },
-        { item: breakthroughItems[0], quantity: 2 },
+        { item: toItemDefinition('wanjie:cultivation:spirit_gathering_pill'), quantity: 3 },
+        { item: toItemDefinition('wanjie:cultivation:foundation_pill'), quantity: 2 },
       ],
       message: 'Boss猎杀者！获得丰厚奖励！'
     },
@@ -175,7 +194,7 @@ export const FACTION_TASKS: FactionTask[] = [
       contribution: 200,
       experience: 200,
       items: [
-        { item: cultivationPillItems[1], quantity: 2 },
+        { item: toItemDefinition('wanjie:cultivation:spirit_gathering_pill'), quantity: 2 },
       ],
       message: '精英杀手！势力以你为荣！'
     },
@@ -196,7 +215,7 @@ export const FACTION_TASKS: FactionTask[] = [
       contribution: 250,
       experience: 250,
       items: [
-        { item: breakthroughItems[0], quantity: 3 },
+        { item: toItemDefinition('wanjie:cultivation:foundation_pill'), quantity: 3 },
       ],
       message: '冒险家！探索精神可嘉！'
     },
@@ -219,8 +238,8 @@ export const FACTION_TASKS: FactionTask[] = [
       contribution: 150,
       experience: 200,
       items: [
-        { item: cultivationPillItems[1], quantity: 2 },
-        { item: breakthroughItems[1], quantity: 1 },
+        { item: toItemDefinition('wanjie:cultivation:spirit_gathering_pill'), quantity: 2 },
+        { item: toItemDefinition('wanjie:cultivation:golden_core_pill'), quantity: 1 },
       ],
       message: '突破成功！实力大增！'
     },

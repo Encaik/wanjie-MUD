@@ -6,7 +6,7 @@ import type { ConsumableTemplate } from '../../types';
 
 /** 回春丹 — 恢复生命值 */
 export const REJUVENATION_PILL: ConsumableTemplate = {
-  templateId: 'rejuvenation_pill',
+  templateId: 'wanjie:common:rejuvenation_pill',
   name: '回春丹',
   description: '基础疗伤丹药，服用后恢复少量生命值。',
   category: 'consumable',
@@ -26,7 +26,7 @@ export const REJUVENATION_PILL: ConsumableTemplate = {
 
 /** 疗伤丹 — 中量恢复生命值 */
 export const HEALING_PILL: ConsumableTemplate = {
-  templateId: 'healing_pill',
+  templateId: 'wanjie:common:healing_pill',
   name: '疗伤丹',
   description: '中级疗伤丹药，服用后恢复中等量生命值。',
   category: 'consumable',
@@ -46,7 +46,7 @@ export const HEALING_PILL: ConsumableTemplate = {
 
 /** 九转还魂丹 — 大量恢复生命值 */
 export const SOUL_RESTORATION_PILL: ConsumableTemplate = {
-  templateId: 'soul_restoration_pill',
+  templateId: 'wanjie:common:soul_restoration_pill',
   name: '九转还魂丹',
   description: '传说中的顶级疗伤丹药，服用后可起死回生，恢复大量生命值。',
   category: 'consumable',
@@ -66,7 +66,7 @@ export const SOUL_RESTORATION_PILL: ConsumableTemplate = {
 
 /** 聚神丹 — 恢复法力值 */
 export const MANA_RESTORATION_PILL: ConsumableTemplate = {
-  templateId: 'mana_restoration_pill',
+  templateId: 'wanjie:common:mana_restoration_pill',
   name: '聚神丹',
   description: '基础回蓝丹药，服用后恢复少量法力值。',
   category: 'consumable',
@@ -86,7 +86,7 @@ export const MANA_RESTORATION_PILL: ConsumableTemplate = {
 
 /** 回元丹 — 中量恢复法力值 */
 export const MANA_HEALING_PILL: ConsumableTemplate = {
-  templateId: 'mana_healing_pill',
+  templateId: 'wanjie:common:mana_healing_pill',
   name: '回元丹',
   description: '中级回蓝丹药，服用后恢复中等量法力值。',
   category: 'consumable',
@@ -106,7 +106,7 @@ export const MANA_HEALING_PILL: ConsumableTemplate = {
 
 /** 聚气丹 — 修炼加速 */
 export const QI_GATHERING_PILL: ConsumableTemplate = {
-  templateId: 'qi_gathering_pill',
+  templateId: 'wanjie:cultivation:qi_gathering_pill',
   name: '聚气丹',
   description: '服用后加速灵气吸收，修炼效率提升 50%，持续 30 分钟。',
   category: 'consumable',
@@ -126,7 +126,7 @@ export const QI_GATHERING_PILL: ConsumableTemplate = {
 
 /** 凝元丹 — 修炼大幅加速 */
 export const ESSENCE_CONDENSING_PILL: ConsumableTemplate = {
-  templateId: 'essence_condensing_pill',
+  templateId: 'wanjie:cultivation:essence_condensing_pill',
   name: '凝元丹',
   description: '服用后灵气凝聚加速，修炼效率提升 100%，持续 30 分钟。',
   category: 'consumable',
@@ -146,7 +146,7 @@ export const ESSENCE_CONDENSING_PILL: ConsumableTemplate = {
 
 /** 筑基丹 — 突破辅助 */
 export const FOUNDATION_PILL: ConsumableTemplate = {
-  templateId: 'foundation_pill',
+  templateId: 'wanjie:cultivation:foundation_pill',
   name: '筑基丹',
   description: '辅助修士突破筑基境界的关键丹药，提升突破成功率 20%。',
   category: 'consumable',
@@ -167,7 +167,7 @@ export const FOUNDATION_PILL: ConsumableTemplate = {
 
 /** 结金丹 — 突破辅助 */
 export const GOLDEN_CORE_PILL: ConsumableTemplate = {
-  templateId: 'golden_core_pill',
+  templateId: 'wanjie:cultivation:golden_core_pill',
   name: '结金丹',
   description: '辅助修士凝结金丹的关键丹药，提升突破成功率 25%。',
   category: 'consumable',
@@ -188,7 +188,7 @@ export const GOLDEN_CORE_PILL: ConsumableTemplate = {
 
 /** 洗髓丹 — 属性重置 */
 export const MARROW_WASHING_PILL: ConsumableTemplate = {
-  templateId: 'marrow_washing_pill',
+  templateId: 'wanjie:cultivation:marrow_washing_pill',
   name: '洗髓丹',
   description: '洗经伐髓的珍稀丹药，服用后可重置已分配的属性点。',
   category: 'consumable',
@@ -208,7 +208,7 @@ export const MARROW_WASHING_PILL: ConsumableTemplate = {
 
 /** 仙灵丹 — 永久属性提升 */
 export const IMMORTAL_SPIRIT_PILL: ConsumableTemplate = {
-  templateId: 'immortal_spirit_pill',
+  templateId: 'wanjie:cultivation:immortal_spirit_pill',
   name: '仙灵丹',
   description: '蕴含仙灵之力的神药，服用后永久提升各项属性 +1。',
   category: 'consumable',

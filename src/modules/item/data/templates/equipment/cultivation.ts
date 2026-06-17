@@ -9,7 +9,7 @@ import type { EquipmentTemplate, SkillTag } from '@/modules/item/types';
 // ─── 近战武器 ───
 
 export const IRON_SWORD: EquipmentTemplate = {
-  templateId: 'iron_sword',
+  templateId: 'wanjie:cultivation:iron_sword',
   name: '铁剑',
   description: '凡铁锻造的普通长剑，剑身朴实无华。',
   category: 'equipment',
@@ -33,7 +33,7 @@ export const IRON_SWORD: EquipmentTemplate = {
 };
 
 export const SPIRIT_SWORD: EquipmentTemplate = {
-  templateId: 'spirit_sword',
+  templateId: 'wanjie:cultivation:spirit_sword',
   name: '灵剑',
   description: '以灵气淬炼的宝剑，剑身泛着淡淡灵光。',
   category: 'equipment',
@@ -57,7 +57,7 @@ export const SPIRIT_SWORD: EquipmentTemplate = {
 };
 
 export const FLAME_DRAGON_SWORD: EquipmentTemplate = {
-  templateId: 'flame_dragon_sword',
+  templateId: 'wanjie:cultivation:flame_dragon_sword',
   name: '炎龙剑',
   description: '以赤龙之血淬火的传说之剑，挥动时烈焰翻腾，剑气化龙。',
   category: 'equipment',
@@ -81,7 +81,7 @@ export const FLAME_DRAGON_SWORD: EquipmentTemplate = {
 };
 
 export const THUNDER_BLADE: EquipmentTemplate = {
-  templateId: 'thunder_blade',
+  templateId: 'wanjie:cultivation:thunder_blade',
   name: '惊雷刀',
   description: '刀身缠绕雷电，挥刀间雷光闪烁，惊雷炸响。',
   category: 'equipment',
@@ -107,7 +107,7 @@ export const THUNDER_BLADE: EquipmentTemplate = {
 // ─── 远程武器 ───
 
 export const HUNTING_BOW: EquipmentTemplate = {
-  templateId: 'hunting_bow',
+  templateId: 'wanjie:cultivation:hunting_bow',
   name: '猎弓',
   description: '山间猎户常用的硬木弓，朴实耐用。',
   category: 'equipment',
@@ -131,7 +131,7 @@ export const HUNTING_BOW: EquipmentTemplate = {
 };
 
 export const STARFALL_BOW: EquipmentTemplate = {
-  templateId: 'starfall_bow',
+  templateId: 'wanjie:cultivation:starfall_bow',
   name: '落星弓',
   description: '以星辰陨铁铸造的神弓，箭出如流星陨落。',
   category: 'equipment',
@@ -157,7 +157,7 @@ export const STARFALL_BOW: EquipmentTemplate = {
 // ─── 防具 ───
 
 export const CLOTH_HAT: EquipmentTemplate = {
-  templateId: 'cloth_hat',
+  templateId: 'wanjie:cultivation:cloth_hat',
   name: '布帽',
   description: '普通的布制头冠，聊胜于无的防护。',
   category: 'equipment',
@@ -181,7 +181,7 @@ export const CLOTH_HAT: EquipmentTemplate = {
 };
 
 export const SPIRIT_CROWN: EquipmentTemplate = {
-  templateId: 'spirit_crown',
+  templateId: 'wanjie:cultivation:spirit_crown',
   name: '灵冠',
   description: '以灵石镶嵌的头冠，能抵御精神攻击。',
   category: 'equipment',
@@ -205,7 +205,7 @@ export const SPIRIT_CROWN: EquipmentTemplate = {
 };
 
 export const COTTON_ROBE: EquipmentTemplate = {
-  templateId: 'cotton_robe',
+  templateId: 'wanjie:cultivation:cotton_robe',
   name: '棉布袍',
   description: '寻常棉布缝制的衣袍，穿着舒适。',
   category: 'equipment',
@@ -229,7 +229,7 @@ export const COTTON_ROBE: EquipmentTemplate = {
 };
 
 export const DRAGON_SCALE_ARMOR: EquipmentTemplate = {
-  templateId: 'dragon_scale_armor',
+  templateId: 'wanjie:cultivation:dragon_scale_armor',
   name: '龙鳞甲',
   description: '以真龙鳞片铸造的神甲，刀枪不入，水火不侵。',
   category: 'equipment',
@@ -253,7 +253,7 @@ export const DRAGON_SCALE_ARMOR: EquipmentTemplate = {
 };
 
 export const COTTON_LEGGINGS: EquipmentTemplate = {
-  templateId: 'cotton_leggings',
+  templateId: 'wanjie:cultivation:cotton_leggings',
   name: '棉布裤',
   description: '普通的棉布裤，行动方便。',
   category: 'equipment',
@@ -277,7 +277,7 @@ export const COTTON_LEGGINGS: EquipmentTemplate = {
 };
 
 export const WIND_WALKER_LEGGINGS: EquipmentTemplate = {
-  templateId: 'wind_walker_leggings',
+  templateId: 'wanjie:cultivation:wind_walker_leggings',
   name: '御风护腿',
   description: '铭刻风系阵法的护腿，穿戴者身轻如燕。',
   category: 'equipment',
@@ -301,7 +301,7 @@ export const WIND_WALKER_LEGGINGS: EquipmentTemplate = {
 };
 
 export const COTTON_BOOTS: EquipmentTemplate = {
-  templateId: 'cotton_boots',
+  templateId: 'wanjie:cultivation:cotton_boots',
   name: '布靴',
   description: '普通的布制靴子。',
   category: 'equipment',
@@ -325,7 +325,7 @@ export const COTTON_BOOTS: EquipmentTemplate = {
 };
 
 export const CLOUD_BOOTS: EquipmentTemplate = {
-  templateId: 'cloud_boots',
+  templateId: 'wanjie:cultivation:cloud_boots',
   name: '踏云靴',
   description: '以云锦编织的仙靴，穿戴者踏云而行，速度激增。',
   category: 'equipment',

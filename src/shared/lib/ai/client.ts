@@ -12,17 +12,19 @@ import type { AIGenerationContext, AIGenerationResult } from './types';
 // ============================================
 
 const API_BASE = 'https://api.deepseek.com/anthropic';
-const API_KEY = 'XXXX';
 const MODEL = 'deepseek-v4-flash';
 
 // ============================================
 // 工具函数
 // ============================================
 
-/** 获取 API Key */
+/** 获取 API Key — 从环境变量读取，未设置时抛出明确错误 */
 function getAPIKey(): string {
-  // 优先用环境变量，方便 CI/其他环境
-  return process.env.ANTHROPIC_API_KEY || API_KEY;
+  const key = process.env.ANTHROPIC_API_KEY;
+  if (!key) {
+    throw new Error('ANTHROPIC_API_KEY 环境变量未设置，无法调用 AI API');
+  }
+  return key;
 }
 
 // ============================================

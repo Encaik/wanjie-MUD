@@ -36,7 +36,7 @@ function makeProtagonist(items: ItemInstance[] = [], slots: Record<string, strin
 describe('protagonistUtils', () => {
   describe('getSpiritStones', () => {
     it('获取灵石余额', () => {
-      let items = addItem([], 'spirit_stone', 500);
+      let items = addItem([], 'wanjie:common:spirit_stone', 500);
       const p = makeProtagonist(items);
       expect(getSpiritStones(p)).toBe(500);
     });
@@ -49,7 +49,7 @@ describe('protagonistUtils', () => {
 
   describe('getEquippedResolved', () => {
     it('获取已装备武器', () => {
-      let items = addItem([], 'iron_sword', 1);
+      let items = addItem([], 'wanjie:cultivation:iron_sword', 1);
       const swordId = items[0].instanceId;
       const slots = { ...createEmptySlots(), weapon_melee: swordId };
       const p = makeProtagonist(items, slots);
@@ -66,7 +66,7 @@ describe('protagonistUtils', () => {
 
   describe('getMeleeWeapon', () => {
     it('获取近战武器', () => {
-      let items = addItem([], 'iron_sword', 1);
+      let items = addItem([], 'wanjie:cultivation:iron_sword', 1);
       const slots = { ...createEmptySlots(), weapon_melee: items[0].instanceId };
       const p = makeProtagonist(items, slots);
       const weapon = getMeleeWeapon(p);
@@ -76,7 +76,7 @@ describe('protagonistUtils', () => {
 
   describe('getEquippedTechniques', () => {
     it('获取已装备功法', () => {
-      let items = addItem([], 'fire_scripture', 1);
+      let items = addItem([], 'wanjie:cultivation:fire_scripture', 1);
       const techId = items[0].instanceId;
       const slots = { ...createEmptySlots(), technique_atk_1: techId };
       const p = makeProtagonist(items, slots);
@@ -88,18 +88,18 @@ describe('protagonistUtils', () => {
 
   describe('hasEquipped', () => {
     it('检查是否装备了某模板物品', () => {
-      let items = addItem([], 'iron_sword', 1);
+      let items = addItem([], 'wanjie:cultivation:iron_sword', 1);
       const slots = { ...createEmptySlots(), weapon_melee: items[0].instanceId };
       const p = makeProtagonist(items, slots);
-      expect(hasEquipped(p, 'iron_sword')).toBe(true);
-      expect(hasEquipped(p, 'spirit_sword')).toBe(false);
+      expect(hasEquipped(p, 'wanjie:cultivation:iron_sword')).toBe(true);
+      expect(hasEquipped(p, 'wanjie:cultivation:spirit_sword')).toBe(false);
     });
   });
 
   describe('getAllEquipped', () => {
     it('获取所有已装备物品', () => {
-      let items = addItem([], 'iron_sword', 1);
-      items = addItem(items, 'light_armor_mantra', 1);
+      let items = addItem([], 'wanjie:cultivation:iron_sword', 1);
+      items = addItem(items, 'wanjie:cultivation:light_armor_mantra', 1);
       const slots = {
         ...createEmptySlots(),
         weapon_melee: items[0].instanceId,

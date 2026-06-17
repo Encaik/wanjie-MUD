@@ -60,7 +60,7 @@ export function getCurrency(protagonist: Protagonist, currencyTemplateId: string
 
 /** 获取灵石余额 */
 export function getSpiritStones(protagonist: Protagonist): number {
-  return getCurrency(protagonist, 'spirit_stone');
+  return getCurrency(protagonist, 'wanjie:common:spirit_stone');
 }
 
 /** 检查是否装备了某模板的物品 */

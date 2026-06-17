@@ -1,4 +1,3 @@
-// @ts-nocheck — TODO: 统一物品系统迁移后重构
 /**
  * 主角适配器
  *
@@ -25,7 +24,7 @@ export function createProtagonistFromSaved(
   const maxHp = Math.round(character.coreStats.maxHp || 50);
   const maxMp = Math.round(character.coreStats.specialResourceCap || 0);
 
-  // 构建旧格式 CharacterStats（过渡兼容）
+  // 构建旧格式 CharacterStats（过渡兼容，待属性系统迁移后移除）
   const legacyStats: CharacterStats = {
     base: { 体质: 50, 灵根: 50, 悟性: 50, 幸运: 50, 意志: 50 },
     growth: { 体质: 0, 灵根: 0, 悟性: 0, 幸运: 0, 意志: 0 },
@@ -60,10 +59,11 @@ export function createProtagonistFromSaved(
     maxHp,
     currentMp: maxMp,
     maxMp,
+    // 新物品系统字段
     items: initialItems,
     slots: {},
     maxSlotCounts: {},
-    /** 初始背包由新手引导阶段 0 发放，此处不再硬编码 */
+    // 旧字段（过渡兼容，待所有消费方迁移后清理）
     inventory: [],
     activeEffects: [],
     experience: 0,

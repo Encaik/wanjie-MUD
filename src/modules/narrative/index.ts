@@ -18,13 +18,8 @@ export type { WorldTextDefinition } from './data/worlds/types';
 // —— 术语 ——
 export {
   getTerminology,
-  getResourceName,
-  getResourceDesc,
-  getDungeonName,
   getDungeonInfo,
   getAttributeNames,
-  getBreakthroughPillName,
-  getCultivationPillName,
 } from './logic/terminology';
 export type { WorldTerminology } from './logic/terminology';
 
@@ -33,6 +28,5 @@ export {
   getWorldTexts,
   getWorldTerminology,
   getWorldStatNames,
-  getWorldPaths,
 } from './data/worlds';
 export type { WorldTextsMap, WorldStatNames, WorldCombatTexts, WorldCultivationTexts, WorldResourceTexts, WorldItemTexts, WorldDungeonTexts, WorldUITexts, WorldBreakthroughTexts, WorldMessageTexts, WorldPathTexts, PathTextDefinition, PathTypeId } from './data/worlds/types';

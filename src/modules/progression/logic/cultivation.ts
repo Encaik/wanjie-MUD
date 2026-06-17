@@ -1,12 +1,13 @@
-// @ts-nocheck — TODO: 统一物品系统迁移后重构
-import {  GAME_CONSTANTS } from '@/shared/utils/constants';
-import {  getExperienceForLevel, getActualStatCap } from '@/modules/progression/logic/realmSystem';
-import {  getTerminology } from '@/modules/narrative/logic/terminology';
-import { FlatStats, Protagonist, CultivationResult, CharacterStats, WorldType, ActiveEffect, InventoryItem, createInventoryItem, getFinalStats, StatKey, GrowthStats } from '@/core/types';
-import {  getMaxLevel } from '@/modules/progression/data/realmData';
-
-// TODO: 统一物品系统迁移 — 暂代
-const spiritStoneItems = [{ id: 'spirit_stone', name: '灵石', type: '灵石', rarity: '普通' as const, description: '', stackable: true, maxStack: 999999, effects: [] as never[] }];
+import { GAME_CONSTANTS } from '@/shared/utils/constants';
+import { getExperienceForLevel, getActualStatCap } from '@/modules/progression/logic/realmSystem';
+import { getTerminology } from '@/modules/narrative/logic/terminology';
+import type {
+  FlatStats, Protagonist, CultivationResult, CharacterStats,
+  WorldType, ActiveEffect, GrowthStats, StatKey,
+} from '@/core/types';
+import { getFinalStats } from '@/core/types';
+import { createItemInstance, getItemCount } from '@/modules/item/logic';
+import { getMaxLevel } from '@/modules/progression/data/realmData';
 
 // 重新导出 getMaxLevel
 export { getMaxLevel } from '@/modules/progression/data/realmData';
@@ -174,22 +175,21 @@ function getWorldTerms(worldType: WorldType) {
 }
 
 // 获取灵石数量
-function getSpiritStoneCount(inventory: InventoryItem[]): number {
-  const item = inventory.find(i => i.definition.id === 'spirit_stone');
-  return item ? item.quantity : 0;
+function getSpiritStoneCount(items: Protagonist['items']): number {
+  return getItemCount(items, 'wanjie:common:spirit_stone');
 }
 
 // 检查是否有足够灵石修炼
 export function canAffordCultivation(protagonist: Protagonist): { canAfford: boolean; message: string } {
-  const spiritStones = getSpiritStoneCount(protagonist.inventory);
-  
+  const spiritStones = getSpiritStoneCount(protagonist.items);
+
   if (spiritStones < 10) {
     return {
       canAfford: false,
       message: `${getWorldTerms(protagonist.world.type).resource}不足！修炼需要至少10${getWorldTerms(protagonist.world.type).resource}，当前只有${spiritStones}。\n\n请通过历练或机缘获取更多${getWorldTerms(protagonist.world.type).resource}。`
     };
   }
-  
+
   return { canAfford: true, message: '' };
 }
 
@@ -287,7 +287,7 @@ export function executeCultivation(protagonist: Protagonist): CultivationResult 
   const maxExp = getMaxExperience(protagonist.level);
   
   // 检查灵石是否足够
-  const spiritStones = getSpiritStoneCount(protagonist.inventory);
+  const spiritStones = getSpiritStoneCount(protagonist.items);
   if (spiritStones < 20) {
     return {
       success: false,
@@ -315,8 +315,8 @@ export function executeCultivation(protagonist: Protagonist): CultivationResult 
   const isSuccess = Math.random() * 100 < successRate;
   
   // 消耗灵石
-  const itemsCost: InventoryItem[] = [
-    createInventoryItem(spiritStoneItems[0], Math.min(20, spiritStones))
+  const itemsCost = [
+    createItemInstance('wanjie:common:spirit_stone', { quantity: Math.min(20, spiritStones) })
   ];
   
   // 丹药效果提示

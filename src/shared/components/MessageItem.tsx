@@ -1,4 +1,7 @@
-// @ts-nocheck — TODO: 统一物品系统迁移后重构
+/**
+ * 消息项渲染组件 — 支持新旧物品格式兼容
+ */
+
 'use client';
 
 import { memo } from 'react';
@@ -7,7 +10,9 @@ import { CheckCircle, XCircle, Info, AlertTriangle } from 'lucide-react';
 
 import { Badge } from '@/shared/ui/data-display/badge';
 import { getRarityStyle } from '@/modules/theme/data/rarityStyles';
-import { MessageRecord, ItemRarity } from '@/core/types';
+import type { MessageRecord, ItemRarity } from '@/core/types';
+import type { ItemInstance } from '@/modules/item/types';
+import { resolveItem } from '@/modules/item/logic';
 
 /** 消息类型配置 */
 export const TYPE_CONFIG = {
@@ -104,12 +109,38 @@ export const MessageItem = memo(({ msg, compact }: { msg: MessageRecord; compact
                 <div className="flex flex-wrap gap-1">
                   <span className="text-[9px] text-muted-foreground">物品:</span>
                   {msg.rewards.items.map((item, idx) => {
-                    const itemName = item.definition?.name || '未知物品';
-                    const displayText = item.quantity > 1 ? `${itemName} x${item.quantity}` : itemName;
+                    // 兼容新旧物品格式：新格式有 templateId，旧格式有 definition
+                    const raw = item as unknown as Record<string, unknown>;
+                    let itemName: string;
+                    let itemRarity: ItemRarity = '普通';
+                    let quantity: number = 1;
+
+                    if (raw.templateId) {
+                      // 新格式 ItemInstance
+                      const resolved = resolveItem(item as unknown as ItemInstance);
+                      itemName = resolved.name;
+                      quantity = resolved.quantity;
+                      // Rarity (英文) → ItemRarity (中文) 映射
+                      const rarityMap: Record<string, ItemRarity> = {
+                        mythic: '神话', legendary: '传说', epic: '史诗',
+                        rare: '稀有', uncommon: '稀有', common: '普通',
+                        poor: '普通', basic: '普通',
+                      };
+                      itemRarity = rarityMap[resolved.rarity] || '普通';
+                    } else if ((raw as { definition?: { name?: string; rarity?: ItemRarity } }).definition) {
+                      // 旧格式 InventoryItem
+                      const def = (raw as { definition: { name?: string; rarity?: ItemRarity } }).definition;
+                      itemName = def.name || '未知物品';
+                      itemRarity = def.rarity || '普通';
+                      quantity = (raw as { quantity?: number }).quantity || 1;
+                    } else {
+                      itemName = '未知物品';
+                    }
+                    const displayText = quantity > 1 ? `${itemName} x${quantity}` : itemName;
                     return (
                       <Badge
                         key={idx}
-                        className={`text-[9px] h-4 ${item.definition?.rarity ? getRarityStyle(item.definition.rarity, 'badge') : ''}`}
+                        className={`text-[9px] h-4 ${getRarityStyle(itemRarity, 'badge')}`}
                       >
                         {displayText}
                       </Badge>
@@ -144,19 +175,23 @@ export const MessageItem = memo(({ msg, compact }: { msg: MessageRecord; compact
                       name: string;
                       rarity: ItemRarity;
                       count: number;
-                      type: 'technique' | 'equipment';
+                      type: string;
                     }>();
-                    for (const fragment of msg.rewards.fragments as FragmentDropData[]) {
-                      const key = fragment.sourceName || `${fragment.rarity}-${fragment.type}`;
+                    for (const fragment of msg.rewards.fragments as Array<Record<string, unknown>>) {
+                      const sourceName = (fragment.sourceName || fragment.name) as string || '';
+                      const rarity = (fragment.rarity || '普通') as ItemRarity;
+                      const count = (fragment.count || fragment.quantity || 1) as number;
+                      const type = (fragment.type || fragment.sourceCategory || '') as string;
+                      const key = sourceName || `${rarity}-${type}`;
                       const existing = fragmentMap.get(key);
                       if (existing) {
-                        existing.count += fragment.count;
+                        existing.count += count;
                       } else {
                         fragmentMap.set(key, {
-                          name: fragment.sourceName || `${fragment.rarity}${fragment.type === 'technique' ? '功法' : '装备'}残片`,
-                          rarity: fragment.rarity,
-                          count: fragment.count,
-                          type: fragment.type,
+                          name: sourceName || `${rarity}${type ? ` ${type}` : ''}残片`,
+                          rarity,
+                          count,
+                          type,
                         });
                       }
                     }

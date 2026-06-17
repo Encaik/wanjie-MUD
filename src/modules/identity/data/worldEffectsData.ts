@@ -700,16 +700,6 @@ export function getMaxDangerLevel(coefficient: number): number {
 }
 
 /**
- * 根据难度系数获取最大机缘等级
- * @deprecated 已废弃，机缘等级不再受世界难度系数限制
- * 现在机缘解锁由 checkOpportunityUnlock 函数控制
- * 始终返回 5
- */
-export function getMaxOpportunityLevel(_coefficient: number): number {
-  return 5; // 所有机缘等级都可以出现
-}
-
-/**
  * 根据难度系数计算危险数量
  */
 export function calculateDangerCount(coefficient: number): number {
@@ -732,30 +722,3 @@ export function calculateOpportunityCount(coefficient: number): number {
   return Math.random() > 0.5 ? 2 : 3;
 }
 
-/**
- * 获取危险图标
- */
-export function getDangerIcon(level: number): string {
-  const icons: Record<number, string> = {
-    1: '⚠️',
-    2: '⚡',
-    3: '🔥',
-    4: '💀',
-    5: '☠️',
-  };
-  return icons[level] || '⚠️';
-}
-
-/**
- * 获取机缘图标
- */
-export function getOpportunityIcon(level: number): string {
-  const icons: Record<number, string> = {
-    1: '✨',
-    2: '🌟',
-    3: '💫',
-    4: '🎁',
-    5: '👑',
-  };
-  return icons[level] || '✨';
-}

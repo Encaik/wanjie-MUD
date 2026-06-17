@@ -4,7 +4,8 @@
  * 根据 comprehensive-optimization-design.md 设计文档实现
  */
 
-import { FlatStats, StatKey, InventoryItem, ItemDefinition, ActiveEffect, EffectType, Protagonist } from '@/core/types';
+import type { FlatStats, StatKey, ItemDefinition, ActiveEffect, EffectType, Protagonist } from '@/core/types';
+import type { ItemInstance } from '@/modules/item/types';
 
 // ============================================
 // 事件类型枚举
@@ -322,8 +323,8 @@ export interface EventExecutionResult {
     mpChange?: number;
     spiritStonesChange?: number;
     expChange?: number;
-    itemsGained?: InventoryItem[];
-    itemsLost?: InventoryItem[];
+    itemsGained?: ItemInstance[];
+    itemsLost?: ItemInstance[];
     statsGained?: Partial<FlatStats>;
     buffsGained?: ActiveEffect[];
     teleportTarget?: { row: number; col: number };

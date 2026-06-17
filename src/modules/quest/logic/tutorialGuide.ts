@@ -18,12 +18,12 @@ import type { GameEvent } from '@/core/events';
 import type { TaskReward } from '../types';
 
 // TODO: 统一物品系统迁移 — 应从 modules/item/data/ 获取模板
-const spiritStoneTemplate: ItemDefinition = { id: 'spirit_stone', name: '灵石', type: '灵石' as const, rarity: '普通' as const, description: '修仙界的通用货币', stackable: true, maxStack: 999999, effects: [] };
-const qiPillTemplate: ItemDefinition = { id: 'qi_gathering_pill', name: '聚气丹', type: '丹药' as const, rarity: '普通' as const, description: '用于辅助修炼', stackable: true, maxStack: 99, effects: [] };
-const foundationPillTemplate: ItemDefinition = { id: 'foundation_pill', name: '筑基丹', type: '丹药' as const, rarity: '稀有' as const, description: '用于突破筑基境界', stackable: true, maxStack: 99, effects: [] };
-const hpPillSmallTemplate: ItemDefinition = { id: 'rejuvenation_pill', name: '回春丹', type: '丹药' as const, rarity: '普通' as const, description: '恢复少量生命值', stackable: true, maxStack: 99, effects: [] };
+const spiritStoneTemplate: ItemDefinition = { id: 'wanjie:common:spirit_stone', name: '灵石', type: '灵石' as const, rarity: '普通' as const, description: '修仙界的通用货币', stackable: true, maxStack: 999999, effects: [] };
+const qiPillTemplate: ItemDefinition = { id: 'wanjie:cultivation:qi_gathering_pill', name: '聚气丹', type: '丹药' as const, rarity: '普通' as const, description: '用于辅助修炼', stackable: true, maxStack: 99, effects: [] };
+const foundationPillTemplate: ItemDefinition = { id: 'wanjie:cultivation:foundation_pill', name: '筑基丹', type: '丹药' as const, rarity: '稀有' as const, description: '用于突破筑基境界', stackable: true, maxStack: 99, effects: [] };
+const hpPillSmallTemplate: ItemDefinition = { id: 'wanjie:common:rejuvenation_pill', name: '回春丹', type: '丹药' as const, rarity: '普通' as const, description: '恢复少量生命值', stackable: true, maxStack: 99, effects: [] };
 const concentratePillTemplate: ItemDefinition = { id: 'spirit_gathering_pill', name: '凝神丹', type: '丹药' as const, rarity: '稀有' as const, description: '用于加速修炼', stackable: true, maxStack: 99, effects: [] };
-const goldCorePillTemplate: ItemDefinition = { id: 'golden_core_pill', name: '结金丹', type: '丹药' as const, rarity: '史诗' as const, description: '用于突破金丹境界', stackable: true, maxStack: 99, effects: [] };
+const goldCorePillTemplate: ItemDefinition = { id: 'wanjie:cultivation:golden_core_pill', name: '结金丹', type: '丹药' as const, rarity: '史诗' as const, description: '用于突破金丹境界', stackable: true, maxStack: 99, effects: [] };
 const vitalityPillTemplate: ItemDefinition = { id: 'vitality_pill', name: '元气丹', type: '丹药' as const, rarity: '稀有' as const, description: '恢复较多生命值', stackable: true, maxStack: 99, effects: [] };
 const noviceTokenTemplate: ItemDefinition = { id: 'novice_token', name: '新手纪念令牌', type: '消耗品' as const, rarity: '传说' as const, description: '完成新手引导的纪念品，象征修行之路的起点。', stackable: false, maxStack: 1, effects: [] };
 
@@ -190,7 +190,7 @@ export const TUTORIAL_GUIDE: TutorialGuideDefinition = {
             confirmText: '知道了',
           },
           triggerEvent: 'item:used',
-          condition: itemUsedIs('qi_gathering_pill'),
+          condition: itemUsedIs('wanjie:cultivation:qi_gathering_pill'),
         },
         {
           id: 'step_first_cultivation',

@@ -1,4 +1,3 @@
-// @ts-nocheck — TODO: 统一物品系统迁移后重构
 /**
  * 游戏数值平衡配置文件
  * 所有核心数值公式和平衡参数都在这里统一管理
@@ -10,26 +9,9 @@
  */
 
 import { EnemyTier, WorldBalanceStats } from '@/core/types';
-import { DIFFICULTY_MULTIPLIERS, DifficultyLevel, ENEMY_TIER_CONFIG, getEnemyTierConfig, getEffectiveEnemyTierConfig } from '@/modules/identity/data/worldData';
+import { DIFFICULTY_MULTIPLIERS, DifficultyLevel, getEnemyTierConfig, getEffectiveEnemyTierConfig } from '@/modules/identity/data/worldData';
 import { clamp, clampNonNegative, safeDivide } from '@/shared/utils/numberUtils';
 
-// ============================================
-// Boss倍率配置（已废弃，使用敌人分级系统）
-// ============================================
-
-/** Boss数值倍率 - 保留用于兼容 */
-export const BOSS_MULTIPLIERS = {
-  /** Boss HP倍率 */
-  hpMultiplier: 2.2,
-  /** Boss攻击力倍率 */
-  attackMultiplier: 1.5,
-  /** Boss防御力倍率 */
-  defenseMultiplier: 1.6,
-  /** Boss经验倍率 */
-  expMultiplier: 6.0,
-  /** Boss灵石倍率 */
-  spiritStoneMultiplier: 5.0,
-};
 
 // ============================================
 // 经验值配置
@@ -372,30 +354,6 @@ export function calculateBattleSpiritStones(
   );
 }
 
-/**
- * 计算战斗灵石奖励（使用货币调节系统）
- *
- * 推荐使用此函数，它会根据玩家等级自动调节奖励
- * 解决后期灵石通胀问题
- */
-export function calculateBattleSpiritStonesWithRegulation(
-  enemyLevel: number,
-  enemyTier: EnemyTier,
-  playerLevel: number,
-  difficultyLevel: DifficultyLevel = 'normal',
-  worldCoefficient: number = 1
-): number {
-  // 动态导入避免循环依赖
-
-  const baseReward = calculateBattleSpiritStones(enemyLevel, enemyTier, difficultyLevel, worldCoefficient);
-
-  return BattleRewardRegulator.adjustBattleSpiritStone(
-    baseReward,
-    playerLevel,
-    enemyLevel,
-    enemyTier
-  );
-}
 
 // ============================================
 // 战斗计算

@@ -6,7 +6,7 @@ import type { MaterialTemplate } from '../../types';
 
 /** 灵草 — 基础炼丹材料 */
 export const SPIRIT_HERB: MaterialTemplate = {
-  templateId: 'spirit_herb',
+  templateId: 'wanjie:common:spirit_herb',
   name: '灵草',
   description: '蕴含微弱灵气的草药，炼丹的基础材料。',
   category: 'material',
@@ -23,7 +23,7 @@ export const SPIRIT_HERB: MaterialTemplate = {
 
 /** 千年灵芝 — 稀有炼丹材料 */
 export const THOUSAND_YEAR_LINGZHI: MaterialTemplate = {
-  templateId: 'thousand_year_lingzhi',
+  templateId: 'wanjie:common:thousand_year_lingzhi',
   name: '千年灵芝',
   description: '生长千年的灵芝，蕴含浓郁灵气，是炼制高级丹药的珍贵材料。',
   category: 'material',
@@ -40,7 +40,7 @@ export const THOUSAND_YEAR_LINGZHI: MaterialTemplate = {
 
 /** 万年雪莲 — 传说炼丹材料 */
 export const TEN_THOUSAND_YEAR_LOTUS: MaterialTemplate = {
-  templateId: 'ten_thousand_year_lotus',
+  templateId: 'wanjie:common:ten_thousand_year_lotus',
   name: '万年雪莲',
   description: '生长于极寒之地的万年雪莲，蕴含天地至寒精华。',
   category: 'material',
@@ -57,7 +57,7 @@ export const TEN_THOUSAND_YEAR_LOTUS: MaterialTemplate = {
 
 /** 铁矿石 — 基础炼器材料 */
 export const IRON_ORE: MaterialTemplate = {
-  templateId: 'iron_ore',
+  templateId: 'wanjie:common:iron_ore',
   name: '铁矿石',
   description: '普通的铁矿石，可提炼用于打造基础装备。',
   category: 'material',
@@ -74,7 +74,7 @@ export const IRON_ORE: MaterialTemplate = {
 
 /** 玄铁 — 稀有炼器材料 */
 export const BLACK_IRON: MaterialTemplate = {
-  templateId: 'black_iron',
+  templateId: 'wanjie:common:black_iron',
   name: '玄铁',
   description: '天外陨铁，坚不可摧，是打造高级装备的上乘材料。',
   category: 'material',
@@ -91,7 +91,7 @@ export const BLACK_IRON: MaterialTemplate = {
 
 /** 灵石碎片 — 宝石材料 */
 export const SPIRIT_GEM: MaterialTemplate = {
-  templateId: 'spirit_gem',
+  templateId: 'wanjie:common:spirit_gem',
   name: '灵石碎片',
   description: '灵石的天然碎片，晶莹剔透，可用于镶嵌或炼制。',
   category: 'material',
@@ -108,7 +108,7 @@ export const SPIRIT_GEM: MaterialTemplate = {
 
 /** 龙晶 — 传说宝石 */
 export const DRAGON_CRYSTAL: MaterialTemplate = {
-  templateId: 'dragon_crystal',
+  templateId: 'wanjie:common:dragon_crystal',
   name: '龙晶',
   description: '真龙陨落后凝结的晶核，蕴含龙之精华，镶嵌于装备可获得强大力量。',
   category: 'material',
@@ -125,7 +125,7 @@ export const DRAGON_CRYSTAL: MaterialTemplate = {
 
 /** 妖兽利爪 — 妖兽材料 */
 export const BEAST_CLAW: MaterialTemplate = {
-  templateId: 'beast_claw',
+  templateId: 'wanjie:common:beast_claw',
   name: '妖兽利爪',
   description: '从妖兽身上取下的利爪，锋利异常，可用于炼器。',
   category: 'material',
@@ -142,7 +142,7 @@ export const BEAST_CLAW: MaterialTemplate = {
 
 /** 妖丹 — 稀有妖兽材料 */
 export const DEMON_CORE: MaterialTemplate = {
-  templateId: 'demon_core',
+  templateId: 'wanjie:common:demon_core',
   name: '妖丹',
   description: '妖兽修炼所凝聚的内丹，蕴含妖力精华。炼丹和炼器的高级材料。',
   category: 'material',
@@ -159,7 +159,7 @@ export const DEMON_CORE: MaterialTemplate = {
 
 /** 经验石 — 装备/功法升级材料 */
 export const EXP_STONE_SMALL: MaterialTemplate = {
-  templateId: 'exp_stone_small',
+  templateId: 'wanjie:common:exp_stone_small',
   name: '小经验石',
   description: '蕴含少量经验的灵石，用于提升装备和功法等级。',
   category: 'material',
@@ -179,7 +179,7 @@ export const EXP_STONE_SMALL: MaterialTemplate = {
 
 /** 经验石 — 装备/功法升级材料 */
 export const EXP_STONE_MEDIUM: MaterialTemplate = {
-  templateId: 'exp_stone_medium',
+  templateId: 'wanjie:common:exp_stone_medium',
   name: '经验石',
   description: '蕴含中等经验的灵石，用于提升装备和功法等级。',
   category: 'material',
@@ -199,7 +199,7 @@ export const EXP_STONE_MEDIUM: MaterialTemplate = {
 
 /** 大经验石 */
 export const EXP_STONE_LARGE: MaterialTemplate = {
-  templateId: 'exp_stone_large',
+  templateId: 'wanjie:common:exp_stone_large',
   name: '大经验石',
   description: '蕴含大量经验的灵石，用于快速提升装备和功法等级。',
   category: 'material',

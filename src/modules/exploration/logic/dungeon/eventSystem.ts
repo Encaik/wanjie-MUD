@@ -1,24 +1,23 @@
-// @ts-nocheck — TODO: 统一物品系统迁移后重构
 /**
  * 地牢随机事件系统主入口
- * 
+ *
  * 整合事件触发、执行、效果应用等功能
  * 根据 comprehensive-optimization-design.md 设计文档实现
  */
 
-import { 
+import {
   DUNGEON_EVENTS,
   getEventById,
   getAvailableEvents,
 } from './eventConfigs';
-import { 
+import {
   EventTriggerService,
   getEventTriggerService,
   checkRequirements,
   getAvailableChoices,
   getRecommendedChoice,
 } from './eventTrigger';
-import { 
+import {
   DungeonEvent,
   DungeonChoice,
   DungeonOutcome,
@@ -30,7 +29,9 @@ import {
   DEFAULT_TRIGGER_CONFIG,
   EventTriggerConfig,
 } from './types';
-import { FlatStats, Protagonist, InventoryItem, CharacterStats, createInventoryItem, ItemDefinition, ActiveEffect } from '@/core/types';
+import type { FlatStats, Protagonist, ActiveEffect } from '@/core/types';
+import type { ItemInstance } from '@/modules/item/types';
+import { generateRandomDrop } from '@/modules/item/logic';
 
 // ============================================
 // 效果应用
@@ -48,8 +49,8 @@ export function applyEffect(
   mpChange?: number;
   spiritStonesChange?: number;
   expChange?: number;
-  itemsGained?: InventoryItem[];
-  itemsLost?: InventoryItem[];
+  itemsGained?: ItemInstance[];
+  itemsLost?: ItemInstance[];
   statsGained?: Partial<FlatStats>;
   buffsGained?: ActiveEffect[];
   triggeredBattle?: { enemyName: string; enemyLevel: number; enemyTier: 'elite' | 'miniboss' };
@@ -85,13 +86,17 @@ export function applyEffect(
       result.expChange = effect.value || 0;
       break;
 
-    case 'gain_item':
+    case 'gain_item': {
       // 根据地牢难度生成随机物品
-      const item = getRandomItem(dungeonDifficulty);
-      if (item) {
-        result.itemsGained = [createInventoryItem(item, effect.value || 1)];
+      const generated = generateRandomDrop(dungeonDifficulty, 0);
+      if (generated) {
+        if (effect.value && effect.value > 1) {
+          generated.quantity = effect.value;
+        }
+        result.itemsGained = [generated];
       }
       break;
+    }
 
     case 'lose_item':
       // 暂不实现物品丢失

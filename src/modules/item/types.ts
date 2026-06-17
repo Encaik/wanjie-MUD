@@ -113,3 +113,43 @@ export interface ResolvedItem {
   actualStats: Record<string, number>; price: number;
   ext: ItemTemplate['ext']; instance: ItemInstance; template: ItemTemplate;
 }
+
+// ─── 命名空间 ID 系统 ───
+
+/** 模板 ID 三段式正则：source:worldview:item_name */
+const ID_PATTERN = /^([a-z][a-z0-9-]{2,31}):([a-z][a-z0-9-]{1,31}):([a-z][a-z0-9_]{1,63})$/;
+
+/** 解析后的三段式 ID */
+export interface ParsedTemplateId {
+  source: string;
+  worldview: string;
+  itemName: string;
+}
+
+/**
+ * 解析三段式模板 ID
+ *
+ * @param id - 模板 ID 字符串
+ * @returns 解析结果，非标准 ID 返回 null
+ */
+export function parseTemplateId(id: string): ParsedTemplateId | null {
+  const match = id.match(ID_PATTERN);
+  if (!match) return null;
+  return { source: match[1], worldview: match[2], itemName: match[3] };
+}
+
+/**
+ * 构建标准三段式模板 ID
+ *
+ * @example buildTemplateId('wanjie', 'cultivation', 'iron_sword') => 'wanjie:cultivation:iron_sword'
+ */
+export function buildTemplateId(source: string, worldview: string, itemName: string): string {
+  return `${source}:${worldview}:${itemName}`;
+}
+
+/**
+ * 验证模板 ID 是否遵循三段式规范
+ */
+export function isValidTemplateId(id: string): boolean {
+  return ID_PATTERN.test(id);
+}

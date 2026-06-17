@@ -1,8 +1,7 @@
-// @ts-nocheck — TODO: 统一物品系统迁移后重构
 /**
  * 闭关修炼系统
  * 提供多倍修炼功能
- * 
+ *
  * 属性增长规则（V2）：
  * - 闭关修炼只获得经验，不直接增加属性
  * - 属性增长只通过突破事件触发
@@ -15,11 +14,10 @@ import { getMaxExperience } from '@/modules/progression/logic/cultivation';
 import { processExperienceGain, calculateBreakthroughTransfer } from '@/modules/progression/logic/experienceSystem';
 import { getRealmName } from '@/modules/progression/data/realmCore';
 import { getTerminology } from '@/modules/narrative/logic/terminology';
-import { Protagonist, CultivationResult, CharacterStats, GrowthStats, WorldType, InventoryItem, createInventoryItem, getGrowthStatCap } from '@/core/types';
+import type { Protagonist, CultivationResult, WorldType, GrowthStats } from '@/core/types';
+import { getGrowthStatCap } from '@/core/types';
+import { createItemInstance, getItemCount } from '@/modules/item/logic';
 import { getMaxLevel } from '@/modules/progression/data/realmData';
-
-// TODO: 统一物品系统迁移 — 暂代
-const spiritStoneItems = [{ id: 'spirit_stone', name: '灵石', type: '灵石', rarity: '普通' as const, description: '', stackable: true, maxStack: 999999, effects: [] as never[] }];
 
 const random = (min: number, max: number) => Math.floor(Math.random() * (max - min + 1)) + min;
 
@@ -82,7 +80,7 @@ export interface SeclusionResult {
   cost: number;              // 实际消耗
   experienceGain: number;   // 经验获得
   statChanges?: Partial<GrowthStats>; // 可成长属性变化
-  itemsCost: InventoryItem[];
+  itemsCost: import('@/modules/item/types').ItemInstance[];
   breakthroughAttempt?: boolean;
   breakthroughSuccess?: boolean;
   newLevel?: number;
@@ -449,9 +447,8 @@ function getWorldTerms(worldType: WorldType) {
 /**
  * 获取灵石数量
  */
-function getSpiritStoneCount(inventory: InventoryItem[]): number {
-  const item = inventory.find(i => i.definition.id === 'spirit_stone');
-  return item ? item.quantity : 0;
+function getSpiritStoneCount(items: Protagonist['items']): number {
+  return getItemCount(items, 'wanjie:common:spirit_stone');
 }
 
 /**
@@ -485,7 +482,7 @@ export function executeSeclusion(
   
   // 计算消耗
   const cost = getSeclusionCost(seclusionType);
-  const spiritStones = getSpiritStoneCount(protagonist.inventory);
+  const spiritStones = getSpiritStoneCount(protagonist.items);
   
   // 检查资源是否足够
   if (spiritStones < cost) {
@@ -515,8 +512,8 @@ export function executeSeclusion(
   const endDesc = descriptions[outcome.outcome].end[random(0, descriptions[outcome.outcome].end.length - 1)];
   
   // 消耗资源
-  const itemsCost: InventoryItem[] = [
-    createInventoryItem(spiritStoneItems[0], cost),
+  const itemsCost = [
+    createItemInstance('wanjie:common:spirit_stone', { quantity: cost }),
   ];
   
   // 计算经验获得

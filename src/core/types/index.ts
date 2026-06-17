@@ -144,15 +144,7 @@ export type {
 
 export {
   getFinalStats,
-  getStatKeys,
-  createDefaultStats,
-  fromOldStats,
-  createStatsWithBonuses,
-  updateGrowthStats,
-  updateBaseStats,
   getGrowthStatCap,
-  clampGrowthStatValue,
-  createDefaultCharacterStats,
   QualityNames,
   EquipmentSlotNames,
   EquipmentSlotEffect,
@@ -162,7 +154,6 @@ export {
   DEFAULT_STATISTICS,
   createInventoryItem,
   migrateInventoryItem,
-  getBuiltinWorldTypes,
   // NPC 系统常量
   ATTITUDE_LEVEL_RANGES,
   FACTION_RELATION_CONFIG,
