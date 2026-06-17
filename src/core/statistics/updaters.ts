@@ -251,6 +251,6 @@ export const statisticsUpdaters: {
   'tutorial:step_completed': (stats) => stats,
   'tutorial:phase_completed': (stats) => stats,
   'tutorial:completed': (stats) => stats,
-  'tutorial:starter_pack_claimed': (stats) => stats,
+  'tutorial:game_started': (stats) => stats,
   'tutorial:dialog_closed': (stats) => stats,
 };

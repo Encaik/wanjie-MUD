@@ -1,7 +1,7 @@
 /**
  * useGameFlow — 游戏流程阶段转换 Hook
  *
- * 管理 startNewGame / selectWorld / startGameWithCharacter / confirmBackstory 等流程
+ * 管理 startNewGame / selectWorld / startGameWithCharacter 等流程
  */
 
 'use client';
@@ -14,7 +14,6 @@ import { post } from '@/shared/utils/api-client';
 import { createLogger } from '@/core/logger';
 import { emit } from '@/core/events';
 import { worldEvents } from '@/modules/theme';
-import { getTemplate } from '@/modules/item/data';
 
 const log = createLogger('GameFlow');
 
@@ -66,41 +65,23 @@ export function useGameFlow() {
       { seed: '', worldSeed: world.id, worldviewId: world.worldviewId, name: characterData.name, gender: characterData.gender, raceId: characterData.raceId, talentIds: characterData.talentIds, attributes: characterData.attributes, coreStats: characterData.coreStats, npcTemplateVersion: 0, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() },
       world,
     );
-    dispatch(prev => ({ ...prev, protagonist, phase: 'playing' }));
-  }, [dispatch]);
-
-  const confirmBackstory = useCallback(() => {
-    let worldId: string | undefined;
-    let worldType: string | undefined;
-
     dispatch(prev => {
-      if (!prev.protagonist) return prev;
-      worldId = prev.protagonist.world.worldviewId;
-      worldType = prev.protagonist.world.type;
-
       const now = Date.now();
       const makeId = () => `msg_${now}_${Math.random().toString(36).substr(2, 9)}`;
-
-      // 游戏开始消息
-      const welcomeMsg = { id: makeId(), timestamp: now, type: 'success' as const, title: '游戏开始', content: '欢迎来到修仙世界！', details: undefined, rewards: undefined };
-
-      // 初始物品获得消息
-      const items = prev.protagonist.items ?? [];
-      const itemNames = items.map(i => {
-        try { return `${getTemplate(i.templateId).name} x${i.quantity}`; }
-        catch { return `${i.templateId} x${i.quantity}`; }
-      }).join('、');
-      const itemMsgs = items.length > 0
-        ? [{ id: makeId(), timestamp: now, type: 'info' as const, title: '初始物品', content: `获得初始物品：${itemNames}`, details: undefined, rewards: undefined }]
-        : [];
-
-      return { ...prev, phase: 'playing', messages: [...itemMsgs, welcomeMsg, ...prev.messages].slice(0, 100) };
+      const welcomeMsg = {
+        id: makeId(), timestamp: now, type: 'success' as const,
+        title: '踏入万界',
+        content: '欢迎来到万界修行录！打开任务面板领取初始修炼物资，开始你的修行之路吧。',
+        details: undefined, rewards: undefined,
+      };
+      return {
+        ...prev,
+        protagonist,
+        phase: 'playing',
+        messages: [welcomeMsg, ...prev.messages].slice(0, 100),
+      };
     });
-
-    if (worldId || worldType) {
-      emit(worldEvents.events.world_changed, { worldviewId: worldId, worldType: worldType });
-    }
   }, [dispatch]);
 
-  return { startNewGame, selectWorld, startGameWithCharacter, confirmBackstory, fetchWorldviews };
+  return { startNewGame, selectWorld, startGameWithCharacter, fetchWorldviews };
 }

@@ -217,7 +217,7 @@ function convertToPlayerData(protagonist: Protagonist): PlayerData {
       ...(protagonist.equippedAttackTechniques || []),
       ...(protagonist.equippedDefenseTechniques || []),
     ],
-    inventory: protagonist.inventory,
+    items: protagonist.items,
     equippedMelee: protagonist.equippedMelee,
     equippedRanged: protagonist.equippedRanged,
   };

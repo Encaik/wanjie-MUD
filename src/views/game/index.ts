@@ -57,7 +57,6 @@ export {
   useCrafting,
   useAscension,
   useBattle,
-  useInventory as useInventoryActions,
   useSaveLoad,
   useGameActions,
   useDevMode,

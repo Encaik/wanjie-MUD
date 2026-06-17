@@ -21,6 +21,7 @@ import {
   Swords,
   Users,
   Lock,
+  Gift,
 } from 'lucide-react';
 
 import { CardCornerDecorations } from '@/shared/components';
@@ -34,6 +35,7 @@ import { TUTORIAL_GUIDE } from '../logic/tutorialGuide';
 import type { TutorialPhase, TutorialStep } from '../logic/tutorialGuide';
 import {
   getTutorialProgressInfo,
+  isStepRewardClaimable,
 } from '../logic/taskProgressTracker';
 import type { TutorialState } from '../logic/taskProgressTracker';
 
@@ -63,6 +65,8 @@ interface QuestPanelProps {
   questState: QuestState;
   /** 是否已加入势力 */
   factionJoined?: boolean;
+  /** 领取步骤奖励回调 */
+  onClaimStepReward?: (stepId: string) => void;
 }
 
 // ============================================
@@ -74,6 +78,7 @@ export function QuestPanel({
   statistics: _statistics,
   questState,
   factionJoined = false,
+  onClaimStepReward,
 }: QuestPanelProps) {
   const [activeTab, setActiveTab] = useState<QuestTab>(
     tutorialState?.completed ? 'npc' : 'tutorial',
@@ -231,7 +236,7 @@ export function QuestPanel({
 
                     {/* 当前步骤 */}
                     {currentStep && (
-                      <div className="bg-card rounded p-2 space-y-1">
+                      <div className="bg-card rounded p-2 space-y-1.5">
                         <div className="flex items-start gap-1.5">
                           <Circle className="w-3 h-3 text-game-cultivation mt-0.5 flex-shrink-0" />
                           <div className="flex-1 min-w-0">
@@ -246,6 +251,19 @@ export function QuestPanel({
                         <div className="text-[10px] text-game-cultivation bg-game-cultivation/10 px-1.5 py-0.5 rounded">
                           💡 {currentStep.hint}
                         </div>
+                        {/* 当前步骤的领取奖励按钮 */}
+                        {currentStep.stepReward && !tutorialState.claimedRewardStepIds.includes(currentStep.id) && onClaimStepReward && (
+                          <button
+                            onClick={() => onClaimStepReward(currentStep.id)}
+                            className="w-full flex items-center justify-center gap-1.5 py-1.5 rounded text-xs font-medium
+                              bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400
+                              hover:bg-amber-200 dark:hover:bg-amber-900/50 transition-colors
+                              border border-amber-300/50 dark:border-amber-700/50"
+                          >
+                            <Gift className="w-3.5 h-3.5" />
+                            领取奖励
+                          </button>
+                        )}
                       </div>
                     )}
                   </div>
@@ -254,12 +272,26 @@ export function QuestPanel({
                 {/* 已完成步骤列表 */}
                 {completedSteps.length > 0 && (
                   <div className="space-y-0.5 max-h-32 overflow-y-auto">
-                    {completedSteps.map(step => (
-                      <div key={step.id} className="flex items-center gap-1 text-[10px] text-game-recovery">
-                        <CheckCircle2 className="w-2.5 h-2.5 flex-shrink-0" />
-                        <span className="line-through">{step.name}</span>
-                      </div>
-                    ))}
+                    {completedSteps.map(step => {
+                      const canClaim = isStepRewardClaimable(step.id, tutorialState);
+                      return (
+                        <div key={step.id} className="flex items-center gap-1 text-[10px]">
+                          <CheckCircle2 className="w-2.5 h-2.5 flex-shrink-0 text-game-recovery" />
+                          <span className="line-through text-game-recovery flex-1">{step.name}</span>
+                          {canClaim && onClaimStepReward && (
+                            <button
+                              onClick={() => onClaimStepReward(step.id)}
+                              className="flex items-center gap-0.5 px-1.5 py-0.5 rounded text-[9px] font-medium
+                                bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400
+                                hover:bg-amber-200 dark:hover:bg-amber-900/50 transition-colors flex-shrink-0"
+                            >
+                              <Gift className="w-2.5 h-2.5" />
+                              领取
+                            </button>
+                          )}
+                        </div>
+                      );
+                    })}
                   </div>
                 )}
               </>

@@ -9,7 +9,9 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/data-displ
 import { CULTIVATION_PATHS } from '@/modules/progression/data/cultivationPathData';
 import { useMentalState } from '@/modules/progression/hooks/useMentalState';
 import { getTerminology } from '@/modules/narrative/logic/terminology';
-import type { ActiveEffect, WorldType, InventoryItem, CultivationPath, FlatStats, MentalState } from '@/core/types';
+import type { ActiveEffect, WorldType, CultivationPath, FlatStats, MentalState } from '@/core/types';
+import type { ItemInstance } from '@/modules/item/types';
+import { getCurrencyAmount } from '@/modules/item/logic';
 
 interface CultivationPanelProps {
   onCultivate: () => void;
@@ -20,7 +22,7 @@ interface CultivationPanelProps {
   onSelectPath?: () => void;
   disabled?: boolean;
   worldType: WorldType;
-  inventory: InventoryItem[];
+  items: ItemInstance[];
   activeEffects?: ActiveEffect[];
   experience: number;
   level: number;
@@ -38,11 +40,10 @@ interface CultivationPanelProps {
   onMentalStateChange?: (mentalState: MentalState) => void;
 }
 
-/** 获取灵石数量 */
-function getSpiritStoneCount(inventory: InventoryItem[] | undefined): number {
-  if (!inventory) return 0;
-  const item = inventory.find(i => i.definition.id === 'spirit_stone');
-  return item ? item.quantity : 0;
+/** 获取灵石数量（新物品系统） */
+function getSpiritStoneCount(items: ItemInstance[] | undefined): number {
+  if (!items) return 0;
+  return getCurrencyAmount(items, 'wanjie:common:spirit_stone');
 }
 
 /** 获取流派图标 */
@@ -85,7 +86,7 @@ export function CultivationPanel({
   onSelectPath,
   disabled,
   worldType,
-  inventory,
+  items,
   activeEffects = [],
   experience,
   currentHp,
@@ -107,7 +108,7 @@ export function CultivationPanel({
   });
 
   const terminology = getTerminology(worldType);
-  const spiritStones = getSpiritStoneCount(inventory);
+  const spiritStones = getSpiritStoneCount(items);
   const hasEnoughStones = spiritStones >= 20;
   const hasEnoughStonesForRest = spiritStones >= 5;
   const needsRest = currentHp < maxHp || currentMp < maxMp;

@@ -88,6 +88,8 @@ export {
   createDefaultTutorialState,
   createLegacyCompatibleTutorialState,
   checkTutorialProgress,
+  claimStepReward,
+  isStepRewardClaimable,
   getPendingDialog,
   markDialogViewed,
   getTutorialProgressInfo,

@@ -10,9 +10,10 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/data-displ
 import { Progress } from '@/shared/ui/feedback/progress';
 import { ScrollArea } from '@/shared/ui/layout/scroll-area';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/shared/ui/data-display/tabs';
-import { 
-  ACHIEVEMENTS, 
-  getAchievementsByType, 
+import { getTemplate } from '@/modules/item/data';
+import {
+  ACHIEVEMENTS,
+  getAchievementsByType,
   AchievementTypeNames 
 } from '@/modules/collection/data/achievementData';
 import { 
@@ -81,7 +82,7 @@ function AchievementCard({
     
     if (definition.rewards.items) {
       definition.rewards.items.forEach(item => {
-        rewards.push({ label: `${item.definition.name} x${item.quantity}` });
+        rewards.push({ label: `${getTemplate(item.definition.id).name} x${item.quantity}` });
       });
     }
     

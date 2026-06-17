@@ -6,10 +6,11 @@
  * 扩展自 executeCultivation()，保留原有功能作为"稳健"策略。
  */
 
-import type { Protagonist, CultivationResult, GrowthStats, InventoryItem } from '@/core/types';
-import { createInventoryItem, getFinalStats } from '@/core/types';
+import type { Protagonist, CultivationResult, GrowthStats } from '@/core/types';
+import { getFinalStats } from '@/core/types';
 import { getExperienceForLevel } from '@/modules/progression/logic/realmSystem';
 import { getTerminology } from '@/modules/narrative/logic/terminology';
+import { getItemCount } from '@/modules/item/logic';
 import {
   calculateCultivationBoost,
   calculateBreakthroughBoost,
@@ -32,9 +33,8 @@ const random = (min: number, max: number) => Math.floor(Math.random() * (max - m
 // 灵石计数
 // ============================================
 
-function getSpiritStoneCount(inventory: InventoryItem[]): number {
-  const item = inventory.find(i => i.definition.id === 'spirit_stone');
-  return item ? item.quantity : 0;
+function getSpiritStoneCount(items: Protagonist['items']): number {
+  return getItemCount(items, 'wanjie:common:spirit_stone');
 }
 
 // ============================================
@@ -121,7 +121,7 @@ export function executeCultivationWithStrategy(
   const stats = getFinalStats(protagonist.stats);
   const terms = getTerminology(protagonist.world.type);
   const maxExp = getMaxExperience(protagonist.level);
-  const spiritStones = getSpiritStoneCount(protagonist.inventory);
+  const spiritStones = getSpiritStoneCount(protagonist.items);
 
   // 检查灵石
   if (spiritStones < config.spiritStoneCost) {

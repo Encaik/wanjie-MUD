@@ -20,7 +20,7 @@ import {
   weightedRandom,
 } from '@/modules/ascension/data/ascensionData';
 import { FlatStats, WorldType, CharacterStats, BattleState, BattleLog, Protagonist, Technique, Equipment, getFinalStats, GrowthStats } from '@/core/types';
-import { 
+import {
   AscensionMark,
   GuardianBattleState,
   AscensionChallengeResult,
@@ -29,6 +29,7 @@ import {
   DEFAULT_ASCENSION_MARK,
   DEFAULT_GUARDIAN_BATTLE_STATE,
 } from '@/core/types';
+import { getCurrencyAmount } from '@/modules/item/logic';
 
 // ============================================
 // 成功率计算
@@ -588,9 +589,7 @@ export function calculateInheritance(
   }
   
   // 计算携带灵石
-  const spiritStones = protagonist.inventory.find(
-    item => item.definition.id === 'spirit_stone'
-  )?.quantity ?? 0;
+  const spiritStones = getCurrencyAmount(protagonist.items, 'wanjie:common:spirit_stone');
   const carriedStones = Math.floor(spiritStones * choice.spiritStonesPercent);
   
   return {

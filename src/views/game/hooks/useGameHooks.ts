@@ -11,14 +11,14 @@ import { useMemo } from 'react';
 
 import { calcPlayerAttack, calcPlayerDefense } from '@/core/calculation';
 import { getFinalStats } from '@/core/types';
-import type { InventoryItem, Technique } from '@/core/types';
+import type { Technique } from '@/core/types';
 import { useGameStore } from '../state/GameStore';
-import { useInventory as useInventoryActions } from '../domainHooks/useInventory';
 import { useEquipment } from '../domainHooks/useEquipment';
 import { getRealmName, getNextRealm, getNextMainRealmLevel, getMainRealmName } from '@/modules/progression/data/realmData';
 import { getMaxExperience } from '@/modules/progression/logic/cultivation';
 import { getActualStatCap, MAX_LEVEL } from '@/modules/progression/logic/realmSystem';
 import { getAttributeNames, getDungeonInfo, getTerminology } from '@/modules/narrative/logic/terminology';
+import { getCurrencyAmount } from '@/modules/item/logic';
 
 /** 获取主角数据 */
 export function useProtagonist() {
@@ -113,14 +113,13 @@ export function useCombatStats() {
 /** 获取背包数据 + useItem action */
 export function useInventory() {
   const { gameState } = useGameStore();
-  const { useItem } = useInventoryActions();
 
   return useMemo(() => {
-    const inv = gameState.protagonist?.inventory || [];
+    const items = gameState.protagonist?.items || [];
     const effects = gameState.protagonist?.activeEffects || [];
-    const ssCount = inv.find((i: InventoryItem) => i.definition.id === 'spirit_stone')?.quantity ?? 0;
-    return { inventory: inv, activeEffects: effects, spiritStoneCount: ssCount, useItem };
-  }, [gameState.protagonist?.inventory, gameState.protagonist?.activeEffects, useItem]);
+    const ssCount = getCurrencyAmount(items, 'wanjie:common:spirit_stone');
+    return { items, activeEffects: effects, spiritStoneCount: ssCount };
+  }, [gameState.protagonist?.items, gameState.protagonist?.activeEffects]);
 }
 
 /** 获取功法数据 + equip/unequip action */

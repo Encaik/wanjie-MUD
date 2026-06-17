@@ -4,7 +4,7 @@
  * 5 阶段 9 步骤的事件驱动引导流程。
  * 每个步骤在对应游戏事件触发时自动完成。
  *
- * 阶段 0: 初入仙途 — 领取新手礼包
+ * 阶段 0: 初入仙途 — 欢迎引导（游戏开始时自动完成）
  * 阶段 1: 初识修炼 — 使用丹药 → 修炼
  * 阶段 2: 初露锋芒 — 进入机缘 → 击败敌人
  * 阶段 3: 融入世界 — 升到 3 级 → 加入势力
@@ -115,13 +115,13 @@ export const TUTORIAL_GUIDE: TutorialGuideDefinition = {
       id: 'phase_0_starter',
       name: '初入仙途',
       order: 0,
-      description: '领取新手礼包，获得修行基本物资',
+      description: '踏入修行世界，领取初始修炼物资',
       steps: [
         {
-          id: 'step_collect_starter_pack',
-          name: '领取新手礼包',
-          description: '点击领取宗门赠送的新手物资',
-          hint: '作为初入修行的凡人，宗门为你准备了基础修炼物资。',
+          id: 'step_welcome',
+          name: '欢迎来到万界',
+          description: '踏入万界修行路，领取初始物资',
+          hint: '你已踏入万界修行之路。前往任务面板领取初始修炼物资，开始修行吧！',
           dialog: {
             title: '欢迎来到万界修行录',
             content: [
@@ -132,16 +132,21 @@ export const TUTORIAL_GUIDE: TutorialGuideDefinition = {
               '• **机缘**：探索秘境，遭遇随机事件与敌人',
               '• **战斗**：回合制战斗，手动或自动模式',
               '• **收集**：获得功法、装备、丹药',
-              '• **势力**：加入宗门，完成委托获取贡献',
               '• **飞升**：穿越到更高层次的世界',
               '',
-              '宗门已为你准备好了初始物资，点击领取开始你的修行之路吧！',
+              '作为初入修行的新人，你可以在任务面板领取初始物资：',
+              '• 灵石 ×200',
+              '• 聚气丹 ×5',
+              '• 筑基丹 ×1',
+              '• 回春丹 ×3',
+              '',
+              '打开任务面板，点击领取奖励开始你的修行之路吧！',
             ].join('\n'),
             variant: 'welcome',
-            confirmText: '领取新手物资',
+            confirmText: '踏入修行',
           },
-          triggerEvent: 'tutorial:starter_pack_claimed',
-          condition: eventIs('tutorial:starter_pack_claimed'),
+          triggerEvent: 'tutorial:game_started',
+          condition: eventIs('tutorial:game_started'),
           stepReward: {
             spiritStones: 200,
             experience: 0,

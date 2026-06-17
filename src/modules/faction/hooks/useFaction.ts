@@ -26,16 +26,14 @@ import {
 } from '@/modules/faction/data/factionProgressData';
 import { getStatisticValue } from '@/modules/collection/logic/achievement/achievementUtils';
 import { processStatisticsEvent } from '@/core/statistics';
-import { 
-  GameState, 
+import {
+  GameState,
   MessageRecord,
-  InventoryItem,
-  createInventoryItem,
   CultivationPath,
 } from '@/core/types';
-import { 
-  FactionProgress, 
-  TaskRoundState, 
+import {
+  FactionProgress,
+  TaskRoundState,
   TaskProgress,
   CommissionState,
   CommissionProgress,
@@ -44,8 +42,16 @@ import {
   createDefaultWeeklyRoundState,
   createDefaultCommissionState,
 } from '@/core/types';
+import type { ItemInstance } from '@/modules/item/types';
+import { getCurrencyAmount, removeItem, addItem } from '@/modules/item/logic';
+import { getTemplate } from '@/modules/item/data';
 
-
+/** 按模板 ID 从物品列表中扣除数量（不可变） */
+function deductByTemplate(items: ItemInstance[], templateId: string, quantity: number): ItemInstance[] {
+  const target = items.find(i => i.templateId === templateId);
+  if (!target) return items;
+  return removeItem(items, target.instanceId, quantity);
+}
 
 interface UseGameFactionProps {
   setGameState: Dispatch<SetStateAction<GameState>>;
@@ -57,7 +63,7 @@ interface UseGameFactionProps {
     details?: string,
     rewards?: MessageRecord['rewards']
   ) => MessageRecord[];
-  addToInventory?: (inventory: InventoryItem[], newItem: InventoryItem) => InventoryItem[];
+  addToInventory?: (items: ItemInstance[], templateId: string, quantity: number) => ItemInstance[];
 }
 
 export interface UseGameFactionReturn {
@@ -717,17 +723,14 @@ export function useGameFaction({
         return prev;
       }
       
-      const spiritStoneItem = prev.protagonist.inventory.find(i => i.definition.id === 'spirit_stone');
-      const currentSpiritStones = spiritStoneItem?.quantity ?? 0;
+      const currentSpiritStones = getCurrencyAmount(prev.protagonist.items, 'wanjie:common:spirit_stone');
       
       if (currentSpiritStones < amount) {
         result = { success: false, message: '灵石不足' };
         return { ...prev, messages: addMessageInternal(prev.messages, 'failure', '捐献失败', '灵石不足') };
       }
       
-      const newInventory = prev.protagonist.inventory.map(i =>
-        i.definition.id === 'spirit_stone' ? { ...i, quantity: i.quantity - amount } : i
-      ).filter(i => i.quantity > 0);
+      const newItems = deductByTemplate(prev.protagonist.items, 'wanjie:common:spirit_stone', amount);
       
       const newProgress: FactionProgress = {
         ...prev.protagonist.factionProgress,
@@ -741,11 +744,11 @@ export function useGameFaction({
         ...prev,
         protagonist: {
           ...prev.protagonist,
-          inventory: newInventory,
+          items: newItems,
           factionProgress: newProgress,
-          currencies: { 
-            ...prev.protagonist.currencies, 
-            contribution: (prev.protagonist.currencies?.contribution ?? 0) + amount 
+          currencies: {
+            ...prev.protagonist.currencies,
+            contribution: (prev.protagonist.currencies?.contribution ?? 0) + amount
           },
         },
         factionProgress: newProgress,
@@ -832,26 +835,18 @@ export function useGameFaction({
       
       result = { success: true, amount: salary };
       
-      const spiritStoneItem = prev.protagonist.inventory.find(i => i.definition.id === 'spirit_stone');
-      let newInventory;
-      if (spiritStoneItem) {
-        newInventory = prev.protagonist.inventory.map(i =>
-          i.definition.id === 'spirit_stone' ? { ...i, quantity: i.quantity + salary } : i
-        );
-      } else {
-        newInventory = [...prev.protagonist.inventory, createInventoryItem(spiritStoneItems[0], salary)];
-      }
-      
+      const newItems = addItem(prev.protagonist.items, 'wanjie:common:spirit_stone', salary);
+
       const newProgress: FactionProgress = {
         ...prev.protagonist.factionProgress,
         lastDailyReward: Date.now(),
       };
-      
+
       return {
         ...prev,
         protagonist: {
           ...prev.protagonist,
-          inventory: newInventory,
+          items: newItems,
           factionProgress: newProgress,
         },
         factionProgress: newProgress,
@@ -909,21 +904,23 @@ export function useGameFaction({
       }
       
       // 发放奖励
-      let newInventory = [...(prev.protagonist.inventory || [])];
+      let newItems = [...(prev.protagonist.items || [])];
       const rewards: string[] = [];
-      
+
       // 经验奖励
       if (achievement.rewards.experience) {
         rewards.push(`${achievement.rewards.experience} 经验`);
       }
-      
+
       // 物品奖励
       if (achievement.rewards.items) {
         for (const item of achievement.rewards.items) {
           if (addToInventory) {
-            newInventory = addToInventory(newInventory, item);
+            newItems = addToInventory(newItems, item.definition.id, item.quantity);
+          } else {
+            newItems = addItem(newItems, item.definition.id, item.quantity);
           }
-          rewards.push(`${item.definition.name} x${item.quantity}`);
+          rewards.push(`${getTemplate(item.definition.id).name} x${item.quantity}`);
         }
       }
       
@@ -945,7 +942,7 @@ export function useGameFaction({
         ...prev,
         protagonist: {
           ...prev.protagonist,
-          inventory: newInventory,
+          items: newItems,
           // 如果有经验奖励，加到经验值
           experience: prev.protagonist.experience + (achievement.rewards.experience || 0),
         },

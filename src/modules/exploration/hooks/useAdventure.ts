@@ -49,13 +49,11 @@ import { applyGrowthStatChanges, getGrowthStatCap } from '@/modules/progression/
 import { gameClock, cooldown } from '@/core/time';
 import { isNewbie } from '@/modules/quest';
 import { getTerminology } from '@/modules/narrative/logic/terminology';
-import { 
-  GameState, 
-  MessageRecord, 
-  InventoryItem,
+import {
+  GameState,
+  MessageRecord,
   DungeonConfig,
   CharacterStats,
-  createInventoryItem,
   ActiveBattleState,
   CellType,
   BattleResult,
@@ -66,8 +64,27 @@ import {
   Equipment,
   EnemyTier,
 } from '@/core/types';
+import type { ItemInstance } from '@/modules/item/types';
+import { getCurrencyAmount, addItem, removeItem } from '@/modules/item/logic';
+import { getTemplate } from '@/modules/item/data';
+
+/** 按模板 ID 从物品列表中扣除数量（不可变） */
+function deductByTemplate(items: ItemInstance[], templateId: string, quantity: number): ItemInstance[] {
+  const target = items.find(i => i.templateId === templateId);
+  if (!target) return items;
+  return removeItem(items, target.instanceId, quantity);
+}
 
 // 行动力系统
+
+/** 突破丹药按难度的模板 ID 映射（替代已删除的 breakthroughItems） */
+const BREAKTHROUGH_PILL_IDS = [
+  'wanjie:cultivation:qi_gathering_pill',
+  'wanjie:cultivation:essence_condensing_pill',
+  'wanjie:cultivation:foundation_pill',
+];
+
+const SPIRIT_STONE_ID = 'wanjie:common:spirit_stone';
 
 interface UseGameAdventureProps {
   gameState: GameState;
@@ -179,15 +196,15 @@ export function useGameAdventure({
               )
             : prev.protagonist.stats;
           
-          let newInventory = [...(prev.protagonist.inventory || [])];
+          let newItems = [...(prev.protagonist.items || [])];
           if (choice.effects.items) {
             for (const item of choice.effects.items) {
-              newInventory = addToInventory(newInventory, item);
+              newItems = addItem(newItems, item.definition.id, item.quantity);
             }
           }
           if (result.rewards?.items) {
             for (const item of result.rewards.items) {
-              newInventory = addToInventory(newInventory, item);
+              newItems = addItem(newItems, item.definition.id, item.quantity);
             }
           }
           
@@ -240,7 +257,7 @@ export function useGameAdventure({
             protagonist: {
               ...prev.protagonist,
               stats: newStats,
-              inventory: newInventory,
+              items: newItems,
               experience: finalExp,
               overflowExperience: newOverflowExp,
               activeEffects: prev.protagonist.activeEffects,
@@ -298,10 +315,10 @@ export function useGameAdventure({
           )
         : prev.protagonist.stats;
       
-      let newInventory = [...(prev.protagonist.inventory || [])];
+      let newItems = [...(prev.protagonist.items || [])];
       if (choice.effects.items) {
         for (const item of choice.effects.items) {
-          newInventory = addToInventory(newInventory, item);
+          newItems = addItem(newItems, item.definition.id, item.quantity);
         }
       }
       
@@ -346,7 +363,7 @@ export function useGameAdventure({
         protagonist: {
           ...prev.protagonist,
           stats: newStats,
-          inventory: newInventory,
+          items: newItems,
           activeEffects: prev.protagonist.activeEffects,
           experience: finalExp,
           overflowExperience: newOverflowExp,
@@ -497,7 +514,7 @@ export function useGameAdventure({
       
       const random = (min: number, max: number) => Math.floor(Math.random() * (max - min + 1)) + min;
       
-      const loot: InventoryItem[] = [];
+      let loot: ItemInstance[] = [];
       let totalExp = 0;
       let totalSpiritStones = 0;
       const statGains: Partial<GrowthStats> = {};
@@ -515,7 +532,7 @@ export function useGameAdventure({
         if (Math.random() < 0.08) {
           const item = getRandomItem(config.difficulty);
           if (item) {
-            loot.push(createInventoryItem(item, 1));
+            loot = addItem(loot, item.id, 1);
           }
         }
       }
@@ -525,7 +542,7 @@ export function useGameAdventure({
         if (Math.random() < 0.15) {
           const item = getRandomItem(config.difficulty);
           if (item) {
-            loot.push(createInventoryItem(item, 1));
+            loot = addItem(loot, item.id, 1);
           }
         }
       }
@@ -533,22 +550,16 @@ export function useGameAdventure({
       const bossExp = Math.floor((config.difficulty * 20 + 50) * config.rewardMultiplier * sweepEfficiency);
       totalExp += bossExp;
       
-      const breakthroughPill = breakthroughItems[Math.min(Math.floor(config.difficulty / 30), 2)];
-      loot.push(createInventoryItem(breakthroughPill, 1));
+      const pillId = BREAKTHROUGH_PILL_IDS[Math.min(Math.floor(config.difficulty / 30), 2)];
+      loot = addItem(loot, pillId, 1);
       
-      let finalInventory = [...(prev.protagonist.inventory || [])];
+      let finalItems = [...(prev.protagonist.items || [])];
       
-      const spiritStoneItem = spiritStoneItems[0];
-      if (spiritStoneItem) {
-        finalInventory = addToInventory(finalInventory, createInventoryItem(spiritStoneItem, totalSpiritStones));
-      }
+      finalItems = addItem(finalItems, SPIRIT_STONE_ID, totalSpiritStones);
       
       for (const item of loot) {
-        finalInventory = addToInventory(finalInventory, item);
+        finalItems = addItem(finalItems, item.templateId, item.quantity);
       }
-      
-      // 【关键修复】使用碎片系统，传入玩家等级限制稀有度
-      const playerLevel = prev.protagonist.level;
       const luck = getFinalStats(prev.protagonist.stats).幸运 || 0;
       const worldType = prev.protagonist.world.type;
       const currentFragmentInventory = prev.protagonist.fragmentInventory ?? createEmptyFragmentInventory();
@@ -644,7 +655,7 @@ export function useGameAdventure({
         ...prev,
         protagonist: {
           ...prev.protagonist,
-          inventory: finalInventory,
+          items: finalItems,
           // 【新增】完整物品掉落（普通/稀有品质直接获得完整物品）
           techniques: newTechniques,
           equipments: newEquipments,
@@ -691,15 +702,15 @@ export function useGameAdventure({
       const currentFragments = prev.adventureFragments || [];
       
       // 根据退出类型决定战利品和经验保留比例
-      let finalInventory = [...(prev.protagonist.inventory || [])];
-      const keptLoot: InventoryItem[] = [];
+      let finalItems = [...(prev.protagonist.items || [])];
+      const keptLoot: ItemInstance[] = [];
       let keptExperience = 0;
       let keptFragments: FragmentDropData[] = [];
       
       if (exitType === 'completed' || exitType === 'stamina_exhausted') {
         // 完成机缘或步数耗尽：保留100%战利品和经验
         for (const item of currentLoot) {
-          finalInventory = addToInventory(finalInventory, item);
+          finalItems = addItem(finalItems, item.definition.id, item.quantity);
           keptLoot.push(item);
         }
         keptExperience = currentExperience;
@@ -714,7 +725,7 @@ export function useGameAdventure({
           const keptQuantity = Math.floor(item.quantity * keepRatio);
           if (keptQuantity > 0) {
             const keptItem = { ...item, quantity: keptQuantity };
-            finalInventory = addToInventory(finalInventory, keptItem);
+            finalItems = addItem(finalItems, keptItem.definition.id, keptItem.quantity);
             keptLoot.push(keptItem);
           }
         }
@@ -762,10 +773,10 @@ export function useGameAdventure({
         // 统计每种物品的数量，并使用统一术语
         const itemCounts = new Map<string, { name: string; quantity: number }>();
         for (const item of keptLoot) {
-          const id = item.definition.id;
+          const id = item.templateId;
           const existing = itemCounts.get(id);
           // 灵石使用统一术语
-          const displayName = id === 'spirit_stone' ? terminology.resource : item.definition.name;
+          const displayName = id === 'wanjie:common:spirit_stone' ? terminology.resource : getTemplate(item.templateId).name;
           if (existing) {
             existing.quantity += item.quantity;
           } else {
@@ -918,7 +929,7 @@ export function useGameAdventure({
         showNoviceCompletionDialog, // 新手引导完成弹窗标记
         protagonist: {
           ...prev.protagonist,
-          inventory: finalInventory,
+          items: finalItems,
           experience: prev.protagonist.experience + keptExperience, // 结算经验值
           fragmentInventory: finalFragmentInventory, // 更新碎片库存
         },
@@ -1183,13 +1194,13 @@ export function useGameAdventure({
             const keepRatio = 0.5;
             
             // 处理战利品：每个物品数量减半（向下取整）
-            let finalInventory = [...(prev.protagonist.inventory || [])];
-            const keptLoot: InventoryItem[] = [];
+            let finalItems = [...(prev.protagonist.items || [])];
+            const keptLoot: ItemInstance[] = [];
             for (const item of currentLoot) {
               const keptQuantity = Math.floor(item.quantity * keepRatio);
               if (keptQuantity > 0) {
                 const keptItem = { ...item, quantity: keptQuantity };
-                finalInventory = addToInventory(finalInventory, keptItem);
+                finalItems = addItem(finalItems, keptItem);
                 keptLoot.push(keptItem);
               }
             }
@@ -1233,10 +1244,10 @@ export function useGameAdventure({
             if (keptLoot.length > 0) {
               const itemCounts = new Map<string, { name: string; quantity: number }>();
               for (const item of keptLoot) {
-                const id = item.definition.id;
+                const id = item.templateId;
                 const existing = itemCounts.get(id);
                 // 灵石使用统一术语
-                const displayName = id === 'spirit_stone' ? terminology.resource : item.definition.name;
+                const displayName = id === 'wanjie:common:spirit_stone' ? terminology.resource : getTemplate(item.templateId).name;
                 if (existing) {
                   existing.quantity += item.quantity;
                 } else {
@@ -1308,7 +1319,7 @@ export function useGameAdventure({
                 ...prev.protagonist,
                 currentHp: healAmount,
                 mentalState: newMentalState,
-                inventory: finalInventory,
+                items: finalItems,
                 experience: prev.protagonist.experience + keptExperience,
                 fragmentInventory: currentFragmentInventory, // 更新碎片库存
               },
@@ -1658,39 +1669,15 @@ export function useGameAdventure({
           }
           
           // 更新玩家背包中的灵石
-          const updatedInventory = [...prev.protagonist.inventory];
+          let updatedItems = [...prev.protagonist.items];
           if (spiritStonesReward > 0) {
-            const spiritStoneIndex = updatedInventory.findIndex(
-              item => item.definition.id === 'spirit_stone' || item.definition.type === '灵石'
-            );
-            if (spiritStoneIndex >= 0) {
-              updatedInventory[spiritStoneIndex] = {
-                ...updatedInventory[spiritStoneIndex],
-                quantity: updatedInventory[spiritStoneIndex].quantity + spiritStonesReward,
-              };
-            } else {
-              const def = {
-                id: 'spirit_stone',
-                name: '灵石',
-                type: '灵石' as const,
-                rarity: '普通' as const,
-                description: '修仙世界的通用货币',
-                effects: [],
-                stackable: true,
-                maxStack: 999999,
-              };
-              updatedInventory.push({
-                id: `spirit_stone_${Date.now()}`,
-                definition: def,
-                quantity: spiritStonesReward,
-              });
-            }
+            updatedItems = addItem(updatedItems, SPIRIT_STONE_ID, spiritStonesReward);
           }
-          
+
           // 使用预设的碎片奖励
           const currentFragmentInventory = prev.protagonist.fragmentInventory ?? createEmptyFragmentInventory();
           const worldType = prev.protagonist.world.type;
-          
+
           // 处理预设的碎片奖励
           const newTechniques = [...prev.protagonist.techniques];
           const newEquipments = [...prev.protagonist.equipments];
@@ -1748,37 +1735,18 @@ export function useGameAdventure({
           // 处理预设的材料奖励
           if (towerEnemy.rewards.materials.length > 0) {
             // 添加材料到背包
-            const addItemToInventory = (id: string, rarity: ItemRarity, quantity: number) => {
-              const existing = updatedInventory.find(item => item.definition.id === id);
-              if (existing) {
-                existing.quantity += quantity;
-              } else {
-                const def: ItemDefinition = {
-                  id,
-                  name: `${rarity}材料`,
-                  type: '材料',
-                  rarity,
-                  description: `${rarity}品质的炼器材料`,
-                  effects: [],
-                  stackable: true,
-                  maxStack: 999,
-                };
-                updatedInventory.push(createInventoryItem(def, quantity));
-              }
-            };
-            
             // 按品质分组统计材料
             const materialByRarity: Record<string, number> = {};
-            
+
             for (const mat of towerEnemy.rewards.materials) {
-              addItemToInventory(mat.id, mat.rarity, mat.quantity);
-              
+              updatedItems = addItem(updatedItems, mat.id, mat.quantity);
+
               if (!materialByRarity[mat.rarity]) {
                 materialByRarity[mat.rarity] = 0;
               }
               materialByRarity[mat.rarity] += mat.quantity;
             }
-            
+
             // 构建材料奖励消息
             for (const [rarity, count] of Object.entries(materialByRarity)) {
               rewardParts.push(`🔨${rarity}材料×${count}`);
@@ -1797,7 +1765,7 @@ export function useGameAdventure({
               ...prev.protagonist,
               // 不更新 currentHp 和 currentMp，保持原有状态
               towerProgress: updatedProgress,
-              inventory: updatedInventory,
+              items: updatedItems,
               fragmentInventory: currentFragmentInventory,
               techniques: newTechniques,
               equipments: newEquipments,
@@ -2055,13 +2023,13 @@ export function useGameAdventure({
         const keepRatio = 0.5;
         
         // 处理战利品：每个物品数量减半（向下取整）
-        let finalInventory = [...(prev.protagonist.inventory || [])];
-        const keptLoot: InventoryItem[] = [];
+        let finalItems = [...(prev.protagonist.items || [])];
+        const keptLoot: ItemInstance[] = [];
         for (const item of currentLoot) {
           const keptQuantity = Math.floor(item.quantity * keepRatio);
           if (keptQuantity > 0) {
             const keptItem = { ...item, quantity: keptQuantity };
-            finalInventory = addToInventory(finalInventory, keptItem);
+            finalItems = addItem(finalItems, keptItem.definition.id, keptItem.quantity);
             keptLoot.push(keptItem);
           }
         }
@@ -2105,10 +2073,10 @@ export function useGameAdventure({
         if (keptLoot.length > 0) {
           const itemCounts = new Map<string, { name: string; quantity: number }>();
           for (const item of keptLoot) {
-            const id = item.definition.id;
+            const id = item.templateId;
             const existing = itemCounts.get(id);
             // 灵石使用统一术语
-            const displayName = id === 'spirit_stone' ? terminology.resource : item.definition.name;
+            const displayName = id === 'wanjie:common:spirit_stone' ? terminology.resource : getTemplate(item.templateId).name;
             if (existing) {
               existing.quantity += item.quantity;
             } else {
@@ -2182,7 +2150,7 @@ export function useGameAdventure({
             ...prev.protagonist,
             currentHp: healAmount,
             mentalState: newMentalState,
-            inventory: finalInventory,
+            items: finalItems,
             experience: prev.protagonist.experience + keptExperience,
             fragmentInventory: currentFragmentInventory, // 更新碎片库存
           },

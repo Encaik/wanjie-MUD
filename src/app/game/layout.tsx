@@ -16,6 +16,7 @@ import type { MentalState } from '@/core/types';
 import { DEFAULT_PROTAGONIST_EXTENSION, getFinalStats } from '@/core/types';
 import { BattleDialog } from '@/modules/combat/components/BattleDialog';
 import { getFactionById } from '@/modules/faction/data/factionData';
+import { getCurrencyAmount } from '@/modules/item/logic';
 import { CultivationPathSelect } from '@/modules/progression/components/CultivationPathSelect';
 import { CriticalHealthOverlay } from '@/shared/components/CriticalHealthOverlay';
 import { DeathDialog } from '@/shared/components/DeathDialog';
@@ -75,8 +76,8 @@ export default function GameLayout({ children }: { children: React.ReactNode }) 
   }, [gameState.autoCultivating, gameState.crafting, gameState.forging]);
 
   const spiritStones = useMemo(
-    () => protagonist?.inventory.find(i => i.definition.id === 'spirit_stone')?.quantity ?? 0,
-    [protagonist?.inventory],
+    () => protagonist ? getCurrencyAmount(protagonist.items, 'wanjie:common:spirit_stone') : 0,
+    [protagonist?.items],
   );
 
   const currencyName = useMemo(

@@ -23,8 +23,8 @@ import { Progress } from '@/shared/ui/feedback/progress';
 import { RadioGroup, RadioGroupItem } from '@/shared/ui/forms/radio-group';
 import { Slider } from '@/shared/ui/forms/slider';
 import { ASCENSION_CONFIG } from '@/modules/ascension/data/ascensionData';
-import { Protagonist, Technique, Equipment, InventoryItem } from '@/core/types';
-import { InheritanceChoice } from '@/core/types';
+import type { Protagonist, Technique, Equipment, InheritanceChoice } from '@/core/types';
+import { getCurrencyAmount } from '@/modules/item/logic';
 
 interface InheritanceSelectProps {
   open: boolean;
@@ -54,11 +54,8 @@ export function InheritanceSelect({
 
   // 获取灵石数量
   const spiritStones = useMemo(() => {
-    const item = protagonist.inventory.find(
-      item => item.definition.id === 'spirit_stone' || item.definition.name === '灵石'
-    );
-    return item?.quantity ?? 0;
-  }, [protagonist.inventory]);
+    return getCurrencyAmount(protagonist.items, 'wanjie:common:spirit_stone');
+  }, [protagonist.items]);
 
   // 筛选可传承的功法
   const techniques = useMemo(() => {

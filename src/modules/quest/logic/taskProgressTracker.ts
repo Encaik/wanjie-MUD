@@ -36,6 +36,8 @@ export interface TutorialState {
   completedPhaseIds: string[];
   /** 已查看过的弹窗步骤 ID 列表 */
   viewedDialogStepIds: string[];
+  /** 已领取奖励的步骤 ID 列表 */
+  claimedRewardStepIds: string[];
 }
 
 /**
@@ -48,10 +50,8 @@ export interface TutorialProgressResult {
   newlyCompletedStep?: TutorialStep;
   /** 新完成的阶段（如果有） */
   newlyCompletedPhase?: TutorialPhase;
-  /** 待发放的阶段奖励（如果有） */
+  /** 待发放的阶段奖励（阶段内所有步骤完成后自动发放） */
   phaseRewardToClaim?: TaskReward;
-  /** 待发放的步骤奖励（如果有） */
-  stepRewardToClaim?: TaskReward;
   /** 是否全部引导完成 */
   allCompleted: boolean;
 }
@@ -71,6 +71,7 @@ export function createDefaultTutorialState(): TutorialState {
     completedStepIds: [],
     completedPhaseIds: [],
     viewedDialogStepIds: [],
+    claimedRewardStepIds: [],
   };
 }
 
@@ -186,9 +187,52 @@ export function checkTutorialProgress(
     newlyCompletedStep: currentStep,
     newlyCompletedPhase,
     phaseRewardToClaim,
-    stepRewardToClaim: currentStep.stepReward,
     allCompleted,
   };
+}
+
+/**
+ * 领取步骤奖励
+ *
+ * 步骤必须已完成且未被领取过。返回奖励内容和更新后的状态。
+ * 步骤奖励需要玩家手动点击领取，不会在步骤完成时自动发放。
+ *
+ * @param stepId - 步骤 ID
+ * @param state - 当前引导状态
+ * @returns 奖励内容 + 更新后的状态，如果不符合条件则返回 null
+ */
+export function claimStepReward(
+  stepId: string,
+  state: TutorialState,
+): { updatedState: TutorialState; reward: TaskReward } | null {
+  // 步骤必须是当前步骤或已完成步骤
+  const isCurrent = state.currentStepId === stepId;
+  const isCompleted = state.completedStepIds.includes(stepId);
+  if (!isCurrent && !isCompleted) return null;
+  // 步骤奖励必须未被领取
+  if (state.claimedRewardStepIds.includes(stepId)) return null;
+
+  // 查找步骤
+  const step = findStepById(stepId);
+  if (!step?.stepReward) return null;
+
+  return {
+    updatedState: {
+      ...state,
+      claimedRewardStepIds: [...state.claimedRewardStepIds, stepId],
+    },
+    reward: step.stepReward,
+  };
+}
+
+/**
+ * 检查步骤奖励是否可领取
+ */
+export function isStepRewardClaimable(stepId: string, state: TutorialState): boolean {
+  const isCurrentOrCompleted = state.currentStepId === stepId || state.completedStepIds.includes(stepId);
+  return isCurrentOrCompleted
+    && !state.claimedRewardStepIds.includes(stepId)
+    && !!findStepById(stepId)?.stepReward;
 }
 
 /**
@@ -267,16 +311,12 @@ export function getTutorialProgressInfo(state: TutorialState): {
  * @returns 是否应跳过阶段 0
  */
 export function shouldSkipPhaseZero(protagonist: Protagonist): boolean {
-  const inventory = protagonist.inventory ?? [];
+  // 检查新物品系统（items）
+  const items = protagonist.items ?? [];
   const starterItemIds = ['wanjie:common:spirit_stone', 'wanjie:cultivation:qi_gathering_pill', 'wanjie:cultivation:foundation_pill', 'wanjie:common:rejuvenation_pill'];
-  // 有至少 2 种初始物品即认为是旧角色
+
   const foundCount = starterItemIds.filter(id =>
-    inventory.some(i => {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const item = i as any;
-      const defId = item?.definition?.id ?? item?.templateId;
-      return defId === id;
-    })
+    items.some(i => i.templateId === id)
   ).length;
   return foundCount >= 2;
 }
@@ -296,6 +336,7 @@ export function createLegacyCompatibleTutorialState(protagonist: Protagonist): T
       currentStepId: phase1.steps[0].id,
       completedStepIds: phase0.steps.map(s => s.id),
       completedPhaseIds: [phase0.id],
+      claimedRewardStepIds: phase0.steps.map(s => s.id),
     };
   }
 
@@ -317,6 +358,14 @@ function findCurrentStep(state: TutorialState): TutorialStep | undefined {
 
 function findCurrentPhase(state: TutorialState): TutorialPhase | undefined {
   return TUTORIAL_GUIDE.phases.find(p => p.id === state.currentPhaseId);
+}
+
+function findStepById(stepId: string): TutorialStep | undefined {
+  for (const phase of TUTORIAL_GUIDE.phases) {
+    const step = phase.steps.find(s => s.id === stepId);
+    if (step) return step;
+  }
+  return undefined;
 }
 
 function getTotalStepCount(): number {

@@ -202,7 +202,7 @@
     { "id": "o1", "name": "仙缘降临", "description": "机缘巧合之下遇到仙缘，获得修炼感悟", "opportunityLevel": 4, "type": "stat_buff", "triggerCondition": { "type": "random", "chance": 0.1 }, "effect": {}, "duration": 2 },
     { "id": "o2", "name": "灵脉发现", "description": "发现隐藏灵脉，灵气充沛之地", "opportunityLevel": 2, "type": "resource_gain", "triggerCondition": { "type": "on_explore", "chance": 0.15 }, "effect": {}, "duration": 3 },
     { "id": "o3", "name": "古修洞府", "description": "发现上古修士遗留的洞府", "opportunityLevel": 5, "type": "rare_drop", "triggerCondition": { "type": "random", "chance": 0.03 }, "effect": {}, "duration": 1 },
-    { "id": "o4", "name": "天道感悟", "description": "顿悟天道法则，修为大进", "opportunityLevel": 6, "type": "stat_buff", "triggerCondition": { "type": "on_cultivate", "chance": 0.05 }, "effect": {}, "duration": 1 }
+    { "id": "o4", "name": "天道感悟", "description": "顿悟天道法则，修为大进", "opportunityLevel": 5, "type": "stat_buff", "triggerCondition": { "type": "on_cultivate", "chance": 0.05 }, "effect": {}, "duration": 1 }
   ],
 
   "factions": [

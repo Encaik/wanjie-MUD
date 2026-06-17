@@ -22,22 +22,22 @@ import { getRealmName } from '@/modules/progression/data/realmCore';
 import { applyGrowthStatChanges, getGrowthStatCap } from '@/modules/progression/logic/realmSystem';
 import { gameClock, cooldown } from '@/core/time';
 import { processStatisticsEvent, processStatisticsEvents } from '@/core/statistics';
-import { 
-  GameState, 
-  MessageRecord, 
-  InventoryItem,
+import {
+  GameState,
+  MessageRecord,
   ActiveEffect,
   GrowthStats,
 } from '@/core/types';
 import { DEFAULT_PROTAGONIST_EXTENSION, MentalState } from '@/core/types';
+import { removeItem, getCurrencyAmount } from '@/modules/item/logic';
+import { getTemplate } from '@/modules/item/data';
+import type { ItemInstance } from '@/modules/item/types';
 
-// TODO: 统一物品系统迁移 — 暂代
-function removeFromInventory(inventory: Record<string, unknown>[], itemId: string, quantity: number): Record<string, unknown>[] {
-  const idx = inventory.findIndex((i: Record<string, unknown>) => (i as { definition?: { id?: string } }).definition?.id === itemId);
-  if (idx < 0) return inventory;
-  const item = inventory[idx] as { quantity: number };
-  if (item.quantity <= quantity) return inventory.filter((_, i: number) => i !== idx);
-  return inventory.map((i: Record<string, unknown>, ix: number) => ix === idx ? { ...i, quantity: item.quantity - quantity } : i);
+/** 按模板 ID 从物品列表中扣除数量（不可变） */
+function deductByTemplate(items: ItemInstance[], templateId: string, quantity: number): ItemInstance[] {
+  const target = items.find(i => i.templateId === templateId);
+  if (!target) return items;
+  return removeItem(items, target.instanceId, quantity);
 }
 
 /**
@@ -62,13 +62,12 @@ function handleStrategyCultivationImpl(
     };
   }
 
-  let newInventory = [...(prev.protagonist.inventory || [])];
-  const stoneItem = newInventory.find(i => i.definition.id === 'spirit_stone');
-  if (stoneItem && result.spiritStonesSpent > 0) {
+  let newItems = [...(prev.protagonist.items || [])];
+  if (result.spiritStonesSpent > 0) {
     const actualCost = result.spiritStonesSpent - result.spiritStonesRefunded;
-    stoneItem.quantity = Math.max(0, stoneItem.quantity - actualCost);
-    if (stoneItem.quantity <= 0) {
-      newInventory = newInventory.filter(i => i.definition.id !== 'spirit_stone');
+    const stoneItem = newItems.find(i => i.templateId === 'wanjie:common:spirit_stone');
+    if (stoneItem) {
+      newItems = removeItem(newItems, stoneItem.instanceId, actualCost);
     }
   }
 
@@ -136,7 +135,7 @@ function handleStrategyCultivationImpl(
     ...prev,
     protagonist: {
       ...prev.protagonist,
-      inventory: newInventory,
+      items: newItems,
       activeEffects: newActiveEffects,
       experience: newExp,
       overflowExperience: newOverflowExp,
@@ -223,7 +222,7 @@ export function useGameCultivation({
       let newMentalStateForReturn: MentalState | undefined;
       let mentalChangeMessage: string = '';
       
-      let newInventory = [...(prev.protagonist.inventory || [])];
+      let newItems = [...(prev.protagonist.items || [])];
       let newStats = prev.protagonist.stats;
       let newLevel = prev.protagonist.level;
       const newStatCapBonuses = prev.protagonist.statCapBonuses;
@@ -231,7 +230,7 @@ export function useGameCultivation({
       // 处理 itemsCost
       if (result.itemsCost) {
         for (const cost of result.itemsCost) {
-          newInventory = removeFromInventory(newInventory, cost.definition.id, cost.quantity);
+          newItems = deductByTemplate(newItems, cost.templateId, cost.quantity);
         }
       }
       
@@ -269,8 +268,8 @@ export function useGameCultivation({
       const costDetails: string[] = [];
       if (result.itemsCost) {
         for (const cost of result.itemsCost) {
-          costDetails.push(`${cost.definition.name} x${cost.quantity}`);
-          newInventory = removeFromInventory(newInventory, cost.definition.id, cost.quantity);
+          costDetails.push(`${getTemplate(cost.templateId).name} x${cost.quantity}`);
+          newItems = deductByTemplate(newItems, cost.templateId, cost.quantity);
         }
       }
       
@@ -433,7 +432,7 @@ export function useGameCultivation({
         protagonist: {
           ...prev.protagonist,
           stats: newStats,
-          inventory: newInventory,
+          items: newItems,
           activeEffects: newActiveEffects,
           level: newLevel,
           realm: newRealm,
@@ -463,10 +462,8 @@ export function useGameCultivation({
     setGameState((prev: GameState) => {
       if (!prev.protagonist) return prev;
       
-      const spiritStones = prev.protagonist.inventory.find(
-        i => i.definition.id === 'spirit_stone'
-      )?.quantity || 0;
-      
+      const spiritStones = getCurrencyAmount(prev.protagonist.items, 'wanjie:common:spirit_stone');
+
       if (spiritStones < 5) {
         return {
           ...prev,
@@ -477,7 +474,7 @@ export function useGameCultivation({
           },
         };
       }
-      
+
       const { currentHp, maxHp, currentMp, maxMp } = prev.protagonist;
       if (currentHp >= maxHp && currentMp >= maxMp) {
         return {
@@ -489,19 +486,18 @@ export function useGameCultivation({
           },
         };
       }
-      
+
       const hpRestore = Math.floor(maxHp * 0.3);
       const mpRestore = Math.floor(maxMp * 0.2);
-      
+
       const newHp = Math.min(maxHp, currentHp + hpRestore);
       const newMp = Math.min(maxMp, currentMp + mpRestore);
-      
-      const newInventory = prev.protagonist.inventory.map(item => {
-        if (item.definition.id === 'spirit_stone') {
-          return { ...item, quantity: item.quantity - 5 };
-        }
-        return item;
-      }).filter(item => item.quantity > 0);
+
+      const stoneItem = prev.protagonist.items.find(i => i.templateId === 'wanjie:common:spirit_stone');
+      let newItems = prev.protagonist.items;
+      if (stoneItem) {
+        newItems = removeItem(newItems, stoneItem.instanceId, 5);
+      }
       
       return {
         ...prev,
@@ -509,7 +505,7 @@ export function useGameCultivation({
           ...prev.protagonist,
           currentHp: newHp,
           currentMp: newMp,
-          inventory: newInventory,
+          items: newItems,
         },
         lastActionResult: {
           success: true,
@@ -557,8 +553,7 @@ export function useGameCultivation({
           return prev;
         }
         
-        const spiritStone = prev.protagonist.inventory.find(item => item.definition.type === '灵石');
-        const hasResources = spiritStone && spiritStone.quantity >= 10;
+        const hasResources = getCurrencyAmount(prev.protagonist.items, 'wanjie:common:spirit_stone') >= 10;
 
         if (!hasResources) {
           isRunning = false;
@@ -581,7 +576,7 @@ export function useGameCultivation({
           };
         }
 
-        let newInventory = [...(prev.protagonist.inventory || [])];
+        let newItems = [...(prev.protagonist.items || [])];
         let newStats = prev.protagonist.stats;
         let newLevel = prev.protagonist.level;
         
@@ -604,7 +599,7 @@ export function useGameCultivation({
 
         if (result.itemsCost) {
           for (const cost of result.itemsCost) {
-            newInventory = removeFromInventory(newInventory, cost.definition.id, cost.quantity);
+            newItems = deductByTemplate(newItems, cost.templateId, cost.quantity);
           }
         }
 
@@ -676,7 +671,7 @@ export function useGameCultivation({
           protagonist: {
             ...prev.protagonist,
             stats: newStats,
-            inventory: newInventory,
+            items: newItems,
             activeEffects: newActiveEffects,
             level: newLevel,
             realm: newRealm,

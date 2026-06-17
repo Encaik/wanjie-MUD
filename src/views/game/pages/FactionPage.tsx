@@ -10,6 +10,7 @@ import { FactionPanel } from '@/modules/faction/components/FactionPanel';
 import { useAdventure } from '@/views/game/domainHooks/useAdventure';
 import { useFaction } from '@/views/game/domainHooks/useFaction';
 import { useGameStore } from '@/views/game/state/GameStore';
+import { getCurrencyAmount } from '@/modules/item/logic';
 
 export function FactionPage() {
   const { gameState } = useGameStore();
@@ -32,7 +33,7 @@ export function FactionPage() {
       onRefreshTasks={() => faction.refreshTasks() as any}
       onClaimDailySalary={faction.claimDailySalary}
       onPromoteRank={faction.promoteRank}
-      spiritStoneCount={p.inventory.find(i => i.definition.id === 'spirit_stone')?.quantity ?? 0}
+      spiritStoneCount={getCurrencyAmount(p.items, 'wanjie:common:spirit_stone')}
       onDonate={faction.donate}
       currentEvent={gameState.currentEvent}
       onExplore={adventure.startExperience}

@@ -32,14 +32,14 @@ import { gameClock, ACTION_TIME_COST } from '@/core/time';
 import { processStatisticsEvents } from '@/core/statistics';
 import { GameState, MessageRecord, ActiveEffect } from '@/core/types';
 import { DEFAULT_PROTAGONIST_EXTENSION, MentalState } from '@/core/types';
+import { removeItem } from '@/modules/item/logic';
+import type { ItemInstance } from '@/modules/item/types';
 
-// TODO: 统一物品系统迁移 — 暂代
-function removeFromInventory(inventory: Record<string, unknown>[], itemId: string, quantity: number): Record<string, unknown>[] {
-  const idx = inventory.findIndex((i: Record<string, unknown>) => (i as { definition?: { id?: string } }).definition?.id === itemId);
-  if (idx < 0) return inventory;
-  const item = inventory[idx] as { quantity: number };
-  if (item.quantity <= quantity) return inventory.filter((_, i: number) => i !== idx);
-  return inventory.map((i: Record<string, unknown>, ix: number) => ix === idx ? { ...i, quantity: item.quantity - quantity } : i);
+/** 按模板 ID 从物品列表中扣除数量（不可变） */
+function deductByTemplate(items: ItemInstance[], templateId: string, quantity: number): ItemInstance[] {
+  const target = items.find(i => i.templateId === templateId);
+  if (!target) return items;
+  return removeItem(items, target.instanceId, quantity);
 }
 
 
@@ -102,7 +102,7 @@ export function useSeclusion({
       }
       
       // 处理结果
-      let newInventory = [...(prev.protagonist.inventory || [])];
+      let newItems = [...(prev.protagonist.items || [])];
       let newStats = prev.protagonist.stats;
       let newLevel = prev.protagonist.level;
       let newRealm = prev.protagonist.realm;
@@ -112,7 +112,7 @@ export function useSeclusion({
       // 扣除消耗
       if (result.itemsCost) {
         for (const cost of result.itemsCost) {
-          newInventory = removeFromInventory(newInventory, cost.definition.id, cost.quantity);
+          newItems = deductByTemplate(newItems, cost.templateId, cost.quantity);
         }
       }
       
@@ -276,7 +276,7 @@ export function useSeclusion({
         protagonist: {
           ...prev.protagonist,
           stats: newStats,
-          inventory: newInventory,
+          items: newItems,
           activeEffects: newActiveEffects,
           level: newLevel,
           realm: newRealm,

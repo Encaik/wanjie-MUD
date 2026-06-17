@@ -24,7 +24,8 @@ import {
   EventEffect,
   DungeonEventType,
 } from './types';
-import { Protagonist, InventoryItem, CharacterStats, getFinalStats, StatKey } from '@/core/types';
+import { Protagonist, CharacterStats, getFinalStats, StatKey } from '@/core/types';
+import { getCurrencyAmount } from '@/modules/item/logic';
 
 // ============================================
 // 需求检查
@@ -69,10 +70,7 @@ export function checkRequirements(
 
   // 灵石检查
   if (requirements.spiritStones !== undefined) {
-    const spiritStoneItem = player.inventory.find(
-      item => item.definition.id === 'spirit_stone' || item.definition.type === '灵石'
-    );
-    const spiritStones = spiritStoneItem?.quantity || 0;
+    const spiritStones = getCurrencyAmount(player.items, 'wanjie:common:spirit_stone');
     if (spiritStones < requirements.spiritStones) {
       missingReqs.push(`需要 ${requirements.spiritStones} 灵石`);
     }
@@ -80,8 +78,8 @@ export function checkRequirements(
 
   // 物品检查
   if (requirements.itemId !== undefined) {
-    const hasItem = player.inventory.some(
-      item => item.definition.id === requirements.itemId
+    const hasItem = player.items.some(
+      item => item.templateId === requirements.itemId
     );
     if (!hasItem) {
       missingReqs.push(`需要特定物品`);

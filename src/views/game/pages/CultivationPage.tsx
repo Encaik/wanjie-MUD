@@ -33,7 +33,7 @@ export function CultivationPage() {
         onCultivate={cultivation.performCultivation}
         onRest={cultivation.performRest}
         worldType={p.world.type}
-        inventory={p.inventory}
+        items={p.items}
         activeEffects={p.activeEffects}
         experience={p.experience}
         level={p.level}
@@ -68,7 +68,7 @@ export function CultivationPage() {
         onSeclusion={cultivation.performSeclusion}
         disabled={gameState.autoCultivating}
         worldType={p.world.type}
-        inventory={p.inventory}
+        items={p.items}
         level={p.level}
       />
     </div>

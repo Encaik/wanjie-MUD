@@ -29,8 +29,11 @@ import {
   createDefaultTutorialState,
   createLegacyCompatibleTutorialState,
   checkTutorialProgress,
+  claimStepReward,
   getPendingDialog,
   markDialogViewed,
+  TUTORIAL_GUIDE,
+  getStepById,
 } from '@/modules/quest';
 import { worldEvents } from '@/modules/theme';
 import { loadGameStateWithRecovery, safeSaveGameState } from '@/shared/utils/saveUtils';
@@ -51,11 +54,13 @@ export interface GameStoreValue {
   dispatch: React.Dispatch<React.SetStateAction<GameState>>;
   messagePagination: MessagePagination;
   setMessagePagination: React.Dispatch<React.SetStateAction<MessagePagination>>;
+  /** 领取新手引导步骤奖励 */
+  claimTutorialStepReward: (stepId: string) => void;
 }
 
 export const StoreContext = createContext<GameStoreValue | null>(null);
 
-/** 发放引导奖励到主角背包和状态 */
+/** 发放引导奖励到主角背包（纯新物品系统） */
 function applyTutorialReward(
   state: GameState,
   reward: {
@@ -68,14 +73,12 @@ function applyTutorialReward(
   if (!state.protagonist) return state;
   let newItems = [...state.protagonist.items];
 
-  // 发放物品
   if (reward.items) {
     for (const r of reward.items) {
       newItems = addItem(newItems, r.item.id, r.quantity);
     }
   }
 
-  // 发放灵石
   if (reward.spiritStones && reward.spiritStones > 0) {
     newItems = addItem(newItems, 'wanjie:common:spirit_stone', reward.spiritStones);
   }
@@ -263,22 +266,26 @@ export function GameStoreProvider({ children }: { children: React.ReactNode }) {
           if (result.newlyCompletedStep) {
             let updatedState = result.tutorialState;
 
-            // 发放步骤/阶段奖励
-            const reward = result.stepRewardToClaim || result.phaseRewardToClaim;
-            if (reward) {
-              next = applyTutorialReward(next, reward);
-            }
-
-            // 阶段/引导完成消息
+            // 阶段奖励（阶段内所有步骤完成后自动发放）
             if (result.phaseRewardToClaim) {
+              next = applyTutorialReward(next, result.phaseRewardToClaim);
               next = {
                 ...next,
-                messages: addMsgToArr(next.messages, 'success', `【${result.newlyCompletedPhase?.name || '阶段'}完成】`, reward?.message || ''),
+                messages: addMsgToArr(next.messages, 'success', `【${result.newlyCompletedPhase?.name || '阶段'}完成】`, result.phaseRewardToClaim.message || ''),
               };
-            } else if (result.stepRewardToClaim) {
+            } else {
+              // 步骤奖励不自动发放，提示玩家前往任务面板领取
+              const stepHasReward = result.newlyCompletedStep.stepReward != null;
               next = {
                 ...next,
-                messages: addMsgToArr(next.messages, 'info', `新手引导`, `「${result.newlyCompletedStep.name}」完成！`),
+                messages: addMsgToArr(
+                  next.messages,
+                  'info',
+                  `新手引导`,
+                  stepHasReward
+                    ? `「${result.newlyCompletedStep.name}」完成！前往任务面板领取奖励。`
+                    : `「${result.newlyCompletedStep.name}」完成！`,
+                ),
               };
             }
 
@@ -310,7 +317,63 @@ export function GameStoreProvider({ children }: { children: React.ReactNode }) {
     };
   }, []);
 
-  const value: GameStoreValue = { gameState, dispatch: setGameState, messagePagination, setMessagePagination };
+  // ===== 手动领取步骤奖励 =====
+  const claimTutorialStepReward = useCallback((stepId: string) => {
+    setGameState(prev => {
+      if (!prev.tutorialState || !prev.protagonist) return prev;
+      const result = claimStepReward(stepId, prev.tutorialState);
+      if (!result) return prev;
+      let next = applyTutorialReward(prev, result.reward);
+      let updatedState = result.updatedState;
+
+      // 如果领取的是当前步骤，自动完成并推进引导
+      if (updatedState.currentStepId === stepId) {
+        const step = getStepById(stepId);
+        if (step) {
+          const newCompletedStepIds = [...updatedState.completedStepIds, stepId];
+          const currentPhase = TUTORIAL_GUIDE.phases.find(p => p.id === updatedState.currentPhaseId);
+
+          if (currentPhase && currentPhase.steps.every(s => newCompletedStepIds.includes(s.id))) {
+            // 阶段完成
+            const nextPhase = TUTORIAL_GUIDE.phases.find(p => p.order === currentPhase.order + 1);
+            updatedState = {
+              ...updatedState,
+              completedStepIds: newCompletedStepIds,
+              completedPhaseIds: [...updatedState.completedPhaseIds, currentPhase.id],
+              currentPhaseId: nextPhase?.id ?? updatedState.currentPhaseId,
+              currentStepId: nextPhase?.steps[0]?.id ?? updatedState.currentStepId,
+            };
+            // 自动发放阶段奖励
+            if (currentPhase.phaseReward) {
+              next = applyTutorialReward(next, currentPhase.phaseReward);
+              next = {
+                ...next,
+                messages: addMsgToArr(next.messages, 'success', `【${currentPhase.name}完成】`, currentPhase.phaseReward.message || ''),
+              };
+            }
+          } else {
+            // 阶段内推进
+            const nextStepIdx = (currentPhase?.steps.findIndex(s => s.id === stepId) ?? -1) + 1;
+            const nextStep = currentPhase?.steps[nextStepIdx];
+            updatedState = {
+              ...updatedState,
+              completedStepIds: newCompletedStepIds,
+              currentStepId: nextStep?.id ?? updatedState.currentStepId,
+            };
+          }
+        }
+      }
+
+      next = {
+        ...next,
+        tutorialState: updatedState,
+        messages: addMsgToArr(next.messages, 'success', '奖励领取', result.reward.message || '奖励已发放到背包！'),
+      };
+      return next;
+    });
+  }, []);
+
+  const value: GameStoreValue = { gameState, dispatch: setGameState, messagePagination, setMessagePagination, claimTutorialStepReward };
 
   return React.createElement(StoreContext.Provider, { value }, children);
 }

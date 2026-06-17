@@ -32,7 +32,7 @@ export function createProtagonistFromSaved(
 
   const extension = DEFAULT_PROTAGONIST_EXTENSION;
 
-  /** 初始物品由新手引导阶段 0 发放，此处不再硬编码 */
+  /** 初始物品由新手引导阶段 0 发放（玩家手动领取） */
   const initialItems: Protagonist['items'] = [];
 
   const protagonist: Protagonist = {

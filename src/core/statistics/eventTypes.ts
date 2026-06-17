@@ -102,10 +102,10 @@ export const playerEvents = eventRegistry.registerModule('player', {
 
 /** 引导域事件 */
 export const tutorialEvents = eventRegistry.registerModule('tutorial', {
+  game_started: { description: '游戏正式开始（自动完成阶段0）' },
   step_completed: { description: '引导步骤完成' },
   phase_completed: { description: '引导阶段完成' },
   completed: { description: '引导全部完成' },
-  starter_pack_claimed: { description: '领取新手礼包' },
   dialog_closed: { description: '引导弹窗关闭' },
 });
 
@@ -165,9 +165,9 @@ export const STATISTICS_EVENT_TYPES: Record<StatisticsEventType, string> = {
   // 玩家域
   'player:level_up': playerEvents.events.level_up,
   // 引导域
+  'tutorial:game_started': tutorialEvents.events.game_started,
   'tutorial:step_completed': tutorialEvents.events.step_completed,
   'tutorial:phase_completed': tutorialEvents.events.phase_completed,
   'tutorial:completed': tutorialEvents.events.completed,
-  'tutorial:starter_pack_claimed': tutorialEvents.events.starter_pack_claimed,
   'tutorial:dialog_closed': tutorialEvents.events.dialog_closed,
 };

@@ -83,7 +83,7 @@ export type StatisticsEventType =
   | 'tutorial:step_completed'
   | 'tutorial:phase_completed'
   | 'tutorial:completed'
-  | 'tutorial:starter_pack_claimed'
+  | 'tutorial:game_started'
   | 'tutorial:dialog_closed';
 
 // ============================================
@@ -129,7 +129,7 @@ export interface StatisticsEventPayloadMap {
   'tutorial:step_completed': { stepId: string };
   'tutorial:phase_completed': { phaseId: string };
   'tutorial:completed': Record<string, never>;
-  'tutorial:starter_pack_claimed': Record<string, never>;
+  'tutorial:game_started': Record<string, never>;
   'tutorial:dialog_closed': { stepId: string };
 }
 

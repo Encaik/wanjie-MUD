@@ -7,7 +7,7 @@
 
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 
 /** 弹窗类型 */
 export type DialogType =
@@ -64,12 +64,12 @@ export function getActiveDialogs(): DialogEntry[] {
 export function useDialogController() {
   const [, setTick] = useState(0);
 
-  // 订阅
-  useState(() => {
+  // 订阅模块级弹窗注册表变化，触发重渲染
+  useEffect(() => {
     const listener = () => setTick(t => t + 1);
     listeners.add(listener);
     return () => { listeners.delete(listener); };
-  });
+  }, []);
 
   const open = useCallback((type: DialogType, props?: Record<string, unknown>) => {
     return openDialog(type, props);

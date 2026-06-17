@@ -6,6 +6,7 @@
  */
 
 import type { GameState, WorldType } from '@/core/types';
+import { getCurrencyAmount } from '@/modules/item/logic';
 
 // ============================================
 // 世界存档记录
@@ -44,14 +45,12 @@ export function saveCurrentWorld(state: GameState): WorldSaveData {
     throw new Error('无法保存世界状态：主角不存在');
   }
 
-  const spiritStone = state.protagonist.inventory.find(
-    i => i.definition.id === 'spirit_stone'
-  );
+  const spiritStones = getCurrencyAmount(state.protagonist.items, 'wanjie:common:spirit_stone');
 
   return {
     worldType: state.protagonist.world.type,
     level: state.protagonist.level,
-    spiritStones: spiritStone?.quantity ?? 0,
+    spiritStones,
     exitTime: Date.now(),
     worldSpecificData: {
       worldFlags: state.worldFlags ?? {},

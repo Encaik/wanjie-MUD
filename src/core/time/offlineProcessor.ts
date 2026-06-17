@@ -17,6 +17,7 @@ import { DEFAULT_OFFLINE_CONFIG, EXP_BASE, EXP_GROWTH_FACTOR, MAX_LEVEL } from '
 import { getOfflineDuration, needsDailyRefresh, needsWeeklyRefresh } from './realClock';
 import { clearExpired } from './cooldown';
 import { duration as formatDuration } from './formatter';
+import { getCurrencyAmount, removeItem } from '@/modules/item/logic';
 
 // ============================================
 // 工具函数
@@ -209,10 +210,7 @@ function calcAutoCultivation(
   if (maxCount <= 0) return defaultResult;
 
   // 查找灵石
-  const spiritStoneItem = protagonist.inventory.find(
-    (item) => item.definition?.id === 'spirit_stone' || item.definition?.type === '灵石',
-  );
-  const currentStones = spiritStoneItem?.quantity ?? 0;
+  const currentStones = getCurrencyAmount(protagonist.items, 'wanjie:common:spirit_stone');
 
   const possibleByStones = Math.floor(currentStones / config.autoCultivateSpiritStoneCost);
   const actualCount = Math.min(maxCount, possibleByStones);
@@ -378,18 +376,13 @@ export function applyResult(
     };
 
     // 扣除灵石
-    const newInventory = [...updated.inventory];
-    const spiritStoneIndex = newInventory.findIndex(
-      (item) => item.definition?.id === 'spirit_stone' || item.definition?.type === '灵石',
+    const spiritStoneInstance = updated.items.find(
+      (item) => item.templateId === 'wanjie:common:spirit_stone',
     );
 
-    if (spiritStoneIndex >= 0 && spiritStonesSpent > 0) {
-      const item = newInventory[spiritStoneIndex];
-      newInventory[spiritStoneIndex] = {
-        ...item,
-        quantity: Math.max(0, item.quantity - spiritStonesSpent),
-      };
-      updated = { ...updated, inventory: newInventory };
+    if (spiritStoneInstance && spiritStonesSpent > 0) {
+      const newItems = removeItem(updated.items, spiritStoneInstance.instanceId, spiritStonesSpent);
+      updated = { ...updated, items: newItems };
     }
   }
 

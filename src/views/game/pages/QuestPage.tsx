@@ -11,7 +11,7 @@ import { createDefaultTutorialState } from '@/modules/quest';
 import { useGameStore } from '@/views/game/state/GameStore';
 
 export function QuestPage() {
-  const { gameState } = useGameStore();
+  const { gameState, claimTutorialStepReward } = useGameStore();
 
   return (
     <QuestPanel
@@ -19,6 +19,7 @@ export function QuestPage() {
       statistics={gameState.statistics}
       questState={gameState.questState}
       factionJoined={!!gameState.protagonist?.factionId}
+      onClaimStepReward={claimTutorialStepReward}
     />
   );
 }

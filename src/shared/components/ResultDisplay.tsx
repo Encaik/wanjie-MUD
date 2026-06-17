@@ -6,6 +6,7 @@ import { Badge } from '@/shared/ui/data-display/badge';
 import { Button } from '@/shared/ui/actions/button';
 import { Card, CardContent } from '@/shared/ui/data-display/card';
 import { ActionResult } from '@/core/types';
+import { getTemplate } from '@/modules/item/data';
 
 
 interface ResultDisplayProps {
@@ -56,7 +57,7 @@ export function ResultDisplay({ result, onClose }: ResultDisplayProps) {
             <div className="flex flex-wrap gap-1">
               {result.itemsCost.map((item, idx) => (
                 <Badge key={idx} variant="outline" className="text-game-combat">
-                  {item.definition.name} x{item.quantity}
+                  {getTemplate(item.definition.id).name} x{item.quantity}
                 </Badge>
               ))}
             </div>
@@ -85,7 +86,7 @@ export function ResultDisplay({ result, onClose }: ResultDisplayProps) {
                 <div className="flex flex-wrap gap-1 mt-1">
                   {result.rewards.items.map((item, idx) => (
                     <Badge key={idx} className="bg-game-cultivation/20 text-game-cultivation">
-                      {item.definition.name} x{item.quantity}
+                      {getTemplate(item.definition.id).name} x{item.quantity}
                     </Badge>
                   ))}
                 </div>

@@ -17,17 +17,17 @@ import {
   updateAscensionMark
 } from '@/modules/ascension/logic/ascensionLogic';
 import { calcPlayerMaxHp, calcPlayerMaxMp } from '@/core/calculation';
-import { 
-  GameState, 
-  MessageRecord, 
-  InventoryItem,
+import {
+  GameState,
+  MessageRecord,
   World,
   CharacterStats,
   GrowthStats,
   Equipment,
   Technique,
-  createInventoryItem,
 } from '@/core/types';
+import type { ItemInstance } from '@/modules/item/types';
+import { getCurrencyAmount, addItem } from '@/modules/item/logic';
 import { DEFAULT_PROTAGONIST_EXTENSION, InheritanceChoice, NewWorldInfo, DiscoveredWorld, GuardianBattleState } from '@/core/types';
 import { DEFAULT_ASCENSION_FLOW_STATE, DEFAULT_GUARDIAN_BATTLE_STATE } from '@/core/types';
 
@@ -403,19 +403,12 @@ export function useGameAscension({
       const newMaxHp = calcPlayerMaxHp(newStats.base.体质, 1, prev.protagonist.world.worldStats);
       const newMaxMp = calcPlayerMaxMp(newStats.base.灵根, 1);
       
-      const currentSpiritStones = prev.protagonist.inventory.find(
-        item => item.definition.id === 'spirit_stone'
-      )?.quantity ?? 0;
+      const currentSpiritStones = getCurrencyAmount(prev.protagonist.items, 'wanjie:common:spirit_stone');
       const carriedStones = Math.floor(currentSpiritStones * (inheritance?.spiritStonesPercent || 0));
-      
-      const newInventory: InventoryItem[] = [];
+
+      let newItems: ItemInstance[] = [];
       if (carriedStones > 0) {
-        const spiritStoneDef = prev.protagonist.inventory.find(
-          item => item.definition.id === 'spirit_stone'
-        )?.definition;
-        if (spiritStoneDef) {
-          newInventory.push(createInventoryItem(spiritStoneDef, carriedStones));
-        }
+        newItems = addItem(newItems, 'wanjie:common:spirit_stone', carriedStones);
       }
       
       const discoveredWorld: DiscoveredWorld = {
@@ -448,7 +441,7 @@ export function useGameAscension({
           maxHp: newMaxHp,
           currentMp: newMaxMp,
           maxMp: newMaxMp,
-          inventory: newInventory,
+          items: newItems,
           techniques: inheritedTechniques,
           equipments: inheritedEquipments,
           equippedMelee: inheritedEquipments.find((e: Equipment) => e.slot === 'melee') || null,

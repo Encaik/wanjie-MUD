@@ -302,7 +302,14 @@ export function getOpportunityLevelStyle(level: number): {
 
 /**
  * 生成等级星星
+ *
+ * 将等级转换为可视化星级（★☆），有效范围为 0-5。
+ * 超出范围的值会被钳制到安全边界内，防止 String.repeat 抛出 RangeError。
+ *
+ * @param level - 等级数值（1-5 正常，超出会被钳制）
+ * @returns 星级字符串，如 "★★★☆☆"
  */
 export function generateLevelStars(level: number): string {
-  return '★'.repeat(level) + '☆'.repeat(5 - level);
+  const clamped = Math.max(0, Math.min(5, Math.round(level) || 0));
+  return '★'.repeat(clamped) + '☆'.repeat(5 - clamped);
 }
