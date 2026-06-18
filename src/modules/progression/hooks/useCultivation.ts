@@ -21,7 +21,8 @@ import { gameSystems } from '@/core/engine';
 import { getRealmName } from '@/modules/progression/data/realmCore';
 import { applyGrowthStatChanges, getGrowthStatCap } from '@/modules/progression/logic/realmSystem';
 import { gameClock, cooldown } from '@/core/time';
-import { processStatisticsEvent, processStatisticsEvents } from '@/core/statistics';
+import { cultivationEvents, processStatisticsEvent, processStatisticsEvents } from '@/core/statistics';
+import { emit } from '@/core/events';
 import {
   GameState,
   MessageRecord,
@@ -86,10 +87,7 @@ function handleStrategyCultivationImpl(
   newExp = expResult.newExp;
   newOverflowExp = expResult.newOverflow;
 
-  // 统计
-  const newStatistics = processStatisticsEvent(prev.statistics, {
-    type: 'cultivation:performed', payload: { count: 1 }, timestamp: Date.now(),
-  });
+  // 统计更新统一由事件总线处理，此处不再直接更新
 
   // 流派经验
   let newPathExp = prev.protagonist.pathExp ?? 0;
@@ -131,6 +129,9 @@ function handleStrategyCultivationImpl(
     extraMsg += '\n触发修炼暴击！请在弹窗中选择奖励。';
   }
 
+  // 通过事件总线发出修炼事件（新手引导、统计系统等监听）
+  emit(cultivationEvents.events.performed, { count: 1 });
+
   return {
     ...prev,
     protagonist: {
@@ -143,7 +144,7 @@ function handleStrategyCultivationImpl(
       pathExp: newPathExp,
       pathLevel: newPathLevel,
     },
-    statistics: newStatistics,
+    statistics: prev.statistics,
     time: newTime,
     lastActionResult: { success: result.success, message: result.message + extraMsg } as GameState['lastActionResult'],
     messages: addMessageInternal(
@@ -228,13 +229,6 @@ export function useGameCultivation({
       let newLevel = prev.protagonist.level;
       const newStatCapBonuses = prev.protagonist.statCapBonuses;
 
-      // 处理 itemsCost
-      if (result.itemsCost) {
-        for (const cost of result.itemsCost) {
-          newItems = deductByTemplate(newItems, cost.templateId, cost.quantity);
-        }
-      }
-      
       // 修炼不再自动触发突破——经验满时标记 breakthroughReady，
       // 实际突破通过 performBreakthrough() 手动调用 executeBreakthrough()
 
@@ -305,13 +299,16 @@ export function useGameCultivation({
       const details = costDetails.length > 0 ? `消耗: ${costDetails.join(', ')}` : undefined;
 
       const now = Date.now();
-      const statsEvents = [
-        { type: 'cultivation:performed' as const, payload: { count: 1 }, timestamp: now },
-      ];
+      const statsEvents: Array<{ type: string; payload: Record<string, unknown>; timestamp: number }> = [];
       if (result.breakthroughReady) {
         statsEvents.push({ type: 'cultivation:breakthrough_ready' as const, payload: { count: 1 }, timestamp: now });
       }
-      const newStatistics = processStatisticsEvents(prev.statistics, statsEvents);
+      const newStatistics = statsEvents.length > 0
+        ? processStatisticsEvents(prev.statistics, statsEvents)
+        : prev.statistics;
+
+      // 通过事件总线发出修炼事件（新手引导、统计系统等监听）
+      emit(cultivationEvents.events.performed, { count: 1 });
 
       const statGains: Record<string, number> = {};
       if (result.statChanges) {
@@ -577,7 +574,7 @@ export function useGameCultivation({
           return prev;
         }
         
-        const hasResources = getCurrencyAmount(prev.protagonist.items, 'wanjie:common:spirit_stone') >= 10;
+        const hasResources = getCurrencyAmount(prev.protagonist.items, 'wanjie:common:spirit_stone') >= 20;
 
         if (!hasResources) {
           isRunning = false;
@@ -654,11 +651,8 @@ export function useGameCultivation({
         }
         rewards.experience = result.success ? 20 : 5;
 
-        const now3 = Date.now();
-        const statsEvents3 = [
-          { type: 'cultivation:performed' as const, payload: { count: 1 }, timestamp: now3 },
-        ];
-        const newStatistics = processStatisticsEvents(prev.statistics, statsEvents3);
+        // 通过事件总线发出修炼事件（新手引导、统计系统等监听）
+        emit(cultivationEvents.events.performed, { count: 1 });
 
         // 修炼成功时增加心境护盾
         let newMindShield2 = prev.protagonist.mentalState?.mindShield ?? 0;
@@ -679,7 +673,7 @@ export function useGameCultivation({
               mindShield: newMindShield2,
             },
           },
-          statistics: newStatistics,
+          statistics: prev.statistics,
           lastActionResult: result,
           messages: addMessageInternal(prev.messages, messageType, messageTitle, messageContent, undefined, rewards),
         };

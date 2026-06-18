@@ -192,6 +192,7 @@ export function generateEnemy(config: EnemyGeneratorConfig): Enemy {
     // 奖励
     expReward: Math.floor(actualLevel * 10 * template.expMultiplier * difficultyConfig.expMultiplier),
     goldReward: Math.floor(actualLevel * 5 * template.dropRateMultiplier * difficultyConfig.dropMultiplier),
+    rewardPoolId: `combat_${template.tier}`,
   };
   
   return enemy;

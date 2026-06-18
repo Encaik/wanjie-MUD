@@ -85,7 +85,6 @@ export {
   equipSkill,
   unequipSkill,
   generateItemInstance,
-  generateRandomDrop,
   upgradeItem,
   fragmentItem,
   synthesizeFragments,

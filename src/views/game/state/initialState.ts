@@ -7,7 +7,6 @@
 import type { GameState } from '@/core/types';
 import { DEFAULT_ASCENSION_FLOW_STATE, createDefaultQuestState } from '@/core/types';
 import { createDefaultGameClock, createDefaultRealClock } from '@/core/time';
-import { createDefaultTutorialState } from '@/modules/quest';
 import { INITIAL_FORTUNE_SLICE } from '@/modules/fortune';
 
 /** 创建初始游戏状态 */
@@ -80,7 +79,6 @@ export function createInitialGameState(): GameState {
     unlockedAchievementIds: [],
     claimedAchievementIds: [],
     completedTutorialTaskIds: [],
-    tutorialState: createDefaultTutorialState(),
     devMode: undefined,
     ascensionFlow: {
       ...DEFAULT_ASCENSION_FLOW_STATE,

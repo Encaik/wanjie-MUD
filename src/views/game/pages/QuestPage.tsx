@@ -1,25 +1,18 @@
 /**
  * QuestPage — 任务面板页面
  *
- * Tab 式任务中心：新手引导 | 势力任务 | NPC 任务
+ * 板块驱动的任务中心。弹窗由 quest.dialog 驱动，
+ * 教程进度由 storyEngine 驱动。不再依赖旧的 TutorialState。
  */
 
 'use client';
 
-import { QuestPanel } from '@/modules/quest';
-import { createDefaultTutorialState } from '@/modules/quest';
+import { QuestPanel, useQuest } from '@/modules/quest';
 import { useGameStore } from '@/views/game/state/GameStore';
 
 export function QuestPage() {
-  const { gameState, claimTutorialStepReward } = useGameStore();
+  const { gameState, dispatch } = useGameStore();
+  const quest = useQuest(gameState, dispatch);
 
-  return (
-    <QuestPanel
-      tutorialState={gameState.tutorialState || createDefaultTutorialState()}
-      statistics={gameState.statistics}
-      questState={gameState.questState}
-      factionJoined={!!gameState.protagonist?.factionId}
-      onClaimStepReward={claimTutorialStepReward}
-    />
-  );
+  return <QuestPanel quest={quest} />;
 }

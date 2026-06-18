@@ -585,24 +585,11 @@ function calculateRewards(
     rewards.gold = Math.floor(rewards.gold * 1.1);
   }
   
-  // 掉落物品
-  if (enemy.drops && enemy.drops.length > 0) {
-    enemy.drops.forEach(drop => {
-      if (rng() < drop.chance) {
-        const quantity = drop.minQuantity && drop.maxQuantity
-          ? Math.floor(rng() * (drop.maxQuantity - drop.minQuantity + 1)) + drop.minQuantity
-          : 1;
-        rewards.items.push({ id: drop.itemId, quantity });
-      }
-    });
-  }
-  
-  // 碎片掉落（Boss和精英）
-  if (enemy.tier === 'boss' || enemy.tier === 'elite') {
-    rewards.fragments = [];
-    // TODO: 根据敌人类型掉落碎片
-  }
-  
+  // 奖励池掉落（替代旧 enemy.drops[] 硬编码）
+  // 注意：poolEngine 依赖注册中心，需在应用启动时注册内置池子
+  // 此处保留占位，实际集成在 Hook 层通过 rollPool 完成
+  // 见 modules/reward-pool/logic/poolEngine.ts
+
   return rewards;
 }
 

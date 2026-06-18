@@ -31,7 +31,7 @@ import {
 } from './types';
 import type { FlatStats, Protagonist, ActiveEffect } from '@/core/types';
 import type { ItemInstance } from '@/modules/item/types';
-import { generateRandomDrop } from '@/modules/item/logic';
+// 奖励生成已迁移到 modules/reward-pool/，通过 Hook 层集成
 
 // ============================================
 // 效果应用
@@ -87,14 +87,9 @@ export function applyEffect(
       break;
 
     case 'gain_item': {
-      // 根据地牢难度生成随机物品
-      const generated = generateRandomDrop(dungeonDifficulty, 0);
-      if (generated) {
-        if (effect.value && effect.value > 1) {
-          generated.quantity = effect.value;
-        }
-        result.itemsGained = [generated];
-      }
+      // 物品奖励已迁移到 modules/reward-pool/
+      // 实际奖励生成在 Hook 层通过 rollPool() 完成
+      // 此处保留占位，effect.value 可作为数量提示
       break;
     }
 

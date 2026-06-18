@@ -25,7 +25,8 @@ import {
   FactionCommissionConfig,
 } from '@/modules/faction/data/factionProgressData';
 import { getStatisticValue } from '@/modules/collection/logic/achievement/achievementUtils';
-import { processStatisticsEvent } from '@/core/statistics';
+import { processStatisticsEvent, factionEvents, achievementEvents } from '@/core/statistics';
+import { emit } from '@/core/events';
 import {
   GameState,
   MessageRecord,
@@ -125,9 +126,7 @@ export function useGameFaction({
       
       const initialProgress = createDefaultFactionProgress(factionId);
       initialProgress.rank = initialRank;
-      
-      const newStatistics = { ...prev.statistics, factionJoined: true };
-      
+
       return {
         ...prev,
         protagonist: {
@@ -142,10 +141,13 @@ export function useGameFaction({
         },
         currentFactionId: factionId,
         factionProgress: initialProgress,
-        statistics: newStatistics,
+        statistics: prev.statistics,
         messages: addMessageInternal(prev.messages, 'success', '加入势力', `成功加入「${faction?.name || factionId}」！`),
       };
     });
+
+    // 通过事件总线发出加入势力事件（新手引导、统计系统等监听）
+    emit(factionEvents.events.joined, { factionId });
   }, [setGameState, addMessageInternal]);
 
   const leaveFaction = useCallback(() => {
@@ -946,16 +948,16 @@ export function useGameFaction({
           // 如果有经验奖励，加到经验值
           experience: prev.protagonist.experience + (achievement.rewards.experience || 0),
         },
-        statistics: processStatisticsEvent(prev.statistics, { type: 'achievement:claimed', payload: {}, timestamp: Date.now() }),
+        statistics: prev.statistics,
         unlockedAchievementIds: newUnlockedIds,
         claimedAchievementIds: newClaimedIds,
         messages: addMessageInternal(
-          prev.messages, 
-          'success', 
-          '成就奖励', 
+          prev.messages,
+          'success',
+          '成就奖励',
           `领取「${achievement.name}」奖励：${rewardsText}`,
           undefined,
-          { 
+          {
             experience: achievement.rewards.experience,
             items: achievement.rewards.items,
             stats: achievement.rewards.stats as Record<string, number>,
@@ -963,6 +965,9 @@ export function useGameFaction({
         ),
       };
     });
+
+    // 通过事件总线发出领取成就事件（新手引导、统计系统等监听）
+    emit(achievementEvents.events.claimed, {});
   }, [setGameState, addMessageInternal]);
 
   /**

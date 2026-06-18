@@ -17,10 +17,15 @@
  * @module modules/mod
  */
 
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useEffect, useRef, useState } from 'react';
+
 // import { ClientModLoader } from '@/core/mod/loader/client-loader';
-import type { ModLoaderState } from '../types';
+import { ItemRegistry } from '@/core/registry/ItemRegistry';
+import { invalidateTemplateCache } from '@/modules/item/data';
+
 import { ModErrorBanner } from './ModErrorBanner';
+
+import type { ModLoaderState } from '../types';
 
 /** Mod 加载状态 Context（供子组件读取加载进度） */
 const ModContext = createContext<ModLoaderState | null>(null);
@@ -50,6 +55,82 @@ interface ModInitProviderProps {
 export function ModInitProvider({ children }: ModInitProviderProps) {
   // 客户端 Mod 加载已临时停用，直接设为就绪状态
   const [state] = useState<ModLoaderState>(READY_STATE);
+  const itemsPreloaded = useRef(false);
+
+  // ============================================================
+  // 客户端物品模板预加载
+  //
+  // 物品模板定义在 Mod 数据文件中（如 wanjie-core 的 cultivation.json）。
+  // 由于客户端 Mod 加载已临时停用，这里做最小化的物品模板预加载，
+  // 确保背包、奖励等系统能正常查询物品模板。
+  // ============================================================
+  useEffect(() => {
+    if (itemsPreloaded.current) return;
+    itemsPreloaded.current = true;
+
+    let cancelled = false;
+
+    /** 加载单个物品文件并注册到 ItemRegistry，返回注册数量 */
+    async function loadOneItemFile(modId: string, itemPath: string): Promise<number> {
+      const itemRes = await fetch(`/mods/${modId}/${itemPath}`);
+      if (!itemRes.ok) return 0;
+      const items = await itemRes.json();
+      if (!Array.isArray(items) || items.length === 0) return 0;
+      ItemRegistry.getInstance().registerAll(items);
+      return items.length;
+    }
+
+    /** 加载单个 Mod 的所有物品文件，返回注册总数 */
+    async function loadModItems(modId: string): Promise<number> {
+      const manifestRes = await fetch(`/mods/${modId}/mod.json`);
+      if (!manifestRes.ok) return 0;
+      const manifest = await manifestRes.json() as {
+        dataFiles?: Record<string, string | string[]>;
+      };
+
+      const itemPaths = manifest.dataFiles?.items;
+      if (!itemPaths) return 0;
+
+      const paths = Array.isArray(itemPaths) ? itemPaths : [itemPaths];
+      let total = 0;
+
+      for (const itemPath of paths) {
+        if (cancelled) return total;
+        total += await loadOneItemFile(modId, itemPath).catch(() => 0);
+      }
+
+      return total;
+    }
+
+    async function preloadItemTemplates() {
+      try {
+        const listRes = await fetch('/mods/mod-list.json');
+        if (!listRes.ok || cancelled) return;
+        const { mods } = await listRes.json() as { mods?: Array<{ id: string; path: string }> };
+        if (!mods || !Array.isArray(mods)) return;
+
+        let totalLoaded = 0;
+
+        for (const mod of mods) {
+          if (cancelled) return;
+          totalLoaded += await loadModItems(mod.id).catch(() => 0);
+        }
+
+        if (totalLoaded > 0) {
+          invalidateTemplateCache();
+          console.log(`[ModInit] 预加载了 ${totalLoaded} 个物品模板`);
+        }
+      } catch {
+        console.warn('[ModInit] 物品模板预加载失败，游戏内 Mod 物品可能不可用');
+      }
+    }
+
+    preloadItemTemplates();
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   // ============================================================
   // TODO: 客户端 Mod 加载逻辑 — 临时停用

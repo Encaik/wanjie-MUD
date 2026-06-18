@@ -1,138 +1,96 @@
 /**
- * QuestPanel — Tab 式任务中心
+ * QuestPanel — 板块驱动任务中心 + 任务弹窗
  *
- * 三个 Tab 独立展示不同的任务系统：
- * - 新手引导：分阶段步骤 + 进度条 + 弹窗触发
- * - 势力任务：日常/周常任务列表
- * - NPC 任务：QuestEngine 进行中的任务
+ * 弹窗由 quest.dialog 驱动：任务变为"可接取"时，若未查看过弹窗则弹出。
  *
  * @module modules/quest
  */
 
 'use client';
 
-import { useMemo, useState, useCallback } from 'react';
-import {
-  Sparkles,
-  CheckCircle2,
-  Circle,
-  ScrollText,
-  ChevronRight,
-  Swords,
-  Users,
-  Lock,
-  Gift,
-} from 'lucide-react';
+import { useMemo, useState, useCallback, useEffect } from 'react';
+import { CheckCircle2, Circle, ScrollText, Lock, Gift, Clock, RefreshCw, Sparkles, X } from 'lucide-react';
 
+import { BoardRegistry } from '@/core/registry/BoardRegistry';
+import type { QuestDefinition, QuestDialog } from '@/core/types';
 import { CardCornerDecorations } from '@/shared/components';
 import { Badge } from '@/shared/ui/data-display/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/data-display/card';
-import { Progress } from '@/shared/ui/feedback/progress';
-import { QuestRegistry } from '@/core/registry/QuestRegistry';
-import type { GameStatistics, QuestState } from '@/core/types';
+import { Button } from '@/shared/ui/actions/button';
 
-import { TUTORIAL_GUIDE } from '../logic/tutorialGuide';
-import type { TutorialPhase, TutorialStep } from '../logic/tutorialGuide';
-import {
-  getTutorialProgressInfo,
-  isStepRewardClaimable,
-} from '../logic/taskProgressTracker';
-import type { TutorialState } from '../logic/taskProgressTracker';
+import type { UseQuestReturn } from '../hooks/useQuest';
 
 // ============================================
-// Tab 类型
+// 常量
 // ============================================
 
-type QuestTab = 'tutorial' | 'faction' | 'npc';
+const BOARD_STATE_ICONS: Record<string, React.FC<{ className?: string }>> = {
+  locked: Lock, empty: ScrollText, available: Circle,
+  claimable: Gift, cooling_down: Clock, completed: CheckCircle2,
+};
 
-interface TabConfig {
-  id: QuestTab;
-  label: string;
-  icon: React.FC<{ className?: string }>;
-  locked?: boolean;
-}
+const STATE_COLORS: Record<string, string> = {
+  locked: 'text-muted-foreground', empty: 'text-muted-foreground',
+  available: 'text-game-cultivation', claimable: 'text-amber-500',
+  cooling_down: 'text-blue-400', completed: 'text-game-recovery',
+};
 
 // ============================================
 // Props
 // ============================================
 
 interface QuestPanelProps {
-  /** 新手引导状态 */
-  tutorialState: TutorialState;
-  /** 统计数据 */
-  statistics: GameStatistics;
-  /** quest 引擎状态 */
-  questState: QuestState;
-  /** 是否已加入势力 */
-  factionJoined?: boolean;
-  /** 领取步骤奖励回调 */
-  onClaimStepReward?: (stepId: string) => void;
+  quest: UseQuestReturn;
 }
 
 // ============================================
 // 组件
 // ============================================
 
-export function QuestPanel({
-  tutorialState,
-  statistics: _statistics,
-  questState,
-  factionJoined = false,
-  onClaimStepReward,
-}: QuestPanelProps) {
-  const [activeTab, setActiveTab] = useState<QuestTab>(
-    tutorialState?.completed ? 'npc' : 'tutorial',
-  );
+export function QuestPanel({ quest }: QuestPanelProps) {
+  const boards = useMemo(() => {
+    const all = BoardRegistry.getInstance().getAll();
+    return all.map(b => ({
+      ...b,
+      state: quest.getBoardUIState(b.id),
+      quests: quest.getBoardQuests(b.id),
+    }));
+  }, [quest]);
 
-  const tutorialInfo = useMemo(
-    () => getTutorialProgressInfo(tutorialState),
-    [tutorialState],
-  );
+  const [activeTab, setActiveTab] = useState<string>(boards[0]?.id ?? '');
+  const [dialog, setDialog] = useState<QuestDialog | null>(null);
+  const [dialogQuestId, setDialogQuestId] = useState<string | null>(null);
 
-  const tabs: TabConfig[] = useMemo(() => [
-    {
-      id: 'tutorial',
-      label: '新手引导',
-      icon: Sparkles,
-    },
-    {
-      id: 'faction',
-      label: '势力任务',
-      icon: Swords,
-      locked: tutorialInfo.allCompleted ? !factionJoined : true,
-    },
-    {
-      id: 'npc',
-      label: 'NPC 任务',
-      icon: Users,
-      locked: !tutorialInfo.allCompleted,
-    },
-  ], [tutorialInfo.allCompleted, factionJoined]);
+  // ===== 弹窗检测：任务变为可接取时检查是否有未查看的弹窗 =====
+  useEffect(() => {
+    for (const board of boards) {
+      if (board.state !== 'available') continue;
+      for (const q of board.quests) {
+        if (!q.dialog) continue;
+        if (quest.hasViewedDialog?.(q.id)) continue;
+        setDialog(q.dialog);
+        setDialogQuestId(q.id);
+        return; // 一次只弹一个
+      }
+    }
+  }, [boards, quest]);
 
-  const activeQuestEntries = useMemo(() => {
-    const registry = QuestRegistry.getInstance();
-    return Object.entries(questState.activeQuests).map(([questId, active]) => {
-      const quest = registry.getById(questId);
-      return {
-        questId,
-        questName: quest?.name ?? questId,
-        currentStageId: active.currentStageId,
-        objectives: active.objectives,
-      };
-    });
-  }, [questState.activeQuests]);
+  const handleTabChange = useCallback((boardId: string) => {
+    const b = boards.find(x => x.id === boardId);
+    if (b?.state === 'locked') return;
+    setActiveTab(boardId);
+    quest.refreshBoardIfNeeded(boardId);
+  }, [boards, quest]);
 
-  const handleTabChange = useCallback((tab: QuestTab) => {
-    const config = tabs.find(t => t.id === tab);
-    if (config?.locked) return;
-    setActiveTab(tab);
-  }, [tabs]);
+  const handleDismissDialog = useCallback(() => {
+    if (dialogQuestId) {
+      quest.markDialogViewed(dialogQuestId);
+    }
+    setDialog(null);
+    setDialogQuestId(null);
+  }, [dialogQuestId, quest]);
 
-  const currentPhase = tutorialInfo.currentPhase;
-  const currentStep = tutorialInfo.currentStep;
-  const completedSteps = TUTORIAL_GUIDE.phases.flatMap((p: TutorialPhase) =>
-    p.steps.filter((s: TutorialStep) => tutorialState?.completedStepIds.includes(s.id)),
-  );
+  const activeBoard = boards.find(b => b.id === activeTab);
 
   return (
     <Card className="relative overflow-hidden">
@@ -144,27 +102,25 @@ export function QuestPanel({
         </CardTitle>
       </CardHeader>
 
-      {/* Tab 栏 */}
-      <div className="px-3 flex gap-1">
-        {tabs.map(tab => {
-          const isActive = activeTab === tab.id;
-          const Icon = tab.icon;
+      {/* 动态板块 Tab */}
+      <div className="px-3 flex gap-1 overflow-x-auto pb-1">
+        {boards.map(board => {
+          const isActive = activeTab === board.id;
+          const Icon = BOARD_STATE_ICONS[board.state] ?? Circle;
+
           return (
             <button
-              key={tab.id}
-              onClick={() => handleTabChange(tab.id)}
+              key={board.id}
+              onClick={() => handleTabChange(board.id)}
               className={`
-                relative flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-t-lg transition-all
-                ${isActive
-                  ? 'bg-card text-game-cultivation border-t border-l border-r border-border/50'
-                  : 'text-muted-foreground hover:text-foreground hover:bg-muted/30'
-                }
-                ${tab.locked ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}
+                relative flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-medium rounded-t-lg transition-all flex-shrink-0
+                ${isActive ? 'bg-card text-game-cultivation border-t border-l border-r border-border/50' : 'text-muted-foreground hover:text-foreground hover:bg-muted/30'}
+                ${board.state === 'locked' ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}
               `}
-              disabled={tab.locked}
+              disabled={board.state === 'locked'}
             >
-              {tab.locked ? <Lock className="w-3 h-3" /> : <Icon className="w-3 h-3" />}
-              {tab.label}
+              <Icon className={`w-3 h-3 ${STATE_COLORS[board.state] ?? ''}`} />
+              {board.name}
               {isActive && (
                 <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-game-cultivation to-game-mental" />
               )}
@@ -174,188 +130,159 @@ export function QuestPanel({
       </div>
 
       <CardContent className="pt-2 pb-2 space-y-2">
-        {/* ===== 新手引导 Tab ===== */}
-        {activeTab === 'tutorial' && (
-          <div className="space-y-2">
-            {tutorialInfo.allCompleted ? (
-              // 引导已完成
-              <div className="bg-gradient-to-r from-game-cultivation/10 to-game-mental/10 rounded-lg p-3 text-center border border-game-cultivation/30">
-                <Sparkles className="w-6 h-6 text-amber-400 mx-auto mb-1" />
-                <div className="text-sm font-medium text-game-cultivation">🎉 新手引导已全部完成！</div>
-                <div className="text-[10px] text-muted-foreground mt-1">
-                  正式任务系统已解锁，查看 NPC 任务和势力任务获取更多挑战。
-                </div>
-              </div>
-            ) : (
-              <>
-                {/* 总进度条 */}
-                <div className="flex items-center gap-2">
-                  <div className="flex-1">
-                    <Progress
-                      value={tutorialInfo.progress * 100}
-                      className="h-1.5 bg-muted"
-                    />
-                  </div>
-                  <span className="text-[10px] text-muted-foreground tabular-nums">
-                    {tutorialInfo.completedStepCount}/{tutorialInfo.totalStepCount}
-                  </span>
-                </div>
-
-                {/* 阶段指示器 */}
-                <div className="flex gap-1 justify-center">
-                  {TUTORIAL_GUIDE.phases.map((phase: TutorialPhase) => {
-                    const isComplete = tutorialState?.completedPhaseIds.includes(phase.id);
-                    const isCurrent = phase.id === tutorialInfo.currentPhase?.id;
-                    return (
-                      <div
-                        key={phase.id}
-                        className={`
-                          flex-1 h-1 rounded-full transition-all
-                          ${isComplete ? 'bg-game-recovery' : ''}
-                          ${isCurrent ? 'bg-game-cultivation' : ''}
-                          ${!isComplete && !isCurrent ? 'bg-muted' : ''}
-                        `}
-                        title={phase.name}
-                      />
-                    );
-                  })}
-                </div>
-
-                {/* 当前阶段信息 */}
-                {currentPhase && (
-                  <div className="bg-gradient-to-r from-game-cultivation/10 to-game-mental/10 rounded-lg p-2 border border-game-cultivation/30">
-                    <div className="flex items-center gap-1.5 mb-1">
-                      <Sparkles className="w-3.5 h-3.5 text-game-cultivation" />
-                      <span className="text-xs font-medium text-game-cultivation">
-                        {currentPhase.name}
-                      </span>
-                      <span className="text-[10px] text-muted-foreground ml-auto">
-                        阶段 {tutorialInfo.completedPhaseCount + 1}/{tutorialInfo.totalPhaseCount}
-                      </span>
-                    </div>
-
-                    {/* 当前步骤 */}
-                    {currentStep && (
-                      <div className="bg-card rounded p-2 space-y-1.5">
-                        <div className="flex items-start gap-1.5">
-                          <Circle className="w-3 h-3 text-game-cultivation mt-0.5 flex-shrink-0" />
-                          <div className="flex-1 min-w-0">
-                            <div className="text-xs font-medium text-foreground">
-                              {currentStep.name}
-                            </div>
-                            <div className="text-[10px] text-muted-foreground">
-                              {currentStep.description}
-                            </div>
-                          </div>
-                        </div>
-                        <div className="text-[10px] text-game-cultivation bg-game-cultivation/10 px-1.5 py-0.5 rounded">
-                          💡 {currentStep.hint}
-                        </div>
-                        {/* 当前步骤的领取奖励按钮 */}
-                        {currentStep.stepReward && !tutorialState.claimedRewardStepIds.includes(currentStep.id) && onClaimStepReward && (
-                          <button
-                            onClick={() => onClaimStepReward(currentStep.id)}
-                            className="w-full flex items-center justify-center gap-1.5 py-1.5 rounded text-xs font-medium
-                              bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400
-                              hover:bg-amber-200 dark:hover:bg-amber-900/50 transition-colors
-                              border border-amber-300/50 dark:border-amber-700/50"
-                          >
-                            <Gift className="w-3.5 h-3.5" />
-                            领取奖励
-                          </button>
-                        )}
-                      </div>
-                    )}
-                  </div>
-                )}
-
-                {/* 已完成步骤列表 */}
-                {completedSteps.length > 0 && (
-                  <div className="space-y-0.5 max-h-32 overflow-y-auto">
-                    {completedSteps.map(step => {
-                      const canClaim = isStepRewardClaimable(step.id, tutorialState);
-                      return (
-                        <div key={step.id} className="flex items-center gap-1 text-[10px]">
-                          <CheckCircle2 className="w-2.5 h-2.5 flex-shrink-0 text-game-recovery" />
-                          <span className="line-through text-game-recovery flex-1">{step.name}</span>
-                          {canClaim && onClaimStepReward && (
-                            <button
-                              onClick={() => onClaimStepReward(step.id)}
-                              className="flex items-center gap-0.5 px-1.5 py-0.5 rounded text-[9px] font-medium
-                                bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400
-                                hover:bg-amber-200 dark:hover:bg-amber-900/50 transition-colors flex-shrink-0"
-                            >
-                              <Gift className="w-2.5 h-2.5" />
-                              领取
-                            </button>
-                          )}
-                        </div>
-                      );
-                    })}
-                  </div>
-                )}
-              </>
-            )}
-          </div>
+        {/* ===== 教程进度条（检测 tutorial 板块的故事线进度） ===== */}
+        {activeTab === 'board_tutorial' && (
+          <TutorialProgress quest={quest} boards={boards} />
         )}
 
-        {/* ===== 势力任务 Tab ===== */}
-        {activeTab === 'faction' && (
+        {activeBoard && (
           <div className="space-y-2">
-            {tabs.find(t => t.id === 'faction')?.locked ? (
-              <div className="text-center py-4 text-xs text-muted-foreground">
-                <Lock className="w-5 h-5 mx-auto mb-1 opacity-30" />
-                {!tutorialInfo.allCompleted
-                  ? '完成新手引导后解锁'
-                  : '加入势力后解锁'}
-              </div>
-            ) : (
-              // TODO: 接入势力任务数据
-              <div className="text-center py-4 text-xs text-muted-foreground">
-                势力任务系统即将开放
+            <div className="flex items-center justify-between">
+              <span className="text-[10px] text-muted-foreground">{activeBoard.description}</span>
+              {activeBoard.refreshRule.type !== 'never' && (
+                <button
+                  onClick={() => quest.refreshBoardIfNeeded(activeBoard.id)}
+                  className="flex items-center gap-1 text-[10px] text-muted-foreground hover:text-foreground"
+                >
+                  <RefreshCw className="w-3 h-3" />
+                </button>
+              )}
+            </div>
+
+            {activeBoard.state === 'locked' && (
+              <div className="text-center py-6 text-xs text-muted-foreground">
+                <Lock className="w-6 h-6 mx-auto mb-1 opacity-30" />
+                前置条件未满足，暂未解锁
               </div>
             )}
-          </div>
-        )}
 
-        {/* ===== NPC 任务 Tab ===== */}
-        {activeTab === 'npc' && (
-          <div className="space-y-2">
-            {tabs.find(t => t.id === 'npc')?.locked ? (
-              <div className="text-center py-4 text-xs text-muted-foreground">
-                <Lock className="w-5 h-5 mx-auto mb-1 opacity-30" />
-                完成新手引导后解锁 NPC 任务
+            {activeBoard.state === 'empty' && (
+              <div className="text-center py-6 text-xs text-muted-foreground">
+                <ScrollText className="w-6 h-6 mx-auto mb-1 opacity-30" />
+                暂无可用任务
               </div>
-            ) : activeQuestEntries.length > 0 ? (
+            )}
+
+            {(activeBoard.state === 'available' || activeBoard.state === 'claimable') && (
               <div className="space-y-1.5">
-                {activeQuestEntries.map(entry => (
-                  <div
-                    key={entry.questId}
-                    className="bg-muted/30 rounded p-2 flex items-center justify-between"
-                  >
-                    <div className="flex-1 min-w-0">
-                      <div className="text-xs font-medium text-foreground truncate">
-                        {entry.questName}
-                      </div>
-                      <div className="text-[10px] text-muted-foreground">
-                        阶段：{entry.currentStageId}
-                      </div>
-                    </div>
-                    <ChevronRight className="w-3.5 h-3.5 text-muted-foreground flex-shrink-0" />
-                  </div>
+                {activeBoard.quests.map(q => (
+                  <QuestRow
+                    key={q.id}
+                    quest={q}
+                    isClaimable={quest.getBoardUIState(activeBoard.id) === 'claimable'}
+                    onAccept={() => quest.acceptQuest(q.id)}
+                    onClaim={() => quest.claimQuestReward(q.id)}
+                  />
                 ))}
               </div>
-            ) : (
+            )}
+
+            {(activeBoard.state === 'cooling_down' || activeBoard.state === 'completed') && (
               <div className="text-center py-4 text-xs text-muted-foreground">
-                <ScrollText className="w-5 h-5 mx-auto mb-1 opacity-30" />
-                暂无进行中的任务
-                <br />
-                <span className="text-[10px]">与 NPC 对话可接取新任务</span>
+                {activeBoard.state === 'cooling_down' ? (
+                  <><Clock className="w-5 h-5 mx-auto mb-1 text-blue-400" />任务冷却中</>
+                ) : (
+                  <><CheckCircle2 className="w-5 h-5 mx-auto mb-1 text-game-recovery" />全部完成</>
+                )}
               </div>
             )}
           </div>
         )}
       </CardContent>
+
+      {/* ===== 任务弹窗 ===== */}
+      {dialog && (
+        <div className="absolute inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-sm rounded-lg">
+          <div className="bg-card border border-border rounded-lg p-4 mx-4 max-w-sm w-full shadow-lg">
+            <div className="flex items-start justify-between mb-3">
+              <div className="flex items-center gap-2">
+                <Sparkles className="w-4 h-4 text-game-cultivation" />
+                <h3 className="text-sm font-semibold text-foreground">{dialog.title}</h3>
+              </div>
+              <button onClick={handleDismissDialog} className="text-muted-foreground hover:text-foreground">
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+            <div className="text-xs text-muted-foreground whitespace-pre-line mb-3">
+              {dialog.content}
+            </div>
+            <Button onClick={handleDismissDialog} className="w-full text-xs" size="sm">
+              {dialog.confirmText ?? '知道了'}
+            </Button>
+          </div>
+        </div>
+      )}
     </Card>
+  );
+}
+
+// ============================================
+// 教程进度条
+// ============================================
+
+function TutorialProgress({ quest, boards }: { quest: UseQuestReturn; boards: Array<{ id: string; quests: QuestDefinition[] }> }) {
+  const progress = useMemo(() => quest.getStoryProgress('storyline_tutorial'), [quest]);
+  if (!progress || progress.allCompleted) return null;
+
+  const tutorialBoard = boards.find(b => b.id === 'board_tutorial');
+  const totalQuests = tutorialBoard?.quests.length ?? 0;
+
+  return (
+    <div className="bg-gradient-to-r from-game-cultivation/10 to-game-mental/10 rounded-lg p-2 border border-game-cultivation/30">
+      <div className="flex items-center gap-2 mb-1">
+        <Sparkles className="w-3.5 h-3.5 text-game-cultivation" />
+        <span className="text-xs font-medium text-game-cultivation">新手引导</span>
+        <span className="text-[10px] text-muted-foreground ml-auto">
+          {progress.completedQuestCount}/{progress.totalQuestCount}
+        </span>
+      </div>
+      <div className="h-1.5 bg-muted rounded-full overflow-hidden">
+        <div
+          className="h-full bg-gradient-to-r from-game-cultivation to-game-mental rounded-full transition-all"
+          style={{ width: `${Math.max(progress.progress * 100, totalQuests > 0 ? 2 : 0)}%` }}
+        />
+      </div>
+    </div>
+  );
+}
+
+// ============================================
+// 任务行
+// ============================================
+
+function QuestRow({ quest, isClaimable, onAccept, onClaim }: {
+  quest: QuestDefinition;
+  isClaimable: boolean;
+  onAccept: () => void;
+  onClaim: () => void;
+}) {
+  return (
+    <div className="bg-muted/30 rounded p-2 flex items-center justify-between">
+      <div className="flex-1 min-w-0">
+        <div className="flex items-center gap-1.5">
+          {isClaimable
+            ? <Gift className="w-3 h-3 text-amber-500 flex-shrink-0" />
+            : <Circle className="w-3 h-3 text-game-cultivation flex-shrink-0" />
+          }
+          <span className="text-xs font-medium text-foreground truncate">{quest.name}</span>
+          {quest.difficulty && (
+            <Badge variant="outline" className="text-[9px] px-1 py-0 h-4">{quest.difficulty}</Badge>
+          )}
+        </div>
+        <p className="text-[10px] text-muted-foreground truncate mt-0.5">{quest.description}</p>
+      </div>
+      <button
+        onClick={isClaimable ? onClaim : onAccept}
+        className={`flex-shrink-0 px-2 py-1 text-[10px] font-medium rounded transition-colors ${
+          isClaimable
+            ? 'bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400'
+            : 'bg-game-cultivation/10 text-game-cultivation'
+        }`}
+      >
+        {isClaimable ? (
+          <span className="flex items-center gap-1"><Gift className="w-2.5 h-2.5" />领取</span>
+        ) : '接取'}
+      </button>
+    </div>
   );
 }

@@ -14,14 +14,17 @@
  */
 
 import { createLogger } from '@/core/logger';
-import { WorldViewRegistry } from '@/core/registry/WorldViewRegistry';
 import { AttributeRegistry } from '@/core/registry/AttributeRegistry';
-import { RaceRegistry } from '@/core/registry/RaceRegistry';
-import { TalentRegistry } from '@/core/registry/TalentRegistry';
+import { BoardRegistry } from '@/core/registry/BoardRegistry';
+import { ItemRegistry } from '@/core/registry/ItemRegistry';
 import { NPCDataRegistry } from '@/core/registry/NPCDataRegistry';
 import { QuestRegistry } from '@/core/registry/QuestRegistry';
+import { RaceRegistry } from '@/core/registry/RaceRegistry';
+import { StoryLineRegistry } from '@/core/registry/StoryLineRegistry';
+import { TalentRegistry } from '@/core/registry/TalentRegistry';
+import { WorldViewRegistry } from '@/core/registry/WorldViewRegistry';
 import type { WorldviewDefinition } from '@/core/registry/WorldViewRegistry';
-import type { NPCDefinition, QuestDefinition } from '@/core/types';
+import type { ItemTemplateData, NPCDefinition, QuestDefinition, StoryLine, QuestBoard } from '@/core/types';
 
 import { parseManifest } from './ModManifest';
 import { ModLoadError } from './types';
@@ -508,6 +511,29 @@ export class ModLoader {
       if (Array.isArray(data)) {
         QuestRegistry.getInstance().registerAll(data as QuestDefinition[]);
         log.info(`Mod "${modId}": 注册了 ${(data as unknown[]).length} 个任务`);
+      } else if (data && typeof data === 'object') {
+        // 支持合并数据格式：{ quests: [...], storylines: [...], boards: [...] }
+        const bundle = data as Record<string, unknown>;
+        if (Array.isArray(bundle['quests'])) {
+          QuestRegistry.getInstance().registerAll(bundle['quests'] as QuestDefinition[]);
+          log.info(`Mod "${modId}": 注册了 ${(bundle['quests'] as unknown[]).length} 个任务`);
+        }
+        if (Array.isArray(bundle['storylines'])) {
+          StoryLineRegistry.getInstance().registerAll(bundle['storylines'] as StoryLine[]);
+          log.info(`Mod "${modId}": 注册了 ${(bundle['storylines'] as unknown[]).length} 个故事线`);
+        }
+        if (Array.isArray(bundle['boards'])) {
+          BoardRegistry.getInstance().registerAll(bundle['boards'] as QuestBoard[]);
+          log.info(`Mod "${modId}": 注册了 ${(bundle['boards'] as unknown[]).length} 个板块`);
+        }
+      }
+      return;
+    }
+
+    if (contentType === 'items') {
+      if (Array.isArray(data)) {
+        ItemRegistry.getInstance().registerAll(data as ItemTemplateData[]);
+        log.info(`Mod "${modId}": 注册了 ${(data as unknown[]).length} 个物品模板`);
       }
       return;
     }

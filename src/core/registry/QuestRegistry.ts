@@ -70,9 +70,9 @@ export class QuestRegistry {
   ): QuestDefinition[] {
     return this.getByWorldview(worldviewId).filter(q => {
       // 已完成且不可重复的任务跳过
-      if (!q.repeatable && questState.completedQuests.includes(q.id)) return false;
+      if (!q.repeatable && questState.completedQuestIds.includes(q.id)) return false;
       // 重复任务检查冷却（简化：只看是否在 claimedRewards 中）
-      if (q.repeatable && questState.claimedRewards.includes(q.id)) return false;
+      if (q.repeatable && questState.claimedQuestIds.includes(q.id)) return false;
       // 已在活跃任务中跳过
       if (questState.activeQuests[q.id]) return false;
       // 前置条件

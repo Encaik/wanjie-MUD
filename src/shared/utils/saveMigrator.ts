@@ -179,5 +179,145 @@ export function migrateCharacterStatsToV3(oldStats: {
 /** 更新存档版本号 */
 export const SAVE_VERSION_V3 = 2;
 
+/** 最新存档版本号（统一任务系统） */
+export const SAVE_VERSION_V4 = 3;
+
+// ============================================
+// QuestState 迁移（v3 → v4 统一任务系统）
+// ============================================
+
+/**
+ * 将旧版任务状态迁移到统一 QuestState
+ *
+ * 旧存档可能包含：
+ * - questState (旧字段名: completedQuests, claimedRewards)
+ * - taskSystems (AllTaskSystemsState 面板格式)
+ * - tutorialState (TutorialState 引导格式)
+ *
+ * 全部合并到新的统一 QuestState 格式。
+ */
+export function migrateQuestState(parsed: Record<string, unknown>): Record<string, unknown> {
+  // 如果已经是新格式（有 completedQuestIds），直接返回
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const existingQS = parsed['questState'] as Record<string, any> | undefined;
+  if (parsed['completedQuestIds'] !== undefined || existingQS?.['completedQuestIds'] !== undefined) {
+    return parsed;
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const oldQuestState = (parsed['questState'] as Record<string, any>) ?? {};
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const taskSystems = (parsed['taskSystems'] as Record<string, any>) ?? {};
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const tutorialState = (parsed['tutorialState'] as Record<string, any>) ?? {};
+
+  // 合并已完成任务 ID
+  const completedQuestIds: string[] = [
+    ...(Array.isArray(oldQuestState['completedQuests']) ? oldQuestState['completedQuests'] : []),
+    ...collectTaskSystemCompletedIds(taskSystems),
+  ];
+
+  // 合并已领取奖励任务 ID
+  const claimedQuestIds: string[] = [
+    ...(Array.isArray(oldQuestState['claimedRewards']) ? oldQuestState['claimedRewards'] : []),
+    ...collectTaskSystemClaimedIds(taskSystems),
+  ];
+
+  // 迁移故事线已完成节点
+  const storyCompletedNodeIds: string[] = migrateTutorialNodes(tutorialState);
+
+  // 迁移板块槽位
+  const boardSlots: Record<string, unknown> = {};
+  const boardLastRefresh: Record<string, number> = {};
+
+  for (const [systemType, systemState] of Object.entries(taskSystems)) {
+    const state = systemState as Record<string, unknown>;
+    if (state['completedTaskIds'] && Array.isArray(state['completedTaskIds'])) {
+      boardSlots[systemType] = {
+        questIds: state['completedTaskIds'] as string[],
+        lastRefresh: (state['lastRefreshTime'] as number) ?? 0,
+      };
+      boardLastRefresh[systemType] = (state['lastRefreshTime'] as number) ?? 0;
+    }
+  }
+
+  return {
+    ...parsed,
+    questState: {
+      activeQuests: oldQuestState['activeQuests'] ?? {},
+      completedQuestIds,
+      claimedQuestIds,
+      acceptedTimestamps: {},
+      completedTimestamps: {},
+      boardSlots,
+      boardLastRefresh,
+      storyCompletedNodeIds,
+      stageHistory: oldQuestState['stageHistory'] ?? {},
+    },
+    // 保留旧字段用于回溯兼容（标记为弃用）
+    taskSystems: parsed['taskSystems'],
+    tutorialState: parsed['tutorialState'],
+  };
+}
+
+/** 从旧 taskSystems 收集已完成任务 ID */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function collectTaskSystemCompletedIds(taskSystems: Record<string, any>): string[] {
+  const ids: string[] = [];
+  for (const systemState of Object.values(taskSystems)) {
+    if (systemState['completedTaskIds'] && Array.isArray(systemState['completedTaskIds'])) {
+      ids.push(...systemState['completedTaskIds']);
+    }
+  }
+  return ids;
+}
+
+/** 从旧 taskSystems 收集已领取任务 ID */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function collectTaskSystemClaimedIds(taskSystems: Record<string, any>): string[] {
+  const ids: string[] = [];
+  for (const systemState of Object.values(taskSystems)) {
+    if (systemState['claimedTaskIds'] && Array.isArray(systemState['claimedTaskIds'])) {
+      ids.push(...systemState['claimedTaskIds']);
+    }
+  }
+  return ids;
+}
+
+/** 将旧 tutorialState 的步骤 ID 映射为故事线节点 ID */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function migrateTutorialNodes(tutorialState: Record<string, any>): string[] {
+  const nodeIds: string[] = [];
+
+  // 教程步骤到故事线节点的映射
+  const STEP_TO_NODE: Record<string, string> = {
+    'step_welcome': 'tnode_welcome',
+    'step_use_pill': 'tnode_use_pill',
+    'step_first_cultivation': 'tnode_first_cultivation',
+    'step_enter_adventure': 'tnode_enter_adventure',
+    'step_first_kill': 'tnode_first_kill',
+    'step_reach_level_3': 'tnode_reach_level_3',
+    'step_join_faction': 'tnode_join_faction',
+    'step_complete_adventure': 'tnode_complete_adventure',
+    'step_claim_achievement': 'tnode_claim_achievement',
+  };
+
+  const completedSteps = tutorialState['completedStepIds'] as string[] | undefined;
+  if (completedSteps) {
+    for (const stepId of completedSteps) {
+      const nodeId = STEP_TO_NODE[stepId];
+      if (nodeId) nodeIds.push(nodeId);
+    }
+  }
+
+  const completedPhases = tutorialState['completedPhaseIds'] as string[] | undefined;
+  if (completedPhases) {
+    for (const phaseId of completedPhases) {
+      nodeIds.push(phaseId);
+    }
+  }
+
+  return nodeIds;
+}
 
 export { DEFAULT_STATISTICS };

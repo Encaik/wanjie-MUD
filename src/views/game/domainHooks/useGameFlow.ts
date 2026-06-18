@@ -13,6 +13,7 @@ import { createInitialGameState } from '../state/initialState';
 import { post } from '@/shared/utils/api-client';
 import { createLogger } from '@/core/logger';
 import { emit } from '@/core/events';
+import { tutorialEvents } from '@/core/statistics';
 import { worldEvents } from '@/modules/theme';
 
 const log = createLogger('GameFlow');
@@ -74,6 +75,8 @@ export function useGameFlow() {
         content: '欢迎来到万界修行录！打开任务面板领取初始修炼物资，开始你的修行之路吧。',
         details: undefined, rewards: undefined,
       };
+      // 发出新手引导开始事件，由事件监听器驱动 step_welcome 完成
+      emit(tutorialEvents.events.game_started, {});
       return {
         ...prev,
         protagonist,

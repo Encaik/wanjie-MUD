@@ -1,7 +1,8 @@
 /**
  * modules/fortune/logic/rewardCalculator.ts — 奖励计算器
  *
- * 纯函数模块：根据节点类型、深度和机缘主题计算奖励。
+ * 纯函数模块：根据节点类型、深度和机缘主题计算基础奖励（灵石+经验）。
+ * 物品/碎片掉落已迁移到 modules/reward-pool/，通过 Hook 层集成。
  */
 
 import type {
@@ -9,7 +10,6 @@ import type {
   FortuneTypeId,
   FortuneLoot,
   CalculatedReward,
-  FragmentGain,
 } from '../types';
 import { getNodeTypeConfig } from '../data/nodeTypeConfig';
 import { getFortuneTypeConfig } from '../data/fortuneTypeConfig';
@@ -19,13 +19,16 @@ import { getFortuneTypeConfig } from '../data/fortuneTypeConfig';
 // ============================================
 
 /**
- * 计算单个节点的奖励
+ * 计算单个节点的基础奖励（灵石 + 经验）
+ *
+ * 物品和碎片奖励通过 modules/reward-pool/ 的 poolEngine.rollPool() 生成。
+ * 节点类型到 poolId 的映射见 fortuneTypeConfig。
  *
  * @param nodeType - 节点类型
  * @param depth - 当前深度
  * @param fortuneType - 机缘主题 ID
  * @param nodeRewardMultiplier - 节点自身奖励倍率
- * @returns 计算后的奖励
+ * @returns 计算后的奖励（items 和 fragments 为空，由 Hook 层填充）
  */
 export function calculateNodeReward(
   nodeType: NodeType,
@@ -56,112 +59,20 @@ export function calculateNodeReward(
       finalSpiritStones = Math.floor(finalSpiritStones * bonuses.other);
     }
 
-    // 经验加成（所有主题统一）
+    // 经验加成
     if (bonuses.other && !bonuses.spirit_stones && !bonuses.fragments && !bonuses.consumables) {
       finalExperience = Math.floor(finalExperience * bonuses.other);
     }
   }
 
-  // 碎片生成
-  const fragments = generateFragmentsForNode(nodeType, depth, fortuneType);
-
+  // 物品和碎片由 Hook 层通过 poolEngine.rollPool() 生成
   return {
     spiritStones: finalSpiritStones,
     experience: finalExperience,
     items: [],
-    fragments,
+    fragments: [],
     multiplier: nodeRewardMultiplier * depthScale,
   };
-}
-
-/**
- * 根据节点类型生成碎片
- */
-function generateFragmentsForNode(
-  nodeType: NodeType,
-  depth: number,
-  fortuneType: FortuneTypeId
-): FragmentGain[] {
-  const result: FragmentGain[] = [];
-  const themeConfig = getFortuneTypeConfig(fortuneType);
-  const fragmentMultiplier = themeConfig?.rewardBonuses.fragments || 1.0;
-
-  switch (nodeType) {
-    case 'elite': {
-      // 精英：有概率掉落 1 个史诗碎片
-      const count = Math.floor(1 * fragmentMultiplier);
-      if (count > 0) {
-        result.push({
-          sourceName: `深度${depth}精英掉落`,
-          type: 'equipment',
-          rarity: 'epic',
-          count,
-        });
-      }
-      break;
-    }
-    case 'miniboss': {
-      // 小头目：必定掉落 1-2 个史诗碎片
-      const count = Math.floor((1 + Math.random()) * fragmentMultiplier);
-      if (count > 0) {
-        result.push({
-          sourceName: `深度${depth}头目掉落`,
-          type: 'technique',
-          rarity: 'epic',
-          count: Math.max(1, count),
-        });
-      }
-      break;
-    }
-    case 'guardian': {
-      // 守卫：必定掉落 2 个史诗碎片，有概率传说
-      const count = Math.floor(2 * fragmentMultiplier);
-      result.push({
-        sourceName: `深度${depth}守卫掉落`,
-        type: 'equipment',
-        rarity: 'legendary',
-        count: Math.max(1, count),
-      });
-      break;
-    }
-    case 'scroll_fragment': {
-      // 残卷：必定掉落碎片
-      const count = Math.floor((1 + Math.random()) * fragmentMultiplier);
-      const rarity = Math.random() < 0.2 ? 'legendary' : 'epic';
-      result.push({
-        sourceName: '上古残卷',
-        type: Math.random() < 0.5 ? 'technique' : 'equipment',
-        rarity,
-        count: Math.max(1, count),
-      });
-      break;
-    }
-    case 'challenge': {
-      // 试炼碑：必定掉落传说碎片
-      const count = Math.floor(2 * fragmentMultiplier);
-      result.push({
-        sourceName: '试炼碑奖励',
-        type: 'technique',
-        rarity: 'legendary',
-        count: Math.max(1, count),
-      });
-      break;
-    }
-    default:
-      break;
-  }
-
-  // 魔渊主题额外传说概率
-  if (fortuneType === 'demon_abyss' && Math.random() < 0.3) {
-    result.push({
-      sourceName: '魔渊碎片',
-      type: 'equipment',
-      rarity: 'mythic',
-      count: 1,
-    });
-  }
-
-  return result;
 }
 
 // ============================================
@@ -170,10 +81,6 @@ function generateFragmentsForNode(
 
 /**
  * 计算楼层完成奖励
- *
- * @param depth - 完成的楼层
- * @param fortuneType - 机缘主题 ID
- * @returns 楼层奖励
  */
 export function calculateFloorBonus(
   depth: number,
@@ -193,10 +100,6 @@ export function calculateFloorBonus(
 
 /**
  * 计算通关完成奖励
- *
- * @param depth - 通关的楼层
- * @param fortuneType - 机缘主题 ID
- * @returns 通关奖励
  */
 export function calculateCompletionBonus(
   depth: number,

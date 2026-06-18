@@ -19,6 +19,8 @@ export { RaceRegistry } from './RaceRegistry';
 export { TalentRegistry } from './TalentRegistry';
 export { NPCDataRegistry } from './NPCDataRegistry';
 export { QuestRegistry } from './QuestRegistry';
+export { StoryLineRegistry } from './StoryLineRegistry';
+export { BoardRegistry } from './BoardRegistry';
 export { ItemRegistry } from './ItemRegistry';
 
 export type {

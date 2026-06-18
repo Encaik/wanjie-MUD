@@ -18,9 +18,10 @@ import {
 } from '../logic/itemManager';
 import { useConsumable } from '../logic/itemUse';
 import { getTemplate } from '../data/index';
+import { emit } from '@/core/events';
+import { itemEvents } from '@/core/statistics';
 import { useGameStore } from '@/views/game/state/GameStore';
 import type { GameState, ActiveEffect, GrowthStats } from '@/core/types';
-import { processStatisticsEvent } from '@/core/statistics';
 import { applyBaseStatChanges } from '@/modules/progression/logic/realmSystem';
 
 /** 内部消息添加辅助 */
@@ -212,11 +213,6 @@ export function useInventory() {
       return {
         ...prev,
         protagonist: newProtagonist as GameState['protagonist'],
-        statistics: processStatisticsEvent(prev.statistics, {
-          type: 'item:used',
-          payload: { templateId: item.templateId, count: 1 },
-          timestamp: Date.now(),
-        }),
         lastActionResult: {
           success: true,
           message: `使用了${template.name}！${effectMsg}`,
@@ -229,6 +225,10 @@ export function useInventory() {
         ),
       };
     });
+
+    // 通过事件总线发出物品使用事件（新手引导、统计系统等监听）
+    emit(itemEvents.events.used, { templateId: item.templateId, count: 1 });
+
     return result;
   }, [gameState.protagonist, dispatch]);
 

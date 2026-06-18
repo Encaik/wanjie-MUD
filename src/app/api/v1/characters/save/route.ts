@@ -8,6 +8,7 @@
 import { NextRequest } from 'next/server';
 import { apiSuccess, apiError } from '@/app/api/result';
 import { createLogger } from '@/core/logger';
+import { ensureWorldSystemInitialized } from '@/app/api/init';
 import { generateCharacterTemplates, createCharacterSeed } from '@/modules/identity/logic/characterTemplates';
 import { saveCharacter } from '../store';
 
@@ -40,6 +41,9 @@ export async function POST(request: NextRequest) {
   if (body.templateIndex < 0 || body.templateIndex > 7) {
     return apiError(400, 'templateIndex 必须在 0-7 之间');
   }
+
+  // 确保世界系统已初始化（与 instrumentation 互补，处理竞争条件）
+  await ensureWorldSystemInitialized();
 
   try {
     // 1. 重新生成 8 个模板（确定性，与前端生成的一致）

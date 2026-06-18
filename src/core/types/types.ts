@@ -464,7 +464,117 @@ export type QuestObjectiveType =
   | 'explore_location'
   | 'use_item'
   | 'dialogue_check'
+  | 'join_faction'
+  | 'cultivate'
   | 'custom';
+
+// ============================================
+// 任务板块系统
+// ============================================
+
+/** 任务板块分类 */
+export type QuestCategory =
+  | 'tutorial'
+  | 'main_story'
+  | 'side_story'
+  | 'daily'
+  | 'weekly'
+  | 'faction'
+  | 'event'
+  | 'achievement';
+
+/** 板块刷新规则 */
+export type RefreshRule =
+  | { type: 'never' }
+  | { type: 'daily'; resetHour?: number }
+  | { type: 'weekly'; resetDay?: number }
+  | { type: 'custom'; cronExpression: string };
+
+/** 任务板块定义 */
+export interface QuestBoard {
+  /** 板块唯一标识 */
+  id: string;
+  /** 板块显示名称 */
+  name: string;
+  /** 板块分类 */
+  category: QuestCategory;
+  /** 板块描述 */
+  description?: string;
+  /** 刷新规则 */
+  refreshRule: RefreshRule;
+  /** 每次刷新的槽位数量 */
+  slotCount: number;
+  /** 可用任务池（questId 列表） */
+  questPool: string[];
+  /** 是否随机选取槽位（false = 按顺序） */
+  randomPick: boolean;
+  /** 板块解锁条件 */
+  unlockConditions?: QuestPrerequisite[];
+  /** Mod 来源标识（内置为空） */
+  sourceModId?: string;
+}
+
+// ============================================
+// 故事线系统
+// ============================================
+
+/** 故事线类型 */
+export type StoryLineType = 'main' | 'side' | 'tutorial';
+
+/** 故事线节点 */
+export interface StoryNode {
+  /** 节点 ID */
+  id: string;
+  /** 节点名称 */
+  name: string;
+  /** 节点类型 */
+  type: 'phase' | 'section' | 'quest_ref';
+  /** 排序序号 */
+  order: number;
+  /** 节点描述 */
+  description?: string;
+  /** 任务引用（仅 type='quest_ref'） */
+  questId?: string;
+  /** 子节点（仅 type='phase'|'section'） */
+  children?: StoryNode[];
+  /** 节点解锁条件 */
+  unlockCondition?: {
+    type: 'quest_completed' | 'level' | 'realm' | 'node_completed';
+    target: string;
+  };
+}
+
+/** 故事线定义 */
+export interface StoryLine {
+  /** 故事线唯一标识 */
+  id: string;
+  /** 故事线名称 */
+  name: string;
+  /** 故事线类型 */
+  type: StoryLineType;
+  /** 故事线描述 */
+  description?: string;
+  /** 限制出现的世界观 ID 列表 */
+  worldviewRestrictions?: string[];
+  /** 根节点列表 */
+  rootNodes: StoryNode[];
+}
+
+// ============================================
+// 事件→目标映射
+// ============================================
+
+/** 事件到任务目标的映射规则 */
+export interface EventObjectiveMapping {
+  /** 匹配的事件类型（支持 'namespace:*' 通配符） */
+  eventType: string;
+  /** 事件 payload 中对应目标 ID 的字段路径 */
+  targetField: string;
+  /** 对应的目标类型（QuestObjective.type） */
+  objectiveType: string;
+  /** 自定义增量计算（默认 +1） */
+  getDelta?: (event: import('@/core/events').GameEvent) => number;
+}
 
 /** 前置条件类型 */
 export type QuestPrerequisiteType =
@@ -545,6 +655,14 @@ export interface QuestReward {
   unlockQuests?: string[];
 }
 
+/** 任务奖励池配置 */
+export interface QuestRewardPoolConfig {
+  /** 引用的奖励池 ID */
+  poolId: string;
+  /** 奖励倍数（默认 1.0） */
+  multiplier?: number;
+}
+
 /** 任务完整定义（Mod 内容类型：quests） */
 export interface QuestDefinition {
   /** 全局唯一标识（kebab-case） */
@@ -561,12 +679,36 @@ export interface QuestDefinition {
   prerequisites: QuestPrerequisite[];
   /** 阶段列表 */
   stages: QuestStage[];
-  /** 最终完成奖励 */
+  /** 最终完成奖励（静态） */
   rewards: QuestReward[];
   /** 是否可重复（daily 类型默认为 true） */
   repeatable: boolean;
   /** 冷却时间（秒，仅 repeatable 任务有效） */
   cooldownSeconds?: number;
+  /** 所属板块 ID 列表 */
+  boardIds?: string[];
+  /** 所属故事线 ID */
+  storylineId?: string;
+  /** 奖励池配置（优先级高于静态 rewards） */
+  rewardPool?: QuestRewardPoolConfig;
+  /** 任务难度（影响奖励池稀有度） */
+  difficulty?: 'easy' | 'normal' | 'hard' | 'epic';
+  /** 事件追踪映射（可选，覆盖默认映射规则） */
+  eventMapping?: EventObjectiveMapping[];
+  /** 是否在任务面板中隐藏 */
+  hiddenInPanel?: boolean;
+  /** 任务可用时显示的引导弹窗 */
+  dialog?: QuestDialog;
+}
+
+/** 任务引导弹窗 */
+export interface QuestDialog {
+  /** 弹窗标题 */
+  title: string;
+  /** 弹窗正文（支持换行） */
+  content: string;
+  /** 确认按钮文字（默认"知道了"） */
+  confirmText?: string;
 }
 
 // ── 运行时状态 ──
@@ -583,14 +725,39 @@ export interface ActiveQuest {
   startedAt: number;
 }
 
-/** 任务系统全局状态 */
+/** 板块槽位状态 */
+export interface BoardSlotState {
+  /** 当前槽位的任务 ID 列表 */
+  questIds: string[];
+  /** 上次刷新时间戳 */
+  lastRefresh: number;
+}
+
+/** 任务系统全局状态（统一所有任务类型） */
 export interface QuestState {
   /** 活跃任务（key = questId） */
   activeQuests: Record<string, ActiveQuest>;
   /** 已完成任务 ID 列表 */
-  completedQuests: string[];
-  /** 已领取奖励的任务 ID 列表（用于 repeatable 任务） */
-  claimedRewards: string[];
+  completedQuestIds: string[];
+  /** 已领取奖励的任务 ID 列表 */
+  claimedQuestIds: string[];
+
+  /** 任务接取时间戳（questId → timestamp） */
+  acceptedTimestamps: Record<string, number>;
+  /** 任务完成时间戳（用于冷却计算，questId → timestamp） */
+  completedTimestamps: Record<string, number>;
+
+  /** 板块槽位状态（boardId → 槽位信息） */
+  boardSlots: Record<string, BoardSlotState>;
+  /** 板块上次刷新时间（boardId → timestamp，冗余但便于查询） */
+  boardLastRefresh: Record<string, number>;
+
+  /** 故事线已完成节点 ID 列表 */
+  storyCompletedNodeIds: string[];
+
+  /** 已查看过弹窗的任务 ID 列表 */
+  viewedDialogQuestIds: string[];
+
   /** 阶段历史（questId → 已完成的 stageId 列表，用于分支追踪） */
   stageHistory: Record<string, string[]>;
 }
@@ -599,8 +766,14 @@ export interface QuestState {
 export function createDefaultQuestState(): QuestState {
   return {
     activeQuests: {},
-    completedQuests: [],
-    claimedRewards: [],
+    completedQuestIds: [],
+    claimedQuestIds: [],
+    acceptedTimestamps: {},
+    completedTimestamps: {},
+    boardSlots: {},
+    boardLastRefresh: {},
+    storyCompletedNodeIds: [],
+    viewedDialogQuestIds: [],
     stageHistory: {},
   };
 }
@@ -1466,15 +1639,26 @@ export interface MessageRecord {
   details?: string;
   rewards?: {
     stats?: Partial<GrowthStats>;
-    statDetails?: { stat: string; base: number; boost: number }[]; // 详细属性变化：基础+加成
+    statDetails?: { stat: string; base: number; boost: number }[];
     items?: InventoryItem[];
+    /** 新奖励池产出物品（替代 items，使用 ItemInstance 序列化格式） */
+    poolItems?: Array<{
+      templateId: string;
+      instanceId: string;
+      quantity: number;
+      rarity: string;
+    }>;
+    poolCurrencies?: Array<{
+      type: string;
+      amount: number;
+    }>;
     experience?: number;
-    experienceBoost?: number; // 丹药带来的经验值加成
+    experienceBoost?: number;
     technique?: Technique;
     equipment?: Equipment;
-    techniques?: Technique[]; // 完整功法掉落（多个，新增）
-    equipments?: Equipment[]; // 完整装备掉落（多个，新增）
-    fragments?: Record<string, unknown>[]; // 碎片掉落奖励
+    techniques?: Technique[];
+    equipments?: Equipment[];
+    fragments?: Record<string, unknown>[];
   };
 }
 
@@ -1569,7 +1753,10 @@ export interface GameState {
   unlockedAchievementIds: string[];
   // 已领取奖励的成就ID列表
   claimedAchievementIds: string[];
-  // 已完成的新手任务ID列表（持久化，防止进度后退）
+  /**
+   * 已完成的新手任务 ID 列表
+   * @deprecated 教程逻辑已完全迁入 QuestState + StoryLine 系统。此字段保留仅用于旧存档迁移。
+   */
   completedTutorialTaskIds: string[];
   // 是否已完成新手机缘（用于显示新手难度选项）
   hasCompletedNoviceAdventure?: boolean;
@@ -1577,10 +1764,6 @@ export interface GameState {
   showNoviceCompletionDialog?: boolean;
   // 是否显示新手任务全部完成弹窗（显示后清除）
   showTutorialCompletionDialog?: boolean;
-  // 新手引导状态（分阶段事件驱动）
-  tutorialState?: import('@/modules/quest').TutorialState;
-  // 任务系统状态 - 统一管理各任务系统
-  taskSystems?: import('@/modules/quest').AllTaskSystemsState;
   // 扩展系统 - 势力相关
   currentFactionId?: string | null; // 当前加入的势力ID
   factionProgress?: import('./typesExtension').FactionProgress | null; // 势力进度
@@ -1598,7 +1781,7 @@ export interface GameState {
   ascensionFlow?: import('./typesExtension').AscensionFlowState;
   // 死亡状态（显示死亡弹窗）
   deathState?: import('./typesExtension').DeathState;
-  // 任务系统状态
+  /** 统一任务系统状态（所有任务类型共用） */
   questState: QuestState;
 }
 

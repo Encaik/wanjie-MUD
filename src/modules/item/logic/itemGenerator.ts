@@ -1,14 +1,13 @@
 /**
- * 物品生成器 — 随机掉落、稀有度选择、词缀生成
+ * 物品生成器 — 实例创建、词缀生成
  *
  * 所有函数接受 seed 参数，使用 seeded RNG 确保确定性。
+ * 注意：generateRandomDrop() 和 rollRarity() 已迁移到 modules/reward-pool/。
  */
 
-import { parseTemplateId } from '../types';
 import type { ItemInstance, Rarity } from '../types';
-import type { ItemTemplate } from '../types';
-import { getTemplate, getAllTemplates } from '../data/index';
-import { ALL_RARITIES, RARITY_ORDER, RARITY_CONFIG } from '../data/rarity';
+import { getTemplate } from '../data/index';
+import { RARITY_ORDER, RARITY_CONFIG } from '../data/rarity';
 import { ALL_AFFIX_TEMPLATES } from '../data/affixes';
 import { createItemInstance } from './itemManager';
 
@@ -41,55 +40,6 @@ export function generateItemInstance(
     : [];
 
   return createItemInstance(templateId, { level, affixes, source: 'drop' });
-}
-
-/**
- * 随机选择稀有度
- *
- * @param enemyLevel - 敌人等级
- * @param bossLevel - Boss 等级（0 表示非 Boss）
- * @param luck - 玩家幸运值（影响高稀有度权重）
- * @param seed - 随机种子
- */
-export function rollRarity(
-  enemyLevel: number,
-  bossLevel: number = 0,
-  luck: number = 8,
-  seed?: number
-): Rarity {
-  const rng = seed !== undefined ? createRng(seed) : createRng(Date.now());
-
-  // 根据等级确定稀有度上限
-  let maxRarityIdx = 0;
-  if (enemyLevel >= 50) maxRarityIdx = 5; // mythic
-  else if (enemyLevel >= 30) maxRarityIdx = 4; // legendary
-  else if (enemyLevel >= 20) maxRarityIdx = 3; // epic
-  else if (enemyLevel >= 10) maxRarityIdx = 2; // rare
-  else if (enemyLevel >= 5) maxRarityIdx = 1; // uncommon
-  else maxRarityIdx = 0; // common
-
-  // Boss 提升稀有度上限
-  if (bossLevel >= 3) maxRarityIdx = Math.min(maxRarityIdx + 2, 5);
-  else if (bossLevel >= 1) maxRarityIdx = Math.min(maxRarityIdx + 1, 5);
-
-  // 加权随机（幸运值提升高稀有度权重）
-  const weights: number[] = ALL_RARITIES.map((r, i) => {
-    if (i > maxRarityIdx) return 0;
-    let w = RARITY_CONFIG[r].dropWeight;
-    // 幸运值加成：每超过基准 8 点，高稀有度权重 +20%
-    const luckBonus = Math.max(0, luck - 8) * 0.02;
-    if (i >= 3) w *= (1 + luckBonus * (i - 2));
-    return w;
-  });
-
-  const totalWeight = weights.reduce((s, w) => s + w, 0);
-  let roll = rng() * totalWeight;
-  for (let i = 0; i < weights.length; i++) {
-    roll -= weights[i];
-    if (roll <= 0) return ALL_RARITIES[i];
-  }
-
-  return 'common';
 }
 
 /**
@@ -132,47 +82,3 @@ export function rollAffixes(
   return selected;
 }
 
-/**
- * 随机生成掉落物品
- *
- * @param enemyLevel - 敌人等级
- * @param bossLevel - Boss 等级（0 表示非 Boss）
- * @param worldType - 世界观过滤
- * @param seed - 随机种子
- * @returns 生成的 ItemInstance，或 null（不掉落）
- */
-export function generateRandomDrop(
-  enemyLevel: number,
-  bossLevel: number = 0,
-  worldType?: string,
-  seed?: number
-): ItemInstance | null {
-  const rng = seed !== undefined ? createRng(seed) : createRng(Date.now());
-
-  // 基础掉落率 40%，Boss 100%
-  const dropRate = bossLevel > 0 ? 1.0 : 0.4;
-  if (rng() > dropRate) return null;
-
-  const rarity = rollRarity(enemyLevel, bossLevel, 8, seed);
-
-  // 筛选可掉落的模板
-  const candidates = getAllTemplates().filter(t => {
-    if (!t.isDroppable) return false;
-    if (t.category === 'currency' || t.category === 'fragment') return false;
-    if (t.rarity !== rarity) return false;
-    // 世界观过滤：通过 templateId 中的 worldview 段判断
-    if (worldType) {
-      const parsed = parseTemplateId(t.templateId);
-      if (parsed && parsed.worldview !== 'common' && parsed.worldview !== worldType) return false;
-    }
-    return true;
-  });
-
-  if (candidates.length === 0) return null;
-
-  // 随机选一个模板
-  const template = candidates[Math.floor(rng() * candidates.length)];
-  const level = Math.max(1, Math.floor(enemyLevel / 10));
-
-  return generateItemInstance(template.templateId, level, seed);
-}

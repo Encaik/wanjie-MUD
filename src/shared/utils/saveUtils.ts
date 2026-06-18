@@ -5,6 +5,7 @@
 
 import { createLogger } from '@/core/logger';
 import { GameState } from '@/core/types';
+import { migrateQuestState } from './saveMigrator';
 
 /** SaveUtils 日志记录器 */
 const log = createLogger('SaveUtils');
@@ -124,9 +125,11 @@ export function loadGameStateWithRecovery(): GameState | null {
     // 尝试加载主存档
     const saved = localStorage.getItem(STORAGE_KEY);
     if (saved) {
-      const parsed = JSON.parse(saved);
+      let parsed = JSON.parse(saved);
       // 验证基本结构
       if (parsed && typeof parsed.phase === 'string') {
+        // 任务系统迁移：旧格式 → 统一 QuestState
+        parsed = migrateQuestState(parsed);
         return parsed as GameState;
       }
     }
@@ -135,11 +138,12 @@ export function loadGameStateWithRecovery(): GameState | null {
     log.warn('Main save corrupted or missing, trying backup...');
     const backup = localStorage.getItem(BACKUP_KEY);
     if (backup) {
-      const parsed = JSON.parse(backup);
+      let parsed = JSON.parse(backup);
       if (parsed && typeof parsed.phase === 'string') {
         // 恢复主存档
         localStorage.setItem(STORAGE_KEY, backup);
         log.info('Restored from backup');
+        parsed = migrateQuestState(parsed);
         return parsed as GameState;
       }
     }
@@ -152,9 +156,10 @@ export function loadGameStateWithRecovery(): GameState | null {
     try {
       const backup = localStorage.getItem(BACKUP_KEY);
       if (backup) {
-        const parsed = JSON.parse(backup);
+        let parsed = JSON.parse(backup);
         if (parsed && typeof parsed.phase === 'string') {
           localStorage.setItem(STORAGE_KEY, backup);
+          parsed = migrateQuestState(parsed);
           return parsed as GameState;
         }
       }

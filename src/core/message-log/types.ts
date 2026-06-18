@@ -23,6 +23,7 @@ export const PRESET_CHANNELS = [
   'cultivation',
   'exploration',
   'economy',
+  'reward',
 ] as const;
 
 /** 预设通道名称的联合类型 */

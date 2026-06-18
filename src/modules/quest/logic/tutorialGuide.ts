@@ -196,6 +196,12 @@ export const TUTORIAL_GUIDE: TutorialGuideDefinition = {
           },
           triggerEvent: 'item:used',
           condition: itemUsedIs('wanjie-core:cultivation:qi_gathering_pill'),
+          stepReward: {
+            spiritStones: 20,
+            experience: 10,
+            items: [],
+            message: '使用聚气丹完成！获得 20 灵石。',
+          },
         },
         {
           id: 'step_first_cultivation',
@@ -220,6 +226,14 @@ export const TUTORIAL_GUIDE: TutorialGuideDefinition = {
           },
           triggerEvent: 'cultivation:performed',
           condition: eventIs('cultivation:performed'),
+          stepReward: {
+            spiritStones: 30,
+            experience: 15,
+            items: [
+              { item: foundationPillTemplate, quantity: 1 },
+            ],
+            message: '首次修炼完成！获得 30 灵石 + 筑基丹 x1。',
+          },
         },
       ],
       phaseReward: {
@@ -261,6 +275,12 @@ export const TUTORIAL_GUIDE: TutorialGuideDefinition = {
           },
           triggerEvent: 'adventure:entered',
           condition: eventIs('adventure:entered'),
+          stepReward: {
+            spiritStones: 20,
+            experience: 10,
+            items: [],
+            message: '进入机缘探索！获得 20 灵石。',
+          },
         },
         {
           id: 'step_first_kill',
@@ -285,6 +305,14 @@ export const TUTORIAL_GUIDE: TutorialGuideDefinition = {
           },
           triggerEvent: 'combat:enemy_killed',
           condition: eventIs('combat:enemy_killed'),
+          stepReward: {
+            spiritStones: 30,
+            experience: 20,
+            items: [
+              { item: hpPillSmallTemplate, quantity: 2 },
+            ],
+            message: '击败首个敌人！获得 30 灵石 + 回春丹 x2。',
+          },
         },
       ],
       phaseReward: {
@@ -313,6 +341,12 @@ export const TUTORIAL_GUIDE: TutorialGuideDefinition = {
           hint: '继续修炼和战斗积累经验。经验满后修炼可尝试突破境界提升等级。',
           triggerEvent: 'player:level_up',
           condition: (_event, p) => p.level >= 3,
+          stepReward: {
+            spiritStones: 30,
+            experience: 15,
+            items: [],
+            message: '提升至 3 级！获得 30 灵石。',
+          },
         },
         {
           id: 'step_join_faction',
@@ -336,6 +370,12 @@ export const TUTORIAL_GUIDE: TutorialGuideDefinition = {
           },
           triggerEvent: 'faction:joined',
           condition: eventIs('faction:joined'),
+          stepReward: {
+            spiritStones: 20,
+            experience: 10,
+            items: [],
+            message: '加入势力！获得 20 灵石。',
+          },
         },
       ],
       phaseReward: {
@@ -363,6 +403,12 @@ export const TUTORIAL_GUIDE: TutorialGuideDefinition = {
           hint: '挑战机缘中的最终 Boss。战前确保状态良好，备好回春丹！',
           triggerEvent: 'adventure:completed',
           condition: eventIs('adventure:completed'),
+          stepReward: {
+            spiritStones: 40,
+            experience: 25,
+            items: [],
+            message: '完成机缘探索！获得 40 灵石。',
+          },
         },
         {
           id: 'step_claim_achievement',
@@ -386,6 +432,12 @@ export const TUTORIAL_GUIDE: TutorialGuideDefinition = {
           },
           triggerEvent: 'achievement:claimed',
           condition: eventIs('achievement:claimed'),
+          stepReward: {
+            spiritStones: 30,
+            experience: 15,
+            items: [],
+            message: '领取成就奖励！获得 30 灵石。',
+          },
         },
       ],
       phaseReward: {

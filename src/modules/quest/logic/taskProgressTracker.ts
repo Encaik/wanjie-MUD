@@ -10,7 +10,7 @@
 import type { Protagonist } from '@/core/types';
 import type { GameEvent } from '@/core/events';
 
-import { TUTORIAL_GUIDE } from './tutorialGuide';
+import { TUTORIAL_GUIDE, getPhaseById } from './tutorialGuide';
 import type { TutorialStep, TutorialPhase } from './tutorialGuide';
 import type { TaskReward } from '../types';
 
@@ -38,6 +38,8 @@ export interface TutorialState {
   viewedDialogStepIds: string[];
   /** 已领取奖励的步骤 ID 列表 */
   claimedRewardStepIds: string[];
+  /** 已领取奖励的阶段 ID 列表 */
+  claimedPhaseRewardIds: string[];
 }
 
 /**
@@ -72,6 +74,7 @@ export function createDefaultTutorialState(): TutorialState {
     completedPhaseIds: [],
     viewedDialogStepIds: [],
     claimedRewardStepIds: [],
+    claimedPhaseRewardIds: [],
   };
 }
 
@@ -236,6 +239,47 @@ export function isStepRewardClaimable(stepId: string, state: TutorialState): boo
 }
 
 /**
+ * 领取阶段奖励
+ *
+ * 阶段必须已完成且未被领取过。返回奖励内容和更新后的状态。
+ * 阶段奖励需要玩家手动点击领取，不会自动发放。
+ *
+ * @param phaseId - 阶段 ID
+ * @param state - 当前引导状态
+ * @returns 奖励内容 + 更新后的状态，如果不符合条件则返回 null
+ */
+export function claimPhaseReward(
+  phaseId: string,
+  state: TutorialState,
+): { updatedState: TutorialState; reward: TaskReward } | null {
+  // 阶段必须已完成
+  if (!state.completedPhaseIds.includes(phaseId)) return null;
+  // 阶段奖励必须未被领取
+  if ((state.claimedPhaseRewardIds ?? []).includes(phaseId)) return null;
+
+  // 查找阶段
+  const phase = getPhaseById(phaseId);
+  if (!phase?.phaseReward) return null;
+
+  return {
+    updatedState: {
+      ...state,
+      claimedPhaseRewardIds: [...(state.claimedPhaseRewardIds ?? []), phaseId],
+    },
+    reward: phase.phaseReward,
+  };
+}
+
+/**
+ * 检查阶段奖励是否可领取
+ */
+export function isPhaseRewardClaimable(phaseId: string, state: TutorialState): boolean {
+  return state.completedPhaseIds.includes(phaseId)
+    && !(state.claimedPhaseRewardIds ?? []).includes(phaseId)
+    && !!getPhaseById(phaseId)?.phaseReward;
+}
+
+/**
  * 获取当前步骤需要显示的弹窗（如果未查看过）
  *
  * @param state - 引导状态
@@ -337,10 +381,11 @@ export function createLegacyCompatibleTutorialState(protagonist: Protagonist): T
       completedStepIds: phase0.steps.map(s => s.id),
       completedPhaseIds: [phase0.id],
       claimedRewardStepIds: phase0.steps.map(s => s.id),
+      claimedPhaseRewardIds: [phase0.id],
     };
   }
 
-  return base;
+  return { ...base, claimedPhaseRewardIds: [] };
 }
 
 // ============================================

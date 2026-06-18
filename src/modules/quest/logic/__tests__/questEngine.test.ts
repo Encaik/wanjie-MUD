@@ -188,7 +188,7 @@ describe('checkPrerequisites', () => {
         { type: 'quest_completed', target: 'intro_quest' },
       ],
     };
-    const qs = { ...createDefaultQuestState(), completedQuests: ['intro_quest'] };
+    const qs = { ...createDefaultQuestState(), completedQuestIds: ['intro_quest'] };
     const result = checkPrerequisites(quest, defaultPlayer, qs);
     expect(result.passed).toBe(true);
   });
@@ -296,6 +296,6 @@ describe('任务流程', () => {
     };
     const next = completeQuest('test_quest', qs);
     expect(next.activeQuests['test_quest']).toBeUndefined();
-    expect(next.completedQuests).toContain('test_quest');
+    expect(next.completedQuestIds).toContain('test_quest');
   });
 });

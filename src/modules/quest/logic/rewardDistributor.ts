@@ -79,3 +79,81 @@ export function buildRewardMessage(result: RewardResult): string {
 
   return parts.join(' | ');
 }
+
+// ============================================
+// 奖励池桥接
+// ============================================
+
+/**
+ * 计算任务奖励（静态 + 奖励池）
+ *
+ * 优先使用 quest.rewardPool 走奖励池动态生成，
+ * 否则合并 quest.rewards 和阶段 rewards 静态发放。
+ *
+ * @param questRewards - 任务定义的静态奖励（quest.rewards）
+ * @param stageRewards - 阶段累计奖励
+ * @param rewardPoolConfig - 奖励池配置
+ * @param rollPool - 奖励池滚动函数（外部注入，避免循环依赖）
+ * @param rollContext - 奖励池上下文
+ */
+export async function calculateQuestRewards(
+  questRewards: QuestReward[],
+  stageRewards: QuestReward[],
+  rewardPoolConfig?: { poolId: string; multiplier?: number },
+  rollPool?: (poolId: string, ctx: Record<string, unknown>) => Promise<{
+    items: Array<{ templateId: string; quantity: number }>;
+    currencies: Array<{ type: string; amount: number }>;
+    summary: string;
+  }>,
+  rollContext?: Record<string, unknown>,
+): Promise<RewardResult> {
+  // 奖励池路径
+  if (rewardPoolConfig && rollPool && rollContext) {
+    try {
+      const poolResult = await rollPool(rewardPoolConfig.poolId, {
+        ...rollContext,
+        quantityMultiplier: rewardPoolConfig.multiplier ?? 1,
+      });
+
+      const result = createEmptyRewardResult();
+      result.experience = 0; // 奖励池不产出经验（由静态奖励提供）
+      result.spiritStones = poolResult.currencies
+        .filter(c => c.type === 'spirit_stone')
+        .reduce((sum, c) => sum + c.amount, 0);
+      result.items = poolResult.items.map(i => ({
+        itemId: i.templateId,
+        quantity: i.quantity,
+      }));
+      result.message = poolResult.summary;
+
+      // 合并静态阶段奖励
+      const staticResult = mergeRewards(stageRewards);
+      result.experience += staticResult.experience;
+      result.spiritStones += staticResult.spiritStones;
+      result.items.push(...staticResult.items);
+      result.attitudeChanges.push(...staticResult.attitudeChanges);
+      result.reputationChanges.push(...staticResult.reputationChanges);
+      result.unlockedQuests.push(...staticResult.unlockedQuests);
+      result.message = [poolResult.summary, staticResult.message].filter(Boolean).join(' | ');
+
+      return result;
+    } catch {
+      // 奖励池失败，回退到静态奖励
+    }
+  }
+
+  // 静态奖励路径
+  return mergeRewards([...questRewards, ...stageRewards]);
+}
+
+/**
+ * 同步版计算任务奖励（不依赖奖励池）
+ *
+ * 用于不需要走奖励池的简单任务。
+ */
+export function calculateStaticQuestRewards(
+  questRewards: QuestReward[],
+  stageRewards: QuestReward[],
+): RewardResult {
+  return mergeRewards([...questRewards, ...stageRewards]);
+}

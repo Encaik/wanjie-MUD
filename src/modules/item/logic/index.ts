@@ -41,8 +41,6 @@ export {
 // 物品生成
 export {
   generateItemInstance,
-  generateRandomDrop,
-  rollRarity,
   rollAffixes,
 } from './itemGenerator';
 

@@ -63,9 +63,22 @@ export type {
   QuestStage,
   QuestPrerequisite,
   QuestReward,
+  QuestRewardPoolConfig,
+  QuestDialog,
   QuestDefinition,
   ActiveQuest,
   QuestState,
+  BoardSlotState,
+  // 任务板块
+  QuestCategory,
+  RefreshRule,
+  QuestBoard,
+  // 故事线
+  StoryLineType,
+  StoryNode,
+  StoryLine,
+  // 事件映射
+  EventObjectiveMapping,
   // 角色
   Character,
   DimensionScores,

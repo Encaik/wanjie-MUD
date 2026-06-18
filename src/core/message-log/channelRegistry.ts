@@ -107,6 +107,7 @@ export class ChannelRegistry {
       { name: PRESET_CHANNELS[2], description: '修炼消息' },
       { name: PRESET_CHANNELS[3], description: '探索消息' },
       { name: PRESET_CHANNELS[4], description: '经济消息' },
+      { name: PRESET_CHANNELS[5], description: '奖励消息' },
     ];
 
     for (const config of presets) {

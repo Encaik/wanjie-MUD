@@ -227,13 +227,8 @@ export interface Enemy {
   expReward: number;
   /** 金币奖励 */
   goldReward: number;
-  /** 掉落物品列表 */
-  drops?: Array<{
-    itemId: string;
-    chance: number;
-    minQuantity?: number;
-    maxQuantity?: number;
-  }>;
+  /** 奖励池 ID（引用 modules/reward-pool 中注册的池子） */
+  rewardPoolId?: string;
 }
 
 // ============================================

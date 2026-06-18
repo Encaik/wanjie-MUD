@@ -18,6 +18,11 @@ export type FortuneTypeId =
   | 'herb_valley'
   | 'mystic_realm'
   | 'demon_abyss'
+  | 'weapon_armory'
+  | 'skill_sanctum'
+  | 'treasury'
+  | 'scriptorium'
+  | 'forge'
   | string; // Mod 扩展
 
 // ============================================

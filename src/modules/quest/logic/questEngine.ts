@@ -101,7 +101,7 @@ export function checkPrerequisites(
 ): { passed: boolean; failedPrerequisite?: QuestPrerequisite; reason?: string } {
   for (const prereq of quest.prerequisites) {
     if (prereq.type === 'quest_completed') {
-      if (!questState.completedQuests.includes(prereq.target)) {
+      if (!questState.completedQuestIds.includes(prereq.target)) {
         return { passed: false, failedPrerequisite: prereq, reason: `需要先完成任务: ${prereq.target}` };
       }
       continue;
@@ -236,7 +236,7 @@ export function completeQuest(
   return {
     ...questState,
     activeQuests: remainingActive,
-    completedQuests: [...questState.completedQuests, questId],
+    completedQuestIds: [...questState.completedQuestIds, questId],
     stageHistory: {
       ...questState.stageHistory,
       [questId]: [...(questState.stageHistory[questId] ?? []), _removed?.currentStageId ?? ''],
