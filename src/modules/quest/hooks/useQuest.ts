@@ -7,9 +7,8 @@
  * @module modules/quest/hooks
  */
 
-import { useCallback, useEffect, useRef } from 'react';
+import { useCallback } from 'react';
 
-import { gameEventBus } from '@/core/events';
 import { BoardRegistry } from '@/core/registry/BoardRegistry';
 import { addItem } from '@/modules/item/logic/itemManager';
 import { hasTemplate, getTemplate } from '@/modules/item/data';
@@ -26,7 +25,6 @@ import {
   advanceBoardSlot,
   getBoardUIState,
 } from '../logic/boardEngine';
-import { createQuestTracker } from '../logic/eventTracker';
 import {
   checkPrerequisites,
   startQuest,
@@ -114,28 +112,7 @@ export function useQuest(
   // 事件追踪器初始化（仅在挂载时注册一次，通过 ref 获取最新 questState）
   // ============================================
 
-  // 使用 ref 让事件追踪器始终能读到最新的 questState，避免 useEffect 时序问题
-  const questStateRef = useRef(gameState.questState);
-  questStateRef.current = gameState.questState; // 渲染期间同步更新（在 effect 之前）
-
-  useEffect(() => {
-    const tracker = createQuestTracker(
-      (updater) => {
-        setGameState(prev => ({
-          ...prev,
-          questState: updater(prev.questState),
-        }));
-      },
-      () => questStateRef.current,
-    );
-
-    gameEventBus.on('*', tracker);
-
-    return () => {
-      gameEventBus.off('*', tracker);
-    };
-
-  }, [setGameState]); // 仅在挂载时注册一次，通过 ref 获取最新状态
+  // 注：任务事件追踪器已提升至 GameLayout 层注册（始终挂载，跨页面工作）
 
   // ============================================
   // NPC 对话集成

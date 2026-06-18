@@ -11,9 +11,12 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
+import { gameEventBus } from '@/core/events';
 import { checkRankPromotion } from '@/core/engine';
 import type { MentalState } from '@/core/types';
 import { DEFAULT_PROTAGONIST_EXTENSION, getFinalStats } from '@/core/types';
+import { applyEventToQuests, buildQuestCompletedPayload } from '@/modules/quest/logic/eventTracker';
+import { QuestRegistry } from '@/core/registry/QuestRegistry';
 import { BattleDialog } from '@/modules/combat/components/BattleDialog';
 import { getFactionById } from '@/modules/faction/data/factionData';
 import { getCurrencyAmount } from '@/modules/item/logic';
@@ -42,9 +45,56 @@ import { useGameStore } from '@/views/game/state/GameStore';
 export default function GameLayout({ children }: { children: React.ReactNode }) {
   useGameSystems();
 
-  const { gameState } = useGameStore();
+  const { gameState, dispatch } = useGameStore();
   const router = useRouter();
   const protagonist = gameState.protagonist;
+
+  // ============================================
+  // 任务事件追踪器（布局层：始终挂载，跨页面追踪事件）
+  // ============================================
+  const questStateRef = useRef(gameState.questState);
+  questStateRef.current = gameState.questState; // 渲染期间同步
+
+  useEffect(() => {
+    const tracker = (event: import('@/core/events').GameEvent) => {
+      const currentState = questStateRef.current;
+      const result = applyEventToQuests(event, currentState);
+
+      if (result.newlyCompletedQuestIds.length > 0 || result.newlyCompletedStages.length > 0) {
+        const registry = QuestRegistry.getInstance();
+
+        dispatch(prev => {
+          const newMessages = result.newlyCompletedQuestIds.map(questId => {
+            const questDef = registry.getById(questId);
+            return {
+              id: `msg_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+              timestamp: Date.now(),
+              type: 'success' as const,
+              title: `任务完成: ${questDef?.name ?? questId}`,
+              content: '请在任务面板领取奖励',
+            };
+          });
+
+          return {
+            ...prev,
+            questState: result.questState,
+            messages: [...newMessages, ...(prev.messages ?? [])].slice(0, 100),
+          };
+        });
+
+        // 同时发射事件（供统计系统等消费）
+        for (const questId of result.newlyCompletedQuestIds) {
+          const questDef = registry.getById(questId);
+          gameEventBus.emit('quest:completed', buildQuestCompletedPayload(
+            questId,
+            questDef?.name ?? questId,
+          ));
+        }
+      }
+    };
+    gameEventBus.on('*', tracker);
+    return () => { gameEventBus.off('*', tracker); };
+  }, [dispatch]);
 
   // 弹窗层需要的领域 Hook（必须在条件判断前调用）
   const ascension = useAscension();
