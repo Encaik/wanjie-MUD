@@ -1,0 +1,149 @@
+[
+  {
+    "templateId": "wanjie-core:tech:energy_blade",
+    "name": "能量刃",
+    "description": "以高频能量场凝聚的利刃，可切割绝大多数物质。",
+    "category": "equipment", "subcategory": "weapon_melee", "rarity": "uncommon",
+    "maxStack": 1, "maxLevel": 5,
+    "baseStats": { "attackBonus": 30, "power": 25 },
+    "price": 1300, "element": "thunder", "worldType": "tech", "isDroppable": true,
+    "ext": { "equipSlot": "weapon_melee", "weaponCategory": "sword", "compatibleElement": "thunder", "compatibleBonus": 8 }
+  },
+  {
+    "templateId": "wanjie-core:tech:plasma_rifle",
+    "name": "等离子步枪",
+    "description": "以等离子体为弹药的先进步枪，射程与威力俱佳。",
+    "category": "equipment", "subcategory": "weapon_ranged", "rarity": "epic",
+    "maxStack": 1, "maxLevel": 8,
+    "baseStats": { "attackBonus": 58, "power": 38 },
+    "price": 18000, "element": "thunder", "worldType": "tech", "isDroppable": true,
+    "ext": { "equipSlot": "weapon_ranged", "weaponCategory": "bow", "compatibleElement": "thunder", "compatibleBonus": 14 }
+  },
+  {
+    "templateId": "wanjie-core:tech:quantum_disruptor",
+    "name": "量子干扰枪",
+    "description": "利用量子纠缠原理的终极武器，可同时攻击所有敌人。",
+    "category": "equipment", "subcategory": "weapon_ranged", "rarity": "legendary",
+    "maxStack": 1, "maxLevel": 9,
+    "baseStats": { "attackBonus": 90, "power": 60, "critRate": 8 },
+    "price": 70000, "element": "thunder", "worldType": "tech", "isDroppable": true,
+    "ext": { "equipSlot": "weapon_ranged", "weaponCategory": "bow", "compatibleElement": "thunder", "compatibleBonus": 20 }
+  },
+  {
+    "templateId": "wanjie-core:tech:tactical_helmet",
+    "name": "战术目镜",
+    "description": "内置HUD显示屏和战斗分析AI的高科技头盔。",
+    "category": "equipment", "subcategory": "armor_head", "rarity": "rare",
+    "maxStack": 1, "maxLevel": 7,
+    "baseStats": { "defenseBonus": 20, "power": 12 },
+    "price": 5000, "element": null, "worldType": "tech", "isDroppable": true,
+    "ext": { "equipSlot": "armor_head", "weaponCategory": null, "compatibleElement": null, "compatibleBonus": 0 }
+  },
+  {
+    "templateId": "wanjie-core:tech:power_armor",
+    "name": "动力装甲",
+    "description": "以核聚变电池驱动的外骨骼装甲，大幅增强穿戴者各项能力。",
+    "category": "equipment", "subcategory": "armor_body", "rarity": "epic",
+    "maxStack": 1, "maxLevel": 8,
+    "baseStats": { "defenseBonus": 55, "power": 30 },
+    "price": 20000, "element": "thunder", "worldType": "tech", "isDroppable": true,
+    "ext": { "equipSlot": "armor_body", "weaponCategory": null, "compatibleElement": "thunder", "compatibleBonus": 15 }
+  },
+  {
+    "templateId": "wanjie-core:tech:nano_leggings",
+    "name": "纳米护腿",
+    "description": "以自修复纳米材料制成的护腿，受损后可自动修复。",
+    "category": "equipment", "subcategory": "armor_legs", "rarity": "uncommon",
+    "maxStack": 1, "maxLevel": 5,
+    "baseStats": { "defenseBonus": 14, "power": 8 },
+    "price": 1800, "element": null, "worldType": "tech", "isDroppable": true,
+    "ext": { "equipSlot": "armor_legs", "weaponCategory": null, "compatibleElement": null, "compatibleBonus": 0 }
+  },
+  {
+    "templateId": "wanjie-core:tech:anti_grav_boots",
+    "name": "反重力靴",
+    "description": "利用反重力技术的先进靴子，可短距离悬浮移动。",
+    "category": "equipment", "subcategory": "armor_feet", "rarity": "rare",
+    "maxStack": 1, "maxLevel": 7,
+    "baseStats": { "defenseBonus": 18, "power": 10 },
+    "price": 5000, "element": "wind", "worldType": "tech", "isDroppable": true,
+    "ext": { "equipSlot": "armor_feet", "weaponCategory": null, "compatibleElement": "wind", "compatibleBonus": 10 }
+  },
+  {
+    "templateId": "wanjie-core:tech:weapon_system",
+    "name": "智能武器系统",
+    "description": "AI辅助的武器控制与优化系统，自动分析弱点并调整攻击模式。",
+    "category": "technique", "subcategory": "attack", "rarity": "epic",
+    "maxStack": 1, "maxLevel": 8,
+    "baseStats": { "power": 80, "bonus": 38, "baseMpCost": 28 },
+    "price": 14000, "element": "thunder", "worldType": "tech", "isDroppable": true,
+    "ext": { "baseMpCost": 28 }
+  },
+  {
+    "templateId": "wanjie-core:tech:energy_shield",
+    "name": "能量护盾",
+    "description": "生成环绕全身的能量护盾，可吸收各类伤害。",
+    "category": "technique", "subcategory": "defense", "rarity": "rare",
+    "maxStack": 1, "maxLevel": 7,
+    "baseStats": { "power": 25, "bonus": 40, "baseMpCost": 20 },
+    "price": 5500, "element": "thunder", "worldType": "tech", "isDroppable": true,
+    "ext": { "baseMpCost": 20 }
+  },
+  {
+    "templateId": "wanjie-core:tech:overcharge_beam",
+    "name": "过载光束",
+    "description": "将武器能量输出调至极限，释放一道灼热光束穿透敌人。",
+    "category": "skill", "subcategory": "magic_skill", "rarity": "rare",
+    "maxStack": 1, "maxLevel": 7,
+    "baseStats": { "power": 65, "mpCost": 25, "cooldown": 3 },
+    "price": 3000, "element": "thunder", "isDroppable": true,
+    "ext": {
+      "requiredElement": "thunder", "isUltimate": false, "cooldown": 3,
+      "effects": [{ "type": "damage", "baseValue": 65, "statScaling": 1.3, "target": "single" }],
+      "tags": ["instant"]
+    }
+  },
+  {
+    "templateId": "wanjie-core:tech:emp_blast",
+    "name": "电磁脉冲",
+    "description": "释放强力电磁脉冲，瘫痪所有敌人的电子系统并造成伤害。",
+    "category": "skill", "subcategory": "magic_skill", "rarity": "epic",
+    "maxStack": 1, "maxLevel": 8,
+    "baseStats": { "power": 85, "mpCost": 45, "cooldown": 4 },
+    "price": 8000, "element": "thunder", "isDroppable": true,
+    "ext": {
+      "requiredElement": "thunder", "isUltimate": true, "cooldown": 4,
+      "effects": [
+        { "type": "damage", "baseValue": 85, "statScaling": 1.5, "target": "all" },
+        { "type": "debuff", "baseValue": 25, "statScaling": 0, "target": "all", "duration": 2, "description": "系统瘫痪" }
+      ],
+      "tags": ["aoe", "debuff"]
+    }
+  },
+  {
+    "templateId": "wanjie-core:tech:repair_kit",
+    "name": "维修套件",
+    "description": "高科技纳米修复套件，可快速修复装备损伤并恢复生命值。",
+    "category": "consumable", "subcategory": "pill_hp", "rarity": "uncommon",
+    "maxStack": 99, "maxLevel": 1,
+    "baseStats": { "hpRestore": 200 },
+    "price": 150, "element": null, "isDroppable": true,
+    "ext": {
+      "effects": [{ "type": "heal", "baseValue": 200, "statScaling": 0, "target": "self" }],
+      "requiredLevel": 3
+    }
+  },
+  {
+    "templateId": "wanjie-core:tech:overclock_chip",
+    "name": "超频芯片",
+    "description": "临时超频武器和装甲系统的芯片，修炼效率提升 90%。",
+    "category": "consumable", "subcategory": "pill_cultivation", "rarity": "rare",
+    "maxStack": 99, "maxLevel": 1,
+    "baseStats": { "cultivationBoost": 90 },
+    "price": 700, "element": null, "isDroppable": true,
+    "ext": {
+      "effects": [{ "type": "buff", "baseValue": 90, "statScaling": 0, "target": "self", "duration": 30, "description": "修炼效率+90%" }],
+      "requiredLevel": 6
+    }
+  }
+]

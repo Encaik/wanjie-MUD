@@ -549,7 +549,7 @@ export function useGameCultivation({
   // 切换自动修炼
   const toggleAutoCultivation = useCallback(() => {
     setGameState((prev: GameState) => {
-      if (!prev.autoCultivating && prev.adventureGrid) {
+      if (!prev.autoCultivating && prev.fortuneSlice.session) {
         return prev;
       }
       return {

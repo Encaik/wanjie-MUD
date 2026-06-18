@@ -8,12 +8,14 @@
  * - 世界选择规则
  */
 
-import { 
-  checkOpportunityUnlock, 
-  MAX_OPPORTUNITY_LEVEL,
-  getOpportunityLevelColorClass,
-  getOpportunityLevelBgClass,
-} from '@/modules/exploration/data/opportunityConfig';
+// 机缘颜色函数内联（原 opportunityConfig 已迁移至 modules/fortune/）
+function getOpportunityLevelColorClass(level: number): string {
+  const colors: Record<number, string> = {
+    1: 'text-muted-foreground', 2: 'text-blue-400', 3: 'text-purple-400',
+    4: 'text-orange-400', 5: 'text-yellow-400',
+  };
+  return colors[level] || 'text-muted-foreground';
+}
 import { WorldViewRegistry } from '@/core/registry';
 import {
   WorldDanger,
@@ -337,29 +339,5 @@ export function getDifficultyBgColor(difficulty: WorldDifficulty): string {
   return colors[difficulty] || 'bg-muted/20';
 }
 
-// ============================================
-// 新系统导出
-// ============================================
-
-// 重新导出新系统函数，方便其他模块使用
-export {
-  checkOpportunityUnlock,
-  getOpportunityConfig,
-  getOpportunityLevelName,
-  getOpportunityRarityRange,
-  getOpportunityLevelBgClass,
-  getOpportunityLevelIcon,
-  MAX_OPPORTUNITY_LEVEL,
-  type OpportunityLevelConfig,
-  type OpportunityUnlockResult,
-} from '@/modules/exploration/data/opportunityConfig';
-
-// TODO: 统一物品系统迁移 — 稀有度相关函数已删除（generateDropRarity 等）
-export {
-  calculateReward,
-  calculateEnemyReward,
-  calculateOpportunityReward,
-  getOpportunityRewardPreview,
-  type RewardCalculationContext,
-  type CalculatedReward,
-} from '@/modules/exploration/data/rewardSystem';
+// 机缘和奖励系统已迁移至 modules/fortune/
+// 如需机缘主题配置，请使用 @/modules/fortune 中的对应函数

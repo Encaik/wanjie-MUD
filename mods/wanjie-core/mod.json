@@ -7,7 +7,7 @@
   "gameVersion": ">=1.0.0",
   "dependencies": [],
   "required": true,
-  "contentTypes": ["worldview", "attributes", "races", "talents", "npcs", "quests"],
+  "contentTypes": ["worldview", "attributes", "races", "talents", "npcs", "quests", "items"],
   "dataFiles": {
     "worldview": [
       "data/worldview/cultivation.json",
@@ -43,6 +43,16 @@
     ],
     "quests": [
       "data/quests/cultivation.json"
+    ],
+    "items": [
+      "data/items/cultivation.json",
+      "data/items/xianxia.json",
+      "data/items/wuxia.json",
+      "data/items/magic.json",
+      "data/items/martial.json",
+      "data/items/tech.json",
+      "data/items/psi.json",
+      "data/items/apocalypse.json"
     ]
   }
 }

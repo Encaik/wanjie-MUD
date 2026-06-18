@@ -22,7 +22,6 @@ import { CriticalHealthOverlay } from '@/shared/components/CriticalHealthOverlay
 import { DeathDialog } from '@/shared/components/DeathDialog';
 import { DialogLayer } from '@/views/game/dialogs/DialogLayer';
 import { openDialog } from '@/views/game/dialogs/useDialogController';
-import { useAdventure } from '@/views/game/domainHooks/useAdventure';
 import { useAscension } from '@/views/game/domainHooks/useAscension';
 import { useDevMode } from '@/views/game/domainHooks/useDevMode';
 import { useEquipment } from '@/views/game/domainHooks/useEquipment';
@@ -47,7 +46,6 @@ export default function GameLayout({ children }: { children: React.ReactNode }) 
   const protagonist = gameState.protagonist;
 
   // 弹窗层需要的领域 Hook（必须在条件判断前调用）
-  const adventure = useAdventure();
   const ascension = useAscension();
   const equipment = useEquipment();
   const dev = useDevMode();
@@ -146,7 +144,7 @@ export default function GameLayout({ children }: { children: React.ReactNode }) 
         mentalState={mentalState} battleState={gameState.battleState}
         onReset={() => openDialog('resetConfirm')}
         onExportSave={saveLoad.exportSave} onImportSave={saveLoad.importSave}
-        onCloseResult={adventure.clearLastResult} TabsContentSection={children}
+        onCloseResult={() => {}} TabsContentSection={children}
         // eslint-disable-next-line @typescript-eslint/no-explicit-any -- MobileLayout 类型与 protagonist 技术类型不完全匹配，与旧 GameLayout 保持一致
         playerTechniques={protagonist.equippedAttackTechniques.filter(Boolean) as any[]}
         // eslint-disable-next-line @typescript-eslint/no-explicit-any -- MobileLayout playerWeapons 类型与旧 GameLayout 保持一致
@@ -191,7 +189,6 @@ export default function GameLayout({ children }: { children: React.ReactNode }) 
       <DialogLayer
         protagonist={protagonist}
         onReset={saveLoad.resetGame}
-        onExitAdventure={adventure.exitAdventure}
         onUpgradeTechnique={equipment.performUpgradeTechnique}
         onUpgradeEquipment={equipment.performUpgradeEquipment}
         devInvincible={dev.devInvincible}
@@ -209,18 +206,18 @@ export default function GameLayout({ children }: { children: React.ReactNode }) 
       <CriticalHealthOverlay currentHp={protagonist.currentHp} maxHp={protagonist.maxHp} />
       <DeathDialog deathState={gameState.deathState} onClose={gameActions.clearDeathState} recoveryHp={gameState.deathState?.recoveryHp} />
 
-      {/* 战斗弹窗 */}
-      {gameState.activeBattle?.isActive && (gameState.adventureConfig || gameState.activeBattle.source === 'tower') && (() => {
-        const bp = gameState.activeBattle.source === 'tower'
-          ? { ...protagonist, currentHp: protagonist.maxHp, currentMp: protagonist.maxMp } : protagonist;
+      {/* 爬塔战斗弹窗 */}
+      {gameState.activeBattle?.isActive && gameState.activeBattle.source === 'tower' && (() => {
+        const bp = { ...protagonist, currentHp: protagonist.maxHp, currentMp: protagonist.maxMp };
+        const defaultConfig = { rows: 5, cols: 5, difficulty: gameState.activeBattle.enemyLevel, realmName: '试炼挑战', enemyLevelMin: gameState.activeBattle.enemyLevel, enemyLevelMax: gameState.activeBattle.enemyLevel, rewardMultiplier: 1, portalCount: 0 };
         return (
           <BattleDialog open={true}
-            onOpenChange={(open) => { if (!open) adventure.handleBattleEnd({ victory: false, fled: true, playerHpAfter: protagonist.currentHp, playerMpAfter: protagonist.currentMp }); }}
+            onOpenChange={(open) => { if (!open) { /* 爬塔逃跑由 tower hook 处理 */ } }}
             protagonist={bp} cellType={gameState.activeBattle.cellType}
             enemyContent={`${gameState.activeBattle.enemyName}(Lv.${gameState.activeBattle.enemyLevel})`}
-            config={gameState.adventureConfig || { rows: 5, cols: 5, difficulty: gameState.activeBattle.enemyLevel, realmName: '试炼挑战', enemyLevelMin: gameState.activeBattle.enemyLevel, enemyLevelMax: gameState.activeBattle.enemyLevel, rewardMultiplier: 1, portalCount: 0 }}
-            onBattleEnd={(result) => { adventure.handleBattleEnd({ victory: result.victory, fled: result.fled, playerHpAfter: result.playerHpAfter ?? protagonist.currentHp, playerMpAfter: result.playerMpAfter ?? protagonist.currentMp }); }}
-            autoMode={gameState.autoBattle} onToggleAutoMode={adventure.toggleAutoBattle}
+            config={defaultConfig}
+            onBattleEnd={(_result) => { /* 爬塔结算由 tower hook 处理 */ }}
+            autoMode={gameState.autoBattle} onToggleAutoMode={() => {}}
             devInvincible={dev.devInvincible} towerFloor={gameState.activeBattle.towerFloor}
             towerEnemy={gameState.activeBattle.towerEnemy} />
         );

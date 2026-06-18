@@ -24,7 +24,7 @@ import { WorldReveal } from './WorldReveal';
 interface DialogLayerProps {
   protagonist: Protagonist;
   onReset: () => void;
-  onExitAdventure: (exitType?: 'completed' | 'stamina_exhausted' | 'quit' | 'fled') => void;
+  onExitAdventure?: (exitType?: 'completed' | 'stamina_exhausted' | 'quit' | 'fled') => void;
   onUpgradeTechnique: (targetId: string, materialIds: string[]) => void;
   onUpgradeEquipment: (targetId: string, materialIds: string[]) => void;
   devInvincible: boolean;
@@ -89,7 +89,7 @@ export function DialogLayer({
           </DialogHeader>
           <DialogFooter className="sm:justify-between gap-2">
             <Button variant="outline" onClick={() => closeDialog('exitAdventure')}>继续探索</Button>
-            <Button variant="destructive" onClick={() => { closeDialog('exitAdventure'); onExitAdventure('quit'); }}>确认退出</Button>
+            <Button variant="destructive" onClick={() => { closeDialog('exitAdventure'); onExitAdventure?.('quit'); }}>确认退出</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>

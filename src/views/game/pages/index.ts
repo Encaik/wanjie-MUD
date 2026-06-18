@@ -3,7 +3,7 @@
  */
 
 export { CultivationPage } from './CultivationPage';
-export { AdventurePage } from './AdventurePage';
+export { FortunePage as AdventurePage } from './FortunePage';
 export { QuestPage } from './QuestPage';
 export { FactionPage } from './FactionPage';
 export { BackpackPage } from './BackpackPage';

@@ -12,21 +12,21 @@ describe('slotSystem', () => {
 
   describe('validateEquip', () => {
     it('类别不匹配返回错误', () => {
-      const pill = createItemInstance('rejuvenation_pill');
+      const pill = createItemInstance('wanjie:common:rejuvenation_pill');
       const result = validateEquip(pill, slotDef);
       expect(result.valid).toBe(false);
       expect(result.error).toContain('类型不匹配');
     });
 
     it('碎片无法装备', () => {
-      const frag = createItemInstance('iron_sword', { isFragment: true });
+      const frag = createItemInstance('wanjie-core:cultivation:iron_sword', { isFragment: true });
       const result = validateEquip(frag, slotDef);
       expect(result.valid).toBe(false);
       expect(result.error).toContain('碎片');
     });
 
     it('类别匹配返回有效', () => {
-      const sword = createItemInstance('iron_sword');
+      const sword = createItemInstance('wanjie-core:cultivation:iron_sword');
       const result = validateEquip(sword, slotDef);
       expect(result.valid).toBe(true);
     });
@@ -34,7 +34,7 @@ describe('slotSystem', () => {
 
   describe('equipItem / unequipItem', () => {
     it('装备成功更新 slots', () => {
-      let inv = addItem([], 'iron_sword', 1);
+      let inv = addItem([], 'wanjie-core:cultivation:iron_sword', 1);
       const swordId = inv[0].instanceId;
       const slots = createEmptySlots();
 
@@ -44,8 +44,8 @@ describe('slotSystem', () => {
     });
 
     it('装备已占用槽位自动替换', () => {
-      let inv = addItem([], 'iron_sword', 1);
-      inv = addItem(inv, 'spirit_sword', 1);
+      let inv = addItem([], 'wanjie-core:cultivation:iron_sword', 1);
+      inv = addItem(inv, 'wanjie-core:cultivation:spirit_sword', 1);
       const sword1Id = inv[0].instanceId;
       const sword2Id = inv[1].instanceId;
       const slots = createEmptySlots();
@@ -59,7 +59,7 @@ describe('slotSystem', () => {
     });
 
     it('卸下槽位恢复物品状态', () => {
-      let inv = addItem([], 'iron_sword', 1);
+      let inv = addItem([], 'wanjie-core:cultivation:iron_sword', 1);
       const swordId = inv[0].instanceId;
       let slots = createEmptySlots();
 

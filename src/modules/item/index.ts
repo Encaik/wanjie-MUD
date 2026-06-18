@@ -50,8 +50,7 @@ export {
 
 // 数据
 export {
-  ALL_TEMPLATES,
-  TEMPLATE_MAP,
+  getAllTemplates,
   getTemplate,
   getTemplatesByCategory,
   getTemplatesByWorldView,

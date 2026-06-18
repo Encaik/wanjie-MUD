@@ -42,7 +42,7 @@ import {
   initTowerBattle, 
   performPlayerAction, 
   estimateBattleDifficulty 
-} from '@/modules/exploration/logic/adventure/adventureBattleIntegration';
+} from '@/modules/combat/logic/fortuneBattleBridge';
 import {
   ExtendedBattleState,
   BattleStatistics,

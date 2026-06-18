@@ -141,7 +141,7 @@ export function parseTemplateId(id: string): ParsedTemplateId | null {
 /**
  * 构建标准三段式模板 ID
  *
- * @example buildTemplateId('wanjie', 'cultivation', 'iron_sword') => 'wanjie:cultivation:iron_sword'
+ * @example buildTemplateId('wanjie-core', 'cultivation', 'iron_sword') => 'wanjie-core:cultivation:iron_sword'
  */
 export function buildTemplateId(source: string, worldview: string, itemName: string): string {
   return `${source}:${worldview}:${itemName}`;

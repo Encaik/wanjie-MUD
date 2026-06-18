@@ -7,7 +7,7 @@
 import { parseTemplateId } from '../types';
 import type { ItemInstance, Rarity } from '../types';
 import type { ItemTemplate } from '../types';
-import { getTemplate, ALL_TEMPLATES } from '../data/index';
+import { getTemplate, getAllTemplates } from '../data/index';
 import { ALL_RARITIES, RARITY_ORDER, RARITY_CONFIG } from '../data/rarity';
 import { ALL_AFFIX_TEMPLATES } from '../data/affixes';
 import { createItemInstance } from './itemManager';
@@ -156,7 +156,7 @@ export function generateRandomDrop(
   const rarity = rollRarity(enemyLevel, bossLevel, 8, seed);
 
   // 筛选可掉落的模板
-  const candidates = ALL_TEMPLATES.filter(t => {
+  const candidates = getAllTemplates().filter(t => {
     if (!t.isDroppable) return false;
     if (t.category === 'currency' || t.category === 'fragment') return false;
     if (t.rarity !== rarity) return false;

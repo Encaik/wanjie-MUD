@@ -1551,15 +1551,8 @@ export interface GameState {
   protagonist: Protagonist | null;
   currentEvent: AdventureEvent | null;
   lastActionResult: ActionResult | null;
-  adventureGrid: AdventureCell[][] | null;
-  adventurePosition: { row: number; col: number } | null;
-  adventureConfig: DungeonConfig | null; // 秘境配置
-  adventurePhase: AdventurePhase; // 机缘阶段
-  adventureLoot: InventoryItem[]; // 机缘战利品（物品）
-  adventureExperience: number; // 机缘战利品（待结算经验值）
-  adventureFragments?: Record<string, unknown>[]; // 机缘战利品（碎片）
-  /** 机缘会话状态（行动力、击败数等） */
-  adventureSession?: AdventureSessionState | null;
+  /** 机缘探索状态（新 fortune 模块） */
+  fortuneSlice: import('@/modules/fortune').FortuneSlice;
   currentTab: ActionTab;
   battleState: BattleState | null; // 当前战斗状态（用于显示战斗结果）
   /** 交互式战斗状态（用于手动操作战斗） */
@@ -1788,6 +1781,49 @@ export interface GameStatistics {
 }
 
 // 默认统计数据
+// ============================================
+// 物品模板数据（Registry 存储的最小契约）
+// ============================================
+
+/**
+ * 物品模板数据 — ItemRegistry 存储的契约类型
+ *
+ * modules/item/types.ts 中的 ItemTemplate 联合类型是此类型的完全兼容超集。
+ * 此处仅定义 Registry 查询所需的公共字段，使用基础类型避免依赖 modules/。
+ */
+export interface ItemTemplateData {
+  /** 三段式模板ID：source:worldview:item_name */
+  templateId: string;
+  /** 物品显示名称 */
+  name: string;
+  /** 物品描述 */
+  description: string;
+  /** 物品类别 */
+  category: string;
+  /** 子类别 */
+  subcategory?: string;
+  /** 稀有度 */
+  rarity: string;
+  /** 最大堆叠数 */
+  maxStack: number;
+  /** 最大等级 */
+  maxLevel: number;
+  /** 基础属性值 */
+  baseStats: Record<string, number>;
+  /** 价格 */
+  price: number;
+  /** 关联元素（string 避免依赖 modules/combat/ 的 Element 枚举） */
+  element: string | null;
+  /** 世界观类型 */
+  worldType?: string;
+  /** 是否可掉落 */
+  isDroppable: boolean;
+  /** 类别特定扩展字段 */
+  ext?: Record<string, unknown>;
+  /** 世界观限制 */
+  worldviewRestrictions?: string[];
+}
+
 export const DEFAULT_STATISTICS: GameStatistics = {
   maxLevel: 1,
   totalEnemiesKilled: 0,

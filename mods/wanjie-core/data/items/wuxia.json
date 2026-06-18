@@ -1,0 +1,156 @@
+[
+  {
+    "templateId": "wanjie-core:wuxia:steel_blade",
+    "name": "百炼钢刀",
+    "description": "经百次折叠锻打的精钢宝刀，刀锋如雪，吹毛断发。",
+    "category": "equipment", "subcategory": "weapon_melee", "rarity": "uncommon",
+    "maxStack": 1, "maxLevel": 5,
+    "baseStats": { "attackBonus": 28, "power": 18 },
+    "price": 900, "element": null, "worldType": "wuxia", "isDroppable": true,
+    "ext": { "equipSlot": "weapon_melee", "weaponCategory": "blade", "compatibleElement": null, "compatibleBonus": 0 }
+  },
+  {
+    "templateId": "wanjie-core:wuxia:dragon_saber",
+    "name": "屠龙刀",
+    "description": "传说中的武林至尊之刀，刀身暗藏龙纹，霸气四溢。",
+    "category": "equipment", "subcategory": "weapon_melee", "rarity": "legendary",
+    "maxStack": 1, "maxLevel": 9,
+    "baseStats": { "attackBonus": 82, "power": 52, "critRate": 6 },
+    "price": 55000, "element": "fire", "worldType": "wuxia", "isDroppable": true,
+    "ext": { "equipSlot": "weapon_melee", "weaponCategory": "blade", "compatibleElement": "fire", "compatibleBonus": 18 }
+  },
+  {
+    "templateId": "wanjie-core:wuxia:hidden_weapon",
+    "name": "暴雨梨花针",
+    "description": "机关暗器之王，一触即发，漫天针雨令敌人防不胜防。",
+    "category": "equipment", "subcategory": "weapon_ranged", "rarity": "epic",
+    "maxStack": 1, "maxLevel": 8,
+    "baseStats": { "attackBonus": 50, "power": 32 },
+    "price": 12000, "element": "dark", "worldType": "wuxia", "isDroppable": true,
+    "ext": { "equipSlot": "weapon_ranged", "weaponCategory": "bow", "compatibleElement": "dark", "compatibleBonus": 12 }
+  },
+  {
+    "templateId": "wanjie-core:wuxia:bamboo_hat",
+    "name": "斗笠",
+    "description": "江湖侠客常戴的竹编斗笠，历经风雨而不坏。",
+    "category": "equipment", "subcategory": "armor_head", "rarity": "common",
+    "maxStack": 1, "maxLevel": 3,
+    "baseStats": { "defenseBonus": 5, "power": 3 },
+    "price": 120, "element": null, "worldType": "wuxia", "isDroppable": true,
+    "ext": { "equipSlot": "armor_head", "weaponCategory": null, "compatibleElement": null, "compatibleBonus": 0 }
+  },
+  {
+    "templateId": "wanjie-core:wuxia:martial_robe",
+    "name": "劲装",
+    "description": "江湖人士常穿的紧身劲装，行动利落，不碍身手。",
+    "category": "equipment", "subcategory": "armor_body", "rarity": "common",
+    "maxStack": 1, "maxLevel": 3,
+    "baseStats": { "defenseBonus": 6, "power": 4 },
+    "price": 180, "element": null, "worldType": "wuxia", "isDroppable": true,
+    "ext": { "equipSlot": "armor_body", "weaponCategory": null, "compatibleElement": null, "compatibleBonus": 0 }
+  },
+  {
+    "templateId": "wanjie-core:wuxia:golden_armor",
+    "name": "金丝软甲",
+    "description": "以金丝编织的贴身软甲，刀枪不入，水火不侵。",
+    "category": "equipment", "subcategory": "armor_body", "rarity": "epic",
+    "maxStack": 1, "maxLevel": 8,
+    "baseStats": { "defenseBonus": 50, "power": 28 },
+    "price": 15000, "element": "earth", "worldType": "wuxia", "isDroppable": true,
+    "ext": { "equipSlot": "armor_body", "weaponCategory": null, "compatibleElement": "earth", "compatibleBonus": 12 }
+  },
+  {
+    "templateId": "wanjie-core:wuxia:wind_pants",
+    "name": "追风裤",
+    "description": "轻功高手偏爱的宽松长裤，腾挪闪转毫不碍事。",
+    "category": "equipment", "subcategory": "armor_legs", "rarity": "uncommon",
+    "maxStack": 1, "maxLevel": 5,
+    "baseStats": { "defenseBonus": 10, "power": 5 },
+    "price": 800, "element": "wind", "worldType": "wuxia", "isDroppable": true,
+    "ext": { "equipSlot": "armor_legs", "weaponCategory": null, "compatibleElement": "wind", "compatibleBonus": 5 }
+  },
+  {
+    "templateId": "wanjie-core:wuxia:thousand_mile_boots",
+    "name": "千里行",
+    "description": "以鹿皮精制的快靴，轻便耐磨，日行千里不倦。",
+    "category": "equipment", "subcategory": "armor_feet", "rarity": "uncommon",
+    "maxStack": 1, "maxLevel": 5,
+    "baseStats": { "defenseBonus": 8, "power": 4 },
+    "price": 500, "element": "wind", "worldType": "wuxia", "isDroppable": true,
+    "ext": { "equipSlot": "armor_feet", "weaponCategory": null, "compatibleElement": "wind", "compatibleBonus": 5 }
+  },
+  {
+    "templateId": "wanjie-core:wuxia:eighteen_palms",
+    "name": "降龙十八掌",
+    "description": "丐帮镇帮绝学，掌势刚猛无俦，每一掌皆有排山倒海之力。",
+    "category": "technique", "subcategory": "attack", "rarity": "legendary",
+    "maxStack": 1, "maxLevel": 9,
+    "baseStats": { "power": 90, "bonus": 32, "baseMpCost": 30 },
+    "price": 20000, "element": "fire", "worldType": "wuxia", "isDroppable": true,
+    "ext": { "baseMpCost": 30 }
+  },
+  {
+    "templateId": "wanjie-core:wuxia:iron_shirt",
+    "name": "金钟罩",
+    "description": "少林七十二绝技之一，真气护体，刀剑难伤。",
+    "category": "technique", "subcategory": "defense", "rarity": "epic",
+    "maxStack": 1, "maxLevel": 8,
+    "baseStats": { "power": 35, "bonus": 45, "baseMpCost": 25 },
+    "price": 10000, "element": "earth", "worldType": "wuxia", "isDroppable": true,
+    "ext": { "baseMpCost": 25 }
+  },
+  {
+    "templateId": "wanjie-core:wuxia:palm_strike",
+    "name": "排云掌",
+    "description": "内力凝聚掌心，一掌拍出云开雾散，威力惊人。",
+    "category": "skill", "subcategory": "magic_skill", "rarity": "uncommon",
+    "maxStack": 1, "maxLevel": 5,
+    "baseStats": { "power": 40, "mpCost": 12, "cooldown": 2 },
+    "price": 400, "element": null, "isDroppable": true,
+    "ext": {
+      "isUltimate": false, "cooldown": 2,
+      "effects": [{ "type": "damage", "baseValue": 40, "statScaling": 1.0, "target": "single" }],
+      "tags": ["instant"]
+    }
+  },
+  {
+    "templateId": "wanjie-core:wuxia:combo_fist",
+    "name": "连环拳",
+    "description": "一套行云流水的连击拳法，拳拳到肉，越打越快。",
+    "category": "skill", "subcategory": "combat_skill", "rarity": "uncommon",
+    "maxStack": 1, "maxLevel": 5,
+    "baseStats": { "power": 30, "mpCost": 0, "cooldown": 2 },
+    "price": 400, "element": null, "isDroppable": true,
+    "ext": {
+      "isUltimate": false, "cooldown": 2,
+      "effects": [{ "type": "damage", "baseValue": 30, "statScaling": 1.2, "target": "single" }],
+      "tags": ["instant", "combo"]
+    }
+  },
+  {
+    "templateId": "wanjie-core:wuxia:healing_salve",
+    "name": "金创药",
+    "description": "江湖郎中的祖传秘方，外敷可快速愈合伤口。",
+    "category": "consumable", "subcategory": "pill_hp", "rarity": "common",
+    "maxStack": 99, "maxLevel": 1,
+    "baseStats": { "hpRestore": 80 },
+    "price": 40, "element": null, "isDroppable": true,
+    "ext": {
+      "effects": [{ "type": "heal", "baseValue": 80, "statScaling": 0, "target": "self" }],
+      "requiredLevel": 1
+    }
+  },
+  {
+    "templateId": "wanjie-core:wuxia:inner_strength_pill",
+    "name": "大还丹",
+    "description": "少林秘制丹药，可大幅增进内力修为。",
+    "category": "consumable", "subcategory": "pill_cultivation", "rarity": "rare",
+    "maxStack": 99, "maxLevel": 1,
+    "baseStats": { "cultivationBoost": 60 },
+    "price": 500, "element": null, "isDroppable": true,
+    "ext": {
+      "effects": [{ "type": "buff", "baseValue": 60, "statScaling": 0, "target": "self", "duration": 30, "description": "修炼效率+60%" }],
+      "requiredLevel": 3
+    }
+  }
+]

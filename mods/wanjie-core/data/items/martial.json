@@ -1,0 +1,146 @@
+[
+  {
+    "templateId": "wanjie-core:martial:alloy_blade",
+    "name": "合金战刀",
+    "description": "以高强度合金锻造的战刀，锋利与坚韧并重。",
+    "category": "equipment", "subcategory": "weapon_melee", "rarity": "uncommon",
+    "maxStack": 1, "maxLevel": 5,
+    "baseStats": { "attackBonus": 32, "power": 22 },
+    "price": 1100, "element": null, "worldType": "martial", "isDroppable": true,
+    "ext": { "equipSlot": "weapon_melee", "weaponCategory": "blade", "compatibleElement": null, "compatibleBonus": 0 }
+  },
+  {
+    "templateId": "wanjie-core:martial:blood_dragon_halberd",
+    "name": "血龙戟",
+    "description": "以气血淬炼的绝世战戟，挥舞间血光冲天，杀气凛然。",
+    "category": "equipment", "subcategory": "weapon_melee", "rarity": "legendary",
+    "maxStack": 1, "maxLevel": 9,
+    "baseStats": { "attackBonus": 88, "power": 55, "critRate": 7 },
+    "price": 58000, "element": "fire", "worldType": "martial", "isDroppable": true,
+    "ext": { "equipSlot": "weapon_melee", "weaponCategory": "blade", "compatibleElement": "fire", "compatibleBonus": 18 }
+  },
+  {
+    "templateId": "wanjie-core:martial:qi_bow",
+    "name": "气功弓",
+    "description": "以气血之力拉动的强弓，箭矢附带气血穿透效果。",
+    "category": "equipment", "subcategory": "weapon_ranged", "rarity": "rare",
+    "maxStack": 1, "maxLevel": 7,
+    "baseStats": { "attackBonus": 45, "power": 30 },
+    "price": 7000, "element": "fire", "worldType": "martial", "isDroppable": true,
+    "ext": { "equipSlot": "weapon_ranged", "weaponCategory": "bow", "compatibleElement": "fire", "compatibleBonus": 10 }
+  },
+  {
+    "templateId": "wanjie-core:martial:combat_helmet",
+    "name": "战术头盔",
+    "description": "融合现代科技的高武头盔，内置气血感应芯片。",
+    "category": "equipment", "subcategory": "armor_head", "rarity": "uncommon",
+    "maxStack": 1, "maxLevel": 5,
+    "baseStats": { "defenseBonus": 16, "power": 8 },
+    "price": 1500, "element": null, "worldType": "martial", "isDroppable": true,
+    "ext": { "equipSlot": "armor_head", "weaponCategory": null, "compatibleElement": null, "compatibleBonus": 0 }
+  },
+  {
+    "templateId": "wanjie-core:martial:battle_armor",
+    "name": "气血战甲",
+    "description": "以气血之力驱动的战斗装甲，能大幅增强穿戴者的攻防能力。",
+    "category": "equipment", "subcategory": "armor_body", "rarity": "epic",
+    "maxStack": 1, "maxLevel": 8,
+    "baseStats": { "defenseBonus": 48, "power": 32 },
+    "price": 16000, "element": "fire", "worldType": "martial", "isDroppable": true,
+    "ext": { "equipSlot": "armor_body", "weaponCategory": null, "compatibleElement": "fire", "compatibleBonus": 12 }
+  },
+  {
+    "templateId": "wanjie-core:martial:reinforced_pants",
+    "name": "强化护腿",
+    "description": "以纳米纤维编织的护腿，灵活且坚韧。",
+    "category": "equipment", "subcategory": "armor_legs", "rarity": "uncommon",
+    "maxStack": 1, "maxLevel": 5,
+    "baseStats": { "defenseBonus": 14, "power": 7 },
+    "price": 1000, "element": null, "worldType": "martial", "isDroppable": true,
+    "ext": { "equipSlot": "armor_legs", "weaponCategory": null, "compatibleElement": null, "compatibleBonus": 0 }
+  },
+  {
+    "templateId": "wanjie-core:martial:assault_boots",
+    "name": "突击战靴",
+    "description": "高武战士的标准战靴，鞋底装有微型推进器。",
+    "category": "equipment", "subcategory": "armor_feet", "rarity": "rare",
+    "maxStack": 1, "maxLevel": 7,
+    "baseStats": { "defenseBonus": 16, "power": 9 },
+    "price": 3500, "element": "wind", "worldType": "martial", "isDroppable": true,
+    "ext": { "equipSlot": "armor_feet", "weaponCategory": null, "compatibleElement": "wind", "compatibleBonus": 8 }
+  },
+  {
+    "templateId": "wanjie-core:martial:blood_qi_burst_art",
+    "name": "气血爆发诀",
+    "description": "激发全身气血潜能，短时间内战力暴增的攻击武技。",
+    "category": "technique", "subcategory": "attack", "rarity": "epic",
+    "maxStack": 1, "maxLevel": 8,
+    "baseStats": { "power": 88, "bonus": 35, "baseMpCost": 32 },
+    "price": 13000, "element": "fire", "worldType": "martial", "isDroppable": true,
+    "ext": { "baseMpCost": 32 }
+  },
+  {
+    "templateId": "wanjie-core:martial:iron_warrior_body",
+    "name": "钢铁战士体",
+    "description": "以气血淬炼肉身的防御秘法，全身坚如钢铁。",
+    "category": "technique", "subcategory": "defense", "rarity": "rare",
+    "maxStack": 1, "maxLevel": 7,
+    "baseStats": { "power": 30, "bonus": 38, "baseMpCost": 24 },
+    "price": 6000, "element": "earth", "worldType": "martial", "isDroppable": true,
+    "ext": { "baseMpCost": 24 }
+  },
+  {
+    "templateId": "wanjie-core:martial:qi_explosion",
+    "name": "气血爆裂",
+    "description": "将气血之力压缩后瞬间释放，造成大范围爆炸伤害。",
+    "category": "skill", "subcategory": "magic_skill", "rarity": "epic",
+    "maxStack": 1, "maxLevel": 8,
+    "baseStats": { "power": 75, "mpCost": 35, "cooldown": 4 },
+    "price": 6000, "element": "fire", "isDroppable": true,
+    "ext": {
+      "requiredElement": "fire", "isUltimate": true, "cooldown": 4,
+      "effects": [{ "type": "damage", "baseValue": 75, "statScaling": 1.6, "target": "all" }],
+      "tags": ["instant", "aoe"]
+    }
+  },
+  {
+    "templateId": "wanjie-core:martial:frenzy_strike",
+    "name": "狂暴连斩",
+    "description": "进入狂暴状态连续斩击，速度与力量逐次递增。",
+    "category": "skill", "subcategory": "combat_skill", "rarity": "rare",
+    "maxStack": 1, "maxLevel": 7,
+    "baseStats": { "power": 50, "mpCost": 0, "cooldown": 3 },
+    "price": 2500, "element": null, "isDroppable": true,
+    "ext": {
+      "isUltimate": false, "cooldown": 3,
+      "effects": [{ "type": "damage", "baseValue": 50, "statScaling": 1.4, "target": "single" }],
+      "tags": ["instant", "combo"]
+    }
+  },
+  {
+    "templateId": "wanjie-core:martial:blood_stimulant",
+    "name": "气血兴奋剂",
+    "description": "高武世界研制的战斗兴奋剂，短期内大幅提升修炼效率 70%。",
+    "category": "consumable", "subcategory": "pill_cultivation", "rarity": "uncommon",
+    "maxStack": 99, "maxLevel": 1,
+    "baseStats": { "cultivationBoost": 70 },
+    "price": 400, "element": null, "isDroppable": true,
+    "ext": {
+      "effects": [{ "type": "buff", "baseValue": 70, "statScaling": 0, "target": "self", "duration": 30, "description": "修炼效率+70%" }],
+      "requiredLevel": 4
+    }
+  },
+  {
+    "templateId": "wanjie-core:martial:recovery_serum",
+    "name": "再生血清",
+    "description": "融合基因科技的恢复血清，快速修复身体损伤。",
+    "category": "consumable", "subcategory": "pill_hp", "rarity": "rare",
+    "maxStack": 99, "maxLevel": 1,
+    "baseStats": { "hpRestore": 300 },
+    "price": 300, "element": null, "isDroppable": true,
+    "ext": {
+      "effects": [{ "type": "heal", "baseValue": 300, "statScaling": 0, "target": "self" }],
+      "requiredLevel": 5
+    }
+  }
+]

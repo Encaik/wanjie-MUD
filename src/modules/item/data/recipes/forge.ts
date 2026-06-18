@@ -2,6 +2,7 @@
  * 炼器配方
  *
  * 输入材料 Item → 产出装备 Item
+ * 所有物品 ID 使用三段式格式：source:worldview:item_name
  */
 
 /** 炼器配方 */
@@ -29,8 +30,8 @@ export const FORGE_RECIPES: ForgeRecipe[] = [
     id: 'forge_iron_sword',
     name: '锻造铁剑',
     description: '以铁矿石为原料锻造铁剑。',
-    inputs: { iron_ore: 3 },
-    outputTemplateId: 'iron_sword',
+    inputs: { 'wanjie:common:iron_ore': 3 },
+    outputTemplateId: 'wanjie-core:cultivation:iron_sword',
     outputQuantity: 1,
     successRate: 0.9,
     craftTimeSeconds: 15,
@@ -40,8 +41,8 @@ export const FORGE_RECIPES: ForgeRecipe[] = [
     id: 'forge_spirit_sword',
     name: '淬炼灵剑',
     description: '以铁矿石和灵石碎片淬炼灵剑。',
-    inputs: { iron_ore: 5, spirit_gem: 2 },
-    outputTemplateId: 'spirit_sword',
+    inputs: { 'wanjie:common:iron_ore': 5, 'wanjie:common:spirit_gem': 2 },
+    outputTemplateId: 'wanjie-core:cultivation:spirit_sword',
     outputQuantity: 1,
     successRate: 0.8,
     craftTimeSeconds: 30,
@@ -51,8 +52,8 @@ export const FORGE_RECIPES: ForgeRecipe[] = [
     id: 'forge_thunder_blade',
     name: '铸造惊雷刀',
     description: '以玄铁和妖兽利爪铸造惊雷刀。',
-    inputs: { black_iron: 4, beast_claw: 3 },
-    outputTemplateId: 'thunder_blade',
+    inputs: { 'wanjie:common:black_iron': 4, 'wanjie:common:beast_claw': 3 },
+    outputTemplateId: 'wanjie-core:cultivation:thunder_blade',
     outputQuantity: 1,
     successRate: 0.6,
     craftTimeSeconds: 60,
@@ -62,8 +63,8 @@ export const FORGE_RECIPES: ForgeRecipe[] = [
     id: 'forge_dragon_scale',
     name: '铸造龙鳞甲',
     description: '以玄铁和龙晶铸造龙鳞甲。',
-    inputs: { black_iron: 6, dragon_crystal: 1 },
-    outputTemplateId: 'dragon_scale_armor',
+    inputs: { 'wanjie:common:black_iron': 6, 'wanjie:common:dragon_crystal': 1 },
+    outputTemplateId: 'wanjie-core:cultivation:dragon_scale_armor',
     outputQuantity: 1,
     successRate: 0.4,
     craftTimeSeconds: 120,

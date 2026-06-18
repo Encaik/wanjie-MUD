@@ -1,0 +1,146 @@
+[
+  {
+    "templateId": "wanjie-core:magic:magic_wand",
+    "name": "魔法杖",
+    "description": "以世界树枝杈制成的法杖，杖身铭刻着古老的魔力符文。",
+    "category": "equipment", "subcategory": "weapon_melee", "rarity": "uncommon",
+    "maxStack": 1, "maxLevel": 5,
+    "baseStats": { "attackBonus": 22, "power": 22 },
+    "price": 1000, "element": null, "worldType": "magic", "isDroppable": true,
+    "ext": { "equipSlot": "weapon_melee", "weaponCategory": "sword", "compatibleElement": null, "compatibleBonus": 0 }
+  },
+  {
+    "templateId": "wanjie-core:magic:archmage_staff",
+    "name": "大法师之杖",
+    "description": "传说中大法师使用的法杖，杖顶宝石蕴含毁天灭地的魔力。",
+    "category": "equipment", "subcategory": "weapon_melee", "rarity": "legendary",
+    "maxStack": 1, "maxLevel": 9,
+    "baseStats": { "attackBonus": 78, "power": 58, "critRate": 5 },
+    "price": 45000, "element": "fire", "worldType": "magic", "isDroppable": true,
+    "ext": { "equipSlot": "weapon_melee", "weaponCategory": "sword", "compatibleElement": "fire", "compatibleBonus": 18 }
+  },
+  {
+    "templateId": "wanjie-core:magic:elemental_orb",
+    "name": "元素宝珠",
+    "description": "凝聚元素之力的魔法宝珠，可远程释放元素魔法。",
+    "category": "equipment", "subcategory": "weapon_ranged", "rarity": "rare",
+    "maxStack": 1, "maxLevel": 7,
+    "baseStats": { "attackBonus": 42, "power": 28 },
+    "price": 6000, "element": "fire", "worldType": "magic", "isDroppable": true,
+    "ext": { "equipSlot": "weapon_ranged", "weaponCategory": "bow", "compatibleElement": "fire", "compatibleBonus": 10 }
+  },
+  {
+    "templateId": "wanjie-core:magic:wizard_hat",
+    "name": "巫师帽",
+    "description": "尖顶宽檐的巫师帽，据说能增强佩戴者的精神力。",
+    "category": "equipment", "subcategory": "armor_head", "rarity": "uncommon",
+    "maxStack": 1, "maxLevel": 5,
+    "baseStats": { "defenseBonus": 12, "power": 10 },
+    "price": 800, "element": null, "worldType": "magic", "isDroppable": true,
+    "ext": { "equipSlot": "armor_head", "weaponCategory": null, "compatibleElement": null, "compatibleBonus": 0 }
+  },
+  {
+    "templateId": "wanjie-core:magic:arcane_robe",
+    "name": "秘法长袍",
+    "description": "以魔法丝线织就的长袍，绣有防御魔法阵，可偏转咒语攻击。",
+    "category": "equipment", "subcategory": "armor_body", "rarity": "epic",
+    "maxStack": 1, "maxLevel": 8,
+    "baseStats": { "defenseBonus": 42, "power": 30 },
+    "price": 14000, "element": "light", "worldType": "magic", "isDroppable": true,
+    "ext": { "equipSlot": "armor_body", "weaponCategory": null, "compatibleElement": "light", "compatibleBonus": 12 }
+  },
+  {
+    "templateId": "wanjie-core:magic:enchanted_leggings",
+    "name": "附魔护腿",
+    "description": "以魔法丝线和秘银编织的护腿，轻便而又坚固。",
+    "category": "equipment", "subcategory": "armor_legs", "rarity": "uncommon",
+    "maxStack": 1, "maxLevel": 5,
+    "baseStats": { "defenseBonus": 12, "power": 6 },
+    "price": 1200, "element": null, "worldType": "magic", "isDroppable": true,
+    "ext": { "equipSlot": "armor_legs", "weaponCategory": null, "compatibleElement": null, "compatibleBonus": 0 }
+  },
+  {
+    "templateId": "wanjie-core:magic:seven_league_boots",
+    "name": "七里靴",
+    "description": "传说中的魔法靴，一步可跨七里，速度惊人。",
+    "category": "equipment", "subcategory": "armor_feet", "rarity": "rare",
+    "maxStack": 1, "maxLevel": 7,
+    "baseStats": { "defenseBonus": 14, "power": 8 },
+    "price": 4000, "element": "wind", "worldType": "magic", "isDroppable": true,
+    "ext": { "equipSlot": "armor_feet", "weaponCategory": null, "compatibleElement": "wind", "compatibleBonus": 8 }
+  },
+  {
+    "templateId": "wanjie-core:magic:elemental_mastery",
+    "name": "元素精通",
+    "description": "深入研究元素本质的攻击魔法，可调动四大元素之力。",
+    "category": "technique", "subcategory": "attack", "rarity": "epic",
+    "maxStack": 1, "maxLevel": 8,
+    "baseStats": { "power": 82, "bonus": 32, "baseMpCost": 30 },
+    "price": 11000, "element": "fire", "worldType": "magic", "isDroppable": true,
+    "ext": { "baseMpCost": 30 }
+  },
+  {
+    "templateId": "wanjie-core:magic:magic_barrier",
+    "name": "魔力屏障",
+    "description": "以纯粹的魔力编织防御屏障，可吸收大量伤害。",
+    "category": "technique", "subcategory": "defense", "rarity": "rare",
+    "maxStack": 1, "maxLevel": 7,
+    "baseStats": { "power": 28, "bonus": 35, "baseMpCost": 22 },
+    "price": 5000, "element": "light", "worldType": "magic", "isDroppable": true,
+    "ext": { "baseMpCost": 22 }
+  },
+  {
+    "templateId": "wanjie-core:magic:arcane_missile",
+    "name": "奥术飞弹",
+    "description": "发射数枚魔力飞弹追踪攻击单个敌人，精准致命。",
+    "category": "skill", "subcategory": "magic_skill", "rarity": "common",
+    "maxStack": 1, "maxLevel": 5,
+    "baseStats": { "power": 35, "mpCost": 8, "cooldown": 1 },
+    "price": 250, "element": null, "isDroppable": true,
+    "ext": {
+      "isUltimate": false, "cooldown": 1,
+      "effects": [{ "type": "damage", "baseValue": 35, "statScaling": 0.8, "target": "single" }],
+      "tags": ["instant"]
+    }
+  },
+  {
+    "templateId": "wanjie-core:magic:meteor_swarm",
+    "name": "流星火雨",
+    "description": "召唤天外流星轰击战场，对所有敌人造成毁灭性火焰伤害。",
+    "category": "skill", "subcategory": "magic_skill", "rarity": "legendary",
+    "maxStack": 1, "maxLevel": 9,
+    "baseStats": { "power": 95, "mpCost": 55, "cooldown": 5 },
+    "price": 15000, "element": "fire", "isDroppable": true,
+    "ext": {
+      "requiredElement": "fire", "isUltimate": true, "cooldown": 5,
+      "effects": [{ "type": "damage", "baseValue": 95, "statScaling": 1.8, "target": "all" }],
+      "tags": ["instant", "aoe"]
+    }
+  },
+  {
+    "templateId": "wanjie-core:magic:mana_potion",
+    "name": "魔力药剂",
+    "description": "以月光草和魔力精华调制的药剂，恢复大量法力值。",
+    "category": "consumable", "subcategory": "pill_mp", "rarity": "common",
+    "maxStack": 99, "maxLevel": 1,
+    "baseStats": { "mpRestore": 60 },
+    "price": 60, "element": null, "isDroppable": true,
+    "ext": {
+      "effects": [{ "type": "heal", "baseValue": 60, "statScaling": 0, "target": "self", "description": "恢复法力值" }],
+      "requiredLevel": 1
+    }
+  },
+  {
+    "templateId": "wanjie-core:magic:magic_crystal",
+    "name": "魔力水晶",
+    "description": "蕴含纯净魔力的水晶，可用于快速恢复法力或辅助施法。",
+    "category": "consumable", "subcategory": "pill_cultivation", "rarity": "uncommon",
+    "maxStack": 99, "maxLevel": 1,
+    "baseStats": { "cultivationBoost": 55 },
+    "price": 350, "element": null, "isDroppable": true,
+    "ext": {
+      "effects": [{ "type": "buff", "baseValue": 55, "statScaling": 0, "target": "self", "duration": 30, "description": "修炼效率+55%" }],
+      "requiredLevel": 2
+    }
+  }
+]

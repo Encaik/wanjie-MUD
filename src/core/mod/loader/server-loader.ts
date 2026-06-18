@@ -27,6 +27,8 @@ import { RaceRegistry } from '@/core/registry/RaceRegistry';
 import { TalentRegistry } from '@/core/registry/TalentRegistry';
 import { NPCDataRegistry } from '@/core/registry/NPCDataRegistry';
 import { QuestRegistry } from '@/core/registry/QuestRegistry';
+import { ItemRegistry } from '@/core/registry/ItemRegistry';
+import type { ItemTemplateData } from '@/core/types';
 import type { WorldviewDefinition } from '@/core/registry/WorldViewRegistry';
 import type { NPCDefinition, QuestDefinition } from '@/core/types';
 import type { MechanicsConfig } from '@/modules/identity/logic/worlds/types';
@@ -226,6 +228,9 @@ export class ServerModLoader extends BaseModLoader {
       case 'quests':
         this.registerQuests(modId, data);
         break;
+      case 'items':
+        this.registerItems(modId, data);
+        break;
       // 尚无对应 Registry 的类型：暂存
       case 'traits':
       case 'dangers':
@@ -234,7 +239,6 @@ export class ServerModLoader extends BaseModLoader {
       case 'factions':
       case 'names':
       case 'text':
-      case 'items':
         this.stageData(modId, contentType, data);
         break;
       default:
@@ -307,6 +311,18 @@ export class ServerModLoader extends BaseModLoader {
         log.info(`Mod "${modId}": 注册了 ${data.length} 个任务`);
       } catch (err) {
         log.warn(`Mod "${modId}": 注册任务失败:`, err);
+      }
+    }
+  }
+
+  /** 注册物品模板到 ItemRegistry */
+  private registerItems(modId: string, data: unknown): void {
+    if (Array.isArray(data)) {
+      try {
+        ItemRegistry.getInstance().registerAll(data as ItemTemplateData[]);
+        log.info(`Mod "${modId}": 注册了 ${(data as unknown[]).length} 个物品模板`);
+      } catch (err) {
+        log.warn(`Mod "${modId}": 注册物品失败:`, err);
       }
     }
   }

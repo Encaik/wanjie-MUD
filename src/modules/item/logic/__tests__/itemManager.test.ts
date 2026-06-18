@@ -26,7 +26,7 @@ describe('itemManager', () => {
     });
 
     it('装备物品 maxStack=1 默认 quantity=1', () => {
-      const inst = createItemInstance('wanjie:cultivation:iron_sword');
+      const inst = createItemInstance('wanjie-core:cultivation:iron_sword');
       expect(inst.quantity).toBe(1);
     });
   });
@@ -41,11 +41,11 @@ describe('itemManager', () => {
     });
 
     it('添加不可堆叠物品创建独立实例', () => {
-      const inv = addItem([], 'wanjie:cultivation:iron_sword', 1);
-      const inv2 = addItem(inv, 'wanjie:cultivation:iron_sword', 1);
-      expect(getItemCount(inv2, 'wanjie:cultivation:iron_sword')).toBe(2);
+      const inv = addItem([], 'wanjie-core:cultivation:iron_sword', 1);
+      const inv2 = addItem(inv, 'wanjie-core:cultivation:iron_sword', 1);
+      expect(getItemCount(inv2, 'wanjie-core:cultivation:iron_sword')).toBe(2);
       // 两把独立的剑
-      expect(inv2.filter(i => i.templateId === 'wanjie:cultivation:iron_sword').length).toBe(2);
+      expect(inv2.filter(i => i.templateId === 'wanjie-core:cultivation:iron_sword').length).toBe(2);
     });
 
     it('quantity=0 不添加', () => {
@@ -92,7 +92,7 @@ describe('itemManager', () => {
 
   describe('resolveItem', () => {
     it('解析装备实例获取完整信息', () => {
-      const inst = createItemInstance('wanjie:cultivation:iron_sword', { level: 3 });
+      const inst = createItemInstance('wanjie-core:cultivation:iron_sword', { level: 3 });
       const resolved = resolveItem(inst);
       expect(resolved.name).toBe('铁剑');
       expect(resolved.category).toBe('equipment');
@@ -102,7 +102,7 @@ describe('itemManager', () => {
     });
 
     it('解析功法实例获取完整信息', () => {
-      const inst = createItemInstance('wanjie:cultivation:fire_scripture', { level: 1 });
+      const inst = createItemInstance('wanjie-core:cultivation:fire_scripture', { level: 1 });
       const resolved = resolveItem(inst);
       expect(resolved.name).toBe('焚天诀');
       expect(resolved.category).toBe('technique');

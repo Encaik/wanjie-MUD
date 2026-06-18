@@ -1,0 +1,153 @@
+[
+  {
+    "templateId": "wanjie-core:psi:psi_blade",
+    "name": "念力刃",
+    "description": "以精神力凝聚的念力之刃，无实体却能斩断万物。",
+    "category": "equipment", "subcategory": "weapon_melee", "rarity": "uncommon",
+    "maxStack": 1, "maxLevel": 5,
+    "baseStats": { "attackBonus": 28, "power": 24 },
+    "price": 1100, "element": null, "worldType": "psi", "isDroppable": true,
+    "ext": { "equipSlot": "weapon_melee", "weaponCategory": "sword", "compatibleElement": null, "compatibleBonus": 0 }
+  },
+  {
+    "templateId": "wanjie-core:psi:mind_cannon",
+    "name": "精神冲击炮",
+    "description": "将精神力高度压缩后远程发射的异能武器。",
+    "category": "equipment", "subcategory": "weapon_ranged", "rarity": "epic",
+    "maxStack": 1, "maxLevel": 8,
+    "baseStats": { "attackBonus": 55, "power": 40 },
+    "price": 15000, "element": "dark", "worldType": "psi", "isDroppable": true,
+    "ext": { "equipSlot": "weapon_ranged", "weaponCategory": "bow", "compatibleElement": "dark", "compatibleBonus": 14 }
+  },
+  {
+    "templateId": "wanjie-core:psi:psi_crown",
+    "name": "心灵头环",
+    "description": "以灵能金属锻造的头环，大幅增强佩戴者的精神力场。",
+    "category": "equipment", "subcategory": "armor_head", "rarity": "rare",
+    "maxStack": 1, "maxLevel": 7,
+    "baseStats": { "defenseBonus": 20, "power": 14 },
+    "price": 4500, "element": null, "worldType": "psi", "isDroppable": true,
+    "ext": { "equipSlot": "armor_head", "weaponCategory": null, "compatibleElement": null, "compatibleBonus": 0 }
+  },
+  {
+    "templateId": "wanjie-core:psi:psionic_vest",
+    "name": "灵能背心",
+    "description": "以灵能丝线编织的防御背心，可吸收精神攻击。",
+    "category": "equipment", "subcategory": "armor_body", "rarity": "rare",
+    "maxStack": 1, "maxLevel": 7,
+    "baseStats": { "defenseBonus": 35, "power": 20 },
+    "price": 7000, "element": "light", "worldType": "psi", "isDroppable": true,
+    "ext": { "equipSlot": "armor_body", "weaponCategory": null, "compatibleElement": "light", "compatibleBonus": 10 }
+  },
+  {
+    "templateId": "wanjie-core:psi:psi_leggings",
+    "name": "灵能护腿",
+    "description": "轻便灵活的灵能护腿，不影响行动且防御出色。",
+    "category": "equipment", "subcategory": "armor_legs", "rarity": "uncommon",
+    "maxStack": 1, "maxLevel": 5,
+    "baseStats": { "defenseBonus": 12, "power": 7 },
+    "price": 1200, "element": null, "worldType": "psi", "isDroppable": true,
+    "ext": { "equipSlot": "armor_legs", "weaponCategory": null, "compatibleElement": null, "compatibleBonus": 0 }
+  },
+  {
+    "templateId": "wanjie-core:psi:psi_boots",
+    "name": "灵能靴",
+    "description": "以念力辅助移动的异能靴，可短距离瞬移。",
+    "category": "equipment", "subcategory": "armor_feet", "rarity": "uncommon",
+    "maxStack": 1, "maxLevel": 5,
+    "baseStats": { "defenseBonus": 10, "power": 6 },
+    "price": 1500, "element": "wind", "worldType": "psi", "isDroppable": true,
+    "ext": { "equipSlot": "armor_feet", "weaponCategory": null, "compatibleElement": "wind", "compatibleBonus": 5 }
+  },
+  {
+    "templateId": "wanjie-core:psi:mind_storm",
+    "name": "心灵风暴",
+    "description": "将精神力化为毁灭风暴的攻击异能，摧枯拉朽。",
+    "category": "technique", "subcategory": "attack", "rarity": "epic",
+    "maxStack": 1, "maxLevel": 8,
+    "baseStats": { "power": 82, "bonus": 35, "baseMpCost": 30 },
+    "price": 12000, "element": "dark", "worldType": "psi", "isDroppable": true,
+    "ext": { "baseMpCost": 30 }
+  },
+  {
+    "templateId": "wanjie-core:psi:mental_wall",
+    "name": "精神壁垒",
+    "description": "在意识周围筑起坚不可摧的精神壁垒，抵御一切精神攻击。",
+    "category": "technique", "subcategory": "defense", "rarity": "epic",
+    "maxStack": 1, "maxLevel": 8,
+    "baseStats": { "power": 38, "bonus": 42, "baseMpCost": 28 },
+    "price": 9000, "element": "light", "worldType": "psi", "isDroppable": true,
+    "ext": { "baseMpCost": 28 }
+  },
+  {
+    "templateId": "wanjie-core:psi:telekinesis",
+    "name": "念力操控",
+    "description": "以精神力操控物体攻击敌人，无形无迹，防不胜防。",
+    "category": "skill", "subcategory": "magic_skill", "rarity": "rare",
+    "maxStack": 1, "maxLevel": 7,
+    "baseStats": { "power": 60, "mpCost": 22, "cooldown": 3 },
+    "price": 3500, "element": null, "isDroppable": true,
+    "ext": {
+      "isUltimate": false, "cooldown": 3,
+      "effects": [{ "type": "damage", "baseValue": 60, "statScaling": 1.2, "target": "single" }],
+      "tags": ["instant"]
+    }
+  },
+  {
+    "templateId": "wanjie-core:psi:mind_blast",
+    "name": "心灵震爆",
+    "description": "将精神力压缩后瞬间释放，对所有敌人造成精神冲击。",
+    "category": "skill", "subcategory": "magic_skill", "rarity": "epic",
+    "maxStack": 1, "maxLevel": 8,
+    "baseStats": { "power": 82, "mpCost": 42, "cooldown": 4 },
+    "price": 7000, "element": "dark", "isDroppable": true,
+    "ext": {
+      "requiredElement": "dark", "isUltimate": true, "cooldown": 4,
+      "effects": [
+        { "type": "damage", "baseValue": 82, "statScaling": 1.6, "target": "all" },
+        { "type": "debuff", "baseValue": 20, "statScaling": 0, "target": "all", "duration": 1, "description": "精神恍惚" }
+      ],
+      "tags": ["aoe", "debuff"]
+    }
+  },
+  {
+    "templateId": "wanjie-core:psi:psionic_strike",
+    "name": "灵能打击",
+    "description": "将念力附着于武器之上，造成额外精神伤害。",
+    "category": "skill", "subcategory": "combat_skill", "rarity": "uncommon",
+    "maxStack": 1, "maxLevel": 5,
+    "baseStats": { "power": 38, "mpCost": 0, "cooldown": 2 },
+    "price": 500, "element": null, "isDroppable": true,
+    "ext": {
+      "isUltimate": false, "cooldown": 2,
+      "effects": [{ "type": "damage", "baseValue": 38, "statScaling": 1.1, "target": "single" }],
+      "tags": ["instant"]
+    }
+  },
+  {
+    "templateId": "wanjie-core:psi:focus_crystal",
+    "name": "专注水晶",
+    "description": "帮助异能者集中精神力的水晶，提升修炼效率 65%。",
+    "category": "consumable", "subcategory": "pill_cultivation", "rarity": "uncommon",
+    "maxStack": 99, "maxLevel": 1,
+    "baseStats": { "cultivationBoost": 65 },
+    "price": 450, "element": null, "isDroppable": true,
+    "ext": {
+      "effects": [{ "type": "buff", "baseValue": 65, "statScaling": 0, "target": "self", "duration": 30, "description": "修炼效率+65%" }],
+      "requiredLevel": 3
+    }
+  },
+  {
+    "templateId": "wanjie-core:psi:psychic_stim",
+    "name": "精神兴奋剂",
+    "description": "刺激精神力快速恢复的异能药剂。",
+    "category": "consumable", "subcategory": "pill_mp", "rarity": "uncommon",
+    "maxStack": 99, "maxLevel": 1,
+    "baseStats": { "mpRestore": 120 },
+    "price": 180, "element": null, "isDroppable": true,
+    "ext": {
+      "effects": [{ "type": "heal", "baseValue": 120, "statScaling": 0, "target": "self", "description": "恢复法力值" }],
+      "requiredLevel": 2
+    }
+  }
+]

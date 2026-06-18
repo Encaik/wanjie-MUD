@@ -1,0 +1,162 @@
+[
+  {
+    "templateId": "wanjie-core:apocalypse:machete",
+    "name": "求生砍刀",
+    "description": "末世幸存者必备的多功能砍刀，砍变异体、开路、防身皆可。",
+    "category": "equipment", "subcategory": "weapon_melee", "rarity": "common",
+    "maxStack": 1, "maxLevel": 3,
+    "baseStats": { "attackBonus": 15, "power": 10 },
+    "price": 300, "element": null, "worldType": "apocalypse", "isDroppable": true,
+    "ext": { "equipSlot": "weapon_melee", "weaponCategory": "blade", "compatibleElement": null, "compatibleBonus": 0 }
+  },
+  {
+    "templateId": "wanjie-core:apocalypse:mutant_blade",
+    "name": "变异之刃",
+    "description": "以变异兽骨打磨而成的恐怖利刃，刃口带有腐蚀性毒素。",
+    "category": "equipment", "subcategory": "weapon_melee", "rarity": "epic",
+    "maxStack": 1, "maxLevel": 8,
+    "baseStats": { "attackBonus": 65, "power": 42 },
+    "price": 18000, "element": "dark", "worldType": "apocalypse", "isDroppable": true,
+    "ext": { "equipSlot": "weapon_melee", "weaponCategory": "blade", "compatibleElement": "dark", "compatibleBonus": 14 }
+  },
+  {
+    "templateId": "wanjie-core:apocalypse:crossbow",
+    "name": "复合弩",
+    "description": "末世猎人自制的强力十字弩，射程远、噪音小、弹药可回收。",
+    "category": "equipment", "subcategory": "weapon_ranged", "rarity": "uncommon",
+    "maxStack": 1, "maxLevel": 5,
+    "baseStats": { "attackBonus": 35, "power": 22 },
+    "price": 2000, "element": null, "worldType": "apocalypse", "isDroppable": true,
+    "ext": { "equipSlot": "weapon_ranged", "weaponCategory": "bow", "compatibleElement": null, "compatibleBonus": 0 }
+  },
+  {
+    "templateId": "wanjie-core:apocalypse:gas_mask",
+    "name": "防毒面具",
+    "description": "末世废墟中必备的防护装备，过滤毒气和辐射尘。",
+    "category": "equipment", "subcategory": "armor_head", "rarity": "common",
+    "maxStack": 1, "maxLevel": 3,
+    "baseStats": { "defenseBonus": 6, "power": 3 },
+    "price": 200, "element": null, "worldType": "apocalypse", "isDroppable": true,
+    "ext": { "equipSlot": "armor_head", "weaponCategory": null, "compatibleElement": null, "compatibleBonus": 0 }
+  },
+  {
+    "templateId": "wanjie-core:apocalypse:leather_jacket",
+    "name": "强化皮夹克",
+    "description": "以变异兽皮缝制的夹克，坚韧耐磨，提供可靠防护。",
+    "category": "equipment", "subcategory": "armor_body", "rarity": "uncommon",
+    "maxStack": 1, "maxLevel": 5,
+    "baseStats": { "defenseBonus": 20, "power": 12 },
+    "price": 2500, "element": null, "worldType": "apocalypse", "isDroppable": true,
+    "ext": { "equipSlot": "armor_body", "weaponCategory": null, "compatibleElement": null, "compatibleBonus": 0 }
+  },
+  {
+    "templateId": "wanjie-core:apocalypse:cargo_pants",
+    "name": "多功能军裤",
+    "description": "多口袋设计的军用裤，方便携带各种求生工具。",
+    "category": "equipment", "subcategory": "armor_legs", "rarity": "common",
+    "maxStack": 1, "maxLevel": 3,
+    "baseStats": { "defenseBonus": 8, "power": 4 },
+    "price": 300, "element": null, "worldType": "apocalypse", "isDroppable": true,
+    "ext": { "equipSlot": "armor_legs", "weaponCategory": null, "compatibleElement": null, "compatibleBonus": 0 }
+  },
+  {
+    "templateId": "wanjie-core:apocalypse:survivor_boots",
+    "name": "幸存者战靴",
+    "description": "钢头加固的战术靴，踩变异鼠、踢丧尸必备。",
+    "category": "equipment", "subcategory": "armor_feet", "rarity": "uncommon",
+    "maxStack": 1, "maxLevel": 5,
+    "baseStats": { "defenseBonus": 12, "power": 6 },
+    "price": 800, "element": null, "worldType": "apocalypse", "isDroppable": true,
+    "ext": { "equipSlot": "armor_feet", "weaponCategory": null, "compatibleElement": null, "compatibleBonus": 0 }
+  },
+  {
+    "templateId": "wanjie-core:apocalypse:scavenger_instinct",
+    "name": "拾荒者本能",
+    "description": "末世中磨练出的战斗本能，善于发现敌人弱点并给予致命一击。",
+    "category": "technique", "subcategory": "attack", "rarity": "rare",
+    "maxStack": 1, "maxLevel": 7,
+    "baseStats": { "power": 65, "bonus": 30, "baseMpCost": 20 },
+    "price": 6000, "element": null, "worldType": "apocalypse", "isDroppable": true,
+    "ext": { "baseMpCost": 20 }
+  },
+  {
+    "templateId": "wanjie-core:apocalypse:survivor_will",
+    "name": "求生意志",
+    "description": "末世幸存者磨砺出的钢铁意志，极大的逆境中也能坚持战斗。",
+    "category": "technique", "subcategory": "defense", "rarity": "epic",
+    "maxStack": 1, "maxLevel": 8,
+    "baseStats": { "power": 35, "bonus": 45, "baseMpCost": 25 },
+    "price": 8000, "element": "earth", "worldType": "apocalypse", "isDroppable": true,
+    "ext": { "baseMpCost": 25 }
+  },
+  {
+    "templateId": "wanjie-core:apocalypse:desperate_strike",
+    "name": "绝境一击",
+    "description": "在绝境中爆发的拼死一击，自身生命越低伤害越高。",
+    "category": "skill", "subcategory": "magic_skill", "rarity": "rare",
+    "maxStack": 1, "maxLevel": 7,
+    "baseStats": { "power": 70, "mpCost": 20, "cooldown": 4 },
+    "price": 4000, "element": null, "isDroppable": true,
+    "ext": {
+      "isUltimate": true, "cooldown": 4,
+      "effects": [{ "type": "damage", "baseValue": 70, "statScaling": 1.5, "target": "single" }],
+      "tags": ["instant", "execute"]
+    }
+  },
+  {
+    "templateId": "wanjie-core:apocalypse:trap_master",
+    "name": "陷阱大师",
+    "description": "利用环境布置致命陷阱，对所有敌人造成伤害并减速。",
+    "category": "skill", "subcategory": "combat_skill", "rarity": "uncommon",
+    "maxStack": 1, "maxLevel": 5,
+    "baseStats": { "power": 32, "mpCost": 0, "cooldown": 3 },
+    "price": 600, "element": null, "isDroppable": true,
+    "ext": {
+      "isUltimate": false, "cooldown": 3,
+      "effects": [
+        { "type": "damage", "baseValue": 32, "statScaling": 0.8, "target": "all" },
+        { "type": "debuff", "baseValue": 15, "statScaling": 0, "target": "all", "duration": 2, "description": "减速15%" }
+      ],
+      "tags": ["aoe", "debuff"]
+    }
+  },
+  {
+    "templateId": "wanjie-core:apocalypse:food_ration",
+    "name": "压缩口粮",
+    "description": "末世标准口粮，高热量高营养，一包可维持一天生存。",
+    "category": "consumable", "subcategory": "pill_hp", "rarity": "common",
+    "maxStack": 99, "maxLevel": 1,
+    "baseStats": { "hpRestore": 120 },
+    "price": 25, "element": null, "isDroppable": true,
+    "ext": {
+      "effects": [{ "type": "heal", "baseValue": 120, "statScaling": 0, "target": "self" }],
+      "requiredLevel": 1
+    }
+  },
+  {
+    "templateId": "wanjie-core:apocalypse:med_kit",
+    "name": "医疗包",
+    "description": "军用级急救医疗包，可处理严重伤势。",
+    "category": "consumable", "subcategory": "pill_hp", "rarity": "rare",
+    "maxStack": 99, "maxLevel": 1,
+    "baseStats": { "hpRestore": 400 },
+    "price": 250, "element": null, "isDroppable": true,
+    "ext": {
+      "effects": [{ "type": "heal", "baseValue": 400, "statScaling": 0, "target": "self" }],
+      "requiredLevel": 5
+    }
+  },
+  {
+    "templateId": "wanjie-core:apocalypse:water_purifier",
+    "name": "净水芯片",
+    "description": "可净化放射性水源的高科技芯片，附赠微量营养补充。",
+    "category": "consumable", "subcategory": "pill_cultivation", "rarity": "uncommon",
+    "maxStack": 99, "maxLevel": 1,
+    "baseStats": { "cultivationBoost": 45 },
+    "price": 200, "element": null, "isDroppable": true,
+    "ext": {
+      "effects": [{ "type": "buff", "baseValue": 45, "statScaling": 0, "target": "self", "duration": 30, "description": "修炼效率+45%" }],
+      "requiredLevel": 2
+    }
+  }
+]

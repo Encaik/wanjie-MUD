@@ -6,17 +6,37 @@
 
 'use client';
 
+import { useCallback } from 'react';
 import { FactionPanel } from '@/modules/faction/components/FactionPanel';
-import { useAdventure } from '@/views/game/domainHooks/useAdventure';
 import { useFaction } from '@/views/game/domainHooks/useFaction';
 import { useGameStore } from '@/views/game/state/GameStore';
 import { getCurrencyAmount } from '@/modules/item/logic';
+import { getRandomEvent } from '@/modules/exploration/logic/dungeon/events';
 
 export function FactionPage() {
-  const { gameState } = useGameStore();
+  const { gameState, dispatch: setGameState } = useGameStore();
   const p = gameState.protagonist!;
   const faction = useFaction();
-  const adventure = useAdventure();
+
+  // 简化历练（随机事件）
+  const startExperience = useCallback(() => {
+    setGameState(prev => ({
+      ...prev,
+      currentEvent: p ? getRandomEvent(p.world.type) : null,
+    }));
+  }, [setGameState, p]);
+
+  const handleEventChoice = useCallback((choiceIndex: number) => {
+    setGameState(prev => {
+      if (!prev.currentEvent) return prev;
+      const choice = prev.currentEvent.choices[choiceIndex];
+      return {
+        ...prev,
+        currentEvent: null,
+        lastActionResult: { success: true, message: choice?.result || '事件已处理' },
+      };
+    });
+  }, [setGameState]);
 
   return (
     <FactionPanel
@@ -36,8 +56,8 @@ export function FactionPage() {
       spiritStoneCount={getCurrencyAmount(p.items, 'wanjie:common:spirit_stone')}
       onDonate={faction.donate}
       currentEvent={gameState.currentEvent}
-      onExplore={adventure.startExperience}
-      onChoose={adventure.handleEventChoice}
+      onExplore={startExperience}
+      onChoose={handleEventChoice}
       playerLevel={p.level}
     />
   );

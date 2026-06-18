@@ -8,6 +8,7 @@ import type { GameState } from '@/core/types';
 import { DEFAULT_ASCENSION_FLOW_STATE, createDefaultQuestState } from '@/core/types';
 import { createDefaultGameClock, createDefaultRealClock } from '@/core/time';
 import { createDefaultTutorialState } from '@/modules/quest';
+import { INITIAL_FORTUNE_SLICE } from '@/modules/fortune';
 
 /** 创建初始游戏状态 */
 export function createInitialGameState(): GameState {
@@ -20,12 +21,7 @@ export function createInitialGameState(): GameState {
     protagonist: null,
     currentEvent: null,
     lastActionResult: null,
-    adventureGrid: null,
-    adventurePosition: null,
-    adventureConfig: null,
-    adventurePhase: 'select',
-    adventureLoot: [],
-    adventureExperience: 0,
+    fortuneSlice: INITIAL_FORTUNE_SLICE,
     currentTab: 'cultivation',
     battleState: null,
     activeBattle: null,

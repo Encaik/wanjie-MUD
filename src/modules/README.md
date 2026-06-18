@@ -24,7 +24,8 @@
 | [`combat/`](combat/) | 战斗 — 回合制战斗、伤害计算、技能释放 |
 | [`techniques/`](techniques/) | 功法/技能 — 功法修炼、技能学习、熟练度系统 |
 | [`equipment/`](equipment/) | 装备 — 装备穿戴、属性加成、强化锻造 |
-| [`exploration/`](exploration/) | 探索 — 地图探索、随机事件、资源采集 |
+| [`exploration/`](exploration/) | 探索 — 通用探索工具（迷雾、路径提示、难度配置） |
+| [`fortune/`](fortune/) | 🆕 机缘 — 地形网格探索、望气术视野、多层深度推进、机缘主题选择 |
 | [`tower/`](tower/) | 爬塔 — 挑战爬塔、层数推进、挂机奖励 |
 
 ### 社交系统

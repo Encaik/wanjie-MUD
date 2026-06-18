@@ -1,0 +1,755 @@
+[
+
+  {
+    "templateId": "wanjie-core:cultivation:iron_sword",
+    "name": "铁剑",
+    "description": "凡铁锻造的普通长剑，剑身朴实无华。",
+    "category": "equipment",
+    "subcategory": "weapon_melee",
+    "rarity": "common",
+    "maxStack": 1,
+    "maxLevel": 3,
+    "baseStats": { "attackBonus": 10, "power": 5 },
+    "price": 200,
+    "element": null,
+    "worldType": "cultivation",
+    "isDroppable": true,
+    "ext": {
+      "equipSlot": "weapon_melee",
+      "weaponCategory": "sword",
+      "compatibleElement": null,
+      "compatibleBonus": 0
+    }
+  },
+  {
+    "templateId": "wanjie-core:cultivation:spirit_sword",
+    "name": "灵剑",
+    "description": "以灵气淬炼的宝剑，剑身泛着淡淡灵光。",
+    "category": "equipment",
+    "subcategory": "weapon_melee",
+    "rarity": "uncommon",
+    "maxStack": 1,
+    "maxLevel": 5,
+    "baseStats": { "attackBonus": 25, "power": 15 },
+    "price": 800,
+    "element": null,
+    "worldType": "cultivation",
+    "isDroppable": true,
+    "ext": {
+      "equipSlot": "weapon_melee",
+      "weaponCategory": "sword",
+      "compatibleElement": null,
+      "compatibleBonus": 0
+    }
+  },
+  {
+    "templateId": "wanjie-core:cultivation:flame_dragon_sword",
+    "name": "炎龙剑",
+    "description": "以赤龙之血淬火的传说之剑，挥动时烈焰翻腾，剑气化龙。",
+    "category": "equipment",
+    "subcategory": "weapon_melee",
+    "rarity": "legendary",
+    "maxStack": 1,
+    "maxLevel": 9,
+    "baseStats": { "attackBonus": 80, "power": 50, "critRate": 5 },
+    "price": 50000,
+    "element": "fire",
+    "worldType": "cultivation",
+    "isDroppable": true,
+    "ext": {
+      "equipSlot": "weapon_melee",
+      "weaponCategory": "sword",
+      "compatibleElement": "fire",
+      "compatibleBonus": 15
+    }
+  },
+  {
+    "templateId": "wanjie-core:cultivation:thunder_blade",
+    "name": "惊雷刀",
+    "description": "刀身缠绕雷电，挥刀间雷光闪烁，惊雷炸响。",
+    "category": "equipment",
+    "subcategory": "weapon_melee",
+    "rarity": "epic",
+    "maxStack": 1,
+    "maxLevel": 8,
+    "baseStats": { "attackBonus": 50, "power": 30 },
+    "price": 12000,
+    "element": "thunder",
+    "worldType": "cultivation",
+    "isDroppable": true,
+    "ext": {
+      "equipSlot": "weapon_melee",
+      "weaponCategory": "blade",
+      "compatibleElement": "thunder",
+      "compatibleBonus": 10
+    }
+  },
+  {
+    "templateId": "wanjie-core:cultivation:hunting_bow",
+    "name": "猎弓",
+    "description": "山间猎户常用的硬木弓，朴实耐用。",
+    "category": "equipment",
+    "subcategory": "weapon_ranged",
+    "rarity": "common",
+    "maxStack": 1,
+    "maxLevel": 3,
+    "baseStats": { "attackBonus": 8, "power": 5 },
+    "price": 150,
+    "element": null,
+    "worldType": "cultivation",
+    "isDroppable": true,
+    "ext": {
+      "equipSlot": "weapon_ranged",
+      "weaponCategory": "bow",
+      "compatibleElement": null,
+      "compatibleBonus": 0
+    }
+  },
+  {
+    "templateId": "wanjie-core:cultivation:starfall_bow",
+    "name": "落星弓",
+    "description": "以星辰陨铁铸造的神弓，箭出如流星陨落。",
+    "category": "equipment",
+    "subcategory": "weapon_ranged",
+    "rarity": "epic",
+    "maxStack": 1,
+    "maxLevel": 8,
+    "baseStats": { "attackBonus": 55, "power": 35 },
+    "price": 15000,
+    "element": "wind",
+    "worldType": "cultivation",
+    "isDroppable": true,
+    "ext": {
+      "equipSlot": "weapon_ranged",
+      "weaponCategory": "bow",
+      "compatibleElement": "wind",
+      "compatibleBonus": 12
+    }
+  },
+  {
+    "templateId": "wanjie-core:cultivation:cloth_hat",
+    "name": "布帽",
+    "description": "普通的布制头冠，聊胜于无的防护。",
+    "category": "equipment",
+    "subcategory": "armor_head",
+    "rarity": "common",
+    "maxStack": 1,
+    "maxLevel": 3,
+    "baseStats": { "defenseBonus": 3, "power": 2 },
+    "price": 100,
+    "element": null,
+    "worldType": "cultivation",
+    "isDroppable": true,
+    "ext": {
+      "equipSlot": "armor_head",
+      "weaponCategory": null,
+      "compatibleElement": null,
+      "compatibleBonus": 0
+    }
+  },
+  {
+    "templateId": "wanjie-core:cultivation:spirit_crown",
+    "name": "灵冠",
+    "description": "以灵石镶嵌的头冠，能抵御精神攻击。",
+    "category": "equipment",
+    "subcategory": "armor_head",
+    "rarity": "rare",
+    "maxStack": 1,
+    "maxLevel": 7,
+    "baseStats": { "defenseBonus": 20, "power": 10 },
+    "price": 3000,
+    "element": "light",
+    "worldType": "cultivation",
+    "isDroppable": true,
+    "ext": {
+      "equipSlot": "armor_head",
+      "weaponCategory": null,
+      "compatibleElement": "light",
+      "compatibleBonus": 8
+    }
+  },
+  {
+    "templateId": "wanjie-core:cultivation:cotton_robe",
+    "name": "棉布袍",
+    "description": "寻常棉布缝制的衣袍，穿着舒适。",
+    "category": "equipment",
+    "subcategory": "armor_body",
+    "rarity": "common",
+    "maxStack": 1,
+    "maxLevel": 3,
+    "baseStats": { "defenseBonus": 5, "power": 3 },
+    "price": 150,
+    "element": null,
+    "worldType": "cultivation",
+    "isDroppable": true,
+    "ext": {
+      "equipSlot": "armor_body",
+      "weaponCategory": null,
+      "compatibleElement": null,
+      "compatibleBonus": 0
+    }
+  },
+  {
+    "templateId": "wanjie-core:cultivation:dragon_scale_armor",
+    "name": "龙鳞甲",
+    "description": "以真龙鳞片铸造的神甲，刀枪不入，水火不侵。",
+    "category": "equipment",
+    "subcategory": "armor_body",
+    "rarity": "legendary",
+    "maxStack": 1,
+    "maxLevel": 9,
+    "baseStats": { "defenseBonus": 60, "power": 35 },
+    "price": 40000,
+    "element": "fire",
+    "worldType": "cultivation",
+    "isDroppable": true,
+    "ext": {
+      "equipSlot": "armor_body",
+      "weaponCategory": null,
+      "compatibleElement": "fire",
+      "compatibleBonus": 10
+    }
+  },
+  {
+    "templateId": "wanjie-core:cultivation:cotton_leggings",
+    "name": "棉布裤",
+    "description": "普通的棉布裤，行动方便。",
+    "category": "equipment",
+    "subcategory": "armor_legs",
+    "rarity": "common",
+    "maxStack": 1,
+    "maxLevel": 3,
+    "baseStats": { "defenseBonus": 4, "power": 2 },
+    "price": 120,
+    "element": null,
+    "worldType": "cultivation",
+    "isDroppable": true,
+    "ext": {
+      "equipSlot": "armor_legs",
+      "weaponCategory": null,
+      "compatibleElement": null,
+      "compatibleBonus": 0
+    }
+  },
+  {
+    "templateId": "wanjie-core:cultivation:wind_walker_leggings",
+    "name": "御风护腿",
+    "description": "铭刻风系阵法的护腿，穿戴者身轻如燕。",
+    "category": "equipment",
+    "subcategory": "armor_legs",
+    "rarity": "rare",
+    "maxStack": 1,
+    "maxLevel": 7,
+    "baseStats": { "defenseBonus": 18, "power": 8 },
+    "price": 2500,
+    "element": "wind",
+    "worldType": "cultivation",
+    "isDroppable": true,
+    "ext": {
+      "equipSlot": "armor_legs",
+      "weaponCategory": null,
+      "compatibleElement": "wind",
+      "compatibleBonus": 5
+    }
+  },
+  {
+    "templateId": "wanjie-core:cultivation:cotton_boots",
+    "name": "布靴",
+    "description": "普通的布制靴子。",
+    "category": "equipment",
+    "subcategory": "armor_feet",
+    "rarity": "common",
+    "maxStack": 1,
+    "maxLevel": 3,
+    "baseStats": { "defenseBonus": 3, "power": 2 },
+    "price": 100,
+    "element": null,
+    "worldType": "cultivation",
+    "isDroppable": true,
+    "ext": {
+      "equipSlot": "armor_feet",
+      "weaponCategory": null,
+      "compatibleElement": null,
+      "compatibleBonus": 0
+    }
+  },
+  {
+    "templateId": "wanjie-core:cultivation:cloud_boots",
+    "name": "踏云靴",
+    "description": "以云锦编织的仙靴，穿戴者踏云而行，速度激增。",
+    "category": "equipment",
+    "subcategory": "armor_feet",
+    "rarity": "epic",
+    "maxStack": 1,
+    "maxLevel": 8,
+    "baseStats": { "defenseBonus": 15, "power": 8 },
+    "price": 8000,
+    "element": "wind",
+    "worldType": "cultivation",
+    "isDroppable": true,
+    "ext": {
+      "equipSlot": "armor_feet",
+      "weaponCategory": null,
+      "compatibleElement": "wind",
+      "compatibleBonus": 8
+    }
+  },
+
+
+  {
+    "templateId": "wanjie-core:cultivation:fire_scripture",
+    "name": "焚天诀",
+    "description": "至阳至烈的火系攻击功法，修炼至极致可焚尽万物。",
+    "category": "technique",
+    "subcategory": "attack",
+    "rarity": "epic",
+    "maxStack": 1,
+    "maxLevel": 8,
+    "baseStats": { "power": 80, "bonus": 30, "baseMpCost": 25 },
+    "price": 10000,
+    "element": "fire",
+    "worldType": "cultivation",
+    "isDroppable": true,
+    "ext": { "baseMpCost": 25 }
+  },
+  {
+    "templateId": "wanjie-core:cultivation:thunder_fist_manual",
+    "name": "奔雷拳经",
+    "description": "以拳御雷的霸道功法，拳出雷动，刚猛无俦。",
+    "category": "technique",
+    "subcategory": "attack",
+    "rarity": "rare",
+    "maxStack": 1,
+    "maxLevel": 7,
+    "baseStats": { "power": 55, "bonus": 20, "baseMpCost": 20 },
+    "price": 4000,
+    "element": "thunder",
+    "worldType": "cultivation",
+    "isDroppable": true,
+    "ext": { "baseMpCost": 20 }
+  },
+  {
+    "templateId": "wanjie-core:cultivation:wind_sword_art",
+    "name": "清风剑法",
+    "description": "飘逸灵动的风系攻击功法，剑出如风，无迹可寻。",
+    "category": "technique",
+    "subcategory": "attack",
+    "rarity": "uncommon",
+    "maxStack": 1,
+    "maxLevel": 5,
+    "baseStats": { "power": 30, "bonus": 12, "baseMpCost": 12 },
+    "price": 1200,
+    "element": "wind",
+    "worldType": "cultivation",
+    "isDroppable": true,
+    "ext": { "baseMpCost": 12 }
+  },
+  {
+    "templateId": "wanjie-core:cultivation:iron_body_scripture",
+    "name": "金刚不坏功",
+    "description": "佛门炼体防御功法，修炼至大成可铸金刚不坏之身。",
+    "category": "technique",
+    "subcategory": "defense",
+    "rarity": "epic",
+    "maxStack": 1,
+    "maxLevel": 8,
+    "baseStats": { "power": 40, "bonus": 40, "baseMpCost": 30 },
+    "price": 12000,
+    "element": "earth",
+    "worldType": "cultivation",
+    "isDroppable": true,
+    "ext": { "baseMpCost": 30 }
+  },
+  {
+    "templateId": "wanjie-core:cultivation:water_shield_art",
+    "name": "水镜术",
+    "description": "以水化镜的防御功法，可偏转敌方攻击，以柔克刚。",
+    "category": "technique",
+    "subcategory": "defense",
+    "rarity": "rare",
+    "maxStack": 1,
+    "maxLevel": 7,
+    "baseStats": { "power": 25, "bonus": 25, "baseMpCost": 18 },
+    "price": 3500,
+    "element": "ice",
+    "worldType": "cultivation",
+    "isDroppable": true,
+    "ext": { "baseMpCost": 18 }
+  },
+  {
+    "templateId": "wanjie-core:cultivation:light_armor_mantra",
+    "name": "灵光护体诀",
+    "description": "基础防御功法，以灵力在体表形成光甲，抵御伤害。",
+    "category": "technique",
+    "subcategory": "defense",
+    "rarity": "common",
+    "maxStack": 1,
+    "maxLevel": 3,
+    "baseStats": { "power": 10, "bonus": 10, "baseMpCost": 8 },
+    "price": 400,
+    "element": "light",
+    "worldType": "cultivation",
+    "isDroppable": true,
+    "ext": { "baseMpCost": 8 }
+  },
+
+
+  {
+    "templateId": "wanjie-core:cultivation:fireball",
+    "name": "火球术",
+    "description": "凝聚火焰之力，释放一颗火球攻击单个敌人，造成火焰伤害。",
+    "category": "skill",
+    "subcategory": "magic_skill",
+    "rarity": "common",
+    "maxStack": 1,
+    "maxLevel": 5,
+    "baseStats": { "power": 30, "mpCost": 10, "cooldown": 1 },
+    "price": 300,
+    "element": "fire",
+    "isDroppable": true,
+    "ext": {
+      "requiredElement": "fire",
+      "isUltimate": false,
+      "cooldown": 1,
+      "effects": [{ "type": "damage", "baseValue": 30, "statScaling": 0.8, "target": "single" }],
+      "tags": ["instant"]
+    }
+  },
+  {
+    "templateId": "wanjie-core:cultivation:ice_lance",
+    "name": "冰枪术",
+    "description": "凝结寒冰为枪，投射攻击单个敌人，造成冰霜伤害并可能减速。",
+    "category": "skill",
+    "subcategory": "magic_skill",
+    "rarity": "uncommon",
+    "maxStack": 1,
+    "maxLevel": 5,
+    "baseStats": { "power": 45, "mpCost": 15, "cooldown": 2 },
+    "price": 500,
+    "element": "ice",
+    "isDroppable": true,
+    "ext": {
+      "requiredElement": "ice",
+      "isUltimate": false,
+      "cooldown": 2,
+      "effects": [
+        { "type": "damage", "baseValue": 45, "statScaling": 1.0, "target": "single" },
+        { "type": "debuff", "baseValue": 20, "statScaling": 0, "target": "single", "duration": 2, "description": "减速20%" }
+      ],
+      "tags": ["instant", "debuff"]
+    }
+  },
+  {
+    "templateId": "wanjie-core:cultivation:thunder_storm",
+    "name": "雷霆万钧",
+    "description": "召唤天雷轰击所有敌人，造成大范围雷电伤害。",
+    "category": "skill",
+    "subcategory": "magic_skill",
+    "rarity": "epic",
+    "maxStack": 1,
+    "maxLevel": 8,
+    "baseStats": { "power": 80, "mpCost": 40, "cooldown": 4 },
+    "price": 5000,
+    "element": "thunder",
+    "isDroppable": true,
+    "ext": {
+      "requiredElement": "thunder",
+      "isUltimate": true,
+      "cooldown": 4,
+      "effects": [
+        { "type": "damage", "baseValue": 80, "statScaling": 1.5, "target": "all" }
+      ],
+      "tags": ["instant", "aoe"]
+    }
+  },
+  {
+    "templateId": "wanjie-core:cultivation:healing_light",
+    "name": "治愈之光",
+    "description": "以灵力化为治愈之光，恢复自身或单个友方生命值。",
+    "category": "skill",
+    "subcategory": "magic_skill",
+    "rarity": "common",
+    "maxStack": 1,
+    "maxLevel": 5,
+    "baseStats": { "power": 0, "mpCost": 8, "cooldown": 2 },
+    "price": 200,
+    "element": "light",
+    "isDroppable": true,
+    "ext": {
+      "requiredElement": "light",
+      "isUltimate": false,
+      "cooldown": 2,
+      "effects": [
+        { "type": "heal", "baseValue": 40, "statScaling": 0.5, "target": "single", "description": "恢复生命值" }
+      ],
+      "tags": ["hot"]
+    }
+  },
+  {
+    "templateId": "wanjie-core:cultivation:spirit_shield",
+    "name": "灵气护盾",
+    "description": "以灵力在身前凝聚护盾，吸收一定量的伤害。",
+    "category": "skill",
+    "subcategory": "magic_skill",
+    "rarity": "uncommon",
+    "maxStack": 1,
+    "maxLevel": 5,
+    "baseStats": { "power": 0, "mpCost": 12, "cooldown": 3 },
+    "price": 400,
+    "element": null,
+    "isDroppable": true,
+    "ext": {
+      "isUltimate": false,
+      "cooldown": 3,
+      "effects": [
+        { "type": "shield", "baseValue": 60, "statScaling": 0.3, "target": "self", "duration": 3, "description": "吸收伤害" }
+      ],
+      "tags": ["shield"]
+    }
+  },
+  {
+    "templateId": "wanjie-core:cultivation:earth_quake",
+    "name": "地动术",
+    "description": "震动大地，对所有敌人造成土系伤害并可能眩晕。",
+    "category": "skill",
+    "subcategory": "magic_skill",
+    "rarity": "rare",
+    "maxStack": 1,
+    "maxLevel": 7,
+    "baseStats": { "power": 60, "mpCost": 30, "cooldown": 3 },
+    "price": 2000,
+    "element": "earth",
+    "isDroppable": true,
+    "ext": {
+      "requiredElement": "earth",
+      "isUltimate": false,
+      "cooldown": 3,
+      "effects": [
+        { "type": "damage", "baseValue": 60, "statScaling": 1.2, "target": "all" },
+        { "type": "debuff", "baseValue": 30, "statScaling": 0, "target": "all", "duration": 1, "description": "30%概率眩晕" }
+      ],
+      "tags": ["aoe", "debuff"]
+    }
+  },
+
+
+  {
+    "templateId": "wanjie-core:cultivation:heavy_strike",
+    "name": "重击",
+    "description": "蓄力一击，造成高于普通攻击的伤害。",
+    "category": "skill",
+    "subcategory": "combat_skill",
+    "rarity": "common",
+    "maxStack": 1,
+    "maxLevel": 5,
+    "baseStats": { "power": 25, "mpCost": 0, "cooldown": 2 },
+    "price": 200,
+    "element": null,
+    "isDroppable": true,
+    "ext": {
+      "isUltimate": false,
+      "cooldown": 2,
+      "effects": [{ "type": "damage", "baseValue": 25, "statScaling": 1.5, "target": "single" }],
+      "tags": ["instant"]
+    }
+  },
+  {
+    "templateId": "wanjie-core:cultivation:whirlwind_slash",
+    "name": "旋风斩",
+    "description": "旋转武器攻击周围所有敌人，造成群体伤害。",
+    "category": "skill",
+    "subcategory": "combat_skill",
+    "rarity": "uncommon",
+    "maxStack": 1,
+    "maxLevel": 5,
+    "baseStats": { "power": 35, "mpCost": 0, "cooldown": 3 },
+    "price": 500,
+    "element": "wind",
+    "isDroppable": true,
+    "ext": {
+      "weaponRestriction": "blade",
+      "isUltimate": false,
+      "cooldown": 3,
+      "effects": [{ "type": "damage", "baseValue": 35, "statScaling": 1.0, "target": "all" }],
+      "tags": ["aoe"]
+    }
+  },
+  {
+    "templateId": "wanjie-core:cultivation:lifesteal_strike",
+    "name": "嗜血一击",
+    "description": "以血祭剑，造成伤害的同时吸取敌方生命值。",
+    "category": "skill",
+    "subcategory": "combat_skill",
+    "rarity": "rare",
+    "maxStack": 1,
+    "maxLevel": 7,
+    "baseStats": { "power": 45, "mpCost": 0, "cooldown": 3 },
+    "price": 2000,
+    "element": "dark",
+    "isDroppable": true,
+    "ext": {
+      "weaponRestriction": "sword",
+      "isUltimate": false,
+      "cooldown": 3,
+      "effects": [
+        { "type": "damage", "baseValue": 45, "statScaling": 1.2, "target": "single" },
+        { "type": "heal", "baseValue": 20, "statScaling": 0.5, "target": "self", "description": "吸血效果" }
+      ],
+      "tags": ["instant", "lifesteal"]
+    }
+  },
+  {
+    "templateId": "wanjie-core:cultivation:fatal_strike",
+    "name": "致命一击",
+    "description": "瞄准敌人要害的致命攻击，暴击率大幅提升。对生命值低的敌人额外造成伤害。",
+    "category": "skill",
+    "subcategory": "combat_skill",
+    "rarity": "epic",
+    "maxStack": 1,
+    "maxLevel": 8,
+    "baseStats": { "power": 70, "mpCost": 0, "cooldown": 5 },
+    "price": 6000,
+    "element": null,
+    "isDroppable": true,
+    "ext": {
+      "isUltimate": true,
+      "cooldown": 5,
+      "effects": [{ "type": "damage", "baseValue": 70, "statScaling": 2.0, "target": "single" }],
+      "tags": ["instant", "execute"]
+    }
+  },
+  {
+    "templateId": "wanjie-core:cultivation:counter_stance",
+    "name": "反击架势",
+    "description": "摆出反击架势，受到攻击时自动反击敌人。",
+    "category": "skill",
+    "subcategory": "combat_skill",
+    "rarity": "uncommon",
+    "maxStack": 1,
+    "maxLevel": 5,
+    "baseStats": { "power": 20, "mpCost": 0, "cooldown": 4 },
+    "price": 600,
+    "element": null,
+    "isDroppable": true,
+    "ext": {
+      "isUltimate": false,
+      "cooldown": 4,
+      "effects": [
+        { "type": "buff", "baseValue": 30, "statScaling": 0, "target": "self", "duration": 2, "description": "受击时反击" }
+      ],
+      "tags": ["counter"]
+    }
+  },
+
+
+  {
+    "templateId": "wanjie-core:cultivation:qi_gathering_pill",
+    "name": "聚气丹",
+    "description": "服用后加速灵气吸收，修炼效率提升 50%，持续 30 分钟。",
+    "category": "consumable",
+    "subcategory": "pill_cultivation",
+    "rarity": "uncommon",
+    "maxStack": 99,
+    "maxLevel": 1,
+    "baseStats": { "cultivationBoost": 50 },
+    "price": 300,
+    "element": null,
+    "isDroppable": true,
+    "ext": {
+      "effects": [{ "type": "buff", "baseValue": 50, "statScaling": 0, "target": "self", "duration": 30, "description": "修炼效率+50%" }],
+      "requiredLevel": 3
+    }
+  },
+  {
+    "templateId": "wanjie-core:cultivation:essence_condensing_pill",
+    "name": "凝元丹",
+    "description": "服用后灵气凝聚加速，修炼效率提升 100%，持续 30 分钟。",
+    "category": "consumable",
+    "subcategory": "pill_cultivation",
+    "rarity": "rare",
+    "maxStack": 99,
+    "maxLevel": 1,
+    "baseStats": { "cultivationBoost": 100 },
+    "price": 800,
+    "element": null,
+    "isDroppable": true,
+    "ext": {
+      "effects": [{ "type": "buff", "baseValue": 100, "statScaling": 0, "target": "self", "duration": 30, "description": "修炼效率+100%" }],
+      "requiredLevel": 10
+    }
+  },
+  {
+    "templateId": "wanjie-core:cultivation:foundation_pill",
+    "name": "筑基丹",
+    "description": "辅助修士突破筑基境界的关键丹药，提升突破成功率 20%。",
+    "category": "consumable",
+    "subcategory": "pill_breakthrough",
+    "rarity": "rare",
+    "maxStack": 99,
+    "maxLevel": 1,
+    "baseStats": { "breakthroughBoost": 20 },
+    "price": 500,
+    "element": null,
+    "isDroppable": true,
+    "ext": {
+      "effects": [{ "type": "buff", "baseValue": 20, "statScaling": 0, "target": "self", "duration": 1, "description": "突破成功率+20%" }],
+      "requiredLevel": 5,
+      "requiredRealm": 1
+    }
+  },
+  {
+    "templateId": "wanjie-core:cultivation:golden_core_pill",
+    "name": "结金丹",
+    "description": "辅助修士凝结金丹的关键丹药，提升突破成功率 25%。",
+    "category": "consumable",
+    "subcategory": "pill_breakthrough",
+    "rarity": "epic",
+    "maxStack": 99,
+    "maxLevel": 1,
+    "baseStats": { "breakthroughBoost": 25 },
+    "price": 1500,
+    "element": null,
+    "isDroppable": true,
+    "ext": {
+      "effects": [{ "type": "buff", "baseValue": 25, "statScaling": 0, "target": "self", "duration": 1, "description": "突破成功率+25%" }],
+      "requiredLevel": 15,
+      "requiredRealm": 3
+    }
+  },
+  {
+    "templateId": "wanjie-core:cultivation:marrow_washing_pill",
+    "name": "洗髓丹",
+    "description": "洗经伐髓的珍稀丹药，服用后可重置已分配的属性点。",
+    "category": "consumable",
+    "subcategory": "pill_stat",
+    "rarity": "legendary",
+    "maxStack": 10,
+    "maxLevel": 1,
+    "baseStats": {},
+    "price": 5000,
+    "element": null,
+    "isDroppable": false,
+    "ext": {
+      "effects": [{ "type": "special", "baseValue": 1, "statScaling": 0, "target": "self", "description": "重置属性点" }],
+      "requiredLevel": 20
+    }
+  },
+  {
+    "templateId": "wanjie-core:cultivation:immortal_spirit_pill",
+    "name": "仙灵丹",
+    "description": "蕴含仙灵之力的神药，服用后永久提升各项属性 +1。",
+    "category": "consumable",
+    "subcategory": "pill_stat",
+    "rarity": "mythic",
+    "maxStack": 10,
+    "maxLevel": 1,
+    "baseStats": {},
+    "price": 50000,
+    "element": null,
+    "isDroppable": false,
+    "ext": {
+      "effects": [{ "type": "buff", "baseValue": 1, "statScaling": 0, "target": "self", "duration": -1, "description": "全属性+1（永久）" }],
+      "requiredLevel": 30
+    }
+  }
+]

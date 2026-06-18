@@ -181,8 +181,8 @@ export const FACTION_TASKS: TaskDefinition[] = [
       contribution: 300,
       experience: 300,
       items: [
-        { item: toItemDefinition('wanjie:cultivation:spirit_gathering_pill'), quantity: 3 },
-        { item: toItemDefinition('wanjie:cultivation:foundation_pill'), quantity: 2 },
+        { item: toItemDefinition('wanjie-core:cultivation:qi_gathering_pill'), quantity: 3 },
+        { item: toItemDefinition('wanjie-core:cultivation:foundation_pill'), quantity: 2 },
       ],
       message: 'Boss猎杀者！获得丰厚奖励！'
     },
@@ -202,7 +202,7 @@ export const FACTION_TASKS: TaskDefinition[] = [
       contribution: 200,
       experience: 200,
       items: [
-        { item: toItemDefinition('wanjie:cultivation:spirit_gathering_pill'), quantity: 2 },
+        { item: toItemDefinition('wanjie-core:cultivation:qi_gathering_pill'), quantity: 2 },
       ],
       message: '精英杀手！势力以你为荣！'
     },
@@ -222,7 +222,7 @@ export const FACTION_TASKS: TaskDefinition[] = [
       contribution: 250,
       experience: 250,
       items: [
-        { item: toItemDefinition('wanjie:cultivation:foundation_pill'), quantity: 3 },
+        { item: toItemDefinition('wanjie-core:cultivation:foundation_pill'), quantity: 3 },
       ],
       message: '冒险家！探索精神可嘉！'
     },
@@ -278,8 +278,8 @@ export const FACTION_TASKS: TaskDefinition[] = [
       contribution: 150,
       experience: 200,
       items: [
-        { item: toItemDefinition('wanjie:cultivation:spirit_gathering_pill'), quantity: 2 },
-        { item: toItemDefinition('wanjie:cultivation:golden_core_pill'), quantity: 1 },
+        { item: toItemDefinition('wanjie-core:cultivation:qi_gathering_pill'), quantity: 2 },
+        { item: toItemDefinition('wanjie-core:cultivation:golden_core_pill'), quantity: 1 },
       ],
       message: '突破成功！实力大增！'
     },

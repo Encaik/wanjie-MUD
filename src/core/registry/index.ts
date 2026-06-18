@@ -19,6 +19,7 @@ export { RaceRegistry } from './RaceRegistry';
 export { TalentRegistry } from './TalentRegistry';
 export { NPCDataRegistry } from './NPCDataRegistry';
 export { QuestRegistry } from './QuestRegistry';
+export { ItemRegistry } from './ItemRegistry';
 
 export type {
   // 世界观文本类型

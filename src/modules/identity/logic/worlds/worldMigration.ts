@@ -87,8 +87,7 @@ export function buildNewWorldState(
   return {
     worldFlags: newWorldFlags,
     eventHistory: [], // 新世界事件链重置
-    adventureGrid: null,
-    adventurePosition: null,
+    fortuneSlice: { session: null, phase: 'hub', lastNodeResult: null, floorTransition: null, settlement: null, pendingBattle: null },
   };
 }
 

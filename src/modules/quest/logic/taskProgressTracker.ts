@@ -313,7 +313,7 @@ export function getTutorialProgressInfo(state: TutorialState): {
 export function shouldSkipPhaseZero(protagonist: Protagonist): boolean {
   // 检查新物品系统（items）
   const items = protagonist.items ?? [];
-  const starterItemIds = ['wanjie:common:spirit_stone', 'wanjie:cultivation:qi_gathering_pill', 'wanjie:cultivation:foundation_pill', 'wanjie:common:rejuvenation_pill'];
+  const starterItemIds = ['wanjie:common:spirit_stone', 'wanjie-core:cultivation:qi_gathering_pill', 'wanjie-core:cultivation:foundation_pill', 'wanjie:common:rejuvenation_pill'];
 
   const foundCount = starterItemIds.filter(id =>
     items.some(i => i.templateId === id)
