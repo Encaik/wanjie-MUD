@@ -72,6 +72,26 @@ export interface TribulationState {
 // 心境与心魔系统类型
 // ============================================
 
+/** 心魔图鉴条目（core 层精简定义，与 modules/progression DemonMemory 结构兼容） */
+export interface DemonMemoryEntry {
+  /** 心魔类型（greed/fear/arrogance/regret/doubt） */
+  demonType: string;
+  /** 心魔名称 */
+  name: string;
+  /** 遭遇总次数 */
+  encounters: number;
+  /** 战胜次数 */
+  victories: number;
+  /** 上次遭遇时间戳 */
+  lastEncountered: number;
+  /** 上次遭遇的世界观 */
+  lastWorldType: string;
+  /** 是否已成为宿敌心魔（连败3次+） */
+  isArchNemesis: boolean;
+  /** 连败计数 */
+  consecutiveLosses: number;
+}
+
 export interface MentalState {
   stability: number;       // 心境稳定度 0-100
   karma: number;           // 业力值（正负）
@@ -79,6 +99,10 @@ export interface MentalState {
   lastDemonTime: number;   // 上次心魔时间
   lastChangeTime?: number; // 上次心境变化时间（可选，用于动画）
   mentalBuffs: MentalBuff[];
+  /** 心境护盾层数（每次修炼成功+1，突破时消耗） */
+  mindShield: number;
+  /** 心魔图鉴（记录遭遇过的所有心魔） */
+  demonCodex: DemonMemoryEntry[];
 }
 
 export interface MentalBuff {
@@ -448,7 +472,9 @@ export const DEFAULT_PROTAGONIST_EXTENSION: ProtagonistExtension = {
     karma: 0,
     demonChance: 0,
     lastDemonTime: 0,
-    mentalBuffs: []
+    mentalBuffs: [],
+    mindShield: 0,
+    demonCodex: [],
   },
   realmBottleneck: {
     isActive: false,

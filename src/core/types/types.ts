@@ -1360,8 +1360,7 @@ export interface CultivationResult {
   /** 消耗的物品（新统一物品格式） */
   itemsCost?: import('@/modules/item/types').ItemInstance[];
   canAfford?: boolean; // 是否有足够资源
-  breakthroughAttempt?: boolean; // 是否尝试突破
-  breakthroughSuccess?: boolean; // 突破是否成功
+  breakthroughReady?: boolean; // 是否满足突破条件（经验满+未满级）
   cultivationBoost?: number; // 丹药加成百分比
   baseGains?: Partial<GrowthStats>; // 基础数值（不含加成）
   boostGains?: Partial<GrowthStats>; // 丹药加成数值

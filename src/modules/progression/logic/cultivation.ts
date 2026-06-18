@@ -5,12 +5,25 @@ import type {
   FlatStats, Protagonist, CultivationResult, CharacterStats,
   WorldType, ActiveEffect, GrowthStats, StatKey,
 } from '@/core/types';
+import type { MentalState } from '@/core/types';
 import { getFinalStats } from '@/core/types';
 import { createItemInstance, getItemCount } from '@/modules/item/logic';
 import { getMaxLevel } from '@/modules/progression/data/realmData';
-
-// 重新导出 getMaxLevel
-export { getMaxLevel } from '@/modules/progression/data/realmData';
+import {
+  forgeDemon,
+  executeAttributeCheck,
+  generateStrategyChoices,
+  executeStrategyChoice,
+  simulateRefineBattle,
+  recordDemonEncounter,
+  computeCoreStats,
+} from './demonBreakthrough';
+import type {
+  BreakthroughResult,
+  GeneratedDemon,
+  StrategyChoice,
+  DemonMemory,
+} from './demonBreakthrough';
 
 const random = (min: number, max: number) => Math.floor(Math.random() * (max - min + 1)) + min;
 
@@ -331,79 +344,9 @@ export function executeCultivation(protagonist: Protagonist): CultivationResult 
     overflowPenalty = calculateOverflowPenalty(protagonist.overflowExperience, maxExp);
   }
   
-  // 尝试突破
-  if (canAttemptBreakthrough) {
-    // 使用新的突破概率计算函数
-    const breakthroughChance = calculateBreakthroughRate(
-      protagonist.level,
-      stats.幸运,
-      breakthroughBoost,
-      protagonist.overflowExperience,
-      maxExp
-    );
-    
-    // 突破判定：直接使用突破概率，不受修炼成功率影响
-    const isBreakthrough = Math.random() * 100 < breakthroughChance;
-    
-    if (isBreakthrough) {
-      // 【重构】突破成功不再直接计算属性增长
-      // 属性增长由 useCultivation.ts 根据实际逻辑计算
-      // 这里只返回突破成功的标志，不再返回误导性的 statChanges
-      
-      let msg = messages.breakthrough[random(0, messages.breakthrough.length - 1)] +
-        `\n\n【境界提升】${protagonist.level}级 → ${protagonist.level + 1}级`;
-      
-      if (breakthroughBoost > 0) {
-        msg += `\n\n【突破丹药】成功率提升${breakthroughBoost}%！`;
-      }
-      
-      return {
-        success: true,
-        message: msg,
-        statChanges: {}, // 属性增长由 useCultivation.ts 计算
-        itemsCost,
-        breakthroughAttempt: true,
-        breakthroughSuccess: true,
-        cultivationBoost,
-        baseGains: {},
-        boostGains: {},
-      };
-    } else {
-      // 突破失败
-      const currentRate = calculateBreakthroughRate(
-        protagonist.level,
-        stats.幸运,
-        breakthroughBoost,
-        protagonist.overflowExperience,
-        maxExp
-      );
-      const failMessage = `修炼时感受到了突破的契机，突破成功率${currentRate.toFixed(1)}%，未能成功突破。\n\n${breakthroughBoost > 0 ? '' : '建议：服用突破丹药后再尝试修炼，可大幅提升突破成功率。'}`;
-      
-      // 即使突破失败，修炼仍有效果（但受溢出惩罚）
-      const penaltyMultiplier = 1 - overflowPenalty;
-      const baseGains = {
-        体质: random(1, 2),
-        灵根: random(1, 2),
-      };
-      const boostMultiplier = cultivationBoost / 100;
-      const statGains: Partial<FlatStats> = {
-        体质: Math.max(1, Math.floor(baseGains.体质 * (1 + boostMultiplier) * penaltyMultiplier)),
-        灵根: Math.max(1, Math.floor(baseGains.灵根 * (1 + boostMultiplier) * penaltyMultiplier)),
-      };
-      
-      return {
-        success: true,
-        message: failMessage +
-          (overflowPenalty > 0 ? `\n\n【经验溢出】修炼效果降低${Math.floor(overflowPenalty * 100)}%` : '') +
-          (cultivationBoost > 0 ? `\n\n【丹药效果】修炼加成${cultivationBoost}%` : ''),
-        statChanges: statGains,
-        itemsCost,
-        breakthroughAttempt: true,
-        breakthroughSuccess: false,
-        cultivationBoost,
-      };
-    }
-  }
+  // 检测突破条件：经验满且未满级 → 修炼成功但标记可突破
+  // 实际突破通过 executeBreakthrough() 手动触发
+  const breakthroughReady = canAttemptBreakthrough;
   
   // 普通修炼
   if (isSuccess) {
@@ -466,6 +409,7 @@ export function executeCultivation(protagonist: Protagonist): CultivationResult 
       message: msg,
       statChanges: statGains,
       itemsCost,
+      breakthroughReady,
       cultivationBoost, // 返回丹药加成百分比
       baseGains, // 返回基础数值
       boostGains, // 返回丹药加成数值
@@ -477,9 +421,138 @@ export function executeCultivation(protagonist: Protagonist): CultivationResult 
       success: false,
       message: messages.failure[random(0, messages.failure.length - 1)],
       statChanges: {},
-      itemsCost
+      itemsCost,
+      breakthroughReady: false,
     };
   }
+}
+
+/**
+ * 执行心魔突破战（三阶段流程）
+ *
+ * 使用心魔动态生成引擎和三个阶段逻辑，将突破过程转化为
+ * 有操作感的"心魔突破战"。成功后等级+1，属性增长。
+ *
+ * 调用方需要：
+ * 1. 先在 UI 中展示阶段一检定结果
+ * 2. 让玩家选择阶段二的策略
+ * 3. 调用 executeBreakthroughPhase3() 完成阶段三
+ *
+ * @param protagonist - 主角数据
+ * @param phase2Choice - 玩家在阶段二选择的策略（undefined = 仅执行阶段一）
+ * @returns 突破结果（含完整三个阶段的数据）
+ */
+export function executeBreakthrough(
+  protagonist: Protagonist,
+  phase2Choice?: StrategyChoice | null,
+): BreakthroughResult {
+  const stats = getFinalStats(protagonist.stats);
+  const coreStats = computeCoreStats(stats);
+  const maxExp = getMaxExperience(protagonist.level);
+  const breakthroughBoost = calculateBreakthroughBoost(protagonist.activeEffects);
+  const mentalState = protagonist.mentalState ?? {
+    stability: 70, karma: 0, demonChance: 0, lastDemonTime: 0,
+    mentalBuffs: [], mindShield: 0, demonCodex: [],
+  };
+
+  // 生成心魔
+  const seed = Date.now() + protagonist.level * 7919;
+  const demon = forgeDemon({
+    worldType: protagonist.world.type,
+    playerLevel: protagonist.level,
+    playerCoreStats: coreStats,
+    karma: mentalState.karma,
+    cultivationPath: protagonist.cultivationPath ?? null,
+    seed,
+    demonCodex: mentalState.demonCodex ?? [],
+  });
+
+  // 阶段一：属性检定
+  const phase1Result = executeAttributeCheck(demon, coreStats, mentalState.demonCodex ?? []);
+
+  // 阶段二：生成策略选项
+  const strategyChoices = generateStrategyChoices(
+    demon,
+    coreStats,
+    protagonist.cultivationPath ?? null,
+  );
+
+  // 阶段二执行（如果有选择）
+  let phase2Result;
+  if (phase2Choice) {
+    phase2Result = executeStrategyChoice(
+      phase2Choice,
+      coreStats,
+      protagonist.cultivationPath ?? null,
+      seed + 1,
+    );
+  } else {
+    // 无选择时默认失败
+    phase2Result = {
+      choiceIndex: -1,
+      isDemonAbsorb: false,
+      success: false,
+      message: '未做出选择，心魔趁虚而入。',
+      statChanges: {},
+      stabilityChange: -20,
+      demonChanceChange: 0.05,
+    };
+  }
+
+  // 阶段三：心魔炼化
+  const baseMindShield = 30 + mentalState.mindShield * 5 + coreStats.willpower;
+  const phase3Result = simulateRefineBattle({
+    physicalATK: coreStats.physicalATK,
+    specialATK: coreStats.specialATK,
+    speed: coreStats.speed,
+    perception: coreStats.perception,
+    mindShield: Math.min(100, baseMindShield),
+    duration: 15 + Math.floor(coreStats.speed * 2),
+    maxWeaknesses: 3 + Math.floor(coreStats.perception / 20),
+    items: [], // MVP：道具预留
+    finalSkillAvailable: (protagonist.pathLevel ?? 1) >= 5,
+    pathType: protagonist.cultivationPath ?? null,
+  });
+
+  // 判定整体突破是否成功
+  const demonDefeated = phase3Result.progress >= 100 && phase3Result.mindShield > 0;
+  const overallSuccess = phase2Result.success && demonDefeated;
+
+  // 计算属性增长
+  const statGains = { ...phase2Result.statChanges };
+
+  // 心魔图鉴更新（取最新条目）
+  const updatedCodex = recordDemonEncounter(
+    mentalState.demonCodex ?? [],
+    demon.type,
+    demon.name,
+    protagonist.world.type,
+    demonDefeated,
+  );
+  const demonMemory = updatedCodex[updatedCodex.length - 1];
+
+  const messages: string[] = [
+    `【心魔显形】${demon.name}从你内心深处浮现！`,
+    `【属性检定】${phase1Result.totalMindDamage > 0 ? `心境受创 -${phase1Result.totalMindDamage}` : '全属性压制！心境无损！'}`,
+    `【策略选择】${phase2Result.message}`,
+    `【心魔炼化】${demonDefeated ? '炼化成功！' : '炼化失败，心魔逃脱……'}`,
+  ];
+
+  return {
+    success: overallSuccess,
+    levelUp: overallSuccess,
+    statGains,
+    demonDefeated,
+    mindShieldChange: overallSuccess ? -10 : -5,
+    stabilityChange: phase2Result.stabilityChange,
+    demonMemory,
+    messages,
+    phaseResults: {
+      phase1: phase1Result,
+      phase2: phase2Result,
+      phase3: phase3Result,
+    },
+  };
 }
 
 // 计算综合战力

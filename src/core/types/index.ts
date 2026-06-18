@@ -170,6 +170,7 @@ export type {
   TribulationConfig,
   TribulationState,
   MentalState,
+  DemonMemoryEntry,
   MentalBuff,
   DemonEncounter,
   DemonChoice,

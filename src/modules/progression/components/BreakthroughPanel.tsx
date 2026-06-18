@@ -1,15 +1,17 @@
 'use client';
 
-import { AlertTriangle, CloudLightning, Droplets, Swords, TrendingUp } from 'lucide-react';
+import { TrendingUp, Shield, AlertTriangle } from 'lucide-react';
 
 import { CardCornerDecorations } from '@/shared/components';
 import { Badge } from '@/shared/ui/data-display/badge';
 import { Button } from '@/shared/ui/actions/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/data-display/card';
-import type { ActiveEffect, WorldType } from '@/core/types';
+import { Progress } from '@/shared/ui/feedback/progress';
+import type { WorldType } from '@/core/types';
 import { getTerminology } from '@/modules/narrative/logic/terminology';
 import { getMaxExperience, calculateBreakthroughRate, calculateBreakthroughBoost } from '@/modules/progression/logic/cultivation';
-import { getNextTribulationLevel } from '@/modules/ascension/data/tribulationData';
+import { computeCoreStats } from '@/modules/progression/logic/demonBreakthrough';
+import { getFinalStats } from '@/core/types';
 import { MAX_LEVEL } from '@/modules/progression/logic/realmSystem';
 
 interface BreakthroughPanelProps {
@@ -19,66 +21,51 @@ interface BreakthroughPanelProps {
   experience: number;
   /** 溢出经验值 */
   overflowExperience: number;
-  /** 幸运值 */
-  luck: number;
   /** 活跃效果列表 */
-  activeEffects: ActiveEffect[];
-  /** 世界类型（用于术语） */
+  activeEffects: import('@/core/types').ActiveEffect[];
+  /** 世界类型 */
   worldType: WorldType;
   /** 是否自动修炼中 */
   autoCultivating: boolean;
-  /** 是否禁用操作 */
+  /** 是否禁用 */
   disabled?: boolean;
-  /** 渡劫回调 */
-  onTribulation?: () => void;
-  /** 挑战天道回调 */
-  onChallengeGuardian?: () => void;
-  /** 当前HP和MP是否已满（用于天道挑战判断） */
-  hpFull?: boolean;
-  mpFull?: boolean;
+  /** 当前心境护盾层数 */
+  mindShield?: number;
+  /** 冲击境界回调 */
+  onBreakthrough: () => void;
 }
 
 /**
- * BreakthroughPanel — 突破、渡劫、天道挑战面板
+ * BreakthroughPanel — 突破入口面板
  *
- * 从 CultivationPanel 拆分出的独立子系统，
- * 负责突破概率显示、经验溢出警告、渡劫提示和满级天道挑战。
+ * 当经验满足突破条件时显示"冲击境界"按钮，触发心魔突破战流程。
  */
 export function BreakthroughPanel({
   level,
   experience,
   overflowExperience,
-  luck,
   activeEffects,
   worldType,
   autoCultivating,
   disabled = false,
-  onTribulation,
-  onChallengeGuardian,
-  hpFull = true,
-  mpFull = true,
+  mindShield = 0,
+  onBreakthrough,
 }: BreakthroughPanelProps) {
   const terminology = getTerminology(worldType);
   const maxExp = getMaxExperience(level);
   const isMaxLevel = level >= MAX_LEVEL;
-  const canAttemptBreakthrough = experience >= maxExp;
+  const canAttemptBreakthrough = experience >= maxExp && !isMaxLevel;
   const hasOverflow = overflowExperience > 0;
 
-  // 计算突破概率
+  // 预估突破成功率（显示参考值）
   const breakthroughBoost = calculateBreakthroughBoost(activeEffects);
-  const breakthroughRate = canAttemptBreakthrough
-    ? calculateBreakthroughRate(level, luck, breakthroughBoost, overflowExperience, maxExp)
+  const flatStats = { 体质: 50, 灵根: 50, 悟性: 50, 幸运: 50, 意志: 50 };
+  const previewRate = canAttemptBreakthrough
+    ? calculateBreakthroughRate(level, 50, breakthroughBoost, overflowExperience, maxExp)
     : 0;
 
-  // 丹药加成
-  const breakthroughEffect = activeEffects.find(e => e.type === 'breakthrough_boost');
-
-  // 渡劫判断
-  const nextTribLevel = getNextTribulationLevel(level);
-  const needsTribulation = nextTribLevel !== null && level >= nextTribLevel && canAttemptBreakthrough;
-
-  // 天道挑战条件
-  const canChallengeGuardian = isMaxLevel && hpFull && mpFull;
+  // 心境护盾预估
+  const estimatedMindShield = 30 + mindShield * 5 + 50; // 粗略估计 willpower=50
 
   return (
     <Card className="relative overflow-hidden">
@@ -90,36 +77,16 @@ export function BreakthroughPanel({
         </CardTitle>
       </CardHeader>
       <CardContent className="pt-0 pb-2 space-y-2">
-        {/* 满级天道挑战 */}
+        {/* 满级提示 */}
         {isMaxLevel && (
-          <div className="border-2 border-game-tribulation/30 rounded-lg p-2 bg-gradient-to-r from-game-tribulation/10 to-game-cultivation/10">
-            <div className="flex items-center justify-between mb-1.5">
-              <div className="flex items-center gap-1.5 text-xs font-medium text-game-tribulation">
-                <Swords className="w-3.5 h-3.5" />
-                <span>天道</span>
-              </div>
-              <span className="text-[10px] text-muted-foreground">满级挑战</span>
-            </div>
-            <Button
-              variant="default"
-              className="w-full h-8 text-xs bg-gradient-to-r from-game-tribulation to-game-cultivation hover:brightness-110"
-              onClick={onChallengeGuardian}
-              disabled={disabled || !canChallengeGuardian || autoCultivating}
-            >
-              <Swords className="w-3 h-3 mr-1" />
-              {canChallengeGuardian ? '挑战天道' : '需满状态挑战'}
-            </Button>
-            {!canChallengeGuardian && (
-              <div className="text-[10px] text-center text-muted-foreground mt-1">
-                请先恢复至满状态
-              </div>
-            )}
+          <div className="text-xs text-muted-foreground text-center py-2">
+            已达最高等级
           </div>
         )}
 
-        {/* 突破提示与概率显示 */}
-        {canAttemptBreakthrough && !isMaxLevel && (
-          <div className="bg-gradient-to-r from-game-tribulation/10 to-game-cultivation/10 p-2 rounded-lg space-y-1.5">
+        {/* 可突破状态 */}
+        {canAttemptBreakthrough && (
+          <div className="bg-gradient-to-r from-game-tribulation/10 to-game-cultivation/10 p-2 rounded-lg space-y-2">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-1 text-xs text-game-tribulation">
                 <TrendingUp className="w-3.5 h-3.5" />
@@ -130,33 +97,53 @@ export function BreakthroughPanel({
               </Badge>
             </div>
 
-            {/* 突破概率显示 */}
-            <div className="bg-card rounded p-1.5 space-y-1">
+            <div className="space-y-1">
               <div className="flex items-center justify-between text-[10px]">
-                <span className="text-muted-foreground">突破成功率</span>
-                <span className={`font-bold ${breakthroughRate >= 70 ? 'text-game-recovery' : breakthroughRate >= 40 ? 'text-game-economy' : 'text-game-combat'}`}>
-                  {breakthroughRate.toFixed(1)}%
+                <span className="text-muted-foreground">预估成功率</span>
+                <span className={`font-bold ${previewRate >= 70 ? 'text-game-recovery' : previewRate >= 40 ? 'text-game-economy' : 'text-game-combat'}`}>
+                  {previewRate.toFixed(1)}%
                 </span>
               </div>
-
-              {/* 概率进度条 */}
-              <div className="h-1.5 bg-muted rounded-full overflow-hidden">
-                <div
-                  className={`h-full rounded-full transition-all ${
-                    breakthroughRate >= 70 ? 'bg-game-recovery' : breakthroughRate >= 40 ? 'bg-game-economy' : 'bg-game-combat'
-                  }`}
-                  style={{ width: `${Math.min(breakthroughRate, 100)}%` }}
-                />
-              </div>
-
-              {/* 丹药加成显示 */}
-              {breakthroughEffect && (
-                <div className="flex items-center gap-1 text-[10px] text-game-cultivation">
-                  <Droplets className="w-2.5 h-2.5" />
-                  <span>{breakthroughEffect.itemName}加成 +{breakthroughEffect.value}%</span>
-                </div>
-              )}
+              <Progress value={previewRate} className="h-1.5" />
             </div>
+
+            <div className="flex items-center justify-between text-[10px] text-muted-foreground">
+              <div className="flex items-center gap-1">
+                <Shield className="w-3 h-3" />
+                <span>心境护盾</span>
+              </div>
+              <span className="font-medium">{estimatedMindShield}</span>
+            </div>
+
+            {mindShield > 0 && (
+              <div className="text-[10px] text-game-cultivation">
+                修炼积累护盾层数：{mindShield}层
+              </div>
+            )}
+
+            <Button
+              className="w-full h-8 text-xs bg-gradient-to-r from-game-tribulation to-game-cultivation hover:brightness-110"
+              onClick={onBreakthrough}
+              disabled={disabled || autoCultivating}
+            >
+              <TrendingUp className="w-3 h-3 mr-1" />
+              冲击境界
+            </Button>
+
+            <p className="text-[10px] text-muted-foreground text-center">
+              将触发心魔突破战——战胜心魔方能突破境界
+            </p>
+          </div>
+        )}
+
+        {/* 经验不足时显示进度 */}
+        {!canAttemptBreakthrough && !isMaxLevel && (
+          <div className="space-y-1">
+            <div className="flex items-center justify-between text-[10px] text-muted-foreground">
+              <span>突破进度</span>
+              <span>{experience}/{maxExp}</span>
+            </div>
+            <Progress value={(experience / maxExp) * 100} className="h-1.5" />
           </div>
         )}
 
@@ -165,33 +152,6 @@ export function BreakthroughPanel({
           <div className="text-xs bg-game-economy/10 text-game-economy p-2 rounded-lg flex items-center gap-1">
             <AlertTriangle className="w-3 h-3" />
             经验溢出 {overflowExperience}，修炼效率降低
-          </div>
-        )}
-
-        {/* 渡劫提示区域 */}
-        {needsTribulation && !isMaxLevel && (
-          <div className="border-2 border-game-tribulation/30 rounded-lg p-2 bg-gradient-to-r from-game-tribulation/10 to-game-combat/10">
-            <div className="flex items-center justify-between mb-1.5">
-              <div className="flex items-center gap-1.5 text-xs font-medium text-game-tribulation">
-                <CloudLightning className="w-3.5 h-3.5" />
-                <span>天劫将至</span>
-              </div>
-              <Badge variant="outline" className="text-[10px] border-game-combat text-game-combat">
-                境界瓶颈
-              </Badge>
-            </div>
-            <p className="text-[10px] text-muted-foreground mb-2">
-              你的修为已达到瓶颈，需要渡劫才能继续突破。
-            </p>
-            <Button
-              variant="outline"
-              className="w-full h-7 text-xs border-game-tribulation text-game-tribulation hover:bg-game-tribulation/10"
-              disabled={disabled || autoCultivating || !onTribulation}
-              onClick={onTribulation}
-            >
-              <CloudLightning className="w-3 h-3 mr-1" />
-              准备渡劫
-            </Button>
           </div>
         )}
       </CardContent>

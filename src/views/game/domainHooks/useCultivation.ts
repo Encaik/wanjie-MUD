@@ -70,6 +70,7 @@ export function useCultivation() {
   return {
     performCultivation: cultivationHook.performCultivation,
     performRest: cultivationHook.performRest,
+    performBreakthrough: cultivationHook.performBreakthrough,
     toggleAutoCultivation: cultivationHook.toggleAutoCultivation,
     performSeclusion: seclusionHook.performSeclusion,
     autoCultivating: gameState.autoCultivating,

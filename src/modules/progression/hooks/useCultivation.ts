@@ -11,10 +11,10 @@ import type { Dispatch, SetStateAction } from 'react';
 
 import { CULTIVATION_PATHS } from '@/modules/progression/data/cultivationPathData';
 import { calcPlayerMaxHp, calcPlayerMaxMp } from '@/core/calculation';
-import { executeCultivation, getMaxExperience } from '@/modules/progression/logic/cultivation';
+import { executeCultivation, getMaxExperience, executeBreakthrough } from '@/modules/progression/logic/cultivation';
 import { executeCultivationWithStrategy } from '@/modules/progression/logic/cultivationStrategy';
 import type { CultivationStrategy } from '@/modules/progression/logic/types';
-import { applyMentalChange } from '@/core/engine';
+import type { StrategyChoice } from '@/modules/progression/logic/demonBreakthrough';
 import { updateTaskProgress } from '@/core/engine';
 import { processExperienceGain, calculateBreakthroughTransfer } from '@/modules/progression/logic/experienceSystem';
 import { gameSystems } from '@/core/engine';
@@ -175,6 +175,7 @@ export interface UseGameCultivationProps {
 export interface UseGameCultivationReturn {
   performCultivation: (strategy?: CultivationStrategy) => void;
   performRest: () => void;
+  performBreakthrough: (phase2Choice: StrategyChoice | null) => void;
   toggleAutoCultivation: () => void;
 }
 
@@ -234,37 +235,9 @@ export function useGameCultivation({
         }
       }
       
-      // 【重构】突破时属性增长设计
-      // 1. 不再所有属性都增长，而是随机选择 1-2 个属性
-      // 2. 增长值更合理（1-3点），符合游戏平衡
-      // 3. 记录实际应用的值，用于消息显示
-      const actualStatGains: Partial<GrowthStats> = {};
-      
-      if (result.breakthroughSuccess) {
-        const growthCap = newLevel * 2;
-        
-        // 随机选择 1-2 个属性进行增长
-        const allStats = ['体质', '灵根', '悟性', '幸运', '意志'] as const;
-        const numStatsToGrow = Math.random() < 0.3 ? 2 : 1; // 30% 概率增长2个属性
-        const shuffled = [...allStats].sort(() => Math.random() - 0.5);
-        const statsToGrow = shuffled.slice(0, numStatsToGrow);
-        
-        // 每个属性增长 1-3 点
-        for (const stat of statsToGrow) {
-          const gain = Math.floor(Math.random() * 3) + 1; // 1-3 点
-          actualStatGains[stat] = gain;
-        }
-        
-        newStats = applyGrowthStatChanges(
-          prev.protagonist.stats,
-          actualStatGains,
-          growthCap
-        );
-        
-        // 更新 result.statChanges 以便消息显示正确
-        result.statChanges = actualStatGains;
-      }
-      
+      // 修炼不再自动触发突破——经验满时标记 breakthroughReady，
+      // 实际突破通过 performBreakthrough() 手动调用 executeBreakthrough()
+
       const costDetails: string[] = [];
       if (result.itemsCost) {
         for (const cost of result.itemsCost) {
@@ -272,85 +245,61 @@ export function useGameCultivation({
           newItems = deductByTemplate(newItems, cost.templateId, cost.quantity);
         }
       }
-      
-      const newActiveEffects = result.success 
+
+      const newActiveEffects = result.success
         ? updateActiveEffects(prev.protagonist.activeEffects)
         : prev.protagonist.activeEffects;
-      
+
       let newRealm = prev.protagonist.realm;
       let newExp = prev.protagonist.experience;
       let newOverflowExp = prev.protagonist.overflowExperience;
       let messageType: MessageRecord['type'] = 'info';
       let messageTitle = '修炼';
-      
-      if (result.breakthroughSuccess) {
-        newLevel += 1;
-        newRealm = getRealmName(prev.protagonist.world.realmSystem, newLevel);
-        const nextMaxExp = getMaxExperience(newLevel);
-        newExp = calculateBreakthroughTransfer(newOverflowExp, nextMaxExp);
-        newOverflowExp = 0;
-        messageType = 'success';
-        messageTitle = '境界突破';
-        
-        const currentMentalState = prev.protagonist.mentalState ?? DEFAULT_PROTAGONIST_EXTENSION.mentalState;
-        const { newState: newMentalState } = applyMentalChange(currentMentalState, 'breakthrough_success');
-        newMentalStateForReturn = newMentalState;
-      } else if (result.breakthroughAttempt) {
+
+      // 普通修炼：处理经验获取
+      const maxExp = getMaxExperience(newLevel);
+      const expGain = result.experienceGain ?? (() => {
         const levelBonus = Math.floor(newLevel / 10) * 5;
         const baseExpGain = result.success ? 20 : 5;
-        const expGain = baseExpGain + levelBonus;
-        const maxExp = getMaxExperience(newLevel);
-        const expResult = processExperienceGain(newExp, expGain, maxExp, newOverflowExp);
-        newExp = expResult.newExp;
-        newOverflowExp = expResult.newOverflow;
-        messageType = 'failure';
-        messageTitle = '突破失败';
-        
-        const currentMentalState = prev.protagonist.mentalState ?? DEFAULT_PROTAGONIST_EXTENSION.mentalState;
-        const { newState: newMentalState, message: mentalMsg } = applyMentalChange(currentMentalState, 'breakthrough_fail');
-        newMentalStateForReturn = newMentalState;
-        mentalChangeMessage = mentalMsg;
-      } else {
-        const maxExp = getMaxExperience(newLevel);
-        const expGain = result.experienceGain ?? (() => {
-          const levelBonus = Math.floor(newLevel / 10) * 5;
-          const baseExpGain = result.success ? 20 : 5;
-          return baseExpGain + levelBonus;
-        })();
-        const expResult = processExperienceGain(newExp, expGain, maxExp, newOverflowExp);
-        newExp = expResult.newExp;
-        newOverflowExp = expResult.newOverflow;
-        messageType = result.success ? 'success' : 'info';
+        return baseExpGain + levelBonus;
+      })();
+      const expResult = processExperienceGain(newExp, expGain, maxExp, newOverflowExp);
+      newExp = expResult.newExp;
+      newOverflowExp = expResult.newOverflow;
+      messageType = result.success ? 'success' : 'info';
+
+      // 修炼成功时增加心境护盾
+      let newMindShield = prev.protagonist.mentalState?.mindShield ?? 0;
+      if (result.success) {
+        newMindShield = Math.min(20, newMindShield + 1);
       }
-      
+
+      // 经验满可突破时的提示
+      if (result.breakthroughReady) {
+        messageTitle = '修炼（可突破）';
+        result.message += `\n\n⚡ 修为已满！点击"冲击境界"挑战心魔突破。`;
+      }
+
       const rewards: MessageRecord['rewards'] = {};
       if (result.statChanges && Object.keys(result.statChanges).length > 0) {
         rewards.stats = result.statChanges;
-        // 检查 baseGains 和 boostGains 是否有实际内容
         const hasBaseGains = result.baseGains && Object.values(result.baseGains).some(v => v !== 0);
         const hasBoostGains = result.boostGains && Object.values(result.boostGains).some(v => v !== 0);
-        
+
         if (hasBaseGains || hasBoostGains) {
-          // 有丹药加成的情况，显示详细的 base+boost
           rewards.statDetails = Object.keys(result.statChanges).map(stat => ({
             stat,
             base: result.baseGains![stat as keyof typeof result.baseGains] || 0,
             boost: result.boostGains![stat as keyof typeof result.boostGains] || 0,
           }));
         }
-        // 突破成功时，statChanges 就是 actualStatGains，不需要 statDetails
-        // MessagePanel 会直接显示 stats 的值
       }
-      if (result.breakthroughSuccess) {
-        rewards.experience = newExp;
-      } else if (!result.breakthroughAttempt) {
-        rewards.experience = result.experienceGain ?? (() => {
-          const levelBonus = Math.floor(newLevel / 10) * 5;
-          return (result.success ? 20 : 5) + levelBonus;
-        })();
-        if (result.experienceBoost && result.experienceBoost > 0) {
-          rewards.experienceBoost = result.experienceBoost;
-        }
+      rewards.experience = result.experienceGain ?? (() => {
+        const levelBonus = Math.floor(newLevel / 10) * 5;
+        return (result.success ? 20 : 5) + levelBonus;
+      })();
+      if (result.experienceBoost && result.experienceBoost > 0) {
+        rewards.experienceBoost = result.experienceBoost;
       }
       
       const details = costDetails.length > 0 ? `消耗: ${costDetails.join(', ')}` : undefined;
@@ -359,29 +308,16 @@ export function useGameCultivation({
       const statsEvents = [
         { type: 'cultivation:performed' as const, payload: { count: 1 }, timestamp: now },
       ];
-      if (result.breakthroughSuccess) {
-        statsEvents.push({ type: 'cultivation:breakthrough' as const, payload: { count: 1 }, timestamp: now });
-      }
-      if (newLevel > prev.statistics.maxLevel) {
-        statsEvents.push({ type: 'player:level_up' as const, payload: { newLevel }, timestamp: now });
+      if (result.breakthroughReady) {
+        statsEvents.push({ type: 'cultivation:breakthrough_ready' as const, payload: { count: 1 }, timestamp: now });
       }
       const newStatistics = processStatisticsEvents(prev.statistics, statsEvents);
-      
-      // 将 statChanges 转换为 Record<string, number> 格式
+
       const statGains: Record<string, number> = {};
       if (result.statChanges) {
-        if ('growth' in result.statChanges && result.statChanges.growth) {
-          Object.assign(statGains, result.statChanges.growth);
-        }
+        Object.assign(statGains, result.statChanges);
       }
-      gameSystems.triggerCultivationDone(
-        statGains,
-        !!result.breakthroughAttempt,
-        !!result.breakthroughSuccess
-      );
-      if (newLevel > prev.protagonist.level) {
-        gameSystems.triggerLevelUp(prev.protagonist.level, newLevel);
-      }
+      gameSystems.triggerCultivationDone(statGains, false, false);
       
       let newFactionProgress = prev.protagonist.factionProgress;
       if (prev.protagonist.factionId && newFactionProgress && result.success) {
@@ -412,21 +348,8 @@ export function useGameCultivation({
       
       const newTime = prev.time ? gameClock.advance(prev.time, 'cultivate') : prev.time;
       
-      // 突破成功时重新计算 maxHp 和 maxMp
-      let newMaxHp = prev.protagonist.maxHp;
-      let newMaxMp = prev.protagonist.maxMp;
-      let newCurrentHp = prev.protagonist.currentHp;
-      let newCurrentMp = prev.protagonist.currentMp;
-      
-      if (result.breakthroughSuccess) {
-        // 根据新属性和新等级重新计算最大血量和法力
-        newMaxHp = calcPlayerMaxHp(newStats.base.体质, newLevel, prev.protagonist.world.worldStats);
-        newMaxMp = calcPlayerMaxMp(newStats.base.灵根, newLevel);
-        // 突破成功时恢复满血满蓝
-        newCurrentHp = newMaxHp;
-        newCurrentMp = newMaxMp;
-      }
-      
+      // 突破不再在修炼流程中处理，由 performBreakthrough 单独处理
+
       return {
         ...prev,
         protagonist: {
@@ -439,14 +362,13 @@ export function useGameCultivation({
           experience: newExp,
           overflowExperience: newOverflowExp,
           statCapBonuses: newStatCapBonuses,
-          maxHp: newMaxHp,
-          maxMp: newMaxMp,
-          currentHp: newCurrentHp,
-          currentMp: newCurrentMp,
           factionProgress: newFactionProgress,
           pathExp: newPathExp,
           pathLevel: newPathLevel,
-          ...(newMentalStateForReturn ? { mentalState: newMentalStateForReturn } : {}),
+          mentalState: {
+            ...(prev.protagonist.mentalState ?? DEFAULT_PROTAGONIST_EXTENSION.mentalState),
+            mindShield: newMindShield,
+          },
         },
         statistics: newStatistics,
         factionProgress: newFactionProgress,
@@ -522,6 +444,108 @@ export function useGameCultivation({
     });
   }, [addMessageInternal, setGameState]);
 
+  // 执行心魔突破战
+  const performBreakthrough = useCallback((phase2Choice: StrategyChoice | null) => {
+    setGameState((prev: GameState) => {
+      if (!prev.protagonist) return prev;
+
+      const result = executeBreakthrough(prev.protagonist, phase2Choice);
+
+      if (!phase2Choice) {
+        return {
+          ...prev,
+          lastActionResult: {
+            success: true,
+            message: `心魔突破流程已启动：${result.phaseResults.phase1.totalMindDamage > 0 ? `心境受创 -${result.phaseResults.phase1.totalMindDamage}` : '全属性压制！'}`,
+            statChanges: {},
+          },
+        };
+      }
+
+      let newLevel = prev.protagonist.level;
+      let newRealm = prev.protagonist.realm;
+      let newStats = prev.protagonist.stats;
+      let newExp = prev.protagonist.experience;
+      let newOverflowExp = prev.protagonist.overflowExperience;
+
+      if (result.success && result.levelUp) {
+        newLevel += 1;
+        newRealm = getRealmName(prev.protagonist.world.realmSystem, newLevel);
+        const nextMaxExp = getMaxExperience(newLevel);
+        newExp = calculateBreakthroughTransfer(newOverflowExp, nextMaxExp);
+        newOverflowExp = 0;
+
+        if (Object.keys(result.statGains).length > 0) {
+          newStats = applyGrowthStatChanges(
+            prev.protagonist.stats,
+            result.statGains,
+            newLevel * 2,
+          );
+        }
+      }
+
+      const currentMental = prev.protagonist.mentalState ?? DEFAULT_PROTAGONIST_EXTENSION.mentalState;
+      const newStability = Math.max(0, Math.min(100,
+        currentMental.stability + (result.stabilityChange ?? 0)
+      ));
+      const newDemonChance = Math.max(0, Math.min(1,
+        (currentMental.demonChance ?? 0) + (result.phaseResults.phase2.demonChanceChange ?? 0)
+      ));
+      const newMindShield = Math.max(0,
+        (currentMental.mindShield ?? 0) + (result.mindShieldChange ?? 0)
+      );
+
+      const newMentalState = {
+        ...currentMental,
+        stability: newStability,
+        demonChance: newDemonChance,
+        mindShield: newMindShield,
+        demonCodex: result.demonMemory
+          ? [
+              ...(currentMental.demonCodex ?? []).filter(
+                m => m.demonType !== result.demonMemory.demonType,
+              ),
+              result.demonMemory,
+            ]
+          : currentMental.demonCodex ?? [],
+        lastDemonTime: Date.now(),
+      };
+
+      const msgType = result.success ? 'success' : 'failure';
+      const msgTitle = result.success ? '境界突破成功！' : '突破失败';
+
+      return {
+        ...prev,
+        protagonist: {
+          ...prev.protagonist,
+          level: newLevel,
+          realm: newRealm,
+          stats: newStats,
+          experience: newExp,
+          overflowExperience: newOverflowExp,
+          mentalState: newMentalState,
+        },
+        statistics: result.success
+          ? processStatisticsEvent(prev.statistics, {
+              type: 'cultivation:breakthrough',
+              payload: { count: 1 },
+              timestamp: Date.now(),
+            })
+          : prev.statistics,
+        messages: addMessageInternal(
+          prev.messages,
+          msgType,
+          msgTitle,
+          result.messages.join('\n'),
+          undefined,
+          result.success && Object.keys(result.statGains).length > 0
+            ? { stats: result.statGains }
+            : undefined,
+        ),
+      };
+    });
+  }, [addMessageInternal, setGameState]);
+
   // 切换自动修炼
   const toggleAutoCultivation = useCallback(() => {
     setGameState((prev: GameState) => {
@@ -577,25 +601,6 @@ export function useGameCultivation({
         }
 
         let newItems = [...(prev.protagonist.items || [])];
-        let newStats = prev.protagonist.stats;
-        let newLevel = prev.protagonist.level;
-        
-        // 自动修炼不再直接增加属性，只有突破时才增加
-        if (result.breakthroughSuccess) {
-          const growthGain = Math.floor(Math.random() * 5) + 2; // 2~6点
-          const growthCap = newLevel * 2;
-          newStats = applyGrowthStatChanges(
-            prev.protagonist.stats,
-            {
-              体质: growthGain,
-              灵根: growthGain,
-              悟性: growthGain,
-              幸运: growthGain,
-              意志: growthGain,
-            },
-            growthCap
-          );
-        }
 
         if (result.itemsCost) {
           for (const cost of result.itemsCost) {
@@ -603,81 +608,76 @@ export function useGameCultivation({
           }
         }
 
-        const newActiveEffects = result.success 
+        const newActiveEffects = result.success
           ? updateActiveEffects(prev.protagonist.activeEffects)
           : prev.protagonist.activeEffects;
 
-        let newRealm = prev.protagonist.realm;
-        let newExp = prev.protagonist.experience;
-        let newOverflowExp = prev.protagonist.overflowExperience;
-
-        if (result.breakthroughSuccess) {
-          newLevel += 1;
-          newRealm = getRealmName(prev.protagonist.world.realmSystem, newLevel);
-          const nextMaxExp = getMaxExperience(newLevel);
-          newExp = calculateBreakthroughTransfer(newOverflowExp, nextMaxExp);
-          newOverflowExp = 0;
-        } else if (result.breakthroughAttempt) {
-          const expGain = result.success ? 20 : 5;
-          const maxExp = getMaxExperience(newLevel);
-          const expResult = processExperienceGain(newExp, expGain, maxExp, newOverflowExp);
-          newExp = expResult.newExp;
-          newOverflowExp = expResult.newOverflow;
-        } else {
-          const maxExp = getMaxExperience(newLevel);
-          const expGain = result.success ? 20 : 5;
-          const expResult = processExperienceGain(newExp, expGain, maxExp, newOverflowExp);
-          newExp = expResult.newExp;
-          newOverflowExp = expResult.newOverflow;
+        if (result.breakthroughReady) {
+          // 自动修炼时经验满了不自动突破，停止自动修炼让玩家手动操作
+          isRunning = false;
+          return {
+            ...prev,
+            autoCultivating: false,
+            protagonist: {
+              ...prev.protagonist,
+              items: newItems,
+              activeEffects: newActiveEffects,
+              experience: getMaxExperience(prev.protagonist.level), // 满经验
+            },
+            messages: addMessageInternal(
+              prev.messages,
+              'success',
+              '自动修炼暂停',
+              '修为已满，可尝试冲击境界突破！自动修炼已暂停。',
+            ),
+          };
         }
+
+        const newExp = prev.protagonist.experience;
+        const newOverflowExp = prev.protagonist.overflowExperience;
+
+        const maxExp2 = getMaxExperience(prev.protagonist.level);
+        const expGain2 = result.success ? 20 : 5;
+        const expResult2 = processExperienceGain(newExp, expGain2, maxExp2, newOverflowExp);
+        const finalExp = expResult2.newExp;
+        const finalOverflow = expResult2.newOverflow;
 
         isRunning = false;
-        
-        let messageType: MessageRecord['type'] = 'info';
-        let messageTitle = '自动修炼';
+
+        const messageType: MessageRecord['type'] = result.success ? 'success' : 'info';
+        const messageTitle = '自动修炼';
         const messageContent = result.message;
-        
-        if (result.breakthroughSuccess) {
-          messageType = 'success';
-          messageTitle = '境界突破';
-        } else if (result.success) {
-          messageType = 'success';
-        }
-        
+
         const rewards: MessageRecord['rewards'] = {};
         if (result.statChanges && Object.keys(result.statChanges).length > 0) {
           rewards.stats = result.statChanges;
         }
-        if (result.breakthroughSuccess) {
-          rewards.experience = newExp;
-        } else if (!result.breakthroughAttempt) {
-          rewards.experience = result.success ? 20 : 5;
-        }
-        
+        rewards.experience = result.success ? 20 : 5;
+
         const now3 = Date.now();
         const statsEvents3 = [
           { type: 'cultivation:performed' as const, payload: { count: 1 }, timestamp: now3 },
         ];
-        if (result.breakthroughSuccess) {
-          statsEvents3.push({ type: 'cultivation:breakthrough' as const, payload: { count: 1 }, timestamp: now3 });
-        }
-        if (newLevel > prev.statistics.maxLevel) {
-          statsEvents3.push({ type: 'player:level_up' as const, payload: { newLevel }, timestamp: now3 });
-        }
         const newStatistics = processStatisticsEvents(prev.statistics, statsEvents3);
-        
+
+        // 修炼成功时增加心境护盾
+        let newMindShield2 = prev.protagonist.mentalState?.mindShield ?? 0;
+        if (result.success) {
+          newMindShield2 = Math.min(20, newMindShield2 + 1);
+        }
+
         return {
           ...prev,
           protagonist: {
             ...prev.protagonist,
-            stats: newStats,
             items: newItems,
             activeEffects: newActiveEffects,
-            level: newLevel,
-            realm: newRealm,
-            experience: newExp,
-            overflowExperience: newOverflowExp,
-            statCapBonuses: prev.protagonist.statCapBonuses,
+            experience: finalExp,
+            overflowExperience: finalOverflow,
+            mentalState: {
+              ...(prev.protagonist.mentalState ?? DEFAULT_PROTAGONIST_EXTENSION.mentalState),
+              mindShield: newMindShield2,
+            },
           },
           statistics: newStatistics,
           lastActionResult: result,
@@ -707,6 +707,7 @@ export function useGameCultivation({
   return {
     performCultivation,
     performRest,
+    performBreakthrough,
     toggleAutoCultivation,
   };
 }

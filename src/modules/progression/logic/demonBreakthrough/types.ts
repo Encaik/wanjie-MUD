@@ -252,8 +252,8 @@ export interface RefineBattleResult {
 
 /** 心魔图鉴条目 */
 export interface DemonMemory {
-  /** 心魔类型 */
-  demonType: DemonType;
+  /** 心魔类型（对应 DemonType 枚举值） */
+  demonType: string;
   /** 心魔名称（记录首次遭遇时的名称） */
   name: string;
   /** 遭遇总次数 */

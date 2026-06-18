@@ -2,17 +2,18 @@
  * CultivationPage — 修炼面板页面
  *
  * 组合 CultivationPanel + BreakthroughPanel + SeclusionPanel。
- * 新手引导任务已迁移至 QuestPage，背包已迁移至 BackpackPage。
+ * 管理心魔突破战流程对话框的打开/关闭。
  */
 
 'use client';
 
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 
 import { getFinalStats, DEFAULT_PROTAGONIST_EXTENSION } from '@/core/types';
 import type { MentalState } from '@/core/types';
 import { CultivationPanel } from '@/modules/progression/components/CultivationPanel';
 import { BreakthroughPanel } from '@/modules/progression/components/BreakthroughPanel';
+import { BreakthroughFlowDialog } from '@/modules/progression/components/BreakthroughFlowDialog';
 import { SeclusionPanel } from '@/modules/progression/components/SeclusionPanel';
 import { openDialog } from '@/views/game/dialogs/useDialogController';
 import { useCultivation } from '@/views/game/domainHooks/useCultivation';
@@ -26,6 +27,19 @@ export function CultivationPage() {
   const [mentalState, setMentalState] = useState<MentalState>(
     p.mentalState ?? DEFAULT_PROTAGONIST_EXTENSION.mentalState,
   );
+
+  // 突破对话框状态
+  const [breakthroughOpen, setBreakthroughOpen] = useState(false);
+
+  const handleOpenBreakthrough = useCallback(() => {
+    setBreakthroughOpen(true);
+  }, []);
+
+  const handleBreakthroughComplete = useCallback((result: { success: boolean; chosenChoice: import('@/modules/progression/logic/demonBreakthrough').StrategyChoice | null }) => {
+    // 通过 hook 执行突破结果，更新游戏状态
+    cultivation.performBreakthrough(result.chosenChoice);
+    setBreakthroughOpen(false);
+  }, [cultivation]);
 
   return (
     <div className="space-y-3">
@@ -51,25 +65,33 @@ export function CultivationPage() {
         mentalState={mentalState}
         onMentalStateChange={setMentalState}
       />
+
       <BreakthroughPanel
         level={p.level}
         experience={p.experience}
         overflowExperience={p.overflowExperience}
-        luck={getFinalStats(p.stats).幸运}
         activeEffects={p.activeEffects}
         worldType={p.world.type}
         autoCultivating={gameState.autoCultivating}
-        hpFull={p.currentHp >= p.maxHp}
-        mpFull={p.currentMp >= p.maxMp}
-        onTribulation={() => {}}
-        onChallengeGuardian={() => {}}
+        mindShield={mentalState.mindShield ?? 0}
+        onBreakthrough={handleOpenBreakthrough}
       />
+
       <SeclusionPanel
         onSeclusion={cultivation.performSeclusion}
         disabled={gameState.autoCultivating}
         worldType={p.world.type}
         items={p.items}
         level={p.level}
+      />
+
+      {/* 心魔突破战对话框 */}
+      <BreakthroughFlowDialog
+        open={breakthroughOpen}
+        onOpenChange={setBreakthroughOpen}
+        protagonist={p}
+        mentalState={mentalState}
+        onBreakthroughComplete={handleBreakthroughComplete}
       />
     </div>
   );

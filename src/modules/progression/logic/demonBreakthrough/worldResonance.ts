@@ -7,7 +7,7 @@
  * @module modules/progression/logic/demonBreakthrough
  */
 
-import type { WorldDemonConfig, DemonType, DemonAttackBias } from './types';
+import type { WorldDemonConfig } from './types';
 
 // ============================================
 // 世界观心魔配置表
