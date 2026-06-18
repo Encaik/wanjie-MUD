@@ -172,6 +172,17 @@ export {
   createDefaultQuestState,
 } from './types';
 
+// QuestTemplate — 标准任务模板（数据层）
+export type {
+  QuestTemplateType,
+  QuestTemplateDifficulty,
+  QuestTemplate,
+  QuestTemplateStage,
+  QuestTemplateCompletion,
+  QuestTemplateObjective,
+  QuestTemplateDialog,
+} from './questTemplate';
+
 // 扩展类型（typesExtension.ts）
 export type {
   CultivationPathProgress,

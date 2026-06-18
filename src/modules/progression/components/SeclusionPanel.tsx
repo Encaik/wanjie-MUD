@@ -39,22 +39,25 @@ import { getTerminology } from '@/modules/narrative/logic/terminology';
 import type { WorldType } from '@/core/types';
 import type { ItemInstance } from '@/modules/item/types';
 import { getCurrencyAmount } from '@/modules/item/logic';
+import { getWorldviewCurrencyItemId } from '@/modules/reward-pool/logic/poolEngine';
 
 
 interface SeclusionPanelProps {
   onSeclusion: (type: SeclusionType) => void;
   disabled?: boolean;
   worldType: WorldType;
+  worldviewId: string;
   items: ItemInstance[];
   level: number;
   // 可选：显示上次闭关结果
   lastOutcome?: string;
 }
 
-// 获取灵石数量（新物品系统）
-function getSpiritStoneCount(items: ItemInstance[] | undefined): number {
+// 获取当前世界观货币数量
+function getSpiritStoneCount(items: ItemInstance[] | undefined, worldviewId: string): number {
   if (!items) return 0;
-  return getCurrencyAmount(items, 'wanjie:common:spirit_stone');
+  const currencyId = getWorldviewCurrencyItemId(worldviewId);
+  return getCurrencyAmount(items, currencyId);
 }
 
 // 获取闭关类型的图标
@@ -94,13 +97,14 @@ export function SeclusionPanel({
   onSeclusion,
   disabled,
   worldType,
+  worldviewId,
   items,
   level,
   lastOutcome,
 }: SeclusionPanelProps) {
   const [showHelp, setShowHelp] = useState(false);
   const terminology = getTerminology(worldType);
-  const spiritStones = getSpiritStoneCount(items);
+  const spiritStones = getSpiritStoneCount(items, worldviewId);
 
   // 获取已解锁的闭关类型
   const getUnlockedTypes = (): SeclusionType[] => {

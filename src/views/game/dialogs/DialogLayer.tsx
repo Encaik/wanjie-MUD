@@ -147,6 +147,53 @@ export function DialogLayer({
         </DialogContent>
       </Dialog>
 
+      {/* 任务引导弹窗（由 QuestPanel 触发） */}
+      <Dialog
+        open={activeDialogs.some(d => d.type === 'questDialog')}
+        onOpenChange={(open) => {
+          if (!open) {
+            const d = activeDialogs.find(dialog => dialog.type === 'questDialog');
+            const onClose = d?.props?.onDismiss as (() => void) | undefined;
+            if (onClose) onClose();
+            closeDialog('questDialog');
+          }
+        }}
+      >
+        <DialogContent className="max-w-sm">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2 text-game-cultivation font-serif tracking-[0.1em]">
+              {(() => {
+                const d = activeDialogs.find(dialog => dialog.type === 'questDialog');
+                return (d?.props?.title as string) ?? '';
+              })()}
+            </DialogTitle>
+            <DialogDescription className="text-xs text-muted-foreground whitespace-pre-line">
+              {(() => {
+                const d = activeDialogs.find(dialog => dialog.type === 'questDialog');
+                return (d?.props?.content as string) ?? '';
+              })()}
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button
+              className="w-full text-xs"
+              size="sm"
+              onClick={() => {
+                const d = activeDialogs.find(dialog => dialog.type === 'questDialog');
+                const onDismiss = d?.props?.onDismiss as (() => void) | undefined;
+                if (onDismiss) onDismiss();
+                closeDialog('questDialog');
+              }}
+            >
+              {(() => {
+                const d = activeDialogs.find(dialog => dialog.type === 'questDialog');
+                return (d?.props?.confirmText as string) ?? '知道了';
+              })()}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
       {/* 开发者面板 */}
       {isDebugMode() && devHandlers && (
         <DeveloperPanel

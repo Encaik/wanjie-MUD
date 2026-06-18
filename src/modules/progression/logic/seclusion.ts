@@ -17,6 +17,7 @@ import { getTerminology } from '@/modules/narrative/logic/terminology';
 import type { Protagonist, CultivationResult, WorldType, GrowthStats } from '@/core/types';
 import { getGrowthStatCap } from '@/core/types';
 import { createItemInstance, getItemCount } from '@/modules/item/logic';
+import { getWorldviewCurrencyItemId } from '@/modules/reward-pool/logic/poolEngine';
 import { getMaxLevel } from '@/modules/progression/data/realmData';
 
 const random = (min: number, max: number) => Math.floor(Math.random() * (max - min + 1)) + min;
@@ -447,8 +448,9 @@ function getWorldTerms(worldType: WorldType) {
 /**
  * 获取灵石数量
  */
-function getSpiritStoneCount(items: Protagonist['items']): number {
-  return getItemCount(items, 'wanjie:common:spirit_stone');
+function getSpiritStoneCount(items: Protagonist['items'], worldviewId: string): number {
+  const currencyId = getWorldviewCurrencyItemId(worldviewId);
+  return getItemCount(items, currencyId);
 }
 
 /**
@@ -480,9 +482,11 @@ export function executeSeclusion(
     };
   }
   
-  // 计算消耗
+  // 计算消耗（按世界观解析货币）
   const cost = getSeclusionCost(seclusionType);
-  const spiritStones = getSpiritStoneCount(protagonist.items);
+  const worldviewId = protagonist.world.worldviewId;
+  const currencyId = getWorldviewCurrencyItemId(worldviewId);
+  const spiritStones = getSpiritStoneCount(protagonist.items, worldviewId);
   
   // 检查资源是否足够
   if (spiritStones < cost) {
@@ -511,9 +515,9 @@ export function executeSeclusion(
   const startDesc = descriptions[outcome.outcome].start[random(0, descriptions[outcome.outcome].start.length - 1)];
   const endDesc = descriptions[outcome.outcome].end[random(0, descriptions[outcome.outcome].end.length - 1)];
   
-  // 消耗资源
+  // 消耗世界观货币
   const itemsCost = [
-    createItemInstance('wanjie:common:spirit_stone', { quantity: cost }),
+    createItemInstance(currencyId, { quantity: cost }),
   ];
   
   // 计算经验获得

@@ -32,7 +32,13 @@ import {
 import { DEFAULT_PROTAGONIST_EXTENSION, MentalState } from '@/core/types';
 import { removeItem, getCurrencyAmount } from '@/modules/item/logic';
 import { getTemplate } from '@/modules/item/data';
+import { getWorldviewCurrencyItemId } from '@/modules/reward-pool/logic/poolEngine';
 import type { ItemInstance } from '@/modules/item/types';
+
+/** 获取当前世界观货币 templateId */
+function getCultivationCurrencyId(worldviewId?: string): string {
+  return getWorldviewCurrencyItemId(worldviewId ?? '');
+}
 
 /** 按模板 ID 从物品列表中扣除数量（不可变） */
 function deductByTemplate(items: ItemInstance[], templateId: string, quantity: number): ItemInstance[] {
@@ -66,7 +72,8 @@ function handleStrategyCultivationImpl(
   let newItems = [...(prev.protagonist.items || [])];
   if (result.spiritStonesSpent > 0) {
     const actualCost = result.spiritStonesSpent - result.spiritStonesRefunded;
-    const stoneItem = newItems.find(i => i.templateId === 'wanjie:common:spirit_stone');
+    const currencyId = getCultivationCurrencyId(prev.protagonist.world.worldviewId);
+    const stoneItem = newItems.find(i => i.templateId === currencyId);
     if (stoneItem) {
       newItems = removeItem(newItems, stoneItem.instanceId, actualCost);
     }
@@ -381,7 +388,8 @@ export function useGameCultivation({
     setGameState((prev: GameState) => {
       if (!prev.protagonist) return prev;
       
-      const spiritStones = getCurrencyAmount(prev.protagonist.items, 'wanjie:common:spirit_stone');
+      const currencyId = getCultivationCurrencyId(prev.protagonist.world.worldviewId);
+      const spiritStones = getCurrencyAmount(prev.protagonist.items, currencyId);
 
       if (spiritStones < 5) {
         return {
@@ -412,7 +420,7 @@ export function useGameCultivation({
       const newHp = Math.min(maxHp, currentHp + hpRestore);
       const newMp = Math.min(maxMp, currentMp + mpRestore);
 
-      const stoneItem = prev.protagonist.items.find(i => i.templateId === 'wanjie:common:spirit_stone');
+      const stoneItem = prev.protagonist.items.find(i => i.templateId === currencyId);
       let newItems = prev.protagonist.items;
       if (stoneItem) {
         newItems = removeItem(newItems, stoneItem.instanceId, 5);
@@ -574,7 +582,8 @@ export function useGameCultivation({
           return prev;
         }
         
-        const hasResources = getCurrencyAmount(prev.protagonist.items, 'wanjie:common:spirit_stone') >= 20;
+        const currencyId = getCultivationCurrencyId(prev.protagonist.world.worldviewId);
+        const hasResources = getCurrencyAmount(prev.protagonist.items, currencyId) >= 20;
 
         if (!hasResources) {
           isRunning = false;

@@ -10,12 +10,10 @@ import type {
   RollContext,
   RollResult,
   RollResultItem,
-  RollResultCurrency,
   ResolvedEntry,
   PoolEntry,
   StaticEntry,
   FilterEntry,
-  CurrencyEntry,
   PoolRefEntry,
   EntryCondition,
 } from '../types';
@@ -25,7 +23,7 @@ import { getPool, getFilterCache, setFilterCache } from './poolRegistry';
 import { applyFilter, filterCacheKey } from './itemFilter';
 import { rollRarity, clampWeightsByRarity, getMaxRarityByLevel } from './rarityRoller';
 import { generateItemInstance } from '@/modules/item/logic/itemGenerator';
-import { getAllTemplates, getTemplate } from '@/modules/item/data/index';
+import { getAllTemplates, getTemplate, hasTemplate } from '@/modules/item/data/index';
 import { ALL_RARITIES, RARITY_ORDER, RARITY_CONFIG } from '@/modules/item/data/rarity';
 import { createRng, randomWeighted, randomInt, randomItem } from '@/shared/utils/rng';
 import { createLogger } from '@/core/logger';
@@ -44,13 +42,13 @@ const logger = createLogger('reward-pool.engine');
  *
  * @param poolId - 池子 ID
  * @param ctx - 滚动上下文
- * @returns 奖励结果（物品 + 货币 + 摘要文本）
+ * @returns 奖励结果（物品列表 + 摘要文本，货币已作为物品统一产出）
  */
 export function rollPool(poolId: string, ctx: RollContext): RollResult {
   const pool = getPool(poolId);
   if (!pool) {
     logger.warn(`池子 "${poolId}" 不存在，返回空结果`);
-    return { items: [], currencies: [], summary: '未获得任何物品' };
+    return { items: [], summary: '未获得任何物品' };
   }
 
   const rng = ctx.seed !== undefined ? createRng(ctx.seed) : createRng(Date.now());
@@ -65,7 +63,7 @@ export function rollPool(poolId: string, ctx: RollContext): RollResult {
   const resolved = resolvePool(pool, ctx);
 
   if (resolved.length === 0) {
-    return { items: [], currencies: [], summary: '未获得任何物品' };
+    return { items: [], summary: '未获得任何物品' };
   }
 
   // ② 加权选取 dropCount 个条目
@@ -76,7 +74,6 @@ export function rollPool(poolId: string, ctx: RollContext): RollResult {
   );
 
   const items: RollResultItem[] = [];
-  const currencies: RollResultCurrency[] = [];
 
   // 可用条目池（避免重复选取同一 static 条目）
   const availableEntries = [...resolved];
@@ -94,11 +91,7 @@ export function rollPool(poolId: string, ctx: RollContext): RollResult {
     const result = processEntry(selected, ctx, rng);
 
     if (result) {
-      if ('templateId' in result) {
-        items.push(result);
-      } else {
-        currencies.push(result);
-      }
+      items.push(result);
     }
 
     // 移除已选条目（不放回）
@@ -106,16 +99,16 @@ export function rollPool(poolId: string, ctx: RollContext): RollResult {
   }
 
   // ④ 格式化摘要
-  const summary = formatSummary(items, currencies);
+  const summary = formatSummary(items);
 
   // ⑤ 发射事件
   emitRewardEvent({
     poolId,
     source: { module: 'reward-pool' },
-    result: { items, currencies, summary },
+    result: { items, summary },
   });
 
-  return { items, currencies, summary };
+  return { items, summary };
 }
 
 // ============================================
@@ -153,7 +146,6 @@ export function resolvePool(
     switch (entry.type) {
       case 'static':
       case 'filter':
-      case 'currency':
         result.push({
           entry,
           effectiveWeight: entry.weight,
@@ -194,15 +186,15 @@ export function resolvePool(
 // ============================================
 
 /**
- * 处理单个选中条目，产出物品或货币
+ * 处理单个选中条目，产出物品
  *
- * @returns RollResultItem | RollResultCurrency | null（产出为空）
+ * @returns RollResultItem | null（产出为空）
  */
 function processEntry(
   resolved: ResolvedEntry,
   ctx: RollContext,
   rng: () => number
-): RollResultItem | RollResultCurrency | null {
+): RollResultItem | null {
   const { entry, rarityOverride } = resolved;
 
   switch (entry.type) {
@@ -212,16 +204,16 @@ function processEntry(
     case 'filter':
       return processFilterEntry(entry, ctx, rarityOverride, rng);
 
-    case 'currency':
-      return processCurrencyEntry(entry, ctx, rng);
-
     default:
       return null;
   }
 }
 
 /**
- * 处理 StaticEntry：稀有度投骰 → 生成实例
+ * 处理 StaticEntry：货币世界观解析 → 稀有度投骰 → 生成实例
+ *
+ * 货币类物品（category === 'currency'）的 templateId 会在生成实例前
+ * 按当前世界观自动解析为世界观特定货币模板（如修仙→灵石、武侠→银两）。
  */
 function processStaticEntry(
   entry: StaticEntry,
@@ -229,26 +221,37 @@ function processStaticEntry(
   rarityOverride: Partial<Record<Rarity, number>> | undefined,
   rng: () => number
 ): RollResultItem | null {
+  // 货币类物品按世界观解析为具体模板
+  let templateId = entry.templateId;
+  if (ctx.worldView) {
+    try {
+      const tpl = getTemplate(templateId);
+      if (tpl.category === 'currency') {
+        templateId = getWorldviewCurrencyItemId(ctx.worldView);
+      }
+    } catch { /* 模板不存在，保持原 templateId */ }
+  }
+
   // 获取有效稀有度权重
   const weights = rarityOverride ?? entry.rarityWeights;
   if (!weights || Object.keys(weights).length === 0) {
     // 无稀有度配置，使用模板默认稀有度
     try {
-      const template = getTemplate(entry.templateId);
+      const template = getTemplate(templateId);
       const quantity = rollQuantity(entry.quantity, ctx.quantityMultiplier, rng);
       const instance = generateItemInstance(
-        entry.templateId,
+        templateId,
         Math.max(1, Math.floor(ctx.playerLevel / 10)),
         Math.floor(rng() * 1000000)
       );
       return {
-        templateId: entry.templateId,
+        templateId,
         instanceId: instance.instanceId,
         quantity,
         rarity: template.rarity,
       };
     } catch {
-      logger.warn(`StaticEntry 模板 "${entry.templateId}" 不存在`);
+      logger.warn(`StaticEntry 模板 "${templateId}" 不存在`);
       return null;
     }
   }
@@ -272,15 +275,15 @@ function processStaticEntry(
   const seed = Math.floor(rng() * 1000000);
 
   try {
-    const instance = generateItemInstance(entry.templateId, level, seed);
+    const instance = generateItemInstance(templateId, level, seed);
     return {
-      templateId: entry.templateId,
+      templateId,
       instanceId: instance.instanceId,
       quantity,
       rarity,
     };
   } catch {
-    logger.warn(`StaticEntry 模板 "${entry.templateId}" 生成失败`);
+    logger.warn(`StaticEntry 模板 "${templateId}" 生成失败`);
     return null;
   }
 }
@@ -345,23 +348,47 @@ function processFilterEntry(
 }
 
 /**
- * 处理 CurrencyEntry：直接产出货币
+ * 世界观 → 货币模板 ID 映射（与 currency.ts 模板保持一致）
+ *
+ * 查找优先级：
+ * 1. 显式映射表
+ * 2. 惯例查找 wanjie-core:<worldview>:spirit_stone → 模板存在则用
+ * 3. 惯例查找 wanjie-core:<worldview>:silver_tael → 模板存在则用
+ * 4. 兜底 wanjie:common:spirit_stone
  */
-function processCurrencyEntry(
-  entry: CurrencyEntry,
-  ctx: RollContext,
-  rng: () => number
-): RollResultCurrency {
-  const [min, max] = entry.amount;
-  let amount = randomInt(rng, min, max);
+const WORLDVIEW_CURRENCY_MAP: Record<string, string> = {
+  cultivation: 'wanjie-core:cultivation:spirit_stone',
+  xianxia: 'wanjie-core:cultivation:spirit_stone',
+  wuxia: 'wanjie-core:martial:silver_tael',
+  martial: 'wanjie-core:martial:silver_tael',
+  magic: 'wanjie-core:magic:mana_crystal',
+  tech: 'wanjie-core:tech:energy_credit',
+  psi: 'wanjie-core:psi:psi_crystal',
+  apocalypse: 'wanjie-core:apocalypse:survival_token',
+};
+const DEFAULT_CURRENCY_ID = 'wanjie:common:spirit_stone';
 
-  // 应用数量倍率
-  if (ctx.quantityMultiplier && ctx.quantityMultiplier !== 1) {
-    amount = Math.floor(amount * ctx.quantityMultiplier);
+/**
+ * 根据世界观获取主货币物品 templateId
+ */
+export function getWorldviewCurrencyItemId(worldviewId?: string): string {
+  // 1. 显式映射
+  if (worldviewId && WORLDVIEW_CURRENCY_MAP[worldviewId]) {
+    return WORLDVIEW_CURRENCY_MAP[worldviewId];
   }
-
-  return { type: entry.currencyType, amount };
+  // 2. 惯例查找 wanjie-core:<worldview>:spirit_stone
+  if (worldviewId) {
+    const conventionId = `wanjie-core:${worldviewId}:spirit_stone`;
+    if (hasTemplate(conventionId)) return conventionId;
+  }
+  // 3. 惯例查找 wanjie-core:<worldview>:silver_tael
+  if (worldviewId) {
+    const conventionId = `wanjie-core:${worldviewId}:silver_tael`;
+    if (hasTemplate(conventionId)) return conventionId;
+  }
+  return DEFAULT_CURRENCY_ID;
 }
+
 
 // ============================================
 // 工具函数
@@ -456,17 +483,12 @@ function buildResultItem(
 /**
  * 格式化奖励摘要文本
  *
- * @param items - 物品列表
- * @param currencies - 货币列表
+ * @param items - 物品列表（含货币物品）
  * @returns 玩家可读的摘要文本（如 "获得了 [凡品] 铁剑 ×1、灵石 ×50"）
  */
-export function formatSummary(
-  items: RollResultItem[],
-  currencies: RollResultCurrency[]
-): string {
+export function formatSummary(items: RollResultItem[]): string {
   const parts: string[] = [];
 
-  // 物品
   if (items.length > 0) {
     for (const item of items) {
       try {
@@ -478,11 +500,6 @@ export function formatSummary(
         parts.push(`${item.templateId}${item.quantity > 1 ? ` ×${item.quantity}` : ''}`);
       }
     }
-  }
-
-  // 货币
-  for (const c of currencies) {
-    parts.push(`${c.type} ×${c.amount}`);
   }
 
   if (parts.length === 0) {

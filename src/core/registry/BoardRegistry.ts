@@ -22,11 +22,9 @@ export class BoardRegistry {
     BoardRegistry.instance = new BoardRegistry();
   }
 
-  /** 注册单个板块 */
+  /** 注册单个板块（幂等：已存在则静默跳过） */
   register(board: QuestBoard): void {
-    if (this.boards.has(board.id)) {
-      throw new Error(`板块 ID 冲突: ${board.id}`);
-    }
+    if (this.boards.has(board.id)) return;
     this.boards.set(board.id, board);
   }
 

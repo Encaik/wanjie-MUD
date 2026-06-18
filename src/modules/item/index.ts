@@ -52,6 +52,8 @@ export {
 export {
   getAllTemplates,
   getTemplate,
+  hasTemplate,
+  invalidateTemplateCache,
   getTemplatesByCategory,
   getTemplatesByWorldView,
 } from './data';

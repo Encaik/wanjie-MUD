@@ -1,22 +1,32 @@
 /**
- * 新手引导任务定义（含弹窗）
+ * 内置教程任务模板（QuestTemplate 格式）
  *
- * 将 TUTORIAL_GUIDE 的 5 阶段 9 步骤映射为 QuestDefinition，
- * 弹窗作为 quest.dialog 字段内嵌。弹窗在任务变为"可接取"时自动弹出。
+ * 新手引导的 9 个步骤，每个步骤是一个 QuestTemplate。
+ * 这些模板注册到 QuestTemplateRegistry，由引擎统一管理。
+ *
+ * 教程流程：
+ *   welcome → use_pill → first_cultivation → enter_adventure
+ *   → first_kill → reach_level_3 → join_faction → complete_adventure → claim_achievement
  *
  * @module modules/quest/data
  */
 
-import type { QuestDefinition } from '@/core/types';
+import type { QuestTemplate } from '@/core/types';
 
-/** 新手引导全部 9 个任务 */
-export const TUTORIAL_QUEST_DEFINITIONS: QuestDefinition[] = [
-  // ====== step_welcome ======
+/** 教程板块 ID */
+const BOARD_ID = 'board_tutorial';
+/** 教程故事线 ID */
+const STORYLINE_ID = 'storyline_tutorial';
+
+/** 内置教程任务模板列表（9 个任务） */
+export const TUTORIAL_QUEST_TEMPLATES: QuestTemplate[] = [
+  // ====== 0: 欢迎来到万界 ======
   {
-    id: 'tutorial_welcome',
+    templateId: 'tutorial_welcome',
     name: '欢迎来到万界',
     description: '踏入万界修行路，领取初始物资',
     type: 'main',
+    source: 'builtin',
     prerequisites: [],
     stages: [{
       id: 'stage_1',
@@ -34,36 +44,37 @@ export const TUTORIAL_QUEST_DEFINITIONS: QuestDefinition[] = [
       { items: [{ itemId: 'wanjie:common:rejuvenation_pill', quantity: 3 }] },
     ],
     repeatable: false,
-    boardIds: ['board_tutorial'],
-    storylineId: 'storyline_tutorial',
+    boardIds: [BOARD_ID],
+    storylineId: STORYLINE_ID,
     eventMapping: [
       { eventType: 'tutorial:game_started', targetField: '', objectiveType: 'custom' },
     ],
-    dialog: {
+    acceptDialog: [{
       title: '欢迎来到万界修行录',
       content: [
         '你即将踏上一段跨越万千世界的修行之旅。',
         '',
         '在万界之中，你可以：',
-        '• 修炼：消耗灵石提升修为，突破境界',
+        '• 修炼：消耗{currency}提升修为，突破境界',
         '• 机缘：探索秘境，遭遇随机事件与敌人',
         '• 战斗：回合制战斗，手动或自动模式',
         '• 收集：获得功法、装备、丹药',
         '• 飞升：穿越到更高层次的世界',
         '',
         '作为初入修行的新人，你可以在任务面板领取初始物资：',
-        '• 灵石 ×200  • 聚气丹 ×5  • 筑基丹 ×1  • 回春丹 ×3',
+        '• {currency} ×200  • 聚气丹 ×5  • 筑基丹 ×1  • 回春丹 ×3',
       ].join('\n'),
       confirmText: '踏入修行',
-    },
+    }],
   },
 
-  // ====== step_use_pill ======
+  // ====== 1: 使用聚气丹 ======
   {
-    id: 'tutorial_use_pill',
+    templateId: 'tutorial_use_pill',
     name: '使用聚气丹',
     description: '在背包中使用一颗聚气丹',
     type: 'main',
+    source: 'builtin',
     prerequisites: [{ type: 'quest_completed', target: 'tutorial_welcome' }],
     stages: [{
       id: 'stage_1', name: '使用丹药', description: '使用背包中的聚气丹',
@@ -73,8 +84,8 @@ export const TUTORIAL_QUEST_DEFINITIONS: QuestDefinition[] = [
       completions: { done: { description: '完成' } },
     }],
     rewards: [],
-    repeatable: false, boardIds: ['board_tutorial'], storylineId: 'storyline_tutorial',
-    dialog: {
+    repeatable: false, boardIds: [BOARD_ID], storylineId: STORYLINE_ID,
+    acceptDialog: [{
       title: '丹药系统',
       content: [
         '丹药是修行中的重要辅助道具：',
@@ -87,15 +98,16 @@ export const TUTORIAL_QUEST_DEFINITIONS: QuestDefinition[] = [
         '现在试试使用背包中的聚气丹吧！',
       ].join('\n'),
       confirmText: '知道了',
-    },
+    }],
   },
 
-  // ====== step_first_cultivation ======
+  // ====== 2: 进行一次修炼 ======
   {
-    id: 'tutorial_first_cultivation',
+    templateId: 'tutorial_first_cultivation',
     name: '进行一次修炼',
     description: '在修炼界面进行一次修炼',
     type: 'main',
+    source: 'builtin',
     prerequisites: [{ type: 'quest_completed', target: 'tutorial_use_pill' }],
     stages: [{
       id: 'stage_1', name: '修炼', description: '进行一次修炼',
@@ -108,30 +120,31 @@ export const TUTORIAL_QUEST_DEFINITIONS: QuestDefinition[] = [
       { spiritStones: 50 },
       { items: [{ itemId: 'wanjie:common:rejuvenation_pill', quantity: 3 }] },
     ],
-    repeatable: false, boardIds: ['board_tutorial'], storylineId: 'storyline_tutorial',
-    dialog: {
+    repeatable: false, boardIds: [BOARD_ID], storylineId: STORYLINE_ID,
+    acceptDialog: [{
       title: '修炼系统',
       content: [
         '修炼是提升实力的核心方式：',
         '',
-        '• 每次修炼消耗灵石，获得经验值',
+        '• 每次修炼消耗{currency}，获得经验值',
         '• 经验值满后可尝试突破境界',
         '• 境界突破会大幅提升你的属性',
         '• 使用丹药可获得修炼加成',
         '',
-        '修炼消耗的灵石可通过战斗、任务等方式获取。',
+        '修炼消耗的{currency}可通过战斗、任务等方式获取。',
         '现在进行你的第一次修炼吧！',
       ].join('\n'),
       confirmText: '开始修炼',
-    },
+    }],
   },
 
-  // ====== step_enter_adventure ======
+  // ====== 3: 进入机缘探索 ======
   {
-    id: 'tutorial_enter_adventure',
+    templateId: 'tutorial_enter_adventure',
     name: '进入机缘探索',
     description: '前往机缘界面选择探索',
     type: 'main',
+    source: 'builtin',
     prerequisites: [{ type: 'quest_completed', target: 'tutorial_first_cultivation' }],
     stages: [{
       id: 'stage_1', name: '探索机缘', description: '进入一次机缘探索',
@@ -141,11 +154,11 @@ export const TUTORIAL_QUEST_DEFINITIONS: QuestDefinition[] = [
       completions: { done: { description: '完成' } },
     }],
     rewards: [],
-    repeatable: false, boardIds: ['board_tutorial'], storylineId: 'storyline_tutorial',
+    repeatable: false, boardIds: [BOARD_ID], storylineId: STORYLINE_ID,
     eventMapping: [
       { eventType: 'adventure:entered', targetField: '', objectiveType: 'custom' },
     ],
-    dialog: {
+    acceptDialog: [{
       title: '机缘系统',
       content: [
         '机缘探索是获取资源、功法和装备的主要途径：',
@@ -158,15 +171,16 @@ export const TUTORIAL_QUEST_DEFINITIONS: QuestDefinition[] = [
         '作为新人，建议从低难度开始，熟悉战斗后再挑战高难度。',
       ].join('\n'),
       confirmText: '去探索',
-    },
+    }],
   },
 
-  // ====== step_first_kill ======
+  // ====== 4: 击败第一个敌人 ======
   {
-    id: 'tutorial_first_kill',
+    templateId: 'tutorial_first_kill',
     name: '击败第一个敌人',
     description: '在机缘中击败任意敌人',
     type: 'main',
+    source: 'builtin',
     prerequisites: [{ type: 'quest_completed', target: 'tutorial_enter_adventure' }],
     stages: [{
       id: 'stage_1', name: '首战', description: '击败任意敌人',
@@ -181,11 +195,8 @@ export const TUTORIAL_QUEST_DEFINITIONS: QuestDefinition[] = [
       { items: [{ itemId: 'wanjie-core:cultivation:foundation_pill', quantity: 1 }] },
       { items: [{ itemId: 'wanjie:common:rejuvenation_pill', quantity: 2 }] },
     ],
-    repeatable: false, boardIds: ['board_tutorial'], storylineId: 'storyline_tutorial',
-    eventMapping: [
-      { eventType: 'combat:enemy_killed', targetField: '', objectiveType: 'kill_enemy' },
-    ],
-    dialog: {
+    repeatable: false, boardIds: [BOARD_ID], storylineId: STORYLINE_ID,
+    acceptDialog: [{
       title: '战斗系统',
       content: [
         '战斗采用回合制，你需要选择合适的技能：',
@@ -199,15 +210,16 @@ export const TUTORIAL_QUEST_DEFINITIONS: QuestDefinition[] = [
         '大胆应战吧，初期敌人并不强大！',
       ].join('\n'),
       confirmText: '去战斗',
-    },
+    }],
   },
 
-  // ====== step_reach_level_3 (no dialog) ======
+  // ====== 5: 提升至 3 级（无弹窗）======
   {
-    id: 'tutorial_reach_level_3',
+    templateId: 'tutorial_reach_level_3',
     name: '提升至 3 级',
     description: '通过修炼和战斗将等级提升到 3 级',
     type: 'main',
+    source: 'builtin',
     prerequisites: [{ type: 'quest_completed', target: 'tutorial_first_kill' }],
     stages: [{
       id: 'stage_1', name: '升到3级', description: '等级达到3级',
@@ -217,15 +229,16 @@ export const TUTORIAL_QUEST_DEFINITIONS: QuestDefinition[] = [
       completions: { done: { description: '完成' } },
     }],
     rewards: [],
-    repeatable: false, boardIds: ['board_tutorial'], storylineId: 'storyline_tutorial',
+    repeatable: false, boardIds: [BOARD_ID], storylineId: STORYLINE_ID,
   },
 
-  // ====== step_join_faction ======
+  // ====== 6: 加入一个势力 ======
   {
-    id: 'tutorial_join_faction',
+    templateId: 'tutorial_join_faction',
     name: '加入一个势力',
     description: '在势力界面选择一个势力加入',
     type: 'main',
+    source: 'builtin',
     prerequisites: [{ type: 'quest_completed', target: 'tutorial_reach_level_3' }],
     stages: [{
       id: 'stage_1', name: '加入势力', description: '加入任意势力',
@@ -239,11 +252,11 @@ export const TUTORIAL_QUEST_DEFINITIONS: QuestDefinition[] = [
       { items: [{ itemId: 'spirit_gathering_pill', quantity: 2 }] },
       { items: [{ itemId: 'wanjie:common:rejuvenation_pill', quantity: 5 }] },
     ],
-    repeatable: false, boardIds: ['board_tutorial'], storylineId: 'storyline_tutorial',
+    repeatable: false, boardIds: [BOARD_ID], storylineId: STORYLINE_ID,
     eventMapping: [
       { eventType: 'faction:joined', targetField: '', objectiveType: 'custom' },
     ],
-    dialog: {
+    acceptDialog: [{
       title: '势力系统',
       content: [
         '加入势力可以获得更多成长资源：',
@@ -256,15 +269,16 @@ export const TUTORIAL_QUEST_DEFINITIONS: QuestDefinition[] = [
         '选择一个你感兴趣的势力加入吧！',
       ].join('\n'),
       confirmText: '选势力',
-    },
+    }],
   },
 
-  // ====== step_complete_adventure (no dialog) ======
+  // ====== 7: 完成一次机缘探索（无弹窗）======
   {
-    id: 'tutorial_complete_adventure',
+    templateId: 'tutorial_complete_adventure',
     name: '完成一次机缘探索',
     description: '击败机缘探索的 Boss 完成探索',
     type: 'main',
+    source: 'builtin',
     prerequisites: [{ type: 'quest_completed', target: 'tutorial_join_faction' }],
     stages: [{
       id: 'stage_1', name: '完成探索', description: '完成一次机缘探索',
@@ -274,18 +288,19 @@ export const TUTORIAL_QUEST_DEFINITIONS: QuestDefinition[] = [
       completions: { done: { description: '完成' } },
     }],
     rewards: [],
-    repeatable: false, boardIds: ['board_tutorial'], storylineId: 'storyline_tutorial',
+    repeatable: false, boardIds: [BOARD_ID], storylineId: STORYLINE_ID,
     eventMapping: [
       { eventType: 'adventure:completed', targetField: '', objectiveType: 'custom' },
     ],
   },
 
-  // ====== step_claim_achievement ======
+  // ====== 8: 领取成就奖励 ======
   {
-    id: 'tutorial_claim_achievement',
+    templateId: 'tutorial_claim_achievement',
     name: '领取成就奖励',
     description: '在成就界面领取一个已完成的成就奖励',
     type: 'main',
+    source: 'builtin',
     prerequisites: [{ type: 'quest_completed', target: 'tutorial_complete_adventure' }],
     stages: [{
       id: 'stage_1', name: '领取成就', description: '领取任意成就奖励',
@@ -300,23 +315,23 @@ export const TUTORIAL_QUEST_DEFINITIONS: QuestDefinition[] = [
       { items: [{ itemId: 'wanjie-core:cultivation:golden_core_pill', quantity: 1 }] },
       { items: [{ itemId: 'vitality_pill', quantity: 2 }] },
     ],
-    repeatable: false, boardIds: ['board_tutorial'], storylineId: 'storyline_tutorial',
+    repeatable: false, boardIds: [BOARD_ID], storylineId: STORYLINE_ID,
     eventMapping: [
       { eventType: 'achievement:claimed', targetField: '', objectiveType: 'custom' },
     ],
-    dialog: {
+    acceptDialog: [{
       title: '成就系统',
       content: [
         '成就记录你的修行历程：',
         '',
         '• 完成特定目标自动解锁成就',
         '• 已解锁的成就可以领取奖励',
-        '• 成就奖励包含经验、灵石和稀有物品',
+        '• 成就奖励包含经验、{currency}和稀有物品',
         '• 成就进度永久保存',
         '',
         '现在去领取你的第一个成就奖励吧！',
       ].join('\n'),
       confirmText: '去领取',
-    },
+    }],
   },
 ];

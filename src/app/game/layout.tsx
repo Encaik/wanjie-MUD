@@ -17,6 +17,8 @@ import { DEFAULT_PROTAGONIST_EXTENSION, getFinalStats } from '@/core/types';
 import { BattleDialog } from '@/modules/combat/components/BattleDialog';
 import { getFactionById } from '@/modules/faction/data/factionData';
 import { getCurrencyAmount } from '@/modules/item/logic';
+import { getWorldviewCurrencyItemId } from '@/modules/reward-pool/logic/poolEngine';
+import { getTemplate } from '@/modules/item/data';
 import { CultivationPathSelect } from '@/modules/progression/components/CultivationPathSelect';
 import { CriticalHealthOverlay } from '@/shared/components/CriticalHealthOverlay';
 import { DeathDialog } from '@/shared/components/DeathDialog';
@@ -37,7 +39,6 @@ import { GameMenu } from '@/views/game/navigation/GameMenu';
 import { SettingsPanel } from '@/views/game/settings/SettingsPanel';
 import { useGameStore } from '@/views/game/state/GameStore';
 
-function getResourceName(worldType: string): string { const names: Record<string,string> = { '修仙': '灵石', '高武': '武晶', '科幻': '能量块', '魔法': '魔晶', '异能': '源能石', '仙界': '仙石', '武侠': '银两', '末世': '补给点' }; return names[worldType] || '灵石'; }
 export default function GameLayout({ children }: { children: React.ReactNode }) {
   useGameSystems();
 
@@ -73,14 +74,22 @@ export default function GameLayout({ children }: { children: React.ReactNode }) 
     return null;
   }, [gameState.autoCultivating, gameState.crafting, gameState.forging]);
 
+  const currencyId = useMemo(
+    () => getWorldviewCurrencyItemId(protagonist?.world.worldviewId),
+    [protagonist?.world.worldviewId],
+  );
+
   const spiritStones = useMemo(
-    () => protagonist ? getCurrencyAmount(protagonist.items, 'wanjie:common:spirit_stone') : 0,
-    [protagonist?.items],
+    () => protagonist ? getCurrencyAmount(protagonist.items, currencyId) : 0,
+    [protagonist?.items, currencyId],
   );
 
   const currencyName = useMemo(
-    () => protagonist ? getResourceName(protagonist.world.type) : '灵石',
-    [protagonist?.world.type],
+    () => {
+      try { return getTemplate(currencyId).name; }
+      catch { return '灵石'; }
+    },
+    [currencyId],
   );
 
   // 如果主角为空（如重开后），重定向到世界选择页

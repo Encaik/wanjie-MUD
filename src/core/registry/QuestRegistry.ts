@@ -21,10 +21,9 @@ export class QuestRegistry {
     QuestRegistry.instance = new QuestRegistry();
   }
 
+  /** 注册任务定义（幂等：已存在则静默跳过） */
   register(quest: QuestDefinition): void {
-    if (this.quests.has(quest.id)) {
-      throw new Error(`任务 ID 冲突: ${quest.id}`);
-    }
+    if (this.quests.has(quest.id)) return;
     this.quests.set(quest.id, quest);
   }
 

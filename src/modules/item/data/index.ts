@@ -29,7 +29,10 @@ let _templateMapCache: Record<string, ItemTemplateData> | null = null;
 export function invalidateTemplateCache(): void {
   _allTemplatesCache = null;
   _templateMapCache = null;
+  _cachedItemRegistrySize = -1;
 }
+
+let _cachedItemRegistrySize = -1;
 
 function buildAllTemplates(): ItemTemplateData[] {
   const registry = ItemRegistry.getInstance();
@@ -38,6 +41,12 @@ function buildAllTemplates(): ItemTemplateData[] {
 }
 
 function getTemplateMap(): Record<string, ItemTemplateData> {
+  // Mod 注入新物品后自动刷新缓存
+  const currentSize = ItemRegistry.getInstance().count;
+  if (_templateMapCache && currentSize !== _cachedItemRegistrySize) {
+    _templateMapCache = null;
+    _allTemplatesCache = null;
+  }
   if (!_templateMapCache) {
     _templateMapCache = {};
     const all = buildAllTemplates();
@@ -48,6 +57,7 @@ function getTemplateMap(): Record<string, ItemTemplateData> {
       }
       _templateMapCache[tpl.templateId] = tpl;
     }
+    _cachedItemRegistrySize = currentSize;
   }
   return _templateMapCache;
 }
@@ -76,6 +86,12 @@ export function getTemplate(templateId: string): ItemTemplate {
   }
   return tpl as ItemTemplate;
 }
+
+/** 检查模板是否存在（不抛异常） */
+export function hasTemplate(templateId: string): boolean {
+  return templateId in getTemplateMap();
+}
+
 
 /**
  * 按类别获取模板列表

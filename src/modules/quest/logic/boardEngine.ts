@@ -10,6 +10,8 @@
 
 import { QuestRegistry } from '@/core/registry/QuestRegistry';
 import type { QuestBoard, QuestState } from '@/core/types';
+import { checkPrerequisites } from './questEngine';
+import type { PlayerCheckData } from './questEngine';
 
 // ============================================
 // 刷新判断
@@ -77,12 +79,14 @@ export function needsRefresh(
  * @param board - 板块定义
  * @param questState - 任务状态
  * @param nowTimestamp - 当前时间戳（用于冷却计算）
+ * @param player - 玩家数据（可选，用于前置条件检查）
  * @returns 可用任务 ID 列表
  */
 export function getAvailableQuestsForBoard(
   board: QuestBoard,
   questState: QuestState,
   nowTimestamp: number = Date.now(),
+  player?: PlayerCheckData,
 ): string[] {
   const registry = QuestRegistry.getInstance();
   const available: string[] = [];
@@ -97,6 +101,12 @@ export function getAvailableQuestsForBoard(
 
     if (quest.repeatable && isQuestInCooldown(questId, quest.cooldownSeconds, questState, nowTimestamp)) {
       continue;
+    }
+
+    // 检查前置条件（有玩家数据时才检查）
+    if (player && quest.prerequisites.length > 0) {
+      const result = checkPrerequisites(quest, player, questState);
+      if (!result.passed) continue;
     }
 
     available.push(questId);
@@ -127,11 +137,12 @@ export function refreshBoard(
   questState: QuestState,
   nowTimestamp: number = Date.now(),
   rng?: () => number,
+  player?: PlayerCheckData,
 ): {
   boardSlots: Record<string, string[]>;
   boardLastRefresh: Record<string, number>;
 } {
-  const available = getAvailableQuestsForBoard(board, questState, nowTimestamp);
+  const available = getAvailableQuestsForBoard(board, questState, nowTimestamp, player);
 
   let selected: string[];
 
@@ -158,11 +169,12 @@ export function advanceBoardSlot(
   board: QuestBoard,
   questState: QuestState,
   nowTimestamp: number = Date.now(),
+  player?: PlayerCheckData,
 ): Record<string, string[]> {
   const currentSlots = questState.boardSlots[board.id]?.questIds ?? [];
   if (board.randomPick) return { [board.id]: currentSlots };
 
-  const available = getAvailableQuestsForBoard(board, questState, nowTimestamp);
+  const available = getAvailableQuestsForBoard(board, questState, nowTimestamp, player);
 
   // 去除已完成/已领取的任务
   const remaining = currentSlots.filter(qid =>

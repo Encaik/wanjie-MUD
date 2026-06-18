@@ -8,6 +8,7 @@ import type {
 import type { MentalState } from '@/core/types';
 import { getFinalStats } from '@/core/types';
 import { createItemInstance, getItemCount } from '@/modules/item/logic';
+import { getWorldviewCurrencyItemId } from '@/modules/reward-pool/logic/poolEngine';
 import { getMaxLevel } from '@/modules/progression/data/realmData';
 import {
   forgeDemon,
@@ -187,14 +188,16 @@ function getWorldTerms(worldType: WorldType) {
   };
 }
 
-// 获取灵石数量
-function getSpiritStoneCount(items: Protagonist['items']): number {
-  return getItemCount(items, 'wanjie:common:spirit_stone');
+// 获取当前世界观货币数量
+function getSpiritStoneCount(items: Protagonist['items'], worldviewId: string): number {
+  const currencyId = getWorldviewCurrencyItemId(worldviewId);
+  return getItemCount(items, currencyId);
 }
 
 // 检查是否有足够灵石修炼
 export function canAffordCultivation(protagonist: Protagonist): { canAfford: boolean; message: string } {
-  const spiritStones = getSpiritStoneCount(protagonist.items);
+  const worldviewId = protagonist.world.worldviewId;
+  const spiritStones = getSpiritStoneCount(protagonist.items, worldviewId);
 
   if (spiritStones < 10) {
     return {
@@ -299,8 +302,10 @@ export function executeCultivation(protagonist: Protagonist): CultivationResult 
   const messages = cultivationMessagesByWorld[worldType];
   const maxExp = getMaxExperience(protagonist.level);
   
-  // 检查灵石是否足够
-  const spiritStones = getSpiritStoneCount(protagonist.items);
+  // 检查货币是否足够（按世界观解析）
+  const worldviewId = protagonist.world.worldviewId;
+  const currencyId = getWorldviewCurrencyItemId(worldviewId);
+  const spiritStones = getSpiritStoneCount(protagonist.items, worldviewId);
   if (spiritStones < 20) {
     return {
       success: false,
@@ -327,9 +332,9 @@ export function executeCultivation(protagonist: Protagonist): CultivationResult 
   
   const isSuccess = Math.random() * 100 < successRate;
   
-  // 消耗灵石
+  // 消耗世界观货币
   const itemsCost = [
-    createItemInstance('wanjie:common:spirit_stone', { quantity: Math.min(20, spiritStones) })
+    createItemInstance(currencyId, { quantity: Math.min(20, spiritStones) })
   ];
   
   // 丹药效果提示

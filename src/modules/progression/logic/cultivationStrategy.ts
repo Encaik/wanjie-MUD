@@ -8,6 +8,7 @@
 
 import type { Protagonist, CultivationResult, GrowthStats } from '@/core/types';
 import { getFinalStats } from '@/core/types';
+import { getWorldviewCurrencyItemId } from '@/modules/reward-pool/logic/poolEngine';
 import { getExperienceForLevel } from '@/modules/progression/logic/realmSystem';
 import { getTerminology } from '@/modules/narrative/logic/terminology';
 import { getItemCount } from '@/modules/item/logic';
@@ -33,8 +34,9 @@ const random = (min: number, max: number) => Math.floor(Math.random() * (max - m
 // 灵石计数
 // ============================================
 
-function getSpiritStoneCount(items: Protagonist['items']): number {
-  return getItemCount(items, 'wanjie:common:spirit_stone');
+function getSpiritStoneCount(items: Protagonist['items'], worldviewId: string): number {
+  const currencyId = getWorldviewCurrencyItemId(worldviewId);
+  return getItemCount(items, currencyId);
 }
 
 // ============================================
@@ -121,7 +123,7 @@ export function executeCultivationWithStrategy(
   const stats = getFinalStats(protagonist.stats);
   const terms = getTerminology(protagonist.world.type);
   const maxExp = getMaxExperience(protagonist.level);
-  const spiritStones = getSpiritStoneCount(protagonist.items);
+  const spiritStones = getSpiritStoneCount(protagonist.items, protagonist.world.worldviewId);
 
   // 检查灵石
   if (spiritStones < config.spiritStoneCost) {

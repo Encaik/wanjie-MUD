@@ -11,6 +11,9 @@ import { useCallback, useEffect, useRef } from 'react';
 
 import { gameEventBus } from '@/core/events';
 import { BoardRegistry } from '@/core/registry/BoardRegistry';
+import { addItem } from '@/modules/item/logic/itemManager';
+import { hasTemplate, getTemplate } from '@/modules/item/data';
+import { getWorldviewCurrencyItemId } from '@/modules/reward-pool/logic/poolEngine';
 import { QuestRegistry } from '@/core/registry/QuestRegistry';
 import { StoryLineRegistry } from '@/core/registry/StoryLineRegistry';
 import type { GameState, QuestState, QuestDefinition } from '@/core/types';
@@ -20,6 +23,7 @@ import type { InjectedQuestOptions } from '@/modules/npc/logic/dialogueEngine';
 import {
   needsRefresh,
   refreshBoard,
+  advanceBoardSlot,
   getBoardUIState,
 } from '../logic/boardEngine';
 import { createQuestTracker } from '../logic/eventTracker';
@@ -75,9 +79,14 @@ export interface UseQuestReturn {
   refreshBoardIfNeeded: (boardId: string) => void;
   getBoardUIState: (boardId: string) => BoardUIState;
   getBoardQuests: (boardId: string) => QuestDefinition[];
+  // 单个任务状态查询
+  getQuestState: (questId: string) => { completed: boolean; claimed: boolean; active: boolean };
   // 弹窗
   hasViewedDialog: (questId: string) => boolean;
   markDialogViewed: (questId: string) => void;
+  // 世界观感知
+  /** 获取当前世界观的主货币显示名（如"灵石""银两"） */
+  getCurrencyName: () => string;
 }
 
 // ============================================
@@ -91,17 +100,23 @@ export function useQuest(
   const worldviewId = gameState.selectedWorld?.worldviewId ?? '';
   const questState = gameState.questState;
 
+  /** 获取当前世界观主货币显示名 */
+  const getCurrencyName = useCallback((): string => {
+    try {
+      const id = getWorldviewCurrencyItemId(worldviewId);
+      return getTemplate(id).name;
+    } catch { return '灵石'; }
+  }, [worldviewId]);
+
   const getPlayerData = useCallback(() => extractPlayerCheckData(gameState), [gameState]);
 
   // ============================================
   // 事件追踪器初始化（仅在挂载时注册一次，通过 ref 获取最新 questState）
   // ============================================
 
+  // 使用 ref 让事件追踪器始终能读到最新的 questState，避免 useEffect 时序问题
   const questStateRef = useRef(gameState.questState);
-
-  useEffect(() => {
-    questStateRef.current = gameState.questState;
-  });
+  questStateRef.current = gameState.questState; // 渲染期间同步更新（在 effect 之前）
 
   useEffect(() => {
     const tracker = createQuestTracker(
@@ -119,7 +134,7 @@ export function useQuest(
     return () => {
       gameEventBus.off('*', tracker);
     };
-     
+
   }, [setGameState]); // 仅在挂载时注册一次，通过 ref 获取最新状态
 
   // ============================================
@@ -162,7 +177,7 @@ export function useQuest(
     const quest = QuestRegistry.getInstance().getById(questId);
     if (!quest) return questState;
 
-    const newQuestState = startQuest(questId, quest, {
+    let newQuestState = startQuest(questId, quest, {
       ...questState,
       acceptedTimestamps: {
         ...questState.acceptedTimestamps,
@@ -170,7 +185,45 @@ export function useQuest(
       },
     });
 
-    setGameState(prev => ({ ...prev, questState: newQuestState }));
+    // 首任务「欢迎来到万界」接取即完成（无实际条件，进入游戏即满足）
+    if (questId === 'tutorial_welcome') {
+      newQuestState = completeQuest(questId, {
+        ...newQuestState,
+        completedTimestamps: {
+          ...newQuestState.completedTimestamps,
+          [questId]: Date.now(),
+        },
+      });
+
+      // 标记故事线节点完成
+      if (quest.storylineId) {
+        const storyline = StoryLineRegistry.getInstance().getById(quest.storylineId);
+        if (storyline) {
+          const allNodes = storyline.rootNodes.flatMap(n => [n, ...(n.children ?? [])]);
+          const node = allNodes.find(n => n.questId === questId);
+          if (node) {
+            newQuestState = markNodeCompleted(storyline, node.id, newQuestState);
+          }
+        }
+      }
+    }
+
+    // 任务接取消息
+    const isTutorialWelcome = questId === 'tutorial_welcome';
+
+    setGameState(prev => ({
+      ...prev,
+      questState: newQuestState,
+      messages: [{
+          id: `msg_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+          timestamp: Date.now(),
+          type: 'info' as const,
+          title: '任务',
+          content: `已接取「${quest.name}」${isTutorialWelcome ? '（自动完成，请在任务面板领取初始物资）' : ''}`,
+        } as import('@/core/types').MessageRecord,
+        ...(prev.messages ?? []),
+      ].slice(0, 100),
+    }));
     return newQuestState;
   }, [questState, setGameState]);
 
@@ -217,8 +270,7 @@ export function useQuest(
   /**
    * 手动领取任务奖励
    *
-   * 检查任务是否已完成且未领取，然后计算并返回奖励信息。
-   * 调用方需要自行发放物品/货币/经验到玩家身上。
+   * 检查完成后发放奖励到主角背包、货币、经验，标记已领取，发送消息通知。
    */
   const claimQuestReward = useCallback((questId: string): { success: boolean; rewardMessage: string } => {
     if (!questState.completedQuestIds.includes(questId)) {
@@ -240,19 +292,96 @@ export function useQuest(
       .filter(c => c.stageRewards)
       .flatMap(c => c.stageRewards ?? []);
 
-    const result = calculateStaticQuestRewards(quest.rewards, stageRewards);
+    const worldviewId = gameState.selectedWorld?.worldviewId;
+    const result = calculateStaticQuestRewards(quest.rewards, stageRewards, worldviewId);
+    // 货币已是物品的一部分（poolEngine 在 processStaticEntry 中已按世界观解析）
+    const allRewardItems = result.items;
+    const rewardMessage = result.message || `任务完成: ${quest.name}`;
 
-    // 标记为已领取
-    setGameState(prev => ({
-      ...prev,
-      questState: {
+    // 发放奖励 + 标记领取 + 推进槽位 + 消息通知
+    setGameState(prev => {
+      if (!prev.protagonist) return prev;
+
+      let newProtagonist = { ...prev.protagonist };
+
+      // 发放经验
+      if (result.experience > 0) {
+        newProtagonist = {
+          ...newProtagonist,
+          experience: newProtagonist.experience + result.experience,
+        };
+      }
+
+      // 发放物品（含货币，已由 poolEngine 在产出时按世界观解析）
+      if (allRewardItems.length > 0) {
+        let inventory = [...(newProtagonist.items ?? [])];
+        let missingCount = 0;
+        for (const item of allRewardItems) {
+          if (hasTemplate(item.itemId)) {
+            inventory = addItem(inventory, item.itemId, item.quantity, { source: 'quest' });
+          } else {
+            missingCount++;
+          }
+        }
+        newProtagonist = { ...newProtagonist, items: inventory };
+        if (missingCount > 0) {
+          console.warn(`[Quest] ${missingCount} 种物品模板尚未加载，跳过入库（ModInitProvider 加载中）`);
+        }
+      }
+
+      // 标记已领取
+      let newQuestState: typeof prev.questState = {
         ...prev.questState,
         claimedQuestIds: [...prev.questState.claimedQuestIds, questId],
-      },
-    }));
+      };
 
-    return { success: true, rewardMessage: result.message };
-  }, [questState, setGameState]);
+      // 推进该任务所属板块的槽位
+      if (quest.boardIds) {
+        const player = getPlayerData();
+        for (const boardId of quest.boardIds) {
+          const board = BoardRegistry.getInstance().getById(boardId);
+          if (!board) continue;
+          const newSlots = advanceBoardSlot(board, newQuestState, Date.now(), player);
+          newQuestState = {
+            ...newQuestState,
+            boardSlots: {
+              ...newQuestState.boardSlots,
+              [boardId]: {
+                questIds: newSlots[boardId],
+                lastRefresh: newQuestState.boardLastRefresh[boardId] ?? Date.now(),
+              },
+            },
+          };
+        }
+      }
+
+      // 构建奖励消息（写入 GameState.messages 显示在右侧消息栏）
+      const hasRewards = result.experience > 0 || result.items.length > 0;
+      const msgTitle = `奖励领取: ${quest.name}`;
+      const msgContent = hasRewards ? rewardMessage : '奖励已领取';
+
+      const newMessages = prev.messages
+        ? [{
+            id: `msg_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+            timestamp: Date.now(),
+            type: 'success' as const,
+            title: msgTitle,
+            content: msgContent,
+          } as import('@/core/types').MessageRecord,
+          ...prev.messages,
+        ].slice(0, 100)
+        : [];
+
+      return {
+        ...prev,
+        protagonist: newProtagonist,
+        questState: newQuestState,
+        messages: newMessages,
+      };
+    });
+
+    return { success: true, rewardMessage };
+  }, [questState, setGameState, getPlayerData]);
 
   // ============================================
   // 故事线查询
@@ -288,7 +417,8 @@ export function useQuest(
     if (!needsRefresh(board, questState.boardLastRefresh, now)) return;
 
     const rng = () => Math.random();
-    const { boardSlots, boardLastRefresh } = refreshBoard(board, questState, now, rng);
+    const player = getPlayerData();
+    const { boardSlots, boardLastRefresh } = refreshBoard(board, questState, now, rng, player);
 
     setGameState(prev => ({
       ...prev,
@@ -301,7 +431,7 @@ export function useQuest(
         boardLastRefresh: { ...prev.questState.boardLastRefresh, ...boardLastRefresh },
       },
     }));
-  }, [questState, setGameState]);
+  }, [questState, setGameState, getPlayerData]);
 
   const getBoardState = useCallback((boardId: string): BoardUIState => {
     const board = BoardRegistry.getInstance().getById(boardId);
@@ -328,6 +458,18 @@ export function useQuest(
     return slots
       .map(id => registry.getById(id))
       .filter((q): q is QuestDefinition => !!q);
+  }, [questState]);
+
+  // ============================================
+  // 单个任务状态查询
+  // ============================================
+
+  const getQuestState = useCallback((questId: string) => {
+    return {
+      completed: questState.completedQuestIds.includes(questId),
+      claimed: questState.claimedQuestIds.includes(questId),
+      active: !!questState.activeQuests[questId],
+    };
   }, [questState]);
 
   // ============================================
@@ -359,7 +501,9 @@ export function useQuest(
     refreshBoardIfNeeded,
     getBoardUIState: getBoardState,
     getBoardQuests,
+    getQuestState,
     hasViewedDialog: hasViewedDialogFn,
     markDialogViewed: markDialogViewedFn,
+    getCurrencyName,
   };
 }

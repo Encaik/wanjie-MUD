@@ -22,6 +22,7 @@ export { QuestRegistry } from './QuestRegistry';
 export { StoryLineRegistry } from './StoryLineRegistry';
 export { BoardRegistry } from './BoardRegistry';
 export { ItemRegistry } from './ItemRegistry';
+export { QuestTemplateRegistry } from './QuestTemplateRegistry';
 
 export type {
   // 世界观文本类型

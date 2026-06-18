@@ -52,9 +52,9 @@ rewardPool?: {
 
 #### Scenario: 多阶段奖励
 
-- **WHEN** Stage 1 的 `completions['done'].stageRewards` 包含 `{ spiritStones: 100 }`
+- **WHEN** Stage 1 的 `completions['done'].stageRewards` 包含 `{ items: [{ itemId: 'wanjie:common:spirit_stone', quantity: 100 }] }`
 - **AND** 最终 Stage 完成后 `quest.rewards` 包含 `{ experience: 500 }`
-- **THEN** 奖励 SHALL 包含 100 灵石 + 500 经验
+- **THEN** 奖励 SHALL 包含 100 灵石（自动按世界观解析为对应货币物品）+ 500 经验
 
 ### Requirement: 手动领奖
 

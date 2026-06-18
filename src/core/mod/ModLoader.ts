@@ -19,12 +19,13 @@ import { BoardRegistry } from '@/core/registry/BoardRegistry';
 import { ItemRegistry } from '@/core/registry/ItemRegistry';
 import { NPCDataRegistry } from '@/core/registry/NPCDataRegistry';
 import { QuestRegistry } from '@/core/registry/QuestRegistry';
+import { QuestTemplateRegistry } from '@/core/registry/QuestTemplateRegistry';
 import { RaceRegistry } from '@/core/registry/RaceRegistry';
 import { StoryLineRegistry } from '@/core/registry/StoryLineRegistry';
 import { TalentRegistry } from '@/core/registry/TalentRegistry';
 import { WorldViewRegistry } from '@/core/registry/WorldViewRegistry';
 import type { WorldviewDefinition } from '@/core/registry/WorldViewRegistry';
-import type { ItemTemplateData, NPCDefinition, QuestDefinition, StoryLine, QuestBoard } from '@/core/types';
+import type { ItemTemplateData, NPCDefinition, QuestDefinition, QuestTemplate, StoryLine, QuestBoard } from '@/core/types';
 
 import { parseManifest } from './ModManifest';
 import { ModLoadError } from './types';
@@ -509,13 +510,27 @@ export class ModLoader {
 
     if (contentType === 'quests') {
       if (Array.isArray(data)) {
-        QuestRegistry.getInstance().registerAll(data as QuestDefinition[]);
-        log.info(`Mod "${modId}": 注册了 ${(data as unknown[]).length} 个任务`);
+        // 检测数据格式：有 templateId 的是 QuestTemplate，否则是 QuestDefinition
+        const firstItem = data[0] as Record<string, unknown> | undefined;
+        if (firstItem && 'templateId' in firstItem) {
+          // QuestTemplate 格式 — 注册到模板注册中心（编译由 quest 模块 init 处理）
+          QuestTemplateRegistry.getInstance().registerAll(data as QuestTemplate[]);
+          log.info(`Mod "${modId}": 注册了 ${(data as unknown[]).length} 个任务模板`);
+        } else {
+          // 旧格式 QuestDefinition[] — 直接注册到 QuestRegistry
+          QuestRegistry.getInstance().registerAll(data as QuestDefinition[]);
+          log.info(`Mod "${modId}": 注册了 ${(data as unknown[]).length} 个任务`);
+        }
       } else if (data && typeof data === 'object') {
         // 支持合并数据格式：{ quests: [...], storylines: [...], boards: [...] }
         const bundle = data as Record<string, unknown>;
         if (Array.isArray(bundle['quests'])) {
-          QuestRegistry.getInstance().registerAll(bundle['quests'] as QuestDefinition[]);
+          const firstQuest = (bundle['quests'] as unknown[])[0] as Record<string, unknown> | undefined;
+          if (firstQuest && 'templateId' in firstQuest) {
+            QuestTemplateRegistry.getInstance().registerAll(bundle['quests'] as QuestTemplate[]);
+          } else {
+            QuestRegistry.getInstance().registerAll(bundle['quests'] as QuestDefinition[]);
+          }
           log.info(`Mod "${modId}": 注册了 ${(bundle['quests'] as unknown[]).length} 个任务`);
         }
         if (Array.isArray(bundle['storylines'])) {

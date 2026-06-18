@@ -2,13 +2,16 @@
  * 模块：Quest（任务系统）
  *
  * 职责：统一任务系统，管理所有任务类型（引导/主线/支线/日常/周常/势力/NPC）。
- * 包含故事线引擎、板块引擎、事件驱动追踪器、奖励桥接。
+ * 包含故事线引擎、板块引擎、事件驱动追踪器、模板编译器。
+ *
+ * 核心理念：任务系统 = 通用引擎，任务内容 = 数据（QuestTemplate）。
+ * 两者通过 QuestTemplateRegistry + compileTemplate() 解耦。
  *
  * @module modules/quest
  */
 
 // ============================================
-// 通用任务类型
+// 通用任务类型（旧系统兼容，保留给 faction 等）
 // ============================================
 
 export type {
@@ -50,7 +53,7 @@ export {
 export type { PlayerCheckData } from './logic/questEngine';
 
 // ============================================
-// 故事线引擎（新增）
+// 故事线引擎
 // ============================================
 
 export {
@@ -66,7 +69,7 @@ export {
 export type { StoryProgress } from './logic/storyEngine';
 
 // ============================================
-// 板块引擎（新增）
+// 板块引擎
 // ============================================
 
 export {
@@ -80,7 +83,7 @@ export {
 export type { BoardUIState } from './logic/boardEngine';
 
 // ============================================
-// 事件追踪器（新增）
+// 事件追踪器
 // ============================================
 
 export {
@@ -92,6 +95,17 @@ export {
 } from './logic/eventTracker';
 
 export type { TrackerResult } from './logic/eventTracker';
+
+// ============================================
+// 模板编译器（新增 — QuestTemplate → QuestDefinition）
+// ============================================
+
+export {
+  compileTemplate,
+  ensureCompiled,
+  deriveEventMapping,
+  clearCompilationCache,
+} from './logic/templateCompiler';
 
 // ============================================
 // 奖励分发
@@ -106,64 +120,30 @@ export {
 export type { RewardResult } from './logic/rewardDistributor';
 
 // ============================================
-// 新手任务系统
+// 通用进度追踪器（替代旧教程专用函数）
 // ============================================
 
 export {
-  tutorialTaskSystem,
-  TUTORIAL_TASKS,
-  isNewbie,
-  getTaskRewards,
+  getQuestProgress,
+  isStorylineCompleted,
+  shouldSkipInitialTutorialPhase,
   getTutorialWelcomeMessage,
-  claimTutorialReward,
-  checkNewlyCompletedTask as checkNewlyCompletedTutorialTask,
-} from './logic/tutorialTasks';
-
-export { checkTutorialProgress as checkLegacyTutorialProgress } from './logic/tutorialTasks';
-
-export type { TutorialTask } from './logic/tutorialTasks';
+} from './logic/taskProgressTracker';
 
 // ============================================
-// 分阶段新手引导
+// 数据初始化
 // ============================================
 
 export {
-  TUTORIAL_GUIDE,
-  getStepById,
-  getPhaseById,
-  getTotalStepCount,
-  getTotalPhaseCount,
-} from './logic/tutorialGuide';
-
-export type {
-  TutorialDialog,
-  TutorialStep,
-  TutorialPhase,
-  TutorialGuideDefinition,
-} from './logic/tutorialGuide';
-
-// ============================================
-// 事件驱动任务进度追踪
-// ============================================
-
-export {
-  createDefaultTutorialState,
-  createLegacyCompatibleTutorialState,
-  checkTutorialProgress,
-  claimStepReward,
-  claimPhaseReward,
-  isStepRewardClaimable,
-  isPhaseRewardClaimable,
-  getPendingDialog,
-  markDialogViewed,
-  getTutorialProgressInfo,
-  shouldSkipPhaseZero,
-} from './logic/taskProgressTracker';
-
-export type {
-  TutorialState,
-  TutorialProgressResult,
-} from './logic/taskProgressTracker';
+  TUTORIAL_STORYLINE,
+  DEFAULT_BOARDS,
+  BOARD_TUTORIAL,
+  BOARD_MAIN_STORY,
+  BOARD_DAILY,
+  BOARD_WEEKLY,
+  TUTORIAL_QUEST_TEMPLATES,
+  initModQuestTemplates,
+} from './data';
 
 // ============================================
 // 组件

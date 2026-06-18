@@ -89,6 +89,8 @@ export function GameStoreProvider({ children }: { children: React.ReactNode }) {
     // 注册内置故事线和板块（仅执行一次）
     import('@/modules/quest/events').then(({ initQuestRegistries }) => {
       initQuestRegistries();
+      // 触发重渲染，确保 QuestPanel 感知到新注册的板块/任务
+      setGameState(prev => ({ ...prev }));
     });
 
     const scheduleDeferred = window.requestIdleCallback ?? ((cb: () => void) => setTimeout(cb, 50));

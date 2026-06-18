@@ -16,7 +16,7 @@ export const BOARD_TUTORIAL: QuestBoard = {
   category: 'tutorial',
   description: '初入修行世界，跟随引导逐步掌握核心玩法',
   refreshRule: { type: 'never' },
-  slotCount: 3,
+  slotCount: 1,
   questPool: [
     'tutorial_welcome',
     'tutorial_use_pill',

@@ -27,10 +27,11 @@ import { RaceRegistry } from '@/core/registry/RaceRegistry';
 import { TalentRegistry } from '@/core/registry/TalentRegistry';
 import { NPCDataRegistry } from '@/core/registry/NPCDataRegistry';
 import { QuestRegistry } from '@/core/registry/QuestRegistry';
+import { QuestTemplateRegistry } from '@/core/registry/QuestTemplateRegistry';
 import { ItemRegistry } from '@/core/registry/ItemRegistry';
 import type { ItemTemplateData } from '@/core/types';
 import type { WorldviewDefinition } from '@/core/registry/WorldViewRegistry';
-import type { NPCDefinition, QuestDefinition } from '@/core/types';
+import type { NPCDefinition, QuestDefinition, QuestTemplate } from '@/core/types';
 import type { MechanicsConfig } from '@/modules/identity/logic/worlds/types';
 import { buildWorldMechanics } from '@/modules/identity/logic/worlds/builder';
 
@@ -305,13 +306,19 @@ export class ServerModLoader extends BaseModLoader {
   }
 
   private registerQuests(modId: string, data: unknown): void {
-    if (Array.isArray(data)) {
-      try {
+    if (!Array.isArray(data)) return;
+
+    try {
+      // 检测格式：有 templateId 的是 QuestTemplate，否则是 QuestDefinition
+      const firstItem = data[0] as Record<string, unknown> | undefined;
+      if (firstItem && 'templateId' in firstItem) {
+        QuestTemplateRegistry.getInstance().registerAll(data as QuestTemplate[]);
+      } else {
         QuestRegistry.getInstance().registerAll(data as QuestDefinition[]);
-        log.info(`Mod "${modId}": 注册了 ${data.length} 个任务`);
-      } catch (err) {
-        log.warn(`Mod "${modId}": 注册任务失败:`, err);
       }
+      log.info(`Mod "${modId}": 注册了 ${data.length} 个任务`);
+    } catch (err) {
+      log.warn(`Mod "${modId}": 注册任务失败:`, err);
     }
   }
 

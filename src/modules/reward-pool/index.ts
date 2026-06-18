@@ -11,12 +11,10 @@ export type {
   StaticEntry,
   FilterEntry,
   PoolRefEntry,
-  CurrencyEntry,
   PoolEntry,
   RewardPool,
   RollContext,
   RollResultItem,
-  RollResultCurrency,
   RollResult,
   ResolvedEntry,
 } from './types';

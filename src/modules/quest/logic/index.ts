@@ -53,3 +53,11 @@ export {
 } from './eventTracker';
 
 export type { TrackerResult } from './eventTracker';
+
+// 模板编译器（新增）
+export {
+  compileTemplate,
+  ensureCompiled,
+  deriveEventMapping,
+  clearCompilationCache,
+} from './templateCompiler';

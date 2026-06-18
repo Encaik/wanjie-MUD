@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "build": "npx tsx scripts/sync-version.ts && next build",
-    "dev": "next dev",
+    "build": "npx tsx scripts/sync-version.ts && npm run build-mods && next build",
+    "dev": "npm run build-mods && next dev",
     "lint": "eslint",
     "lint:strict": "eslint . --max-warnings 0 && bash scripts/check-file-sizes.sh",
     "check-sizes": "bash scripts/check-file-sizes.sh",

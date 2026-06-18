@@ -14,9 +14,9 @@ export const COMBAT_NORMAL_POOL: RewardPool = {
   description: '普通敌人的基础掉落',
   entries: [
     {
-      type: 'currency',
-      currencyType: '灵石',
-      amount: [5, 25],
+      type: 'static',
+      templateId: 'wanjie:common:spirit_stone',
+      quantity: [5, 25],
       weight: 50,
     },
     {
@@ -50,9 +50,9 @@ export const COMBAT_ELITE_POOL: RewardPool = {
   description: '精英敌人的优质掉落',
   entries: [
     {
-      type: 'currency',
-      currencyType: '灵石',
-      amount: [20, 80],
+      type: 'static',
+      templateId: 'wanjie:common:spirit_stone',
+      quantity: [20, 80],
       weight: 40,
     },
     {
@@ -92,9 +92,9 @@ export const COMBAT_MINIBOSS_POOL: RewardPool = {
   description: '小头目的稀有掉落',
   entries: [
     {
-      type: 'currency',
-      currencyType: '灵石',
-      amount: [50, 200],
+      type: 'static',
+      templateId: 'wanjie:common:spirit_stone',
+      quantity: [50, 200],
       weight: 35,
     },
     {
@@ -133,9 +133,9 @@ export const COMBAT_BOSS_POOL: RewardPool = {
   description: 'Boss 的丰厚掉落，保底稀有+',
   entries: [
     {
-      type: 'currency',
-      currencyType: '灵石',
-      amount: [200, 1000],
+      type: 'static',
+      templateId: 'wanjie:common:spirit_stone',
+      quantity: [200, 1000],
       weight: 30,
     },
     {

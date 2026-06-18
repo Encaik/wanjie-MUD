@@ -22,11 +22,9 @@ export class StoryLineRegistry {
     StoryLineRegistry.instance = new StoryLineRegistry();
   }
 
-  /** 注册单个故事线 */
+  /** 注册单个故事线（幂等：已存在则静默跳过） */
   register(storyline: StoryLine): void {
-    if (this.storylines.has(storyline.id)) {
-      throw new Error(`故事线 ID 冲突: ${storyline.id}`);
-    }
+    if (this.storylines.has(storyline.id)) return;
     this.storylines.set(storyline.id, storyline);
   }
 

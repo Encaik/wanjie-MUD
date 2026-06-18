@@ -8,25 +8,20 @@
  */
 
 import type { MessageTemplate } from '@/core/message-log';
+import { getMessageManager } from '@/core/message-log';
 import { BoardRegistry } from '@/core/registry/BoardRegistry';
-import { QuestRegistry } from '@/core/registry/QuestRegistry';
 import { StoryLineRegistry } from '@/core/registry/StoryLineRegistry';
 
-import { TUTORIAL_STORYLINE, DEFAULT_BOARDS, TUTORIAL_QUEST_DEFINITIONS } from './data';
+import { TUTORIAL_STORYLINE, DEFAULT_BOARDS, initModQuestTemplates } from './data';
 
 // ============================================
 // 初始化
 // ============================================
 
-/** 注册内置故事线、板块和任务 */
+/** 注册内置故事线、板块、任务和消息模板 */
 export function initQuestRegistries(): void {
-  // 注册教程任务定义
-  const questRegistry = QuestRegistry.getInstance();
-  for (const quest of TUTORIAL_QUEST_DEFINITIONS) {
-    if (!questRegistry.getById(quest.id)) {
-      questRegistry.register(quest);
-    }
-  }
+  // 编译 Mod 注册的模板并注入 QuestRegistry（内置模板已在模块加载时同步注册）
+  initModQuestTemplates();
 
   // 注册教程故事线
   const storyRegistry = StoryLineRegistry.getInstance();
@@ -40,6 +35,12 @@ export function initQuestRegistries(): void {
     if (!boardRegistry.getById(board.id)) {
       boardRegistry.register(board);
     }
+  }
+
+  // 注册消息模板（事件 → 消息）
+  const mm = getMessageManager();
+  for (const template of QUEST_MESSAGE_TEMPLATES) {
+    mm.registerTemplate(template);
   }
 }
 

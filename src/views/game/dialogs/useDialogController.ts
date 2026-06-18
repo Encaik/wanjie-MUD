@@ -22,6 +22,7 @@ export type DialogType =
   | 'worldReveal'
   | 'noviceComplete'
   | 'tutorialComplete'
+  | 'questDialog'
   | 'death';
 
 /** 弹窗条目 */

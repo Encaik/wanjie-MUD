@@ -89,21 +89,8 @@ export interface PoolRefEntry {
   conditions?: EntryCondition[];
 }
 
-/** 货币条目：直接产出货币，不走稀有度投骰 */
-export interface CurrencyEntry {
-  type: 'currency';
-  /** 货币类型标识（如 'spirit_stone'、'sect_coin'） */
-  currencyType: string;
-  /** 产出数量范围 [min, max] */
-  amount: [number, number];
-  /** 选择权重 */
-  weight: number;
-  /** 生效条件 */
-  conditions?: EntryCondition[];
-}
-
 /** 池子条目联合类型 */
-export type PoolEntry = StaticEntry | FilterEntry | PoolRefEntry | CurrencyEntry;
+export type PoolEntry = StaticEntry | FilterEntry | PoolRefEntry;
 
 // ============================================
 // RewardPool — 池子定义
@@ -167,20 +154,10 @@ export interface RollResultItem {
   rarity: Rarity;
 }
 
-/** 单个货币产出 */
-export interface RollResultCurrency {
-  /** 货币类型 */
-  type: string;
-  /** 数量 */
-  amount: number;
-}
-
 /** 池子滚动结果 */
 export interface RollResult {
   /** 物品产出列表 */
   items: RollResultItem[];
-  /** 货币产出列表 */
-  currencies: RollResultCurrency[];
   /** 预格式化摘要文本 */
   summary: string;
 }
@@ -192,7 +169,7 @@ export interface RollResult {
 /** resolve 后的条目（权重已归一化） */
 export interface ResolvedEntry {
   /** 原始条目 */
-  entry: StaticEntry | FilterEntry | CurrencyEntry;
+  entry: StaticEntry | FilterEntry;
   /** 生效权重 */
   effectiveWeight: number;
   /** 稀有度覆写（来自 PoolRefEntry） */

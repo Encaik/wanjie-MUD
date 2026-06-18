@@ -452,7 +452,7 @@ export interface NPCDefinition {
 // ============================================
 
 /** 任务类型 */
-export type QuestType = 'main' | 'side' | 'hidden' | 'daily' | 'event';
+export type QuestType = 'main' | 'side' | 'hidden' | 'daily' | 'weekly' | 'event';
 
 /** 任务目标类型 */
 export type QuestObjectiveType =

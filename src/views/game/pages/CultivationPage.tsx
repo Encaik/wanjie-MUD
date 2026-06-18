@@ -47,6 +47,7 @@ export function CultivationPage() {
         onCultivate={cultivation.performCultivation}
         onRest={cultivation.performRest}
         worldType={p.world.type}
+        worldviewId={p.world.worldviewId}
         items={p.items}
         activeEffects={p.activeEffects}
         experience={p.experience}
@@ -81,6 +82,7 @@ export function CultivationPage() {
         onSeclusion={cultivation.performSeclusion}
         disabled={gameState.autoCultivating}
         worldType={p.world.type}
+        worldviewId={p.world.worldviewId}
         items={p.items}
         level={p.level}
       />

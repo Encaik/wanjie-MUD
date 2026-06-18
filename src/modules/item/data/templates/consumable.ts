@@ -104,12 +104,29 @@ export const MANA_HEALING_PILL: ConsumableTemplate = {
   },
 };
 
-/** 所有通用消耗品模板（修仙专属丹药已迁移至 wanjie-core mod 的 data/items/cultivation.json） */
+/**
+ * 遗留丹药（旧教程引用，无 worldview 命名空间前缀）
+ *
+ * Mod 丹药使用 wanjie-core:cultivation:* 命名空间，但旧教程中的 spirit_gathering_pill
+ * 和 vitality_pill 使用裸 ID。内置模板兜底，确保客户端始终可查。
+ */
+export const SPIRIT_GATHERING_PILL: ConsumableTemplate = {
+  templateId: 'spirit_gathering_pill',
+  name: '凝神丹', description: '中阶修炼丹药，使用后大幅提升修炼效率。',
+  category: 'consumable', subcategory: 'pill_cultivation', rarity: 'uncommon', maxStack: 99, maxLevel: 1,
+  baseStats: {}, price: 300, element: null, isDroppable: true,
+  ext: { effects: [{ type: 'buff', baseValue: 40, statScaling: 0, target: 'self' }], requiredLevel: 5 },
+};
+
+export const VITALITY_PILL: ConsumableTemplate = {
+  templateId: 'vitality_pill',
+  name: '元气丹', description: '中阶疗伤丹药，服用后恢复较多生命值。',
+  category: 'consumable', subcategory: 'pill_hp', rarity: 'uncommon', maxStack: 99, maxLevel: 1,
+  baseStats: {}, price: 400, element: null, isDroppable: true,
+  ext: { effects: [{ type: 'heal', baseValue: 200, statScaling: 0, target: 'self' }], requiredLevel: 3 },
+};
 
 export const CONSUMABLE_TEMPLATES: ConsumableTemplate[] = [
-  REJUVENATION_PILL,
-  HEALING_PILL,
-  SOUL_RESTORATION_PILL,
-  MANA_RESTORATION_PILL,
-  MANA_HEALING_PILL,
+  REJUVENATION_PILL, HEALING_PILL, SOUL_RESTORATION_PILL, MANA_RESTORATION_PILL, MANA_HEALING_PILL,
+  SPIRIT_GATHERING_PILL, VITALITY_PILL,
 ];

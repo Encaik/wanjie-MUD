@@ -44,11 +44,7 @@
    - `rarityOverride?: Partial<Record<Rarity, number>>`
    - `conditions?: EntryCondition[]`
 
-4. **CurrencyEntry** — 货币（不走稀有度投骰）
-   - `currencyType: string`
-   - `amount: [number, number]`
-   - `weight: number`
-   - `conditions?: EntryCondition[]`
+4. ~~**CurrencyEntry**~~ — 已删除。货币改用 `StaticEntry`（`templateId: 'wanjie:common:spirit_stone'`），在 `processStaticEntry` 中自动按世界观解析为具体货币模板
 
 ### EntryCondition
 - `playerLevelMin` / `playerLevelMax` — 等级限制
@@ -67,8 +63,7 @@
 - `maxRarityOverride?: Rarity`
 
 ### RollResult
-- `items: Array<{ templateId, instanceId, quantity, rarity }>`
-- `currencies: Array<{ type, amount }>`
+- `items: Array<{ templateId, instanceId, quantity, rarity }>` — 统一产出（含货币物品）
 - `summary: string` — 格式化文本
 
 ## 逻辑函数
@@ -110,7 +105,7 @@
 
 ## 边界情况
 
-- 池子为空或所有条目被条件过滤 → `RollResult` 为空（items=[], currencies=[], summary="未获得任何物品"）
+- 池子为空或所有条目被条件过滤 → `RollResult` 为空（items=[], summary="未获得任何物品"）
 - FilterEntry 过滤后无匹配物品 → 该条目产出 `null`，不贡献到结果
 - PoolRefEntry 引用不存在的池子 → warn 日志，该条目产出 `null`
 - 稀有度 weights 全为 0 → fallback 到 `common`

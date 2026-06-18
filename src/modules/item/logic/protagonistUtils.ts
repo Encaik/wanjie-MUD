@@ -8,6 +8,7 @@
 import type { Protagonist } from '@/core/types';
 import type { ItemInstance, ResolvedItem, ItemCategory } from '../types';
 import { resolveItem, findItemByInstance, getItemCount } from './itemManager';
+import { getWorldviewCurrencyItemId } from '@/modules/reward-pool/logic/poolEngine';
 
 /** 从槽位获取已解析的装备物品 */
 export function getEquippedResolved(protagonist: Protagonist, slotId: string): ResolvedItem | null {
@@ -58,9 +59,10 @@ export function getCurrency(protagonist: Protagonist, currencyTemplateId: string
   return getItemCount(protagonist.items, currencyTemplateId);
 }
 
-/** 获取灵石余额 */
+/** 获取当前世界观主货币余额 */
 export function getSpiritStones(protagonist: Protagonist): number {
-  return getCurrency(protagonist, 'wanjie:common:spirit_stone');
+  const currencyId = getWorldviewCurrencyItemId(protagonist.world.worldviewId);
+  return getCurrency(protagonist, currencyId);
 }
 
 /** 检查是否装备了某模板的物品 */

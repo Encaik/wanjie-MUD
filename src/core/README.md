@@ -12,7 +12,7 @@
 | [`logger/`](logger/) | 系统日志 — 结构化日志记录 |
 | [`message-log/`](message-log/) | 玩家消息日志 — 游戏内消息的记录、格式化和检索 |
 | [`mod/`](mod/) | Mod 系统 — Mod 加载、验证、清单管理 |
-| [`registry/`](registry/) | 数据注册中心 — WorldDataRegistry、WorldMechanicsRegistry |
+| [`registry/`](registry/) | 数据注册中心 — WorldDataRegistry、WorldMechanicsRegistry、QuestTemplateRegistry、QuestRegistry、StoryLineRegistry、BoardRegistry |
 | [`server/`](server/) | 服务端核心代码 — instrumentation、中间件等服务端基础设施 |
 | [`statistics/`](statistics/) | 统计追踪器 — 事件驱动的统计更新纯函数，全部游戏统计的单一更新入口 |
 | [`time/`](time/) | 时间系统 — 游戏时间模拟、离线收益计算 |

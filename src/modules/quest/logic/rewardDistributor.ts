@@ -2,17 +2,23 @@
  * 任务奖励分发器
  *
  * 纯函数集合，处理任务/阶段奖励的计算和发放。
+ * 货币按世界观自动映射为对应物品，不特殊处理。
  *
  * @module modules/quest/logic
  */
 
 import type { QuestReward } from '@/core/types';
+import { hasTemplate, getTemplate } from '@/modules/item/data';
+import { getWorldviewCurrencyItemId } from '@/modules/reward-pool/logic/poolEngine';
 
-/** 奖励发放结果 */
+// ============================================
+// 奖励结果类型
+// ============================================
+
+/** 奖励发放结果（货币已统一为物品，与其他物品无差别） */
 export interface RewardResult {
   success: boolean;
   experience: number;
-  spiritStones: number;
   items: { itemId: string; quantity: number }[];
   attitudeChanges: { npcId: string; change: number }[];
   reputationChanges: { factionId: string; change: number }[];
@@ -25,7 +31,6 @@ export function createEmptyRewardResult(): RewardResult {
   return {
     success: true,
     experience: 0,
-    spiritStones: 0,
     items: [],
     attitudeChanges: [],
     reputationChanges: [],
@@ -34,38 +39,53 @@ export function createEmptyRewardResult(): RewardResult {
   };
 }
 
+// ============================================
+// 合并 / 消息
+// ============================================
+
 /**
  * 合并多个奖励
- *
- * @param rewards - 奖励列表
- * @returns 合并后的奖励结果
  */
-export function mergeRewards(rewards: QuestReward[]): RewardResult {
+export function mergeRewards(rewards: QuestReward[], worldviewId?: string): RewardResult {
   const result = createEmptyRewardResult();
 
   for (const reward of rewards) {
     if (reward.experience) result.experience += reward.experience;
-    if (reward.spiritStones) result.spiritStones += reward.spiritStones;
+    if (reward.spiritStones && reward.spiritStones > 0) {
+      // 货币按世界观解析为具体物品
+      const currencyId = getWorldviewCurrencyItemId(worldviewId);
+      result.items.push({ itemId: currencyId, quantity: reward.spiritStones });
+    }
     if (reward.items) result.items.push(...reward.items);
     if (reward.attitudeChanges) result.attitudeChanges.push(...reward.attitudeChanges);
     if (reward.reputation) result.reputationChanges.push(reward.reputation);
     if (reward.unlockQuests) result.unlockedQuests.push(...reward.unlockQuests);
   }
 
-  result.message = buildRewardMessage(result);
+  result.message = buildRewardMessage(result, worldviewId);
   return result;
 }
 
 /**
  * 构建奖励的可读消息
+ *
+ * 货币显示名称通过 worldviewId 解析。
  */
-export function buildRewardMessage(result: RewardResult): string {
+export function buildRewardMessage(result: RewardResult, worldviewId?: string): string {
   const parts: string[] = [];
 
   if (result.experience > 0) parts.push(`经验 +${result.experience}`);
-  if (result.spiritStones > 0) parts.push(`灵石 +${result.spiritStones}`);
+
   if (result.items.length > 0) {
-    parts.push(`获得: ${result.items.map(i => `${i.itemId} x${i.quantity}`).join(', ')}`);
+    parts.push(`获得: ${result.items.map(i => {
+      let name: string;
+      if (hasTemplate(i.itemId)) {
+        name = getTemplate(i.itemId).name;
+      } else {
+        name = i.itemId.split(':').pop() ?? i.itemId;
+      }
+      return `${name} x${i.quantity}`;
+    }).join(', ')}`);
   }
   if (result.attitudeChanges.length > 0) {
     parts.push(result.attitudeChanges.map(a => `${a.npcId} 好感度 ${a.change > 0 ? '+' : ''}${a.change}`).join(', '));
@@ -84,30 +104,16 @@ export function buildRewardMessage(result: RewardResult): string {
 // 奖励池桥接
 // ============================================
 
-/**
- * 计算任务奖励（静态 + 奖励池）
- *
- * 优先使用 quest.rewardPool 走奖励池动态生成，
- * 否则合并 quest.rewards 和阶段 rewards 静态发放。
- *
- * @param questRewards - 任务定义的静态奖励（quest.rewards）
- * @param stageRewards - 阶段累计奖励
- * @param rewardPoolConfig - 奖励池配置
- * @param rollPool - 奖励池滚动函数（外部注入，避免循环依赖）
- * @param rollContext - 奖励池上下文
- */
 export async function calculateQuestRewards(
   questRewards: QuestReward[],
   stageRewards: QuestReward[],
   rewardPoolConfig?: { poolId: string; multiplier?: number },
   rollPool?: (poolId: string, ctx: Record<string, unknown>) => Promise<{
     items: Array<{ templateId: string; quantity: number }>;
-    currencies: Array<{ type: string; amount: number }>;
     summary: string;
   }>,
   rollContext?: Record<string, unknown>,
 ): Promise<RewardResult> {
-  // 奖励池路径
   if (rewardPoolConfig && rollPool && rollContext) {
     try {
       const poolResult = await rollPool(rewardPoolConfig.poolId, {
@@ -116,20 +122,15 @@ export async function calculateQuestRewards(
       });
 
       const result = createEmptyRewardResult();
-      result.experience = 0; // 奖励池不产出经验（由静态奖励提供）
-      result.spiritStones = poolResult.currencies
-        .filter(c => c.type === 'spirit_stone')
-        .reduce((sum, c) => sum + c.amount, 0);
+      // 货币已在 poolResult.items 中（poolEngine 已解析为世界观货币）
       result.items = poolResult.items.map(i => ({
         itemId: i.templateId,
         quantity: i.quantity,
       }));
       result.message = poolResult.summary;
 
-      // 合并静态阶段奖励
       const staticResult = mergeRewards(stageRewards);
       result.experience += staticResult.experience;
-      result.spiritStones += staticResult.spiritStones;
       result.items.push(...staticResult.items);
       result.attitudeChanges.push(...staticResult.attitudeChanges);
       result.reputationChanges.push(...staticResult.reputationChanges);
@@ -138,22 +139,17 @@ export async function calculateQuestRewards(
 
       return result;
     } catch {
-      // 奖励池失败，回退到静态奖励
+      // 回退静态
     }
   }
 
-  // 静态奖励路径
   return mergeRewards([...questRewards, ...stageRewards]);
 }
 
-/**
- * 同步版计算任务奖励（不依赖奖励池）
- *
- * 用于不需要走奖励池的简单任务。
- */
 export function calculateStaticQuestRewards(
   questRewards: QuestReward[],
   stageRewards: QuestReward[],
+  worldviewId?: string,
 ): RewardResult {
-  return mergeRewards([...questRewards, ...stageRewards]);
+  return mergeRewards([...questRewards, ...stageRewards], worldviewId);
 }

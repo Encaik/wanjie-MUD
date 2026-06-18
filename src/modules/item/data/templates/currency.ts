@@ -108,9 +108,77 @@ export const EVENT_TOKEN: CurrencyTemplate = {
   ext: {},
 };
 
+// ============================================
+// 世界观主货币（8 种世界观各有一种）
+// ============================================
+
+/** 灵石 — 修仙世界主货币（也是默认兜底） */
+export const CULTIVATION_SPIRIT_STONE: CurrencyTemplate = {
+  ...SPIRIT_STONE,
+  templateId: 'wanjie-core:cultivation:spirit_stone',
+  name: '灵石',
+  description: '修仙界通用货币，蕴含天地灵气。',
+};
+
+/** 银两 — 武侠世界主货币 */
+export const MARTIAL_SILVER: CurrencyTemplate = {
+  templateId: 'wanjie-core:martial:silver_tael',
+  name: '银两',
+  description: '武侠世界通用货币，用于购买武器、丹药和功法。',
+  category: 'currency', subcategory: 'primary', rarity: 'common',
+  maxStack: 999_999_999, maxLevel: 1, baseStats: {}, price: 1,
+  element: null, isDroppable: true, ext: {},
+};
+
+/** 魔晶 — 魔法世界主货币 */
+export const MAGIC_CRYSTAL: CurrencyTemplate = {
+  templateId: 'wanjie-core:magic:mana_crystal',
+  name: '魔晶',
+  description: '魔法世界通用货币，蕴含魔力精华。',
+  category: 'currency', subcategory: 'primary', rarity: 'common',
+  maxStack: 999_999_999, maxLevel: 1, baseStats: {}, price: 1,
+  element: null, isDroppable: true, ext: {},
+};
+
+/** 能源币 — 科技世界主货币 */
+export const TECH_CREDIT: CurrencyTemplate = {
+  templateId: 'wanjie-core:tech:energy_credit',
+  name: '能源币',
+  description: '科技世界通用货币，以能源单位计价。',
+  category: 'currency', subcategory: 'primary', rarity: 'common',
+  maxStack: 999_999_999, maxLevel: 1, baseStats: {}, price: 1,
+  element: null, isDroppable: true, ext: {},
+};
+
+/** 灵能水晶 — 超能世界主货币 */
+export const PSI_CRYSTAL: CurrencyTemplate = {
+  templateId: 'wanjie-core:psi:psi_crystal',
+  name: '灵能水晶',
+  description: '超能世界通用货币，蕴含精神能量。',
+  category: 'currency', subcategory: 'primary', rarity: 'common',
+  maxStack: 999_999_999, maxLevel: 1, baseStats: {}, price: 1,
+  element: null, isDroppable: true, ext: {},
+};
+
+/** 生存点 — 末日世界主货币 */
+export const APOCALYPSE_TOKEN: CurrencyTemplate = {
+  templateId: 'wanjie-core:apocalypse:survival_token',
+  name: '生存点',
+  description: '末日世界通用货币，代表生存资源的分配权。',
+  category: 'currency', subcategory: 'primary', rarity: 'common',
+  maxStack: 999_999_999, maxLevel: 1, baseStats: {}, price: 1,
+  element: null, isDroppable: true, ext: {},
+};
+
 /** 所有货币模板 */
 export const CURRENCY_TEMPLATES: CurrencyTemplate[] = [
   SPIRIT_STONE,
+  CULTIVATION_SPIRIT_STONE,
+  MARTIAL_SILVER,
+  MAGIC_CRYSTAL,
+  TECH_CREDIT,
+  PSI_CRYSTAL,
+  APOCALYPSE_TOKEN,
   CONTRIBUTION,
   SECT_POINT,
   HONOR,
