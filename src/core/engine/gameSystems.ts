@@ -8,6 +8,15 @@ import { createLogger } from '@/core/logger';
 import { GameStatistics, Technique, Equipment } from '@/core/types';
 import { achievementSystem, AchievementConfig } from '@/modules/collection/logic/achievement/achievementSystem';
 import { collectionSystem, BondConfig } from '@/modules/collection/logic/collectionSystem';
+import {
+  emitAdventureCompleted,
+  emitCultivationPerformed,
+  emitEnemyKilled,
+  emitEquipmentObtained,
+  emitLegendaryObtained,
+  emitPlayerLevelUp,
+  emitTechniqueObtained,
+} from '@/core/statistics';
 
 /** GameSystems 日志记录器 */
 const log = createLogger('GameSystems');
@@ -23,7 +32,7 @@ const ACHIEVEMENT_CONFIGS: AchievementConfig[] = [
     description: "角色等级达到10级",
     type: "level",
     icon: "trophy",
-    triggerEvent: 'progression:level_up',
+    triggerEvent: 'player:level_up',
     condition: { type: "compare", field: "newLevel", operator: ">=", value: 10 },
     rewards: { experience: 100, stats: { "体质": 5 } },
     rarity: "普通"
@@ -34,7 +43,7 @@ const ACHIEVEMENT_CONFIGS: AchievementConfig[] = [
     description: "角色等级达到30级",
     type: "level",
     icon: "trophy",
-    triggerEvent: 'progression:level_up',
+    triggerEvent: 'player:level_up',
     condition: { type: "compare", field: "newLevel", operator: ">=", value: 30 },
     rewards: { experience: 500, stats: { "体质": 10, "灵根": 5 } },
     rarity: "稀有"
@@ -45,7 +54,7 @@ const ACHIEVEMENT_CONFIGS: AchievementConfig[] = [
     description: "角色等级达到50级",
     type: "level",
     icon: "trophy",
-    triggerEvent: 'progression:level_up',
+    triggerEvent: 'player:level_up',
     condition: { type: "compare", field: "newLevel", operator: ">=", value: 50 },
     rewards: { experience: 2000, stats: { "体质": 20, "灵根": 10, "悟性": 5 } },
     rarity: "史诗"
@@ -56,7 +65,7 @@ const ACHIEVEMENT_CONFIGS: AchievementConfig[] = [
     description: "角色等级达到100级",
     type: "level",
     icon: "trophy",
-    triggerEvent: 'progression:level_up',
+    triggerEvent: 'player:level_up',
     condition: { type: "compare", field: "newLevel", operator: ">=", value: 100 },
     rewards: { experience: 10000, stats: { "体质": 50, "灵根": 30, "悟性": 20, "意志": 20 } },
     rarity: "传说"
@@ -67,8 +76,8 @@ const ACHIEVEMENT_CONFIGS: AchievementConfig[] = [
     description: "累计击败10个敌人",
     type: "combat",
     icon: "swords",
-    triggerEvent: 'combat:monster_killed',
-    condition: { type: "accumulate", event: 'combat:monster_killed', target: 10 },
+    triggerEvent: 'combat:enemy_killed',
+    condition: { type: "accumulate", event: 'combat:enemy_killed', target: 10 },
     rewards: { experience: 50 },
     rarity: "普通"
   },
@@ -78,8 +87,8 @@ const ACHIEVEMENT_CONFIGS: AchievementConfig[] = [
     description: "累计击败100个敌人",
     type: "combat",
     icon: "swords",
-    triggerEvent: 'combat:monster_killed',
-    condition: { type: "accumulate", event: 'combat:monster_killed', target: 100 },
+    triggerEvent: 'combat:enemy_killed',
+    condition: { type: "accumulate", event: 'combat:enemy_killed', target: 100 },
     rewards: { experience: 200, stats: { "体质": 5 } },
     rarity: "稀有"
   },
@@ -111,8 +120,8 @@ const ACHIEVEMENT_CONFIGS: AchievementConfig[] = [
     description: "收集5种不同的功法",
     type: "collection",
     icon: "package",
-    triggerEvent: 'collection:technique_collected',
-    condition: { type: "accumulate_unique", event: 'collection:technique_collected', field: "techniqueName", target: 5 },
+    triggerEvent: 'collection:technique_obtained',
+    condition: { type: "accumulate_unique", event: 'collection:technique_obtained', field: "name", target: 5 },
     rewards: { experience: 100 },
     rarity: "普通"
   },
@@ -122,8 +131,8 @@ const ACHIEVEMENT_CONFIGS: AchievementConfig[] = [
     description: "收集20种不同的功法",
     type: "collection",
     icon: "package",
-    triggerEvent: 'collection:technique_collected',
-    condition: { type: "accumulate_unique", event: 'collection:technique_collected', field: "techniqueName", target: 20 },
+    triggerEvent: 'collection:technique_obtained',
+    condition: { type: "accumulate_unique", event: 'collection:technique_obtained', field: "name", target: 20 },
     rewards: { experience: 500, stats: { "悟性": 10 } },
     rarity: "稀有"
   },
@@ -133,8 +142,8 @@ const ACHIEVEMENT_CONFIGS: AchievementConfig[] = [
     description: "收集6种不同的装备",
     type: "collection",
     icon: "shield",
-    triggerEvent: 'collection:equipment_collected',
-    condition: { type: "accumulate_unique", event: 'collection:equipment_collected', field: "equipmentName", target: 6 },
+    triggerEvent: 'collection:equipment_obtained',
+    condition: { type: "accumulate_unique", event: 'collection:equipment_obtained', field: "name", target: 6 },
     rewards: { experience: 100 },
     rarity: "普通"
   },
@@ -144,8 +153,8 @@ const ACHIEVEMENT_CONFIGS: AchievementConfig[] = [
     description: "完成1次秘境探索",
     type: "exploration",
     icon: "map",
-    triggerEvent: 'progression:adventure_completed',
-    condition: { type: "accumulate", event: 'progression:adventure_completed', target: 1 },
+    triggerEvent: 'adventure:completed',
+    condition: { type: "accumulate", event: 'adventure:completed', target: 1 },
     rewards: { experience: 100 },
     rarity: "普通"
   },
@@ -155,8 +164,8 @@ const ACHIEVEMENT_CONFIGS: AchievementConfig[] = [
     description: "完成10次秘境探索",
     type: "exploration",
     icon: "map",
-    triggerEvent: 'progression:adventure_completed',
-    condition: { type: "accumulate", event: 'progression:adventure_completed', target: 10 },
+    triggerEvent: 'adventure:completed',
+    condition: { type: "accumulate", event: 'adventure:completed', target: 10 },
     rewards: { experience: 500, stats: { "幸运": 5 } },
     rarity: "稀有"
   },
@@ -166,8 +175,8 @@ const ACHIEVEMENT_CONFIGS: AchievementConfig[] = [
     description: "累计修炼100次",
     type: "cultivation",
     icon: "sparkles",
-    triggerEvent: 'progression:cultivation_done',
-    condition: { type: "accumulate", event: 'progression:cultivation_done', target: 100 },
+    triggerEvent: 'cultivation:performed',
+    condition: { type: "accumulate", event: 'cultivation:performed', target: 100 },
     rewards: { experience: 300, stats: { "意志": 5 } },
     rarity: "普通"
   },
@@ -404,74 +413,49 @@ class GameSystemsManager {
   
   /** 触发等级提升事件 */
   triggerLevelUp(oldLevel: number, newLevel: number): void {
-    emit('progression:level_up', { oldLevel, newLevel });
+    emitPlayerLevelUp(oldLevel, newLevel);
   }
 
   /** 触发怪物击杀事件 */
-  triggerMonsterKilled(enemyName: string, enemyTier: 'normal' | 'elite' | 'miniboss' | 'boss', enemyLevel: number): void {
-    emit('combat:monster_killed', { enemyName, enemyTier, enemyLevel });
+  triggerMonsterKilled(enemyName: string, enemyTier: 'normal' | 'elite' | 'miniboss' | 'boss', enemyLevel: number, enemyId?: string): void {
+    emitEnemyKilled({ enemyId, enemyName, enemyTier, enemyLevel });
     
     // 同时触发特定类型事件
-    if (enemyTier === 'boss') {
-      emit('combat:boss_killed', { bossName: enemyName, bossLevel: enemyLevel });
-    } else if (enemyTier === 'elite') {
-      emit('combat:elite_killed', { eliteName: enemyName, eliteLevel: enemyLevel });
-    }
   }
 
   /** 触发功法收集事件 */
   triggerTechniqueCollected(technique: Technique): void {
-    emit('collection:technique_collected', {
-      techniqueId: technique.id,
-      techniqueName: technique.name,
-      techniqueType: technique.type,
-      rarity: technique.rarity,
-      level: technique.level,
-    });
+    emitTechniqueObtained(technique.name);
 
     // 传说品质触发特殊事件
     if (technique.rarity === '传说') {
-      emit('collection:legendary_obtained', {
-        itemType: 'technique',
-        itemName: technique.name,
-      });
+      emitLegendaryObtained();
     }
   }
 
   /** 触发装备收集事件 */
   triggerEquipmentCollected(equipment: Equipment): void {
-    emit('collection:equipment_collected', {
-      equipmentId: equipment.id,
-      equipmentName: equipment.name,
-      slot: equipment.slot,
-      rarity: equipment.rarity,
-      level: equipment.level,
-    });
+    emitEquipmentObtained(equipment.name);
 
     // 传说品质触发特殊事件
     if (equipment.rarity === '传说') {
-      emit('collection:legendary_obtained', {
-        itemType: 'equipment',
-        itemName: equipment.name,
-      });
+      emitLegendaryObtained();
     }
   }
 
   /** 触发秘境完成事件 */
   triggerAdventureCompleted(dungeonName: string, difficulty: string, rewards: any): void {
-    emit('progression:adventure_completed', { dungeonName, difficulty, rewards });
+    void dungeonName;
+    void rewards;
+    emitAdventureCompleted(Number(difficulty) || undefined);
   }
 
   /** 触发修炼完成事件 */
   triggerCultivationDone(statGains: Record<string, number>, breakthroughAttempt: boolean, breakthroughSuccess: boolean): void {
-    emit('progression:cultivation_done', { statGains, breakthroughAttempt, breakthroughSuccess });
-    
-    if (breakthroughSuccess) {
-      emit('progression:realm_breakthrough', {
-        oldRealm: '',
-        newRealm: '',
-      });
-    }
+    void statGains;
+    void breakthroughAttempt;
+    void breakthroughSuccess;
+    emitCultivationPerformed(1);
   }
 
   /** 触发全装备事件 */

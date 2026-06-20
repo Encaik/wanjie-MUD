@@ -53,6 +53,22 @@ export {
   isStatisticsEvent,
 } from './statisticsTracker';
 
+export {
+  emitPlayerLevelUp,
+  emitEnemyKilled,
+  emitCultivationPerformed,
+  emitCultivationBreakthrough,
+  emitAdventureEntered,
+  emitAdventureCompleted,
+  emitItemObtained,
+  emitItemUsed,
+  emitSpiritStonesGained,
+  emitSpiritStonesSpent,
+  emitTechniqueObtained,
+  emitEquipmentObtained,
+  emitLegendaryObtained,
+} from './emitters';
+
 // 统计摘要
 export type { StatisticsSummary } from './summary';
 export { calculateStatisticsSummary } from './summary';

@@ -29,8 +29,10 @@ import {
   SECLUSION_OUTCOMES,
 } from '@/modules/progression/logic/seclusion';
 import { gameClock, ACTION_TIME_COST } from '@/core/time';
-import { processStatisticsEvents, cultivationEvents, playerEvents } from '@/core/statistics';
-import { emit } from '@/core/events';
+import {
+  emitCultivationBreakthrough,
+  emitPlayerLevelUp,
+} from '@/core/statistics';
 import { GameState, MessageRecord, ActiveEffect } from '@/core/types';
 import { DEFAULT_PROTAGONIST_EXTENSION, MentalState } from '@/core/types';
 import { removeItem } from '@/modules/item/logic';
@@ -197,19 +199,14 @@ export function useSeclusion({
       }
       
       // 统计信息
-      const now = Date.now();
-      const statsEvents: Array<{ type: string; payload: Record<string, unknown>; timestamp: number }> = [];
-      if (result.breakthroughSuccess) {
-        statsEvents.push({ type: 'cultivation:breakthrough' as const, payload: { count: 1 }, timestamp: now });
-      }
-      const newStatistics = statsEvents.length > 0
-        ? processStatisticsEvents(prev.statistics, statsEvents)
-        : prev.statistics;
+      const newStatistics = prev.statistics;
 
       // 通过事件总线发出事件（新手引导、统计系统等监听）
-      emit(cultivationEvents.events.performed, { count: 1 });
-      if (newLevel > prev.statistics.maxLevel) {
-        emit(playerEvents.events.level_up, { oldLevel: prev.protagonist.level, newLevel });
+      if (result.breakthroughSuccess) {
+        emitCultivationBreakthrough(prev.protagonist.realm, newRealm, 1);
+      }
+      if (newLevel > prev.protagonist.level) {
+        emitPlayerLevelUp(prev.protagonist.level, newLevel);
       }
       
       // 触发游戏系统事件
@@ -219,9 +216,6 @@ export function useSeclusion({
         !!result.breakthroughSuccess
       );
       
-      if (newLevel > prev.protagonist.level) {
-        gameSystems.triggerLevelUp(prev.protagonist.level, newLevel);
-      }
       
       // 更新势力任务进度
       let newFactionProgress = prev.protagonist.factionProgress;

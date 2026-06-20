@@ -34,7 +34,7 @@ function makeKillEvent(enemyId: string): GameEvent {
 }
 
 function makeCollectEvent(itemId: string): GameEvent {
-  return { type: 'item:collected', timestamp: Date.now(), payload: { itemId } };
+  return { type: 'item:obtained', timestamp: Date.now(), payload: { templateId: itemId } };
 }
 
 // ============================================

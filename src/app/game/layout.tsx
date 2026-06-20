@@ -60,7 +60,7 @@ export default function GameLayout({ children }: { children: React.ReactNode }) 
       const currentState = questStateRef.current;
       const result = applyEventToQuests(event, currentState);
 
-      if (result.newlyCompletedQuestIds.length > 0 || result.newlyCompletedStages.length > 0) {
+      if (result.changed) {
         const registry = QuestRegistry.getInstance();
 
         dispatch(prev => {

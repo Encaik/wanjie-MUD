@@ -214,23 +214,23 @@ export class AchievementSystem {
    */
   private getAccumulatedCount(eventType: string, statistics: GameStatistics): number {
     switch (eventType) {
-      case 'combat:monster_killed':
+      case 'combat:enemy_killed':
         return statistics.totalEnemiesKilled;
       case 'combat:boss_killed':
         return statistics.totalBossKilled;
       case 'combat:elite_killed':
         return statistics.totalEliteKilled;
-      case 'progression:adventure_completed':
+      case 'adventure:completed':
         return statistics.totalAdventuresCompleted;
-      case 'progression:cultivation_done':
+      case 'cultivation:performed':
         return statistics.totalCultivations;
-      case 'collection:technique_collected':
+      case 'collection:technique_obtained':
         return statistics.totalTechniquesCollected;
-      case 'collection:equipment_collected':
+      case 'collection:equipment_obtained':
         return statistics.totalEquipmentsCollected;
       case 'collection:legendary_obtained':
         return statistics.legendaryItemsObtained;
-      case 'progression:realm_breakthrough':
+      case 'cultivation:breakthrough':
         return statistics.totalBreakthroughs;
       default:
         return 0;
@@ -242,9 +242,9 @@ export class AchievementSystem {
    */
   private getUniqueCount(eventType: string, statistics: GameStatistics): number {
     switch (eventType) {
-      case 'collection:technique_collected':
+      case 'collection:technique_obtained':
         return statistics.collectedTechniqueNames.length;
-      case 'collection:equipment_collected':
+      case 'collection:equipment_obtained':
         return statistics.collectedEquipmentNames.length;
       default:
         return 0;

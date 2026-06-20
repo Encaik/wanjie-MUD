@@ -96,11 +96,11 @@ export type StatisticsEventType =
  * 每个事件类型对应其 payload 的结构。
  */
 export interface StatisticsEventPayloadMap {
-  'combat:enemy_killed': { tier?: 'normal' | 'elite' | 'boss'; count?: number };
-  'combat:boss_killed': { count?: number };
-  'combat:elite_killed': { count?: number };
+  'combat:enemy_killed': { enemyId?: string; enemyName?: string; tier?: 'normal' | 'elite' | 'miniboss' | 'boss'; enemyLevel?: number; count?: number };
+  'combat:boss_killed': { enemyId?: string; enemyName?: string; count?: number };
+  'combat:elite_killed': { enemyId?: string; enemyName?: string; count?: number };
   'cultivation:performed': { count?: number };
-  'cultivation:breakthrough': { count?: number };
+  'cultivation:breakthrough': { oldRealm?: string; newRealm?: string; count?: number };
   'item:used': { templateId: string; count?: number };
   'item:obtained': { templateId: string; rarity?: Quality; count?: number };
   'economy:spirit_stones_gained': { amount: number };
@@ -125,7 +125,7 @@ export interface StatisticsEventPayloadMap {
   'bond:activated': { level: number };
   'crafting:technique_synthesized': { count?: number };
   'crafting:fragment_synthesized': { count?: number };
-  'player:level_up': { newLevel: number };
+  'player:level_up': { oldLevel?: number; newLevel: number };
   'tutorial:step_completed': { stepId: string };
   'tutorial:phase_completed': { phaseId: string };
   'tutorial:completed': Record<string, never>;

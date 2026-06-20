@@ -9,7 +9,9 @@
 
 import { useCallback } from 'react';
 
+import { gameEventBus } from '@/core/events';
 import { BoardRegistry } from '@/core/registry/BoardRegistry';
+import { emitItemObtained, emitSpiritStonesGained } from '@/core/statistics';
 import { addItem } from '@/modules/item/logic/itemManager';
 import { hasTemplate, getTemplate } from '@/modules/item/data';
 import { getWorldviewCurrencyItemId } from '@/modules/reward-pool/logic/poolEngine';
@@ -25,6 +27,7 @@ import {
   advanceBoardSlot,
   getBoardUIState,
 } from '../logic/boardEngine';
+import { buildQuestClaimedPayload } from '../logic/eventTracker';
 import {
   checkPrerequisites,
   startQuest,
@@ -55,7 +58,7 @@ function extractPlayerCheckData(state: GameState): PlayerCheckData {
     attitudes: {},
     coreStats: (p?.v3CoreStats ?? {}) as Record<string, number>,
     attributes: (p?.v3Attributes ?? {}) as Record<string, number>,
-    inventoryItemIds: (p?.inventory ?? []).map(i => i.definition?.id ?? i.id).filter(Boolean),
+    inventoryItemIds: (p?.items ?? []).map(i => i.templateId).filter(Boolean),
   };
 }
 
@@ -270,6 +273,7 @@ export function useQuest(
       .flatMap(c => c.stageRewards ?? []);
 
     const worldviewId = gameState.selectedWorld?.worldviewId;
+    const currencyId = getWorldviewCurrencyItemId(worldviewId ?? '');
     const result = calculateStaticQuestRewards(quest.rewards, stageRewards, worldviewId);
     // 货币已是物品的一部分（poolEngine 在 processStaticEntry 中已按世界观解析）
     const allRewardItems = result.items;
@@ -356,6 +360,20 @@ export function useQuest(
         messages: newMessages,
       };
     });
+
+    for (const item of allRewardItems) {
+      if (!hasTemplate(item.itemId)) continue;
+
+      emitItemObtained(item.itemId, item.quantity);
+      if (item.itemId === currencyId) {
+        emitSpiritStonesGained(item.quantity);
+      }
+    }
+
+    gameEventBus.emit(
+      'quest:claimed',
+      buildQuestClaimedPayload(questId, quest.name, rewardMessage),
+    );
 
     return { success: true, rewardMessage };
   }, [questState, setGameState, getPlayerData]);

@@ -21,8 +21,11 @@ import { gameSystems } from '@/core/engine';
 import { getRealmName } from '@/modules/progression/data/realmCore';
 import { applyGrowthStatChanges, getGrowthStatCap } from '@/modules/progression/logic/realmSystem';
 import { gameClock, cooldown } from '@/core/time';
-import { cultivationEvents, processStatisticsEvent, processStatisticsEvents } from '@/core/statistics';
-import { emit } from '@/core/events';
+import {
+  emitCultivationBreakthrough,
+  emitCultivationPerformed,
+  emitPlayerLevelUp,
+} from '@/core/statistics';
 import {
   GameState,
   MessageRecord,
@@ -137,7 +140,7 @@ function handleStrategyCultivationImpl(
   }
 
   // 通过事件总线发出修炼事件（新手引导、统计系统等监听）
-  emit(cultivationEvents.events.performed, { count: 1 });
+  emitCultivationPerformed(1);
 
   return {
     ...prev,
@@ -305,17 +308,7 @@ export function useGameCultivation({
       
       const details = costDetails.length > 0 ? `消耗: ${costDetails.join(', ')}` : undefined;
 
-      const now = Date.now();
-      const statsEvents: Array<{ type: string; payload: Record<string, unknown>; timestamp: number }> = [];
-      if (result.breakthroughReady) {
-        statsEvents.push({ type: 'cultivation:breakthrough_ready' as const, payload: { count: 1 }, timestamp: now });
-      }
-      const newStatistics = statsEvents.length > 0
-        ? processStatisticsEvents(prev.statistics, statsEvents)
-        : prev.statistics;
-
-      // 通过事件总线发出修炼事件（新手引导、统计系统等监听）
-      emit(cultivationEvents.events.performed, { count: 1 });
+      const newStatistics = prev.statistics;
 
       const statGains: Record<string, number> = {};
       if (result.statChanges) {
@@ -519,6 +512,13 @@ export function useGameCultivation({
       const msgType = result.success ? 'success' : 'failure';
       const msgTitle = result.success ? '境界突破成功！' : '突破失败';
 
+      if (result.success) {
+        emitCultivationBreakthrough(prev.protagonist.realm, newRealm, 1);
+        if (newLevel > prev.protagonist.level) {
+          emitPlayerLevelUp(prev.protagonist.level, newLevel);
+        }
+      }
+
       return {
         ...prev,
         protagonist: {
@@ -530,13 +530,7 @@ export function useGameCultivation({
           overflowExperience: newOverflowExp,
           mentalState: newMentalState,
         },
-        statistics: result.success
-          ? processStatisticsEvent(prev.statistics, {
-              type: 'cultivation:breakthrough',
-              payload: { count: 1 },
-              timestamp: Date.now(),
-            })
-          : prev.statistics,
+        statistics: prev.statistics,
         messages: addMessageInternal(
           prev.messages,
           msgType,
@@ -661,7 +655,7 @@ export function useGameCultivation({
         rewards.experience = result.success ? 20 : 5;
 
         // 通过事件总线发出修炼事件（新手引导、统计系统等监听）
-        emit(cultivationEvents.events.performed, { count: 1 });
+        emitCultivationPerformed(1);
 
         // 修炼成功时增加心境护盾
         let newMindShield2 = prev.protagonist.mentalState?.mindShield ?? 0;

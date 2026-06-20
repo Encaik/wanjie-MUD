@@ -18,8 +18,7 @@ import {
 } from '../logic/itemManager';
 import { useConsumable } from '../logic/itemUse';
 import { getTemplate } from '../data/index';
-import { emit } from '@/core/events';
-import { itemEvents } from '@/core/statistics';
+import { emitItemObtained, emitItemUsed } from '@/core/statistics';
 import { useGameStore } from '@/views/game/state/GameStore';
 import type { GameState, ActiveEffect, GrowthStats } from '@/core/types';
 import { applyBaseStatChanges } from '@/modules/progression/logic/realmSystem';
@@ -64,6 +63,7 @@ export function useInventory() {
         } as GameState['protagonist'],
       };
     });
+    emitItemObtained(templateId, quantity);
   }, [dispatch]);
 
   const removeItem = useCallback((instanceId: string, quantity: number) => {
@@ -227,7 +227,7 @@ export function useInventory() {
     });
 
     // 通过事件总线发出物品使用事件（新手引导、统计系统等监听）
-    emit(itemEvents.events.used, { templateId: item.templateId, count: 1 });
+    emitItemUsed(item.templateId, 1);
 
     return result;
   }, [gameState.protagonist, dispatch]);

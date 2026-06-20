@@ -33,12 +33,12 @@ const compilationCache = new Map<string, QuestDefinition>();
 /** 目标类型到默认事件类型的映射（反向查找） */
 const OBJECTIVE_TO_EVENT: Record<string, { eventType: string; targetField: string }> = {
   'kill_enemy': { eventType: 'combat:enemy_killed', targetField: 'enemyId' },
-  'collect_item': { eventType: 'item:collected', targetField: 'itemId' },
+  'collect_item': { eventType: 'item:obtained', targetField: 'templateId' },
   'use_item': { eventType: 'item:used', targetField: 'templateId' },
-  'reach_level': { eventType: 'progression:level_up', targetField: 'newLevel' },
-  'reach_realm': { eventType: 'progression:realm_broken', targetField: 'realm' },
+  'reach_level': { eventType: 'player:level_up', targetField: 'newLevel' },
+  'reach_realm': { eventType: 'cultivation:breakthrough', targetField: 'newRealm' },
   'cultivate': { eventType: 'cultivation:performed', targetField: '' },
-  'explore_location': { eventType: 'exploration:location_entered', targetField: 'locationId' },
+  'explore_location': { eventType: 'adventure:entered', targetField: 'locationId' },
   'dialogue_check': { eventType: 'npc:dialogue_triggered', targetField: 'npcId' },
   'join_faction': { eventType: 'faction:joined', targetField: 'factionId' },
 };

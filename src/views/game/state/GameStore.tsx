@@ -11,7 +11,12 @@ import React, { createContext, useCallback, useContext, useEffect, useRef, useSt
 
 import { emit, on } from '@/core/events';
 import { createLogger } from '@/core/logger';
-import { processStatisticsEvent } from '@/core/statistics';
+import {
+  emitCultivationPerformed,
+  emitPlayerLevelUp,
+  emitSpiritStonesSpent,
+  processStatisticsEvent,
+} from '@/core/statistics';
 import {
   cooldown,
   fetchServerTime,
@@ -103,6 +108,17 @@ export function GameStoreProvider({ children }: { children: React.ReactNode }) {
         const time = prev.time;
         const offlineResult = offline.process(time, prev.protagonist!, serverNow, prev.autoCultivating || false);
         let updatedProtagonist = offline.applyResult(prev.protagonist, offlineResult);
+
+        if (offlineResult.autoCultivate.executed) {
+          emitCultivationPerformed(offlineResult.autoCultivate.count);
+          emitSpiritStonesSpent(offlineResult.autoCultivate.spiritStonesSpent);
+          if (offlineResult.autoCultivate.endLevel > offlineResult.autoCultivate.startLevel) {
+            emitPlayerLevelUp(
+              offlineResult.autoCultivate.startLevel,
+              offlineResult.autoCultivate.endLevel,
+            );
+          }
+        }
 
         let updatedTime = realClock.login(time, serverNow);
         const { time: cleanedTime } = cooldown.clearExpired(updatedTime, serverNow);
