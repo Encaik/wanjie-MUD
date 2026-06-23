@@ -15,6 +15,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/shared/ui/overlay/dialog';
+
 import type { BattleEncounter } from '../types';
 
 interface FortuneBattleDialogProps {

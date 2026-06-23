@@ -7,10 +7,12 @@
 
 'use client';
 
-import { Card, CardContent } from '@/shared/ui/data-display/card';
-import { Badge } from '@/shared/ui/data-display/badge';
 import { Button } from '@/shared/ui/actions/button';
+import { Badge } from '@/shared/ui/data-display/badge';
+import { Card, CardContent } from '@/shared/ui/data-display/card';
+
 import { getAvailableFortuneTypes } from '../data/fortuneTypeConfig';
+
 import type { FortuneTypeId } from '../types';
 
 interface FortuneHubProps {

@@ -7,6 +7,7 @@
  */
 
 import { eq, desc } from 'drizzle-orm';
+
 import { getDb } from '@/app/api/db';
 import { charactersTable } from '@/app/api/db/schema';
 

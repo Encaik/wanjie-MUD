@@ -7,6 +7,7 @@
  */
 
 import { ALL_MOD_CONTENT_TYPES } from './types';
+
 import type { ModContentType } from './types';
 
 // ============================================

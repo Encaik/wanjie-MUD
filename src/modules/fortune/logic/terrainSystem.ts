@@ -4,8 +4,9 @@
  * 纯函数模块：计算地形对移动、视野、节点概率的影响。
  */
 
-import type { TerrainType, TerrainEffect, FortuneSession } from '../types';
 import { getTerrainConfig } from '../data/terrainConfig';
+
+import type { TerrainType, TerrainEffect, FortuneSession } from '../types';
 
 /**
  * 获取在地形上移动的体力消耗

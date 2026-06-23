@@ -10,7 +10,9 @@
  */
 
 import { createLogger } from '@/core/logger';
+
 import { ModLoadError } from '../types';
+
 import type { ModManifest } from '../ModManifest';
 import type {
   ModLoadResult,

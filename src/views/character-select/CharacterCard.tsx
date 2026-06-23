@@ -5,10 +5,10 @@ import { Sparkles } from 'lucide-react';
 import type { AttributeTemplate } from '@/core/types';
 import type { CharacterTemplate } from '@/modules/identity/hooks';
 import type { RadarAxis, RadarSeries } from '@/shared/components/RadarChart';
-import { Badge } from '@/shared/ui/data-display/badge';
-import { Button } from '@/shared/ui/actions/button';
-import { Progress } from '@/shared/ui/feedback/progress';
 import { RadarChart } from '@/shared/components/RadarChart';
+import { Button } from '@/shared/ui/actions/button';
+import { Badge } from '@/shared/ui/data-display/badge';
+import { Progress } from '@/shared/ui/feedback/progress';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/shared/ui/overlay/tooltip';
 import { cn, useDebounce } from '@/shared/utils';
 

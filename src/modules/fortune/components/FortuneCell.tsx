@@ -8,9 +8,11 @@
 'use client';
 
 import { cn } from '@/shared/utils/cn';
-import type { TerrainType, NodeType } from '../types';
-import { TERRAIN_ICONS, TERRAIN_NAMES } from '../data/terrainConfig';
+
 import { getNodeIcon } from '../data/nodeTypeConfig';
+import { TERRAIN_ICONS, TERRAIN_NAMES } from '../data/terrainConfig';
+
+import type { TerrainType, NodeType } from '../types';
 
 interface FortuneCellProps {
   /** 地形 */

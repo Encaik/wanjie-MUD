@@ -4,11 +4,13 @@
 
 'use client';
 
+import { useRef } from 'react';
+
 import { emitAdventureCompleted, emitAdventureEntered, emitItemObtained, emitSpiritStonesGained } from '@/core/statistics';
-import { getTemplate, hasTemplate } from '@/modules/item/data';
-import { addItem } from '@/modules/item/logic';
 import { useFortune } from '@/modules/fortune';
 import type { SettlementResult } from '@/modules/fortune';
+import { getTemplate, hasTemplate } from '@/modules/item/data';
+import { addItem } from '@/modules/item/logic';
 import { getWorldviewCurrencyItemId } from '@/modules/reward-pool/logic/poolEngine';
 import { FortunePage } from '@/views/game/pages/FortunePage';
 import { useGameStore } from '@/views/game/state/GameStore';
@@ -29,6 +31,7 @@ function mergeFragmentInventory(
 export default function Page() {
   const { gameState, dispatch: setGameState } = useGameStore();
   const protagonist = gameState.protagonist;
+  const mountSeed = useRef(Date.now());
 
   const fortune = useFortune({
     slice: gameState.fortuneSlice,
@@ -103,7 +106,7 @@ export default function Page() {
     maxHp: protagonist?.maxHp ?? 100,
     maxMp: protagonist?.maxMp ?? 100,
     playerLevel: protagonist?.level ?? 1,
-    seed: Date.now(),
+    seed: mountSeed.current,
   });
 
   return <FortunePage fortuneSlice={gameState.fortuneSlice} fortune={fortune} />;

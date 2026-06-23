@@ -21,7 +21,6 @@
 
 import React, { createContext, useContext, useMemo, useEffect } from 'react';
 
-import { worldTextManager, WORLD_TEXT_MAP, getWorldText } from '@/modules/narrative/logic/WorldTextManager';
 import { WorldType } from '@/core/types';
 import {
   WorldTextDefinition,
@@ -32,6 +31,7 @@ import {
   StatKey,
   PathTypeId,
 } from '@/modules/narrative/data/worlds/types';
+import { worldTextManager, WORLD_TEXT_MAP, getWorldText } from '@/modules/narrative/logic/WorldTextManager';
 
 interface WorldTextContextValue {
   /** 当前世界观类型 */

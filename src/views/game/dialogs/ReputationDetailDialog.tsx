@@ -4,7 +4,13 @@ import { useState } from 'react';
 
 import { Star, ChevronRight } from 'lucide-react';
 
+import {
+  REPUTATION_LEVELS,
+  ReputationLevel,
+  getReputationLevel,
+} from '@/modules/faction/data/factionProgressData';
 import { Badge } from '@/shared/ui/data-display/badge';
+import { Progress } from '@/shared/ui/feedback/progress';
 import {
   Dialog,
   DialogContent,
@@ -12,12 +18,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/shared/ui/overlay/dialog';
-import { Progress } from '@/shared/ui/feedback/progress';
-import {
-  REPUTATION_LEVELS,
-  ReputationLevel,
-  getReputationLevel,
-} from '@/modules/faction/data/factionProgressData';
 
 
 interface ReputationDetailDialogProps {

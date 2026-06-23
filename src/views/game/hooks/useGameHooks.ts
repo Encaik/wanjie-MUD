@@ -12,13 +12,14 @@ import { useMemo } from 'react';
 import { calcPlayerAttack, calcPlayerDefense } from '@/core/calculation';
 import { getFinalStats } from '@/core/types';
 import type { Technique } from '@/core/types';
-import { useGameStore } from '../state/GameStore';
-import { useEquipment } from '../domainHooks/useEquipment';
+import { getCurrencyAmount } from '@/modules/item/logic';
+import { getAttributeNames, getDungeonInfo, getTerminology } from '@/modules/narrative/logic/terminology';
 import { getRealmName, getNextRealm, getNextMainRealmLevel, getMainRealmName } from '@/modules/progression/data/realmData';
 import { getMaxExperience } from '@/modules/progression/logic/cultivation';
 import { getActualStatCap, MAX_LEVEL } from '@/modules/progression/logic/realmSystem';
-import { getAttributeNames, getDungeonInfo, getTerminology } from '@/modules/narrative/logic/terminology';
-import { getCurrencyAmount } from '@/modules/item/logic';
+
+import { useEquipment } from '../domainHooks/useEquipment';
+import { useGameStore } from '../state/GameStore';
 
 /** 获取主角数据 */
 export function useProtagonist() {

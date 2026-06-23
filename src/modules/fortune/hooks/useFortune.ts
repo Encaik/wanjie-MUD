@@ -8,7 +8,7 @@
 'use client';
 
 import { useMemo } from 'react';
-import type { FortuneSlice } from '../types';
+
 import {
   calculateSenseLevel,
   getVisibleCells,
@@ -16,6 +16,8 @@ import {
   getStaminaStatus,
 } from '../logic';
 import { useFortuneActions } from './useFortuneActions';
+
+import type { FortuneSlice } from '../types';
 
 interface UseFortuneOptions {
   slice: FortuneSlice;

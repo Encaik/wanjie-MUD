@@ -7,10 +7,10 @@
 
 import { NextRequest } from 'next/server';
 
-import { apiSuccess, apiError } from '@/app/api/result';
 import { ensureWorldSystemInitialized } from '@/app/api/init';
-import { WorldMechanicsRegistry } from '@/core/registry/WorldMechanicsRegistry';
+import { apiSuccess, apiError } from '@/app/api/result';
 import { createLogger } from '@/core/logger';
+import { WorldMechanicsRegistry } from '@/core/registry/WorldMechanicsRegistry';
 
 const log = createLogger('Mechanics');
 

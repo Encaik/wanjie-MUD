@@ -15,8 +15,8 @@ import {
   BarChart3,
 } from 'lucide-react';
 
-import { GameStatistics, Protagonist, getFinalStats } from '@/core/types';
 import { calculateStatisticsSummary } from '@/core/statistics';
+import { GameStatistics, Protagonist, getFinalStats } from '@/core/types';
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/data-display/card';
 import { Progress } from '@/shared/ui/feedback/progress';
 import { cn } from '@/shared/utils';

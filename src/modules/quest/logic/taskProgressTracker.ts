@@ -10,10 +10,12 @@
  * @module modules/quest/logic
  */
 
-import type { QuestState, Protagonist } from '@/core/types';
-import { StoryLineRegistry } from '@/core/registry/StoryLineRegistry';
 import { QuestTemplateRegistry } from '@/core/registry/QuestTemplateRegistry';
+import { StoryLineRegistry } from '@/core/registry/StoryLineRegistry';
+import type { QuestState, Protagonist } from '@/core/types';
+
 import { getStoryProgress } from './storyEngine';
+
 import type { StoryProgress } from './storyEngine';
 
 // ============================================

@@ -12,7 +12,6 @@ import {
   formatCombatPower as formatPower,
   getCombatPowerRatio as getPowerRatio,
 } from '@/core/calculation';
-
 import type { Protagonist, Technique, Equipment, ActiveEffect, EnemyTier } from '@/core/types';
 
 /**

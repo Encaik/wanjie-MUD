@@ -4,10 +4,10 @@ import { useMemo } from 'react';
 
 import { Package, EyeOff, Sparkles } from 'lucide-react';
 
+import { InventoryItem, ItemRarity, WorldType } from '@/core/types';
+import { getTerminology } from '@/modules/narrative/logic/terminology';
 import { Badge } from '@/shared/ui/data-display/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/data-display/card';
-import { getTerminology } from '@/modules/narrative/logic/terminology';
-import { InventoryItem, ItemRarity, WorldType } from '@/core/types';
 
 interface AdventureLootPanelProps {
   loot: InventoryItem[];

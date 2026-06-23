@@ -4,9 +4,9 @@ import { useEffect, useState } from 'react';
 
 import { Skull, Heart, Sparkles } from 'lucide-react';
 
+import { DeathState, DEFAULT_DEATH_STATE } from '@/core/types';
 import { Button } from '@/shared/ui/actions/button';
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from '@/shared/ui/overlay/dialog';
-import { DeathState, DEFAULT_DEATH_STATE } from '@/core/types';
 
 
 interface DeathDialogProps {

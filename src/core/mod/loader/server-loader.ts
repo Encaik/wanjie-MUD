@@ -18,26 +18,27 @@ import fs from 'fs';
 import path from 'path';
 
 import { createLogger } from '@/core/logger';
-import { WorldViewRegistry } from '@/core/registry/WorldViewRegistry';
-import { WorldMechanicsRegistry } from '@/core/registry/WorldMechanicsRegistry';
-import { WorldProviderRegistry } from '@/core/world/WorldProviderRegistry';
-import { CoreWorldProvider } from '@/core/world/CoreWorldProvider';
 import { AttributeRegistry } from '@/core/registry/AttributeRegistry';
-import { RaceRegistry } from '@/core/registry/RaceRegistry';
-import { TalentRegistry } from '@/core/registry/TalentRegistry';
+import { ItemRegistry } from '@/core/registry/ItemRegistry';
 import { NPCDataRegistry } from '@/core/registry/NPCDataRegistry';
 import { QuestRegistry } from '@/core/registry/QuestRegistry';
 import { QuestTemplateRegistry } from '@/core/registry/QuestTemplateRegistry';
-import { ItemRegistry } from '@/core/registry/ItemRegistry';
-import type { ItemTemplateData } from '@/core/types';
+import { RaceRegistry } from '@/core/registry/RaceRegistry';
+import { TalentRegistry } from '@/core/registry/TalentRegistry';
+import { WorldMechanicsRegistry } from '@/core/registry/WorldMechanicsRegistry';
+import { WorldViewRegistry } from '@/core/registry/WorldViewRegistry';
 import type { WorldviewDefinition } from '@/core/registry/WorldViewRegistry';
+import type { ItemTemplateData } from '@/core/types';
 import type { NPCDefinition, QuestDefinition, QuestTemplate } from '@/core/types';
-import type { MechanicsConfig } from '@/modules/identity/logic/worlds/types';
+import { CoreWorldProvider } from '@/core/world/CoreWorldProvider';
+import { WorldProviderRegistry } from '@/core/world/WorldProviderRegistry';
 import { buildWorldMechanics } from '@/modules/identity/logic/worlds/builder';
+import type { MechanicsConfig } from '@/modules/identity/logic/worlds/types';
 
 import { BaseModLoader } from './base-loader';
-import type { ModManifest } from '../ModManifest';
 import { parseManifest } from '../ModManifest';
+
+import type { ModManifest } from '../ModManifest';
 import type { ModContentType, ModEntry } from '../types';
 
 const log = createLogger('ServerModLoader');

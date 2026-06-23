@@ -4,11 +4,12 @@
  * 所有函数为纯函数。
  */
 
-import type { ItemInstance } from '../types';
+import { generateItemInstance } from './itemGenerator';
+import { createItemInstance, getItemCount, removeItem, findItemByInstance } from './itemManager';
 import { getTemplate } from '../data/index';
 import { getRarityConfig } from '../data/rarity';
-import { createItemInstance, getItemCount, removeItem, findItemByInstance } from './itemManager';
-import { generateItemInstance } from './itemGenerator';
+
+import type { ItemInstance } from '../types';
 
 /**
  * 将完整物品拆解为碎片

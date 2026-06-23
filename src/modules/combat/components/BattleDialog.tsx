@@ -26,23 +26,7 @@ import {
   Flame,
 } from 'lucide-react';
 
-import { Badge } from '@/shared/ui/data-display/badge';
-import { Button } from '@/shared/ui/actions/button';
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-} from '@/shared/ui/overlay/dialog';
-import { ScrollArea } from '@/shared/ui/layout/scroll-area';
-import { Separator } from '@/shared/ui/layout/separator';
-import { 
-  initInteractiveBattle, 
-  initTowerBattle, 
-  performPlayerAction, 
-  estimateBattleDifficulty 
-} from '@/modules/combat/logic/fortuneBattleBridge';
+import { Protagonist, CellType, DungeonConfig, BattleResult } from '@/core/types';
 import {
   ExtendedBattleState,
   BattleStatistics,
@@ -51,8 +35,24 @@ import {
   TurnResult,
   TriggeredEvent,
 } from '@/modules/combat/logic/battle';
+import { 
+  initInteractiveBattle, 
+  initTowerBattle, 
+  performPlayerAction, 
+  estimateBattleDifficulty 
+} from '@/modules/combat/logic/fortuneBattleBridge';
 import type { TowerEnemy } from '@/modules/tower/logic/types';
-import { Protagonist, CellType, DungeonConfig, BattleResult } from '@/core/types';
+import { Button } from '@/shared/ui/actions/button';
+import { Badge } from '@/shared/ui/data-display/badge';
+import { ScrollArea } from '@/shared/ui/layout/scroll-area';
+import { Separator } from '@/shared/ui/layout/separator';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from '@/shared/ui/overlay/dialog';
 
 import { BattleLogList } from './BattleLogList';
 import { CombatantPanel } from './CombatantPanel';

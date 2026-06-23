@@ -22,23 +22,6 @@ import {
   X,
 } from 'lucide-react';
 
-import { Badge } from '@/shared/ui/data-display/badge';
-import { Button } from '@/shared/ui/actions/button';
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from '@/shared/ui/layout/collapsible';
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/shared/ui/overlay/dialog';
-import { ScrollArea } from '@/shared/ui/layout/scroll-area';
-import { Separator } from '@/shared/ui/layout/separator';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/shared/ui/data-display/tabs';
 import {
   getStatDetailService,
   StatDetailBreakdown,
@@ -46,6 +29,23 @@ import {
   AllStatBreakdowns,
 } from '@/core/calculation/services/statDetailService';
 import { Protagonist } from '@/core/types';
+import { Button } from '@/shared/ui/actions/button';
+import { Badge } from '@/shared/ui/data-display/badge';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/shared/ui/data-display/tabs';
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from '@/shared/ui/layout/collapsible';
+import { ScrollArea } from '@/shared/ui/layout/scroll-area';
+import { Separator } from '@/shared/ui/layout/separator';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/shared/ui/overlay/dialog';
 
 // ============================================
 // 类型定义

@@ -5,9 +5,9 @@
  */
 'use client';
 
-import { Button } from '@/shared/ui/actions/button';
 import type { MetaProgress, MetaBranch, MetaNode } from '@/modules/ascension/logic/metaTree';
 import { META_TREE, canUnlockNode } from '@/modules/ascension/logic/metaTree';
+import { Button } from '@/shared/ui/actions/button';
 
 interface MetaTreePanelProps {
   /** 元进程状态 */

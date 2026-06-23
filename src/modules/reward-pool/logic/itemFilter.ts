@@ -5,10 +5,11 @@
  * FilterEntry 在运行时调用，查询 ItemRegistry 获取匹配物品。
  */
 
-import type { ItemFilter } from '../types';
 import type { ItemTemplateData } from '@/core/types';
-import type { Rarity } from '@/modules/item/types';
 import { RARITY_ORDER } from '@/modules/item/data/rarity';
+import type { Rarity } from '@/modules/item/types';
+
+import type { ItemFilter } from '../types';
 
 /**
  * 按 ItemFilter 条件筛选模板列表

@@ -5,6 +5,16 @@
  * 改造为 seed-based RNG（使用 createRng 工具函数），以提高可测试性。
  */
 
+import { FlatStats, WorldType, CharacterStats, BattleState, BattleLog, Protagonist, Technique, Equipment, getFinalStats, GrowthStats } from '@/core/types';
+import {
+  AscensionMark,
+  GuardianBattleState,
+  AscensionChallengeResult,
+  NewWorldInfo,
+  InheritanceChoice,
+  DEFAULT_ASCENSION_MARK,
+  DEFAULT_GUARDIAN_BATTLE_STATE,
+} from '@/core/types';
 import { 
   ASCENSION_CONFIG,
   WORLD_GUARDIANS,
@@ -19,16 +29,6 @@ import {
   calculateWorldWeights,
   weightedRandom,
 } from '@/modules/ascension/data/ascensionData';
-import { FlatStats, WorldType, CharacterStats, BattleState, BattleLog, Protagonist, Technique, Equipment, getFinalStats, GrowthStats } from '@/core/types';
-import {
-  AscensionMark,
-  GuardianBattleState,
-  AscensionChallengeResult,
-  NewWorldInfo,
-  InheritanceChoice,
-  DEFAULT_ASCENSION_MARK,
-  DEFAULT_GUARDIAN_BATTLE_STATE,
-} from '@/core/types';
 import { getCurrencyAmount } from '@/modules/item/logic';
 
 // ============================================

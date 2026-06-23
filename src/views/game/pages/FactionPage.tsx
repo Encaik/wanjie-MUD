@@ -7,11 +7,12 @@
 'use client';
 
 import { useCallback } from 'react';
+
+import { getRandomEvent } from '@/modules/exploration/logic/dungeon/events';
 import { FactionPanel } from '@/modules/faction/components/FactionPanel';
+import { getCurrencyAmount } from '@/modules/item/logic';
 import { useFaction } from '@/views/game/domainHooks/useFaction';
 import { useGameStore } from '@/views/game/state/GameStore';
-import { getCurrencyAmount } from '@/modules/item/logic';
-import { getRandomEvent } from '@/modules/exploration/logic/dungeon/events';
 
 export function FactionPage() {
   const { gameState, dispatch: setGameState } = useGameStore();

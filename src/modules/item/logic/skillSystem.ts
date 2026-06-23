@@ -4,9 +4,10 @@
  * 所有函数为纯函数。
  */
 
-import type { ItemInstance, SlotId, EquipResult } from '../types';
-import { getTemplate } from '../data/index';
 import { findItemByInstance } from './itemManager';
+import { getTemplate } from '../data/index';
+
+import type { ItemInstance, SlotId, EquipResult } from '../types';
 
 /**
  * 验证技能能否装备到指定技能槽位

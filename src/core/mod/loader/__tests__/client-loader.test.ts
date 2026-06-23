@@ -2,6 +2,7 @@
  * ClientModLoader 单元测试
  */
 import { describe, it, expect, beforeEach, vi } from 'vitest';
+
 import { ClientModLoader } from '../client-loader';
 
 // Mock global fetch

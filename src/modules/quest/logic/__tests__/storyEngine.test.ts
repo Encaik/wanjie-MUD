@@ -2,8 +2,10 @@
  * storyEngine 单元测试
  */
 import { describe, it, expect } from 'vitest';
+
 import { createDefaultQuestState } from '@/core/types';
 import type { StoryLine, StoryNode, QuestState } from '@/core/types';
+
 import {
   findNodeById,
   getAllLeafQuestIds,

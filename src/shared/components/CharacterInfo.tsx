@@ -2,14 +2,14 @@
 
 import { Sparkles } from 'lucide-react';
 
-import { Badge } from '@/shared/ui/data-display/badge';
+import { Protagonist } from '@/core/types';
+import { getTerminology } from '@/modules/narrative/logic/terminology';
 import { 
   getRealmName, 
   getNextRealm, 
   getNextMainRealmLevel 
 } from '@/modules/progression/data/realmData';
-import { getTerminology } from '@/modules/narrative/logic/terminology';
-import { Protagonist } from '@/core/types';
+import { Badge } from '@/shared/ui/data-display/badge';
 
 interface CharacterInfoProps {
   protagonist: Protagonist;

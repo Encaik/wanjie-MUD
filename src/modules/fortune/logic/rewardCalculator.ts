@@ -5,14 +5,15 @@
  * 物品/碎片掉落已迁移到 modules/reward-pool/，通过 Hook 层集成。
  */
 
+import { getFortuneTypeConfig } from '../data/fortuneTypeConfig';
+import { getNodeTypeConfig } from '../data/nodeTypeConfig';
+
 import type {
   NodeType,
   FortuneTypeId,
   FortuneLoot,
   CalculatedReward,
 } from '../types';
-import { getNodeTypeConfig } from '../data/nodeTypeConfig';
-import { getFortuneTypeConfig } from '../data/fortuneTypeConfig';
 
 // ============================================
 // 节点奖励计算

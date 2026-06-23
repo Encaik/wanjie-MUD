@@ -18,9 +18,10 @@
  * @module core/combat
  */
 
+import type { CoreStatValues } from '@/core/world/calculateCoreStats';
+
 import type { EngagementType, CombatUnit, CombatSkill, CombatMode, CombatResult, CombatRoundLog, SessionState, PendingAction } from './types';
 import type { EquipmentModifier } from './types';
-import type { CoreStatValues } from '@/core/world/calculateCoreStats';
 
 // ============================================
 // 战斗常量
@@ -544,7 +545,7 @@ export class CombatSession {
 
   /** 处理所有就绪的 AI 行动 */
   private processAiActions(): void {
-    // eslint-disable-next-line no-constant-condition
+     
     while (true) {
       if (this.state !== 'running') break;
       this.processNextAction();

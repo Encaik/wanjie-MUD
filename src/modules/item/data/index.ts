@@ -5,13 +5,16 @@
  * ItemRegistry 在 Mod 加载时异步填充，getTemplate() 等查询函数支持惰性求值。
  */
 
-import type { ItemTemplateData } from '@/core/types';
 import { ItemRegistry } from '@/core/registry/ItemRegistry';
-import type { ItemTemplate } from '../types';
+import type { ItemTemplateData } from '@/core/types';
+
+
 import { parseTemplateId } from '../types';
-import { CURRENCY_TEMPLATES } from './templates/currency';
 import { CONSUMABLE_TEMPLATES } from './templates/consumable';
+import { CURRENCY_TEMPLATES } from './templates/currency';
 import { MATERIAL_TEMPLATES } from './templates/material';
+
+import type { ItemTemplate } from '../types';
 
 /** Built-in 通用物品模板（wanjie:common:*） */
 const BUILTIN_TEMPLATES: ItemTemplateData[] = [

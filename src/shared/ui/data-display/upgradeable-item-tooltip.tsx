@@ -3,9 +3,9 @@
 import { ReactNode } from 'react';
 
 import type { ItemRarity } from '@/core/types';
+import { getRarityStyle, getStatColor } from '@/modules/theme/data/rarityStyles';
 import { Badge } from '@/shared/ui/data-display/badge';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/shared/ui/overlay/tooltip';
-import { getRarityStyle, getStatColor } from '@/modules/theme/data/rarityStyles';
 
 /** 可升级物品tooltip属性 */
 interface UpgradeableItemTooltipProps {

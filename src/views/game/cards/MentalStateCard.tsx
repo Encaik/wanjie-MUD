@@ -8,9 +8,12 @@ import {
   Shield, Zap
 } from 'lucide-react';
 
-import {  Badge } from '@/shared/ui/data-display/badge';
+import { FlatStats, CharacterStats, getFinalStats } from '@/core/types';
+import {  MentalState, DemonEncounter, DemonChoice } from '@/core/types';
 import {  Button } from '@/shared/ui/actions/button';
+import {  Badge } from '@/shared/ui/data-display/badge';
 import {  Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/data-display/card';
+import {  Progress } from '@/shared/ui/feedback/progress';
 import { 
   Dialog,
   DialogContent,
@@ -19,9 +22,6 @@ import {
   DialogTitle,
   DialogFooter,
 } from '@/shared/ui/overlay/dialog';
-import {  Progress } from '@/shared/ui/feedback/progress';
-import { FlatStats, CharacterStats, getFinalStats } from '@/core/types';
-import {  MentalState, DemonEncounter, DemonChoice } from '@/core/types';
 
 
 interface MentalStateCardProps {

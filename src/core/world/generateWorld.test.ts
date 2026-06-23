@@ -5,6 +5,9 @@
  */
 
 import { describe, it, expect } from 'vitest';
+
+import type { WorldviewDefinition } from '@/core/registry/WorldViewRegistry';
+
 import {
   generateWorld,
   generateWorlds,
@@ -12,7 +15,6 @@ import {
   calculateDifficultyCoefficient,
   getDifficultyFromCoefficient,
 } from './generateWorld';
-import type { WorldviewDefinition } from '@/core/registry/WorldViewRegistry';
 
 /** 创建用于测试的完整 WorldviewDefinition */
 function createTestWorldview(overrides: Partial<WorldviewDefinition> = {}): WorldviewDefinition {

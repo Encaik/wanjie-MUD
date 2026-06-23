@@ -14,8 +14,18 @@ import {
   HelpCircle,
 } from 'lucide-react';
 
-import { Badge } from '@/shared/ui/data-display/badge';
+import type { WorldType } from '@/core/types';
+import { getCurrencyAmount } from '@/modules/item/logic';
+import type { ItemInstance } from '@/modules/item/types';
+import { getTerminology } from '@/modules/narrative/logic/terminology';
+import { 
+  SeclusionType, 
+  SECLUSION_CONFIGS, 
+  SECLUSION_OUTCOMES,
+} from '@/modules/progression/logic/seclusion';
+import { getWorldviewCurrencyItemId } from '@/modules/reward-pool/logic/poolEngine';
 import { Button } from '@/shared/ui/actions/button';
+import { Badge } from '@/shared/ui/data-display/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/data-display/card';
 import { 
   Dialog,
@@ -30,16 +40,6 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/shared/ui/overlay/tooltip';
-import { 
-  SeclusionType, 
-  SECLUSION_CONFIGS, 
-  SECLUSION_OUTCOMES,
-} from '@/modules/progression/logic/seclusion';
-import { getTerminology } from '@/modules/narrative/logic/terminology';
-import type { WorldType } from '@/core/types';
-import type { ItemInstance } from '@/modules/item/types';
-import { getCurrencyAmount } from '@/modules/item/logic';
-import { getWorldviewCurrencyItemId } from '@/modules/reward-pool/logic/poolEngine';
 
 
 interface SeclusionPanelProps {

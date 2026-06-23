@@ -7,7 +7,6 @@
  * 3. 支持多敌人战斗
  */
 
-import { BattleSkill } from '@/modules/combat/logic/battle/types';
 import {
   WorldType,
   EnemyTier,
@@ -15,6 +14,7 @@ import {
   Equipment,
   ItemRarity,
 } from '@/core/types';
+import { BattleSkill } from '@/modules/combat/logic/battle/types';
 import type { Element, WeaponCategory } from '@/modules/combat/logic/restraintSystem';
 
 // ============================================

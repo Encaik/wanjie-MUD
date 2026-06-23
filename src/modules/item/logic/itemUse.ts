@@ -4,10 +4,11 @@
  * 所有函数为纯函数。
  */
 
+import { removeItem, findItemByInstance } from './itemManager';
+import { getTemplate } from '../data/index';
+
 import type { ItemInstance } from '../types';
 import type { SkillEffect } from '../types';
-import { getTemplate } from '../data/index';
-import { removeItem, findItemByInstance } from './itemManager';
 
 /** 使用消耗品的结果 */
 export interface UseConsumableResult {

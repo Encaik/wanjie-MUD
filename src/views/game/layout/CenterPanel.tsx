@@ -1,9 +1,8 @@
 'use client';
 
-import { ScrollArea } from '@/shared/ui/layout/scroll-area';
 import { BattleState, Technique, Equipment } from '@/core/types';
-
 import { BattleResultDialog } from '@/modules/combat/components';
+import { ScrollArea } from '@/shared/ui/layout/scroll-area';
 
 interface CenterPanelProps {
   TabsContentSection: React.ReactNode;

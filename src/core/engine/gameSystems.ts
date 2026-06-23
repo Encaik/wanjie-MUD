@@ -5,9 +5,6 @@
 
 import { emit, gameEventBus } from '@/core/events';
 import { createLogger } from '@/core/logger';
-import { GameStatistics, Technique, Equipment } from '@/core/types';
-import { achievementSystem, AchievementConfig } from '@/modules/collection/logic/achievement/achievementSystem';
-import { collectionSystem, BondConfig } from '@/modules/collection/logic/collectionSystem';
 import {
   emitAdventureCompleted,
   emitCultivationPerformed,
@@ -17,6 +14,9 @@ import {
   emitPlayerLevelUp,
   emitTechniqueObtained,
 } from '@/core/statistics';
+import { GameStatistics, Technique, Equipment } from '@/core/types';
+import { achievementSystem, AchievementConfig } from '@/modules/collection/logic/achievement/achievementSystem';
+import { collectionSystem, BondConfig } from '@/modules/collection/logic/collectionSystem';
 
 /** GameSystems 日志记录器 */
 const log = createLogger('GameSystems');

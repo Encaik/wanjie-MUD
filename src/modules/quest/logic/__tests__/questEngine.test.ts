@@ -5,6 +5,15 @@
  */
 
 import { describe, it, expect } from 'vitest';
+
+import { createDefaultQuestState } from '@/core/types';
+import type {
+  QuestDefinition,
+  QuestStage,
+  ActiveQuest,
+  QuestState,
+} from '@/core/types';
+
 import {
   checkPrerequisites,
   checkSinglePrerequisite,
@@ -14,13 +23,7 @@ import {
   startQuest,
   updateObjectiveProgress,
 } from '../questEngine';
-import { createDefaultQuestState } from '@/core/types';
-import type {
-  QuestDefinition,
-  QuestStage,
-  ActiveQuest,
-  QuestState,
-} from '@/core/types';
+
 import type { PlayerCheckData } from '../questEngine';
 
 // ============================================

@@ -1,6 +1,3 @@
-import { GAME_CONSTANTS } from '@/shared/utils/constants';
-import { getExperienceForLevel, getActualStatCap } from '@/modules/progression/logic/realmSystem';
-import { getTerminology } from '@/modules/narrative/logic/terminology';
 import type {
   FlatStats, Protagonist, CultivationResult, CharacterStats,
   WorldType, ActiveEffect, GrowthStats, StatKey,
@@ -8,8 +5,12 @@ import type {
 import type { MentalState } from '@/core/types';
 import { getFinalStats } from '@/core/types';
 import { createItemInstance, getItemCount } from '@/modules/item/logic';
-import { getWorldviewCurrencyItemId } from '@/modules/reward-pool/logic/poolEngine';
+import { getTerminology } from '@/modules/narrative/logic/terminology';
 import { getMaxLevel } from '@/modules/progression/data/realmData';
+import { getExperienceForLevel, getActualStatCap } from '@/modules/progression/logic/realmSystem';
+import { getWorldviewCurrencyItemId } from '@/modules/reward-pool/logic/poolEngine';
+import { GAME_CONSTANTS } from '@/shared/utils/constants';
+
 import {
   forgeDemon,
   executeAttributeCheck,
@@ -19,6 +20,7 @@ import {
   recordDemonEncounter,
   computeCoreStats,
 } from './demonBreakthrough';
+
 import type {
   BreakthroughResult,
   GeneratedDemon,

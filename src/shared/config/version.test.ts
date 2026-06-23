@@ -3,6 +3,7 @@
  */
 
 import { describe, it, expect } from 'vitest';
+
 import { parseSemver, checkWorldTemplateCompatibility, GAME_VERSION } from './version';
 
 describe('parseSemver', () => {

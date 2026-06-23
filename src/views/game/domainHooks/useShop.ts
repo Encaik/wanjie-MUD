@@ -10,8 +10,8 @@ import { useCallback } from 'react';
 
 import { addItem, removeItem, findItemsByTemplate, getItemCount } from '@/modules/item/logic';
 
-import { useGameStore } from '../state/GameStore';
 import { createAddMessageInternal } from './helpers';
+import { useGameStore } from '../state/GameStore';
 
 export function useShop() {
   const { dispatch } = useGameStore();

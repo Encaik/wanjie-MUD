@@ -10,8 +10,10 @@
 'use client';
 
 import { createContext, useContext } from 'react';
-import type { ThemeContextValue } from '../types';
+
 import { createInitialThemeState } from '../state';
+
+import type { ThemeContextValue } from '../types';
 
 /** 主题 Context */
 export const ThemeContext = createContext<ThemeContextValue>({

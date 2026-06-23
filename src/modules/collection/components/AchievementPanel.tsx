@@ -4,13 +4,10 @@ import { useState, useMemo } from 'react';
 
 import { Trophy, Swords, Package, Map, Sparkles, Star, Lock, CheckCircle, Gift } from 'lucide-react';
 
-import { Badge } from '@/shared/ui/data-display/badge';
-import { Button } from '@/shared/ui/actions/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/data-display/card';
-import { Progress } from '@/shared/ui/feedback/progress';
-import { ScrollArea } from '@/shared/ui/layout/scroll-area';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/shared/ui/data-display/tabs';
-import { getTemplate } from '@/modules/item/data';
+import { 
+  GameStatistics,
+} from '@/core/types';
+import { AchievementType, AchievementStatus, AchievementDefinition } from '@/core/types';
 import {
   ACHIEVEMENTS,
   getAchievementsByType,
@@ -20,10 +17,13 @@ import {
   calculateAllAchievementStatuses,
   getAchievementProgress,
 } from '@/modules/collection/logic/achievement/achievementUtils';
-import { 
-  GameStatistics,
-} from '@/core/types';
-import { AchievementType, AchievementStatus, AchievementDefinition } from '@/core/types';
+import { getTemplate } from '@/modules/item/data';
+import { Button } from '@/shared/ui/actions/button';
+import { Badge } from '@/shared/ui/data-display/badge';
+import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/data-display/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/shared/ui/data-display/tabs';
+import { Progress } from '@/shared/ui/feedback/progress';
+import { ScrollArea } from '@/shared/ui/layout/scroll-area';
 
 interface AchievementPanelProps {
   statistics: GameStatistics;

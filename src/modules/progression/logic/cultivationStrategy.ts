@@ -8,19 +8,21 @@
 
 import type { Protagonist, CultivationResult, GrowthStats } from '@/core/types';
 import { getFinalStats } from '@/core/types';
-import { getWorldviewCurrencyItemId } from '@/modules/reward-pool/logic/poolEngine';
-import { getExperienceForLevel } from '@/modules/progression/logic/realmSystem';
-import { getTerminology } from '@/modules/narrative/logic/terminology';
 import { getItemCount } from '@/modules/item/logic';
+import { getTerminology } from '@/modules/narrative/logic/terminology';
 import {
   calculateCultivationBoost,
   calculateBreakthroughBoost,
   calculateBreakthroughRate,
   getMaxExperience,
 } from '@/modules/progression/logic/cultivation';
+import { getExperienceForLevel } from '@/modules/progression/logic/realmSystem';
+import { getWorldviewCurrencyItemId } from '@/modules/reward-pool/logic/poolEngine';
+
 import {
   CULTIVATION_STRATEGIES,
 } from './types';
+
 import type {
   CultivationStrategy,
   CultivationCritEvent,

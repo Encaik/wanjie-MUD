@@ -5,16 +5,16 @@
  * 该函数直接导入所有依赖，不通过 barrel 或重导出链。
  */
 
-import type { RealmSystem } from '@/modules/progression/data/realmCore';
 import type { DungeonConfig, WorldBalanceStats } from '@/core/types';
+import { calculateEnemyCombatPower } from '@/modules/combat/logic/combatPower';
+import { calculateEnemyEnhancement } from '@/modules/combat/logic/enemy/enemyEnhancement';
+import type { RealmSystem } from '@/modules/progression/data/realmCore';
 import { getRealmName, getRealmMultiplier } from '@/modules/progression/data/realmCore';
 import {
   calculateEnemyHp,
   calculateEnemyAttack,
   calculateEnemyDefense,
 } from '@/modules/progression/logic/balanceConfig';
-import { calculateEnemyCombatPower } from '@/modules/combat/logic/combatPower';
-import { calculateEnemyEnhancement } from '@/modules/combat/logic/enemy/enemyEnhancement';
 
 /** 默认世界平衡数值（当 worldStats 未提供时使用） */
 export const DEFAULT_BALANCE_STATS: WorldBalanceStats = {

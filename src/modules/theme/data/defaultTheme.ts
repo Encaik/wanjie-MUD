@@ -8,6 +8,7 @@
  */
 
 import type { WorldType } from '@/core/types';
+
 import type { ThemeVariableOverrides } from '../types';
 
 /**

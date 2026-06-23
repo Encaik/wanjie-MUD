@@ -5,6 +5,9 @@
  * 根据 comprehensive-optimization-design.md 设计文档实现
  */
 
+import { Protagonist, CharacterStats, getFinalStats, StatKey } from '@/core/types';
+import { getCurrencyAmount } from '@/modules/item/logic';
+
 import {
   DUNGEON_EVENTS,
   getAvailableEvents,
@@ -24,8 +27,6 @@ import {
   EventEffect,
   DungeonEventType,
 } from './types';
-import { Protagonist, CharacterStats, getFinalStats, StatKey } from '@/core/types';
-import { getCurrencyAmount } from '@/modules/item/logic';
 
 // ============================================
 // 需求检查

@@ -15,13 +15,19 @@ function parseEnemyInfo(content: string): { name: string; level: number } {
   return { name: content, level: 1 };
 }
 import { calcPlayerMaxHp, calcPlayerMaxMp, calcPlayerAttack, calcPlayerDefense } from '@/core/calculation';
-import {
-  calculateEnemyHp,
-  calculateEnemyAttack,
-  calculateEnemyDefense,
-  calculateBattleExp,
-  calculateBattleSpiritStones,
-} from '@/modules/progression/logic/balanceConfig';
+import { 
+  Protagonist, 
+  CellType, 
+  DungeonConfig,
+  BattleResult,
+  BattleState,
+  BattleLog,
+  EnemyTier,
+  Technique,
+  Equipment,
+  WorldBalanceStats,
+  getFinalStats,
+} from '@/core/types';
 import {
   createBattleState,
   createBattleStateFromGroup,
@@ -43,7 +49,7 @@ import {
 } from '@/modules/combat/logic/battle';
 import { calculatePlayerCombatPower, calculateEnemyCombatPower } from '@/modules/combat/logic/combatPower';
 import { calculateEnemyEnhancement, applyEnemyEnhancement } from '@/modules/combat/logic/enemy/enemyEnhancement';
-// TODO: 统一物品系统迁移 — generateEnemyTechniquesAndEquipments 等已删除
+import type { EnemyGroup } from '@/modules/combat/logic/enemy/types';
 import {
   getEnemyAttributes,
   calculateRestraintResult,
@@ -52,27 +58,20 @@ import {
   ELEMENT_NAMES,
   WEAPON_CATEGORY_NAMES,
 } from '@/modules/combat/logic/restraintSystem';
-import { generateTowerEnemyGroup, convertTowerEnemyToEnemy } from '@/modules/tower/logic/towerSystem';
-import { TowerEnemy } from '@/modules/tower/logic/types';
-import { 
-  Protagonist, 
-  CellType, 
-  DungeonConfig,
-  BattleResult,
-  BattleState,
-  BattleLog,
-  EnemyTier,
-  Technique,
-  Equipment,
-  WorldBalanceStats,
-  getFinalStats,
-} from '@/core/types';
 import { 
   getEnemyTierFromCellType, 
   getEnemyTierConfig 
 } from '@/modules/identity/data/worldData';
-
-import type { EnemyGroup } from '@/modules/combat/logic/enemy/types';
+import {
+  calculateEnemyHp,
+  calculateEnemyAttack,
+  calculateEnemyDefense,
+  calculateBattleExp,
+  calculateBattleSpiritStones,
+} from '@/modules/progression/logic/balanceConfig';
+// TODO: 统一物品系统迁移 — generateEnemyTechniquesAndEquipments 等已删除
+import { generateTowerEnemyGroup, convertTowerEnemyToEnemy } from '@/modules/tower/logic/towerSystem';
+import { TowerEnemy } from '@/modules/tower/logic/types';
 
 
 // ============================================

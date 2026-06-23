@@ -11,9 +11,9 @@ import { useState, useCallback } from 'react';
 
 import { getFinalStats, DEFAULT_PROTAGONIST_EXTENSION } from '@/core/types';
 import type { MentalState } from '@/core/types';
-import { CultivationPanel } from '@/modules/progression/components/CultivationPanel';
-import { BreakthroughPanel } from '@/modules/progression/components/BreakthroughPanel';
 import { BreakthroughFlowDialog } from '@/modules/progression/components/BreakthroughFlowDialog';
+import { BreakthroughPanel } from '@/modules/progression/components/BreakthroughPanel';
+import { CultivationPanel } from '@/modules/progression/components/CultivationPanel';
 import { SeclusionPanel } from '@/modules/progression/components/SeclusionPanel';
 import { openDialog } from '@/views/game/dialogs/useDialogController';
 import { useCultivation } from '@/views/game/domainHooks/useCultivation';

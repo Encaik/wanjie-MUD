@@ -3,6 +3,7 @@
  */
 
 import { describe, it, expect } from 'vitest';
+
 import { generateFortuneMap, manhattanDistance } from '../mapGenerator';
 
 describe('mapGenerator', () => {

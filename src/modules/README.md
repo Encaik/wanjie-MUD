@@ -22,8 +22,6 @@
 | 模块 | 职责 |
 |------|------|
 | [`combat/`](combat/) | 战斗 — 回合制战斗、伤害计算、技能释放 |
-| [`techniques/`](techniques/) | 功法/技能 — 功法修炼、技能学习、熟练度系统 |
-| [`equipment/`](equipment/) | 装备 — 装备穿戴、属性加成、强化锻造 |
 | [`exploration/`](exploration/) | 探索 — 通用探索工具（迷雾、路径提示、难度配置） |
 | [`fortune/`](fortune/) | 🆕 机缘 — 地形网格探索、望气术视野、多层深度推进、机缘主题选择 |
 | [`tower/`](tower/) | 爬塔 — 挑战爬塔、层数推进、挂机奖励 |
@@ -40,30 +38,21 @@
 
 | 模块 | 职责 |
 |------|------|
-| [`item/`](item/) | 🆕 统一物品系统 — 整合货币、消耗品、材料、装备、功法、技能、碎片七大品类。提供模板定义、实例管理、槽位装备、升级、碎片合成、物品生成等完整逻辑与 UI 组件（`ItemCard`、`ItemGrid`、`InventoryPanel`、`ItemTooltip`）。替代旧 economy/equipment/techniques/crafting 分散管理 |
-| [`reward-pool/`](reward-pool/) | 🆕 奖励池系统 — 统一的奖励出口。通过 ItemFilter 动态过滤 ItemRegistry，支持 Static/Filter/PoolRef 三种条目类型（货币已统一为 Static 条目，自动按世界观解析），每个条目独立稀有度投骰，Mod 池子合并。替代各模块分散的掉落逻辑 |
-| [`economy/`](economy/) | 经济/交易 — 货币管理、商店系统、每日特卖、商品配置（逐步迁移至 item/） |
-| [`crafting/`](crafting/) | 炼制/制造 — 物品合成、炼器炼丹、配方系统（逐步迁移至 item/） |
+| [`item/`](item/) | 🆕 统一物品系统 — 整合货币、消耗品、材料、装备、功法、技能、碎片七大品类。提供模板定义、实例管理、槽位装备、升级、碎片合成、物品生成等完整逻辑与 UI 组件 |
+| [`reward-pool/`](reward-pool/) | 🆕 奖励池系统 — 统一的奖励出口 |
 | [`collection/`](collection/) | 收藏/图鉴 — 收集物跟踪、图鉴解锁、收集奖励 |
 
 ### 任务系统
 
 | 模块 | 职责 |
 |------|------|
-| [`quest/`](quest/) | 任务 — 通用任务引擎：故事线/板块引擎、事件驱动追踪、QuestTemplate 模板编译、奖励池桥接、数据驱动 UI。任务内容（教程/主线/日常）与引擎解耦，内置和 Mod 共享 QuestTemplate 格式 |
+| [`quest/`](quest/) | 任务 — 通用任务引擎：故事线/板块引擎、事件驱动追踪、QuestTemplate 模板编译、奖励池桥接、数据驱动 UI |
 
 ### 叙事系统
 
 | 模块 | 职责 |
 |------|------|
 | [`narrative/`](narrative/) | 叙事/剧情 — 文案管理、剧情节点、分支故事、叙事 Hook |
-
-### 世界系统
-
-| 模块 | 职责 |
-|------|------|
-| [`world-pool/`](world-pool/) | 世界池 — 世界生成池管理、世界分配策略 |
-| [`world-rating/`](world-rating/) | 世界评级 — 世界评分系统、评价存储与展示 |
 
 ### 主题系统
 

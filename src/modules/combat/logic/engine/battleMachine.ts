@@ -7,6 +7,7 @@
 
 import type { Element, WeaponCategory } from '@/modules/combat/logic/restraintSystem';
 import { calculateElementMultiplier, calculateWeaponMultiplier } from '@/modules/combat/logic/restraintSystem';
+
 import type {
   BattleAction,
   ManualBattleState,

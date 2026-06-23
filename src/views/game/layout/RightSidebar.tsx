@@ -2,12 +2,12 @@
 
 import { Bell } from 'lucide-react';
 
+import { MessageRecord } from '@/core/types';
+import { MessageItem } from '@/shared/components/MessageItem';
 import { Badge } from '@/shared/ui/data-display/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/data-display/card';
 import { Empty, EmptyContent } from '@/shared/ui/feedback/empty';
 import { ScrollArea } from '@/shared/ui/layout/scroll-area';
-import { MessageRecord } from '@/core/types';
-import { MessageItem } from '@/shared/components/MessageItem';
 
 interface RightSidebarProps {
   /** 系统消息（MessageRecord[]，来自 gameState） */

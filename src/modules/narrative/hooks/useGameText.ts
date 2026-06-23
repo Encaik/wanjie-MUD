@@ -6,13 +6,12 @@
 
 import { useCallback, useMemo } from 'react';
 
-import { useGameStore } from '@/views/game/state/GameStore';
-import { calculatePlayerCombatPower } from '@/modules/combat/logic/combatPower';
 import { WorldType } from '@/core/types';
-
-import { textResolver } from '@/modules/narrative/logic/textResolver';
+import { calculatePlayerCombatPower } from '@/modules/combat/logic/combatPower';
 import { getWorldTerminology, getWorldStatNames } from '@/modules/narrative/data/worlds';
+import { textResolver } from '@/modules/narrative/logic/textResolver';
 import { TextKey, ValueContext, UseTextResult } from '@/modules/narrative/types';
+import { useGameStore } from '@/views/game/state/GameStore';
 
 import { useText } from './useText';
 

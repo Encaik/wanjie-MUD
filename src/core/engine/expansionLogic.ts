@@ -25,6 +25,26 @@ import {
 } from '@/core/types';
 import {  DemonEncounter, DemonChoice } from '@/core/types';
 import { 
+  TRIBULATION_CONFIGS,
+  getTribulationConfig,
+  getNextTribulationLevel,
+  calculateSuccessRate
+} from '@/modules/ascension/data/tribulationData';
+import { 
+  DEMON_ENCOUNTERS,
+  getRandomDemonEncounter,
+  calculateDemonChoiceSuccessRate,
+  calculateDemonTriggerChance
+} from '@/modules/combat/data/demonData';
+import {
+  REPUTATION_LEVELS,
+  getReputationLevel,
+  getRanksByFactionType,
+  FACTION_TASKS,
+  FACTION_SHOP_ITEMS,
+  FACTION_SKILLS
+} from '@/modules/faction/data/factionProgressData';
+import { 
   CULTIVATION_PATHS,
   PATH_LEVEL_CONFIG,
   getPathLevelExp,
@@ -32,12 +52,6 @@ import {
   getActivePathSkills,
   calculatePathStatBonus
 } from '@/modules/progression/data/cultivationPathData';
-import { 
-  DEMON_ENCOUNTERS,
-  getRandomDemonEncounter,
-  calculateDemonChoiceSuccessRate,
-  calculateDemonTriggerChance
-} from '@/modules/combat/data/demonData';
 // TODO: 统一物品系统迁移 — 装备词缀/功法羁绊来自已删除模块
 const ALL_AFFIXES: never[] = [];
 const TECHNIQUE_BONDS: never[] = [];
@@ -53,14 +67,6 @@ function calculateSetBonus() { return {}; }
 function getProficiencyLevel() { return { name: '', multiplier: 1 }; }
 function getProficiencyBonus() { return 0; }
 function calculateBondEffects() { return []; }
-import {
-  REPUTATION_LEVELS,
-  getReputationLevel,
-  getRanksByFactionType,
-  FACTION_TASKS,
-  FACTION_SHOP_ITEMS,
-  FACTION_SKILLS
-} from '@/modules/faction/data/factionProgressData';
 
 // ============================================
 // 修炼流派系统逻辑
@@ -727,12 +733,6 @@ export function calculateDailySalary(
 // 境界瓶颈与渡劫系统逻辑
 // ============================================
 
-import { 
-  TRIBULATION_CONFIGS,
-  getTribulationConfig,
-  getNextTribulationLevel,
-  calculateSuccessRate
-} from '@/modules/ascension/data/tribulationData';
 
 /**
  * 检测是否触发境界瓶颈

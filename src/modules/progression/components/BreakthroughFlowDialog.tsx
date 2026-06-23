@@ -1,22 +1,15 @@
 'use client';
 
 import { useState, useMemo } from 'react';
+
 import {
   Sparkles, Swords, Brain, Shield, Zap, Heart,
   Target, AlertTriangle, CheckCircle, XCircle,
   TrendingUp, Flame,
 } from 'lucide-react';
 
-import { Badge } from '@/shared/ui/data-display/badge';
-import { Button } from '@/shared/ui/actions/button';
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-} from '@/shared/ui/overlay/dialog';
-import { Progress } from '@/shared/ui/feedback/progress';
+import { getFinalStats } from '@/core/types';
+import type { Protagonist, MentalState } from '@/core/types';
 import type {
   AttributeCheckResult,
   StrategyChoice,
@@ -32,8 +25,16 @@ import {
   simulateRefineBattle,
   computeCoreStats,
 } from '@/modules/progression/logic/demonBreakthrough';
-import { getFinalStats } from '@/core/types';
-import type { Protagonist, MentalState } from '@/core/types';
+import { Button } from '@/shared/ui/actions/button';
+import { Badge } from '@/shared/ui/data-display/badge';
+import { Progress } from '@/shared/ui/feedback/progress';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from '@/shared/ui/overlay/dialog';
 
 // ============================================
 // Props

@@ -7,9 +7,16 @@ import {
   Check, X, ChevronRight
 } from 'lucide-react';
 
-import { Badge } from '@/shared/ui/data-display/badge';
+import type { Protagonist, Technique, Equipment, InheritanceChoice } from '@/core/types';
+import { ASCENSION_CONFIG } from '@/modules/ascension/data/ascensionData';
+import { getCurrencyAmount } from '@/modules/item/logic';
 import { Button } from '@/shared/ui/actions/button';
+import { Badge } from '@/shared/ui/data-display/badge';
 import { Card, CardContent } from '@/shared/ui/data-display/card';
+import { Progress } from '@/shared/ui/feedback/progress';
+import { Label } from '@/shared/ui/forms/label';
+import { RadioGroup, RadioGroupItem } from '@/shared/ui/forms/radio-group';
+import { Slider } from '@/shared/ui/forms/slider';
 import {
   Dialog,
   DialogContent,
@@ -18,13 +25,6 @@ import {
   DialogTitle,
   DialogFooter,
 } from '@/shared/ui/overlay/dialog';
-import { Label } from '@/shared/ui/forms/label';
-import { Progress } from '@/shared/ui/feedback/progress';
-import { RadioGroup, RadioGroupItem } from '@/shared/ui/forms/radio-group';
-import { Slider } from '@/shared/ui/forms/slider';
-import { ASCENSION_CONFIG } from '@/modules/ascension/data/ascensionData';
-import type { Protagonist, Technique, Equipment, InheritanceChoice } from '@/core/types';
-import { getCurrencyAmount } from '@/modules/item/logic';
 
 interface InheritanceSelectProps {
   open: boolean;

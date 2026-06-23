@@ -5,6 +5,9 @@
  * 视野受玩家属性（悟性+灵识）和所在地形影响。
  */
 
+import { manhattanDistance } from './mapGenerator';
+import { getVisionModifier } from './terrainSystem';
+
 import type {
   FortuneMap,
   FortuneCell,
@@ -14,8 +17,6 @@ import type {
   SenseHint,
   TerrainType,
 } from '../types';
-import { getVisionModifier } from './terrainSystem';
-import { manhattanDistance } from './mapGenerator';
 
 // ============================================
 // 视野计算

@@ -6,7 +6,6 @@
 
 'use client';
 
-import { useFortune } from '@/modules/fortune/hooks/useFortune';
 import {
   FortuneHub,
   FortuneMapView,
@@ -14,6 +13,7 @@ import {
   FortuneResult,
   FortuneBattleDialog,
 } from '@/modules/fortune/components';
+import { useFortune } from '@/modules/fortune/hooks/useFortune';
 import type { FortuneTypeId } from '@/modules/fortune/types';
 
 interface FortunePageProps {

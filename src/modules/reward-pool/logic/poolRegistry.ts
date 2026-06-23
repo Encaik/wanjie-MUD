@@ -5,8 +5,9 @@
  * Mod 同名池子条目追加（不覆盖），配置参数以最后注册为准。
  */
 
-import type { RewardPool, StaticEntry } from '../types';
 import { createLogger } from '@/core/logger';
+
+import type { RewardPool, StaticEntry } from '../types';
 
 const logger = createLogger('reward-pool.registry');
 

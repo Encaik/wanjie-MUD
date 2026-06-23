@@ -8,9 +8,10 @@
  * - 掉落配置
  */
 
-import { Element } from '@/modules/combat/logic/restraintSystem';
-import { EnemyTier } from '../types';
 import { WorldType } from '@/core/types';
+import { Element } from '@/modules/combat/logic/restraintSystem';
+
+import { EnemyTier } from '../types';
 import { EnemyTemplate, EnemyBehaviorType } from '../types';
 
 // ============================================

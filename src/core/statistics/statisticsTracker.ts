@@ -12,11 +12,12 @@
  * @module core/statistics
  */
 
-import type { GameStatistics } from '@/core/types';
 import type { GameEvent } from '@/core/events';
+import type { GameStatistics } from '@/core/types';
+
+import { statisticsUpdaters } from './updaters';
 
 import type { StatisticsEventType } from './types';
-import { statisticsUpdaters } from './updaters';
 
 // ============================================
 // 核心函数

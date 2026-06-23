@@ -5,6 +5,7 @@
  */
 
 import { useState, useEffect, useRef, useCallback } from 'react';
+
 import { checkDemonTrigger } from '@/core/engine';
 import type { MentalState, CultivationPath } from '@/core/types';
 import { DEFAULT_PROTAGONIST_EXTENSION } from '@/core/types';

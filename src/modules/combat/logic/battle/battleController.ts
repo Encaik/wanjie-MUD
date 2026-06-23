@@ -10,12 +10,36 @@
  */
 
 import { 
+  Technique, 
+  Equipment, 
+  InventoryItem, 
+  ItemRarity,
+  EnemyTier,
+  Protagonist,
+} from '@/core/types';
+import { EnemyGroup, Enemy } from '@/modules/combat/logic/enemy/types';
+import { getDefenseAttributes } from '@/modules/combat/logic/restraintSystem';
+import { calculateDamage, COMBAT_CONFIG } from '@/modules/progression/logic/balanceConfig';
+import { applyDamage, applyHeal, clamp, clampNonNegative } from '@/shared/utils/numberUtils';
+
+import { 
   getAvailableDecisions, 
   executePlayerAction, 
   executeEnemyAction, 
   executeTurn,
   executeAutoTurn,
 } from './decisionSystem';
+import {
+  BattleEnemy,
+  TurnOrderEntry,
+  createBattleEnemy,
+  getAliveEnemies,
+  getAliveEnemyCount,
+  areAllEnemiesDefeated,
+  calculateTurnOrder,
+  getNextActor,
+  resetTurnOrder,
+} from './enemyState';
 import {
   checkBattleEvents,
   applyEventEffect,
@@ -41,29 +65,8 @@ import {
   TriggeredEvent,
   PlayerData,
 } from './types';
-import { calculateDamage, COMBAT_CONFIG } from '@/modules/progression/logic/balanceConfig';
-import { EnemyGroup, Enemy } from '@/modules/combat/logic/enemy/types';
-import { getDefenseAttributes } from '@/modules/combat/logic/restraintSystem';
-import { 
-  Technique, 
-  Equipment, 
-  InventoryItem, 
-  ItemRarity,
-  EnemyTier,
-  Protagonist,
-} from '@/core/types';
-import {
-  BattleEnemy,
-  TurnOrderEntry,
-  createBattleEnemy,
-  getAliveEnemies,
-  getAliveEnemyCount,
-  areAllEnemiesDefeated,
-  calculateTurnOrder,
-  getNextActor,
-  resetTurnOrder,
-} from './enemyState';
-import { applyDamage, applyHeal, clamp, clampNonNegative } from '@/shared/utils/numberUtils';
+
+
 
 import type { BattleSkillType } from './types';
 

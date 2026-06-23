@@ -5,6 +5,11 @@
  * 生成过程确定性：相同 seed + fortuneType + depth → 相同地图。
  */
 
+import { getFortuneTypeConfig } from '../data/fortuneTypeConfig';
+import { getNodeTypeConfig } from '../data/nodeTypeConfig';
+import { getTerrainConfig } from '../data/terrainConfig';
+
+import type { FortuneTypeConfigEntry } from '../data/fortuneTypeConfig';
 import type {
   FortuneTypeId,
   TerrainType,
@@ -17,10 +22,6 @@ import type {
   NodeContent,
   EnemyContent,
 } from '../types';
-import { getFortuneTypeConfig } from '../data/fortuneTypeConfig';
-import { getTerrainConfig } from '../data/terrainConfig';
-import { getNodeTypeConfig } from '../data/nodeTypeConfig';
-import type { FortuneTypeConfigEntry } from '../data/fortuneTypeConfig';
 
 // ============================================
 // 种子随机数生成器

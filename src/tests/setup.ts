@@ -6,14 +6,15 @@
 import '@testing-library/jest-dom/vitest';
 import { ItemRegistry } from '@/core/registry/ItemRegistry';
 import { invalidateTemplateCache } from '@/modules/item/data/index';
+
+import apocalypseItems from '../../mods/wanjie-core/data/items/apocalypse.json';
 import cultivationItems from '../../mods/wanjie-core/data/items/cultivation.json';
-import xianxiaItems from '../../mods/wanjie-core/data/items/xianxia.json';
-import wuxiaItems from '../../mods/wanjie-core/data/items/wuxia.json';
 import magicItems from '../../mods/wanjie-core/data/items/magic.json';
 import martialItems from '../../mods/wanjie-core/data/items/martial.json';
-import techItems from '../../mods/wanjie-core/data/items/tech.json';
 import psiItems from '../../mods/wanjie-core/data/items/psi.json';
-import apocalypseItems from '../../mods/wanjie-core/data/items/apocalypse.json';
+import techItems from '../../mods/wanjie-core/data/items/tech.json';
+import wuxiaItems from '../../mods/wanjie-core/data/items/wuxia.json';
+import xianxiaItems from '../../mods/wanjie-core/data/items/xianxia.json';
 
 // 将所有世界观物品注册到 ItemRegistry，确保测试中 getTemplate() 可查到
 ItemRegistry.resetInstance();

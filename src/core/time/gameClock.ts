@@ -5,7 +5,6 @@
  * 游戏时间绑定于玩家主动行为，不随现实时间流逝。
  */
 
-import type { GameClock, GameAction, TimeState } from './types';
 import {
   ACTION_TIME_COST,
   DEFAULT_BASE_AGE,
@@ -18,6 +17,8 @@ import {
   SHICHEN_NAMES,
   MONTH_NAMES,
 } from './constants';
+
+import type { GameClock, GameAction, TimeState } from './types';
 
 // ============================================
 // 默认值

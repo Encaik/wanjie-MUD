@@ -4,8 +4,8 @@
  * 玩家和敌人的数值都基于世界的属性进行计算
  */
 
-import { WorldType, CellType, EnemyTier, WorldDifficulty } from '@/core/types';
 import { WorldViewRegistry } from '@/core/registry';
+import { WorldType, CellType, EnemyTier, WorldDifficulty } from '@/core/types';
 
 // 重新导出 EnemyTier（从 types 导入）
 export type { EnemyTier } from '@/core/types';

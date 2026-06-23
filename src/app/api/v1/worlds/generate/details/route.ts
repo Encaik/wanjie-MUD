@@ -13,8 +13,8 @@
 
 import { NextRequest } from 'next/server';
 
-import { apiSuccess, apiError } from '@/app/api/result';
 import { ensureWorldSystemInitialized } from '@/app/api/init';
+import { apiSuccess, apiError } from '@/app/api/result';
 import { createLogger } from '@/core/logger';
 import { WorldViewRegistry } from '@/core/registry';
 import { generateWorldDetails } from '@/core/world';

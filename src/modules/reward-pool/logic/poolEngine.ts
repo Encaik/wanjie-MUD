@@ -5,6 +5,19 @@
  * resolve → rarityRoll → select → generate → format。
  */
 
+import { createLogger } from '@/core/logger';
+import type { ItemTemplateData } from '@/core/types';
+import { getAllTemplates, getTemplate, hasTemplate } from '@/modules/item/data/index';
+import { ALL_RARITIES, RARITY_ORDER, RARITY_CONFIG } from '@/modules/item/data/rarity';
+import { generateItemInstance } from '@/modules/item/logic/itemGenerator';
+import type { Rarity } from '@/modules/item/types';
+import { createRng, randomWeighted, randomInt, randomItem } from '@/shared/utils/rng';
+
+import { applyFilter, filterCacheKey } from './itemFilter';
+import { getPool, getFilterCache, setFilterCache } from './poolRegistry';
+import { rollRarity, clampWeightsByRarity, getMaxRarityByLevel } from './rarityRoller';
+import { emitRewardEvent } from '../events';
+
 import type {
   RewardPool,
   RollContext,
@@ -17,17 +30,6 @@ import type {
   PoolRefEntry,
   EntryCondition,
 } from '../types';
-import type { Rarity } from '@/modules/item/types';
-import type { ItemTemplateData } from '@/core/types';
-import { getPool, getFilterCache, setFilterCache } from './poolRegistry';
-import { applyFilter, filterCacheKey } from './itemFilter';
-import { rollRarity, clampWeightsByRarity, getMaxRarityByLevel } from './rarityRoller';
-import { generateItemInstance } from '@/modules/item/logic/itemGenerator';
-import { getAllTemplates, getTemplate, hasTemplate } from '@/modules/item/data/index';
-import { ALL_RARITIES, RARITY_ORDER, RARITY_CONFIG } from '@/modules/item/data/rarity';
-import { createRng, randomWeighted, randomInt, randomItem } from '@/shared/utils/rng';
-import { createLogger } from '@/core/logger';
-import { emitRewardEvent } from '../events';
 
 const logger = createLogger('reward-pool.engine');
 

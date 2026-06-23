@@ -1,4 +1,5 @@
 import { emit } from '@/core/events';
+
 import {
   adventureEvents,
   collectionEvents,

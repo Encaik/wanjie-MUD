@@ -17,6 +17,8 @@ function getOpportunityLevelColorClass(level: number): string {
   return colors[level] || 'text-muted-foreground';
 }
 import { WorldViewRegistry } from '@/core/registry';
+import { WorldType, WorldDifficulty } from '@/core/types';
+
 import {
   WorldDanger,
   WorldOpportunity,
@@ -27,7 +29,6 @@ import {
   calculateDangerCount,
   calculateOpportunityCount,
 } from './worldEffectsData';
-import { WorldType, WorldDifficulty } from '@/core/types';
 
 // ============================================
 // 常量定义

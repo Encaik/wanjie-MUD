@@ -2,12 +2,14 @@
  * calculateCoreStats / calculateAttributeGrowth 测试
  */
 import { describe, it, expect } from 'vitest';
+
+import type { AttributeTemplate, AttributeGrowthRule } from '@/core/types';
+
 import {
   calculateCoreStats,
   calculateAttributeGrowth,
   DEFAULT_CORE_STAT_BASE_VALUES,
 } from './calculateCoreStats';
-import type { AttributeTemplate, AttributeGrowthRule } from '@/core/types';
 
 // 修仙属性集（简化版，用于测试）
 const cultivationAttrs: AttributeTemplate[] = [

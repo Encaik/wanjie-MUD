@@ -1,12 +1,14 @@
+import { Suspense } from 'react';
+
 import { Analytics } from "@vercel/analytics/next"
 import { SpeedInsights } from "@vercel/speed-insights/next"
 
-import { Suspense } from 'react';
+import { PageLoading } from '@/shared/components/PageLoading';
 import { PathAwareProvider } from '@/views/layout';
 import { BackgroundLayout } from '@/views/layout';
-import { PageLoading } from '@/shared/components/PageLoading';
 
 import { serifFont } from './fonts';
+
 import type { Metadata } from 'next';
 
 import './globals.css';

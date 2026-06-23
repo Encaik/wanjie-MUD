@@ -2,10 +2,10 @@
 
 import { Compass, Swords } from 'lucide-react';
 
+import { AdventureEvent, WorldType } from '@/core/types';
+import { CooldownButton } from '@/shared/components/CooldownButton';
 import { Button } from '@/shared/ui/actions/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/data-display/card';
-import { CooldownButton } from '@/shared/components/CooldownButton';
-import { AdventureEvent, WorldType } from '@/core/types';
 
 
 interface ExperiencePanelProps {

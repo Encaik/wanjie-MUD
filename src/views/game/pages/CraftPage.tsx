@@ -9,8 +9,7 @@
 
 import { useState, useMemo, useCallback } from 'react';
 
-import { useGameStore } from '@/views/game/state/GameStore';
-import { useAddMessage } from '@/views/game/hooks/useAddMessage';
+import { getTemplatesByCategory } from '@/modules/item/data';
 import {
   generateItemInstance,
   addItem,
@@ -18,13 +17,14 @@ import {
   hasEnough,
   resolveItem,
 } from '@/modules/item/logic';
-import { getTemplatesByCategory } from '@/modules/item/data';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/shared/ui/data-display/tabs';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/shared/ui/data-display/card';
 import { Button } from '@/shared/ui/actions/button';
-import { ScrollArea } from '@/shared/ui/layout/scroll-area';
 import { Badge } from '@/shared/ui/data-display/badge';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/shared/ui/data-display/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/shared/ui/data-display/tabs';
+import { ScrollArea } from '@/shared/ui/layout/scroll-area';
 import { cn } from '@/shared/utils';
+import { useAddMessage } from '@/views/game/hooks/useAddMessage';
+import { useGameStore } from '@/views/game/state/GameStore';
 
 // ─── 配方接口 ───
 

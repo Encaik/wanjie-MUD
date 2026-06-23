@@ -2,13 +2,14 @@
  * modules/reward-pool/data/pools/index.ts — 池子数据桶导出
  */
 
-import type { RewardPool } from '../../types';
-import { COMMON_POOLS } from './common';
 import { COMBAT_POOLS } from './combat';
-import { FORTUNE_POOLS } from './fortune';
+import { COMMON_POOLS } from './common';
 import { DUNGEON_POOLS } from './dungeon';
-import { TOWER_POOLS } from './tower';
+import { FORTUNE_POOLS } from './fortune';
 import { QUEST_POOLS } from './quest';
+import { TOWER_POOLS } from './tower';
+
+import type { RewardPool } from '../../types';
 
 /** 所有内置池子 */
 const ALL_BUILTIN_POOLS: RewardPool[] = [

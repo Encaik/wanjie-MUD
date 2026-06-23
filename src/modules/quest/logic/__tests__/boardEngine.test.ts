@@ -2,8 +2,10 @@
  * boardEngine 单元测试
  */
 import { describe, it, expect } from 'vitest';
+
 import type { QuestBoard, QuestState } from '@/core/types';
 import { createDefaultQuestState } from '@/core/types';
+
 import {
   needsRefresh,
   getAvailableQuestsForBoard,

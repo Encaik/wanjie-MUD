@@ -2,6 +2,7 @@
  * WorldViewRegistry 单元测试
  */
 import { describe, it, expect, beforeEach } from 'vitest';
+
 import {
   WorldViewRegistry,
   asWorldType,
@@ -11,6 +12,7 @@ import {
   getWorldVisualConfig,
   isExtensibleWorldType,
 } from './WorldViewRegistry';
+
 import type { WorldviewDefinition } from './WorldViewRegistry';
 
 // ============================================

@@ -8,8 +8,8 @@
  * - 奖励声望和贡献点
  */
 
-import { getTemplate } from '@/modules/item/data';
 import type { Protagonist, GameStatistics, ItemRarity, ItemDefinition } from '@/core/types';
+import { getTemplate } from '@/modules/item/data';
 import {
   TaskSystemType,
   TaskSystemState,

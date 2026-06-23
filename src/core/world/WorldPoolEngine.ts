@@ -7,9 +7,10 @@
  * @module core/world
  */
 
-import type { WorldProvider, WorldPoolEntry, WorldPoolConfig, WorldRatingsMap } from './types';
-import { DEFAULT_WORLD_POOL_CONFIG } from './types';
 import { parseWorldId } from './identity';
+import { DEFAULT_WORLD_POOL_CONFIG } from './types';
+
+import type { WorldProvider, WorldPoolEntry, WorldPoolConfig, WorldRatingsMap } from './types';
 
 /**
  * 按评分排序并截取

@@ -8,6 +8,10 @@
  */
 
 import { calcPlayerMaxMp } from '@/core/calculation';
+import { WorldType, WorldBalanceStats, ItemRarity, EnemyTier } from '@/core/types';
+import { Enemy } from '@/modules/combat/logic/enemy/types';
+import { EnemyGroup } from '@/modules/combat/logic/enemy/types';
+import { getTerminology } from '@/modules/narrative/logic/terminology';
 import { calculateEnemyHp, calculateEnemyAttack, calculateEnemyDefense } from '@/modules/progression/logic/balanceConfig';
 import {
   TowerEnemy,
@@ -21,10 +25,6 @@ import {
   createEmptyDropPool,
   createDefaultTowerProgress,
 } from '@/modules/tower/logic/types';
-import { Enemy } from '@/modules/combat/logic/enemy/types';
-import { EnemyGroup } from '@/modules/combat/logic/enemy/types';
-import { getTerminology } from '@/modules/narrative/logic/terminology';
-import { WorldType, WorldBalanceStats, ItemRarity, EnemyTier } from '@/core/types';
 
 // ============================================
 // 工具函数

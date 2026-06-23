@@ -4,11 +4,14 @@
 import { describe, it, expect } from 'vitest';
 
 import type { Protagonist } from '@/core/types';
-import type { TimeState } from '../types';
-import { createDefaultGameClock } from '../gameClock';
-import { createDefaultRealClock } from '../realClock';
-import { process, applyResult, shouldShowDialog } from '../offlineProcessor';
+
 import { DEFAULT_OFFLINE_CONFIG } from '../constants';
+import { createDefaultGameClock } from '../gameClock';
+import { process, applyResult, shouldShowDialog } from '../offlineProcessor';
+import { createDefaultRealClock } from '../realClock';
+
+import type { TimeState } from '../types';
+
 
 const NOW = 1000000000000;
 
@@ -22,13 +25,7 @@ function makeProtagonist(overrides: Partial<Protagonist> = {}): Protagonist {
     realm: '筑基期',
     stats: {} as any,
     statCapBonuses: {},
-    inventory: [
-      {
-        id: 'inv-spirit-stone',
-        definition: { id: 'spirit_stone', name: '灵石', type: '灵石', rarity: '普通', description: '', effects: [], stackable: true, maxStack: 999 },
-        quantity: 999999,
-      },
-    ],
+    inventory: [],
     activeEffects: [],
     experience: 0,
     overflowExperience: 0,
@@ -49,7 +46,23 @@ function makeProtagonist(overrides: Partial<Protagonist> = {}): Protagonist {
     factionId: null,
     stamina: 50,
     maxStamina: 100,
-    items: [],
+    items: [
+      {
+        instanceId: 'test-spirit-stone',
+        templateId: 'wanjie:common:spirit_stone',
+        quantity: 999999,
+        level: 1,
+        exp: 0,
+        affixes: [],
+        equipped: false,
+        equippedInSlot: null,
+        equippedSkills: {},
+        element: null,
+        isFragment: false,
+        obtainedAt: 0,
+        source: 'initial',
+      },
+    ],
     slots: {},
     maxSlotCounts: {},
     ...overrides,

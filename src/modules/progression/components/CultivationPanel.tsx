@@ -2,17 +2,17 @@
 
 import { Sparkles, Coins, Play, Square, Moon, Swords, Zap, Flame, Shield, AlertTriangle } from 'lucide-react';
 
-import { CardCornerDecorations } from '@/shared/components';
-import { Badge } from '@/shared/ui/data-display/badge';
-import { Button } from '@/shared/ui/actions/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/data-display/card';
+import type { ActiveEffect, WorldType, CultivationPath, FlatStats, MentalState } from '@/core/types';
+import { getCurrencyAmount } from '@/modules/item/logic';
+import type { ItemInstance } from '@/modules/item/types';
+import { getTerminology } from '@/modules/narrative/logic/terminology';
 import { CULTIVATION_PATHS } from '@/modules/progression/data/cultivationPathData';
 import { useMentalState } from '@/modules/progression/hooks/useMentalState';
-import { getTerminology } from '@/modules/narrative/logic/terminology';
-import type { ActiveEffect, WorldType, CultivationPath, FlatStats, MentalState } from '@/core/types';
-import type { ItemInstance } from '@/modules/item/types';
-import { getCurrencyAmount } from '@/modules/item/logic';
 import { getWorldviewCurrencyItemId } from '@/modules/reward-pool/logic/poolEngine';
+import { CardCornerDecorations } from '@/shared/components';
+import { Button } from '@/shared/ui/actions/button';
+import { Badge } from '@/shared/ui/data-display/badge';
+import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/data-display/card';
 
 interface CultivationPanelProps {
   onCultivate: () => void;

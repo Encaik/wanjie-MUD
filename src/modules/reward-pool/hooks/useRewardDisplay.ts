@@ -9,6 +9,7 @@
  */
 
 import { useMemo } from 'react';
+
 import type { RollResult, RollResultItem } from '../types';
 
 /** 展示就绪的单个物品 */

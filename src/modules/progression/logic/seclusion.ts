@@ -10,15 +10,15 @@
  * - 大彻大悟效果：+3~+8点主属性可成长
  */
 
-import { getMaxExperience } from '@/modules/progression/logic/cultivation';
-import { processExperienceGain, calculateBreakthroughTransfer } from '@/modules/progression/logic/experienceSystem';
-import { getRealmName } from '@/modules/progression/data/realmCore';
-import { getTerminology } from '@/modules/narrative/logic/terminology';
 import type { Protagonist, CultivationResult, WorldType, GrowthStats } from '@/core/types';
 import { getGrowthStatCap } from '@/core/types';
 import { createItemInstance, getItemCount } from '@/modules/item/logic';
-import { getWorldviewCurrencyItemId } from '@/modules/reward-pool/logic/poolEngine';
+import { getTerminology } from '@/modules/narrative/logic/terminology';
+import { getRealmName } from '@/modules/progression/data/realmCore';
 import { getMaxLevel } from '@/modules/progression/data/realmData';
+import { getMaxExperience } from '@/modules/progression/logic/cultivation';
+import { processExperienceGain, calculateBreakthroughTransfer } from '@/modules/progression/logic/experienceSystem';
+import { getWorldviewCurrencyItemId } from '@/modules/reward-pool/logic/poolEngine';
 
 const random = (min: number, max: number) => Math.floor(Math.random() * (max - min + 1)) + min;
 

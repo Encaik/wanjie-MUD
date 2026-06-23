@@ -4,6 +4,8 @@
  * 纯函数模块：处理机缘楼层推进、撤退、死亡惩罚和通关奖励逻辑。
  */
 
+import { getFortuneTypeConfig } from '../data/fortuneTypeConfig';
+
 import type {
   FortuneSession,
   FloorTransition,
@@ -13,7 +15,6 @@ import type {
   CompletionBonus,
   FortuneLoot,
 } from '../types';
-import { getFortuneTypeConfig } from '../data/fortuneTypeConfig';
 
 // ============================================
 // 楼层过渡

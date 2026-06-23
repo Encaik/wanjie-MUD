@@ -4,8 +4,9 @@
  * 将效果数据转换为用户可读的描述文本
  */
 
-import { WorldDanger, WorldOpportunity, DangerEffect, OpportunityEffect } from './worldEffectsData';
 import { StatName } from '@/core/types';
+
+import { WorldDanger, WorldOpportunity, DangerEffect, OpportunityEffect } from './worldEffectsData';
 
 /** 属性名称映射 */
 const STAT_NAMES: Record<StatName, string> = {

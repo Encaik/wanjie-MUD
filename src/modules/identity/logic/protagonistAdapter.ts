@@ -7,9 +7,9 @@
  * @module modules/identity
  */
 
+import type { StoredCharacter } from '@/app/api/v1/characters/store';
 import type { World, Protagonist, CharacterStats } from '@/core/types';
 import { DEFAULT_PROTAGONIST_EXTENSION } from '@/core/types/typesExtension';
-import type { StoredCharacter } from '@/app/api/v1/characters/store';
 
 /**
  * 从保存的角色数据 + 世界数据创建 Protagonist

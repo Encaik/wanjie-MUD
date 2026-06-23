@@ -4,11 +4,12 @@
  * 所有函数为纯函数。
  */
 
-import type { ItemInstance, SlotId, EquipResult } from '../types';
-import type { SlotDefinition } from '../types';
+import { findItemByInstance, createItemInstance } from './itemManager';
 import { getTemplate } from '../data/index';
 import { getSlotDefinition, SLOT_DEFINITIONS, createEmptySlots } from '../data/slots';
-import { findItemByInstance, createItemInstance } from './itemManager';
+
+import type { ItemInstance, SlotId, EquipResult } from '../types';
+import type { SlotDefinition } from '../types';
 
 // ══════════════════════════════════════════════════════════════════
 // 验证
@@ -111,7 +112,7 @@ export function syncSkillSlots(
   newItemId: string | null
 ): { inventory: ItemInstance[]; slots: Record<string, string | null> } {
   let newInventory = inventory.map(i => ({ ...i, equippedSkills: { ...i.equippedSkills } }));
-  let newSlots = { ...slots };
+  const newSlots = { ...slots };
 
   // 清理旧物品的动态技能槽位
   if (oldItemId) {

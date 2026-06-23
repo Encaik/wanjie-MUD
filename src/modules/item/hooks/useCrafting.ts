@@ -3,14 +3,16 @@
  */
 
 import { useCallback, useMemo } from 'react';
-import { useGameStore } from '@/views/game/state/GameStore';
+
 import type { GameState } from '@/core/types';
-import { addItem, hasEnough, removeItem, getItemCount } from '../logic/itemManager';
-import { fragmentItem, synthesizeFragments } from '../logic/itemFragment';
-import { generateItemInstance } from '../logic/itemGenerator';
+import { useGameStore } from '@/views/game/state/GameStore';
+
+import { getTemplate } from '../data/index';
 import { ALCHEMY_RECIPES } from '../data/recipes/alchemy';
 import { FORGE_RECIPES } from '../data/recipes/forge';
-import { getTemplate } from '../data/index';
+import { fragmentItem, synthesizeFragments } from '../logic/itemFragment';
+import { generateItemInstance } from '../logic/itemGenerator';
+import { addItem, hasEnough, removeItem, getItemCount } from '../logic/itemManager';
 
 export function useCrafting() {
   const { gameState, dispatch } = useGameStore();

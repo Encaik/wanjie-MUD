@@ -13,6 +13,8 @@ import {
   WorldType,
   EnemyTier,
 } from '@/core/types';
+import { calculateStats } from '@/modules/combat/logic/statsCalc';
+
 import {
   generateEnemyTechniqueEquipment,
   EnemyTechniqueEquipmentResult,
@@ -28,7 +30,6 @@ import {
   DIFFICULTY_CONFIG,
   TIER_EQUIPMENT_CONFIG,
 } from './types';
-import { calculateStats } from '@/modules/combat/logic/statsCalc';
 
 // ============================================
 // 工具函数

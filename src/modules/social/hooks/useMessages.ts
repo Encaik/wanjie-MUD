@@ -8,13 +8,13 @@
 import { useCallback } from 'react';
 import type { Dispatch, SetStateAction } from 'react';
 
-import { generateId } from '@/shared/utils/id';
 import {
   addMessage as dbAddMessage,
   getMessagesPage,
 } from '@/core/engine';
 import { MessageRecord } from '@/core/types';
 import { MESSAGE_CONFIG } from '@/core/types';
+import { generateId } from '@/shared/utils/id';
 
 interface UseGameMessagesProps {
   gameId: string;

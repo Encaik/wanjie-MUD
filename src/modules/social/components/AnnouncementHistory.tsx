@@ -6,12 +6,12 @@
 
 import { Bell, X } from 'lucide-react';
 
+import type { Announcement } from '@/modules/social/announcementTypes';
+import { ANNOUNCEMENT_TYPE_CONFIG } from '@/modules/social/logic/announcement/config';
 import { Badge } from '@/shared/ui/data-display/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/data-display/card';
 import { ScrollArea } from '@/shared/ui/layout/scroll-area';
-import { ANNOUNCEMENT_TYPE_CONFIG } from '@/modules/social/logic/announcement/config';
 import { cn } from '@/shared/utils';
-import type { Announcement } from '@/modules/social/announcementTypes';
 
 /** Props */
 interface AnnouncementHistoryProps {

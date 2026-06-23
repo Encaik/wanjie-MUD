@@ -9,23 +9,15 @@
 import { useCallback, useEffect } from 'react';
 import type { Dispatch, SetStateAction } from 'react';
 
-import { CULTIVATION_PATHS } from '@/modules/progression/data/cultivationPathData';
 import { calcPlayerMaxHp, calcPlayerMaxMp } from '@/core/calculation';
-import { executeCultivation, getMaxExperience, executeBreakthrough } from '@/modules/progression/logic/cultivation';
-import { executeCultivationWithStrategy } from '@/modules/progression/logic/cultivationStrategy';
-import type { CultivationStrategy } from '@/modules/progression/logic/types';
-import type { StrategyChoice } from '@/modules/progression/logic/demonBreakthrough';
 import { updateTaskProgress } from '@/core/engine';
-import { processExperienceGain, calculateBreakthroughTransfer } from '@/modules/progression/logic/experienceSystem';
 import { gameSystems } from '@/core/engine';
-import { getRealmName } from '@/modules/progression/data/realmCore';
-import { applyGrowthStatChanges, getGrowthStatCap } from '@/modules/progression/logic/realmSystem';
-import { gameClock, cooldown } from '@/core/time';
 import {
   emitCultivationBreakthrough,
   emitCultivationPerformed,
   emitPlayerLevelUp,
 } from '@/core/statistics';
+import { gameClock, cooldown } from '@/core/time';
 import {
   GameState,
   MessageRecord,
@@ -33,10 +25,18 @@ import {
   GrowthStats,
 } from '@/core/types';
 import { DEFAULT_PROTAGONIST_EXTENSION, MentalState } from '@/core/types';
-import { removeItem, getCurrencyAmount } from '@/modules/item/logic';
 import { getTemplate } from '@/modules/item/data';
-import { getWorldviewCurrencyItemId } from '@/modules/reward-pool/logic/poolEngine';
+import { removeItem, getCurrencyAmount } from '@/modules/item/logic';
 import type { ItemInstance } from '@/modules/item/types';
+import { CULTIVATION_PATHS } from '@/modules/progression/data/cultivationPathData';
+import { getRealmName } from '@/modules/progression/data/realmCore';
+import { executeCultivation, getMaxExperience, executeBreakthrough } from '@/modules/progression/logic/cultivation';
+import { executeCultivationWithStrategy } from '@/modules/progression/logic/cultivationStrategy';
+import type { StrategyChoice } from '@/modules/progression/logic/demonBreakthrough';
+import { processExperienceGain, calculateBreakthroughTransfer } from '@/modules/progression/logic/experienceSystem';
+import { applyGrowthStatChanges, getGrowthStatCap } from '@/modules/progression/logic/realmSystem';
+import type { CultivationStrategy } from '@/modules/progression/logic/types';
+import { getWorldviewCurrencyItemId } from '@/modules/reward-pool/logic/poolEngine';
 
 /** 获取当前世界观货币 templateId */
 function getCultivationCurrencyId(worldviewId?: string): string {
@@ -232,11 +232,11 @@ export function useGameCultivation({
       }
       
       let newMentalStateForReturn: MentalState | undefined;
-      let mentalChangeMessage: string = '';
+      const mentalChangeMessage: string = '';
       
       let newItems = [...(prev.protagonist.items || [])];
-      let newStats = prev.protagonist.stats;
-      let newLevel = prev.protagonist.level;
+      const newStats = prev.protagonist.stats;
+      const newLevel = prev.protagonist.level;
       const newStatCapBonuses = prev.protagonist.statCapBonuses;
 
       // 修炼不再自动触发突破——经验满时标记 breakthroughReady，
@@ -254,7 +254,7 @@ export function useGameCultivation({
         ? updateActiveEffects(prev.protagonist.activeEffects)
         : prev.protagonist.activeEffects;
 
-      let newRealm = prev.protagonist.realm;
+      const newRealm = prev.protagonist.realm;
       let newExp = prev.protagonist.experience;
       let newOverflowExp = prev.protagonist.overflowExperience;
       let messageType: MessageRecord['type'] = 'info';

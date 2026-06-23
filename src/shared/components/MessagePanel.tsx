@@ -4,12 +4,12 @@ import { useState, useRef, useCallback, useMemo, useEffect } from 'react';
 
 import { Bell, Loader2, ChevronUp } from 'lucide-react';
 
-import { Badge } from '@/shared/ui/data-display/badge';
-import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/data-display/card';
-import { ScrollArea } from '@/shared/ui/layout/scroll-area';
-import { Empty, EmptyContent } from '@/shared/ui/feedback/empty';
 import { MessageRecord } from '@/core/types';
 import { MessageItem } from '@/shared/components/MessageItem';
+import { Badge } from '@/shared/ui/data-display/badge';
+import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/data-display/card';
+import { Empty, EmptyContent } from '@/shared/ui/feedback/empty';
+import { ScrollArea } from '@/shared/ui/layout/scroll-area';
 
 interface MessagePanelProps {
   /** 系统消息（MessageRecord[]，来自 gameState） */

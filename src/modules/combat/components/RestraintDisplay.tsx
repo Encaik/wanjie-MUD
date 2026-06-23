@@ -8,8 +8,6 @@
 
 import { ArrowRight, AlertTriangle, Check, X } from 'lucide-react';
 
-import { Badge } from '@/shared/ui/data-display/badge';
-import { Card, CardContent } from '@/shared/ui/data-display/card';
 import {
   calculateRestraintResult,
   getElementIcon,
@@ -21,6 +19,8 @@ import {
 } from '@/modules/combat/logic/restraintSystem';
 import type { EnemyAttributes } from '@/modules/combat/logic/restraintSystem';
 import type { Element, WeaponCategory } from '@/modules/combat/logic/restraintSystem';
+import { Badge } from '@/shared/ui/data-display/badge';
+import { Card, CardContent } from '@/shared/ui/data-display/card';
 
 interface RestraintDisplayProps {
   playerElement: Element | null;

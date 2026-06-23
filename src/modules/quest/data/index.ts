@@ -7,8 +7,9 @@
  * @module modules/quest
  */
 
-import { QuestTemplateRegistry } from '@/core/registry/QuestTemplateRegistry';
 import { QuestRegistry } from '@/core/registry/QuestRegistry';
+import { QuestTemplateRegistry } from '@/core/registry/QuestTemplateRegistry';
+
 import { TUTORIAL_QUEST_TEMPLATES } from './quests/tutorial';
 import { compileTemplate } from '../logic/templateCompiler';
 

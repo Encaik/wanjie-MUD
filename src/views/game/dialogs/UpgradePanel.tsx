@@ -5,13 +5,6 @@ import { useState, useMemo, useEffect } from 'react';
 
 import { Sparkles, Sword, Shield, ChevronUp, Info } from 'lucide-react';
 
-import { Badge } from '@/shared/ui/data-display/badge';
-import { Button } from '@/shared/ui/actions/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/data-display/card';
-import { Checkbox } from '@/shared/ui/forms/checkbox';
-import { getRarityStyle } from '@/modules/theme/data/rarityStyles';
-import { Progress } from '@/shared/ui/feedback/progress';
-import { ScrollArea } from '@/shared/ui/layout/scroll-area';
 import { 
   Technique, 
   Equipment, 
@@ -19,6 +12,13 @@ import {
   ItemRarity,
   UPGRADE_CONFIG 
 } from '@/core/types';
+import { getRarityStyle } from '@/modules/theme/data/rarityStyles';
+import { Button } from '@/shared/ui/actions/button';
+import { Badge } from '@/shared/ui/data-display/badge';
+import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/data-display/card';
+import { Progress } from '@/shared/ui/feedback/progress';
+import { Checkbox } from '@/shared/ui/forms/checkbox';
+import { ScrollArea } from '@/shared/ui/layout/scroll-area';
 // TODO: 统一物品系统迁移 — upgradeSystem 函数已删除（getExpToNextLevel 等）
 function getExpToNextLevel(_level: number, _rarity: string): number { return 100; }
 function getMaterialExpValue(_item: unknown): number { return 50; }

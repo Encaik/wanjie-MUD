@@ -5,13 +5,16 @@
  * 支持 Mod 通过注册表注入事件模板。
  */
 
+import type { WorldType } from '@/core/types';
+
+import { getDefaultEvents } from '../data/defaultEvents';
+
 import type {
   FortuneEventTemplate,
   FortuneEventChoice,
 } from '../types';
-import type { WorldType } from '@/core/types';
 import type { FortuneTypeId } from '../types';
-import { getDefaultEvents } from '../data/defaultEvents';
+
 
 // ============================================
 // 事件注册表

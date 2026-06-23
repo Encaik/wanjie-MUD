@@ -7,9 +7,17 @@ import {
   Sparkles, User, SwordsIcon, AlertTriangle, Loader2
 } from 'lucide-react';
 
-import { Badge } from '@/shared/ui/data-display/badge';
+import { BattleState, BattleLog, Protagonist, getFinalStats } from '@/core/types';
+import { GuardianBattleState } from '@/core/types';
+import { WORLD_GUARDIANS, ASCENSION_CONFIG } from '@/modules/ascension/data/ascensionData';
+import { 
+  createGuardianBattleState, 
+  executeBattleRound,
+} from '@/modules/ascension/logic/ascensionLogic';
 import { Button } from '@/shared/ui/actions/button';
+import { Badge } from '@/shared/ui/data-display/badge';
 import { Card } from '@/shared/ui/data-display/card';
+import { Progress } from '@/shared/ui/feedback/progress';
 import {
   Dialog,
   DialogContent,
@@ -18,14 +26,6 @@ import {
   DialogTitle,
   DialogFooter,
 } from '@/shared/ui/overlay/dialog';
-import { Progress } from '@/shared/ui/feedback/progress';
-import { WORLD_GUARDIANS, ASCENSION_CONFIG } from '@/modules/ascension/data/ascensionData';
-import { 
-  createGuardianBattleState, 
-  executeBattleRound,
-} from '@/modules/ascension/logic/ascensionLogic';
-import { BattleState, BattleLog, Protagonist, getFinalStats } from '@/core/types';
-import { GuardianBattleState } from '@/core/types';
 
 // 战斗结果类型
 interface BattleResult {

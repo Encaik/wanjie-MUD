@@ -8,8 +8,8 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-import { cn } from '@/shared/utils';
 import type { Announcement } from '@/modules/social/announcementTypes';
+import { cn } from '@/shared/utils';
 
 import { AnnouncementToast } from './AnnouncementToast';
 

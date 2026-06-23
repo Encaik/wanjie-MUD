@@ -7,9 +7,9 @@
  * 3. 生成符合游戏风格的静态文本
  */
 
+import type { WorldType } from '@/core/types';
 import type { AnnouncementGameEvent, AnnouncementRequest } from '@/modules/social/announcementTypes';
 import { AnnouncementEventType } from '@/modules/social/announcementTypes';
-import type { WorldType } from '@/core/types';
 
 import { getAnnouncementConfig, shouldTriggerAnnouncement } from './config';
 

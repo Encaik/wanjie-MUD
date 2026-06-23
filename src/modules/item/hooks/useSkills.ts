@@ -3,10 +3,12 @@
  */
 
 import { useCallback, useMemo } from 'react';
-import { useGameStore } from '@/views/game/state/GameStore';
+
 import type { GameState } from '@/core/types';
-import { equipSkill as equipSkillLogic, unequipSkill as unequipSkillLogic, getAvailableSkillSlots } from '../logic/skillSystem';
+import { useGameStore } from '@/views/game/state/GameStore';
+
 import { resolveItem, findItemByInstance } from '../logic/itemManager';
+import { equipSkill as equipSkillLogic, unequipSkill as unequipSkillLogic, getAvailableSkillSlots } from '../logic/skillSystem';
 
 export function useSkills() {
   const { gameState, dispatch } = useGameStore();

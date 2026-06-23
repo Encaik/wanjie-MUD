@@ -10,10 +10,12 @@
  */
 
 import fs from 'fs';
+
+import { createLogger } from '@/core/logger';
+
 import type initSqlJs from 'sql.js';
 import type { BindParams } from 'sql.js';
 
-import { createLogger } from '@/core/logger';
 
 /** sql.js 初始化后的静态类型 */
 type SqlJsStatic = Awaited<ReturnType<typeof initSqlJs>>;

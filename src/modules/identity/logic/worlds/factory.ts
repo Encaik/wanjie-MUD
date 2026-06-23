@@ -7,8 +7,9 @@
  * @module modules/identity/logic/worlds
  */
 
-import type { WorldMechanics } from './types';
 import { WorldMechanicsRegistry } from '@/core/registry/WorldMechanicsRegistry';
+
+import type { WorldMechanics } from './types';
 
 /**
  * 获取世界机制（服务端专用）

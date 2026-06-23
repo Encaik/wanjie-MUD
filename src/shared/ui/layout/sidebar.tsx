@@ -7,6 +7,7 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { PanelLeftIcon } from 'lucide-react';
 
 import { Button } from '@/shared/ui/actions/button';
+import { Skeleton } from '@/shared/ui/feedback/skeleton';
 import { Input } from '@/shared/ui/forms/input';
 import { Separator } from '@/shared/ui/layout/separator';
 import {
@@ -16,15 +17,14 @@ import {
   SheetHeader,
   SheetTitle,
 } from '@/shared/ui/overlay/sheet';
-import { Skeleton } from '@/shared/ui/feedback/skeleton';
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from '@/shared/ui/overlay/tooltip';
-import { useIsMobile } from '@/shared/utils/use-mobile';
 import { cn } from '@/shared/utils';
+import { useIsMobile } from '@/shared/utils/use-mobile';
 
 const SIDEBAR_COOKIE_NAME = 'sidebar_state';
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7;

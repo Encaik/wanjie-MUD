@@ -18,8 +18,9 @@ import {
   Package,
 } from 'lucide-react';
 
-import { Badge } from '@/shared/ui/data-display/badge';
+import { IdleRewards } from '@/modules/tower/logic/types';
 import { Button } from '@/shared/ui/actions/button';
+import { Badge } from '@/shared/ui/data-display/badge';
 import {
   Dialog,
   DialogContent,
@@ -27,7 +28,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/shared/ui/overlay/dialog';
-import { IdleRewards } from '@/modules/tower/logic/types';
 
 /**
  * 离线处理结果

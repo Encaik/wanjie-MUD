@@ -5,11 +5,12 @@
  * 注意：generateRandomDrop() 和 rollRarity() 已迁移到 modules/reward-pool/。
  */
 
-import type { ItemInstance, Rarity } from '../types';
+import { createItemInstance } from './itemManager';
+import { ALL_AFFIX_TEMPLATES } from '../data/affixes';
 import { getTemplate } from '../data/index';
 import { RARITY_ORDER, RARITY_CONFIG } from '../data/rarity';
-import { ALL_AFFIX_TEMPLATES } from '../data/affixes';
-import { createItemInstance } from './itemManager';
+
+import type { ItemInstance, Rarity } from '../types';
 
 /** 简易 seeded RNG（乘法同余，确定性） */
 function createRng(seed: number): () => number {

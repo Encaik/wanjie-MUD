@@ -17,9 +17,14 @@ import {
   Star
 } from 'lucide-react';
 
-import { Badge } from '@/shared/ui/data-display/badge';
+import { InventoryItem, CraftingState, ForgingState, ItemRarity } from '@/core/types';
+import { getRarityStyle } from '@/modules/theme/data/rarityStyles';
 import { Button } from '@/shared/ui/actions/button';
+import { Badge } from '@/shared/ui/data-display/badge';
 import { Card, CardContent } from '@/shared/ui/data-display/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/shared/ui/data-display/tabs';
+import { Progress } from '@/shared/ui/feedback/progress';
+import { ScrollArea } from '@/shared/ui/layout/scroll-area';
 import {
   Dialog,
   DialogContent,
@@ -27,17 +32,12 @@ import {
   DialogTitle,
   DialogDescription,
 } from '@/shared/ui/overlay/dialog';
-import { getRarityStyle } from '@/modules/theme/data/rarityStyles';
-import { Progress } from '@/shared/ui/feedback/progress';
-import { ScrollArea } from '@/shared/ui/layout/scroll-area';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/shared/ui/data-display/tabs';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/shared/ui/overlay/tooltip';
 // TODO: 统一物品系统迁移 — 炼丹/炼器配方来自已删除的 crafting 模块
 type PillQuality = '极品' | '上品' | '中品' | '下品';
 type EquipmentQuality = '完美' | '优秀' | '精良' | '普通';
 interface AlchemyRecipe { id: string; name: string; }
 interface ForgeRecipe { id: string; name: string; }
-import { InventoryItem, CraftingState, ForgingState, ItemRarity } from '@/core/types';
 import { cn } from '@/shared/utils';
 
 interface CraftingDialogProps {

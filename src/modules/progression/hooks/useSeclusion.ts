@@ -9,12 +9,21 @@
 import { useCallback, useState } from 'react';
 import type { Dispatch, SetStateAction } from 'react';
 
-import { CULTIVATION_PATHS } from '@/modules/progression/data/cultivationPathData';
-import { getMaxExperience, getMaxLevel } from '@/modules/progression/logic/cultivation';
 import { applyMentalChange, updateTaskProgress } from '@/core/engine';
-import { processExperienceGain, calculateBreakthroughTransfer } from '@/modules/progression/logic/experienceSystem';
 import { gameSystems } from '@/core/engine';
+import {
+  emitCultivationBreakthrough,
+  emitPlayerLevelUp,
+} from '@/core/statistics';
+import { gameClock, ACTION_TIME_COST } from '@/core/time';
+import { GameState, MessageRecord, ActiveEffect } from '@/core/types';
+import { DEFAULT_PROTAGONIST_EXTENSION, MentalState } from '@/core/types';
+import { removeItem } from '@/modules/item/logic';
+import type { ItemInstance } from '@/modules/item/types';
+import { CULTIVATION_PATHS } from '@/modules/progression/data/cultivationPathData';
 import { getRealmName } from '@/modules/progression/data/realmCore';
+import { getMaxExperience, getMaxLevel } from '@/modules/progression/logic/cultivation';
+import { processExperienceGain, calculateBreakthroughTransfer } from '@/modules/progression/logic/experienceSystem';
 import { applyGrowthStatChanges } from '@/modules/progression/logic/realmSystem';
 import {
   SeclusionType,
@@ -28,15 +37,6 @@ import {
   SECLUSION_CONFIGS,
   SECLUSION_OUTCOMES,
 } from '@/modules/progression/logic/seclusion';
-import { gameClock, ACTION_TIME_COST } from '@/core/time';
-import {
-  emitCultivationBreakthrough,
-  emitPlayerLevelUp,
-} from '@/core/statistics';
-import { GameState, MessageRecord, ActiveEffect } from '@/core/types';
-import { DEFAULT_PROTAGONIST_EXTENSION, MentalState } from '@/core/types';
-import { removeItem } from '@/modules/item/logic';
-import type { ItemInstance } from '@/modules/item/types';
 
 /** 按模板 ID 从物品列表中扣除数量（不可变） */
 function deductByTemplate(items: ItemInstance[], templateId: string, quantity: number): ItemInstance[] {

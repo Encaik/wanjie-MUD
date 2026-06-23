@@ -11,8 +11,7 @@ import {
   Crown, Star
 } from 'lucide-react';
 
-import { Badge } from '@/shared/ui/data-display/badge';
-import { Progress } from '@/shared/ui/feedback/progress';
+import type { Technique, Equipment, EnemyTier } from '@/core/types';
 import { StatBuff } from '@/modules/combat/logic/battle';
 import { 
   getElementIcon, 
@@ -21,8 +20,9 @@ import {
   WEAPON_CATEGORY_NAMES,
   EnemyAttributes,
 } from '@/modules/combat/logic/restraintSystem';
-import type { Technique, Equipment, EnemyTier } from '@/core/types';
 import type { Element, WeaponCategory } from '@/modules/combat/logic/restraintSystem';
+import { Badge } from '@/shared/ui/data-display/badge';
+import { Progress } from '@/shared/ui/feedback/progress';
 
 /** 敌人类型显示配置 */
 const TIER_CONFIG: Record<EnemyTier, { name: string; icon: React.ReactNode; color: string }> = {

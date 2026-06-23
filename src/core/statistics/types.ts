@@ -7,8 +7,8 @@
  * @module core/statistics
  */
 
-import type { Quality } from '@/core/types';
 import type { GameEvent } from '@/core/events';
+import type { Quality } from '@/core/types';
 
 // ============================================
 // 统计事件类型联合

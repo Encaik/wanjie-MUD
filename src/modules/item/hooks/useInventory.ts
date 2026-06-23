@@ -5,7 +5,13 @@
  */
 
 import { useCallback } from 'react';
-import type { ItemInstance, ConsumableTemplate } from '../types';
+
+import { emitItemObtained, emitItemUsed } from '@/core/statistics';
+import type { GameState, ActiveEffect, GrowthStats } from '@/core/types';
+import { applyBaseStatChanges } from '@/modules/progression/logic/realmSystem';
+import { useGameStore } from '@/views/game/state/GameStore';
+
+import { getTemplate } from '../data/index';
 import {
   addItem as addItemLogic,
   removeItem as removeItemLogic,
@@ -17,11 +23,8 @@ import {
   resolveItem,
 } from '../logic/itemManager';
 import { useConsumable } from '../logic/itemUse';
-import { getTemplate } from '../data/index';
-import { emitItemObtained, emitItemUsed } from '@/core/statistics';
-import { useGameStore } from '@/views/game/state/GameStore';
-import type { GameState, ActiveEffect, GrowthStats } from '@/core/types';
-import { applyBaseStatChanges } from '@/modules/progression/logic/realmSystem';
+
+import type { ItemInstance, ConsumableTemplate } from '../types';
 
 /** 内部消息添加辅助 */
 function addMessage(

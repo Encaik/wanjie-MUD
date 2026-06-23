@@ -36,29 +36,8 @@ import {
   Hammer,
 } from 'lucide-react';
 
-import { RankDetailDialog, ReputationDetailDialog } from '@/views/game';
-import { Badge } from '@/shared/ui/data-display/badge';
-import { Button } from '@/shared/ui/actions/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/data-display/card';
-import { 
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from '@/shared/ui/overlay/dialog';
-import { Progress } from '@/shared/ui/feedback/progress';
-import { ScrollArea } from '@/shared/ui/layout/scroll-area';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/shared/ui/overlay/tooltip';
-import { 
-  getFactionsByWorld, 
-  getFactionById, 
-  calculateFactionBonuses,
-} from '@/modules/faction/data/factionData';
+import { checkRankPromotion } from '@/core/engine';
 import type { WorldType, WorldFaction } from '@/core/types';
-import type { Faction } from '@/modules/faction/data/factionData';
-import { FactionTypeNames } from '@/modules/faction/data/factionData';
 import type {
   TaskRoundState,
   CommissionState,
@@ -66,6 +45,13 @@ import type {
   FactionProgress,
   ReputationLevel,
 } from '@/core/types';
+import type { Faction } from '@/modules/faction/data/factionData';
+import { 
+  getFactionsByWorld, 
+  getFactionById, 
+  calculateFactionBonuses,
+} from '@/modules/faction/data/factionData';
+import { FactionTypeNames } from '@/modules/faction/data/factionData';
 import { 
   REPUTATION_LEVELS,
   DAILY_TASK_ROUND,
@@ -78,9 +64,23 @@ import {
   COMMISSION_QUALITY_CONFIG,
   CommissionQuality,
 } from '@/modules/faction/data/factionProgressData';
-import { checkRankPromotion } from '@/core/engine';
+import { Button } from '@/shared/ui/actions/button';
+import { Badge } from '@/shared/ui/data-display/badge';
+import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/data-display/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/shared/ui/data-display/tabs';
+import { Progress } from '@/shared/ui/feedback/progress';
 import { Slider } from '@/shared/ui/forms/slider';
+import { ScrollArea } from '@/shared/ui/layout/scroll-area';
+import { 
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/shared/ui/overlay/dialog';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/shared/ui/overlay/tooltip';
+import { RankDetailDialog, ReputationDetailDialog } from '@/views/game';
 
 
 interface FactionPanelProps {

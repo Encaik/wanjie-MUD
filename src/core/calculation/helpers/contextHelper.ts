@@ -4,13 +4,16 @@
  * 提供从游戏对象构建计算上下文的便捷方法
  */
 
+import type { Protagonist, ActiveEffect, EnemyTier } from '@/core/types';
+import type { WorldDanger, WorldOpportunity } from '@/modules/identity/data/worldEffectsData';
+import { resolveItem, findItemByInstance } from '@/modules/item/logic/itemManager';
+import type { ResolvedItem } from '@/modules/item/types';
+
 import { ContextBuilder } from '../context/builder';
 
-import type { WorldDanger, WorldOpportunity } from '@/modules/identity/data/worldEffectsData';
-import type { Protagonist, ActiveEffect, EnemyTier } from '@/core/types';
+
 import type { CalculationContext, WorldEffectInput } from '../context/types';
-import type { ResolvedItem } from '@/modules/item/types';
-import { resolveItem, findItemByInstance } from '@/modules/item/logic/itemManager';
+
 
 /**
  * 从主角对象构建计算上下文

@@ -13,8 +13,15 @@ import {
   Zap,
 } from 'lucide-react';
 
-import { Badge } from '@/shared/ui/data-display/badge';
+import {
+  getRanksByFactionType,
+  FactionRankConfig,
+  REPUTATION_LEVELS,
+  ReputationLevel,
+} from '@/modules/faction/data/factionProgressData';
 import { Button } from '@/shared/ui/actions/button';
+import { Badge } from '@/shared/ui/data-display/badge';
+import { ScrollArea } from '@/shared/ui/layout/scroll-area';
 import {
   Dialog,
   DialogContent,
@@ -22,14 +29,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/shared/ui/overlay/dialog';
-import { ScrollArea } from '@/shared/ui/layout/scroll-area';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/shared/ui/overlay/tooltip';
-import {
-  getRanksByFactionType,
-  FactionRankConfig,
-  REPUTATION_LEVELS,
-  ReputationLevel,
-} from '@/modules/faction/data/factionProgressData';
 
 interface RankDetailDialogProps {
   factionType: string;

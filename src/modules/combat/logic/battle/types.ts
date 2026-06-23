@@ -7,7 +7,6 @@
  * 3. 接口抽象，便于扩展
  */
 
-import {  RestraintResult, EnemyAttributes } from '@/modules/combat/logic/restraintSystem';
 import {
   FlatStats,
   Technique,
@@ -21,6 +20,7 @@ import {
   BattleState,
   Protagonist,
 } from '@/core/types';
+import {  RestraintResult, EnemyAttributes } from '@/modules/combat/logic/restraintSystem';
 import type { Element, WeaponCategory } from '@/modules/combat/logic/restraintSystem';
 
 // ============================================

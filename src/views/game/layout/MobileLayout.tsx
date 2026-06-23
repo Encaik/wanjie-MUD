@@ -2,11 +2,10 @@
 
 import { RotateCcw } from 'lucide-react';
 
-import { Button } from '@/shared/ui/actions/button';
 import { Protagonist, BattleState, Technique, Equipment } from '@/core/types';
 import { MentalState } from '@/core/types';
-
 import { BattleResultDialog } from '@/modules/combat/components';
+import { Button } from '@/shared/ui/actions/button';
 import { SaveLoadPanel } from '@/views/game/cards/SaveLoadPanel';
 import { StatusPanel } from '@/views/game/cards/StatusPanel';
 

@@ -2,9 +2,11 @@
  * ModLoader 和 ModManifest 单元测试
  */
 import { describe, it, expect, beforeEach, vi } from 'vitest';
+
+import { WorldViewRegistry } from '@/core/registry/WorldViewRegistry';
+
 import { ModLoader } from './ModLoader';
 import { parseManifest, validateManifest } from './ModManifest';
-import { WorldViewRegistry } from '@/core/registry/WorldViewRegistry';
 
 // ============================================
 // ModManifest 校验测试

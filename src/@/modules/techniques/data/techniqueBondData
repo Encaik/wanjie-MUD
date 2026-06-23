@@ -1,2 +1,0 @@
-// barrel re-export → modules/item/
-export {};

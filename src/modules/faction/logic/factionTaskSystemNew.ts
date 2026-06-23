@@ -7,8 +7,8 @@
  * - 与统计系统紧密集成
  */
 
-import { getTemplate } from '@/modules/item/data';
 import type { ItemDefinition, ItemRarity, Protagonist, GameStatistics } from '@/core/types';
+import { getTemplate } from '@/modules/item/data';
 
 /** Rarity (英文) → ItemRarity (中文) 映射 */
 const RARITY_TO_ITEM_RARITY: Record<string, ItemRarity> = {

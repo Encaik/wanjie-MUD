@@ -3,9 +3,10 @@
  */
 import { describe, it, expect } from 'vitest';
 
+import { set, remove, isActive, remaining, progress, clearExpired } from '../cooldown';
 import { createDefaultGameClock } from '../gameClock';
 import { createDefaultRealClock } from '../realClock';
-import { set, remove, isActive, remaining, progress, clearExpired } from '../cooldown';
+
 import type { TimeState } from '../types';
 
 const NOW = 1000000000000;

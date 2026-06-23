@@ -4,6 +4,7 @@
  */
 
 import { NextRequest } from 'next/server';
+
 import { apiSuccess, apiError } from '@/app/api/result';
 import { createLogger } from '@/core/logger';
 import { QuestRegistry } from '@/core/registry/QuestRegistry';
@@ -16,7 +17,7 @@ export async function GET(request: NextRequest) {
 
   try {
     const registry = QuestRegistry.getInstance();
-    let quests = worldviewId
+    const quests = worldviewId
       ? registry.getByWorldview(worldviewId)
       : registry.getAll();
 

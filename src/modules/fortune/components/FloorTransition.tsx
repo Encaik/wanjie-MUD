@@ -16,6 +16,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/shared/ui/overlay/dialog';
+
 import type { FloorTransition as FloorTransitionData } from '../types';
 
 interface FloorTransitionProps {

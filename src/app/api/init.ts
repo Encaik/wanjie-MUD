@@ -8,10 +8,10 @@
  */
 
 import { createLogger } from '@/core/logger';
-import { WorldViewRegistry } from '@/core/registry/WorldViewRegistry';
-import { WorldMechanicsRegistry } from '@/core/registry/WorldMechanicsRegistry';
-import { WorldProviderRegistry } from '@/core/world/WorldProviderRegistry';
 import { ServerModLoader } from '@/core/mod';
+import { WorldMechanicsRegistry } from '@/core/registry/WorldMechanicsRegistry';
+import { WorldViewRegistry } from '@/core/registry/WorldViewRegistry';
+import { WorldProviderRegistry } from '@/core/world/WorldProviderRegistry';
 
 const log = createLogger('API Init');
 

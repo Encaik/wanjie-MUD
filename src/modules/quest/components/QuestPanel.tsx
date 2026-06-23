@@ -10,6 +10,7 @@
 'use client';
 
 import { useMemo, useState, useCallback, useEffect } from 'react';
+
 import { CheckCircle2, Circle, ScrollText, Lock, Gift, Clock, RefreshCw, Sparkles } from 'lucide-react';
 
 import { BoardRegistry } from '@/core/registry/BoardRegistry';

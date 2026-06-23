@@ -17,13 +17,13 @@
 import fs from 'fs';
 import path from 'path';
 
-import initSqlJs from 'sql.js';
 import { drizzle } from 'drizzle-orm/better-sqlite3';
+import initSqlJs from 'sql.js';
 
 import { createLogger } from '@/core/logger';
 
-import { SqlJsDatabase } from './sqljs-wrapper';
 import * as schema from './schema';
+import { SqlJsDatabase } from './sqljs-wrapper';
 
 // ============================================
 // 日志 & 路径

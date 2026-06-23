@@ -3,9 +3,10 @@
  * slotSystem 单元测试
  */
 import { describe, it, expect } from 'vitest';
+
+import { createEmptySlots } from '../../data/slots';
 import { createItemInstance, addItem } from '../itemManager';
 import { validateEquip, equipItem, unequipItem } from '../slotSystem';
-import { createEmptySlots } from '../../data/slots';
 
 describe('slotSystem', () => {
   const slotDef = { slotId: 'weapon_melee', category: 'equipment' as const, acceptedCategory: 'equipment' as const, acceptedSubcategory: 'weapon_melee', displayName: '近战武器' };
@@ -34,7 +35,7 @@ describe('slotSystem', () => {
 
   describe('equipItem / unequipItem', () => {
     it('装备成功更新 slots', () => {
-      let inv = addItem([], 'wanjie-core:cultivation:iron_sword', 1);
+      const inv = addItem([], 'wanjie-core:cultivation:iron_sword', 1);
       const swordId = inv[0].instanceId;
       const slots = createEmptySlots();
 
@@ -59,9 +60,9 @@ describe('slotSystem', () => {
     });
 
     it('卸下槽位恢复物品状态', () => {
-      let inv = addItem([], 'wanjie-core:cultivation:iron_sword', 1);
+      const inv = addItem([], 'wanjie-core:cultivation:iron_sword', 1);
       const swordId = inv[0].instanceId;
-      let slots = createEmptySlots();
+      const slots = createEmptySlots();
 
       const equipResult = equipItem(inv, slots, swordId, 'weapon_melee');
       expect(equipResult.success).toBe(true);

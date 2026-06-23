@@ -5,8 +5,8 @@
  * 替代旧的 itemGenerator.rollRarity()，支持每个条目独立的稀有度配置。
  */
 
-import type { Rarity } from '@/modules/item/types';
 import { ALL_RARITIES, RARITY_ORDER } from '@/modules/item/data/rarity';
+import type { Rarity } from '@/modules/item/types';
 import { createRng } from '@/shared/utils/rng';
 
 /** 默认幸运基准值 */

@@ -10,7 +10,9 @@
 
 import { QuestRegistry } from '@/core/registry/QuestRegistry';
 import type { QuestBoard, QuestState } from '@/core/types';
+
 import { checkPrerequisites } from './questEngine';
+
 import type { PlayerCheckData } from './questEngine';
 
 // ============================================

@@ -2,9 +2,11 @@
  * eventTracker 单元测试
  */
 import { describe, it, expect } from 'vitest';
+
 import type { GameEvent } from '@/core/events';
 import type { QuestState, ActiveQuest, QuestStage, QuestDefinition } from '@/core/types';
 import { createDefaultQuestState } from '@/core/types';
+
 import { matchEventToObjectives, applyEventToQuests } from '../eventTracker';
 
 // ============================================

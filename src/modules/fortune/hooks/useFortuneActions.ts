@@ -7,7 +7,7 @@
 'use client';
 
 import { useCallback } from 'react';
-import type { FortuneSlice, FortuneTypeId, FortuneSession, SettlementResult } from '../types';
+
 import {
   generateFortuneMap,
   resolveNode,
@@ -19,6 +19,8 @@ import {
   manhattanDistance,
 } from '../logic';
 import { INITIAL_FORTUNE_SLICE } from '../state';
+
+import type { FortuneSlice, FortuneTypeId, FortuneSession, SettlementResult } from '../types';
 
 interface ActionDeps {
   updateSlice: (updater: (prev: FortuneSlice) => FortuneSlice) => void;

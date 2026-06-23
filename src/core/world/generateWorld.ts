@@ -12,11 +12,11 @@
  * @module core/world
  */
 
-import { hashString, createRng } from '@/shared/utils/rng';
-import { GAME_VERSION } from '@/shared/config/version';
-import type { WorldviewDefinition } from '@/core/registry/WorldViewRegistry';
 import { AttributeRegistry } from '@/core/registry/AttributeRegistry';
+import type { WorldviewDefinition } from '@/core/registry/WorldViewRegistry';
 import type { World, WorldDifficulty, WorldFaction, AttributeTemplate } from '@/core/types';
+import { GAME_VERSION } from '@/shared/config/version';
+import { hashString, createRng } from '@/shared/utils/rng';
 
 // ============================================
 // 工具函数
@@ -114,7 +114,7 @@ export function generateWorldDetails(
   // 危险（从世界观池中选取 2-4 个）
   const dangerCount = Math.floor(dangerRng() * 3) + 2;
   const selectedDangers = pickItems(worldview.dangers, dangerCount, dangerRng);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   
   const dangers = selectedDangers.map(d => ({
     id: d.id,
     name: d.name,
@@ -132,7 +132,7 @@ export function generateWorldDetails(
   // 机遇（从世界观池中选取 2-4 个）
   const opportunityCount = Math.floor(opportunityRng() * 3) + 2;
   const selectedOpportunities = pickItems(worldview.opportunities, opportunityCount, opportunityRng);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   
   const opportunities = selectedOpportunities.map(o => ({
     id: o.id,
     name: o.name,

@@ -12,8 +12,8 @@ import { useCallback } from 'react';
 import { DEFAULT_ASCENSION_FLOW_STATE } from '@/core/types';
 import type { InheritanceChoice, NewWorldInfo } from '@/core/types';
 
-import { useGameStore } from '../state/GameStore';
 import { createAddMessageInternal } from './helpers';
+import { useGameStore } from '../state/GameStore';
 
 export function useAscension() {
   const { dispatch } = useGameStore();

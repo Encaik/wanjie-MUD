@@ -7,9 +7,9 @@
 import { useCallback, useMemo } from 'react';
 
 import { WorldType } from '@/core/types';
+import { getWorldTerminology, getWorldStatNames } from '@/modules/narrative/data/worlds';
 import { textResolver } from '@/modules/narrative/logic/textResolver';
 import { TextKey, UseTextResult, ValueContext } from '@/modules/narrative/types';
-import { getWorldTerminology, getWorldStatNames } from '@/modules/narrative/data/worlds';
 
 /**
  * 文案 Hook

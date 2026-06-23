@@ -8,17 +8,19 @@
  * 4. 所有境界相关查询都基于世界存储的境界配置
  */
 
+import { WorldViewRegistry } from '@/core/registry/WorldViewRegistry';
+import type { WorldType, WorldBalanceStats, DungeonConfig } from '@/core/types';
+import { calculateEnemyCombatPower } from '@/modules/combat/logic/combatPower';
+import { calculateEnemyEnhancement } from '@/modules/combat/logic/enemy/enemyEnhancement';
 import {
   calculateEnemyHp,
   calculateEnemyAttack,
   calculateEnemyDefense
 } from '@/modules/progression/logic/balanceConfig';
-import { calculateEnemyCombatPower } from '@/modules/combat/logic/combatPower';
-import { calculateEnemyEnhancement } from '@/modules/combat/logic/enemy/enemyEnhancement';
-import type { WorldType, WorldBalanceStats, DungeonConfig } from '@/core/types';
-import { WorldViewRegistry } from '@/core/registry/WorldViewRegistry';
-import type { RealmSystem, RealmTier } from './realmCore';
+
 import { getRealmName, getRealmMultiplier } from './realmCore';
+
+import type { RealmSystem, RealmTier } from './realmCore';
 
 // ============================================
 // 小境界体系（可与任意大境界体系搭配）

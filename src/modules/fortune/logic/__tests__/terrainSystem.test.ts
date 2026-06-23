@@ -3,6 +3,7 @@
  */
 
 import { describe, it, expect } from 'vitest';
+
 import {
   getMoveCost,
   getVisionModifier,
@@ -10,6 +11,7 @@ import {
   canMoveOnTerrain,
   resolveTerrainEffect,
 } from '../terrainSystem';
+
 import type { TerrainType, FortuneSession } from '../../types';
 
 function makeSession(stamina: number): FortuneSession {

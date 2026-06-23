@@ -26,19 +26,7 @@ import {
   X,
 } from 'lucide-react';
 
-import { Badge } from '@/shared/ui/data-display/badge';
-import { Button } from '@/shared/ui/actions/button';
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-  DialogFooter,
-} from '@/shared/ui/overlay/dialog';
-import { Progress } from '@/shared/ui/feedback/progress';
-import { ScrollArea } from '@/shared/ui/layout/scroll-area';
-import { Separator } from '@/shared/ui/layout/separator';
+import { BattleState, BattleLog, Technique, Equipment } from '@/core/types';
 import { formatCombatPower, getCombatPowerRank } from '@/modules/combat/logic/combatPower';
 import { 
   getElementIcon, 
@@ -47,7 +35,19 @@ import {
   WEAPON_CATEGORY_NAMES,
   EnemyAttributes,
 } from '@/modules/combat/logic/restraintSystem';
-import { BattleState, BattleLog, Technique, Equipment } from '@/core/types';
+import { Button } from '@/shared/ui/actions/button';
+import { Badge } from '@/shared/ui/data-display/badge';
+import { Progress } from '@/shared/ui/feedback/progress';
+import { ScrollArea } from '@/shared/ui/layout/scroll-area';
+import { Separator } from '@/shared/ui/layout/separator';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from '@/shared/ui/overlay/dialog';
 
 import { CombatantPanel } from './CombatantPanel';
 

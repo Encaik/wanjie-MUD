@@ -7,8 +7,10 @@
 'use client';
 
 import { useCallback, useRef, useState } from 'react';
-import type { Element, WeaponCategory } from '@/modules/combat/logic/restraintSystem';
-import { calculateElementMultiplier, calculateWeaponMultiplier } from '@/modules/combat/logic/restraintSystem';
+
+import { calcPlayerMaxHp, calcPlayerMaxMp, calcPlayerAttack, calcPlayerDefense } from '@/core/calculation';
+import type { Protagonist, Technique } from '@/core/types';
+import { getFinalStats } from '@/core/types';
 import {
   createManualBattleState,
   executeBattleAction,
@@ -22,9 +24,8 @@ import type {
   CombatTechniqueSlot,
   AutoBattleStrategy,
 } from '@/modules/combat/logic/engine/types';
-import type { Protagonist, Technique } from '@/core/types';
-import { getFinalStats } from '@/core/types';
-import { calcPlayerMaxHp, calcPlayerMaxMp, calcPlayerAttack, calcPlayerDefense } from '@/core/calculation';
+import type { Element, WeaponCategory } from '@/modules/combat/logic/restraintSystem';
+import { calculateElementMultiplier, calculateWeaponMultiplier } from '@/modules/combat/logic/restraintSystem';
 
 /** 战斗初始化参数 */
 export interface BattleInitParams {
@@ -103,7 +104,7 @@ function buildCombatTechniques(
 }
 
 /** 种子计数器，用于保持伪随机 */
-let seedCounter = Date.now();
+const seedCounter = Date.now();
 
 export function useBattle(): UseBattleReturn {
   const [battleState, setBattleState] = useState<ManualBattleState | null>(null);

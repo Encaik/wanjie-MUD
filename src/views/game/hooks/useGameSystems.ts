@@ -8,6 +8,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+
 import { createLogger } from '@/core/logger';
 
 const log = createLogger('GameSystems');

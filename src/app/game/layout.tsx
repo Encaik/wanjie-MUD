@@ -9,20 +9,21 @@
 'use client';
 
 import { useEffect, useMemo, useRef, useState } from 'react';
+
 import { useRouter } from 'next/navigation';
 
-import { gameEventBus } from '@/core/events';
 import { checkRankPromotion } from '@/core/engine';
+import { gameEventBus } from '@/core/events';
+import { QuestRegistry } from '@/core/registry/QuestRegistry';
 import type { MentalState } from '@/core/types';
 import { DEFAULT_PROTAGONIST_EXTENSION, getFinalStats } from '@/core/types';
-import { applyEventToQuests, buildQuestCompletedPayload } from '@/modules/quest/logic/eventTracker';
-import { QuestRegistry } from '@/core/registry/QuestRegistry';
 import { BattleDialog } from '@/modules/combat/components/BattleDialog';
 import { getFactionById } from '@/modules/faction/data/factionData';
-import { getCurrencyAmount } from '@/modules/item/logic';
-import { getWorldviewCurrencyItemId } from '@/modules/reward-pool/logic/poolEngine';
 import { getTemplate } from '@/modules/item/data';
+import { getCurrencyAmount } from '@/modules/item/logic';
 import { CultivationPathSelect } from '@/modules/progression/components/CultivationPathSelect';
+import { applyEventToQuests, buildQuestCompletedPayload } from '@/modules/quest/logic/eventTracker';
+import { getWorldviewCurrencyItemId } from '@/modules/reward-pool/logic/poolEngine';
 import { CriticalHealthOverlay } from '@/shared/components/CriticalHealthOverlay';
 import { DeathDialog } from '@/shared/components/DeathDialog';
 import { DialogLayer } from '@/views/game/dialogs/DialogLayer';
@@ -53,9 +54,10 @@ export default function GameLayout({ children }: { children: React.ReactNode }) 
   // 任务事件追踪器（布局层：始终挂载，跨页面追踪事件）
   // ============================================
   const questStateRef = useRef(gameState.questState);
-  questStateRef.current = gameState.questState; // 渲染期间同步
 
   useEffect(() => {
+    questStateRef.current = gameState.questState;
+
     const tracker = (event: import('@/core/events').GameEvent) => {
       const currentState = questStateRef.current;
       const result = applyEventToQuests(event, currentState);

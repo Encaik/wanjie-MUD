@@ -8,11 +8,11 @@ import { memo } from 'react';
 
 import { CheckCircle, XCircle, Info, AlertTriangle } from 'lucide-react';
 
-import { Badge } from '@/shared/ui/data-display/badge';
-import { getRarityStyle } from '@/modules/theme/data/rarityStyles';
 import type { MessageRecord, ItemRarity } from '@/core/types';
-import type { ItemInstance } from '@/modules/item/types';
 import { resolveItem } from '@/modules/item/logic';
+import type { ItemInstance } from '@/modules/item/types';
+import { getRarityStyle } from '@/modules/theme/data/rarityStyles';
+import { Badge } from '@/shared/ui/data-display/badge';
 
 /** 消息类型配置 */
 export const TYPE_CONFIG = {

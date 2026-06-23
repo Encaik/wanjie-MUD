@@ -4,11 +4,8 @@ import { useState, useMemo } from 'react';
 
 import { Flame, Snowflake, Zap, Wind, Mountain, Sun, Moon, Sword, Swords, Hand, Target, Crosshair, BookOpen, Shield, Sparkles, Lock, CheckCircle, Flame as FireIcon } from 'lucide-react';
 
-import { Badge } from '@/shared/ui/data-display/badge';
-import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/data-display/card';
-import { Progress } from '@/shared/ui/feedback/progress';
-import { ScrollArea } from '@/shared/ui/layout/scroll-area';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/shared/ui/data-display/tabs';
+import { Technique, Equipment, ItemRarity } from '@/core/types';
+import { GameStatistics } from '@/core/types';
 import { 
   BONDS, 
   BOND_LEVELS, 
@@ -20,8 +17,11 @@ import {
   ElementNames,
   WeaponNames
 } from '@/modules/collection/data/bondData';
-import { Technique, Equipment, ItemRarity } from '@/core/types';
-import { GameStatistics } from '@/core/types';
+import { Badge } from '@/shared/ui/data-display/badge';
+import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/data-display/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/shared/ui/data-display/tabs';
+import { Progress } from '@/shared/ui/feedback/progress';
+import { ScrollArea } from '@/shared/ui/layout/scroll-area';
 
 interface CollectionPanelProps {
   techniques: Technique[];

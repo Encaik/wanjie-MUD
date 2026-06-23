@@ -7,8 +7,6 @@
  * 3. 提供事件获取接口
  */
 
-import { getEventExpReward } from '@/modules/progression/logic/balanceConfig';
-import { getTerminology } from '@/modules/narrative/logic/terminology';
 import type { AdventureEvent, WorldType } from '@/core/types';
 import {
   SAFE_EVENTS,
@@ -18,6 +16,8 @@ import {
   ALL_EVENTS,
   EventRisk
 } from '@/modules/exploration/data/events';
+import { getTerminology } from '@/modules/narrative/logic/terminology';
+import { getEventExpReward } from '@/modules/progression/logic/balanceConfig';
 
 const randomItem = <T>(arr: T[]): T => arr[Math.floor(Math.random() * arr.length)];
 

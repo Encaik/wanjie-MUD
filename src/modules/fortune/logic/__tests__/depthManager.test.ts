@@ -3,10 +3,12 @@
  */
 
 import { describe, it, expect } from 'vitest';
+
 import {
   canEnterNextFloor,
   calculateDeathPenalty,
 } from '../depthManager';
+
 import type { FortuneSession } from '../../types';
 
 function makeSession(depth: number, maxDepth: number, spiritStones: number): FortuneSession {

@@ -4,8 +4,8 @@
  * 定义所有可能的危险和机缘效果，用于世界生成时随机选择
  */
 
-import { StatName, WorldType } from '@/core/types';
 import { WorldViewRegistry } from '@/core/registry';
+import { StatName, WorldType } from '@/core/types';
 
 // ============================================
 // 类型定义

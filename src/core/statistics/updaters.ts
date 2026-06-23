@@ -9,6 +9,7 @@
  */
 
 import type { GameStatistics } from '@/core/types';
+
 import type { StatisticsEventType, StatisticsEventPayloadMap } from './types';
 
 // ============================================

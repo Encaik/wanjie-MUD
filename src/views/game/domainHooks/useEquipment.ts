@@ -5,21 +5,23 @@
 'use client';
 
 import { useCallback } from 'react';
+
 import type { GameState } from '@/core/types';
-import { useGameStore } from '../state/GameStore';
-import { useAddMessage } from '../hooks/useAddMessage';
-import { createAddMessageInternal } from './helpers';
-import {
-  equipItem as equipItemFn,
-  unequipItem as unequipItemFn,
-} from '@/modules/item/logic/slotSystem';
-import { upgradeItem } from '@/modules/item/logic/itemUpgrade';
 import { fragmentItem, synthesizeFragments } from '@/modules/item/logic/itemFragment';
 import {
   findItemByInstance,
   hasEnough,
 } from '@/modules/item/logic/itemManager';
 import { resolveItem } from '@/modules/item/logic/itemManager';
+import { upgradeItem } from '@/modules/item/logic/itemUpgrade';
+import {
+  equipItem as equipItemFn,
+  unequipItem as unequipItemFn,
+} from '@/modules/item/logic/slotSystem';
+
+import { createAddMessageInternal } from './helpers';
+import { useAddMessage } from '../hooks/useAddMessage';
+import { useGameStore } from '../state/GameStore';
 
 export function useEquipment() {
   const { gameState, dispatch } = useGameStore();

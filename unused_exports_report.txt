@@ -1,0 +1,2124 @@
+Total files: 669.
+Unique export identifiers: 2628.
+Import map built.
+Barrel re-export map built.
+
+================================================================================
+RESULTS: EXPORTS WITH ZERO CONSUMER IMPORTS
+(excluding Next.js route handlers, page exports, barrel re-exports)
+================================================================================
+
+=== 1. UNUSED EXPORTED FUNCTIONS / VARIABLES (1038 found) ===
+src\app\api\db\index.ts:337:  refreshDbFromDisk
+src\app\api\db\index.ts:356:  closeDb
+src\app\api\db\index.ts:368:  resetDb
+src\app\api\init.ts:88:  resetWorldSystem
+src\core\calculation\adapters\base.ts:45:  STAT_NAME_MAP
+src\core\calculation\constants.ts:28:  DEFAULT_STAT_BOUNDS
+src\core\calculation\constants.ts:174:  EFFECT_PRIORITY_VALUES
+  (also: src\core\calculation\index.ts:78)
+src\core\calculation\constants.ts:184:  EFFECT_PRIORITIES
+  (also: src\core\calculation\index.ts:78)
+src\core\calculation\constants.ts:187:  CALCULATION_TYPES
+  (also: src\core\calculation\index.ts:78)
+src\core\calculation\constants.ts:190:  EFFECT_SOURCE_TYPES
+  (also: src\core\calculation\index.ts:78)
+src\core\calculation\constants.ts:208:  DEFAULT_EFFECT_LAYER
+  (also: src\core\calculation\index.ts:78)
+src\core\calculation\constants.ts:211:  PERMANENT_DURATION
+  (also: src\core\calculation\index.ts:78)
+src\core\calculation\constants.ts:214:  INSTANT_DURATION
+  (also: src\core\calculation\index.ts:78)
+src\core\calculation\constants.ts:221:  CALCULATION_CACHE_TTL
+src\core\calculation\constants.ts:224:  MAX_CALCULATION_DEPTH
+  (also: src\core\calculation\index.ts:78)
+src\core\calculation\constants.ts:227:  MAX_BATCH_CALCULATION_SIZE
+  (also: src\core\calculation\index.ts:78)
+src\core\calculation\constants.ts:234:  ENABLE_CALCULATION_LOG
+src\core\calculation\constants.ts:256:  getStatDefaultValue
+  (also: src\core\calculation\index.ts:78)
+src\core\calculation\constants.ts:263:  isProbabilityStat
+  (also: src\core\calculation\index.ts:78)
+src\core\calculation\constants.ts:270:  isPercentageStat
+  (also: src\core\calculation\index.ts:78)
+src\core\calculation\constants.ts:277:  isMultiplierStat
+  (also: src\core\calculation\index.ts:78)
+src\core\calculation\constants.ts:292:  DEFAULT_BOUNDARY_CONFIG
+src\core\calculation\constants.ts:300:  DEFAULT_SYSTEM_CONFIG
+  (also: src\core\calculation\index.ts:78)
+src\core\calculation\context\builder.ts:178:  createContextBuilder
+src\core\calculation\context\builder.ts:185:  buildContext
+src\core\calculation\coreStatFormulas.ts:23:  calcMaxHp
+  (also: src\core\calculation\index.ts:263)
+src\core\calculation\coreStatFormulas.ts:32:  calcMaxSpecialResource
+  (also: src\core\calculation\index.ts:263)
+src\core\calculation\coreStatFormulas.ts:39:  calcPhysicalATK
+  (also: src\core\calculation\index.ts:263)
+src\core\calculation\coreStatFormulas.ts:46:  calcSpecialATK
+  (also: src\core\calculation\index.ts:263)
+src\core\calculation\coreStatFormulas.ts:53:  calcPhysicalDEF
+  (also: src\core\calculation\index.ts:263)
+src\core\calculation\coreStatFormulas.ts:60:  calcSpecialDEF
+  (also: src\core\calculation\index.ts:263)
+src\core\calculation\coreStatFormulas.ts:67:  calcSpeed
+  (also: src\core\calculation\index.ts:263)
+src\core\calculation\coreStatFormulas.ts:83:  calcPhysicalDamage
+  (also: src\core\calculation\index.ts:263)
+src\core\calculation\coreStatFormulas.ts:96:  calcSpecialDamage
+  (also: src\core\calculation\index.ts:263)
+src\core\calculation\coreStatFormulas.ts:109:  calcCritRate
+  (also: src\core\calculation\index.ts:263)
+src\core\calculation\coreStatFormulas.ts:118:  calcDodgeRate
+  (also: src\core\calculation\index.ts:263)
+src\core\calculation\coreStatFormulas.ts:131:  calcBreakthroughBaseRate
+  (also: src\core\calculation\index.ts:263)
+src\core\calculation\coreStatFormulas.ts:141:  calcCultivationEfficiency
+  (also: src\core\calculation\index.ts:263)
+src\core\calculation\coreStatFormulas.ts:155:  calcCombatPower
+  (also: src\core\calculation\index.ts:263)
+src\core\calculation\effect\processor.ts:219:  createEffectProcessor
+src\core\calculation\helpers\contextHelper.ts:286:  buildContextFromUnifiedProtagonist
+src\core\calculation\helpers\contextHelper.ts:349:  quickCalculatePlayerPowerUnified
+src\core\calculation\index.ts:26:  }
+  (also: src\core\calculation\index.ts:69)
+  (also: src\core\calculation\index.ts:78)
+  (also: src\core\calculation\index.ts:127)
+  (also: src\core\calculation\index.ts:163)
+  (also: src\core\calculation\index.ts:186)
+  (also: src\core\calculation\index.ts:216)
+  (also: src\core\calculation\index.ts:233)
+  (also: src\core\calculation\index.ts:252)
+  (also: src\core\calculation\index.ts:263)
+  (also: src\core\calculation\effect\index.ts:7)
+  (also: src\core\calculation\helpers\index.ts:5)
+  (also: src\core\calculation\services\index.ts:5)
+  (also: src\core\calculation\services\index.ts:13)
+  (also: src\core\combat\index.ts:7)
+  (also: src\core\engine\index.ts:12)
+  (also: src\core\engine\index.ts:49)
+  (also: src\core\events\index.ts:23)
+  (also: src\core\events\index.ts:33)
+  (also: src\core\events\index.ts:45)
+  (also: src\core\events\index.ts:65)
+  (also: src\core\message-log\index.ts:22)
+  (also: src\core\message-log\index.ts:28)
+  (also: src\core\message-log\index.ts:34)
+  (also: src\core\message-log\index.ts:41)
+  (also: src\core\mod\index.ts:9)
+  (also: src\core\mod\index.ts:19)
+  (also: src\core\mod\index.ts:39)
+  (also: src\core\registry\index.ts:7)
+  (also: src\core\statistics\index.ts:26)
+  (also: src\core\statistics\index.ts:50)
+  (also: src\core\statistics\index.ts:56)
+  (also: src\core\time\index.ts:38)
+  (also: src\core\time\index.ts:50)
+  (also: src\core\time\index.ts:64)
+  (also: src\core\time\index.ts:77)
+  (also: src\core\time\index.ts:90)
+  (also: src\core\types\index.ts:156)
+  (also: src\core\types\index.ts:237)
+  (also: src\core\types\types.ts:14)
+  (also: src\core\world\index.ts:5)
+  (also: src\core\world\index.ts:15)
+  (also: src\modules\ascension\hooks\index.ts:5)
+  (also: src\modules\combat\logic\battle\index.ts:8)
+  (also: src\modules\combat\logic\enemy\index.ts:20)
+  (also: src\modules\faction\hooks\index.ts:5)
+  (also: src\modules\faction\logic\index.ts:11)
+  (also: src\modules\faction\logic\index.ts:26)
+  (also: src\modules\faction\logic\index.ts:40)
+  (also: src\modules\fortune\index.ts:40)
+  (also: src\modules\fortune\index.ts:56)
+  (also: src\modules\fortune\index.ts:75)
+  (also: src\modules\fortune\index.ts:108)
+  (also: src\modules\fortune\data\index.ts:5)
+  (also: src\modules\fortune\data\index.ts:13)
+  (also: src\modules\fortune\data\index.ts:21)
+  (also: src\modules\fortune\data\index.ts:29)
+  (also: src\modules\fortune\logic\index.ts:5)
+  (also: src\modules\fortune\logic\index.ts:10)
+  (also: src\modules\fortune\logic\index.ts:19)
+  (also: src\modules\fortune\logic\index.ts:27)
+  (also: src\modules\fortune\logic\index.ts:32)
+  (also: src\modules\fortune\logic\index.ts:38)
+  (also: src\modules\fortune\logic\index.ts:46)
+  (also: src\modules\identity\index.ts:8)
+  (also: src\modules\identity\index.ts:19)
+  (also: src\modules\item\index.ts:45)
+  (also: src\modules\item\index.ts:52)
+  (also: src\modules\item\index.ts:61)
+  (also: src\modules\item\index.ts:68)
+  (also: src\modules\item\index.ts:75)
+  (also: src\modules\item\index.ts:109)
+  (also: src\modules\item\index.ts:118)
+  (also: src\modules\item\logic\index.ts:6)
+  (also: src\modules\item\logic\index.ts:23)
+  (also: src\modules\item\logic\index.ts:33)
+  (also: src\modules\item\logic\index.ts:42)
+  (also: src\modules\item\logic\index.ts:48)
+  (also: src\modules\item\logic\index.ts:55)
+  (also: src\modules\item\logic\index.ts:61)
+  (also: src\modules\item\logic\index.ts:66)
+  (also: src\modules\narrative\index.ts:19)
+  (also: src\modules\narrative\index.ts:27)
+  (also: src\modules\npc\index.ts:17)
+  (also: src\modules\npc\index.ts:30)
+  (also: src\modules\npc\index.ts:48)
+  (also: src\modules\progression\data\realmData.ts:398)
+  (also: src\modules\progression\logic\demonBreakthrough\index.ts:32)
+  (also: src\modules\progression\logic\demonBreakthrough\index.ts:50)
+  (also: src\modules\progression\logic\demonBreakthrough\index.ts:58)
+  (also: src\modules\quest\index.ts:29)
+  (also: src\modules\quest\index.ts:41)
+  (also: src\modules\quest\index.ts:59)
+  (also: src\modules\quest\index.ts:75)
+  (also: src\modules\quest\index.ts:89)
+  (also: src\modules\quest\index.ts:103)
+  (also: src\modules\quest\index.ts:114)
+  (also: src\modules\quest\index.ts:126)
+  (also: src\modules\quest\index.ts:137)
+  (also: src\modules\quest\logic\index.ts:8)
+  (also: src\modules\quest\logic\index.ts:23)
+  (also: src\modules\quest\logic\index.ts:36)
+  (also: src\modules\quest\logic\index.ts:47)
+  (also: src\modules\quest\logic\index.ts:58)
+  (also: src\modules\shop\index.ts:12)
+  (also: src\modules\social\hooks\index.ts:5)
+  (also: src\modules\theme\index.ts:33)
+  (also: src\shared\ui\data-display\index.ts:7)
+  (also: src\shared\ui\feedback\index.ts:2)
+  (also: src\shared\ui\feedback\index.ts:10)
+  (also: src\shared\ui\forms\index.ts:2)
+  (also: src\shared\ui\forms\index.ts:16)
+  (also: src\views\game\index.ts:23)
+  (also: src\views\game\index.ts:51)
+  (also: src\views\game\index.ts:66)
+  (also: src\views\game\hooks\index.ts:3)
+src\core\calculation\index.ts:69:  CalculableStatList
+  (also: src\core\calculation\types.ts:36)
+src\core\calculation\index.ts:69:  STAT_CATEGORIES
+  (also: src\core\calculation\types.ts:101)
+src\core\calculation\index.ts:78:  //
+  (also: src\core\calculation\index.ts:78)
+  (also: src\core\calculation\index.ts:78)
+  (also: src\core\calculation\index.ts:78)
+  (also: src\core\calculation\index.ts:78)
+  (also: src\core\calculation\index.ts:78)
+  (also: src\core\calculation\index.ts:216)
+  (also: src\core\calculation\index.ts:216)
+  (also: src\core\types\index.ts:156)
+  (also: src\core\types\index.ts:156)
+src\core\calculation\index.ts:118:  RangeUtils
+  (also: src\core\calculation\boundary\checker.ts:302)
+src\core\calculation\index.ts:127:  createBoundaryChecker
+  (also: src\core\calculation\boundary\index.ts:32)
+src\core\calculation\index.ts:127:  safeAdd
+  (also: src\core\calculation\boundary\index.ts:37)
+src\core\calculation\index.ts:127:  safeMultiply
+  (also: src\core\calculation\boundary\index.ts:42)
+src\core\calculation\index.ts:127:  safeClamp
+  (also: src\core\calculation\boundary\index.ts:47)
+src\core\calculation\index.ts:127:  floatEquals
+  (also: src\core\calculation\boundary\index.ts:52)
+src\core\calculation\index.ts:127:  isFinite
+  (also: src\core\calculation\boundary\index.ts:57)
+src\core\calculation\index.ts:163:  EffectRegistrationService
+  (also: src\core\calculation\effect\index.ts:7)
+  (also: src\core\calculation\effect\registrationService.ts:49)
+src\core\calculation\index.ts:163:  createEffectRegistrationService
+  (also: src\core\calculation\effect\index.ts:7)
+  (also: src\core\calculation\effect\registrationService.ts:485)
+src\core\calculation\index.ts:204:  quickCalculate
+  (also: src\core\calculation\calculator\index.ts:277)
+src\core\calculation\index.ts:204:  quickCalculateCombat
+  (also: src\core\calculation\calculator\index.ts:288)
+src\core\calculation\index.ts:216:  setCalculationService
+  (also: src\core\calculation\service\index.ts:219)
+src\core\calculation\index.ts:216:  resetCalculationService
+  (also: src\core\calculation\service\index.ts:226)
+src\core\calculation\index.ts:216:  calculateEnemyPower
+  (also: src\core\calculation\service\index.ts:244)
+src\core\calculation\index.ts:216:  getCombatPowerRatio
+  (also: src\core\calculation\service\index.ts:279)
+  (also: src\modules\combat\logic\combatPower.ts:64)
+src\core\calculation\index.ts:233:  buildContextFromEnemy
+  (also: src\core\calculation\helpers\contextHelper.ts:144)
+  (also: src\core\calculation\helpers\index.ts:5)
+src\core\calculation\index.ts:252:  WorldEffectCalculationService
+  (also: src\core\calculation\services\index.ts:5)
+  (also: src\core\calculation\services\worldEffectCalculationService.ts:51)
+src\core\calculation\index.ts:252:  getWorldEffectCalculationService
+  (also: src\core\calculation\services\index.ts:5)
+  (also: src\core\calculation\services\worldEffectCalculationService.ts:251)
+src\core\calculation\index.ts:252:  resetWorldEffectCalculationService
+  (also: src\core\calculation\services\index.ts:5)
+  (also: src\core\calculation\services\worldEffectCalculationService.ts:261)
+src\core\calculation\index.ts:252:  StatDetailService
+  (also: src\core\calculation\services\index.ts:13)
+  (also: src\core\calculation\services\statDetailService.ts:173)
+src\core\calculation\index.ts:283:  CALCULATION_SYSTEM_VERSION
+src\core\calculation\index.ts:285:  CALCULATION_SYSTEM_NAME
+src\core\calculation\service\index.ts:209:  getCalculationService
+src\core\calculation\service\index.ts:237:  calculatePlayerPower
+  (also: src\modules\progression\logic\balanceConfig.ts:577)
+src\core\combat\combatEngine.ts:85:  applyEquipmentModifiers
+src\core\combat\combatEngine.ts:352:  CombatSession
+  (also: src\core\combat\index.ts:7)
+src\core\engine\expansionLogic.ts:78:  selectCultivationPath
+  (also: src\core\engine\index.ts:12)
+src\core\engine\expansionLogic.ts:119:  addPathExperience
+  (also: src\core\engine\index.ts:12)
+src\core\engine\expansionLogic.ts:149:  calculatePathBonuses
+  (also: src\core\engine\index.ts:12)
+src\core\engine\expansionLogic.ts:185:  addTechniqueProficiency
+  (also: src\core\engine\index.ts:12)
+src\core\engine\expansionLogic.ts:207:  calculateTechniqueFinalStats
+  (also: src\core\engine\index.ts:12)
+src\core\engine\expansionLogic.ts:255:  checkTechniqueBonds
+  (also: src\core\engine\index.ts:12)
+src\core\engine\expansionLogic.ts:294:  generateEquipmentAffixes
+  (also: src\core\engine\index.ts:12)
+src\core\engine\expansionLogic.ts:315:  calculateEquipmentFinalStats
+  (also: src\core\engine\index.ts:12)
+src\core\engine\expansionLogic.ts:365:  enhanceEquipment
+  (also: src\core\engine\index.ts:12)
+src\core\engine\expansionLogic.ts:445:  refineEquipment
+  (also: src\core\engine\index.ts:12)
+src\core\engine\expansionLogic.ts:491:  addFactionReputation
+  (also: src\core\engine\index.ts:12)
+src\core\engine\expansionLogic.ts:616:  claimTaskReward
+  (also: src\core\engine\index.ts:12)
+src\core\engine\expansionLogic.ts:741:  checkRealmBottleneck
+  (also: src\core\engine\index.ts:12)
+src\core\engine\expansionLogic.ts:806:  attemptBreakthrough
+  (also: src\core\engine\index.ts:12)
+src\core\engine\expansionLogic.ts:870:  startTribulation
+  (also: src\core\engine\index.ts:12)
+src\core\engine\expansionLogic.ts:898:  executeTribulationPhase
+  (also: src\core\engine\index.ts:12)
+src\core\engine\expansionLogic.ts:943:  calculateTribulationReward
+  (also: src\core\engine\index.ts:12)
+src\core\engine\expansionLogic.ts:958:  calculateTribulationPenalty
+  (also: src\core\engine\index.ts:12)
+src\core\engine\expansionLogic.ts:978:  calculateMentalEffect
+  (also: src\core\engine\index.ts:12)
+src\core\engine\expansionLogic.ts:993:  updateMentalStability
+  (also: src\core\engine\index.ts:12)
+src\core\engine\expansionLogic.ts:1003:  updateKarma
+  (also: src\core\engine\index.ts:12)
+src\core\engine\expansionLogic.ts:1053:  MENTAL_CHANGE_CONFIG
+src\core\engine\expansionLogic.ts:1172:  getDemonEvent
+  (also: src\core\engine\index.ts:12)
+src\core\engine\expansionLogic.ts:1179:  processDemonChoice
+  (also: src\core\engine\index.ts:12)
+src\core\engine\expansionLogic.ts:1227:  updateMentalBuffs
+  (also: src\core\engine\index.ts:12)
+src\core\engine\expansionLogic.ts:1242:  addMentalBuff
+  (also: src\core\engine\index.ts:12)
+src\core\engine\expansionLogic.ts:1266:  TECHNIQUE_BONDS
+src\core\engine\expansionLogic.ts:1266:  ALL_AFFIXES
+src\core\engine\expansionLogic.ts:1266:  EQUIPMENT_SETS
+src\core\engine\expansionLogic.ts:1266:  ENHANCEMENT_CONFIG
+src\core\engine\expansionLogic.ts:1266:  REFINEMENT_CONFIG
+src\core\engine\expansionLogic.ts:1266:  FACTION_TASKS
+  (also: src\modules\faction\data\factionProgressData.ts:180)
+  (also: src\modules\faction\logic\factionTaskSystem.ts:85)
+  (also: src\modules\faction\logic\factionTaskSystemNew.ts:64)
+  (also: src\modules\faction\logic\index.ts:11)
+  (also: src\modules\faction\logic\index.ts:26)
+src\core\engine\expansionLogic.ts:1266:  FACTION_SHOP_ITEMS
+  (also: src\modules\faction\data\factionProgressData.ts:476)
+src\core\engine\expansionLogic.ts:1266:  FACTION_SKILLS
+  (also: src\modules\faction\data\factionProgressData.ts:502)
+src\core\engine\expansionLogic.ts:1266:  TRIBULATION_CONFIGS
+  (also: src\modules\ascension\data\tribulationData.ts:10)
+src\core\engine\expansionLogic.ts:1266:  DEMON_ENCOUNTERS
+  (also: src\modules\combat\data\demonData.ts:10)
+src\core\engine\gameSystems.ts:502:  initGameSystems
+src\core\engine\gameSystems.ts:505:  ACHIEVEMENT_CONFIGS
+src\core\engine\gameSystems.ts:505:  BOND_CONFIGS
+src\core\engine\index.ts:49:  getLatestMessages
+  (also: src\core\engine\messageDB.ts:279)
+src\core\engine\index.ts:49:  getMessagesBefore
+  (also: src\core\engine\messageDB.ts:333)
+src\core\engine\index.ts:49:  getMessageCount
+  (also: src\core\engine\messageDB.ts:364)
+src\core\engine\index.ts:49:  clearAllMessages
+  (also: src\core\engine\messageDB.ts:381)
+src\core\engine\index.ts:49:  syncMessagesFromRemote
+  (also: src\core\engine\messageDB.ts:392)
+src\core\events\eventBus.ts:62:  EventBus
+  (also: src\core\events\index.ts:23)
+src\core\events\eventBus.ts:337:  once
+  (also: src\core\events\index.ts:23)
+src\core\events\eventBus.ts:340:  off
+  (also: src\core\events\index.ts:23)
+src\core\events\eventMatcher.ts:24:  checkPrerequisite
+  (also: src\core\events\index.ts:65)
+  (also: src\modules\exploration\logic\dungeon\eventMatcher.ts:23)
+src\core\events\eventMatcher.ts:74:  matchEventBranch
+  (also: src\core\events\index.ts:65)
+  (also: src\modules\exploration\logic\dungeon\eventMatcher.ts:73)
+src\core\events\eventMatcher.ts:100:  applyConsequences
+  (also: src\core\events\index.ts:65)
+  (also: src\modules\exploration\logic\dungeon\eventMatcher.ts:99)
+src\core\events\eventMatcher.ts:140:  getChainProgress
+  (also: src\core\events\index.ts:65)
+  (also: src\modules\exploration\logic\dungeon\eventMatcher.ts:139)
+src\core\events\eventMatcher.ts:156:  isChainCompleted
+  (also: src\core\events\index.ts:65)
+  (also: src\modules\exploration\logic\dungeon\eventMatcher.ts:155)
+src\core\events\eventRegistry.ts:63:  EventRegistry
+  (also: src\core\events\index.ts:33)
+src\core\events\events.ts:80:  getEventById
+  (also: src\modules\exploration\logic\dungeon\eventConfigs.ts:1091)
+  (also: src\modules\exploration\logic\dungeon\events.ts:80)
+  (also: src\modules\exploration\logic\dungeon\eventSystem.ts:467)
+src\core\events\events.ts:86:  SAFE_EVENTS
+  (also: src\modules\exploration\data\events.ts:23)
+  (also: src\modules\exploration\logic\dungeon\events.ts:86)
+src\core\events\events.ts:86:  RISKY_EVENTS
+  (also: src\modules\exploration\data\events.ts:114)
+  (also: src\modules\exploration\logic\dungeon\events.ts:86)
+src\core\events\events.ts:86:  DANGEROUS_EVENTS
+  (also: src\modules\exploration\data\events.ts:363)
+  (also: src\modules\exploration\logic\dungeon\events.ts:86)
+src\core\events\events.ts:86:  BATTLE_EVENTS
+  (also: src\modules\exploration\data\events.ts:458)
+  (also: src\modules\exploration\logic\dungeon\events.ts:86)
+src\core\events\events.ts:86:  ALL_EVENTS
+  (also: src\modules\exploration\data\events.ts:529)
+  (also: src\modules\exploration\logic\dungeon\events.ts:86)
+src\core\events\index.ts:45:  getWildcardPrefix
+  (also: src\core\events\patternMatcher.ts:31)
+src\core\events\index.ts:45:  findMatchingEntries
+  (also: src\core\events\patternMatcher.ts:72)
+src\core\message-log\index.ts:34:  MessageManager
+  (also: src\core\message-log\messageManager.ts:85)
+src\core\mod\index.ts:39:  validateModData
+  (also: src\core\mod\ModValidator.ts:39)
+src\core\mod\index.ts:39:  validateMod
+  (also: src\core\mod\ModValidator.ts:146)
+src\core\server\instrumentation.ts:11:  register
+src\core\statistics\eventTypes.ts:72:  pathEvents
+  (also: src\core\statistics\index.ts:26)
+src\core\statistics\eventTypes.ts:78:  techniqueEvents
+  (also: src\core\statistics\index.ts:26)
+src\core\statistics\eventTypes.ts:83:  equipmentEvents
+  (also: src\core\statistics\index.ts:26)
+src\core\statistics\eventTypes.ts:89:  bondEvents
+  (also: src\core\statistics\index.ts:26)
+src\core\statistics\eventTypes.ts:94:  craftingEvents
+  (also: src\core\statistics\index.ts:26)
+src\core\statistics\eventTypes.ts:123:  STATISTICS_EVENT_TYPES
+  (also: src\core\statistics\index.ts:26)
+src\core\statistics\index.ts:50:  processStatisticsEvents
+  (also: src\core\statistics\statisticsTracker.ts:80)
+src\core\statistics\index.ts:50:  isStatisticsEvent
+  (also: src\core\statistics\statisticsTracker.ts:98)
+src\core\time\constants.ts:27:  GAME_TIME_SCALE
+  (also: src\core\time\index.ts:38)
+src\core\time\index.ts:64:  login
+  (also: src\core\time\realClock.ts:36)
+src\core\time\index.ts:64:  logout
+  (also: src\core\time\realClock.ts:53)
+src\core\time\realClock.ts:134:  timeUntilMidnight
+src\core\types\index.ts:156:  QualityNames
+  (also: src\core\types\types.ts:878)
+src\core\types\index.ts:156:  EquipmentSlotNames
+  (also: src\core\types\types.ts:1424)
+src\core\types\index.ts:156:  EquipmentSlotEffect
+  (also: src\core\types\types.ts:1434)
+src\core\types\index.ts:156:  TECHNIQUE_SLOT_COUNT
+  (also: src\core\types\types.ts:1365)
+src\core\types\index.ts:156:  DEFAULT_STATISTICS
+  (also: src\core\types\types.ts:2010)
+  (also: src\shared\utils\saveMigrator.ts:323)
+src\core\types\index.ts:156:  migrateInventoryItem
+  (also: src\core\types\types.ts:1207)
+src\core\types\index.ts:237:  DEFAULT_TECHNIQUE_EXTENSION
+  (also: src\core\types\typesExtension.ts:524)
+src\core\types\index.ts:237:  DEFAULT_EQUIPMENT_EXTENSION
+  (also: src\core\types\typesExtension.ts:541)
+src\core\types\index.ts:237:  migrateProtagonist
+  (also: src\core\types\typesExtension.ts:555)
+  (also: src\shared\utils\saveMigrator.ts:47)
+src\core\types\index.ts:237:  migrateTechnique
+  (also: src\core\types\typesExtension.ts:581)
+src\core\types\index.ts:237:  migrateEquipment
+  (also: src\core\types\typesExtension.ts:593)
+src\core\types\index.ts:237:  getDeathMessage
+  (also: src\core\types\typesExtension.ts:895)
+src\core\types\types.ts:14:  ELEMENT_KEYWORDS
+  (also: src\modules\collection\data\bondData.ts:29)
+  (also: src\modules\combat\logic\restraintSystem.ts:52)
+src\core\types\types.ts:14:  WEAPON_KEYWORDS
+  (also: src\modules\collection\data\bondData.ts:42)
+  (also: src\modules\combat\logic\restraintSystem.ts:63)
+src\core\world\calculateCoreStats.ts:174:  getCoreStatKeys
+  (also: src\core\world\index.ts:15)
+src\core\world\calculateCoreStats.ts:191:  CORE_STAT_DISPLAY_NAMES
+  (also: src\core\world\index.ts:15)
+src\core\world\calculateCoreStats.ts:206:  CORE_STAT_CATEGORIES
+  (also: src\core\world\index.ts:15)
+src\core\world\generateWorld.ts:360:  generateWorldsByCount
+  (also: src\core\world\index.ts:5)
+src\modules\ascension\AscensionContext.tsx:64:  AscensionProvider
+src\modules\ascension\AscensionContext.tsx:213:  useAscensionContext
+src\modules\ascension\AscensionContext.tsx:226:  useAscensionFlow
+src\modules\ascension\AscensionContext.tsx:234:  useIsInAscension
+src\modules\ascension\AscensionContext.tsx:242:  useAscensionActions
+src\modules\ascension\hooks\index.ts:5:  useGameAscension
+  (also: src\modules\ascension\hooks\useAscension.ts:67)
+src\modules\ascension\logic\ascensionLogic.ts:197:  calculatePhase
+src\modules\ascension\logic\ascensionLogic.ts:548:  calculateCooldown
+src\modules\ascension\logic\ascensionShop.ts:21:  ASCENSION_SHOP_ITEMS
+  (also: src\modules\ascension\logic\index.ts:82)
+src\modules\ascension\logic\ascensionShop.ts:171:  SHOP_TYPE_NAMES
+  (also: src\modules\ascension\logic\index.ts:82)
+src\modules\ascension\logic\ascensionShop.ts:180:  SHOP_TYPE_ICONS
+  (also: src\modules\ascension\logic\index.ts:82)
+src\modules\ascension\logic\ascensionShop.ts:189:  SHOP_SECTIONS
+  (also: src\modules\ascension\logic\index.ts:82)
+src\modules\ascension\logic\ascensionShop.ts:201:  AscensionShopService
+  (also: src\modules\ascension\logic\index.ts:82)
+src\modules\ascension\logic\ascensionShop.ts:433:  AscensionShopSystem
+  (also: src\modules\ascension\logic\index.ts:82)
+src\modules\ascension\logic\index.ts:54:  ASCENSION_REALMS
+  (also: src\modules\ascension\logic\realmSystem.ts:22)
+src\modules\ascension\logic\index.ts:54:  MARK_GAIN_CONFIGS
+  (also: src\modules\ascension\logic\realmSystem.ts:111)
+src\modules\ascension\logic\index.ts:54:  ASCENSION_CORE_CONFIG
+  (also: src\modules\ascension\logic\realmSystem.ts:179)
+src\modules\ascension\logic\index.ts:64:  LEADERBOARD_NAMES
+  (also: src\modules\ascension\logic\leaderboardSystem.ts:20)
+src\modules\ascension\logic\index.ts:64:  LEADERBOARD_ICONS
+  (also: src\modules\ascension\logic\leaderboardSystem.ts:29)
+src\modules\ascension\logic\index.ts:64:  LEADERBOARD_DESCRIPTIONS
+  (also: src\modules\ascension\logic\leaderboardSystem.ts:38)
+src\modules\ascension\logic\index.ts:64:  DEFAULT_LEADERBOARD_REWARDS
+  (also: src\modules\ascension\logic\leaderboardSystem.ts:47)
+src\modules\ascension\logic\index.ts:64:  LEADERBOARD_RESET_INTERVALS
+  (also: src\modules\ascension\logic\leaderboardSystem.ts:88)
+src\modules\ascension\logic\index.ts:64:  LeaderboardService
+  (also: src\modules\ascension\logic\leaderboardSystem.ts:100)
+src\modules\ascension\logic\index.ts:64:  LeaderboardSystem
+  (also: src\modules\ascension\logic\leaderboardSystem.ts:403)
+src\modules\ascension\logic\index.ts:75:  WeeklyBossGenerator
+  (also: src\modules\ascension\logic\weeklyBossSystem.ts:101)
+src\modules\ascension\logic\index.ts:75:  WeeklyBossService
+  (also: src\modules\ascension\logic\weeklyBossSystem.ts:242)
+src\modules\ascension\logic\index.ts:75:  WeeklyBossSystem
+  (also: src\modules\ascension\logic\weeklyBossSystem.ts:551)
+src\modules\ascension\logic\index.ts:97:  createInitialAscensionState
+src\modules\ascension\logic\index.ts:104:  isFeatureUnlocked
+src\modules\ascension\logic\index.ts:114:  getCurrentRealm
+src\modules\ascension\logic\metaTree.ts:246:  calculateMetaPoints
+src\modules\ascension\logic\metaTree.ts:292:  unlockMetaNode
+src\modules\ascension\logic\metaTree.ts:308:  getActiveMetaEffects
+src\modules\ascension\logic\metaTree.ts:318:  META_PROGRESS_KEY
+src\modules\ascension\logic\metaTree.ts:323:  loadMetaProgress
+src\modules\ascension\logic\metaTree.ts:334:  saveMetaProgress
+src\modules\collection\data\achievementData.ts:31:  AchievementIcons
+src\modules\collection\data\achievementData.ts:654:  getAchievementById
+src\modules\collection\data\bondData.ts:270:  getBondById
+src\modules\collection\data\bondData.ts:277:  getAllBondTypes
+src\modules\collection\data\bondData.ts:284:  matchBondKeywords
+src\modules\collection\data\bondData.ts:291:  getMatchedBonds
+src\modules\collection\data\bondData.ts:334:  detectElementFromName
+  (also: src\modules\combat\logic\restraintSystem.ts:131)
+src\modules\collection\data\bondData.ts:347:  detectWeaponFromName
+src\modules\collection\logic\achievement\achievementSystem.ts:60:  AchievementSystem
+src\modules\collection\logic\achievement\achievementUtils.ts:164:  checkNewAchievements
+src\modules\collection\logic\achievement\achievementUtils.ts:192:  groupAchievementsByType
+src\modules\collection\logic\collectionSystem.ts:44:  CollectionSystem
+src\modules\combat\components\BattleLogList.tsx:89:  DetailedBattleLogItem
+src\modules\combat\components\BattlePanel.tsx:174:  BattlePanel
+src\modules\combat\components\RestraintChart.tsx:54:  ElementRestraintChart
+src\modules\combat\components\RestraintChart.tsx:129:  WeaponRestraintChart
+src\modules\combat\components\RestraintChart.tsx:178:  RestraintChart
+src\modules\combat\components\RestraintDisplay.tsx:182:  ElementRestraintCycle
+src\modules\combat\components\RestraintDisplay.tsx:212:  WeaponRestraintCycle
+src\modules\combat\data\enemies.ts:35:  ENEMY_NAMES
+src\modules\combat\data\enemies.ts:89:  getEnemyNames
+src\modules\combat\logic\battle\battleController.ts:654:  getSkillStatus
+  (also: src\modules\combat\logic\battle\index.ts:8)
+src\modules\combat\logic\battle\battleController.ts:683:  isEmergencyHealNeeded
+  (also: src\modules\combat\logic\battle\index.ts:8)
+src\modules\combat\logic\battle\battleController.ts:691:  getRecommendedAction
+  (also: src\modules\combat\logic\battle\index.ts:8)
+src\modules\combat\logic\battle\battleController.ts:710:  serializeBattleState
+  (also: src\modules\combat\logic\battle\index.ts:8)
+src\modules\combat\logic\battle\battleController.ts:725:  deserializeBattleState
+  (also: src\modules\combat\logic\battle\index.ts:8)
+src\modules\combat\logic\battle\decisionSystem.ts:1176:  executeSingleEnemyAction
+src\modules\combat\logic\battle\eventSystem.ts:271:  addBuff
+src\modules\combat\logic\battle\eventSystem.ts:302:  removeBuff
+src\modules\combat\logic\battle\eventSystem.ts:381:  processSkillSpecialEffect
+src\modules\combat\logic\battle\eventSystem.ts:554:  formatEventMessage
+src\modules\combat\logic\battle\eventSystem.ts:601:  getRecentEvents
+src\modules\combat\logic\battle\eventSystem.ts:611:  filterEventsByType
+src\modules\combat\logic\battle\index.ts:8:  quickBattle
+src\modules\combat\logic\battle\skillSystem.ts:60:  generateSkillFromTechniqueSkill
+src\modules\combat\logic\battle\skillSystem.ts:151:  generateSkillFromTechnique
+src\modules\combat\logic\battle\skillSystem.ts:189:  generateSkillsFromTechniques
+src\modules\combat\logic\battle\skillSystem.ts:199:  generateBattleSkillFromWeaponTechnique
+src\modules\combat\logic\battle\skillSystem.ts:308:  generateCombatTechniqueFromEquipment
+src\modules\combat\logic\battle\skillSystem.ts:364:  generateCombatTechniquesFromEquipments
+src\modules\combat\logic\battle\skillSystem.ts:438:  updateSkillCooldowns
+src\modules\combat\logic\battle\skillSystem.ts:453:  setSkillCooldown
+  (also: src\modules\combat\logic\enemy\groupGenerator.ts:417)
+src\modules\combat\logic\battle\skillSystem.ts:692:  getBasicAttackSkill
+src\modules\combat\logic\battle\skillSystem.ts:709:  getDefendSkill
+src\modules\combat\logic\battle\skillSystem.ts:726:  getFleeSkill
+src\modules\combat\logic\battle\types.ts:545:  createDefaultBattleConfig
+src\modules\combat\logic\battle\types.ts:556:  createDefaultBattleStatistics
+src\modules\combat\logic\battle\types.ts:572:  createDefaultExtendedBattleState
+src\modules\combat\logic\enemy\ai\decision.ts:357:  makeAIDecision
+src\modules\combat\logic\enemy\ai\decision.ts:368:  makeAIDecisions
+src\modules\combat\logic\enemy\ai\decision.ts:385:  DEFAULT_SKILL_PRIORITY
+src\modules\combat\logic\enemy\ai\decision.ts:394:  getSkillPriority
+src\modules\combat\logic\enemy\ai\decision.ts:412:  aggressiveStrategy
+src\modules\combat\logic\enemy\ai\decision.ts:412:  defensiveStrategy
+src\modules\combat\logic\enemy\ai\decision.ts:412:  balancedStrategy
+src\modules\combat\logic\enemy\ai\decision.ts:412:  strategicStrategy
+src\modules\combat\logic\enemy\ai\decision.ts:412:  tacticalStrategy
+src\modules\combat\logic\enemy\enemyEnhancement.ts:321:  getEnemyEnhancementShortDesc
+src\modules\combat\logic\enemy\generator.ts:274:  generateEnemies
+src\modules\combat\logic\enemy\generator.ts:305:  generateEliteEnemy
+src\modules\combat\logic\enemy\generator.ts:320:  generateMiniboss
+src\modules\combat\logic\enemy\generator.ts:335:  generateBoss
+src\modules\combat\logic\enemy\generator.ts:372:  generateTowerBoss
+src\modules\combat\logic\enemy\generator.ts:383:  refreshEnemy
+src\modules\combat\logic\enemy\generator.ts:395:  refreshEnemies
+src\modules\combat\logic\enemy\groupGenerator.ts:59:  generateEnemyGroup
+src\modules\combat\logic\enemy\groupGenerator.ts:219:  generatePatrolGroup
+src\modules\combat\logic\enemy\groupGenerator.ts:233:  generateEliteGroup
+src\modules\combat\logic\enemy\groupGenerator.ts:247:  generateMinibossBattle
+src\modules\combat\logic\enemy\groupGenerator.ts:261:  generateBossBattle
+src\modules\combat\logic\enemy\groupGenerator.ts:275:  generateAmbushGroup
+src\modules\combat\logic\enemy\groupGenerator.ts:293:  getCurrentActingEnemy
+src\modules\combat\logic\enemy\groupGenerator.ts:309:  markEnemyActed
+src\modules\combat\logic\enemy\groupGenerator.ts:326:  isAllEnemiesActed
+src\modules\combat\logic\enemy\groupGenerator.ts:349:  removeDefeatedEnemy
+src\modules\combat\logic\enemy\groupGenerator.ts:381:  isGroupDefeated
+src\modules\combat\logic\enemy\groupGenerator.ts:392:  updateGroupCooldowns
+src\modules\combat\logic\enemy\index.ts:20:  ENEMY_TECHNIQUE_COUNT
+src\modules\combat\logic\enemy\index.ts:20:  ENEMY_EQUIPMENT_COUNT
+src\modules\combat\logic\enemy\index.ts:20:  ENEMY_RARITY_WEIGHTS
+src\modules\combat\logic\enemy\index.ts:20:  getEnemyRarityRange
+src\modules\combat\logic\enemy\index.ts:20:  generateEnemyTechniquesAndEquipments
+src\modules\combat\logic\enemy\index.ts:20:  selectEnemySkill
+src\modules\combat\logic\enemy\index.ts:20:  calculateEnemySkillDamage
+src\modules\combat\logic\enemy\levelSuppression.ts:23:  calculateSuppressionLevel
+src\modules\combat\logic\enemy\levelSuppression.ts:57:  calculateLevelDiffModifier
+src\modules\combat\logic\enemy\levelSuppression.ts:106:  shouldInstantKill
+src\modules\combat\logic\enemy\levelSuppression.ts:117:  calculateInstantKillDamage
+src\modules\combat\logic\enemy\levelSuppression.ts:141:  checkLevelSuppressionAtBattleStart
+src\modules\combat\logic\enemy\levelSuppression.ts:193:  getSuppressionDisplayText
+src\modules\combat\logic\enemy\levelSuppression.ts:209:  getSuppressionClassName
+src\modules\combat\logic\enemy\levelSuppression.ts:225:  shouldShowSkullIcon
+src\modules\combat\logic\enemy\levelSuppression.ts:239:  applyLevelSuppressionToDamage
+src\modules\combat\logic\enemy\templates\index.ts:39:  ATTRIBUTE_TEMPLATES
+src\modules\combat\logic\enemy\templates\index.ts:370:  ENEMY_TEMPLATES_BY_WORLD
+src\modules\combat\logic\enemy\templates\index.ts:373:  TOWER_TEMPLATES
+src\modules\combat\logic\enemy\templates\index.ts:376:  ALL_ENEMY_TEMPLATES
+src\modules\combat\logic\enemy\templates\index.ts:398:  getTemplatesByWorld
+src\modules\combat\logic\enemy\templates\index.ts:405:  getTemplatesByLevelRange
+src\modules\combat\logic\enemy\templates\index.ts:421:  getTemplatesByTier
+src\modules\combat\logic\engine\battleMachine.ts:352:  applyDefendReduction
+src\modules\combat\logic\engine\battleMachine.ts:591:  calculateEnemyDamageWithDefend
+src\modules\combat\logic\engine\elementalModifier.ts:22:  calculateElementalModifier
+src\modules\combat\logic\engine\elementalModifier.ts:36:  calculateWeaponModifier
+src\modules\combat\logic\engine\elementalModifier.ts:50:  getElementalStatus
+src\modules\combat\logic\engine\elementalModifier.ts:70:  calculateFullRestraint
+src\modules\combat\logic\fortuneBattleBridge.ts:365:  executeAutoBattle
+src\modules\combat\logic\fortuneBattleBridge.ts:576:  shouldUseManualBattle
+src\modules\combat\logic\fortuneBattleBridge.ts:625:  getBattlePreview
+src\modules\combat\logic\restraintSystem.ts:43:  WEAPON_CATEGORY_COMPATIBLE_TECHNIQUE
+src\modules\combat\logic\restraintSystem.ts:72:  WEAPON_CATEGORY_DEFAULT_ELEMENT
+src\modules\combat\logic\restraintSystem.ts:147:  detectWeaponCategoryFromName
+src\modules\combat\logic\restraintSystem.ts:258:  getElementRestraintHint
+src\modules\combat\logic\restraintSystem.ts:288:  getWeaponRestraintHint
+src\modules\combat\logic\restraintSystem.ts:316:  getNormalAttackAttributes
+src\modules\combat\logic\restraintSystem.ts:343:  getTechniqueAttackAttributes
+src\modules\combat\logic\statsCalc.ts:50:  ELEMENTS
+src\modules\combat\logic\statsCalc.ts:53:  WEAPON_CATEGORIES
+src\modules\combat\logic\statsCalc.ts:199:  calculateTechniqueBonus
+  (also: src\modules\combat\logic\enemy\index.ts:20)
+src\modules\combat\logic\statsCalc.ts:229:  calculateEquipmentBonus
+  (also: src\modules\combat\logic\enemy\index.ts:20)
+src\modules\combat\logic\statsCalc.ts:263:  calculateTotalBonus
+src\modules\combat\logic\statsCalc.ts:290:  calculateBaseHp
+src\modules\combat\logic\statsCalc.ts:299:  calculateBaseMp
+src\modules\combat\logic\statsCalc.ts:308:  calculateBaseAttack
+src\modules\combat\logic\statsCalc.ts:317:  calculateBaseDefense
+src\modules\combat\logic\statsCalc.ts:326:  getWorldCoefficient
+src\modules\exploration\data\eventChains.ts:432:  EVENT_CHAINS
+src\modules\exploration\data\eventChains.ts:441:  EVENT_CHAINS_BY_ID
+src\modules\exploration\data\eventChains.ts:447:  getEventChainsForWorld
+src\modules\exploration\data\events.ts:544:  getEventsByRisk
+src\modules\exploration\data\events.ts:562:  getRandomEventFromData
+src\modules\exploration\logic\adventureDifficulties.ts:20:  DEFAULT_BALANCE_STATS
+src\modules\exploration\logic\adventureDifficulties.ts:46:  getAvailableDifficultiesForRealm
+  (also: src\modules\progression\data\realmData.ts:227)
+src\modules\exploration\logic\dungeon\eventConfigs.ts:29:  EVENT_ANCIENT_ALTAR
+src\modules\exploration\logic\dungeon\eventConfigs.ts:124:  EVENT_MYSTERIOUS_SPRING
+src\modules\exploration\logic\dungeon\eventConfigs.ts:218:  EVENT_MYSTERY_CHEST
+src\modules\exploration\logic\dungeon\eventConfigs.ts:305:  EVENT_GOLDEN_CHEST
+src\modules\exploration\logic\dungeon\eventConfigs.ts:369:  EVENT_WANDERING_MERCHANT
+src\modules\exploration\logic\dungeon\eventConfigs.ts:433:  EVENT_BLACK_MARKET_MERCHANT
+src\modules\exploration\logic\dungeon\eventConfigs.ts:501:  EVENT_CULTIVATION_SHRINE
+src\modules\exploration\logic\dungeon\eventConfigs.ts:587:  EVENT_DIVINE_BLESSING
+src\modules\exploration\logic\dungeon\eventConfigs.ts:652:  EVENT_POISON_TRAP
+src\modules\exploration\logic\dungeon\eventConfigs.ts:738:  EVENT_ROCK_TRAP
+src\modules\exploration\logic\dungeon\eventConfigs.ts:807:  EVENT_HIDDEN_VAULT
+src\modules\exploration\logic\dungeon\eventConfigs.ts:897:  EVENT_SLEEPING_GUARDIAN
+src\modules\exploration\logic\dungeon\eventConfigs.ts:975:  EVENT_SPIRIT_SPRING
+src\modules\exploration\logic\dungeon\eventConfigs.ts:1074:  EVENTS_BY_TYPE
+src\modules\exploration\logic\dungeon\eventConfigs.ts:1096:  getEventsByType
+src\modules\exploration\logic\dungeon\eventSystem.ts:44:  applyEffect
+src\modules\exploration\logic\dungeon\eventSystem.ts:185:  executeEvent
+src\modules\exploration\logic\dungeon\eventSystem.ts:232:  handleEventCell
+src\modules\exploration\logic\dungeon\eventSystem.ts:280:  getEventPreview
+src\modules\exploration\logic\dungeon\eventSystem.ts:300:  autoExecuteEvent
+src\modules\exploration\logic\dungeon\eventSystem.ts:350:  logEvent
+src\modules\exploration\logic\dungeon\eventSystem.ts:375:  getEventLogs
+src\modules\exploration\logic\dungeon\eventSystem.ts:382:  clearEventLogs
+src\modules\exploration\logic\dungeon\eventSystem.ts:393:  quickHandleEvent
+src\modules\exploration\logic\dungeon\eventSystem.ts:473:  EventTriggerService
+  (also: src\modules\exploration\logic\dungeon\eventTrigger.ts:141)
+src\modules\exploration\logic\dungeon\eventSystem.ts:473:  getEventTriggerService
+  (also: src\modules\exploration\logic\dungeon\eventTrigger.ts:341)
+src\modules\exploration\logic\dungeon\eventSystem.ts:473:  checkRequirements
+  (also: src\modules\exploration\logic\dungeon\eventTrigger.ts:38)
+src\modules\exploration\logic\dungeon\eventSystem.ts:473:  getAvailableChoices
+  (also: src\modules\exploration\logic\dungeon\eventTrigger.ts:362)
+src\modules\exploration\logic\dungeon\eventSystem.ts:473:  getRecommendedChoice
+  (also: src\modules\exploration\logic\dungeon\eventTrigger.ts:439)
+src\modules\exploration\logic\dungeon\eventTrigger.ts:121:  isChoiceAvailable
+src\modules\exploration\logic\dungeon\eventTrigger.ts:351:  resetEventTriggerService
+src\modules\exploration\logic\dungeon\eventTrigger.ts:383:  calculateExpectedValue
+src\modules\faction\data\factionData.ts:80:  WORLD_FACTION_GROUPS
+src\modules\faction\data\factionData.ts:1587:  generateWorldFactions
+src\modules\faction\data\factionData.ts:1606:  generateFactionDescription
+src\modules\faction\data\factionData.ts:1628:  generateFactionBackgroundDescription
+src\modules\faction\data\factionData.ts:1651:  WORLD_FACTIONS
+src\modules\faction\data\factionData.ts:1699:  getFactionTraitDisplay
+src\modules\faction\data\factionProgressData.ts:67:  SECT_RANKS
+src\modules\faction\data\factionProgressData.ts:78:  EMPIRE_RANKS
+src\modules\faction\data\factionProgressData.ts:89:  GENERIC_RANKS
+src\modules\faction\data\factionProgressData.ts:283:  getTaskName
+src\modules\faction\data\factionProgressData.ts:288:  getTaskDescription
+src\modules\faction\data\factionProgressData.ts:344:  COMMISSION_TEMPLATES
+src\modules\faction\data\factionProgressData.ts:559:  getShopDiscount
+src\modules\faction\logic\factionQuests.ts:130:  updateQuestProgress
+src\modules\faction\logic\factionQuests.ts:163:  FACTION_CONFLICTS
+src\modules\faction\logic\factionTaskSystem.ts:258:  factionTaskSystem
+  (also: src\modules\faction\logic\index.ts:11)
+src\modules\faction\logic\factionTaskSystem.ts:301:  getDailyTasks
+  (also: src\modules\faction\logic\factionTaskSystemNew.ts:331)
+  (also: src\modules\faction\logic\index.ts:11)
+  (also: src\modules\faction\logic\index.ts:26)
+src\modules\faction\logic\factionTaskSystem.ts:308:  getWeeklyTasks
+  (also: src\modules\faction\logic\factionTaskSystemNew.ts:338)
+  (also: src\modules\faction\logic\index.ts:11)
+  (also: src\modules\faction\logic\index.ts:26)
+src\modules\faction\logic\factionTaskSystem.ts:315:  getSpecialTasks
+  (also: src\modules\faction\logic\factionTaskSystemNew.ts:345)
+  (also: src\modules\faction\logic\index.ts:11)
+  (also: src\modules\faction\logic\index.ts:26)
+src\modules\faction\logic\factionTaskSystem.ts:322:  getTaskCooldown
+  (also: src\modules\faction\logic\index.ts:11)
+src\modules\faction\logic\factionTaskSystem.ts:330:  isTaskAvailable
+  (also: src\modules\faction\logic\factionTaskSystemNew.ts:369)
+  (also: src\modules\faction\logic\index.ts:11)
+  (also: src\modules\faction\logic\index.ts:26)
+src\modules\faction\logic\factionTaskSystemNew.ts:352:  getTaskById
+  (also: src\modules\faction\logic\index.ts:26)
+src\modules\faction\logic\factionTaskSystemNew.ts:359:  getTaskRewards
+  (also: src\modules\faction\logic\index.ts:26)
+src\modules\faction\logic\factionTaskSystemNew.ts:394:  getAvailableTasks
+  (also: src\modules\faction\logic\index.ts:26)
+src\modules\faction\logic\factionTaskSystemNew.ts:407:  formatTaskProgress
+  (also: src\modules\faction\logic\index.ts:26)
+src\modules\faction\logic\index.ts:40:  TaskProgressManager
+  (also: src\modules\faction\logic\taskProgressSystem.ts:274)
+src\modules\faction\logic\index.ts:40:  taskProgressManager
+  (also: src\modules\faction\logic\taskProgressSystem.ts:460)
+src\modules\faction\logic\index.ts:40:  TASK_STAT_MAP
+  (also: src\modules\faction\logic\taskProgressSystem.ts:102)
+src\modules\faction\logic\index.ts:40:  EVENT_TO_TASK_TYPE_MAP
+  (also: src\modules\faction\logic\taskProgressSystem.ts:127)
+src\modules\faction\logic\index.ts:40:  calculateRequirementProgress
+  (also: src\modules\faction\logic\taskProgressSystem.ts:155)
+src\modules\faction\logic\index.ts:40:  createBatchBaselineSnapshot
+  (also: src\modules\faction\logic\taskProgressSystem.ts:242)
+src\modules\fortune\index.ts:40:  setFortuneSession
+  (also: src\modules\fortune\state.ts:31)
+src\modules\fortune\index.ts:40:  updatePlayerPosition
+  (also: src\modules\fortune\state.ts:44)
+src\modules\fortune\index.ts:40:  setNodeResult
+  (also: src\modules\fortune\state.ts:61)
+src\modules\fortune\index.ts:40:  updateStamina
+  (also: src\modules\fortune\state.ts:71)
+src\modules\fortune\index.ts:40:  markNodeCleared
+  (also: src\modules\fortune\state.ts:87)
+src\modules\fortune\index.ts:40:  revealCells
+  (also: src\modules\fortune\state.ts:120)
+src\modules\fortune\index.ts:40:  accumulateLoot
+  (also: src\modules\fortune\state.ts:147)
+src\modules\fortune\index.ts:40:  enterFloorTransition
+  (also: src\modules\fortune\state.ts:169)
+src\modules\fortune\index.ts:40:  continueToNextFloor
+  (also: src\modules\fortune\state.ts:182)
+src\modules\fortune\index.ts:40:  retreatFortune
+  (also: src\modules\fortune\state.ts:203)
+src\modules\fortune\index.ts:40:  returnToHub
+  (also: src\modules\fortune\state.ts:235)
+src\modules\fortune\index.ts:56:  TERRAIN_CONFIG
+  (also: src\modules\fortune\data\index.ts:5)
+  (also: src\modules\fortune\data\terrainConfig.ts:32)
+src\modules\fortune\index.ts:56:  NODE_TYPE_CONFIG
+  (also: src\modules\fortune\data\index.ts:13)
+  (also: src\modules\fortune\data\nodeTypeConfig.ts:36)
+src\modules\fortune\index.ts:56:  getNodeTypesByCategory
+  (also: src\modules\fortune\data\index.ts:13)
+  (also: src\modules\fortune\data\nodeTypeConfig.ts:233)
+src\modules\fortune\index.ts:56:  FORTUNE_TYPE_CONFIGS
+  (also: src\modules\fortune\data\fortuneTypeConfig.ts:36)
+  (also: src\modules\fortune\data\index.ts:21)
+src\modules\fortune\index.ts:56:  getPresetFortuneTypeIds
+  (also: src\modules\fortune\data\fortuneTypeConfig.ts:443)
+  (also: src\modules\fortune\data\index.ts:21)
+src\modules\fortune\index.ts:56:  DEFAULT_FORTUNE_EVENTS
+  (also: src\modules\fortune\data\defaultEvents.ts:15)
+  (also: src\modules\fortune\data\index.ts:29)
+src\modules\fortune\index.ts:56:  getDefaultEventsByRarity
+  (also: src\modules\fortune\data\defaultEvents.ts:180)
+  (also: src\modules\fortune\data\index.ts:29)
+src\modules\fortune\index.ts:75:  isInVision
+  (also: src\modules\fortune\logic\index.ts:19)
+  (also: src\modules\fortune\logic\visionSystem.ts:302)
+src\modules\fortune\index.ts:75:  calculateFloorBonus
+  (also: src\modules\fortune\logic\index.ts:32)
+  (also: src\modules\fortune\logic\rewardCalculator.ts:86)
+src\modules\fortune\index.ts:75:  calculateCompletionBonus
+  (also: src\modules\fortune\logic\index.ts:32)
+  (also: src\modules\fortune\logic\rewardCalculator.ts:105)
+src\modules\fortune\index.ts:75:  resolveEventChoice
+  (also: src\modules\fortune\logic\eventEngine.ts:131)
+  (also: src\modules\fortune\logic\index.ts:46)
+src\modules\fortune\state.ts:219:  setPendingBattle
+src\modules\fortune\state.ts:228:  clearPendingBattle
+src\modules\identity\data\statDisplayNames.ts:30:  getStatDisplayName
+src\modules\identity\data\worldData.ts:19:  getWorldTypes
+src\modules\identity\data\worldData.ts:27:  getWorldviewIds
+src\modules\identity\data\worldData.ts:159:  ENEMY_TIER_CONFIG
+src\modules\identity\data\worldData.ts:320:  NEWBIE_ENEMY_TIER_CONFIG
+src\modules\identity\data\worldEffectsData.ts:160:  getAllDangersFromRegistry
+src\modules\identity\data\worldEffectsData.ts:167:  getWorldDangersFromRegistry
+src\modules\identity\data\worldEffectsData.ts:445:  getAllOpportunitiesFromRegistry
+src\modules\identity\data\worldEffectsData.ts:450:  getWorldOpportunitiesFromRegistry
+src\modules\identity\data\worldEffectsUtils.ts:41:  formatDangerEffect
+src\modules\identity\data\worldEffectsUtils.ts:105:  formatOpportunityEffect
+src\modules\identity\data\worldSystem.ts:38:  ASCENSION_COEFFICIENT_BONUS
+src\modules\identity\data\worldSystem.ts:41:  MAX_DIFFICULTY_COEFFICIENT
+src\modules\identity\data\worldSystem.ts:50:  WORLD_SELECTION_RULES
+src\modules\identity\data\worldSystem.ts:94:  getDifficultyEnemyBonus
+src\modules\identity\data\worldSystem.ts:223:  isWorldUnlocked
+src\modules\identity\data\worldSystem.ts:244:  getNextUnlockInfo
+src\modules\identity\data\worldSystem.ts:294:  getDangerLevelColor
+src\modules\identity\data\worldSystem.ts:309:  getOpportunityLevelColor
+src\modules\identity\data\worldSystem.ts:316:  getDifficultyColor
+src\modules\identity\data\worldSystem.ts:331:  getDifficultyBgColor
+src\modules\identity\index.ts:19:  calculateWorldDifficultyCoefficient
+  (also: src\modules\identity\data\worldSystem.ts:68)
+src\modules\identity\index.ts:19:  getWorldDifficultyFromCoefficient
+  (also: src\modules\identity\data\worldSystem.ts:82)
+src\modules\identity\logic\protagonistAdapter.ts:19:  createProtagonistFromSaved
+src\modules\identity\logic\worlds\factory.ts:21:  getWorldMechanics
+src\modules\identity\logic\worlds\registerBuiltin.ts:24:  registerBuiltinMechanics
+src\modules\identity\logic\worlds\worldMigration.ts:43:  saveCurrentWorld
+src\modules\identity\logic\worlds\worldMigration.ts:71:  buildNewWorldState
+src\modules\identity\logic\worlds\worldMigration.ts:101:  restoreWorldState
+src\modules\item\components\ItemTooltipSections.tsx:18:  STAT_LABEL
+src\modules\item\components\ItemTooltipSections.tsx:27:  SKILL_TAG_LABEL
+src\modules\item\components\ItemTooltipSections.tsx:35:  EFFECT_TYPE_LABEL
+src\modules\item\components\ItemTooltipSections.tsx:57:  SOURCE_LABEL
+src\modules\item\components\ItemTooltipSections.tsx:263:  LevelProgress
+src\modules\item\data\affixes.ts:51:  getAffixTemplatesByRarity
+src\modules\item\data\affixes.ts:56:  getAffixTemplatesUpToRarity
+src\modules\item\data\affixes.ts:63:  PREFIX_TEMPLATES
+src\modules\item\data\affixes.ts:63:  SUFFIX_TEMPLATES
+src\modules\item\data\index.ts:124:  CURRENCY_TEMPLATES
+  (also: src\modules\item\data\templates\currency.ts:174)
+src\modules\item\data\index.ts:124:  CONSUMABLE_TEMPLATES
+  (also: src\modules\item\data\templates\consumable.ts:129)
+src\modules\item\data\index.ts:124:  MATERIAL_TEMPLATES
+  (also: src\modules\item\data\templates\material.ts:221)
+src\modules\item\data\recipes\alchemy.ts:96:  getAlchemyRecipe
+src\modules\item\data\recipes\forge.ts:76:  getForgeRecipe
+src\modules\item\data\templates\consumable.ts:8:  REJUVENATION_PILL
+src\modules\item\data\templates\consumable.ts:28:  HEALING_PILL
+src\modules\item\data\templates\consumable.ts:48:  SOUL_RESTORATION_PILL
+src\modules\item\data\templates\consumable.ts:68:  MANA_RESTORATION_PILL
+src\modules\item\data\templates\consumable.ts:88:  MANA_HEALING_PILL
+src\modules\item\data\templates\consumable.ts:113:  SPIRIT_GATHERING_PILL
+src\modules\item\data\templates\consumable.ts:121:  VITALITY_PILL
+src\modules\item\data\templates\currency.ts:10:  SPIRIT_STONE
+src\modules\item\data\templates\currency.ts:27:  CONTRIBUTION
+src\modules\item\data\templates\currency.ts:44:  SECT_POINT
+src\modules\item\data\templates\currency.ts:61:  HONOR
+src\modules\item\data\templates\currency.ts:78:  ASCENSION_MARK
+src\modules\item\data\templates\currency.ts:95:  EVENT_TOKEN
+src\modules\item\data\templates\currency.ts:116:  CULTIVATION_SPIRIT_STONE
+src\modules\item\data\templates\currency.ts:124:  MARTIAL_SILVER
+src\modules\item\data\templates\currency.ts:134:  MAGIC_CRYSTAL
+src\modules\item\data\templates\currency.ts:144:  TECH_CREDIT
+src\modules\item\data\templates\currency.ts:154:  PSI_CRYSTAL
+src\modules\item\data\templates\currency.ts:164:  APOCALYPSE_TOKEN
+src\modules\item\data\templates\material.ts:8:  SPIRIT_HERB
+src\modules\item\data\templates\material.ts:25:  THOUSAND_YEAR_LINGZHI
+src\modules\item\data\templates\material.ts:42:  TEN_THOUSAND_YEAR_LOTUS
+src\modules\item\data\templates\material.ts:59:  IRON_ORE
+src\modules\item\data\templates\material.ts:76:  BLACK_IRON
+src\modules\item\data\templates\material.ts:93:  SPIRIT_GEM
+src\modules\item\data\templates\material.ts:110:  DRAGON_CRYSTAL
+src\modules\item\data\templates\material.ts:127:  BEAST_CLAW
+src\modules\item\data\templates\material.ts:144:  DEMON_CORE
+src\modules\item\data\templates\material.ts:161:  EXP_STONE_SMALL
+src\modules\item\data\templates\material.ts:181:  EXP_STONE_MEDIUM
+src\modules\item\data\templates\material.ts:201:  EXP_STONE_LARGE
+src\modules\item\index.ts:45:  buildTemplateId
+  (also: src\modules\item\types.ts:146)
+src\modules\item\index.ts:45:  isValidTemplateId
+  (also: src\modules\item\types.ts:153)
+src\modules\item\index.ts:52:  getTemplatesByWorldView
+  (also: src\modules\item\data\index.ts:115)
+src\modules\item\index.ts:68:  FIXED_SLOT_IDS
+  (also: src\modules\item\data\slots.ts:26)
+src\modules\item\index.ts:109:  useTechniques
+  (also: src\modules\item\hooks\useTechniques.ts:16)
+  (also: src\views\game\index.ts:66)
+  (also: src\views\game\hooks\index.ts:3)
+  (also: src\views\game\hooks\useGameHooks.ts:127)
+src\modules\item\index.ts:109:  useCrafting
+  (also: src\modules\item\hooks\useCrafting.ts:17)
+  (also: src\views\game\index.ts:51)
+  (also: src\views\game\domainHooks\useCrafting.ts:17)
+src\modules\item\logic\index.ts:6:  generateInstanceId
+  (also: src\modules\item\logic\itemManager.ts:17)
+src\modules\item\logic\index.ts:6:  splitStack
+  (also: src\modules\item\logic\itemManager.ts:151)
+src\modules\item\logic\index.ts:6:  mergeStacks
+  (also: src\modules\item\logic\itemManager.ts:176)
+src\modules\item\logic\index.ts:6:  getItemsByCategory
+  (also: src\modules\item\logic\itemManager.ts:214)
+src\modules\item\logic\index.ts:23:  isSlotCompatible
+  (also: src\modules\item\logic\slotSystem.ts:51)
+src\modules\item\logic\index.ts:23:  createDynamicSkillSlots
+  (also: src\modules\item\logic\slotSystem.ts:68)
+src\modules\item\logic\index.ts:23:  syncSkillSlots
+  (also: src\modules\item\logic\slotSystem.ts:107)
+src\modules\item\logic\index.ts:33:  validateSkillEquip
+  (also: src\modules\item\logic\skillSystem.ts:15)
+src\modules\item\logic\index.ts:33:  getEquippedSkillsForSource
+  (also: src\modules\item\logic\skillSystem.ts:185)
+src\modules\item\logic\index.ts:42:  rollAffixes
+  (also: src\modules\item\logic\itemGenerator.ts:49)
+src\modules\item\logic\index.ts:48:  calculateUpgradeExp
+  (also: src\modules\item\logic\itemUpgrade.ts:16)
+src\modules\item\logic\index.ts:48:  getStatsAtLevel
+  (also: src\modules\item\logic\itemUpgrade.ts:24)
+src\modules\item\logic\index.ts:66:  getEquippedEquipments
+  (also: src\modules\item\logic\protagonistUtils.ts:43)
+src\modules\item\logic\index.ts:66:  getItemsByCategoryResolved
+  (also: src\modules\item\logic\protagonistUtils.ts:51)
+src\modules\item\logic\index.ts:66:  getCurrency
+  (also: src\modules\item\logic\protagonistUtils.ts:60)
+src\modules\item\logic\index.ts:66:  getRangedWeapon
+  (also: src\modules\item\logic\protagonistUtils.ts:86)
+src\modules\mod\components\ModInitProvider.tsx:46:  useModContext
+src\modules\narrative\WorldTextContext.tsx:61:  WorldTextProvider
+src\modules\narrative\WorldTextContext.tsx:126:  useWorldText
+src\modules\narrative\WorldTextContext.tsx:155:  WORLD_TEXT_MAP
+  (also: src\modules\narrative\logic\WorldTextManager.ts:214)
+src\modules\narrative\data\terminology.ts:73:  WORLD_TERMINOLOGY
+src\modules\narrative\hooks\useGameText.ts:18:  useGameText
+src\modules\narrative\hooks\useGameText.ts:96:  useGameTerminology
+src\modules\narrative\hooks\useText.ts:61:  useTerminology
+  (also: src\views\game\index.ts:66)
+  (also: src\views\game\hooks\index.ts:3)
+  (also: src\views\game\hooks\useGameHooks.ts:144)
+src\modules\narrative\hooks\useText.ts:73:  formatTextValue
+src\modules\narrative\logic\textResolver.ts:87:  TextResolver
+src\modules\narrative\logic\textResolver.ts:300:  resolveText
+src\modules\narrative\story\logic\index.ts:12:  findStoryNode
+src\modules\narrative\story\logic\index.ts:19:  getStartNode
+src\modules\narrative\story\logic\index.ts:26:  findStoriesByTag
+src\modules\npc\data\index.ts:11:  NPC_TEMPLATES
+src\modules\npc\data\index.ts:14:  AVAILABLE_NPCS
+src\modules\npc\index.ts:17:  clampAttitude
+  (also: src\modules\npc\logic\attitudeCalculator.ts:47)
+src\modules\npc\index.ts:17:  calculateInitialAttitude
+  (also: src\modules\npc\logic\attitudeCalculator.ts:62)
+src\modules\npc\index.ts:17:  calculateAttitudeChange
+  (also: src\modules\npc\logic\attitudeCalculator.ts:106)
+src\modules\npc\index.ts:17:  applyAttitudeChanges
+  (also: src\modules\npc\logic\attitudeCalculator.ts:129)
+src\modules\npc\index.ts:17:  isHostile
+  (also: src\modules\npc\logic\attitudeCalculator.ts:148)
+src\modules\npc\index.ts:17:  shouldNPCFlee
+  (also: src\modules\npc\logic\attitudeCalculator.ts:162)
+src\modules\npc\index.ts:30:  evaluateOptionGates
+  (also: src\modules\npc\logic\dialogueEngine.ts:65)
+src\modules\npc\index.ts:30:  allGatesPassed
+  (also: src\modules\npc\logic\dialogueEngine.ts:83)
+src\modules\npc\index.ts:30:  firstFailedGate
+  (also: src\modules\npc\logic\dialogueEngine.ts:90)
+src\modules\npc\index.ts:30:  evaluateOption
+  (also: src\modules\npc\logic\dialogueEngine.ts:108)
+src\modules\npc\index.ts:30:  getAvailableDialogueLine
+  (also: src\modules\npc\logic\dialogueEngine.ts:162)
+src\modules\npc\index.ts:30:  getOptionCheck
+  (also: src\modules\npc\logic\dialogueEngine.ts:184)
+src\modules\npc\index.ts:48:  canTrade
+  (also: src\modules\npc\logic\shopCalculator.ts:34)
+src\modules\npc\index.ts:48:  calculateShopPrice
+  (also: src\modules\npc\logic\shopCalculator.ts:45)
+src\modules\npc\index.ts:48:  getAvailableShopItems
+  (also: src\modules\npc\logic\shopCalculator.ts:81)
+src\modules\npc\index.ts:48:  purchaseItem
+  (also: src\modules\npc\logic\shopCalculator.ts:131)
+src\modules\npc\index.ts:48:  restockShopItems
+  (also: src\modules\npc\logic\shopCalculator.ts:161)
+src\modules\npc\logic\index.ts:13:  findNPCById
+src\modules\npc\logic\index.ts:20:  findNPCsByTag
+src\modules\npc\logic\index.ts:27:  findNPCsByAffiliation
+src\modules\npc\logic\index.ts:34:  findAIDialogueNPCs
+src\modules\progression\components\CultivationPathSelect.tsx:448:  CultivationPathDisplay
+src\modules\progression\data\cultivationPathData.ts:13:  CultivationPathNames
+src\modules\progression\data\cultivationPathData.ts:22:  CultivationPathDescriptions
+src\modules\progression\data\cultivationPathData.ts:31:  CultivationPathIcons
+src\modules\progression\data\realmCore.ts:134:  getPowerSystemDescription
+  (also: src\modules\progression\data\realmData.ts:398)
+  (also: src\modules\progression\logic\realmSystem.ts:318)
+src\modules\progression\data\realmCore.ts:201:  getStatBaseForLevel
+  (also: src\modules\progression\data\realmData.ts:398)
+src\modules\progression\data\realmCore.ts:208:  getStatPotentialForLevel
+  (also: src\modules\progression\data\realmData.ts:398)
+src\modules\progression\data\realmData.ts:36:  SUB_REALM_SYSTEMS
+src\modules\progression\data\realmData.ts:85:  DEFAULT_SUB_REALM_NAMES
+src\modules\progression\data\realmData.ts:91:  MAIN_REALM_SYSTEMS
+src\modules\progression\data\realmData.ts:167:  generateRealmSystem
+src\modules\progression\events.ts:19:  progressionEvents
+src\modules\progression\logic\balanceConfig.ts:21:  EXPERIENCE_CONFIG
+src\modules\progression\logic\balanceConfig.ts:111:  RESOURCE_CONFIG
+src\modules\progression\logic\balanceConfig.ts:123:  BREAKTHROUGH_CONFIG
+src\modules\progression\logic\balanceConfig.ts:414:  applyDamageVariance
+src\modules\progression\logic\balanceConfig.ts:457:  calculateSkillDamageWithVariance
+src\modules\progression\logic\balanceConfig.ts:497:  calculateDodgeRate
+src\modules\progression\logic\balanceConfig.ts:506:  calculateRestHeal
+src\modules\progression\logic\balanceConfig.ts:520:  calculateBreakthroughSuccessRate
+src\modules\progression\logic\balanceConfig.ts:550:  getExpForNextLevel
+src\modules\progression\logic\balanceConfig.ts:559:  getDifficultyName
+src\modules\progression\logic\cultivation.ts:200:  canAffordCultivation
+src\modules\progression\logic\cultivation.ts:566:  calculatePower
+src\modules\progression\logic\cultivationStrategy.ts:84:  generateCultivationCritEvent
+src\modules\progression\logic\demonBreakthrough\demonMemory.ts:26:  findDemonMemory
+  (also: src\modules\progression\logic\demonBreakthrough\index.ts:58)
+src\modules\progression\logic\demonBreakthrough\demonMemory.ts:124:  isArchNemesis
+  (also: src\modules\progression\logic\demonBreakthrough\index.ts:58)
+src\modules\progression\logic\demonBreakthrough\index.ts:50:  WORLD_DEMON_CONFIGS
+  (also: src\modules\progression\logic\demonBreakthrough\worldResonance.ts:17)
+src\modules\progression\logic\experienceSystem.ts:11:  OVERFLOW_CONFIG
+src\modules\progression\logic\experienceSystem.ts:36:  calculateOverflowAbsorption
+src\modules\progression\logic\milestones.ts:42:  BREAKTHROUGH_MILESTONES
+src\modules\progression\logic\milestones.ts:115:  getMilestoneForLevel
+src\modules\progression\logic\milestones.ts:125:  getNextMilestone
+src\modules\progression\logic\milestones.ts:160:  applyFailProtection
+src\modules\progression\logic\pillRealmSystem.ts:15:  REALM_TIERS
+src\modules\progression\logic\pillRealmSystem.ts:76:  getRealmLevelFromName
+src\modules\progression\logic\pillRealmSystem.ts:106:  getRealmLevelFromPlayerLevel
+src\modules\progression\logic\pillRealmSystem.ts:116:  getPlayerRealmLevel
+src\modules\progression\logic\pillRealmSystem.ts:136:  calculatePillEffect
+src\modules\progression\logic\pillRealmSystem.ts:224:  getPillRealmLevel
+src\modules\progression\logic\pillRealmSystem.ts:238:  getPillRealmDescription
+src\modules\progression\logic\realmSystem.ts:76:  WORLD_REALM_MULTIPLIERS
+src\modules\progression\logic\realmSystem.ts:88:  worldRealms
+  (also: src\modules\progression\logic\realmSystem.ts:313)
+src\modules\progression\logic\realmSystem.ts:163:  getAvailableDifficulties
+src\modules\progression\logic\realmSystem.ts:239:  getFixedStatCap
+src\modules\progression\logic\seclusion.ts:421:  drawSeclusionOutcome
+src\modules\quest\events.ts:22:  initQuestRegistries
+src\modules\quest\events.ts:52:  QUEST_MESSAGE_TEMPLATES
+src\modules\quest\index.ts:29:  createDefaultAllTaskSystemsState
+  (also: src\modules\quest\types.ts:155)
+src\modules\quest\index.ts:29:  checkTaskCompletion
+  (also: src\modules\quest\types.ts:169)
+src\modules\quest\index.ts:41:  ensureQuestState
+  (also: src\modules\quest\logic\index.ts:8)
+  (also: src\modules\quest\logic\questEngine.ts:277)
+src\modules\quest\index.ts:89:  createQuestTracker
+  (also: src\modules\quest\logic\eventTracker.ts:180)
+  (also: src\modules\quest\logic\index.ts:47)
+src\modules\quest\index.ts:103:  ensureCompiled
+  (also: src\modules\quest\logic\index.ts:58)
+  (also: src\modules\quest\logic\templateCompiler.ts:159)
+src\modules\quest\index.ts:103:  deriveEventMapping
+  (also: src\modules\quest\logic\index.ts:58)
+  (also: src\modules\quest\logic\templateCompiler.ts:52)
+src\modules\quest\index.ts:103:  clearCompilationCache
+  (also: src\modules\quest\logic\index.ts:58)
+  (also: src\modules\quest\logic\templateCompiler.ts:174)
+src\modules\quest\index.ts:114:  buildRewardMessage
+  (also: src\modules\quest\logic\rewardDistributor.ts:74)
+src\modules\quest\index.ts:114:  createEmptyRewardResult
+  (also: src\modules\quest\logic\rewardDistributor.ts:30)
+src\modules\quest\index.ts:126:  getQuestProgress
+  (also: src\modules\quest\logic\taskProgressTracker.ts:35)
+src\modules\quest\index.ts:126:  isStorylineCompleted
+  (also: src\modules\quest\logic\taskProgressTracker.ts:53)
+src\modules\quest\index.ts:126:  shouldSkipInitialTutorialPhase
+  (also: src\modules\quest\logic\taskProgressTracker.ts:71)
+src\modules\quest\index.ts:126:  getTutorialWelcomeMessage
+  (also: src\modules\quest\logic\taskProgressTracker.ts:97)
+src\modules\quest\index.ts:137:  BOARD_TUTORIAL
+  (also: src\modules\quest\data\boards\default.ts:13)
+src\modules\quest\index.ts:137:  BOARD_MAIN_STORY
+  (also: src\modules\quest\data\boards\default.ts:35)
+src\modules\quest\index.ts:137:  BOARD_DAILY
+  (also: src\modules\quest\data\boards\default.ts:50)
+src\modules\quest\index.ts:137:  BOARD_WEEKLY
+  (also: src\modules\quest\data\boards\default.ts:65)
+src\modules\quest\logic\rewardDistributor.ts:107:  calculateQuestRewards
+src\modules\reward-pool\data\difficultyConfig.ts:55:  getDifficultyMultiplier
+src\modules\reward-pool\data\difficultyConfig.ts:66:  LEVEL_RARITY_CAP
+src\modules\reward-pool\data\difficultyConfig.ts:78:  getMaxRarityForLevel
+src\modules\reward-pool\data\pools\combat.ts:11:  COMBAT_NORMAL_POOL
+src\modules\reward-pool\data\pools\combat.ts:47:  COMBAT_ELITE_POOL
+src\modules\reward-pool\data\pools\combat.ts:89:  COMBAT_MINIBOSS_POOL
+src\modules\reward-pool\data\pools\combat.ts:130:  COMBAT_BOSS_POOL
+src\modules\reward-pool\data\pools\common.ts:11:  COMMON_CURRENCY_POOL
+src\modules\reward-pool\data\pools\common.ts:41:  COMMON_MATERIAL_POOL
+src\modules\reward-pool\data\pools\common.ts:71:  COMMON_CONSUMABLE_POOL
+src\modules\reward-pool\data\pools\dungeon.ts:7:  DUNGEON_TREASURE_POOL
+src\modules\reward-pool\data\pools\dungeon.ts:19:  DUNGEON_SHRINE_POOL
+src\modules\reward-pool\data\pools\dungeon.ts:31:  DUNGEON_HIDDEN_ROOM_POOL
+src\modules\reward-pool\data\pools\dungeon.ts:43:  DUNGEON_ELITE_GUARDIAN_POOL
+src\modules\reward-pool\data\pools\fortune.ts:15:  FORTUNE_SPIRIT_VEIN_COMBAT
+src\modules\reward-pool\data\pools\fortune.ts:27:  FORTUNE_SPIRIT_VEIN_RESOURCE
+src\modules\reward-pool\data\pools\fortune.ts:39:  FORTUNE_BATTLEFIELD_COMBAT
+src\modules\reward-pool\data\pools\fortune.ts:52:  FORTUNE_BATTLEFIELD_RESOURCE
+src\modules\reward-pool\data\pools\fortune.ts:64:  FORTUNE_HERB_VALLEY_COMBAT
+src\modules\reward-pool\data\pools\fortune.ts:77:  FORTUNE_HERB_VALLEY_RESOURCE
+src\modules\reward-pool\data\pools\fortune.ts:89:  FORTUNE_MYSTIC_REALM_COMBAT
+src\modules\reward-pool\data\pools\fortune.ts:103:  FORTUNE_MYSTIC_REALM_RESOURCE
+src\modules\reward-pool\data\pools\fortune.ts:116:  FORTUNE_DEMON_ABYSS_COMBAT
+src\modules\reward-pool\data\pools\fortune.ts:130:  FORTUNE_DEMON_ABYSS_RESOURCE
+src\modules\reward-pool\data\pools\fortune.ts:147:  FORTUNE_WEAPON_ARMORY_COMBAT
+src\modules\reward-pool\data\pools\fortune.ts:158:  FORTUNE_WEAPON_ARMORY_RESOURCE
+src\modules\reward-pool\data\pools\fortune.ts:169:  FORTUNE_SKILL_SANCTUM_COMBAT
+src\modules\reward-pool\data\pools\fortune.ts:180:  FORTUNE_SKILL_SANCTUM_RESOURCE
+src\modules\reward-pool\data\pools\fortune.ts:191:  FORTUNE_TREASURY_COMBAT
+src\modules\reward-pool\data\pools\fortune.ts:203:  FORTUNE_TREASURY_RESOURCE
+src\modules\reward-pool\data\pools\fortune.ts:215:  FORTUNE_SCRIPTORIUM_COMBAT
+src\modules\reward-pool\data\pools\fortune.ts:226:  FORTUNE_SCRIPTORIUM_RESOURCE
+src\modules\reward-pool\data\pools\fortune.ts:237:  FORTUNE_FORGE_COMBAT
+src\modules\reward-pool\data\pools\fortune.ts:248:  FORTUNE_FORGE_RESOURCE
+src\modules\reward-pool\data\pools\index.ts:25:  getAllPools
+src\modules\reward-pool\data\pools\index.ts:30:  registerAllBuiltinPools
+src\modules\reward-pool\data\pools\quest.ts:7:  QUEST_TUTORIAL_POOL
+src\modules\reward-pool\data\pools\quest.ts:18:  QUEST_DAILY_POOL
+src\modules\reward-pool\data\pools\quest.ts:30:  QUEST_FACTION_POOL
+src\modules\reward-pool\data\pools\tower.ts:7:  TOWER_FLOOR_NORMAL_POOL
+src\modules\reward-pool\data\pools\tower.ts:19:  TOWER_FLOOR_BOSS_POOL
+src\modules\reward-pool\events.ts:33:  REWARD_EVENT_TYPE
+src\modules\reward-pool\events.ts:58:  registerRewardMessageTemplates
+src\modules\reward-pool\hooks\useRewardDisplay.ts:53:  useRewardDisplay
+src\modules\reward-pool\logic\poolEngine.ts:49:  rollPool
+src\modules\reward-pool\logic\poolEngine.ts:131:  resolvePool
+src\modules\reward-pool\logic\poolEngine.ts:491:  formatSummary
+src\modules\reward-pool\logic\poolRegistry.ts:37:  registerPool
+src\modules\reward-pool\logic\poolRegistry.ts:104:  getAllPoolIds
+src\modules\reward-pool\logic\poolRegistry.ts:134:  invalidateCache
+src\modules\reward-pool\logic\poolRegistry.ts:142:  clearAllPools
+src\modules\shop\index.ts:12:  canPurchase
+  (also: src\modules\shop\logic\shopService.ts:16)
+src\modules\shop\index.ts:12:  getProductDisplay
+  (also: src\modules\shop\logic\shopService.ts:39)
+src\modules\shop\index.ts:12:  calculatePurchase
+  (also: src\modules\shop\logic\shopService.ts:64)
+src\modules\social\components\AnnouncementContainer.tsx:33:  AnnouncementContainer
+src\modules\social\components\AnnouncementHistory.tsx:31:  AnnouncementHistory
+src\modules\social\hooks\index.ts:5:  useGameMessages
+  (also: src\modules\social\hooks\useMessages.ts:53)
+src\modules\social\logic\announcement\config.ts:18:  ANNOUNCEMENT_TRIGGERS
+src\modules\social\logic\announcement\generator.ts:37:  AnnouncementGenerator
+src\modules\social\logic\announcement\generator.ts:252:  createAnnouncementGenerator
+src\modules\theme\data\defaultTheme.ts:17:  WORLD_DATA_ATTR_MAP
+src\modules\theme\data\defaultTheme.ts:31:  WORLD_DISPLAY_NAMES
+src\modules\theme\data\rarityStyles.ts:16:  RARITY_STYLES
+src\modules\theme\data\rarityStyles.ts:94:  STAT_COLOR_MAP
+src\modules\theme\data\themeConfigTemplate.ts:17:  THEME_VARIABLE_NAMES
+src\modules\theme\data\themeConfigTemplate.ts:36:  extractHue
+src\modules\theme\data\themeConfigTemplate.ts:47:  expandLightTheme
+src\modules\theme\data\themeConfigTemplate.ts:74:  expandDarkTheme
+src\modules\theme\events.ts:38:  applyWorldTheme
+src\modules\theme\events.ts:46:  clearWorldTheme
+src\modules\theme\index.ts:33:  useThemeSettings
+  (also: src\modules\theme\hooks\useThemeSettings.ts:150)
+src\modules\tower\logic\towerSystem.ts:73:  calculateTowerDifficulty
+src\modules\tower\logic\towerSystem.ts:103:  getEnemyType
+src\modules\tower\logic\towerSystem.ts:116:  calculateEnemyLevel
+src\modules\tower\logic\towerSystem.ts:269:  calculateFloorRewards
+src\modules\tower\logic\towerSystem.ts:333:  serializeTowerProgress
+src\modules\tower\logic\towerSystem.ts:343:  deserializeTowerProgress
+src\modules\tower\logic\types.ts:196:  createEmptyIdleRewards
+src\modules\world-pool\hooks\useWorldPool.ts:36:  useWorldPool
+src\modules\world-rating\components\WorldRatingForm.tsx:29:  WorldRatingForm
+src\modules\world-rating\hooks\useWorldRating.ts:26:  useWorldRating
+src\modules\world-rating\logic\ratingStorage.ts:26:  saveRatings
+src\modules\world-rating\logic\ratingStorage.ts:36:  getRating
+src\modules\world-rating\logic\ratingStorage.ts:75:  getRatedWorldIds
+src\modules\world-rating\logic\ratingStorage.ts:81:  removeRating
+src\shared\components\AdventureLootPanel.tsx:34:  AdventureLootPanel
+src\shared\components\BreakthroughCeremony.tsx:28:  BreakthroughCeremony
+src\shared\components\CharacterInfo.tsx:25:  CharacterInfo
+src\shared\components\CharacterInfo.tsx:81:  CharacterInfoInline
+src\shared\components\CharacterInfo.tsx:102:  RealmBadge
+src\shared\components\CharacterInfo.tsx:115:  getCharacterInfoData
+src\shared\components\CharacterInfo.tsx:130:  AscensionCountBadge
+src\shared\components\CriticalHealthOverlay.tsx:81:  CriticalHealthWarning
+src\shared\components\DeathDialog.tsx:161:  triggerDeathState
+src\shared\components\ExperiencePanel.tsx:23:  ExperiencePanel
+src\shared\components\MessageItem.tsx:18:  TYPE_CONFIG
+src\shared\components\MessagePanel.tsx:31:  MessagePanel
+src\shared\components\MetaTreePanel.tsx:84:  MetaTreePanel
+src\shared\components\RealmTable.tsx:23:  RealmTable
+src\shared\components\ResultDisplay.tsx:17:  ResultDisplay
+src\shared\components\TutorialDialog.tsx:77:  TutorialDialog
+src\shared\config\env.ts:16:  isProductionMode
+src\shared\config\env.ts:21:  getMode
+src\shared\lib\ai\client.ts:80:  generatePlotWithAI
+src\shared\storage\database\shared\schema.ts:4:  healthCheck
+src\shared\storage\database\shared\schema.ts:10:  gameMessages
+src\shared\storage\supabase-client.ts:51:  getSupabaseCredentials
+  (also: src\shared\storage\database\supabase-client.ts:51)
+src\shared\storage\supabase-client.ts:51:  getSupabaseClient
+  (also: src\shared\storage\database\supabase-client.ts:51)
+src\shared\ui\actions\button-group.tsx:78:  ButtonGroup
+src\shared\ui\actions\button-group.tsx:78:  ButtonGroupSeparator
+src\shared\ui\actions\button-group.tsx:78:  ButtonGroupText
+src\shared\ui\actions\button-group.tsx:78:  buttonGroupVariants
+src\shared\ui\actions\dropdown-menu.tsx:242:  DropdownMenu
+src\shared\ui\actions\dropdown-menu.tsx:242:  DropdownMenuPortal
+src\shared\ui\actions\dropdown-menu.tsx:242:  DropdownMenuTrigger
+src\shared\ui\actions\dropdown-menu.tsx:242:  DropdownMenuContent
+src\shared\ui\actions\dropdown-menu.tsx:242:  DropdownMenuGroup
+src\shared\ui\actions\dropdown-menu.tsx:242:  DropdownMenuLabel
+src\shared\ui\actions\dropdown-menu.tsx:242:  DropdownMenuItem
+src\shared\ui\actions\dropdown-menu.tsx:242:  DropdownMenuCheckboxItem
+src\shared\ui\actions\dropdown-menu.tsx:242:  DropdownMenuRadioGroup
+src\shared\ui\actions\dropdown-menu.tsx:242:  DropdownMenuRadioItem
+src\shared\ui\actions\dropdown-menu.tsx:242:  DropdownMenuSeparator
+src\shared\ui\actions\dropdown-menu.tsx:242:  DropdownMenuShortcut
+src\shared\ui\actions\dropdown-menu.tsx:242:  DropdownMenuSub
+src\shared\ui\actions\dropdown-menu.tsx:242:  DropdownMenuSubTrigger
+src\shared\ui\actions\dropdown-menu.tsx:242:  DropdownMenuSubContent
+src\shared\ui\actions\menubar.tsx:260:  Menubar
+src\shared\ui\actions\menubar.tsx:260:  MenubarPortal
+src\shared\ui\actions\menubar.tsx:260:  MenubarMenu
+src\shared\ui\actions\menubar.tsx:260:  MenubarTrigger
+src\shared\ui\actions\menubar.tsx:260:  MenubarContent
+src\shared\ui\actions\menubar.tsx:260:  MenubarGroup
+src\shared\ui\actions\menubar.tsx:260:  MenubarSeparator
+src\shared\ui\actions\menubar.tsx:260:  MenubarLabel
+src\shared\ui\actions\menubar.tsx:260:  MenubarItem
+src\shared\ui\actions\menubar.tsx:260:  MenubarShortcut
+src\shared\ui\actions\menubar.tsx:260:  MenubarCheckboxItem
+src\shared\ui\actions\menubar.tsx:260:  MenubarRadioGroup
+src\shared\ui\actions\menubar.tsx:260:  MenubarRadioItem
+src\shared\ui\actions\menubar.tsx:260:  MenubarSub
+src\shared\ui\actions\menubar.tsx:260:  MenubarSubTrigger
+src\shared\ui\actions\menubar.tsx:260:  MenubarSubContent
+src\shared\ui\data-display\avatar.tsx:54:  Avatar
+src\shared\ui\data-display\avatar.tsx:54:  AvatarImage
+src\shared\ui\data-display\avatar.tsx:54:  AvatarFallback
+src\shared\ui\data-display\badge.tsx:47:  badgeVariants
+src\shared\ui\data-display\calendar.tsx:221:  Calendar
+src\shared\ui\data-display\calendar.tsx:221:  CalendarDayButton
+src\shared\ui\data-display\card.tsx:84:  CardFooter
+src\shared\ui\data-display\card.tsx:84:  CardAction
+src\shared\ui\data-display\carousel.tsx:235:  Carousel
+src\shared\ui\data-display\carousel.tsx:235:  CarouselContent
+src\shared\ui\data-display\carousel.tsx:235:  CarouselItem
+src\shared\ui\data-display\carousel.tsx:235:  CarouselPrevious
+src\shared\ui\data-display\carousel.tsx:235:  CarouselNext
+src\shared\ui\data-display\chart.tsx:351:  ChartLegend
+src\shared\ui\data-display\chart.tsx:351:  ChartLegendContent
+src\shared\ui\data-display\chart.tsx:351:  ChartStyle
+src\shared\ui\data-display\index.ts:7:  Item
+  (also: src\shared\ui\data-display\item.tsx:183)
+src\shared\ui\data-display\index.ts:7:  ItemMedia
+  (also: src\shared\ui\data-display\item.tsx:183)
+src\shared\ui\data-display\index.ts:7:  ItemContent
+  (also: src\shared\ui\data-display\item.tsx:183)
+src\shared\ui\data-display\index.ts:7:  ItemActions
+  (also: src\shared\ui\data-display\item.tsx:183)
+src\shared\ui\data-display\index.ts:7:  ItemGroup
+  (also: src\shared\ui\data-display\item.tsx:183)
+src\shared\ui\data-display\index.ts:7:  ItemSeparator
+  (also: src\shared\ui\data-display\item.tsx:183)
+src\shared\ui\data-display\index.ts:7:  ItemTitle
+  (also: src\shared\ui\data-display\item.tsx:183)
+src\shared\ui\data-display\index.ts:7:  ItemDescription
+  (also: src\shared\ui\data-display\item.tsx:183)
+src\shared\ui\data-display\index.ts:7:  ItemHeader
+  (also: src\shared\ui\data-display\item.tsx:183)
+src\shared\ui\data-display\index.ts:7:  ItemFooter
+  (also: src\shared\ui\data-display\item.tsx:183)
+src\shared\ui\data-display\kbd.tsx:28:  Kbd
+src\shared\ui\data-display\kbd.tsx:28:  KbdGroup
+src\shared\ui\data-display\table.tsx:107:  Table
+src\shared\ui\data-display\table.tsx:107:  TableHeader
+src\shared\ui\data-display\table.tsx:107:  TableBody
+src\shared\ui\data-display\table.tsx:107:  TableFooter
+src\shared\ui\data-display\table.tsx:107:  TableHead
+src\shared\ui\data-display\table.tsx:107:  TableRow
+src\shared\ui\data-display\table.tsx:107:  TableCell
+src\shared\ui\data-display\table.tsx:107:  TableCaption
+src\shared\ui\data-display\upgradeable-item-tooltip.tsx:47:  UpgradeableItemTooltip
+src\shared\ui\feedback\alert.tsx:67:  Alert
+src\shared\ui\feedback\alert.tsx:67:  AlertTitle
+src\shared\ui\feedback\alert.tsx:67:  AlertDescription
+src\shared\ui\feedback\empty-slot.tsx:18:  EmptySlotCard
+  (also: src\shared\ui\feedback\index.ts:10)
+src\shared\ui\feedback\empty-slot.tsx:47:  BackpackHeader
+  (also: src\shared\ui\feedback\index.ts:10)
+src\shared\ui\feedback\empty-slot.tsx:67:  EmptyBackpackHint
+  (also: src\shared\ui\feedback\index.ts:10)
+src\shared\ui\feedback\empty.tsx:97:  EmptyHeader
+  (also: src\shared\ui\feedback\index.ts:2)
+src\shared\ui\feedback\empty.tsx:97:  EmptyTitle
+  (also: src\shared\ui\feedback\index.ts:2)
+src\shared\ui\feedback\empty.tsx:97:  EmptyDescription
+  (also: src\shared\ui\feedback\index.ts:2)
+src\shared\ui\feedback\empty.tsx:97:  EmptyMedia
+  (also: src\shared\ui\feedback\index.ts:2)
+src\shared\ui\feedback\sonner.tsx:40:  Toaster
+src\shared\ui\feedback\spinner.tsx:47:  Spinner
+src\shared\ui\forms\field.tsx:238:  Field
+  (also: src\shared\ui\forms\index.ts:2)
+src\shared\ui\forms\field.tsx:238:  FieldLabel
+  (also: src\shared\ui\forms\index.ts:2)
+src\shared\ui\forms\field.tsx:238:  FieldDescription
+  (also: src\shared\ui\forms\index.ts:2)
+src\shared\ui\forms\field.tsx:238:  FieldError
+  (also: src\shared\ui\forms\index.ts:2)
+src\shared\ui\forms\field.tsx:238:  FieldGroup
+  (also: src\shared\ui\forms\index.ts:2)
+src\shared\ui\forms\field.tsx:238:  FieldLegend
+  (also: src\shared\ui\forms\index.ts:2)
+src\shared\ui\forms\field.tsx:238:  FieldSeparator
+  (also: src\shared\ui\forms\index.ts:2)
+src\shared\ui\forms\field.tsx:238:  FieldSet
+  (also: src\shared\ui\forms\index.ts:2)
+src\shared\ui\forms\field.tsx:238:  FieldContent
+  (also: src\shared\ui\forms\index.ts:2)
+src\shared\ui\forms\field.tsx:238:  FieldTitle
+  (also: src\shared\ui\forms\index.ts:2)
+src\shared\ui\forms\form.tsx:160:  useFormField
+src\shared\ui\forms\form.tsx:160:  Form
+src\shared\ui\forms\form.tsx:160:  FormItem
+src\shared\ui\forms\form.tsx:160:  FormLabel
+src\shared\ui\forms\form.tsx:160:  FormControl
+src\shared\ui\forms\form.tsx:160:  FormDescription
+src\shared\ui\forms\form.tsx:160:  FormMessage
+src\shared\ui\forms\form.tsx:160:  FormField
+src\shared\ui\forms\index.ts:16:  InputGroup
+  (also: src\shared\ui\forms\input-group.tsx:164)
+src\shared\ui\forms\index.ts:16:  InputGroupAddon
+  (also: src\shared\ui\forms\input-group.tsx:164)
+src\shared\ui\forms\index.ts:16:  InputGroupButton
+  (also: src\shared\ui\forms\input-group.tsx:164)
+src\shared\ui\forms\index.ts:16:  InputGroupText
+  (also: src\shared\ui\forms\input-group.tsx:164)
+src\shared\ui\forms\index.ts:16:  InputGroupInput
+  (also: src\shared\ui\forms\input-group.tsx:164)
+src\shared\ui\forms\index.ts:16:  InputGroupTextarea
+  (also: src\shared\ui\forms\input-group.tsx:164)
+src\shared\ui\forms\input-otp.tsx:78:  InputOTP
+src\shared\ui\forms\input-otp.tsx:78:  InputOTPGroup
+src\shared\ui\forms\input-otp.tsx:78:  InputOTPSlot
+src\shared\ui\forms\input-otp.tsx:78:  InputOTPSeparator
+src\shared\ui\forms\select.tsx:180:  SelectGroup
+src\shared\ui\forms\select.tsx:180:  SelectLabel
+src\shared\ui\forms\select.tsx:180:  SelectScrollDownButton
+src\shared\ui\forms\select.tsx:180:  SelectScrollUpButton
+src\shared\ui\forms\select.tsx:180:  SelectSeparator
+src\shared\ui\layout\accordion.tsx:67:  Accordion
+src\shared\ui\layout\accordion.tsx:67:  AccordionItem
+src\shared\ui\layout\accordion.tsx:67:  AccordionTrigger
+src\shared\ui\layout\accordion.tsx:67:  AccordionContent
+src\shared\ui\layout\aspect-ratio.tsx:11:  AspectRatio
+src\shared\ui\layout\resizable.tsx:63:  ResizablePanelGroup
+src\shared\ui\layout\resizable.tsx:63:  ResizablePanel
+src\shared\ui\layout\resizable.tsx:63:  ResizableHandle
+src\shared\ui\layout\scroll-area.tsx:59:  ScrollBar
+src\shared\ui\layout\sidebar.tsx:700:  Sidebar
+src\shared\ui\layout\sidebar.tsx:700:  SidebarContent
+src\shared\ui\layout\sidebar.tsx:700:  SidebarFooter
+src\shared\ui\layout\sidebar.tsx:700:  SidebarGroup
+src\shared\ui\layout\sidebar.tsx:700:  SidebarGroupAction
+src\shared\ui\layout\sidebar.tsx:700:  SidebarGroupContent
+src\shared\ui\layout\sidebar.tsx:700:  SidebarGroupLabel
+src\shared\ui\layout\sidebar.tsx:700:  SidebarHeader
+src\shared\ui\layout\sidebar.tsx:700:  SidebarInput
+src\shared\ui\layout\sidebar.tsx:700:  SidebarInset
+src\shared\ui\layout\sidebar.tsx:700:  SidebarMenu
+src\shared\ui\layout\sidebar.tsx:700:  SidebarMenuAction
+src\shared\ui\layout\sidebar.tsx:700:  SidebarMenuBadge
+src\shared\ui\layout\sidebar.tsx:700:  SidebarMenuButton
+src\shared\ui\layout\sidebar.tsx:700:  SidebarMenuItem
+src\shared\ui\layout\sidebar.tsx:700:  SidebarMenuSkeleton
+src\shared\ui\layout\sidebar.tsx:700:  SidebarMenuSub
+src\shared\ui\layout\sidebar.tsx:700:  SidebarMenuSubButton
+src\shared\ui\layout\sidebar.tsx:700:  SidebarMenuSubItem
+src\shared\ui\layout\sidebar.tsx:700:  SidebarProvider
+src\shared\ui\layout\sidebar.tsx:700:  SidebarRail
+src\shared\ui\layout\sidebar.tsx:700:  SidebarSeparator
+src\shared\ui\layout\sidebar.tsx:700:  SidebarTrigger
+src\shared\ui\layout\sidebar.tsx:700:  useSidebar
+src\shared\ui\navigation\breadcrumb.tsx:102:  Breadcrumb
+src\shared\ui\navigation\breadcrumb.tsx:102:  BreadcrumbList
+src\shared\ui\navigation\breadcrumb.tsx:102:  BreadcrumbItem
+src\shared\ui\navigation\breadcrumb.tsx:102:  BreadcrumbLink
+src\shared\ui\navigation\breadcrumb.tsx:102:  BreadcrumbPage
+src\shared\ui\navigation\breadcrumb.tsx:102:  BreadcrumbSeparator
+src\shared\ui\navigation\breadcrumb.tsx:102:  BreadcrumbEllipsis
+src\shared\ui\navigation\navigation-menu.tsx:159:  NavigationMenu
+src\shared\ui\navigation\navigation-menu.tsx:159:  NavigationMenuList
+src\shared\ui\navigation\navigation-menu.tsx:159:  NavigationMenuItem
+src\shared\ui\navigation\navigation-menu.tsx:159:  NavigationMenuContent
+src\shared\ui\navigation\navigation-menu.tsx:159:  NavigationMenuTrigger
+src\shared\ui\navigation\navigation-menu.tsx:159:  NavigationMenuLink
+src\shared\ui\navigation\navigation-menu.tsx:159:  NavigationMenuIndicator
+src\shared\ui\navigation\navigation-menu.tsx:159:  NavigationMenuViewport
+src\shared\ui\navigation\navigation-menu.tsx:159:  navigationMenuTriggerStyle
+src\shared\ui\navigation\pagination.tsx:120:  Pagination
+src\shared\ui\navigation\pagination.tsx:120:  PaginationContent
+src\shared\ui\navigation\pagination.tsx:120:  PaginationLink
+src\shared\ui\navigation\pagination.tsx:120:  PaginationItem
+src\shared\ui\navigation\pagination.tsx:120:  PaginationPrevious
+src\shared\ui\navigation\pagination.tsx:120:  PaginationNext
+src\shared\ui\navigation\pagination.tsx:120:  PaginationEllipsis
+src\shared\ui\navigation\toggle-group.tsx:84:  ToggleGroup
+src\shared\ui\navigation\toggle-group.tsx:84:  ToggleGroupItem
+src\shared\ui\navigation\toggle.tsx:48:  Toggle
+src\shared\ui\overlay\alert-dialog.tsx:146:  AlertDialog
+src\shared\ui\overlay\alert-dialog.tsx:146:  AlertDialogPortal
+src\shared\ui\overlay\alert-dialog.tsx:146:  AlertDialogOverlay
+src\shared\ui\overlay\alert-dialog.tsx:146:  AlertDialogTrigger
+src\shared\ui\overlay\alert-dialog.tsx:146:  AlertDialogContent
+src\shared\ui\overlay\alert-dialog.tsx:146:  AlertDialogHeader
+src\shared\ui\overlay\alert-dialog.tsx:146:  AlertDialogFooter
+src\shared\ui\overlay\alert-dialog.tsx:146:  AlertDialogTitle
+src\shared\ui\overlay\alert-dialog.tsx:146:  AlertDialogDescription
+src\shared\ui\overlay\alert-dialog.tsx:146:  AlertDialogAction
+src\shared\ui\overlay\alert-dialog.tsx:146:  AlertDialogCancel
+src\shared\ui\overlay\command.tsx:175:  Command
+src\shared\ui\overlay\command.tsx:175:  CommandDialog
+src\shared\ui\overlay\command.tsx:175:  CommandInput
+src\shared\ui\overlay\command.tsx:175:  CommandList
+src\shared\ui\overlay\command.tsx:175:  CommandEmpty
+src\shared\ui\overlay\command.tsx:175:  CommandGroup
+src\shared\ui\overlay\command.tsx:175:  CommandItem
+src\shared\ui\overlay\command.tsx:175:  CommandShortcut
+src\shared\ui\overlay\command.tsx:175:  CommandSeparator
+src\shared\ui\overlay\context-menu.tsx:237:  ContextMenu
+src\shared\ui\overlay\context-menu.tsx:237:  ContextMenuTrigger
+src\shared\ui\overlay\context-menu.tsx:237:  ContextMenuContent
+src\shared\ui\overlay\context-menu.tsx:237:  ContextMenuItem
+src\shared\ui\overlay\context-menu.tsx:237:  ContextMenuCheckboxItem
+src\shared\ui\overlay\context-menu.tsx:237:  ContextMenuRadioItem
+src\shared\ui\overlay\context-menu.tsx:237:  ContextMenuLabel
+src\shared\ui\overlay\context-menu.tsx:237:  ContextMenuSeparator
+src\shared\ui\overlay\context-menu.tsx:237:  ContextMenuShortcut
+src\shared\ui\overlay\context-menu.tsx:237:  ContextMenuGroup
+src\shared\ui\overlay\context-menu.tsx:237:  ContextMenuPortal
+src\shared\ui\overlay\context-menu.tsx:237:  ContextMenuSub
+src\shared\ui\overlay\context-menu.tsx:237:  ContextMenuSubContent
+src\shared\ui\overlay\context-menu.tsx:237:  ContextMenuSubTrigger
+src\shared\ui\overlay\context-menu.tsx:237:  ContextMenuRadioGroup
+src\shared\ui\overlay\dialog.tsx:133:  DialogClose
+src\shared\ui\overlay\dialog.tsx:133:  DialogOverlay
+src\shared\ui\overlay\dialog.tsx:133:  DialogPortal
+src\shared\ui\overlay\drawer.tsx:125:  Drawer
+src\shared\ui\overlay\drawer.tsx:125:  DrawerPortal
+src\shared\ui\overlay\drawer.tsx:125:  DrawerOverlay
+src\shared\ui\overlay\drawer.tsx:125:  DrawerTrigger
+src\shared\ui\overlay\drawer.tsx:125:  DrawerClose
+src\shared\ui\overlay\drawer.tsx:125:  DrawerContent
+src\shared\ui\overlay\drawer.tsx:125:  DrawerHeader
+src\shared\ui\overlay\drawer.tsx:125:  DrawerFooter
+src\shared\ui\overlay\drawer.tsx:125:  DrawerTitle
+src\shared\ui\overlay\drawer.tsx:125:  DrawerDescription
+src\shared\ui\overlay\hover-card.tsx:45:  HoverCard
+src\shared\ui\overlay\hover-card.tsx:45:  HoverCardTrigger
+src\shared\ui\overlay\hover-card.tsx:45:  HoverCardContent
+src\shared\ui\overlay\popover.tsx:49:  Popover
+src\shared\ui\overlay\popover.tsx:49:  PopoverTrigger
+src\shared\ui\overlay\popover.tsx:49:  PopoverContent
+src\shared\ui\overlay\popover.tsx:49:  PopoverAnchor
+src\shared\ui\overlay\sheet.tsx:131:  SheetClose
+src\shared\ui\overlay\sheet.tsx:131:  SheetFooter
+src\shared\utils\api-client.ts:60:  request
+src\shared\utils\api-client.ts:140:  get
+src\shared\utils\api-client.ts:165:  put
+src\shared\utils\api-client.ts:180:  del
+src\shared\utils\constants.ts:74:  getConstant
+src\shared\utils\constants.ts:81:  clampValue
+src\shared\utils\constants.ts:88:  LEVEL_CONSTRAINTS
+src\shared\utils\constants.ts:100:  STAMINA_CONSTRAINTS
+src\shared\utils\constants.ts:113:  MENTAL_CONSTRAINTS
+src\shared\utils\constants.ts:125:  PERCENTAGE_CONSTRAINTS
+src\shared\utils\constants.ts:145:  TIME_CONSTANTS
+src\shared\utils\constants.ts:164:  SAVE_VERSION
+  (also: src\shared\utils\saveMigrator.ts:7)
+src\shared\utils\constants.ts:177:  VALUE_LIMITS
+src\shared\utils\numberUtils.ts:27:  clampPositive
+src\shared\utils\numberUtils.ts:50:  clampPercent
+src\shared\utils\numberUtils.ts:57:  clampProbability
+src\shared\utils\numberUtils.ts:64:  isValidNumber
+src\shared\utils\numberUtils.ts:71:  parseNumber
+src\shared\utils\numberUtils.ts:85:  roundTo
+src\shared\utils\numberUtils.ts:93:  safeIncrement
+src\shared\utils\numberUtils.ts:102:  safeDecrement
+src\shared\utils\numberUtils.ts:112:  clampHpMp
+src\shared\utils\resolution-scale.ts:18:  computeScaleFactor
+src\shared\utils\rng.ts:53:  createRngs
+src\shared\utils\saveMigrator.ts:100:  migrateStatistics
+src\shared\utils\saveMigrator.ts:156:  migrateCharacterStatsToV3
+src\shared\utils\saveMigrator.ts:180:  SAVE_VERSION_V3
+src\shared\utils\saveMigrator.ts:183:  SAVE_VERSION_V4
+src\shared\utils\saveUtils.ts:176:  clearAllSaveData
+src\shared\utils\saveUtils.ts:189:  exportSaveToString
+src\shared\utils\saveUtils.ts:201:  importSaveFromString
+src\shared\utils\typeGuards.ts:16:  isArray
+src\shared\utils\typeGuards.ts:23:  isObject
+src\shared\utils\typeGuards.ts:30:  isString
+src\shared\utils\typeGuards.ts:37:  isNumber
+src\shared\utils\typeGuards.ts:44:  isBoolean
+src\shared\utils\typeGuards.ts:51:  hasKey
+src\shared\utils\typeGuards.ts:58:  safeJsonParse
+src\shared\utils\typeGuards.ts:73:  toArray
+src\shared\utils\typeGuards.ts:89:  isProtagonist
+src\shared\utils\typeGuards.ts:103:  isCharacterStats
+src\shared\utils\typeGuards.ts:119:  isInventoryItem
+src\shared\utils\typeGuards.ts:127:  isTechnique
+src\shared\utils\typeGuards.ts:135:  isEquipment
+src\shared\utils\typeGuards.ts:143:  isAchievementStatus
+src\shared\utils\typeGuards.ts:155:  isTechniqueArray
+src\shared\utils\typeGuards.ts:163:  isEquipmentArray
+src\shared\utils\typeGuards.ts:171:  isInventoryItemArray
+src\shared\utils\typeGuards.ts:179:  getProperty
+src\shared\utils\typeGuards.ts:189:  getPropertyOrDefault
+src\shared\utils\typeGuards.ts:201:  castArray
+src\shared\utils\typeGuards.ts:212:  cast
+src\shared\utils\typeGuards.ts:222:  extractProperties
+src\shared\utils\typeGuards.ts:238:  deepClone
+src\shared\utils\typeGuards.ts:261:  isNil
+src\shared\utils\typeGuards.ts:268:  filterFalsy
+src\shared\utils\typeGuards.ts:275:  safeArrayAccess
+src\shared\utils\use-debounce.ts:50:  useThrottle
+src\views\game\cards\MentalStateCard.tsx:33:  MentalStateCard
+src\views\game\cards\MentalStateCard.tsx:152:  DemonEncounterDialog
+src\views\game\dialogs\CraftingDialog.tsx:80:  CraftingDialog
+src\views\game\dialogs\OfflineRewardDialog.tsx:53:  OfflineRewardDialog
+src\views\game\dialogs\TribulationDialog.tsx:35:  TribulationDialog
+src\views\game\dialogs\useDialogController.ts:58:  getActiveDialogs
+src\views\game\domainHooks\helpers.ts:38:  updateActiveEffects
+src\views\game\hooks\useAddMessage.ts:37:  addMessageToArray
+src\views\game\index.ts:23:  AdventurePage
+src\views\game\index.ts:51:  useShop
+  (also: src\views\game\domainHooks\useShop.ts:16)
+src\views\game\index.ts:66:  useProtagonist
+  (also: src\views\game\hooks\index.ts:3)
+  (also: src\views\game\hooks\useGameHooks.ts:25)
+src\views\game\layout\CenterPanel.tsx:17:  CenterPanel
+src\views\game\navigation\WanjiePanel.tsx:28:  WanjiePanel
+src\views\game\navigation\panelRegistry.tsx:23:  PANELS
+src\views\game\settings\ThemeSettingsPanel.tsx:48:  ThemeSettingsPanel
+src\views\game\state\GameStore.tsx:53:  StoreContext
+src\views\game\state\GameStore.tsx:79:  GameStoreProvider
+
+=== 2. UNUSED EXPORTED TYPES / INTERFACES (552 found) ===
+src\app\api\db\schema.ts:45:  WorldRow
+src\app\api\db\schema.ts:47:  InsertWorldRow
+src\app\api\db\schema.ts:68:  RatingRow
+src\app\api\db\schema.ts:70:  InsertRatingRow
+src\app\api\db\schema.ts:105:  CharacterRow
+src\app\api\db\schema.ts:107:  InsertCharacterRow
+src\app\api\db\sqljs-wrapper.ts:31:  RunResult
+src\app\api\result.ts:28:  ApiResult
+src\app\api\v1\characters\store.ts:15:  StoredCharacter
+src\core\calculation\adapters\factionAdapter.ts:204:  SchoolInput
+  (also: src\core\calculation\context\types.ts:132)
+src\core\calculation\boundary\index.ts:8:  ClampResult
+src\core\calculation\boundary\index.ts:18:  ClampWarning
+src\core\calculation\context\types.ts:10:  BaseStatsInput
+src\core\calculation\context\types.ts:142:  CharacterContext
+src\core\calculation\effect\registrationService.ts:23:  RegistrationResult
+src\core\calculation\effect\registrationService.ts:31:  BatchRegistrationResult
+src\core\calculation\effect\registrationService.ts:39:  UnregistrationResult
+src\core\calculation\service\index.ts:31:  CombatPowerResult
+src\core\calculation\service\index.ts:45:  RealmResult
+src\core\calculation\service\index.ts:59:  ICalculationService
+src\core\calculation\services\statDetailService.ts:42:  EffectCategory
+src\core\calculation\services\worldEffectCalculationService.ts:29:  AppliedEffectResult
+src\core\calculation\services\worldEffectCalculationService.ts:41:  EnemyCalculationContext
+src\core\calculation\types.ts:44:  CombatStat
+src\core\calculation\types.ts:47:  EconomyStat
+src\core\calculation\types.ts:50:  CultivationStat
+src\core\calculation\types.ts:56:  StatCategory
+src\core\calculation\types.ts:85:  CalculationType
+src\core\calculation\types.ts:98:  EffectState
+src\core\calculation\types.ts:184:  EffectCondition
+src\core\calculation\types.ts:318:  EffectMetadata
+src\core\calculation\types.ts:332:  EffectConstraint
+src\core\calculation\types.ts:342:  EffectTrace
+src\core\calculation\types.ts:358:  CalculationWarning
+src\core\calculation\types.ts:372:  BoundaryConfig
+src\core\calculation\types.ts:384:  StatBound
+src\core\calculation\types.ts:392:  SystemConfig
+src\core\combat\types.ts:14:  EngagementType
+src\core\combat\types.ts:17:  EngagementEffect
+src\core\combat\types.ts:33:  DamageType
+src\core\combat\types.ts:36:  CombatSkill
+src\core\combat\types.ts:58:  CombatUnit
+src\core\combat\types.ts:82:  CombatMode
+src\core\combat\types.ts:85:  CombatRoundLog
+src\core\combat\types.ts:113:  EquipmentModifier
+src\core\combat\types.ts:129:  SessionState
+src\core\combat\types.ts:132:  PendingAction
+src\core\combat\types.ts:142:  CombatResult
+src\core\engine\expansionLogic.ts:1033:  MentalChangeReason
+src\core\engine\messageDB.ts:249:  MessagePagination
+src\core\events\eventRegistry.ts:22:  EventDef
+src\core\events\eventRegistry.ts:28:  ModuleEventDefs
+src\core\events\eventRegistry.ts:31:  EventNameConstants
+src\core\events\eventRegistry.ts:40:  ModuleEventEmitter
+src\core\events\types.ts:21:  EventType
+src\core\events\types.ts:31:  EventMatcher
+src\core\events\types.ts:38:  GameEvent
+src\core\events\types.ts:53:  EventListener
+src\core\events\types.ts:60:  EventBusOptions
+src\core\events\types.ts:75:  EventRecord
+src\core\events\types.ts:89:  EventPrerequisite
+src\core\events\types.ts:107:  EventBranch
+src\core\events\types.ts:123:  NPCRelationChange
+src\core\events\types.ts:131:  FlagChange
+src\core\events\types.ts:141:  Consequence
+  (also: src\core\types\typesExtension.ts:406)
+src\core\events\types.ts:155:  ChainEventDef
+src\core\events\types.ts:175:  EventChain
+src\core\logger\types.ts:33:  LogFn
+src\core\logger\types.ts:41:  Logger
+src\core\message-log\types.ts:17:  MessageChannel
+src\core\message-log\types.ts:30:  PresetChannel
+src\core\message-log\types.ts:37:  ChannelConfig
+src\core\message-log\types.ts:54:  MessageContentGenerator
+src\core\message-log\types.ts:57:  MessageTitleGenerator
+src\core\message-log\types.ts:65:  MessageTemplate
+src\core\message-log\types.ts:90:  GameMessageOptions
+src\core\message-log\types.ts:104:  GameMessageClassOptions
+src\core\mod\ModLoader.ts:64:  ModProgressCallback
+  (also: src\core\mod\types.ts:127)
+src\core\mod\ModLoader.ts:65:  ModCompleteCallback
+  (also: src\core\mod\types.ts:130)
+src\core\mod\ModManifest.ts:23:  ModManifest
+src\core\mod\ModManifest.ts:61:  ManifestValidationError
+src\core\mod\types.ts:15:  ServerModContentType
+src\core\mod\types.ts:32:  ClientModContentType
+src\core\mod\types.ts:37:  ModContentType
+src\core\mod\types.ts:64:  ModLoadPhase
+  (also: src\modules\mod\types.ts:8)
+src\core\mod\types.ts:67:  ModLoadStatus
+src\core\mod\types.ts:70:  ModLoadProgress
+src\core\mod\types.ts:80:  ModLoadResult
+src\core\mod\types.ts:92:  ModEntry
+src\core\mod\types.ts:108:  IModLoader
+src\core\mod\types.ts:154:  LoadedMod
+src\core\registry\WorldViewRegistry.ts:26:  WorldVisualConfig
+src\core\registry\WorldViewRegistry.ts:52:  WorldStatsData
+src\core\registry\WorldViewRegistry.ts:100:  WorldCombatTexts
+src\core\registry\WorldViewRegistry.ts:113:  WorldCultivationTexts
+src\core\registry\WorldViewRegistry.ts:123:  WorldResourceTexts
+src\core\registry\WorldViewRegistry.ts:130:  WorldItemTexts
+src\core\registry\WorldViewRegistry.ts:137:  WorldDungeonTexts
+src\core\registry\WorldViewRegistry.ts:147:  WorldUITexts
+src\core\registry\WorldViewRegistry.ts:158:  WorldBreakthroughTexts
+src\core\registry\WorldViewRegistry.ts:166:  WorldMessageTexts
+src\core\registry\WorldViewRegistry.ts:222:  WorldImpactData
+src\core\registry\WorldViewRegistry.ts:229:  TriggerConditionData
+src\core\registry\WorldViewRegistry.ts:235:  DangerEffectData
+src\core\registry\WorldViewRegistry.ts:246:  OpportunityEffectData
+src\core\registry\WorldViewRegistry.ts:257:  DangerData
+src\core\registry\WorldViewRegistry.ts:271:  OpportunityData
+src\core\registry\WorldViewRegistry.ts:285:  TraitDefinitionData
+src\core\registry\WorldViewRegistry.ts:294:  TraitPoolData
+src\core\registry\WorldViewRegistry.ts:302:  FactionTemplateData
+src\core\registry\WorldViewRegistry.ts:311:  NamePoolData
+src\core\registry\WorldViewRegistry.ts:318:  RealmTierData
+src\core\registry\WorldViewRegistry.ts:325:  RealmSystemData
+src\core\registry\WorldViewRegistry.ts:334:  WorldTextData
+src\core\registry\WorldViewRegistry.ts:337:  RewardCoefficientData
+src\core\registry\WorldViewRegistry.ts:365:  WorldviewDefinition
+src\core\registry\schemas.ts:27:  ValidationError
+src\core\registry\schemas.ts:35:  ValidationResult
+src\core\statistics\summary.ts:17:  StatisticsSummary
+src\core\statistics\types.ts:37:  StatisticsEventType
+src\core\statistics\types.ts:98:  StatisticsEventPayloadMap
+src\core\statistics\types.ts:145:  StatisticsEvent
+src\core\statistics\types.ts:153:  StatisticsEventPayload
+src\core\statistics\updaters.ts:26:  StatisticsUpdater
+src\core\time\timerService.ts:24:  TickCallback
+src\core\time\types.ts:15:  CooldownRecord
+src\core\time\types.ts:23:  CooldownMap
+src\core\time\types.ts:30:  GameClock
+src\core\time\types.ts:52:  RealClock
+src\core\time\types.ts:76:  TimeState
+src\core\time\types.ts:88:  OfflineConfig
+src\core\time\types.ts:118:  AutoCultivateResult
+src\core\time\types.ts:138:  OfflineResult
+src\core\time\types.ts:172:  GameAction
+src\core\types\questTemplate.ts:26:  QuestTemplateType
+src\core\types\questTemplate.ts:29:  QuestTemplateDifficulty
+src\core\types\questTemplate.ts:37:  QuestTemplate
+src\core\types\questTemplate.ts:103:  QuestTemplateStage
+src\core\types\questTemplate.ts:119:  QuestTemplateCompletion
+src\core\types\questTemplate.ts:131:  QuestTemplateObjective
+src\core\types\questTemplate.ts:149:  QuestTemplateDialog
+src\core\types\types.ts:31:  AttributeCategory
+src\core\types\types.ts:46:  CoreStatKey
+src\core\types\types.ts:60:  CoreStatBaseValues
+src\core\types\types.ts:63:  AttributeCalculation
+src\core\types\types.ts:69:  AttributeEnumValue
+src\core\types\types.ts:77:  AttributeTemplate
+  (also: src\modules\combat\logic\enemy\templates\index.ts:22)
+src\core\types\types.ts:81:  NumericAttributeTemplate
+src\core\types\types.ts:90:  EnumAttributeTemplate
+src\core\types\types.ts:107:  AttributeBreakdown
+src\core\types\types.ts:127:  AttributeGrowthTerm
+src\core\types\types.ts:146:  AttributeGrowthRule
+src\core\types\types.ts:151:  WorldviewAttributeConfig
+src\core\types\types.ts:159:  SpecialResourceDef
+src\core\types\types.ts:175:  InnateAbility
+src\core\types\types.ts:184:  RaceDefinition
+src\core\types\types.ts:204:  TalentEffect
+src\core\types\types.ts:214:  TalentRarity
+src\core\types\types.ts:217:  TalentDefinition
+src\core\types\types.ts:243:  DialogueCheck
+src\core\types\types.ts:261:  CheckResult
+src\core\types\types.ts:283:  AttitudeLevel
+src\core\types\types.ts:297:  NPCAttitudeConfig
+src\core\types\types.ts:309:  FactionRelation
+src\core\types\types.ts:326:  StatGate
+src\core\types\types.ts:336:  NPCDialogueOption
+src\core\types\types.ts:352:  NPCDialogueLine
+src\core\types\types.ts:368:  NPCShopItem
+src\core\types\types.ts:384:  NPCCombatStyle
+src\core\types\types.ts:387:  NPCCombatBehavior
+src\core\types\types.ts:399:  NPCAIDialogueConfig
+src\core\types\types.ts:413:  NPCDefinition
+src\core\types\types.ts:455:  QuestType
+src\core\types\types.ts:458:  QuestObjectiveType
+src\core\types\types.ts:476:  QuestCategory
+src\core\types\types.ts:487:  RefreshRule
+src\core\types\types.ts:494:  QuestBoard
+src\core\types\types.ts:522:  StoryLineType
+src\core\types\types.ts:525:  StoryNode
+  (also: src\modules\narrative\story\types.ts:54)
+src\core\types\types.ts:548:  StoryLine
+src\core\types\types.ts:568:  EventObjectiveMapping
+src\core\types\types.ts:580:  QuestPrerequisiteType
+src\core\types\types.ts:591:  QuestObjective
+src\core\types\types.ts:605:  QuestStageCompletion
+src\core\types\types.ts:615:  QuestStage
+src\core\types\types.ts:631:  QuestPrerequisite
+src\core\types\types.ts:643:  QuestReward
+src\core\types\types.ts:659:  QuestRewardPoolConfig
+src\core\types\types.ts:667:  QuestDefinition
+src\core\types\types.ts:705:  QuestDialog
+src\core\types\types.ts:717:  ActiveQuest
+src\core\types\types.ts:729:  BoardSlotState
+src\core\types\types.ts:737:  QuestState
+src\core\types\types.ts:825:  CharacterAttributesV3
+src\core\types\types.ts:875:  Quality
+src\core\types\types.ts:890:  ImpactLevel
+src\core\types\types.ts:896:  StatImpact
+src\core\types\types.ts:905:  ImpactfulTrait
+src\core\types\types.ts:914:  Character
+src\core\types\types.ts:941:  DimensionScores
+src\core\types\types.ts:952:  RoleArchetype
+src\core\types\types.ts:963:  RoleProfile
+src\core\types\types.ts:975:  SynergyEffect
+src\core\types\types.ts:988:  CharacterEvaluation
+src\core\types\types.ts:1017:  ExtensibleWorldType
+src\core\types\types.ts:1032:  WorldImpact
+src\core\types\types.ts:1139:  ItemType
+src\core\types\types.ts:1145:  EffectType
+src\core\types\types.ts:1156:  ItemEffect
+src\core\types\types.ts:1263:  ActiveBattleState
+src\core\types\types.ts:1355:  PlayerCurrencies
+src\core\types\types.ts:1496:  UpgradeableItemType
+src\core\types\types.ts:1526:  GamePhase
+src\core\types\types.ts:1529:  CultivationResult
+src\core\types\types.ts:1547:  StatChanges
+src\core\types\types.ts:1550:  EventChoice
+src\core\types\types.ts:1580:  AdventureCell
+src\core\types\types.ts:1683:  ActionTab
+src\core\types\types.ts:1686:  AdventurePhase
+src\core\types\types.ts:1712:  AdventureSessionState
+src\core\types\types.ts:1861:  CollectionStatus
+src\core\types\types.ts:1869:  CollectionEntry
+src\core\types\types.ts:1977:  ItemTemplateData
+src\core\types\typesExtension.ts:39:  BottleneckRequirements
+src\core\types\typesExtension.ts:76:  DemonMemoryEntry
+src\core\types\typesExtension.ts:108:  MentalBuff
+src\core\types\typesExtension.ts:136:  ProficiencyLevel
+src\core\types\typesExtension.ts:145:  TechniqueEssence
+src\core\types\typesExtension.ts:154:  EssenceEffect
+src\core\types\typesExtension.ts:166:  AffixType
+src\core\types\typesExtension.ts:168:  EquipmentAffix
+src\core\types\typesExtension.ts:176:  AffixEffect
+src\core\types\typesExtension.ts:377:  CurrencyType
+src\core\types\typesExtension.ts:390:  TitleProgress
+src\core\types\typesExtension.ts:399:  ChoiceImpact
+src\core\types\typesExtension.ts:622:  WorldVisitRecord
+src\core\types\typesExtension.ts:634:  AscensionRecord
+src\core\types\typesExtension.ts:732:  AscensionFlowState
+src\core\types\typesExtension.ts:816:  DeathCause
+src\core\types\typesExtension.ts:843:  CriticalHealthState
+src\core\world\calculateCoreStats.ts:23:  AttributeValues
+src\core\world\calculateCoreStats.ts:26:  CoreStatValues
+src\core\world\identity.ts:10:  WorldIdParts
+src\core\world\types.ts:16:  WorldProviderType
+src\core\world\types.ts:19:  WorldProvider
+src\core\world\types.ts:47:  WorldProviderMetadata
+src\core\world\types.ts:62:  WorldPoolSource
+src\core\world\types.ts:65:  WorldPoolEntry
+src\core\world\types.ts:78:  WorldPoolConfig
+src\core\world\types.ts:104:  RatingData
+src\core\world\types.ts:112:  WorldRatingsMap
+src\modules\ascension\AscensionContext.tsx:20:  AscensionContextValue
+src\modules\ascension\data\ascensionData.ts:15:  GuardianAbility
+  (also: src\modules\ascension\logic\types.ts:285)
+src\modules\ascension\data\ascensionData.ts:37:  GuardianBattleCries
+  (also: src\modules\ascension\logic\types.ts:305)
+src\modules\ascension\data\ascensionData.ts:47:  GuardianConfig
+  (also: src\modules\ascension\logic\types.ts:313)
+src\modules\ascension\data\ascensionData.ts:470:  TitleEffect
+src\modules\ascension\hooks\useAscension.ts:47:  UseGameAscensionReturn
+src\modules\ascension\logic\metaTree.ts:13:  MetaBranch
+src\modules\ascension\logic\metaTree.ts:16:  MetaEffect
+src\modules\ascension\logic\metaTree.ts:29:  MetaNode
+src\modules\ascension\logic\metaTree.ts:49:  MetaProgress
+src\modules\ascension\logic\metaTree.ts:225:  AscensionCompletionStats
+src\modules\ascension\logic\types.ts:244:  Season
+src\modules\ascension\logic\types.ts:265:  PlayerSeasonData
+src\modules\ascension\logic\types.ts:378:  InheritanceResult
+src\modules\collection\events.ts:30:  CollectionEventType
+src\modules\collection\logic\achievement\achievementSystem.ts:15:  AchievementCondition
+src\modules\collection\logic\achievement\achievementSystem.ts:27:  AchievementReward
+src\modules\collection\logic\achievement\achievementSystem.ts:48:  AchievementsConfigFile
+src\modules\collection\logic\collectionSystem.ts:15:  BondLevelConfig
+src\modules\collection\logic\collectionSystem.ts:31:  CollectionConfigFile
+src\modules\combat\data\enemies.ts:17:  EnemyNames
+src\modules\combat\data\enemies.ts:24:  EnemyNamesByWorld
+src\modules\combat\events.ts:26:  CombatEventType
+src\modules\combat\hooks\useBattle.ts:31:  BattleInitParams
+src\modules\combat\hooks\useBattle.ts:46:  UseBattleReturn
+src\modules\combat\logic\battle\enemyState.ts:75:  BattleEnemyBuff
+src\modules\combat\logic\battle\types.ts:194:  BattleEventTriggerType
+src\modules\combat\logic\battle\types.ts:209:  BattleEventDefinition
+src\modules\combat\logic\battle\types.ts:235:  BattleEventEffect
+src\modules\combat\logic\battle\types.ts:249:  BattleEventContext
+src\modules\combat\logic\battle\types.ts:261:  BattleEventInstance
+src\modules\combat\logic\battle\types.ts:454:  ExtendedBattleResult
+src\modules\combat\logic\enemy\ai\decision.ts:20:  BattleContext
+src\modules\combat\logic\enemy\enemyEnhancement.ts:18:  EnemyVirtualTechnique
+src\modules\combat\logic\enemy\enemyEnhancement.ts:32:  EnemyVirtualEquipment
+src\modules\combat\logic\enemy\enemyEnhancement.ts:46:  EnemyEnhancement
+src\modules\combat\logic\enemy\generator.ts:82:  EnemyGeneratorConfig
+src\modules\combat\logic\enemy\generator.ts:264:  BatchGenerateConfig
+src\modules\combat\logic\enemy\groupGenerator.ts:49:  GroupGeneratorConfig
+src\modules\combat\logic\enemy\levelSuppression.ts:44:  LevelDiffModifier
+src\modules\combat\logic\enemy\levelSuppression.ts:130:  LevelSuppressionCheckResult
+src\modules\combat\logic\enemy\types.ts:37:  EnemyStats
+src\modules\combat\logic\enemy\types.ts:55:  EnemyDifficultyConfig
+src\modules\combat\logic\enemy\types.ts:93:  TierEquipmentConfig
+src\modules\combat\logic\engine\types.ts:19:  AutoBattleStrategy
+src\modules\combat\logic\engine\types.ts:36:  CombatTechniqueSlot
+src\modules\combat\logic\engine\types.ts:84:  ManualBattleState
+src\modules\combat\logic\engine\types.ts:154:  ManualBattleResult
+src\modules\combat\logic\restraintSystem.ts:20:  WeaponCategory
+  (also: src\modules\combat\logic\statsCalc.ts:63)
+src\modules\combat\logic\restraintSystem.ts:91:  RestraintHint
+src\modules\combat\logic\statsCalc.ts:66:  CalculatedStats
+src\modules\combat\logic\statsCalc.ts:80:  StatsCalculationParams
+src\modules\exploration\logic\dungeon\types.ts:26:  EventTypeConfig
+src\modules\exploration\logic\dungeon\types.ts:129:  EventEffectType
+src\modules\exploration\logic\dungeon\types.ts:148:  EventBuffEffect
+src\modules\exploration\logic\dungeon\types.ts:211:  EventConditions
+src\modules\faction\data\factionData.ts:16:  FactionType
+src\modules\faction\data\factionData.ts:31:  TraitEffectType
+src\modules\faction\data\factionData.ts:33:  FactionTraitEffect
+src\modules\faction\data\factionData.ts:39:  FactionTrait
+src\modules\faction\data\factionData.ts:51:  Faction
+src\modules\faction\data\factionData.ts:70:  FactionGroup
+src\modules\faction\data\factionProgressData.ts:51:  RankBenefit
+src\modules\faction\data\factionProgressData.ts:106:  TaskType
+src\modules\faction\data\factionProgressData.ts:107:  TaskDifficulty
+src\modules\faction\data\factionProgressData.ts:141:  TaskRoundConfig
+src\modules\faction\data\factionProgressData.ts:296:  CommissionType
+src\modules\faction\data\factionProgressData.ts:299:  CommissionRequirement
+src\modules\faction\data\factionProgressData.ts:306:  CommissionRewards
+src\modules\faction\data\factionProgressData.ts:464:  FactionShopItem
+src\modules\faction\data\factionProgressData.ts:490:  FactionSkill
+src\modules\faction\hooks\useFaction.ts:70:  UseGameFactionReturn
+src\modules\faction\logic\factionQuests.ts:15:  DialogueNode
+src\modules\faction\logic\factionQuests.ts:25:  DialogueOption
+src\modules\faction\logic\factionQuests.ts:47:  FactionNpc
+src\modules\faction\logic\factionQuests.ts:65:  FactionConflictEvent
+src\modules\faction\logic\factionQuests.ts:79:  FactionConflictChoice
+src\modules\faction\logic\factionQuests.ts:102:  FactionQuestAction
+src\modules\faction\logic\factionQuests.ts:111:  FactionQuestProgress
+src\modules\faction\logic\factionTaskSystem.ts:51:  FactionTaskType
+src\modules\faction\logic\factionTaskSystem.ts:52:  FactionTaskDifficulty
+src\modules\faction\logic\factionTaskSystem.ts:67:  FactionTask
+src\modules\fortune\data\fortuneTypeConfig.ts:10:  FortuneTypeConfigEntry
+src\modules\fortune\data\nodeTypeConfig.ts:10:  NodeTypeConfigEntry
+src\modules\fortune\data\terrainConfig.ts:10:  TerrainConfigEntry
+src\modules\fortune\logic\eventEngine.ts:105:  EventResult
+src\modules\fortune\logic\nodeResolver.ts:24:  NodeResolveContext
+src\modules\fortune\types.ts:15:  FortuneTypeId
+src\modules\fortune\types.ts:33:  TerrainType
+src\modules\fortune\types.ts:36:  TerrainEffect
+src\modules\fortune\types.ts:52:  NodeCategory
+src\modules\fortune\types.ts:55:  NodeType
+  (also: src\modules\narrative\story\types.ts:17)
+src\modules\fortune\types.ts:62:  EnemyContent
+src\modules\fortune\types.ts:69:  EventContent
+src\modules\fortune\types.ts:76:  NodeContent
+src\modules\fortune\types.ts:79:  FortuneNode
+src\modules\fortune\types.ts:101:  GridPosition
+src\modules\fortune\types.ts:119:  FortuneMap
+src\modules\fortune\types.ts:149:  SenseLevel
+src\modules\fortune\types.ts:152:  VisibleCell
+src\modules\fortune\types.ts:167:  SenseHint
+src\modules\fortune\types.ts:180:  FortuneLoot
+src\modules\fortune\types.ts:192:  FragmentGain
+src\modules\fortune\types.ts:204:  FortuneSession
+src\modules\fortune\types.ts:242:  FortunePhase
+src\modules\fortune\types.ts:249:  FortuneSlice
+src\modules\fortune\types.ts:269:  NodeResult
+src\modules\fortune\types.ts:291:  BattleEncounter
+src\modules\fortune\types.ts:313:  FloorPreview
+src\modules\fortune\types.ts:321:  RetreatResult
+src\modules\fortune\types.ts:329:  DeathPenalty
+src\modules\fortune\types.ts:341:  CompletionBonus
+src\modules\fortune\types.ts:351:  SettlementResult
+src\modules\fortune\types.ts:367:  FortuneEventChoice
+src\modules\fortune\types.ts:394:  FortuneEventTemplate
+src\modules\fortune\types.ts:420:  RewardCategory
+src\modules\fortune\types.ts:423:  CalculatedReward
+src\modules\identity\data\worldData.ts:126:  EnemyTierConfigItem
+src\modules\identity\data\worldEffectsData.ts:15:  DangerType
+src\modules\identity\data\worldEffectsData.ts:23:  OpportunityType
+src\modules\identity\data\worldEffectsData.ts:31:  TriggerType
+src\modules\identity\data\worldEffectsData.ts:40:  TriggerCondition
+src\modules\identity\data\worldSystem.ts:44:  WorldSelectionRule
+src\modules\identity\hooks\useCharacterTemplates.ts:11:  TalentInfo
+src\modules\identity\hooks\useCharacterTemplates.ts:19:  RaceInfo
+src\modules\identity\hooks\useCharacterTemplates.ts:26:  CharacterTemplate
+  (also: src\modules\identity\logic\characterTemplates.ts:27)
+src\modules\identity\hooks\useStatLabels.ts:11:  StatLabelsResult
+src\modules\identity\logic\worlds\types.ts:13:  WorldCultivationParams
+src\modules\identity\logic\worlds\types.ts:31:  WorldCombatParams
+src\modules\identity\logic\worlds\types.ts:45:  WorldExplorationParams
+src\modules\identity\logic\worlds\types.ts:63:  WorldMechanics
+src\modules\identity\logic\worlds\types.ts:86:  MechanicsConfig
+src\modules\identity\logic\worlds\types.ts:100:  UniqueMechanicInfo
+src\modules\identity\logic\worlds\worldMigration.ts:16:  WorldSaveData
+src\modules\identity\logic\worlds\worldMigration.ts:30:  WorldMigrationResult
+src\modules\item\data\rarity.ts:11:  RarityConfig
+src\modules\item\data\recipes\alchemy.ts:11:  AlchemyRecipe
+src\modules\item\data\recipes\forge.ts:9:  ForgeRecipe
+src\modules\item\events.ts:10:  ItemObtainedEvent
+src\modules\item\events.ts:17:  ItemUsedEvent
+src\modules\item\events.ts:25:  ItemEquippedEvent
+src\modules\item\events.ts:34:  ItemUnequippedEvent
+src\modules\item\events.ts:43:  ItemUpgradedEvent
+src\modules\item\events.ts:53:  ItemFragmentedEvent
+src\modules\item\events.ts:62:  ItemSynthesizedEvent
+src\modules\item\events.ts:70:  ItemEvent
+src\modules\item\logic\itemUse.ts:14:  UseConsumableResult
+src\modules\item\types.ts:11:  Rarity
+src\modules\item\types.ts:12:  ItemCategory
+src\modules\item\types.ts:13:  EquipmentSubcategory
+src\modules\item\types.ts:14:  TechniqueSubcategory
+src\modules\item\types.ts:15:  SkillSubcategory
+src\modules\item\types.ts:16:  SkillTag
+src\modules\item\types.ts:19:  SkillEffect
+src\modules\item\types.ts:28:  ItemAffix
+src\modules\item\types.ts:35:  SlotId
+src\modules\item\types.ts:37:  SlotDefinition
+src\modules\item\types.ts:54:  CurrencyTemplate
+src\modules\item\types.ts:59:  ConsumableTemplate
+src\modules\item\types.ts:65:  MaterialTemplate
+src\modules\item\types.ts:71:  EquipmentTemplate
+src\modules\item\types.ts:76:  TechniqueTemplate
+src\modules\item\types.ts:81:  SkillTemplate
+src\modules\item\types.ts:86:  FragmentTemplate
+src\modules\item\types.ts:91:  ItemTemplate
+src\modules\item\types.ts:95:  ItemInstance
+src\modules\item\types.ts:103:  EquipResult
+src\modules\item\types.ts:104:  ItemActionResult
+src\modules\item\types.ts:106:  ResolvedItem
+src\modules\item\types.ts:123:  ParsedTemplateId
+src\modules\mod\types.ts:11:  ModLoadWarning
+src\modules\mod\types.ts:18:  ModLoaderState
+src\modules\narrative\logic\textResolver.ts:23:  TextCategory
+src\modules\narrative\story\types.ts:24:  StoryCondition
+src\modules\narrative\story\types.ts:30:  NodeEffect
+src\modules\narrative\story\types.ts:40:  StoryChoice
+src\modules\narrative\story\types.ts:80:  Story
+src\modules\npc\logic\attitudeCalculator.ts:77:  AttitudeAction
+src\modules\npc\logic\dialogueEngine.ts:26:  OptionEvaluation
+src\modules\npc\logic\dialogueEngine.ts:46:  GateResult
+src\modules\npc\logic\dialogueEngine.ts:146:  DialogueLineResult
+src\modules\npc\logic\dialogueEngine.ts:193:  InjectedQuestOptions
+src\modules\npc\logic\shopCalculator.ts:57:  AvailableShopItem
+src\modules\npc\logic\shopCalculator.ts:118:  PurchaseResult
+  (also: src\modules\shop\types.ts:59)
+src\modules\npc\types.ts:13:  NPC
+src\modules\progression\data\cultivationPathData.ts:40:  PathActionType
+src\modules\progression\data\cultivationPathData.ts:53:  PathActionExp
+src\modules\progression\data\cultivationPathData.ts:60:  PathSkill
+src\modules\progression\data\cultivationPathData.ts:73:  PathConfig
+src\modules\progression\data\realmCore.ts:14:  RealmTier
+src\modules\progression\events.ts:27:  ProgressionEventType
+src\modules\progression\hooks\useCultivation.ts:172:  UseGameCultivationProps
+src\modules\progression\hooks\useCultivation.ts:186:  UseGameCultivationReturn
+src\modules\progression\hooks\useSeclusion.ts:50:  UseSeclusionProps
+src\modules\progression\hooks\useSeclusion.ts:64:  UseSeclusionReturn
+src\modules\progression\logic\demonBreakthrough\types.ts:33:  DemonAttackBias
+src\modules\progression\logic\demonBreakthrough\types.ts:36:  DemonVisualPreset
+src\modules\progression\logic\demonBreakthrough\types.ts:46:  GeneratedDemon
+src\modules\progression\logic\demonBreakthrough\types.ts:68:  DemonBattleStats
+src\modules\progression\logic\demonBreakthrough\types.ts:78:  DemonSourceFactors
+src\modules\progression\logic\demonBreakthrough\types.ts:96:  SingleAttributeCheck
+src\modules\progression\logic\demonBreakthrough\types.ts:110:  AttributeCheckResult
+src\modules\progression\logic\demonBreakthrough\types.ts:128:  StrategyStatType
+src\modules\progression\logic\demonBreakthrough\types.ts:131:  StrategyChoice
+src\modules\progression\logic\demonBreakthrough\types.ts:155:  StrategyEffect
+src\modules\progression\logic\demonBreakthrough\types.ts:169:  StrategyChoiceResult
+src\modules\progression\logic\demonBreakthrough\types.ts:191:  WeaknessType
+src\modules\progression\logic\demonBreakthrough\types.ts:194:  WeaknessHit
+src\modules\progression\logic\demonBreakthrough\types.ts:204:  RefineBattleParams
+src\modules\progression\logic\demonBreakthrough\types.ts:228:  RefineBattleResult
+src\modules\progression\logic\demonBreakthrough\types.ts:254:  DemonMemory
+src\modules\progression\logic\demonBreakthrough\types.ts:278:  WorldDemonConfig
+src\modules\progression\logic\demonBreakthrough\types.ts:307:  BreakthroughResult
+src\modules\progression\logic\demonBreakthrough\types.ts:337:  DemonForgeParams
+src\modules\progression\logic\demonBreakthrough\types.ts:355:  PlayerCoreStatsSnapshot
+src\modules\progression\logic\milestones.ts:13:  MilestoneUnlock
+src\modules\progression\logic\milestones.ts:22:  Milestone
+src\modules\progression\logic\milestones.ts:143:  BreakthroughAttempt
+src\modules\progression\logic\pillRealmSystem.ts:43:  PillRealmRestriction
+src\modules\progression\logic\pillRealmSystem.ts:53:  PillUseResult
+src\modules\progression\logic\realmSystem.ts:16:  RealmConfig
+src\modules\progression\logic\seclusion.ts:33:  SeclusionConfig
+src\modules\progression\logic\seclusion.ts:58:  SeclusionOutcomeConfig
+src\modules\progression\logic\seclusion.ts:73:  SeclusionResult
+src\modules\progression\logic\types.ts:14:  CultivationStrategy
+src\modules\progression\logic\types.ts:17:  CultivationStrategyConfig
+src\modules\progression\logic\types.ts:85:  CultivationCritChoice
+src\modules\progression\logic\types.ts:100:  CultivationCritEvent
+src\modules\progression\logic\types.ts:116:  CultivationStrategyResult
+src\modules\progression\logic\types.ts:152:  InsightMarkState
+src\modules\quest\hooks\useQuest.ts:69:  UseQuestReturn
+src\modules\quest\logic\boardEngine.ts:201:  BoardUIState
+src\modules\quest\logic\eventTracker.ts:110:  TrackerResult
+src\modules\quest\logic\questEngine.ts:23:  PlayerCheckData
+src\modules\quest\logic\rewardDistributor.ts:19:  RewardResult
+src\modules\quest\logic\storyEngine.ts:166:  StoryProgress
+src\modules\quest\types.ts:36:  TaskItemReward
+src\modules\quest\types.ts:131:  AllTaskSystemsState
+src\modules\reward-pool\data\difficultyConfig.ts:18:  DifficultyConfig
+src\modules\reward-pool\events.ts:17:  RewardGeneratedPayload
+src\modules\reward-pool\hooks\useRewardDisplay.ts:16:  DisplayItem
+src\modules\reward-pool\hooks\useRewardDisplay.ts:26:  RewardDisplayData
+src\modules\reward-pool\types.ts:15:  ItemFilter
+src\modules\reward-pool\types.ts:37:  EntryCondition
+src\modules\reward-pool\types.ts:50:  StaticEntry
+src\modules\reward-pool\types.ts:65:  FilterEntry
+src\modules\reward-pool\types.ts:80:  PoolRefEntry
+src\modules\reward-pool\types.ts:93:  PoolEntry
+src\modules\reward-pool\types.ts:100:  RewardPool
+src\modules\reward-pool\types.ts:124:  RollContext
+src\modules\reward-pool\types.ts:146:  RollResultItem
+src\modules\reward-pool\types.ts:158:  RollResult
+src\modules\reward-pool\types.ts:170:  ResolvedEntry
+src\modules\shop\types.ts:8:  ShopType
+src\modules\shop\types.ts:11:  ShopProduct
+src\modules\shop\types.ts:38:  ShopConfig
+src\modules\social\announcementTypes.ts:14:  AnnouncementType
+src\modules\social\announcementTypes.ts:26:  AnnouncementPriority
+src\modules\social\announcementTypes.ts:46:  Announcement
+src\modules\social\announcementTypes.ts:76:  AnnouncementRequest
+src\modules\social\announcementTypes.ts:100:  AnnouncementCondition
+src\modules\social\announcementTypes.ts:103:  AnnouncementTriggerConfig
+src\modules\social\announcementTypes.ts:117:  AnnouncementGameEvent
+src\modules\social\announcementTypes.ts:127:  WorldContext
+src\modules\social\hooks\useMessages.ts:31:  UseGameMessagesReturn
+src\modules\social\logic\announcement\generator.ts:21:  AnnouncementContext
+src\modules\theme\data\rarityStyles.ts:13:  ExtendedRarity
+src\modules\theme\data\themeConfigTemplate.ts:20:  ThemeCoreColors
+src\modules\theme\events.ts:31:  WorldEventType
+src\modules\theme\types.ts:12:  ThemeMode
+src\modules\theme\types.ts:15:  ThemeVariableOverrides
+src\modules\theme\types.ts:21:  WorldTheme
+src\modules\theme\types.ts:35:  ThemeSlice
+src\modules\theme\types.ts:51:  ThemeContextValue
+src\modules\theme\types.ts:67:  WorldThemeData
+src\modules\theme\types.ts:79:  StyleLoadCallback
+src\modules\theme\types.ts:80:  StyleErrorCallback
+src\modules\theme\types.ts:81:  StyleUnloadCallback
+src\modules\tower\logic\types.ts:20:  TowerState
+src\modules\world-pool\hooks\useWorldPool.ts:17:  UseWorldPoolOptions
+src\modules\world-pool\hooks\useWorldPool.ts:24:  UseWorldPoolReturn
+src\modules\world-rating\hooks\useWorldRating.ts:15:  UseWorldRatingReturn
+src\modules\world-rating\types.ts:10:  WorldRatingsStore
+src\shared\components\MysticalBackground.tsx:11:  BgVariant
+src\shared\components\MysticalBackground.tsx:12:  BgIntensity
+src\shared\components\RadarChart.tsx:24:  RadarAxis
+src\shared\components\RadarChart.tsx:30:  RadarSeries
+src\shared\config\version.ts:22:  SemverParts
+src\shared\config\version.ts:54:  VersionCompatibility
+src\shared\lib\ai\types.ts:12:  AIGenerationContext
+src\shared\lib\ai\types.ts:23:  AIGenerationResult
+src\shared\storage\database\shared\schema.ts:34:  InsertGameMessage
+src\shared\ui\data-display\chart.tsx:12:  ChartConfig
+src\shared\utils\constants.ts:69:  GameConstantKey
+src\shared\utils\saveUtils.ts:22:  SaveResult
+src\views\game\dialogs\OfflineRewardDialog.tsx:35:  OfflineProcessResultV2
+src\views\game\dialogs\useDialogController.ts:13:  DialogType
+src\views\game\dialogs\useDialogController.ts:29:  DialogEntry
+src\views\game\navigation\GameMenu.tsx:22:  GameMenuStatusDots
+src\views\game\navigation\panelRegistry.tsx:14:  PanelDefinition
+src\views\game\state\GameStore.tsx:46:  GameStoreValue

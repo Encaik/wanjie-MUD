@@ -8,6 +8,7 @@
  */
 
 import { WorldType } from '@/core/types';
+
 import {
   generateEnemy,
 } from './generator';

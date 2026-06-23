@@ -13,9 +13,11 @@
  */
 
 import { gameEventBus } from '@/core/events';
+
 import { TIMER_TICK_INTERVAL } from './constants';
 import { clearExpired } from './cooldown';
 import { needsDailyRefresh, needsWeeklyRefresh } from './realClock';
+
 import type { TimeState } from './types';
 
 /** tick 回调类型：接收当前服务端时间 */

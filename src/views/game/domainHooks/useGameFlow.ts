@@ -7,14 +7,17 @@
 'use client';
 
 import { useCallback, useRef } from 'react';
+
+import { emit } from '@/core/events';
+import { createLogger } from '@/core/logger';
+import { tutorialEvents } from '@/core/statistics';
 import type { World } from '@/core/types';
+import { worldEvents } from '@/modules/theme';
+import { post } from '@/shared/utils/api-client';
+
 import { useGameStore, useGameDispatch } from '../state/GameStore';
 import { createInitialGameState } from '../state/initialState';
-import { post } from '@/shared/utils/api-client';
-import { createLogger } from '@/core/logger';
-import { emit } from '@/core/events';
-import { tutorialEvents } from '@/core/statistics';
-import { worldEvents } from '@/modules/theme';
+
 
 const log = createLogger('GameFlow');
 

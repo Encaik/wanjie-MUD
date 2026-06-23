@@ -8,6 +8,8 @@
  * 4. 管理Buff/Debuff
  */
 
+import { clamp, clampNonNegative } from '@/shared/utils/numberUtils';
+
 import {
   TriggeredEvent,
   BattleEventType,
@@ -22,7 +24,6 @@ import {
   StatBuff,
   SpecialEffectType,
 } from './types';
-import { clamp, clampNonNegative } from '@/shared/utils/numberUtils';
 
 // 随机工具
 const randomBetween = (min: number, max: number, rng: () => number = Math.random) => rng() * (max - min) + min;

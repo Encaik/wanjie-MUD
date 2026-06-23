@@ -4,13 +4,14 @@
  * 根据世界观加载对应文案，解析占位符
  */
 
+import { WorldType } from '@/core/types';
+
+import { getWorldTexts, WorldTextDefinition } from '../data/worlds';
 import {
   TextResolveResult,
   TextResolverConfig,
   ValueContext,
 } from '../types';
-import { WorldType } from '@/core/types';
-import { getWorldTexts, WorldTextDefinition } from '../data/worlds';
 
 // ============================================
 // 文案键类型（从世界观结构推导）

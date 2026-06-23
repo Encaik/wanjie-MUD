@@ -8,14 +8,6 @@
 import { useCallback, useEffect } from 'react';
 import type { Dispatch, SetStateAction } from 'react';
 
-import { 
-  checkAscensionRequirements, 
-  calculateBattleReward, 
-  generateNewWorld, 
-  calculateInheritance,
-  getOrCreateAscensionMark,
-  updateAscensionMark
-} from '@/modules/ascension/logic/ascensionLogic';
 import { calcPlayerMaxHp, calcPlayerMaxMp } from '@/core/calculation';
 import {
   GameState,
@@ -26,10 +18,18 @@ import {
   Equipment,
   Technique,
 } from '@/core/types';
-import type { ItemInstance } from '@/modules/item/types';
-import { getCurrencyAmount, addItem } from '@/modules/item/logic';
 import { DEFAULT_PROTAGONIST_EXTENSION, InheritanceChoice, NewWorldInfo, DiscoveredWorld, GuardianBattleState } from '@/core/types';
 import { DEFAULT_ASCENSION_FLOW_STATE, DEFAULT_GUARDIAN_BATTLE_STATE } from '@/core/types';
+import { 
+  checkAscensionRequirements, 
+  calculateBattleReward, 
+  generateNewWorld, 
+  calculateInheritance,
+  getOrCreateAscensionMark,
+  updateAscensionMark
+} from '@/modules/ascension/logic/ascensionLogic';
+import { getCurrencyAmount, addItem } from '@/modules/item/logic';
+import type { ItemInstance } from '@/modules/item/types';
 
 interface UseGameAscensionProps {
   gameState: GameState;

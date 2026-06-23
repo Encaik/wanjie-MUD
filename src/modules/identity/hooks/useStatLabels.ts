@@ -5,6 +5,7 @@
  * 依赖模块：identity/data/statDisplayNames
  */
 import { useMemo } from 'react';
+
 import { getStatLabels, type StatKey } from '../data/statDisplayNames';
 
 export interface StatLabelsResult {

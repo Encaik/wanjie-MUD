@@ -6,8 +6,8 @@
 
 import { type ReactNode, useCallback } from 'react';
 
-import { Badge } from '@/shared/ui/data-display/badge';
 import { Button } from '@/shared/ui/actions/button';
+import { Badge } from '@/shared/ui/data-display/badge';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/shared/ui/overlay/tooltip';
 
 import { TooltipCategorySection, CATEGORY_LABEL, SUBCATEGORY_LABEL } from './ItemTooltipSections';

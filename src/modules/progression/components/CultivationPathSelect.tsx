@@ -17,8 +17,19 @@ import {
   Minus
 } from 'lucide-react';
 
-import {  Badge } from '@/shared/ui/data-display/badge';
+import { FlatStats, CharacterStats, WorldType } from '@/core/types';
+import { 
+  CultivationPath,
+} from '@/core/types';
+import {  getWorldText } from '@/modules/narrative/logic/WorldTextManager';
+import { 
+  CULTIVATION_PATHS,
+  checkPathUnlockConditions,
+  getPathLevelExp,
+  PATH_LEVEL_CONFIG,
+} from '@/modules/progression/data/cultivationPathData';
 import {  Button } from '@/shared/ui/actions/button';
+import {  Badge } from '@/shared/ui/data-display/badge';
 import {  Card, CardContent } from '@/shared/ui/data-display/card';
 import { 
   Dialog,
@@ -28,17 +39,6 @@ import {
   DialogTitle,
   DialogFooter,
 } from '@/shared/ui/overlay/dialog';
-import { 
-  CULTIVATION_PATHS,
-  checkPathUnlockConditions,
-  getPathLevelExp,
-  PATH_LEVEL_CONFIG,
-} from '@/modules/progression/data/cultivationPathData';
-import { FlatStats, CharacterStats, WorldType } from '@/core/types';
-import { 
-  CultivationPath,
-} from '@/core/types';
-import {  getWorldText } from '@/modules/narrative/logic/WorldTextManager';
 
 interface CultivationPathSelectProps {
   isOpen: boolean;

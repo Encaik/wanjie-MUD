@@ -6,9 +6,11 @@
  */
 
 import type { Protagonist } from '@/core/types';
-import type { ItemInstance, ResolvedItem, ItemCategory } from '../types';
-import { resolveItem, findItemByInstance, getItemCount } from './itemManager';
 import { getWorldviewCurrencyItemId } from '@/modules/reward-pool/logic/poolEngine';
+
+import { resolveItem, findItemByInstance, getItemCount } from './itemManager';
+
+import type { ItemInstance, ResolvedItem, ItemCategory } from '../types';
 
 /** 从槽位获取已解析的装备物品 */
 export function getEquippedResolved(protagonist: Protagonist, slotId: string): ResolvedItem | null {

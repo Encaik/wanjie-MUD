@@ -10,6 +10,9 @@
 'use client';
 
 import { Sparkles, BookOpen, Lightbulb } from 'lucide-react';
+
+import { CardCornerDecorations } from '@/shared/components';
+import { Button } from '@/shared/ui/actions/button';
 import {
   Dialog,
   DialogContent,
@@ -17,8 +20,6 @@ import {
   DialogTitle,
   DialogFooter,
 } from '@/shared/ui/overlay/dialog';
-import { Button } from '@/shared/ui/actions/button';
-import { CardCornerDecorations } from '@/shared/components';
 
 // ============================================
 // Props

@@ -3,11 +3,13 @@
  */
 
 import { useCallback } from 'react';
-import { useGameStore } from '@/views/game/state/GameStore';
+
 import type { GameState } from '@/core/types';
-import { equipItem as equipItemLogic, unequipItem as unequipItemLogic } from '../logic/slotSystem';
-import { resolveItem, findItemByInstance } from '../logic/itemManager';
+import { useGameStore } from '@/views/game/state/GameStore';
+
 import { SLOT_DEFINITIONS } from '../data/slots';
+import { resolveItem, findItemByInstance } from '../logic/itemManager';
+import { equipItem as equipItemLogic, unequipItem as unequipItemLogic } from '../logic/slotSystem';
 
 export function useEquipment() {
   const { gameState, dispatch } = useGameStore();

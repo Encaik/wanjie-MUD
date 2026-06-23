@@ -2,17 +2,17 @@
 
 import { TrendingUp, Shield, AlertTriangle } from 'lucide-react';
 
-import { CardCornerDecorations } from '@/shared/components';
-import { Badge } from '@/shared/ui/data-display/badge';
-import { Button } from '@/shared/ui/actions/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/data-display/card';
-import { Progress } from '@/shared/ui/feedback/progress';
 import type { WorldType } from '@/core/types';
+import { getFinalStats } from '@/core/types';
 import { getTerminology } from '@/modules/narrative/logic/terminology';
 import { getMaxExperience, calculateBreakthroughRate, calculateBreakthroughBoost } from '@/modules/progression/logic/cultivation';
 import { computeCoreStats } from '@/modules/progression/logic/demonBreakthrough';
-import { getFinalStats } from '@/core/types';
 import { MAX_LEVEL } from '@/modules/progression/logic/realmSystem';
+import { CardCornerDecorations } from '@/shared/components';
+import { Button } from '@/shared/ui/actions/button';
+import { Badge } from '@/shared/ui/data-display/badge';
+import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/data-display/card';
+import { Progress } from '@/shared/ui/feedback/progress';
 
 interface BreakthroughPanelProps {
   /** 当前等级 */

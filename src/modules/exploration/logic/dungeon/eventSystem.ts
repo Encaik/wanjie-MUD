@@ -5,6 +5,9 @@
  * 根据 comprehensive-optimization-design.md 设计文档实现
  */
 
+import type { FlatStats, Protagonist, ActiveEffect } from '@/core/types';
+import type { ItemInstance } from '@/modules/item/types';
+
 import {
   DUNGEON_EVENTS,
   getEventById,
@@ -29,8 +32,6 @@ import {
   DEFAULT_TRIGGER_CONFIG,
   EventTriggerConfig,
 } from './types';
-import type { FlatStats, Protagonist, ActiveEffect } from '@/core/types';
-import type { ItemInstance } from '@/modules/item/types';
 // 奖励生成已迁移到 modules/reward-pool/，通过 Hook 层集成
 
 // ============================================

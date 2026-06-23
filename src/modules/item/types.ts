@@ -5,8 +5,8 @@
  * 槽位系统：装备/功法/技能 独立固定槽位，无父子依赖关系。
  */
 
-import type { Element, WeaponCategory } from '@/modules/combat/logic/restraintSystem';
 import type { WorldType } from '@/core/types';
+import type { Element, WeaponCategory } from '@/modules/combat/logic/restraintSystem';
 
 export type Rarity = 'common' | 'uncommon' | 'rare' | 'epic' | 'legendary' | 'mythic';
 export type ItemCategory = 'currency' | 'consumable' | 'material' | 'equipment' | 'technique' | 'skill' | 'fragment';

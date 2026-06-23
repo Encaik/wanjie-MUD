@@ -6,6 +6,10 @@
  * 其他节点直接计算并返回结果。
  */
 
+import { fortuneEventRegistry, selectRandomEvent } from './eventEngine';
+import { calculateNodeReward } from './rewardCalculator';
+import { getNodeTypeConfig } from '../data/nodeTypeConfig';
+
 import type {
   FortuneNode,
   FortuneSession,
@@ -15,9 +19,6 @@ import type {
   FortuneLoot,
   FortuneEventTemplate,
 } from '../types';
-import { getNodeTypeConfig } from '../data/nodeTypeConfig';
-import { calculateNodeReward } from './rewardCalculator';
-import { fortuneEventRegistry, selectRandomEvent } from './eventEngine';
 
 /** 节点解析上下文 */
 export interface NodeResolveContext {

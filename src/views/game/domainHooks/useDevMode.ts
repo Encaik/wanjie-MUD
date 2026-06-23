@@ -11,8 +11,8 @@ import { useCallback } from 'react';
 import { DEFAULT_PROTAGONIST_EXTENSION } from '@/core/types';
 import { addItem } from '@/modules/item/logic';
 
-import { useGameStore } from '../state/GameStore';
 import { createAddMessageInternal } from './helpers';
+import { useGameStore } from '../state/GameStore';
 
 export function useDevMode() {
   const { gameState, dispatch } = useGameStore();

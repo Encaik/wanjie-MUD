@@ -6,10 +6,12 @@
  */
 
 import { NextRequest } from 'next/server';
+
+import { ensureWorldSystemInitialized } from '@/app/api/init';
 import { apiSuccess, apiError } from '@/app/api/result';
 import { createLogger } from '@/core/logger';
-import { ensureWorldSystemInitialized } from '@/app/api/init';
 import { generateCharacterTemplates, createCharacterSeed } from '@/modules/identity/logic/characterTemplates';
+
 import { saveCharacter } from '../store';
 
 const log = createLogger('Character Save');

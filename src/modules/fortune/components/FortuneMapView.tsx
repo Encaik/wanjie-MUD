@@ -8,14 +8,18 @@
 'use client';
 
 import { useMemo } from 'react';
-import { Card, CardContent } from '@/shared/ui/data-display/card';
-import { Badge } from '@/shared/ui/data-display/badge';
+
 import { Button } from '@/shared/ui/actions/button';
-import type { FortuneSession, VisibleCell, SenseHint } from '../types';
-import { getFortuneTypeConfig } from '../data/fortuneTypeConfig';
+import { Badge } from '@/shared/ui/data-display/badge';
+import { Card, CardContent } from '@/shared/ui/data-display/card';
+
+
 import { FortuneCell } from './FortuneCell';
-import { getMoveCost } from '../logic/terrainSystem';
+import { getFortuneTypeConfig } from '../data/fortuneTypeConfig';
 import { manhattanDistance } from '../logic/mapGenerator';
+import { getMoveCost } from '../logic/terrainSystem';
+
+import type { FortuneSession, VisibleCell, SenseHint } from '../types';
 
 interface FortuneMapViewProps {
   session: FortuneSession;

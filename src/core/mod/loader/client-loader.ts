@@ -14,9 +14,11 @@
  */
 
 import { createLogger } from '@/core/logger';
+
 import { BaseModLoader } from './base-loader';
-import type { ModManifest } from '../ModManifest';
 import { parseManifest } from '../ModManifest';
+
+import type { ModManifest } from '../ModManifest';
 import type { ModEntry } from '../types';
 
 const log = createLogger('ClientModLoader');

@@ -7,10 +7,13 @@
  * @module modules/identity/logic/worlds
  */
 
-import { WorldMechanicsRegistry } from '@/core/registry/WorldMechanicsRegistry';
 import { WorldViewRegistry } from '@/core/registry';
-import type { MechanicsConfig } from './types';
+import { WorldMechanicsRegistry } from '@/core/registry/WorldMechanicsRegistry';
+
 import { buildWorldMechanics } from './builder';
+
+import type { MechanicsConfig } from './types';
+
 
 /**
  * 注册所有已加载世界的 WorldMechanics 实现

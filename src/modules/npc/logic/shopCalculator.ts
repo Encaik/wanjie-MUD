@@ -7,6 +7,7 @@
  */
 
 import type { NPCShopItem, AttitudeLevel } from '@/core/types';
+
 import { getAttitudeLevel } from './attitudeCalculator';
 
 // ============================================

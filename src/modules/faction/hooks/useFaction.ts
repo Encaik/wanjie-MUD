@@ -10,23 +10,8 @@
 import { useCallback } from 'react';
 import type { Dispatch, SetStateAction } from 'react';
 
-import { ACHIEVEMENTS } from '@/modules/collection/data/achievementData';
-import { getFactionById, calculateFactionBonuses } from '@/modules/faction/data/factionData';
-import { 
-  getRanksByFactionType,
-  getTaskConfig,
-  DAILY_TASK_ROUND,
-  WEEKLY_TASK_ROUND,
-  checkRankPromotion,
-  calculateDailySalary,
-  generateCommission,
-  COMMISSION_QUALITY_CONFIG,
-  CommissionQuality,
-  FactionCommissionConfig,
-} from '@/modules/faction/data/factionProgressData';
-import { getStatisticValue } from '@/modules/collection/logic/achievement/achievementUtils';
-import { processStatisticsEvent, factionEvents, achievementEvents } from '@/core/statistics';
 import { emit } from '@/core/events';
+import { processStatisticsEvent, factionEvents, achievementEvents } from '@/core/statistics';
 import {
   GameState,
   MessageRecord,
@@ -43,9 +28,24 @@ import {
   createDefaultWeeklyRoundState,
   createDefaultCommissionState,
 } from '@/core/types';
-import type { ItemInstance } from '@/modules/item/types';
-import { getCurrencyAmount, removeItem, addItem } from '@/modules/item/logic';
+import { ACHIEVEMENTS } from '@/modules/collection/data/achievementData';
+import { getStatisticValue } from '@/modules/collection/logic/achievement/achievementUtils';
+import { getFactionById, calculateFactionBonuses } from '@/modules/faction/data/factionData';
+import { 
+  getRanksByFactionType,
+  getTaskConfig,
+  DAILY_TASK_ROUND,
+  WEEKLY_TASK_ROUND,
+  checkRankPromotion,
+  calculateDailySalary,
+  generateCommission,
+  COMMISSION_QUALITY_CONFIG,
+  CommissionQuality,
+  FactionCommissionConfig,
+} from '@/modules/faction/data/factionProgressData';
 import { getTemplate } from '@/modules/item/data';
+import { getCurrencyAmount, removeItem, addItem } from '@/modules/item/logic';
+import type { ItemInstance } from '@/modules/item/types';
 
 /** 按模板 ID 从物品列表中扣除数量（不可变） */
 function deductByTemplate(items: ItemInstance[], templateId: string, quantity: number): ItemInstance[] {

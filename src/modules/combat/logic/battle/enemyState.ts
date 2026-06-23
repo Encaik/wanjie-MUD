@@ -9,8 +9,9 @@
 
 import type { EnemyTier } from '@/core/types';
 import type { Element, WeaponCategory } from '@/modules/combat/logic/restraintSystem';
-import { BattleSkill } from './types';
 import { EnemyAttributes } from '@/modules/combat/logic/restraintSystem';
+
+import { BattleSkill } from './types';
 
 // ============================================
 // 战斗敌人状态

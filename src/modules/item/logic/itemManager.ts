@@ -4,9 +4,10 @@
  * 所有函数为纯函数：不修改输入参数，不依赖 React/浏览器 API。
  */
 
-import type { ItemInstance, ItemCategory, Rarity, ResolvedItem } from '../types';
 import { getTemplate } from '../data/index';
 import { getRarityConfig } from '../data/rarity';
+
+import type { ItemInstance, ItemCategory, Rarity, ResolvedItem } from '../types';
 
 // ══════════════════════════════════════════════════════════════════
 // 创建

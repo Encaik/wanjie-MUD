@@ -4,8 +4,8 @@
  * 门派专属任务线进度管理、NPC 对话树、门派冲突事件生成。
  */
 
-import type { GameState } from '@/core/types';
 import type { EventRecord } from '@/core/events/types';
+import type { GameState } from '@/core/types';
 
 // ============================================
 // NPC 对话树

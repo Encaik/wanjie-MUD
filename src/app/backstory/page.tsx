@@ -7,8 +7,8 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import type { World } from '@/core/types';
 import { post } from '@/shared/utils/api-client';
 import { BackstoryView } from '@/views/backstory/BackstoryView';
-import { useGameStore } from '@/views/game/state/GameStore';
 import { useGameFlow } from '@/views/game/domainHooks/useGameFlow';
+import { useGameStore } from '@/views/game/state/GameStore';
 
 interface CharacterInfo {
   name: string;
@@ -86,7 +86,7 @@ function useCharacterData(characterSeed: string | null) {
   return { character, backstory, world, loading, error, setError };
 }
 
-// eslint-disable-next-line complexity -- 数据加载已提取到 useCharacterData，剩余分支为必要 UI 状态处理
+ 
 function BackstoryContent() {
   const router = useRouter();
   const searchParams = useSearchParams();

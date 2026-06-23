@@ -8,9 +8,9 @@
  */
 
 import { WorldViewRegistry } from '@/core/registry/WorldViewRegistry';
+import type { World } from '@/core/types';
 import { generateWorld, generateSeed } from '@/core/world/generateWorld';
 import { createWorldId } from '@/core/world/identity';
-import type { World } from '@/core/types';
 import type { WorldProvider, WorldProviderMetadata } from '@/core/world/types';
 
 export class CoreWorldProvider implements WorldProvider {

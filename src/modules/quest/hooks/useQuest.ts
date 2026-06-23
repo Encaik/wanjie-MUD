@@ -11,15 +11,15 @@ import { useCallback } from 'react';
 
 import { gameEventBus } from '@/core/events';
 import { BoardRegistry } from '@/core/registry/BoardRegistry';
-import { emitItemObtained, emitSpiritStonesGained } from '@/core/statistics';
-import { addItem } from '@/modules/item/logic/itemManager';
-import { hasTemplate, getTemplate } from '@/modules/item/data';
-import { getWorldviewCurrencyItemId } from '@/modules/reward-pool/logic/poolEngine';
 import { QuestRegistry } from '@/core/registry/QuestRegistry';
 import { StoryLineRegistry } from '@/core/registry/StoryLineRegistry';
+import { emitItemObtained, emitSpiritStonesGained } from '@/core/statistics';
 import type { GameState, QuestState, QuestDefinition } from '@/core/types';
+import { hasTemplate, getTemplate } from '@/modules/item/data';
+import { addItem } from '@/modules/item/logic/itemManager';
 import { injectQuestOptions } from '@/modules/npc/logic/dialogueEngine';
 import type { InjectedQuestOptions } from '@/modules/npc/logic/dialogueEngine';
+import { getWorldviewCurrencyItemId } from '@/modules/reward-pool/logic/poolEngine';
 
 import {
   needsRefresh,

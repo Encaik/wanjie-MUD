@@ -5,8 +5,6 @@
  * 所有数值计算都通过此服务进行，便于统一管理和测试
  */
 
-import { UnifiedCalculator } from '../calculator';
-import { ContextBuilder } from '../context/builder';
 import type { WorldType } from '@/core/types';
 import {
   getRealmByLevel,
@@ -14,6 +12,9 @@ import {
   getNextRealmLevel,
   getRealmMultiplier,
 } from '@/modules/progression/logic/realmSystem';
+
+import { UnifiedCalculator } from '../calculator';
+import { ContextBuilder } from '../context/builder';
 
 import type { CalculationContext } from '../context/types';
 import type { CalculableStat } from '../types';

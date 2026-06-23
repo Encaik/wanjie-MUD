@@ -4,10 +4,11 @@
  * 所有函数为纯函数。
  */
 
-import type { ItemInstance, Rarity } from '../types';
+import { findItemByInstance, removeItem } from './itemManager';
 import { getTemplate } from '../data/index';
 import { getRarityConfig } from '../data/rarity';
-import { findItemByInstance, removeItem } from './itemManager';
+
+import type { ItemInstance, Rarity } from '../types';
 
 /**
  * 计算当前等级升级所需经验
@@ -66,7 +67,7 @@ export function upgradeItem(
   }
 
   // 验证并消耗材料
-  let newInventory = inventory.map(i => ({ ...i, equippedSkills: { ...i.equippedSkills } }));
+  const newInventory = inventory.map(i => ({ ...i, equippedSkills: { ...i.equippedSkills } }));
   let totalExp = 0;
 
   for (const mat of materials) {
@@ -102,7 +103,7 @@ export function upgradeItem(
   }
 
   // 升级逻辑
-  let updatedItem = { ...item, equippedSkills: { ...item.equippedSkills } };
+  const updatedItem = { ...item, equippedSkills: { ...item.equippedSkills } };
   let leveledUp = false;
   let newSkillsUnlocked = 0;
 

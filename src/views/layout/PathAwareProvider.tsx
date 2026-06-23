@@ -8,13 +8,14 @@
 'use client';
 
 import { Suspense } from 'react';
-import { usePathname } from 'next/navigation';
-import dynamic from 'next/dynamic';
 
-import { ThemeProvider } from '@/modules/theme';
+import dynamic from 'next/dynamic';
+import { usePathname } from 'next/navigation';
+
 import { ModInitProvider } from '@/modules/mod/components/ModInitProvider';
-import { HomeProvider } from '@/views/home/HomeProvider';
+import { ThemeProvider } from '@/modules/theme';
 import { PageLoading } from '@/shared/components/PageLoading';
+import { HomeProvider } from '@/views/home/HomeProvider';
 
 const GameStoreProviderLazy = dynamic(
   () =>

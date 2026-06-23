@@ -8,6 +8,7 @@
  */
 
 import { eventRegistry } from '@/core/events';
+
 import type { StatisticsEventType } from './types';
 
 // ============================================

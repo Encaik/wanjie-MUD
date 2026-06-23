@@ -11,8 +11,8 @@ import { useCallback } from 'react';
 import type { CraftingState, ForgingState } from '@/core/types';
 import { addItem, createItemInstance } from '@/modules/item/logic';
 
-import { useGameStore } from '../state/GameStore';
 import { createAddMessageInternal } from './helpers';
+import { useGameStore } from '../state/GameStore';
 
 export function useCrafting() {
   const { dispatch } = useGameStore();

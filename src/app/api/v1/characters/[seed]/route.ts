@@ -3,8 +3,10 @@
  */
 
 import { NextRequest } from 'next/server';
+
 import { apiSuccess, apiError } from '@/app/api/result';
 import { createLogger } from '@/core/logger';
+
 import { getCharacterBySeed } from '../store';
 
 const log = createLogger('Character By Seed');

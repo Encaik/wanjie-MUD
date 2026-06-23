@@ -12,9 +12,9 @@
  * - 页面组件使用 useWorldText() hook 获取文案
  */
 
-import { WorldType } from '@/core/types';
 import { WorldViewRegistry } from '@/core/registry';
 import type { WorldTextDefinition } from '@/core/registry';
+import { WorldType } from '@/core/types';
 
 // 保留静态导入作为 fallback（过渡期）
 import { gaowuTexts } from '../data/worlds/gaowu';

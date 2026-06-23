@@ -4,9 +4,9 @@
  * 从 useGameState.tsx 提取，减少巨型文件体积。
  */
 
+import { createDefaultGameClock, createDefaultRealClock } from '@/core/time';
 import type { GameState } from '@/core/types';
 import { DEFAULT_ASCENSION_FLOW_STATE, createDefaultQuestState } from '@/core/types';
-import { createDefaultGameClock, createDefaultRealClock } from '@/core/time';
 import { INITIAL_FORTUNE_SLICE } from '@/modules/fortune';
 
 /** 创建初始游戏状态 */

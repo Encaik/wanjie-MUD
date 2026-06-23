@@ -17,9 +17,9 @@ import {
   Loader2,
 } from 'lucide-react';
 
-import { Badge } from '@/shared/ui/data-display/badge';
-import { Button } from '@/shared/ui/actions/button';
 import { BattleAction, DecisionOption } from '@/modules/combat/logic/battle';
+import { Button } from '@/shared/ui/actions/button';
+import { Badge } from '@/shared/ui/data-display/badge';
 
 interface DecisionPanelProps {
   decisions: DecisionOption[];

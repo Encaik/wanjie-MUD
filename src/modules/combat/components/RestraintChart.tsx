@@ -8,18 +8,18 @@
 
 import { Flame, Swords, ArrowRight, ArrowLeftRight } from 'lucide-react';
 
-import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/data-display/card';
+import type { Element, WeaponCategory } from '@/modules/combat/logic/restraintSystem';
 import {
   ELEMENT_COUNTER_MAP,
   WEAPON_COUNTER_MAP,
   getElementIcon,
   getWeaponCategoryIcon,
 } from '@/modules/combat/logic/restraintSystem';
-import type { Element, WeaponCategory } from '@/modules/combat/logic/restraintSystem';
 import {
   ELEMENT_NAMES,
   WEAPON_CATEGORY_NAMES,
 } from '@/modules/combat/logic/restraintSystem';
+import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/data-display/card';
 import { cn } from '@/shared/utils';
 
 // 元素颜色映射

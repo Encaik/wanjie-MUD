@@ -7,9 +7,10 @@
 
 'use client';
 
-import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/data-display/card';
 import { Button } from '@/shared/ui/actions/button';
 import { Badge } from '@/shared/ui/data-display/badge';
+import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/data-display/card';
+
 import type { SettlementResult } from '../types';
 
 interface FortuneResultProps {

@@ -2,6 +2,7 @@
  * itemManager 单元测试
  */
 import { describe, it, expect } from 'vitest';
+
 import {
   createItemInstance,
   addItem,

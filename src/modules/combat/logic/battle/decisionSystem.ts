@@ -9,6 +9,29 @@
  * 5. 支持多敌人回合
  */
 
+import { InventoryItem, EnemyTier } from '@/core/types';
+import { 
+  calculateRestraintResult, 
+  formatRestraintDescription,
+  EnemyAttributes,
+  getDefenseAttributes,
+} from '@/modules/combat/logic/restraintSystem';
+import { calculateDamage, calculateCritRate, COMBAT_CONFIG } from '@/modules/progression/logic/balanceConfig';
+import { clamp, clampNonNegative, applyDamage, applyHeal } from '@/shared/utils/numberUtils';
+
+import {
+  BattleEnemy,
+  TurnOrderEntry,
+  getAliveEnemies,
+  getAliveEnemyCount,
+  areAllEnemiesDefeated,
+  getEnemyTotalAttack,
+  getEnemyTotalDefense,
+  updateEnemySkillCooldowns,
+  updateEnemyBuffs,
+  applyDamageToEnemy,
+  applyHealToEnemy,
+} from './enemyState';
 import { 
   BattleSkill,
   isSkillUsable, 
@@ -30,28 +53,8 @@ import {
   StatBuff,
   BattlePhase,
 } from './types';
-import { calculateDamage, calculateCritRate, COMBAT_CONFIG } from '@/modules/progression/logic/balanceConfig';
-import { 
-  calculateRestraintResult, 
-  formatRestraintDescription,
-  EnemyAttributes,
-  getDefenseAttributes,
-} from '@/modules/combat/logic/restraintSystem';
-import { InventoryItem, EnemyTier } from '@/core/types';
-import {
-  BattleEnemy,
-  TurnOrderEntry,
-  getAliveEnemies,
-  getAliveEnemyCount,
-  areAllEnemiesDefeated,
-  getEnemyTotalAttack,
-  getEnemyTotalDefense,
-  updateEnemySkillCooldowns,
-  updateEnemyBuffs,
-  applyDamageToEnemy,
-  applyHealToEnemy,
-} from './enemyState';
-import { clamp, clampNonNegative, applyDamage, applyHeal } from '@/shared/utils/numberUtils';
+
+
 
 import type { BattleSkillType } from './types';
 

@@ -4,11 +4,13 @@ import { useState } from 'react';
 
 import { Bug, Settings, Sparkles, Swords, Shield, Heart, Zap, Globe, ShieldCheck } from 'lucide-react';
 
-import { Badge } from '@/shared/ui/data-display/badge';
+import { WorldViewRegistry } from '@/core/registry';
+import { Protagonist, CultivationPath, WorldType, ItemRarity, TechniqueType, EquipmentSlot } from '@/core/types';
 import { Button } from '@/shared/ui/actions/button';
+import { Badge } from '@/shared/ui/data-display/badge';
+import { ControlledTabs, TabsContent, TabsList, TabsTrigger } from '@/shared/ui/data-display/tabs';
 import { Input } from '@/shared/ui/forms/input';
 import { Label } from '@/shared/ui/forms/label';
-import { ScrollArea } from '@/shared/ui/layout/scroll-area';
 import {
   Select,
   SelectContent,
@@ -16,6 +18,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/shared/ui/forms/select';
+import { Switch } from '@/shared/ui/forms/switch';
+import { ScrollArea } from '@/shared/ui/layout/scroll-area';
 import { Separator } from '@/shared/ui/layout/separator';
 import {
   Sheet,
@@ -25,10 +29,6 @@ import {
   SheetTitle,
   SheetTrigger,
 } from '@/shared/ui/overlay/sheet';
-import { Switch } from '@/shared/ui/forms/switch';
-import { ControlledTabs, TabsContent, TabsList, TabsTrigger } from '@/shared/ui/data-display/tabs';
-import { Protagonist, CultivationPath, WorldType, ItemRarity, TechniqueType, EquipmentSlot } from '@/core/types';
-import { WorldViewRegistry } from '@/core/registry';
 
 interface DeveloperPanelProps {
   protagonist: Protagonist;

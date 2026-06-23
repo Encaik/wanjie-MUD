@@ -9,6 +9,7 @@
  * @module modules/quest/logic
  */
 
+import { QuestTemplateRegistry } from '@/core/registry/QuestTemplateRegistry';
 import type {
   QuestTemplate,
   QuestTemplateStage,
@@ -17,7 +18,6 @@ import type {
   QuestObjective,
   EventObjectiveMapping,
 } from '@/core/types';
-import { QuestTemplateRegistry } from '@/core/registry/QuestTemplateRegistry';
 
 // ============================================
 // 编译缓存

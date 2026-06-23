@@ -6,6 +6,7 @@
  */
 
 import { gameEventBus } from '@/core/events';
+
 import type { RollResult } from './types';
 
 // ============================================

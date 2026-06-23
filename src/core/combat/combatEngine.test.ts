@@ -4,7 +4,9 @@
  * 运行: pnpm vitest run src/core/combat/
  */
 import { describe, it, expect } from 'vitest';
+
 import { executeCombat, calculateDamage, setCombatSeed } from './combatEngine';
+
 import type { CombatUnit } from './types';
 
 /** 默认测试单位 coreStats */

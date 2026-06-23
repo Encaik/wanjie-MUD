@@ -18,16 +18,16 @@ import {
   Package,
 } from 'lucide-react';
 
-import { Badge } from '@/shared/ui/data-display/badge';
-import { Button } from '@/shared/ui/actions/button';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/shared/ui/data-display/card';
+import type { WorldBalanceStats, ItemRarity } from '@/core/types';
+import { getRarityStyle } from '@/modules/theme/data/rarityStyles';
 import { generateTowerEnemy } from '@/modules/tower/logic/towerSystem';
 import {
   TowerProgress,
   TowerEnemy,
 } from '@/modules/tower/logic/types';
-import type { WorldBalanceStats, ItemRarity } from '@/core/types';
-import { getRarityStyle } from '@/modules/theme/data/rarityStyles';
+import { Button } from '@/shared/ui/actions/button';
+import { Badge } from '@/shared/ui/data-display/badge';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/shared/ui/data-display/card';
 
 
 interface TowerPanelProps {

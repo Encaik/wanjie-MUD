@@ -7,9 +7,10 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+
+import type { Milestone } from '@/modules/progression/logic/milestones';
 import { Button } from '@/shared/ui/actions/button';
 import { Progress } from '@/shared/ui/feedback/progress';
-import type { Milestone } from '@/modules/progression/logic/milestones';
 
 interface BreakthroughCeremonyProps {
   /** 里程碑信息 */

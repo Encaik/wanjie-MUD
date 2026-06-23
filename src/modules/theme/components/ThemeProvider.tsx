@@ -15,10 +15,9 @@
 
 import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import type { ReactNode } from 'react';
-import { ThemeContext } from '../hooks/useTheme';
-import type { ThemeSlice, ThemeMode } from '../types';
-import { createInitialThemeState, resolveIsDark, toggleDark } from '../state';
+
 import { subscribeThemeEvents, unsubscribeThemeEvents, setOnWorldChanged, setOnNewGameStarted } from '../events';
+import { ThemeContext } from '../hooks/useTheme';
 import {
   loadThemePrefs,
   saveThemePrefs,
@@ -29,6 +28,10 @@ import {
   fetchWorldTheme,
   getVarNamesFromThemeData,
 } from '../hooks/useThemeSettings';
+import { createInitialThemeState, resolveIsDark, toggleDark } from '../state';
+
+import type { ThemeSlice, ThemeMode } from '../types';
+
 
 /**
  * 应用暗色模式到 DOM

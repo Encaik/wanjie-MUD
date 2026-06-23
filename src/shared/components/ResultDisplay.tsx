@@ -2,11 +2,11 @@
 
 import { CheckCircle2, XCircle, Package } from 'lucide-react';
 
-import { Badge } from '@/shared/ui/data-display/badge';
-import { Button } from '@/shared/ui/actions/button';
-import { Card, CardContent } from '@/shared/ui/data-display/card';
 import { ActionResult } from '@/core/types';
 import { getTemplate } from '@/modules/item/data';
+import { Button } from '@/shared/ui/actions/button';
+import { Badge } from '@/shared/ui/data-display/badge';
+import { Card, CardContent } from '@/shared/ui/data-display/card';
 
 
 interface ResultDisplayProps {

@@ -5,8 +5,9 @@
  * 纯函数，接收当前状态和历史，返回适用的分支选项。
  */
 
-import type { EventRecord, EventPrerequisite, Consequence } from './types';
 import type { GameState } from '@/core/types';
+
+import type { EventRecord, EventPrerequisite, Consequence } from './types';
 
 // ============================================
 // 前置条件检查

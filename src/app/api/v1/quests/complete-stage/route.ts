@@ -6,16 +6,17 @@
  */
 
 import { NextRequest } from 'next/server';
+
 import { apiSuccess, apiError } from '@/app/api/result';
 import { createLogger } from '@/core/logger';
 import { QuestRegistry } from '@/core/registry/QuestRegistry';
+import type { QuestState, QuestReward } from '@/core/types';
 import {
   completeStage,
   completeQuest,
   checkStageCompletion,
 } from '@/modules/quest/logic/questEngine';
 import { mergeRewards } from '@/modules/quest/logic/rewardDistributor';
-import type { QuestState, QuestReward } from '@/core/types';
 
 const log = createLogger('Quests');
 

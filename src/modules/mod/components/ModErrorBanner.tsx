@@ -8,6 +8,7 @@
  */
 
 import { useState } from 'react';
+
 import type { ModLoadWarning } from '../types';
 
 interface ModErrorBannerProps {

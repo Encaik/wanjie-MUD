@@ -16,6 +16,8 @@
 
 
 // 导入所有世界观文案
+import { WorldType } from '@/core/types';
+
 import { gaowuTexts } from './gaowu';
 import { kejiTexts } from './keji';
 import { mohuanTexts } from './mohuan';
@@ -25,7 +27,6 @@ import { wuxiaTexts } from './wuxia';
 import { xianxiaTexts } from './xianxia';
 import { xiuxianTexts } from './xiuxian';
 import { yinengTexts } from './yineng';
-import { WorldType } from '@/core/types';
 
 // ============================================
 // 世界观文案映射表
